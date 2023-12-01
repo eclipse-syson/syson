@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "baseUrl": "./src",
+    "declarationDir": "build",
+    "module": "esnext",
+    "target": "ES2019",
+    "lib": ["es6", "dom", "dom.iterable", "es2016", "es2017", "ES2019"],
+    "jsx": "react-jsx",
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "types": ["node", "reflect-metadata", "jest"],
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "strict": false
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "build",
+    "src/**/*.stories.tsx",
+    "src/**/*.stories.js",
+    "src/**/*.test.tsx",
+    "src/**/*.test.js"
+  ]
+}

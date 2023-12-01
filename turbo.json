@@ -1,0 +1,27 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "format": {
+      "outputs": []
+    },
+    "format-lint": {
+      "outputs": []
+    },
+    "build": {
+      "dependsOn": ["format-lint", "^build"],
+      "outputs": ["dist/**"]
+    },
+    "test": {
+      "dependsOn": ["build"]
+    },
+    "coverage": {
+      "dependsOn": ["build"]
+    },
+    "publish:local": {
+      "dependsOn": ["build"]
+    },
+    "start": {
+      "dependsOn": ["build"]
+    }
+  }
+}

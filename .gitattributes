@@ -1,0 +1,2 @@
+# Prevent global windows configuration to change lf into crlf
+* text=auto eol=lf

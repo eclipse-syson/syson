@@ -1,0 +1,47 @@
+= ADR-001 - Support direct edit in diagrams
+
+== Context
+
+In General View diagram (and maybe other diagrams existing in the future), we need to perform direct edit (e.g. renaming an element) on some diagram elements (i.e. nodes and edges).
+
+Change the name of a SysML element is the easiest case while performing a direct edit.
+But there are many other direct edit much moe complex than simply change the name of an element.
+
+For example, the General View diagram displays `PartUsage` as container node.
+These container node contains a compartment for its attributes (i.e. `AttributeUsage`).
+An `AttributeUsage` may have a type, may redefine another `AttributeUsage`, may have a value (simple or complex) affected, ...
+Furthermore, an `AttributeUsage` can be represented as a compartment node inside a `Usage`` container node, but can also be represented as a container node.
+Depending on this kind of node, we do not want to display the same level of information, and we do not want to edit the same level of information.
+
+We also want to create elements on the fly.
+For example, on an `AttributeUsage` that only have a name 'attr1', performing a direct edit from `attr1` to `attr1 : MyType` should create a `FeatureTyping` element and reference the type `MyType` in this newly created `FeatureTyping`.
+But it should also create the type `MyType` if it does not exist.
+
+We also want to delete elements on the fly.
+For example, on an `AttributeUsage` 'attr1' that redefines another `AttributeUsage` 'attr2' (meaning a `Redefinition` element exists under `attr1` and references `attr2`), performing a direct edit from `attr1 :>> attr2` to `attr1` should delete the `Redefinition` element existing under `attr1`.
+
+These examples give a small insight of what can be done with the direct edit.
+
+== Decision
+
+For simple cases, the usage of `String.split(...)` or a regular expression may be the technical solution to handle the direct edit.
+For complex cases (like the ones described above), a parser could help to manage this complexity (several elements to update/create/delete, optional parts...).
+
+The decision is to use ANTLR parser to handle these complex cases.
+It will be used to create grammars dedicated to parse these complex cases.
+The first use case will be the direct edit of all `Usage` elements (`AttributeUsage`, `PartUsage`, `PortUsage`, ...) that are represented as compartment nodes inside node containers.
+Other use cases (unknown at the moment) may also use the same grammar or new ones depending on the context.
+
+== Status
+
+To be reviewed.
+
+== Consequences
+
+`syson-diagram-general-view` will depend on `antlr4-runtime` as maven dependency.
+The version used will be the same as Sirius Web, ANTLR 4.10.1.
+SysON will keep its version of ANTLR synchronized with the Sirius Web one.
+
+== References
+
+- https://www.antlr.org/

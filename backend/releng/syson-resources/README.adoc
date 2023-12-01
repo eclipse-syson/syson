@@ -1,0 +1,10 @@
+= syson-resources
+
+== Goal
+
+This project is used to store some common settings used by our Java projects.
+As such, it contains our Checkstyle configuration, our formatter settings etc.
+
+== Dependencies
+
+None, this is not a Java project

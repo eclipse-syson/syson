@@ -1,0 +1,111 @@
+/*******************************************************************************
+ * Copyright (c) 2019, 2020 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+
+html {
+  /* Primary Colors */
+  --daintree: #261e58;
+  --blue-lagoon: #be1a78;
+  --bondi-blue: #7269a4;
+  --white: #ffffff;
+
+  /* Secondary colors */
+  --blue: #383838;
+  --green: #079459;
+  --red: #de1000;
+  --yellow: #fbb800;
+
+  /* Variants for Daintree */
+  --daintree-lighten-95: #f1f0fa;
+  --daintree-lighten-90: #e4e1f5;
+  --daintree-lighten-80: #c9c4eb;
+  --daintree-lighten-70: #afa7e1;
+  --daintree-lighten-40: #5f4fc3;
+  --daintree-lighten-30: #4b3baf;
+  --daintree-lighten-20: #3f3192;
+  --daintree-lighten-10: #322775;
+  /* --daintree */
+
+  /* Variants for Blue Lagoon */
+  --blue-lagoon-lighten-95: #fdf2f8;
+  --blue-lagoon-lighten-90: #fbe5f1;
+  --blue-lagoon-lighten-60: #f097ca;
+  --blue-lagoon-lighten-30: #e649a3;
+  --blue-lagoon-lighten-20: #e23096;
+  --blue-lagoon-lighten-10: #d71d88;
+  /* --blue-lagoon */
+  --blue-lagoon-darken-10: #ab176c;
+  --blue-lagoon-darken-20: #981460;
+  --blue-lagoon-darken-30: #841254;
+  --blue-lagoon-darken-60: #4c0a30;
+  --blue-lagoon-darken-90: #12020c;
+
+  /* Variants for Bondi blue */
+
+  /* Variants for Blue */
+  --blue-lighten-90: #ebebeb;
+  --blue-lighten-60: #afafaf;
+  --blue-lighten-30: #737373;
+  --blue-lighten-10: #4b4b4b;
+  /* --blue */
+  --blue-darken-10: #323232;
+  --blue-darken-20: #2c2c2c;
+  --blue-darken-30: #272727;
+  --blue-darken-60: #161616;
+
+  /* Variants for Green */
+  --green-lighten-90: #e6f4ee;
+  --green-lighten-60: #9cd4bd;
+  --green-lighten-30: #51b48b;
+  /* --green */
+  --green-darken-10: #05683e;
+  --green-darken-30: #033b24;
+  --green-darken-90: #010f09;
+
+  /* Variants for Red */
+  --red-lighten-90: #fce7e5;
+  --red-lighten-60: #f29f99;
+  --red-lighten-30: #e8584c;
+  --red-lighten-20: #e54033;
+  --red-lighten-10: #e12819;
+  /* --red */
+  --red-darken-10: #c80e00;
+  --red-darken-30: #9b0b00;
+  --red-darken-60: #590600;
+  --red-darken-90: #160200;
+
+  /* Variants for Yellow */
+  --yellow-lighten-100: #fff8e5;
+  --yellow-lighten-60: #fde399;
+  --yellow-lighten-30: #fccd4c;
+  /* --yellow */
+  --yellow-darken-10: #b08100;
+  --yellow-darken-30: #644a00;
+  --yellow-darken-90: #191200;
+
+  /* TYPOGRAPHY */
+  --font-family: Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --font-weight-bold: bold;
+  --font-weight-600: 600;
+  --font-weight-default: normal;
+
+  --font-size-1: 32px;
+  --font-size-2: 24px;
+  --font-size-3: 20px;
+  --font-size-4: 16px;
+  --font-size-5: 14px;
+  --font-size-6: 12px;
+
+  --line-height-default: 1.5;
+  --line-height-1: 32px;
+}

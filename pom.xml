@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2023 Obeo.
+ This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v2.0
+ which accompanies this distribution, and is available at
+ https://www.eclipse.org/legal/epl-2.0/
+
+ SPDX-License-Identifier: EPL-2.0
+
+ Contributors:
+     Obeo - initial API and implementation
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.eclipse.syson</groupId>
+	<artifactId>syson</artifactId>
+	<version>2023.10.9</version>
+
+	<name>syson</name>
+	<description>SysON</description>
+	<packaging>pom</packaging>
+
+  <pluginRepositories>
+    <pluginRepository>
+	  	<id>dash-licenses-snapshots</id>
+	    <url>https://repo.eclipse.org/content/repositories/dash-licenses-snapshots/</url>
+	    <snapshots>
+		  	<enabled>true</enabled>
+	    </snapshots>
+	  </pluginRepository>
+  </pluginRepositories>
+
+	<modules>
+		<module>/backend</module>
+	</modules>
+
+	<profiles>
+		<profile>
+		  <id>verify-iplog</id>
+		  <build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.dash</groupId>
+						<artifactId>license-tool-plugin</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+						<executions>
+							<execution>
+								<id>license-check</id>
+								<phase>compile</phase>
+								<goals>
+									<goal>license-check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+		  </build>
+	  </profile>
+	</profiles>
+</project>
