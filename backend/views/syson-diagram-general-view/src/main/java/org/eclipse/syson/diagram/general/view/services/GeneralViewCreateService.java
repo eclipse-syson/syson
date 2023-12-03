@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.general.view.services;
 
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -23,6 +24,20 @@ import org.eclipse.syson.sysml.SysmlFactory;
  * @author arichard
  */
 public class GeneralViewCreateService {
+
+    private final ElementInitializerSwitch elementInitializerSwitch = new ElementInitializerSwitch();
+
+    /**
+     * Call the {@link ElementInitializerSwitch} on the given {@link Element}. Allows to set various
+     * attributes/references.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the given {@link Element}.
+     */
+    public Element elementInitializer(Element element) {
+        return this.elementInitializerSwitch.doSwitch(element);
+    }
 
     /**
      * Create a {@link PartUsage} under the given {@link PartUsage}.

@@ -18,9 +18,12 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.VariantMembership;
 
 /**
  * <!-- begin-user-doc -->
@@ -62,8 +65,15 @@ public class EnumerationDefinitionImpl extends AttributeDefinitionImpl implement
      */
     @Override
     public EList<EnumerationUsage> getEnumeratedValue() {
-        List<EnumerationUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue(), data.size(), data.toArray());
+        List<EnumerationUsage> enumeratedValues = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(VariantMembership.class::isInstance)
+            .map(VariantMembership.class::cast)
+            .flatMap(vm -> vm.getOwnedRelatedElement().stream())
+            .filter(EnumerationUsage.class::isInstance)
+            .map(EnumerationUsage.class::cast)
+            .forEach(enumeratedValues::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue(), enumeratedValues.size(), enumeratedValues.toArray());
     }
 
     /**

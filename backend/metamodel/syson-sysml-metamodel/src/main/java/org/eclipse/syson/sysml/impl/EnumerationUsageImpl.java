@@ -12,11 +12,17 @@
  */
 package org.eclipse.syson.sysml.impl;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.DataType;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc -->
@@ -65,13 +71,27 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public EnumerationDefinition basicGetEnumerationDefinition() {
-        // TODO: implement this method to return the 'Enumeration Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        EnumerationDefinition enumerationDefinition = null;
+        EList<Relationship> relationships = this.getOwnedRelationship();
+        for (Relationship relationship : relationships) {
+            if (relationship instanceof FeatureTyping featureTyping) {
+                Type type = featureTyping.getType();
+                if (type instanceof EnumerationDefinition definition) {
+                    enumerationDefinition = definition;
+                    break;
+                }
+            }
+        }
+        if (enumerationDefinition == null) {
+            Definition owningDefinition = getOwningDefinition();
+            if (owningDefinition instanceof EnumerationDefinition definition) {
+                enumerationDefinition = definition;
+            }
+        }
+        return enumerationDefinition;
     }
 
     /**

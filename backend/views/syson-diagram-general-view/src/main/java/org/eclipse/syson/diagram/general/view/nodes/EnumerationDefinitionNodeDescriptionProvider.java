@@ -15,12 +15,15 @@ package org.eclipse.syson.diagram.general.view.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.ListLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.general.view.AQLConstants;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
@@ -44,7 +47,9 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getEnumerationDefinition());
         return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression("60")
+                .childrenDescriptions(this.createEnumerationCompartment(NAME))
+                .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
+                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .labelExpression("aql:self.getContainerLabel()")
@@ -93,19 +98,6 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
         }
     }
 
-    @Override
-    protected NodeStyleDescription createDefinitionNodeStyle() {
-        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
-                .borderRadius(0)
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BACKGROUND_COLOR))
-                .displayHeaderSeparator(false)
-                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
-                .withHeader(false)
-                .build();
-    }
-
     private NodePalette createNodePalette(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:self.deleteFromModel()");
@@ -127,6 +119,123 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
                 .labelEditTool(editTool.build())
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions),
                         this.createSubclassificationEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
+                .build();
+    }
+
+    private NodeDescription createEnumerationCompartment(String name) {
+        return this.diagramBuilderHelper.newNodeDescription()
+                .childrenDescriptions(this.createEnumerationUsageCompartmentItem(name))
+                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
+                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_HEIGHT)
+                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
+                .labelExpression("enums")
+                .name(name + " EnumsCompartment")
+                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
+                .style(this.createEnumerationCompartmentNodeStyle())
+                .userResizable(false)
+                .palette(this.createEnumerationCompartmentPalette())
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .build();
+    }
+
+    protected NodeDescription createEnumerationUsageCompartmentItem(String name) {
+        return this.diagramBuilderHelper.newNodeDescription()
+                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
+                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getEnumerationUsage()))
+                .labelExpression("aql:self.declaredName")
+                .name(name + " EnumerationUsageCompartmentItem")
+                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue().getName())
+                .style(this.createEnumerationUsageCompartmentItemNodeStyle())
+                .userResizable(false)
+                .palette(this.createEnumerationUsageNodePalette())
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .build();
+    }
+
+    protected NodeStyleDescription createEnumerationCompartmentNodeStyle() {
+        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
+                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderRadius(0)
+                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
+                .displayHeaderSeparator(false)
+                .fontSize(12)
+                .italic(true)
+                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .showIcon(false)
+                .withHeader(true)
+                .build();
+    }
+
+    protected NodeStyleDescription createEnumerationUsageCompartmentItemNodeStyle() {
+        return this.diagramBuilderHelper.newIconLabelNodeStyleDescription()
+                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderRadius(0)
+                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BACKGROUND_COLOR))
+                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .showIcon(true)
+                .build();
+    }
+
+    protected NodePalette createEnumerationCompartmentPalette() {
+        return this.diagramBuilderHelper.newNodePalette()
+                .nodeTools(this.createEnumerationCompartmentNodeTool(SysmlPackage.eINSTANCE.getEnumerationUsage(), "enumeration"))
+                .build();
+    }
+
+    protected NodeTool createEnumerationCompartmentNodeTool(EClass eClass, String defaultLabel) {
+        var builder = this.diagramBuilderHelper.newNodeTool();
+
+        var setValue = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
+                .valueExpression(defaultLabel);
+
+        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:newInstance")
+                .children(setValue.build());
+
+        var createInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
+                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
+                .variableName("newInstance")
+                .children(changeContextNewInstance.build());
+
+        var changeContextMembership = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:newVariantMembership")
+                .children(createInstance.build());
+
+        var createMembership = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getVariantMembership()))
+                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
+                .variableName("newVariantMembership")
+                .children(changeContextMembership.build());
+
+        return builder
+                .name(eClass.getName())
+                .body(createMembership.build())
+                .build();
+    }
+
+    protected NodePalette createEnumerationUsageNodePalette() {
+        var callDeleteService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL_SELF + ".deleteFromModel()");
+
+        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
+                .name("Delete from Model")
+                .body(callDeleteService.build());
+
+        var callEditService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+
+        var editTool = this.diagramBuilderHelper.newLabelEditTool()
+                .name("Edit")
+                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultItemInitialDirectEditLabel()")
+                .body(callEditService.build());
+
+        return this.diagramBuilderHelper.newNodePalette()
+                .deleteTool(deleteTool.build())
+                .labelEditTool(editTool.build())
                 .build();
     }
 }

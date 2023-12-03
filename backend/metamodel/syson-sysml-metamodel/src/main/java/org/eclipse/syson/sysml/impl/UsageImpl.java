@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
@@ -37,6 +38,7 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PartUsage;
@@ -546,12 +548,16 @@ public class UsageImpl extends FeatureImpl implements Usage {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Definition basicGetOwningDefinition() {
-        // TODO: implement this method to return the 'Owning Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        EObject eContainer = this.eContainer();
+        if (eContainer instanceof Membership membership) {
+            EObject membershipContainer = membership.eContainer();
+            if (membershipContainer instanceof Definition definition) {
+                return definition;
+            }
+        }
         return null;
     }
 
