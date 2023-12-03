@@ -109,11 +109,11 @@ public class StateSubactionMembershipItemProvider extends FeatureMembershipItemP
      * This returns StateSubactionMembership.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/StateSubactionMembership"));
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/StateSubactionMembership.svg"));
     }
 
     /**

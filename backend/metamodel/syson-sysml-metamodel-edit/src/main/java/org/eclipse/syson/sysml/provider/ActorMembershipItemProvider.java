@@ -84,11 +84,11 @@ public class ActorMembershipItemProvider extends ParameterMembershipItemProvider
      * This returns ActorMembership.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/ActorMembership"));
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/ActorMembership.svg"));
     }
 
     /**

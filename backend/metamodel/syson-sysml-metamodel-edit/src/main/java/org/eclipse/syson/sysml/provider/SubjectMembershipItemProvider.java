@@ -84,11 +84,11 @@ public class SubjectMembershipItemProvider extends ParameterMembershipItemProvid
      * This returns SubjectMembership.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/SubjectMembership"));
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/SubjectMembership.svg"));
     }
 
     /**

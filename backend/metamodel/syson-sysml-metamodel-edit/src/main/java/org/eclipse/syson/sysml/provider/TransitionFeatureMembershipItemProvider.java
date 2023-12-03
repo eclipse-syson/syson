@@ -109,11 +109,11 @@ public class TransitionFeatureMembershipItemProvider extends FeatureMembershipIt
      * This returns TransitionFeatureMembership.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/TransitionFeatureMembership"));
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/TransitionFeatureMembership.svg"));
     }
 
     /**

@@ -60,11 +60,11 @@ public class EndFeatureMembershipItemProvider extends FeatureMembershipItemProvi
      * This returns EndFeatureMembership.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/EndFeatureMembership"));
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/EndFeatureMembership.svg"));
     }
 
     /**
