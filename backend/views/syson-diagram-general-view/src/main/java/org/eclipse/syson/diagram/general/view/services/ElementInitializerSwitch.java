@@ -24,6 +24,11 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
 public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
+    public Element caseElement(Element object) {
+        return object;
+    }
+
+    @Override
     public Element caseEnumerationDefinition(EnumerationDefinition object) {
         object.setIsVariation(true);
         return object;

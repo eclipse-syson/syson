@@ -41,6 +41,7 @@ import org.eclipse.syson.diagram.general.view.nodes.InterfaceDefinitionNodeDescr
 import org.eclipse.syson.diagram.general.view.nodes.InterfaceUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ItemDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ItemUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.MetadataDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PartDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProvider;
@@ -101,6 +102,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 new InterfaceUsageNodeDescriptionProvider(colorProvider),
                 new ItemDefinitionNodeDescriptionProvider(colorProvider),
                 new ItemUsageNodeDescriptionProvider(colorProvider),
+                new MetadataDefinitionNodeDescriptionProvider(colorProvider),
                 new PackageNodeDescriptionProvider(colorProvider),
                 new PartDefinitionNodeDescriptionProvider(colorProvider),
                 new PartUsageNodeDescriptionProvider(colorProvider),
@@ -141,6 +143,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         var optInterfaceUsageNodeDescription = cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME);
         var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
         var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
+        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
         var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
         var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
@@ -154,6 +157,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         acceptedNodeTypes.add(optInterfaceUsageNodeDescription.get());
         acceptedNodeTypes.add(optItemDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optItemUsageNodeDescription.get());
+        acceptedNodeTypes.add(optMetadataDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optPackageNodeDescription.get());
         acceptedNodeTypes.add(optPartDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optPartUsageNodeDescription.get());
@@ -190,6 +194,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                            this.createNodeToolFromPackage(cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getInterfaceUsage()),
                            this.createNodeToolFromPackage(cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getItemDefinition()),
                            this.createNodeToolFromPackage(cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getItemUsage()),
+                           this.createNodeToolFromPackage(cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getMetadataDefinition()),
                            this.createNodeToolFromPackage(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()),
                            this.createNodeToolFromPackage(cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartDefinition()),
                            this.createNodeToolFromPackage(cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage()),

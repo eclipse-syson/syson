@@ -28,23 +28,23 @@ import org.eclipse.syson.diagram.general.view.SysMLMetamodelHelper;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * Used to create the port usage node description.
+ * Used to create the enumeration definition node description.
  *
  * @author arichard
  */
-public class PortUsageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+public class MetadataDefinitionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    public static final String NAME = "GV Node PortUsage";
+    public static final String NAME = "GV Node MetadataDefinition";
 
-    public PortUsageNodeDescriptionProvider(IColorProvider colorProvider) {
+    public MetadataDefinitionNodeDescriptionProvider(IColorProvider colorProvider) {
         super(colorProvider);
     }
 
     @Override
     public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPortUsage());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getMetadataDefinition());
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createUsageAttributesCompartment(NAME))
+                .childrenDescriptions(this.createDefinitionAttributesCompartment(NAME))
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
@@ -52,7 +52,7 @@ public class PortUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .labelExpression("aql:self.getContainerLabel()")
                 .name(NAME)
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .style(this.createUsageNodeStyle())
+                .style(this.createDefinitionNodeStyle())
                 .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .build();
@@ -90,8 +90,8 @@ public class PortUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         dependencyTargetNodeDescriptions.add(optPortDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optPortUsageNodeDescription.get());
 
-        if (optPartUsageNodeDescription.isPresent()) {
-            NodeDescription nodeDescription = optPortUsageNodeDescription.get();
+        if (optMetadataDefinitionNodeDescription.isPresent()) {
+            NodeDescription nodeDescription = optMetadataDefinitionNodeDescription.get();
             diagramDescription.getNodeDescriptions().add(nodeDescription);
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, dependencyTargetNodeDescriptions));
         }
@@ -117,7 +117,7 @@ public class PortUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions),
-                        this.createRedefinitionEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
+                        this.createSubclassificationEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
                 .build();
     }
 }

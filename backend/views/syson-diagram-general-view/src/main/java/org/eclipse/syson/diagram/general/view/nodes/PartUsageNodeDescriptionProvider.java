@@ -74,6 +74,7 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         var optInterfaceUsageNodeDescription = cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME);
         var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
         var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
+        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
         var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
         var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
@@ -87,6 +88,7 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         dependencyTargetNodeDescriptions.add(optInterfaceUsageNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optItemDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optItemUsageNodeDescription.get());
+        dependencyTargetNodeDescriptions.add(optMetadataDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optPackageNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optPartDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optPartUsageNodeDescription.get());

@@ -74,6 +74,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
         var optInterfaceUsageNodeDescription = cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME);
         var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
         var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
+        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
         var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
         var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
@@ -87,6 +88,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
         dependencyTargetNodeDescriptions.add(optInterfaceUsageNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optItemDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optItemUsageNodeDescription.get());
+        dependencyTargetNodeDescriptions.add(optMetadataDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optPackageNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optPartDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optPartUsageNodeDescription.get());
@@ -103,6 +105,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
             packageNodeDescription.getReusedChildNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
             packageNodeDescription.getReusedChildNodeDescriptions().add(optItemDefinitionNodeDescription.get());
             packageNodeDescription.getReusedChildNodeDescriptions().add(optItemUsageNodeDescription.get());
+            packageNodeDescription.getReusedChildNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
             packageNodeDescription.getReusedChildNodeDescriptions().add(packageNodeDescription);
             packageNodeDescription.getReusedChildNodeDescriptions().add(optPartDefinitionNodeDescription.get());
             packageNodeDescription.getReusedChildNodeDescriptions().add(optPartUsageNodeDescription.get());
@@ -159,6 +162,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
         var optInterfaceUsageNodeDescription = cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME);
         var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
         var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
+        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
         var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
         var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
@@ -172,6 +176,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
         acceptedNodeTypes.add(optInterfaceUsageNodeDescription.get());
         acceptedNodeTypes.add(optItemDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optItemUsageNodeDescription.get());
+        acceptedNodeTypes.add(optMetadataDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optPackageNodeDescription.get());
         acceptedNodeTypes.add(optPartDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optPartUsageNodeDescription.get());
@@ -197,6 +202,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                            this.createNodeTool(cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getInterfaceUsage()),
                            this.createNodeTool(cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getItemDefinition()),
                            this.createNodeTool(cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getItemUsage()),
+                           this.createNodeTool(cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getMetadataDefinition()),
                            this.createNodeTool(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()),
                            this.createNodeTool(cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartDefinition()),
                            this.createNodeTool(cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage()),
