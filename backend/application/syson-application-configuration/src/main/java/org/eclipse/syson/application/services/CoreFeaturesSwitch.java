@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -97,6 +98,14 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         features.addAll(this.caseElement(object));
         features.add(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature());
         features.add(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseType(Type object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getType_IsAbstract());
         return features;
     }
 }
