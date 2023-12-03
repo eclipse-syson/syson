@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -48,6 +49,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String caseAttributeDefinition(AttributeDefinition object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("attribute def")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -60,6 +62,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String caseAttributeUsage(AttributeUsage object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("attribute")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -72,6 +75,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String caseEnumerationDefinition(EnumerationDefinition object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("enumeration def")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -84,6 +88,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String caseInterfaceDefinition(InterfaceDefinition object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("interface def")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -96,6 +101,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String caseInterfaceUsage(InterfaceUsage object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("interface")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -108,6 +114,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String caseItemDefinition(ItemDefinition object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("item def")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -120,6 +127,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String caseItemUsage(ItemUsage object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("item")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -132,6 +140,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String casePartDefinition(PartDefinition object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("part def")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -156,6 +165,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String casePartUsage(PartUsage object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("part")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -168,6 +178,7 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String casePortDefinition(PortDefinition object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("port def")
             .append(LabelConstants.CLOSE_QUOTE)
@@ -180,11 +191,24 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     public String casePortUsage(PortUsage object) {
         StringBuilder label = new StringBuilder();
         label
+            .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("port")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
             .append(this.caseElement(object));
+        return label.toString();
+    }
+
+    private String abstractType(Type type) {
+        StringBuilder label = new StringBuilder();
+        if (type.isIsAbstract()) {
+            label
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("abstract")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR);
+        }
         return label.toString();
     }
 }
