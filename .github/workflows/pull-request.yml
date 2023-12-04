@@ -1,0 +1,58 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'CHANGELOG.adoc'
+      - 'doc/**'
+    types:
+      [
+        opened,
+        synchronize,
+        reopened,
+        labeled,
+        unlabeled,
+        milestoned,
+        demilestoned,
+      ]
+
+jobs:
+  build:
+    name: Metadata Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node SDK
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.7
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Check that the CHANGELOG has been updated
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-changelog.js
+
+      - name: Check that the copyright of the modified files has been updated
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-copyright.js
+
+      - name: Check that the labels of the pull request are ok
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-labels.js
+
+      - name: Check that the milestone of the pull request is ok
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-milestone.js
+
+      - name: Check that the TypeScript files do not have an issue
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-ts.js

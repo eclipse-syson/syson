@@ -32,6 +32,14 @@
 		<sirius.web.version>2023.10.9</sirius.web.version>
 	</properties>
 	
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-syson/syson</url>
+		</repository>
+	</distributionManagement>
+
 	<repositories>
 		<repository>
 			<id>Central</id>
@@ -43,7 +51,6 @@
 		</repository>
 		<repository>
 			<id>github-sirius-web</id>
-			<name>Apache Maven Packages</name>
 			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
 		</repository>
 	</repositories>

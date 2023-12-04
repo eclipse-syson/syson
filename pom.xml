@@ -23,6 +23,14 @@
 	<description>SysON</description>
 	<packaging>pom</packaging>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-syson/syson</url>
+		</repository>
+	</distributionManagement>
+
   <pluginRepositories>
     <pluginRepository>
 	  	<id>dash-licenses-snapshots</id>
