@@ -19,7 +19,8 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "start": "turbo run start"
+    "start": "turbo run start",
+    "format-lint": "turbo run format-lint"
   },
   "devDependencies": {
     "turbo": "1.4.2"

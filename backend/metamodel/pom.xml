@@ -23,6 +23,14 @@
 	<description>SysON Metamodel Parent</description>
 	<packaging>pom</packaging>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-syson/syson</url>
+		</repository>
+	</distributionManagement>
+
 	<modules>
 		<module>syson-sysml-metamodel</module>
 		<module>syson-sysml-metamodel-edit</module>

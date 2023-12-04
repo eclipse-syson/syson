@@ -1,0 +1,152 @@
+name: Continuous integration
+
+on:
+  push:
+    paths-ignore:
+      - 'CHANGELOG.adoc'
+      - 'doc/**'
+    branches:
+      - '**'
+    tags:
+      - '*'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        if: github.event_name != 'pull_request'
+        with:
+          fetch-depth: 0
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Node SDK
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.7
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+
+      - name: Setup Java SDK
+        uses: actions/setup-java@v3.9.0
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Setup some global environment variables
+        run: |
+          echo "git_describe=$(git describe)" >> $GITHUB_ENV
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build the frontend packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
+          echo "CI=true" >> $GITHUB_ENV
+          npm ci
+          npm run-script format-lint
+          npm run build
+
+      - name: Copy frontend artifacts
+        run: |
+          mkdir -p backend/application/syson-frontend/src/main/resources/static
+          cp -R frontend/syson/dist/* backend/application/syson-frontend/src/main/resources/static
+
+      - name: Build the backend
+        env:
+          USERNAME: ${{github.actor}}
+          PASSWORD: ${{secrets.GITHUB_TOKEN}}
+        run: mvn -U -B -e clean verify --settings settings.xml
+
+      - name: Publish the backend
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: mvn -B deploy
+
+      - name: Publish the frontend packages
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          npm publish --workspaces
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Build the Docker image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: staging-syson
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          docker build -t syson backend/application/syson-application
+
+      - name: Configure AWS CLI for SysON
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-3
+
+      - name: Login to Amazon Elastic Container Registry
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Tag the Docker image
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: docker tag syson $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: staging-syson
+          IMAGE_TAG: ${{ env.git_describe }}
+
+      - name: Upload the Docker image to AWS ECR
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: staging-syson
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
+      - name: Upload the Docker configuration for AWS Elastic Beanstalk
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: staging-syson
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          sed -e "s|IMAGE_NAME|$REGISTRY/$REPOSITORY:$IMAGE_TAG|" Dockerrun.aws.json.template > Dockerrun.aws.json
+          aws s3 cp Dockerrun.aws.json s3://staging-syson-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
+
+      - name: Create a new ElasticBeanstalk Application Version for SysON Staging
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: aws elasticbeanstalk create-application-version --application-name "SysON" --source-bundle S3Bucket="staging-syson-deployment",S3Key="integration/${{ env.git_describe }}/Dockerrun.aws.json" --version-label "${{ env.git_describe }}" --description "${{ github.sha }}"
+
+      - name: Deploy a new ElasticBeanstalk Application Version for SysON Staging
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: aws elasticbeanstalk update-environment --environment-name "staging-syson-staging" --version-label "${{ env.git_describe }}"

@@ -23,8 +23,17 @@
 	<description>SysON Application Parent</description>
 	<packaging>pom</packaging>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/eclipse-syson/syson</url>
+		</repository>
+	</distributionManagement>
+
 	<modules>
 		<module>syson-application</module>
 		<module>syson-application-configuration</module>
+		<module>syson-frontend</module>
 	</modules>
 </project>
