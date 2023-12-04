@@ -34,6 +34,7 @@ import org.eclipse.syson.diagram.general.view.SysMLMetamodelHelper;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.Usage;
 
 /**
  * Miscellaneous Java services used by the {@link GeneralViewDiagramDescriptionProvider}.
@@ -191,6 +192,66 @@ public class GeneralViewUtilService {
         }
 
         return definition;
+    }
+
+    /**
+     * Find a {@link Usage} element that match the given name in the ResourceSet of the given element.
+     *
+     * @param object
+     *            the object for which to find a corresponding type.
+     * @param usageName
+     *            the type name to match.
+     * @return the found {@link Usage} element or <code>null</code>
+     */
+    public Usage findUsageByName(EObject object, String usageName) {
+        final Usage result = this.findUsageByName(this.getAllRootsInResourceSet(object), usageName);
+        return result;
+    }
+
+    /**
+     * Iterate over the given {@link Collection} of root elements to find a {@link Usage} element with the given name.
+     *
+     * @param roots
+     *            the elements to inspect
+     * @param usageName
+     *            the name to match
+     * @return the found {@link Usage} or <code>null</code>
+     */
+    public Usage findUsageByName(Collection<EObject> roots, String usageName) {
+        for (final EObject root : roots) {
+            final Usage result = this.findUsageByNameFrom(root, usageName);
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Iterate over the root children to find a {@link Usage} element with the given name.
+     *
+     * @param root
+     *            the root object to iterate.
+     * @param usageName
+     *            the name to match
+     * @return the found {@link Usage} or <code>null</code>
+     */
+    private Usage findUsageByNameFrom(EObject root, String usageName) {
+        Usage usage = null;
+
+        if (root instanceof Usage && this.nameMatches((Definition) root, usageName)) {
+            return (Usage) root;
+        }
+
+        TreeIterator<EObject> eAllContents = root.eAllContents();
+        while (eAllContents.hasNext()) {
+            EObject obj = eAllContents.next();
+            if (obj instanceof Usage && this.nameMatches((Usage) obj, usageName)) {
+                usage = (Usage) obj;
+            }
+        }
+
+        return usage;
     }
 
     /**

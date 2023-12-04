@@ -20,6 +20,8 @@ package org.eclipse.syson.diagram.general.view;
 public class LabelConstants {
 
     public static final String CR = "\n";
+    public static final String COLON = ":";
     public static final String CLOSE_QUOTE = "\u00BB";
     public static final String OPEN_QUOTE = "\u00AB";
+    public static final String SPACE = " ";
 }

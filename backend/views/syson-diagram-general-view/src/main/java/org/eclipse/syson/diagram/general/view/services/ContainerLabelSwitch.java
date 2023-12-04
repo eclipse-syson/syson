@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.services;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.diagram.general.view.LabelConstants;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.InterfaceDefinition;
@@ -28,6 +30,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -184,7 +187,8 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("part")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.featureTyping(object));
         return label.toString();
     }
 
@@ -222,6 +226,20 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
                 .append("abstract")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR);
+        }
+        return label.toString();
+    }
+
+    private String featureTyping(Usage usage) {
+        StringBuilder label = new StringBuilder();
+        EList<Classifier> definitions = usage.getDefinition();
+        if (!definitions.isEmpty()) {
+            Classifier definition = definitions.get(0);
+            label
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.COLON)
+                .append(LabelConstants.SPACE)
+                .append(definition.getDeclaredName());
         }
         return label.toString();
     }

@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
@@ -628,12 +629,13 @@ public class FeatureImpl extends TypeImpl implements Feature {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Type basicGetOwningType() {
-        // TODO: implement this method to return the 'Owning Type' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        FeatureMembership owningFeatureMembership = this.getOwningFeatureMembership();
+        if (owningFeatureMembership != null) {
+            return owningFeatureMembership.getOwningType();
+        }
         return null;
     }
 
@@ -644,8 +646,13 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<Type> getType() {
-        List<Type> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_Type(), data.size(), data.toArray());
+        List<Type> types = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureTyping.class::isInstance)
+            .map(FeatureTyping.class::cast)
+            .map(typing -> typing.getType())
+            .forEach(types::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_Type(), types.size(), types.toArray());
     }
 
     /**

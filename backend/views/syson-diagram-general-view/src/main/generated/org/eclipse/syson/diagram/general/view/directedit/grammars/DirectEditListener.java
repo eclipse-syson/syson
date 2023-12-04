@@ -32,6 +32,36 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitExpression(DirectEditParser.ExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#featureExpressions}.
+	 * @param ctx the parse tree
+	 */
+	void enterFeatureExpressions(DirectEditParser.FeatureExpressionsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#featureExpressions}.
+	 * @param ctx the parse tree
+	 */
+	void exitFeatureExpressions(DirectEditParser.FeatureExpressionsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#subsettingExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubsettingExpression(DirectEditParser.SubsettingExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#subsettingExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubsettingExpression(DirectEditParser.SubsettingExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#redefinitionExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterRedefinitionExpression(DirectEditParser.RedefinitionExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#redefinitionExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitRedefinitionExpression(DirectEditParser.RedefinitionExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#typingExpression}.
 	 * @param ctx the parse tree
 	 */

@@ -25,6 +25,8 @@ import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditPars
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Usage;
 
 /**
@@ -46,16 +48,18 @@ public class GeneralViewLabelService {
     }
 
     /**
-     * Return the compartment item label for the given {@link Usage}.
+     * Return the label for the given {@link Usage}.
      *
      * @param usage
      *            the given {@link Usage}.
-     * @return the compartment item label for the given {@link Usage}.
+     * @return the label for the given {@link Usage}.
      */
-    public String getCompartmentItemLabel(Usage usage) {
+    public String getUsageLabel(Usage usage) {
         StringBuilder builder = new StringBuilder();
         builder.append(usage.getDeclaredName());
         builder.append(this.getTypingLabel(usage));
+        builder.append(this.getRedefinitionLabel(usage));
+        builder.append(this.getSubsettingLabel(usage));
         builder.append(this.getValueLabel(usage));
         return builder.toString();
     }
@@ -88,8 +92,59 @@ public class GeneralViewLabelService {
         if (featureTyping.isPresent()) {
             var type = featureTyping.get().getType();
             if (type != null) {
-                builder.append(" : ");
-                builder.append(type.getDeclaredName());
+                builder
+                    .append(LabelConstants.SPACE)
+                    .append(LabelConstants.COLON)
+                    .append(LabelConstants.SPACE)
+                    .append(type.getDeclaredName());
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Return the label of the subsetting part of the given {@link Usage}.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label of the subsetting part of the given {@link Usage} if there is one, an empty string otherwise.
+     */
+    private String getSubsettingLabel(Usage usage) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("");
+        var subsetting = usage.getOwnedRelationship().stream()
+                .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition))
+                .map(Subsetting.class::cast)
+                .findFirst();
+        if (subsetting.isPresent()) {
+            var subsettedFeature = subsetting.get().getSubsettedFeature();
+            if (subsettedFeature != null) {
+                builder.append(" :> ");
+                builder.append(subsettedFeature.getDeclaredName());
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Return the label of the redefinition part of the given {@link Usage}.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label of the redefinition part of the given {@link Usage} if there is one, an empty string otherwise.
+     */
+    private String getRedefinitionLabel(Usage usage) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("");
+        var redefinition = usage.getOwnedRelationship().stream()
+                .filter(Redefinition.class::isInstance)
+                .map(Redefinition.class::cast)
+                .findFirst();
+        if (redefinition.isPresent()) {
+            var redefinedFeature = redefinition.get().getRedefinedFeature();
+            if (redefinedFeature != null) {
+                builder.append(" :>> ");
+                builder.append(redefinedFeature.getDeclaredName());
             }
         }
         return builder.toString();
@@ -138,16 +193,13 @@ public class GeneralViewLabelService {
     }
 
     /**
-     * Get the value to display when a direct edit has been called on the given {@link Element} compartment item node.
+     * Get the value to display when a direct edit has been called on the given {@link Usage}.
      *
-     * @param element
-     *            the given {@link Element}.
+     * @param usage
+     *            the given {@link Usage}.
      * @return the value to display.
      */
-    public String getCompartmentItemInitialDirectEditLabel(Element element) {
-        if (element instanceof Usage usage) {
-            return this.getCompartmentItemLabel(usage);
-        }
-        return element.getDeclaredName();
+    public String getUsageInitialDirectEditLabel(Usage usage) {
+        return this.getUsageLabel(usage);
     }
 }

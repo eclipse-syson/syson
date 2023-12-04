@@ -1,4 +1,4 @@
-// Generated from DirectEdit.g4 by ANTLR 4.10.1
+// Generated from /Users/arichard/git/obeo/syson/backend/views/syson-diagram-general-view/src/main/resources/DirectEdit.g4 by ANTLR 4.9.2
 
 /*******************************************************************************
  * Copyright (c) 2023 Obeo.
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class DirectEditParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.10.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -160,14 +160,6 @@ public class DirectEditParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_expression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitExpression(this);
-		}
 	}
 
 	public final ExpressionContext expression() throws RecognitionException {
@@ -212,14 +204,6 @@ public class DirectEditParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_featureExpressions; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterFeatureExpressions(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitFeatureExpressions(this);
-		}
 	}
 
 	public final FeatureExpressionsContext featureExpressions() throws RecognitionException {
@@ -342,14 +326,6 @@ public class DirectEditParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_subsettingExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterSubsettingExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitSubsettingExpression(this);
-		}
 	}
 
 	public final SubsettingExpressionContext subsettingExpression() throws RecognitionException {
@@ -381,14 +357,6 @@ public class DirectEditParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_redefinitionExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterRedefinitionExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitRedefinitionExpression(this);
-		}
 	}
 
 	public final RedefinitionExpressionContext redefinitionExpression() throws RecognitionException {
@@ -420,14 +388,6 @@ public class DirectEditParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_typingExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterTypingExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitTypingExpression(this);
-		}
 	}
 
 	public final TypingExpressionContext typingExpression() throws RecognitionException {
@@ -458,14 +418,6 @@ public class DirectEditParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_valueExpression; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterValueExpression(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitValueExpression(this);
-		}
 	}
 
 	public final ValueExpressionContext valueExpression() throws RecognitionException {
@@ -492,40 +444,21 @@ public class DirectEditParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001j3\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002\u0002"+
-		"\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002\u0005"+
-		"\u0007\u0005\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0001"+
-		"\u0001\u0001\u0003\u0001\u0013\b\u0001\u0001\u0001\u0003\u0001\u0016\b"+
-		"\u0001\u0001\u0001\u0003\u0001\u0019\b\u0001\u0001\u0001\u0003\u0001\u001c"+
-		"\b\u0001\u0001\u0001\u0001\u0001\u0003\u0001 \b\u0001\u0001\u0001\u0003"+
-		"\u0001#\b\u0001\u0003\u0001%\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002"+
-		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0000\u0000\u0006\u0000"+
-		"\u0002\u0004\u0006\b\n\u0000\u00005\u0000\f\u0001\u0000\u0000\u0000\u0002"+
-		"$\u0001\u0000\u0000\u0000\u0004&\u0001\u0000\u0000\u0000\u0006)\u0001"+
-		"\u0000\u0000\u0000\b,\u0001\u0000\u0000\u0000\n/\u0001\u0000\u0000\u0000"+
-		"\f\r\u0005\n\u0000\u0000\r\u000e\u0003\u0002\u0001\u0000\u000e\u000f\u0005"+
-		"\u0000\u0000\u0001\u000f\u0001\u0001\u0000\u0000\u0000\u0010\u0013\u0003"+
-		"\u0004\u0002\u0000\u0011\u0013\u0003\u0006\u0003\u0000\u0012\u0010\u0001"+
-		"\u0000\u0000\u0000\u0012\u0011\u0001\u0000\u0000\u0000\u0012\u0013\u0001"+
-		"\u0000\u0000\u0000\u0013\u0015\u0001\u0000\u0000\u0000\u0014\u0016\u0003"+
-		"\b\u0004\u0000\u0015\u0014\u0001\u0000\u0000\u0000\u0015\u0016\u0001\u0000"+
-		"\u0000\u0000\u0016\u0018\u0001\u0000\u0000\u0000\u0017\u0019\u0003\n\u0005"+
-		"\u0000\u0018\u0017\u0001\u0000\u0000\u0000\u0018\u0019\u0001\u0000\u0000"+
-		"\u0000\u0019%\u0001\u0000\u0000\u0000\u001a\u001c\u0003\b\u0004\u0000"+
-		"\u001b\u001a\u0001\u0000\u0000\u0000\u001b\u001c\u0001\u0000\u0000\u0000"+
-		"\u001c\u001f\u0001\u0000\u0000\u0000\u001d \u0003\u0004\u0002\u0000\u001e"+
-		" \u0003\u0006\u0003\u0000\u001f\u001d\u0001\u0000\u0000\u0000\u001f\u001e"+
-		"\u0001\u0000\u0000\u0000\u001f \u0001\u0000\u0000\u0000 \"\u0001\u0000"+
-		"\u0000\u0000!#\u0003\n\u0005\u0000\"!\u0001\u0000\u0000\u0000\"#\u0001"+
-		"\u0000\u0000\u0000#%\u0001\u0000\u0000\u0000$\u0012\u0001\u0000\u0000"+
-		"\u0000$\u001b\u0001\u0000\u0000\u0000%\u0003\u0001\u0000\u0000\u0000&"+
-		"\'\u0005\u0001\u0000\u0000\'(\u0005\n\u0000\u0000(\u0005\u0001\u0000\u0000"+
-		"\u0000)*\u0005\u0002\u0000\u0000*+\u0005\n\u0000\u0000+\u0007\u0001\u0000"+
-		"\u0000\u0000,-\u0005\u0003\u0000\u0000-.\u0005\n\u0000\u0000.\t\u0001"+
-		"\u0000\u0000\u0000/0\u0005\u0004\u0000\u000001\u0005\u0005\u0000\u0000"+
-		"1\u000b\u0001\u0000\u0000\u0000\u0007\u0012\u0015\u0018\u001b\u001f\""+
-		"$";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3l\65\4\2\t\2\4\3\t"+
+		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\3\2\3\2\3\2\3\3\3\3\5\3\25\n\3"+
+		"\3\3\5\3\30\n\3\3\3\5\3\33\n\3\3\3\5\3\36\n\3\3\3\3\3\5\3\"\n\3\3\3\5"+
+		"\3%\n\3\5\3\'\n\3\3\4\3\4\3\4\3\5\3\5\3\5\3\6\3\6\3\6\3\7\3\7\3\7\3\7"+
+		"\2\2\b\2\4\6\b\n\f\2\2\2\67\2\16\3\2\2\2\4&\3\2\2\2\6(\3\2\2\2\b+\3\2"+
+		"\2\2\n.\3\2\2\2\f\61\3\2\2\2\16\17\7\f\2\2\17\20\5\4\3\2\20\21\7\2\2\3"+
+		"\21\3\3\2\2\2\22\25\5\6\4\2\23\25\5\b\5\2\24\22\3\2\2\2\24\23\3\2\2\2"+
+		"\24\25\3\2\2\2\25\27\3\2\2\2\26\30\5\n\6\2\27\26\3\2\2\2\27\30\3\2\2\2"+
+		"\30\32\3\2\2\2\31\33\5\f\7\2\32\31\3\2\2\2\32\33\3\2\2\2\33\'\3\2\2\2"+
+		"\34\36\5\n\6\2\35\34\3\2\2\2\35\36\3\2\2\2\36!\3\2\2\2\37\"\5\6\4\2 \""+
+		"\5\b\5\2!\37\3\2\2\2! \3\2\2\2!\"\3\2\2\2\"$\3\2\2\2#%\5\f\7\2$#\3\2\2"+
+		"\2$%\3\2\2\2%\'\3\2\2\2&\24\3\2\2\2&\35\3\2\2\2\'\5\3\2\2\2()\7\3\2\2"+
+		")*\7\f\2\2*\7\3\2\2\2+,\7\4\2\2,-\7\f\2\2-\t\3\2\2\2./\7\5\2\2/\60\7\f"+
+		"\2\2\60\13\3\2\2\2\61\62\7\6\2\2\62\63\7\7\2\2\63\r\3\2\2\2\t\24\27\32"+
+		"\35!$&";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

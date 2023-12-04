@@ -29,7 +29,19 @@ package org.eclipse.syson.diagram.general.view.directedit.grammars;
 }
 
 expression :
-	Ident (typingExpression)? (valueExpression)? EOF
+	Ident featureExpressions EOF
+;
+
+featureExpressions :
+	(subsettingExpression|redefinitionExpression)? (typingExpression)? (valueExpression)?
+	| (typingExpression)? (subsettingExpression|redefinitionExpression)? (valueExpression)?
+;
+subsettingExpression :
+	':>' Ident
+;
+
+redefinitionExpression :
+	':>>' Ident
 ;
 
 typingExpression :
@@ -98,7 +110,7 @@ DISJOINING : 'disjoining';
 DISJOINT : 'disjoint';
 DOC : 'doc';
 ELSE : 'else';
-END : 'END';
+END : 'end';
 EXPR : 'expr';
 FALSE : 'false';
 FEATURE : 'feature';

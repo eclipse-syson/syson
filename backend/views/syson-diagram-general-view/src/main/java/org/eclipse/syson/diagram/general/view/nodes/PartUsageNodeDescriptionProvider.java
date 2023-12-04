@@ -117,7 +117,7 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getUsageInitialDirectEditLabel()")
                 .body(callEditService.build());
 
         return this.diagramBuilderHelper.newNodePalette()

@@ -71,7 +71,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
                 .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getAttributeUsage()))
-                .labelExpression("aql:self.getCompartmentItemLabel()")
+                .labelExpression("aql:self.getUsageLabel()")
                 .name(name + " AttributesCompartmentItem")
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute().getName())
                 .style(this.createDefinitionCompartmentItemNodeStyle())
@@ -294,7 +294,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getCompartmentItemInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getUsageInitialDirectEditLabel()")
                 .body(callEditService.build());
 
         return this.diagramBuilderHelper.newNodePalette()
