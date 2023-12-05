@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Classifier;
+import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -62,8 +63,12 @@ public class ClassifierImpl extends TypeImpl implements Classifier {
      */
     @Override
     public EList<Subclassification> getOwnedSubclassification() {
-        List<Subclassification> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getClassifier_OwnedSubclassification(), data.size(), data.toArray());
+        List<Subclassification> ownedSubclassifications = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(Subclassification.class::isInstance)
+            .map(Subclassification.class::cast)
+            .forEach(ownedSubclassifications::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getClassifier_OwnedSubclassification(), ownedSubclassifications.size(), ownedSubclassifications.toArray());
     }
 
     /**

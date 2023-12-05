@@ -193,7 +193,7 @@ public class GeneralViewDirectEditListener extends DirectEditBaseListener {
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
         if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.subsettingExpression() == null)) {
             var subsetting = this.element.getOwnedRelationship().stream()
-                    .filter(Subsetting.class::isInstance)
+                    .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
                     .map(Subsetting.class::cast)
                     .findFirst();
             if (subsetting.isPresent()) {

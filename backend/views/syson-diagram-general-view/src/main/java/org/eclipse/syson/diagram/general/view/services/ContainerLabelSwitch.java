@@ -17,8 +17,10 @@ import org.eclipse.syson.diagram.general.view.LabelConstants;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Classifier;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
@@ -29,6 +31,8 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
@@ -58,7 +62,8 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("attribute def")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -71,7 +76,9 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("attribute")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object));
         return label.toString();
     }
 
@@ -84,7 +91,8 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("enumeration def")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -97,7 +105,8 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("interface def")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -110,7 +119,9 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("interface")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object));
         return label.toString();
     }
 
@@ -123,7 +134,8 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("item def")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -136,7 +148,9 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("item")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object));
         return label.toString();
     }
 
@@ -149,20 +163,8 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("metadata def")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
-        return label.toString();
-    }
-
-    @Override
-    public String casePartDefinition(PartDefinition object) {
-        StringBuilder label = new StringBuilder();
-        label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("part def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -179,6 +181,20 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
     }
 
     @Override
+    public String casePartDefinition(PartDefinition object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("part def")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
+        return label.toString();
+    }
+
+    @Override
     public String casePartUsage(PartUsage object) {
         StringBuilder label = new StringBuilder();
         label
@@ -188,7 +204,8 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
-            .append(this.featureTyping(object));
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object));
         return label.toString();
     }
 
@@ -201,7 +218,8 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("port def")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -214,7 +232,9 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
             .append("port")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+            .append(this.caseElement(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object));
         return label.toString();
     }
 
@@ -240,6 +260,44 @@ public class ContainerLabelSwitch extends SysmlSwitch<String> {
                 .append(LabelConstants.COLON)
                 .append(LabelConstants.SPACE)
                 .append(definition.getDeclaredName());
+        }
+        return label.toString();
+    }
+
+    private String redefinition(Usage usage) {
+        StringBuilder label = new StringBuilder();
+        EList<Redefinition> redefinitions = usage.getOwnedRedefinition();
+        if (!redefinitions.isEmpty()) {
+            Redefinition redefinition = redefinitions.get(0);
+            Feature redefinedFeature = redefinition.getRedefinedFeature();
+            String redefinedFeatureName = null;
+            if (redefinedFeature != null) {
+                redefinedFeatureName = redefinedFeature.getDeclaredName();
+            }
+            label
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.REDEFINITION)
+                .append(LabelConstants.SPACE)
+                .append(redefinedFeatureName);
+        }
+        return label.toString();
+    }
+
+    private String subclassification(Definition definition) {
+        StringBuilder label = new StringBuilder();
+        EList<Subclassification> subclassifications = definition.getOwnedSubclassification();
+        if (!subclassifications.isEmpty()) {
+            Subclassification subclassification = subclassifications.get(0);
+            Classifier superclassifier = subclassification.getSuperclassifier();
+            String superclassifierName = null;
+            if (superclassifier != null) {
+                superclassifierName = superclassifier.getDeclaredName();
+            }
+            label
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.SUBCLASSIFICATION)
+                .append(LabelConstants.SPACE)
+                .append(superclassifierName);
         }
         return label.toString();
     }
