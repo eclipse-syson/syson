@@ -54,7 +54,7 @@ jobs:
 
       - name: Setup some global environment variables
         run: |
-          echo "git_describe=$(git describe)" >> $GITHUB_ENV
+          echo "git_describe=$(git describe --always)" >> $GITHUB_ENV
 
       - name: Cache Maven packages
         uses: actions/cache@v2
@@ -104,7 +104,7 @@ jobs:
           docker build -t syson backend/application/syson-application
 
       - name: Configure AWS CLI for SysON
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
@@ -112,12 +112,12 @@ jobs:
           aws-region: eu-west-3
 
       - name: Login to Amazon Elastic Container Registry
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Tag the Docker image
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: docker tag syson $REGISTRY/$REPOSITORY:$IMAGE_TAG
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -125,7 +125,7 @@ jobs:
           IMAGE_TAG: ${{ env.git_describe }}
 
       - name: Upload the Docker image to AWS ECR
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: staging-syson
@@ -134,7 +134,7 @@ jobs:
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Upload the Docker configuration for AWS Elastic Beanstalk
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: staging-syson
@@ -144,9 +144,9 @@ jobs:
           aws s3 cp Dockerrun.aws.json s3://staging-syson-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
 
       - name: Create a new ElasticBeanstalk Application Version for SysON Staging
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: aws elasticbeanstalk create-application-version --application-name "SysON" --source-bundle S3Bucket="staging-syson-deployment",S3Key="integration/${{ env.git_describe }}/Dockerrun.aws.json" --version-label "${{ env.git_describe }}" --description "${{ github.sha }}"
 
       - name: Deploy a new ElasticBeanstalk Application Version for SysON Staging
-        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: aws elasticbeanstalk update-environment --environment-name "staging-syson-staging" --version-label "${{ env.git_describe }}"
