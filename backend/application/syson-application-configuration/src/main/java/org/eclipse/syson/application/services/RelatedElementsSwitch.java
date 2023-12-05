@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.services;
+package org.eclipse.syson.application.services;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subclassification;
@@ -27,8 +28,8 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
- * Switch returning the related elements of an element to delete in the General View. These related elements must also
- * be deleted.
+ * Switch returning the related elements of an element to delete in the Explorer View, General View or any other
+ * representations. These related elements must also be deleted.
  *
  * @author arichard
  */
@@ -58,6 +59,15 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
             if (object.eContainer() instanceof Membership membership) {
                 relatedElements.add(membership);
             }
+        }
+        return relatedElements;
+    }
+
+    @Override
+    public Set<EObject> caseFeatureTyping(FeatureTyping object) {
+        Set<EObject> relatedElements = new HashSet<>();
+        if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getFeatureTyping_Type())) {
+            relatedElements.add(object);
         }
         return relatedElements;
     }

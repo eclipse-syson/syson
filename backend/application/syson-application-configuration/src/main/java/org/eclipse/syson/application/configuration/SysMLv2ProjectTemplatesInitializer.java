@@ -123,7 +123,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
                         Object semanticTarget = resource.getContents().get(0);
 
-                        Diagram diagram = this.diagramCreationService.create("General View__REACT_FLOW", semanticTarget, generalViewDiagram, editingContext);
+                        Diagram diagram = this.diagramCreationService.create("General View", semanticTarget, generalViewDiagram, editingContext);
                         this.representationPersistenceService.save(editingContext, diagram);
 
                         result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
