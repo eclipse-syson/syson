@@ -429,7 +429,7 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
      */
     public Element basicGetOwner() {
         Element basicGetOwner = null;
-        Relationship owningRelationship = getOwningRelationship();
+        Relationship owningRelationship = this.getOwningRelationship();
         if (owningRelationship != null) {
             basicGetOwner = owningRelationship.getOwningRelatedElement();
         }
@@ -454,7 +454,7 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
      */
     public OwningMembership basicGetOwningMembership() {
         OwningMembership basicGetOwningMembership = null;
-        Relationship owningRelationship = getOwningRelationship();
+        Relationship owningRelationship = this.getOwningRelationship();
         if (owningRelationship instanceof OwningMembership membership) {
             basicGetOwningMembership = membership;
         }
