@@ -13,7 +13,6 @@
 package org.eclipse.syson.diagram.general.view.services;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.syson.diagram.general.view.LabelConstants;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Classifier;
@@ -36,6 +35,7 @@ import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
+import org.eclipse.syson.util.LabelConstants;
 
 /**
  * Switch returning the label of a container node in the General View.

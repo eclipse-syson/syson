@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IDefaultEditService;
 import org.eclipse.sirius.components.core.api.IEditServiceDelegate;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.sysml.Element;
 import org.springframework.stereotype.Service;
 

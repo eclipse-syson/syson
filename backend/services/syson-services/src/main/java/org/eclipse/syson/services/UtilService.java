@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.services;
+package org.eclipse.syson.services;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,19 +29,18 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.SysMLMetamodelHelper;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
- * Miscellaneous Java services used by the {@link GeneralViewDiagramDescriptionProvider}.
+ * Miscellaneous Java services used by the SysON views.
  *
  * @author arichard
  */
-public class GeneralViewUtilService {
+public class UtilService {
 
     /**
      * Return the {@link Package} containing the given {@link EObject}.

@@ -48,6 +48,7 @@ import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProv
 import org.eclipse.syson.diagram.general.view.nodes.PortDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PortUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Description of the General View diagram using the ViewBuilder API from Sirius Web.
@@ -56,25 +57,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class GeneralViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
-    public static final String DEFAULT_LABEL_EXPRESSION = "aql:self.declaredName";
-
-    public static final String DEFAULT_NODE_WIDTH = "125";
-
-    public static final String DEFAULT_COMPARTMENT_NODE_HEIGHT = "60";
-
-    public static final String DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT = "15";
-
-    public static final String DEFAULT_CONTAINER_NODE_HEIGHT = "60";
-
-    public static final String DEFAULT_BACKGROUND_COLOR = "white";
-
-    public static final String DEFAULT_COMPARTMENT_BACKGROUND_COLOR = "transparent";
-
-    public static final String DEFAULT_BORDER_COLOR = "black";
-
-    public static final String DEFAULT_LABEL_COLOR = "black";
-
-    public static final String DEFAULT_EDGE_COLOR = "black";
+    public static final String DESCRIPTION_NAME = "General View";
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
@@ -88,12 +71,12 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         diagramDescriptionBuilder
                 .autoLayout(false)
                 .domainType(domainType)
-                .name("General View")
-                .titleExpression("General View__REACT_FLOW");
+                .name(DESCRIPTION_NAME)
+                .titleExpression(DESCRIPTION_NAME);
 
         var diagramDescription = diagramDescriptionBuilder.build();
 
-        var cache = new ViewDiagramElementFinder();
+        var cache = new GeneralViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
                 new AttributeDefinitionNodeDescriptionProvider(colorProvider),
                 new AttributeUsageNodeDescriptionProvider(colorProvider),

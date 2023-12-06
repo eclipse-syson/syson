@@ -135,30 +135,30 @@
 			<version>${eef.version}</version>
 		</dependency>
  		<dependency>
-			 <groupId>org.eclipse.sirius</groupId>
-			 <artifactId>sirius-web-customwidgets</artifactId>
-			 <version>${sirius.web.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-customwidgets-edit</artifactId>
-				<version>${sirius.web.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-components-widget-reference</artifactId>
-				<version>${sirius.web.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-components-collaborative-widget-reference</artifactId>
-				<version>${sirius.web.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.eclipse.sirius</groupId>
-				<artifactId>sirius-web-customnodes</artifactId>
-				<version>${sirius.web.version}</version>
-			</dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-customwidgets</artifactId>
+			<version>${sirius.web.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-customwidgets-edit</artifactId>
+			<version>${sirius.web.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-widget-reference</artifactId>
+			<version>${sirius.web.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
+			<version>${sirius.web.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-customnodes</artifactId>
+			<version>${sirius.web.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-customnodes-edit</artifactId>
@@ -209,6 +209,11 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-general-view</artifactId>
+			<version>2023.10.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-diagram-interconnection-view</artifactId>
 			<version>2023.10.9</version>
 		</dependency>
 	</dependencies>

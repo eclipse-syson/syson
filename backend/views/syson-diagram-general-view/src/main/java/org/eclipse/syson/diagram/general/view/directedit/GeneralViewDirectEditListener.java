@@ -25,7 +25,7 @@ import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditPars
 import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser.SubsettingExpressionContext;
 import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser.TypingExpressionContext;
 import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser.ValueExpressionContext;
-import org.eclipse.syson.diagram.general.view.services.GeneralViewUtilService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -45,11 +45,11 @@ public class GeneralViewDirectEditListener extends DirectEditBaseListener {
 
     private final Element element;
 
-    private final GeneralViewUtilService generalViewUtilService;
+    private final UtilService generalViewUtilService;
 
     public GeneralViewDirectEditListener(Element element) {
         this.element = Objects.requireNonNull(element);
-        this.generalViewUtilService = new GeneralViewUtilService();
+        this.generalViewUtilService = new UtilService();
     }
 
     @Override

@@ -27,10 +27,10 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.syson.diagram.general.view.AQLConstants;
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.SysMLMetamodelHelper;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.util.ViewConstants;
 
 /**
  * Common pieces of node descriptions shared by {@link INodeDescriptionProvider} in General View.
@@ -53,8 +53,8 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenDescriptions(this.createDefinitionAttributesCompartmentItem(name))
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .labelExpression("attributes")
                 .name(name + " AttributesCompartment")
@@ -68,8 +68,8 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeDescription createDefinitionAttributesCompartmentItem(String name) {
         return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getAttributeUsage()))
                 .labelExpression("aql:self.getUsageLabel()")
                 .name(name + " AttributesCompartmentItem")
@@ -85,8 +85,8 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenDescriptions(this.createDefinitionPortsCompartmentItem(name))
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .labelExpression("ports")
                 .name(name + " PortsCompartment")
@@ -100,10 +100,10 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeDescription createDefinitionPortsCompartmentItem(String name) {
         return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPortUsage()))
-                .labelExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_EXPRESSION)
+                .labelExpression(AQLConstants.DEFAULT_LABEL_EXPRESSION)
                 .name(name + " PortsCompartmentItem")
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDefinition_OwnedPort().getName())
                 .style(this.createDefinitionCompartmentItemNodeStyle())
@@ -117,8 +117,8 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenDescriptions(this.createDefinitionItemsCompartmentItem(name))
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .labelExpression("items")
                 .name(name + " ItemsCompartment")
@@ -132,10 +132,10 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeDescription createDefinitionItemsCompartmentItem(String name) {
         return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getItemUsage()))
-                .labelExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_EXPRESSION)
+                .labelExpression(AQLConstants.DEFAULT_LABEL_EXPRESSION)
                 .name(name + " ItemsCompartmentItem")
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDefinition_OwnedItem().getName())
                 .style(this.createDefinitionCompartmentItemNodeStyle())
@@ -147,11 +147,11 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeStyleDescription createDefinitionNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BACKGROUND_COLOR))
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
                 .displayHeaderSeparator(true)
-                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(true)
                 .withHeader(true)
                 .build();
@@ -159,13 +159,13 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeStyleDescription createDefinitionCompartmentNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
                 .displayHeaderSeparator(false)
                 .fontSize(12)
                 .italic(true)
-                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(false)
                 .withHeader(true)
                 .build();
@@ -173,10 +173,10 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeStyleDescription createDefinitionCompartmentItemNodeStyle() {
         return this.diagramBuilderHelper.newIconLabelNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BACKGROUND_COLOR))
-                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(true)
                 .build();
     }
@@ -185,8 +185,8 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenDescriptions(this.createUsageAttributesCompartmentItem(name))
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .labelExpression("attributes")
                 .name(name + " AttributesCompartment")
@@ -200,10 +200,10 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeDescription createUsageAttributesCompartmentItem(String name) {
         return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getAttributeUsage()))
-                .labelExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_EXPRESSION)
+                .labelExpression(AQLConstants.DEFAULT_LABEL_EXPRESSION)
                 .name(name + " AttributesCompartmentItem")
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedAttribute().getName())
                 .style(this.createUsageCompartmentItemNodeStyle())
@@ -217,8 +217,8 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenDescriptions(this.createUsagePortsCompartmentItem(name))
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .labelExpression("ports")
                 .name(name + " PortsCompartment")
@@ -232,10 +232,10 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeDescription createUsagePortsCompartmentItem(String name) {
         return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPortUsage()))
-                .labelExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_EXPRESSION)
+                .labelExpression(AQLConstants.DEFAULT_LABEL_EXPRESSION)
                 .name(name + " PortsCompartmentItem")
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName())
                 .style(this.createUsageCompartmentItemNodeStyle())
@@ -247,11 +247,11 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeStyleDescription createUsageNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(10)
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BACKGROUND_COLOR))
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
                 .displayHeaderSeparator(true)
-                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(true)
                 .withHeader(true)
                 .build();
@@ -259,13 +259,13 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeStyleDescription createUsageCompartmentNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
                 .displayHeaderSeparator(false)
                 .fontSize(12)
                 .italic(true)
-                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(false)
                 .withHeader(true)
                 .build();
@@ -273,10 +273,10 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     protected NodeStyleDescription createUsageCompartmentItemNodeStyle() {
         return this.diagramBuilderHelper.newIconLabelNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BACKGROUND_COLOR))
-                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(true)
                 .build();
     }

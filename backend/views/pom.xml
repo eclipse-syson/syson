@@ -33,5 +33,6 @@
 
 	<modules>
 		<module>syson-diagram-general-view</module>
+		<module>syson-diagram-interconnection-view</module>
 	</modules>
 </project>

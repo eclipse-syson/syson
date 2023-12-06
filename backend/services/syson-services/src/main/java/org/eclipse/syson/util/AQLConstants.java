@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view;
+package org.eclipse.syson.util;
 
 /**
  * AQL-related constants.
@@ -22,6 +22,8 @@ public class AQLConstants {
     public static final String AQL = "aql:";
 
     public static final String AQL_SELF = "aql:self";
+
+    public static final String DEFAULT_LABEL_EXPRESSION = "aql:self.declaredName";
 
     public static final String DIAGRAM = "diagram";
 
@@ -40,4 +42,5 @@ public class AQLConstants {
     public static final String SEMANTIC_RECONNECTION_SOURCE = "semanticReconnectionSource";
 
     public static final String SEMANTIC_RECONNECTION_TARGET = "semanticReconnectionTarget";
+
 }

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view;
+package org.eclipse.syson.diagram.interconnection.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  *
  * @author mcharfadi
  */
-public class ViewDiagramElementFinder implements IViewObjectCache, IViewDiagramElementFinder {
+public class InterconnectionViewDiagramElementFinder implements IViewObjectCache, IViewDiagramElementFinder {
 
     private final Map<String, List<EObject>> data = new HashMap<>();
 
