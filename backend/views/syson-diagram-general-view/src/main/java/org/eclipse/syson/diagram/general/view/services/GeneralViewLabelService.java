@@ -21,6 +21,7 @@ import org.eclipse.syson.diagram.general.view.directedit.GeneralViewDirectEditLi
 import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditLexer;
 import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditListener;
 import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser;
+import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -34,18 +35,7 @@ import org.eclipse.syson.util.LabelConstants;
  *
  * @author arichard
  */
-public class GeneralViewLabelService {
-
-    /**
-     * Return the container label for the given {@link Element}.
-     *
-     * @param element
-     *            the given {@link Element}.
-     * @return the container label for the given {@link Element}.
-     */
-    public String getContainerLabel(Element element) {
-        return new ContainerLabelSwitch().doSwitch(element);
-    }
+public class GeneralViewLabelService extends LabelService {
 
     /**
      * Return the label for the given {@link Usage}.
@@ -84,7 +74,6 @@ public class GeneralViewLabelService {
      */
     private String getTypingLabel(Usage usage) {
         StringBuilder builder = new StringBuilder();
-        builder.append("");
         var featureTyping = usage.getOwnedRelationship().stream()
                 .filter(FeatureTyping.class::isInstance)
                 .map(FeatureTyping.class::cast)
@@ -119,8 +108,10 @@ public class GeneralViewLabelService {
         if (subsetting.isPresent()) {
             var subsettedFeature = subsetting.get().getSubsettedFeature();
             if (subsettedFeature != null) {
-                builder.append(" :> ");
-                builder.append(subsettedFeature.getDeclaredName());
+                builder.append(LabelConstants.SPACE)
+                    .append(LabelConstants.SUBSETTING)
+                    .append(LabelConstants.SPACE)
+                    .append(subsettedFeature.getDeclaredName());
             }
         }
         return builder.toString();
@@ -143,8 +134,10 @@ public class GeneralViewLabelService {
         if (redefinition.isPresent()) {
             var redefinedFeature = redefinition.get().getRedefinedFeature();
             if (redefinedFeature != null) {
-                builder.append(" :>> ");
-                builder.append(redefinedFeature.getDeclaredName());
+                builder.append(LabelConstants.SPACE)
+                    .append(LabelConstants.REDEFINITION)
+                    .append(LabelConstants.SPACE)
+                    .append(redefinedFeature.getDeclaredName());
             }
         }
         return builder.toString();

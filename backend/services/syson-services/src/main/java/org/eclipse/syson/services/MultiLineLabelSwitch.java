@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.services;
+package org.eclipse.syson.services;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.AttributeDefinition;
@@ -38,11 +38,11 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
 import org.eclipse.syson.util.LabelConstants;
 
 /**
- * Switch returning the label of a container node in the General View.
+ * Switch returning the label of some container nodes in the diagrams.
  *
  * @author arichard
  */
-public class ContainerLabelSwitch extends SysmlSwitch<String> {
+public class MultiLineLabelSwitch extends SysmlSwitch<String> {
 
     @Override
     public String caseElement(Element object) {

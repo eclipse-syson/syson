@@ -26,7 +26,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Relationship;
 
 /**
- * Deletion-related Java services used by SysOn representations.
+ * Deletion-related Java services used by SysON representations.
  *
  * @author arichard
  */

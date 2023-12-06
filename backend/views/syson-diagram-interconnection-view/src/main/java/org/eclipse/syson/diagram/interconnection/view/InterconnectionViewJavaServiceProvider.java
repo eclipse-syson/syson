@@ -16,6 +16,9 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewToolService;
+import org.eclipse.syson.services.DeleteService;
+import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.services.UtilService;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,7 +37,9 @@ public class InterconnectionViewJavaServiceProvider implements IJavaServiceProvi
             .filter(desc -> InterconnectionViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
             .findFirst();
         if (optGVDescription.isPresent()) {
-            return List.of(
+            return List.of(DeleteService.class,
+                    InterconnectionViewToolService.class,
+                    LabelService.class,
                     UtilService.class);
         }
         return List.of();

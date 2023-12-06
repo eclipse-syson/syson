@@ -26,4 +26,5 @@ public class LabelConstants {
     public static final String REDEFINITION = ":>>";
     public static final String SPACE = " ";
     public static final String SUBCLASSIFICATION = ":>";
+    public static final String SUBSETTING = ":>";
 }

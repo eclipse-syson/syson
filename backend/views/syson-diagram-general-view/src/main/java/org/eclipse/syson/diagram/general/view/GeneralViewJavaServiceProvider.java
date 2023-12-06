@@ -17,10 +17,10 @@ import java.util.List;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewCreateService;
-import org.eclipse.syson.diagram.general.view.services.GeneralViewDeleteService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewEditService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewLabelService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewToolService;
+import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
 import org.springframework.context.annotation.Configuration;
 
@@ -40,7 +40,7 @@ public class GeneralViewJavaServiceProvider implements IJavaServiceProvider {
             .findFirst();
         if (optGVDescription.isPresent()) {
             return List.of(GeneralViewCreateService.class,
-                    GeneralViewDeleteService.class,
+                    DeleteService.class,
                     GeneralViewEditService.class,
                     GeneralViewLabelService.class,
                     GeneralViewToolService.class,
