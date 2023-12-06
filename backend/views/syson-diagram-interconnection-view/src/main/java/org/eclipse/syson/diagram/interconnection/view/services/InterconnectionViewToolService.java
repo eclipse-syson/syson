@@ -10,42 +10,37 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.services;
+package org.eclipse.syson.diagram.interconnection.view.services;
 
 import java.util.Map;
 
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.services.ToolService;
-import org.eclipse.syson.sysml.FeatureMembership;
-import org.eclipse.syson.sysml.OwningMembership;
-import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
-import org.eclipse.syson.sysml.SysmlFactory;
 
 /**
- * Tool-related Java services used by the {@link GeneralViewDiagramDescriptionProvider}.
+ * Tool-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
  *
  * @author arichard
  */
-public class GeneralViewToolService extends ToolService {
+public class InterconnectionViewToolService extends ToolService {
 
-    public GeneralViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+    public InterconnectionViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
         super(objectService, representationDescriptionSearchService);
     }
 
     /**
-     * Called by "Add existing elements" tool from General View diagram or General View Package node. Add nodes that are
-     * not present in the diagram or the selectedNode (i.e. a Package).
+     * Called by "Add existing elements" tool from Interconnection View PartUsage node. Add nodes that are not present
+     * in selectedNode (i.e. a PartUsage).
      *
-     * @param pkg
-     *            the {@link Package} corresponding to the target object of the Diagram or the {@link Node} Package on
+     * @param partUsage
+     *            the {@link PartUsage} corresponding to the target object of the Diagram or the {@link Node} Package on
      *            which the tool has been called.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
@@ -59,27 +54,14 @@ public class GeneralViewToolService extends ToolService {
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
-     * @return the input {@link Package}.
+     * @return the input {@link PartUsage}.
      */
-    public Package addExistingElements(Package pkg, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public PartUsage addExistingElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var members = pkg.getOwnedMember();
-        members.stream()
+        var nestedParts = partUsage.getNestedPart();
+        nestedParts.stream()
                 .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, selectedNode)))
                 .forEach(member -> this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes));
-        return pkg;
-    }
-
-    public PartUsage becomeNestedPart(PartUsage partUsage, PartUsage newContainer) {
-        var eContainer = partUsage.eContainer();
-        if (eContainer instanceof FeatureMembership featureMembership) {
-            newContainer.getOwnedRelationship().add(featureMembership);
-        } else if (eContainer instanceof OwningMembership owningMembership) {
-            var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            newFeatureMembership.getOwnedRelatedElement().add(partUsage);
-            newContainer.getOwnedRelationship().add(newFeatureMembership);
-            EcoreUtil.delete(owningMembership);
-        }
         return partUsage;
     }
 }

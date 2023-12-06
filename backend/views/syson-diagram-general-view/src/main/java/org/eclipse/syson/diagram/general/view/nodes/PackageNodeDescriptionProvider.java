@@ -147,7 +147,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
-                .toolSections(this.createNodeToolSection(cache), this.addElementsToolSection(cache))
+                .toolSections(this.createNodeToolSection(cache), this.addElementsToolSection())
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions))
                 .build();
     }
@@ -251,7 +251,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .build();
     }
 
-    private NodeToolSection addElementsToolSection(IViewDiagramElementFinder cache) {
+    private NodeToolSection addElementsToolSection() {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Add")
                 .nodeTools(this.addExistingElementsTool())

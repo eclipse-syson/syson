@@ -10,16 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.services;
+package org.eclipse.syson.services;
 
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.services.DeleteService;
+import org.eclipse.syson.sysml.Element;
 
 /**
- * Deletion-related Java services used by the {@link GeneralViewDiagramDescriptionProvider}.
+ * Label-related Java services used by SysON representations.
  *
  * @author arichard
  */
-public class GeneralViewDeleteService extends DeleteService {
+public class LabelService {
 
+    /**
+     * Return the container label for the given {@link Element}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the container label for the given {@link Element}.
+     */
+    public String getContainerLabel(Element element) {
+        return new MultiLineLabelSwitch().doSwitch(element);
+    }
 }
