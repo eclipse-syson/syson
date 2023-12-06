@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-application-parent</artifactId>
-	<version>2023.10.9</version>
+	<version>2023.12.0</version>
 
 	<name>syson-application-parent</name>
 	<description>SysON Application Parent</description>
