@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.services;
+package org.eclipse.syson.services;
 
 import java.util.HashSet;
 import java.util.Objects;

@@ -24,9 +24,6 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
-import org.eclipse.syson.diagram.general.view.AQLConstants;
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.SysMLMetamodelHelper;
 import org.eclipse.syson.diagram.general.view.nodes.AttributeUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.InterfaceUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ItemUsageNodeDescriptionProvider;
@@ -34,6 +31,9 @@ import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProv
 import org.eclipse.syson.diagram.general.view.nodes.PortUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.util.ViewConstants;
 
 /**
  * Used to create the {@link Redefinition} edge description.
@@ -93,7 +93,7 @@ public class RedefinitionEdgeDescriptionProvider extends AbstractEdgeDescription
 
     private EdgeStyle createEdgeStyle() {
         return this.diagramBuilderHelper.newEdgeStyle()
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_EDGE_COLOR))
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
                 .edgeWidth(1)
                 .lineStyle(LineStyle.SOLID)
                 .sourceArrowStyle(ArrowStyle.NONE)

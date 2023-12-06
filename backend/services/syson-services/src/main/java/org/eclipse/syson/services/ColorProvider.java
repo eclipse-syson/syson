@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view;
+package org.eclipse.syson.services;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

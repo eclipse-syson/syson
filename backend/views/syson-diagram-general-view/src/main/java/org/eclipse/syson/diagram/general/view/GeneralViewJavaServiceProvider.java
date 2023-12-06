@@ -21,7 +21,7 @@ import org.eclipse.syson.diagram.general.view.services.GeneralViewDeleteService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewEditService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewLabelService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewToolService;
-import org.eclipse.syson.diagram.general.view.services.GeneralViewUtilService;
+import org.eclipse.syson.services.UtilService;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -34,7 +34,18 @@ public class GeneralViewJavaServiceProvider implements IJavaServiceProvider {
 
     @Override
     public List<Class<?>> getServiceClasses(View view) {
-        return List.of(GeneralViewCreateService.class, GeneralViewDeleteService.class, GeneralViewEditService.class, GeneralViewLabelService.class, GeneralViewToolService.class,
-                GeneralViewUtilService.class);
+        var descriptions = view.getDescriptions();
+        var optGVDescription = descriptions.stream()
+            .filter(desc -> GeneralViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
+            .findFirst();
+        if (optGVDescription.isPresent()) {
+            return List.of(GeneralViewCreateService.class,
+                    GeneralViewDeleteService.class,
+                    GeneralViewEditService.class,
+                    GeneralViewLabelService.class,
+                    GeneralViewToolService.class,
+                    UtilService.class);
+        }
+        return List.of();
     }
 }

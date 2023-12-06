@@ -17,7 +17,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.LabelConstants;
 import org.eclipse.syson.diagram.general.view.directedit.GeneralViewDirectEditListener;
 import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditLexer;
 import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditListener;
@@ -28,6 +27,7 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.util.LabelConstants;
 
 /**
  * Label-related Java services used by the {@link GeneralViewDiagramDescriptionProvider}.

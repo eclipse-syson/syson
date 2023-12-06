@@ -32,7 +32,6 @@ import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.SysMLMetamodelHelper;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
@@ -40,6 +39,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Tool-related Java services used by the {@link GeneralViewDiagramDescriptionProvider}.

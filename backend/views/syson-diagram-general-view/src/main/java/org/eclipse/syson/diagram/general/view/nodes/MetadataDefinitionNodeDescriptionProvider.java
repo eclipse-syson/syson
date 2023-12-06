@@ -22,13 +22,13 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.syson.diagram.general.view.AQLConstants;
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.SysMLMetamodelHelper;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the enumeration definition node description.
+ * Used to create the metadata definition node description.
  *
  * @author arichard
  */
@@ -46,8 +46,8 @@ public class MetadataDefinitionNodeDescriptionProvider extends AbstractNodeDescr
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenDescriptions(this.createDefinitionAttributesCompartment(NAME))
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_CONTAINER_NODE_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .labelExpression("aql:self.getContainerLabel()")
                 .name(NAME)

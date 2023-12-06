@@ -34,6 +34,7 @@
 	<modules>
 		<module>/application</module>
 		<module>/metamodel</module>
+		<module>/services</module>
 		<module>/views</module>
 	</modules>
 </project>

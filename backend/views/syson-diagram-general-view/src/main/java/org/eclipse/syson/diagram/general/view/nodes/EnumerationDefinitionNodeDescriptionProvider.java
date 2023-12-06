@@ -25,10 +25,10 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.syson.diagram.general.view.AQLConstants;
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.SysMLMetamodelHelper;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.util.ViewConstants;
 
 /**
  * Used to create the enumeration definition node description.
@@ -49,8 +49,8 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenDescriptions(this.createEnumerationCompartment(NAME))
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_CONTAINER_NODE_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .labelExpression("aql:self.getContainerLabel()")
                 .name(NAME)
@@ -128,8 +128,8 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenDescriptions(this.createEnumerationUsageCompartmentItem(name))
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .labelExpression("enums")
                 .name(name + " EnumsCompartment")
@@ -143,8 +143,8 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
 
     protected NodeDescription createEnumerationUsageCompartmentItem(String name) {
         return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(GeneralViewDiagramDescriptionProvider.DEFAULT_NODE_WIDTH)
+                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
+                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getEnumerationUsage()))
                 .labelExpression("aql:self.declaredName")
                 .name(name + " EnumerationUsageCompartmentItem")
@@ -158,13 +158,13 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
 
     protected NodeStyleDescription createEnumerationCompartmentNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
                 .displayHeaderSeparator(false)
                 .fontSize(12)
                 .italic(true)
-                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(false)
                 .withHeader(true)
                 .build();
@@ -172,10 +172,10 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
 
     protected NodeStyleDescription createEnumerationUsageCompartmentItemNodeStyle() {
         return this.diagramBuilderHelper.newIconLabelNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BORDER_COLOR))
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_BACKGROUND_COLOR))
-                .labelColor(this.colorProvider.getColor(GeneralViewDiagramDescriptionProvider.DEFAULT_LABEL_COLOR))
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(true)
                 .build();
     }

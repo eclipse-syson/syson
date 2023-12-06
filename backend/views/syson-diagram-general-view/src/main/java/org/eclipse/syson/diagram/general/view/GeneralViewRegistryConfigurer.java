@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.emf.IViewConverter;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
+import org.eclipse.syson.services.ColorProvider;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -38,7 +39,7 @@ import org.springframework.context.annotation.Configuration;
  * @author arichard
  */
 @Configuration
-public class RepresentationDescriptionRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer {
+public class GeneralViewRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer {
 
     private static final String GENERAL_VIEW_DIAGRAM_ID = "GeneralViewDiagram";
 
@@ -48,7 +49,7 @@ public class RepresentationDescriptionRegistryConfigurer implements IRepresentat
 
     private final IInMemoryViewRegistry inMemoryViewRegistry;
 
-    public RepresentationDescriptionRegistryConfigurer(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
+    public GeneralViewRegistryConfigurer(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.viewConverter = viewConverter;
         this.ePackagesRegistry = ePackagesRegistry;
         this.inMemoryViewRegistry = inMemoryViewRegistry;

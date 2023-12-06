@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.services;
 
-import org.eclipse.syson.application.services.DeleteService;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.services.DeleteService;
 
 /**
  * Deletion-related Java services used by the {@link GeneralViewDiagramDescriptionProvider}.
