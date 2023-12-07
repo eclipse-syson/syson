@@ -15,7 +15,6 @@
     "@apollo/client": "3.8.1",
     "@eclipse-sirius/sirius-components-charts": "2023.12.0",
     "@eclipse-sirius/sirius-components-core": "2023.12.0",
-    "@eclipse-sirius/sirius-components-diagrams": "2023.12.0",
     "@eclipse-sirius/sirius-components-diagrams-reactflow": "2023.12.0",
     "@eclipse-sirius/sirius-components-formdescriptioneditors": "2023.12.0",
     "@eclipse-sirius/sirius-components-forms": "2023.12.0",
@@ -41,7 +40,6 @@
     "react-router-dom": "5.2.0",
     "reactflow": "11.8.1",
     "reflect-metadata": "0.1.13",
-    "sprotty": "0.12.0",
     "subscriptions-transport-ws": "0.9.19",
     "xstate": "4.32.1"
   },
