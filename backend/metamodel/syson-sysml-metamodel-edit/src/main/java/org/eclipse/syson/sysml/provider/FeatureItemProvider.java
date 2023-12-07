@@ -569,11 +569,11 @@ public class FeatureItemProvider extends TypeItemProvider {
      * This returns Feature.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/Feature"));
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/Feature.svg"));
     }
 
     /**

@@ -63,8 +63,8 @@ public class InterconnectionViewRegistryConfigurer implements IRepresentationDes
         IColorProvider colorProvider = new ColorProvider(view);
 
         // Create org.eclipse.sirius.components.view.RepresentationDescription
-        InterconnectionViewDiagramDescriptionProvider generalViewDiagramDescriptionProvider = new InterconnectionViewDiagramDescriptionProvider();
-        RepresentationDescription viewRepresentationDescription = generalViewDiagramDescriptionProvider.create(colorProvider);
+        InterconnectionViewDiagramDescriptionProvider diagramDescriptionProvider = new InterconnectionViewDiagramDescriptionProvider();
+        RepresentationDescription viewRepresentationDescription = diagramDescriptionProvider.create(colorProvider);
         view.getDescriptions().add(viewRepresentationDescription);
 
         // Add an ID to all view elements

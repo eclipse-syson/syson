@@ -16,6 +16,8 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewCreateService;
+import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewEdgeService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewToolService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.LabelService;
@@ -38,7 +40,9 @@ public class InterconnectionViewJavaServiceProvider implements IJavaServiceProvi
             .findFirst();
         if (optGVDescription.isPresent()) {
             return List.of(DeleteService.class,
+                    InterconnectionViewCreateService.class,
                     InterconnectionViewToolService.class,
+                    InterconnectionViewEdgeService.class,
                     LabelService.class,
                     UtilService.class);
         }
