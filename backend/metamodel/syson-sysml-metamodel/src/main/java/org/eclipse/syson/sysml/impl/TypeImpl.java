@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Conjugation;
 import org.eclipse.syson.sysml.Differencing;
 import org.eclipse.syson.sysml.Disjoining;
@@ -405,8 +406,12 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<FeatureMembership> getOwnedFeatureMembership() {
-        List<FeatureMembership> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedFeatureMembership(), data.size(), data.toArray());
+        List<FeatureMembership> ownedFeatureMemberships = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .forEach(ownedFeatureMemberships::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedFeatureMembership(), ownedFeatureMemberships.size(), ownedFeatureMemberships.toArray());
     }
 
     /**

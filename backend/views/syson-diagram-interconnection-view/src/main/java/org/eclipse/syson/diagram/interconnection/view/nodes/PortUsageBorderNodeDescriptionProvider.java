@@ -12,19 +12,23 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.nodes;
 
+import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -56,7 +60,7 @@ public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionP
                 .domainType(domainType)
                 .labelExpression("aql:self.declaredName")
                 .name(NAME)
-                .semanticCandidatesExpression("aql:self.nestedPort")
+                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName())
                 .style(this.createPortUsageNodeStyle())
                 .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -69,9 +73,8 @@ public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionP
 
         if (optPortUsageBorderNodeDescription.isPresent()) {
             NodeDescription nodeDescription = optPortUsageBorderNodeDescription.get();
-            nodeDescription.setPalette(this.createNodePalette());
+            nodeDescription.setPalette(this.createNodePalette(nodeDescription));
         }
-
     }
 
     private NodeStyleDescription createPortUsageNodeStyle() {
@@ -86,7 +89,7 @@ public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionP
                 .build();
     }
 
-    private NodePalette createNodePalette() {
+    private NodePalette createNodePalette(NodeDescription nodeDescription) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:self.deleteFromModel()");
 
@@ -96,6 +99,20 @@ public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionP
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
+                .edgeTools(this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription)))
+                .build();
+    }
+
+    private EdgeTool createBindingConnectorAsUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createBindingConnectorAsUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+
+        return builder
+                .name("New " + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName())
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
                 .build();
     }
 }

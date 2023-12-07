@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.syson.diagram.interconnection.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.PartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.PortUsageBorderNodeDescriptionProvider;
@@ -55,7 +56,8 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
         var diagramElementDescriptionProviders = List.of(
                 new PartUsageNodeDescriptionProvider(colorProvider),
                 new ChildPartUsageNodeDescriptionProvider(colorProvider),
-                new PortUsageBorderNodeDescriptionProvider(colorProvider)
+                new PortUsageBorderNodeDescriptionProvider(colorProvider),
+                new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider)
         );
 
         diagramElementDescriptionProviders.stream().

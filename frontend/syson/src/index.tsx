@@ -52,7 +52,7 @@ const propertySectionsRegistry: PropertySectionComponentRegistry = {
     return null;
   },
   getPreviewComponent: (widget: GQLWidget) => {
-    if (widget.__typename === 'ReferenceWidget') {
+    if (isReferenceWidget(widget)) {
       return ReferencePreview;
     }
     return null;
@@ -96,10 +96,14 @@ const propertySectionRegistryValue: PropertySectionContextValue = {
 };
 
 ReactDOM.render(
-  <PropertySectionContext.Provider value={propertySectionRegistryValue}>
-    <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} theme={sysonTheme}>
-      <Views applicationIcon={<SysONIcon />} applicationBarMenu={<Help />} />
-    </SiriusWebApplication>
-  </PropertySectionContext.Provider>,
+  <div>
+    <PropertySectionContext.Provider value={propertySectionRegistryValue}>
+      <div>
+        <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} theme={sysonTheme}>
+          <Views applicationIcon={<SysONIcon />} applicationBarMenu={<Help />} />
+        </SiriusWebApplication>
+      </div>
+    </PropertySectionContext.Provider>
+  </div>,
   document.getElementById('root')
 );

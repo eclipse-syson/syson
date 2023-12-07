@@ -506,8 +506,12 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<FeatureChaining> getOwnedFeatureChaining() {
-        List<FeatureChaining> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedFeatureChaining(), data.size(), data.toArray());
+        List<FeatureChaining> ownedFeatureChainings = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureChaining.class::isInstance)
+            .map(FeatureChaining.class::cast)
+            .forEach(ownedFeatureChainings::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedFeatureChaining(), ownedFeatureChainings.size(), ownedFeatureChainings.toArray());
     }
 
     /**
@@ -550,13 +554,14 @@ public class FeatureImpl extends TypeImpl implements Feature {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public ReferenceSubsetting basicGetOwnedReferenceSubsetting() {
-        // TODO: implement this method to return the 'Owned Reference Subsetting' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+            .filter(ReferenceSubsetting.class::isInstance)
+            .map(ReferenceSubsetting.class::cast)
+            .findFirst()
+            .orElse(null);
     }
 
     /**

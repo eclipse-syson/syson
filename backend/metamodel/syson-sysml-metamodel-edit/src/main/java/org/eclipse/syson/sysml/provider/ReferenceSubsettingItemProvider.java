@@ -107,11 +107,11 @@ public class ReferenceSubsettingItemProvider extends SubsettingItemProvider {
      * This returns ReferenceSubsetting.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/ReferenceSubsetting"));
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/ReferenceSubsetting.svg"));
     }
 
     /**

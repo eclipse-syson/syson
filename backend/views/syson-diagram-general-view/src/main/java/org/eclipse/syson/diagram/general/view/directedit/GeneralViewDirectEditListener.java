@@ -45,11 +45,11 @@ public class GeneralViewDirectEditListener extends DirectEditBaseListener {
 
     private final Element element;
 
-    private final UtilService generalViewUtilService;
+    private final UtilService utilService;
 
     public GeneralViewDirectEditListener(Element element) {
         this.element = Objects.requireNonNull(element);
-        this.generalViewUtilService = new UtilService();
+        this.utilService = new UtilService();
     }
 
     @Override
@@ -67,9 +67,9 @@ public class GeneralViewDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage) {
             var identifier = ctx.Ident();
             var typeAsString = identifier.getText();
-            var definition = this.generalViewUtilService.findDefinitionByName(this.element, typeAsString);
+            var definition = this.utilService.findDefinitionByName(this.element, typeAsString);
             if (definition == null) {
-                var containerPackage = this.generalViewUtilService.getContainerPackage(this.element);
+                var containerPackage = this.utilService.getContainerPackage(this.element);
                 var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
                 containerPackage.getOwnedRelationship().add(newMembership);
                 EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(this.element.eClass().getName().replace("Usage", "Definition"));
@@ -100,9 +100,9 @@ public class GeneralViewDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage subsettingUsage) {
             var identifier = ctx.Ident();
             var usageAsString = identifier.getText();
-            var usage = this.generalViewUtilService.findUsageByName(subsettingUsage, usageAsString);
+            var usage = this.utilService.findUsageByName(subsettingUsage, usageAsString);
             if (usage == null) {
-                var containerPackage = this.generalViewUtilService.getContainerPackage(subsettingUsage);
+                var containerPackage = this.utilService.getContainerPackage(subsettingUsage);
                 var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
                 containerPackage.getOwnedRelationship().add(newMembership);
                 EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(subsettingUsage.eClass().getName());
@@ -140,9 +140,9 @@ public class GeneralViewDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage redefining) {
             var identifier = ctx.Ident();
             var usageAsString = identifier.getText();
-            var usage = this.generalViewUtilService.findUsageByName(redefining, usageAsString);
+            var usage = this.utilService.findUsageByName(redefining, usageAsString);
             if (usage == null) {
-                var containerPackage = this.generalViewUtilService.getContainerPackage(redefining);
+                var containerPackage = this.utilService.getContainerPackage(redefining);
                 var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
                 containerPackage.getOwnedRelationship().add(newMembership);
                 EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(redefining.eClass().getName());

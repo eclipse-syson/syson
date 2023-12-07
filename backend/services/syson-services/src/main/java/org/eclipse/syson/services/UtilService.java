@@ -32,6 +32,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -57,6 +59,22 @@ public class UtilService {
             return this.getContainerPackage(element.eContainer());
         }
         return pack;
+    }
+
+    /**
+     * Return the {@link PartUsage} containing the given {@link PortUsage}.
+     *
+     * @param element
+     *            the portUsage {@link PortUsage}.
+     * @return the {@link PartUsage} containing the given {@link PortUsage} if found, <code>null</code> otherwise.
+     */
+    public PartUsage getContainerPart(PortUsage portUsage) {
+        PartUsage containerPart = null;
+        Usage owningUsage = portUsage.getOwningUsage();
+        if (owningUsage instanceof PartUsage partUsage) {
+            containerPart = partUsage;
+        }
+        return containerPart;
     }
 
     /**
