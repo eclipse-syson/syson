@@ -98,7 +98,7 @@ jobs:
       - name: Build the Docker image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: staging-syson
+          REPOSITORY: syson
           IMAGE_TAG: ${{ env.git_describe }}
         run: |
           docker build -t syson backend/application/syson-application
@@ -121,14 +121,14 @@ jobs:
         run: docker tag syson $REGISTRY/$REPOSITORY:$IMAGE_TAG
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: staging-syson
+          REPOSITORY: syson
           IMAGE_TAG: ${{ env.git_describe }}
 
       - name: Upload the Docker image to AWS ECR
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: staging-syson
+          REPOSITORY: syson
           IMAGE_TAG: ${{ env.git_describe }}
         run: |
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
@@ -137,16 +137,16 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: staging-syson
+          REPOSITORY: syson
           IMAGE_TAG: ${{ env.git_describe }}
         run: |
           sed -e "s|IMAGE_NAME|$REGISTRY/$REPOSITORY:$IMAGE_TAG|" Dockerrun.aws.json.template > Dockerrun.aws.json
-          aws s3 cp Dockerrun.aws.json s3://staging-syson-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
+          aws s3 cp Dockerrun.aws.json s3://syson-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
 
       - name: Create a new ElasticBeanstalk Application Version for SysON Staging
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: aws elasticbeanstalk create-application-version --application-name "SysON" --source-bundle S3Bucket="staging-syson-deployment",S3Key="integration/${{ env.git_describe }}/Dockerrun.aws.json" --version-label "${{ env.git_describe }}" --description "${{ github.sha }}"
+        run: aws elasticbeanstalk create-application-version --application-name "SysON" --source-bundle S3Bucket="syson-deployment",S3Key="integration/${{ env.git_describe }}/Dockerrun.aws.json" --version-label "${{ env.git_describe }}" --description "${{ github.sha }}"
 
       - name: Deploy a new ElasticBeanstalk Application Version for SysON Staging
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: aws elasticbeanstalk update-environment --environment-name "staging-syson-staging" --version-label "${{ env.git_describe }}"
+        run: aws elasticbeanstalk update-environment --environment-name "syson-staging" --version-label "${{ env.git_describe }}"
