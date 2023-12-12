@@ -44,7 +44,6 @@ public class MetadataDefinitionNodeDescriptionProvider extends AbstractNodeDescr
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getMetadataDefinition());
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createDefinitionAttributesCompartment(NAME))
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
@@ -76,6 +75,8 @@ public class MetadataDefinitionNodeDescriptionProvider extends AbstractNodeDescr
         var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
         var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
 
+        var optDefinitionAttributesCompartmentNodeDescription = cache.getNodeDescription(DefinitionAttributesCompartmentNodeDescriptionProvider.NAME);
+
         dependencyTargetNodeDescriptions.add(optAttributeDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optAttributeUsageNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
@@ -90,11 +91,10 @@ public class MetadataDefinitionNodeDescriptionProvider extends AbstractNodeDescr
         dependencyTargetNodeDescriptions.add(optPortDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optPortUsageNodeDescription.get());
 
-        if (optMetadataDefinitionNodeDescription.isPresent()) {
-            NodeDescription nodeDescription = optMetadataDefinitionNodeDescription.get();
-            diagramDescription.getNodeDescriptions().add(nodeDescription);
-            nodeDescription.setPalette(this.createNodePalette(nodeDescription, dependencyTargetNodeDescriptions));
-        }
+        NodeDescription nodeDescription = optMetadataDefinitionNodeDescription.get();
+        diagramDescription.getNodeDescriptions().add(nodeDescription);
+        nodeDescription.getReusedChildNodeDescriptions().add(optDefinitionAttributesCompartmentNodeDescription.get());
+        nodeDescription.setPalette(this.createNodePalette(nodeDescription, dependencyTargetNodeDescriptions));
     }
 
     private NodePalette createNodePalette(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {

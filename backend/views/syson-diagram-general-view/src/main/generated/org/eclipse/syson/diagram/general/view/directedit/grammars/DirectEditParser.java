@@ -31,22 +31,23 @@ public class DirectEditParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, WS=6, Integer=7, Real=8, String=9, 
-		Ident=10, ABOUT=11, ABSTRACT=12, ALIAS=13, ALL=14, AND=15, AS=16, ASSIGN=17, 
-		ASSOC=18, BEAHVIOR=19, BINDING=20, BOOL=21, BY=22, CHAINS=23, CLASS=24, 
-		CLASSIFIER=25, COMMENT=26, COMPOSITE=27, CONJUGATE=28, CONJUGATES=29, 
-		CONJUGATION=30, CONNECTOR=31, DATATYPE=32, DEFAULT=33, DEPENDENCY=34, 
-		DERIVED=35, DIFFERENCES=36, DISJOINING=37, DISJOINT=38, DOC=39, ELSE=40, 
-		END=41, EXPR=42, FALSE=43, FEATURE=44, FEATURED=45, FEATURING=46, FILTER=47, 
-		FIRST=48, FLOW=49, FOR=50, FROM=51, FUNCTION=52, HASTYPE=53, IF=54, INTERSECTS=55, 
-		IMPLIES=56, IMPORT=57, IN=58, INPUT=59, INTERACTION=60, INV=61, INVERSE=62, 
-		INVERTING=63, ISTYPE=64, LANGUAGE=65, MEMBER=66, METACLASS=67, METADATA=68, 
-		MULTIPLICITY=69, NAMESPACE=70, NONUNIQUE=71, NOT=72, NULL=73, OF=74, OR=75, 
-		ORDERED=76, OUT=77, PACKAGE=78, PORTION=79, PREDICATE=80, PRIAVTE=81, 
-		PROTECTED=82, PUBLIC=83, READONLY=84, REDEFINES=85, REDEFINITION=86, RFERENCES=87, 
-		REP=88, RETURN=89, SPECIALIZTION=90, SPECIALIZES=91, STEP=92, STRCUT=93, 
-		SUBCLASSIFIER=94, SUBSET=95, SUBSETS=96, SUBTYPE=97, SUCCESSION=98, THEN=99, 
-		TO=100, TRUE=101, TYPE=102, TYPED=103, TYPING=104, UNIONS=105, XOR=106;
+		T__0=1, T__1=2, T__2=3, T__3=4, WS=5, Boolean=6, Integer=7, Real=8, SingleQuotedString=9, 
+		DoubleQuotedString=10, Ident=11, ABOUT=12, ABSTRACT=13, ALIAS=14, ALL=15, 
+		AND=16, AS=17, ASSIGN=18, ASSOC=19, BEAHVIOR=20, BINDING=21, BOOL=22, 
+		BY=23, CHAINS=24, CLASS=25, CLASSIFIER=26, COMMENT=27, COMPOSITE=28, CONJUGATE=29, 
+		CONJUGATES=30, CONJUGATION=31, CONNECTOR=32, DATATYPE=33, DEFAULT=34, 
+		DEPENDENCY=35, DERIVED=36, DIFFERENCES=37, DISJOINING=38, DISJOINT=39, 
+		DOC=40, ELSE=41, END=42, EXPR=43, FALSE=44, FEATURE=45, FEATURED=46, FEATURING=47, 
+		FILTER=48, FIRST=49, FLOW=50, FOR=51, FROM=52, FUNCTION=53, HASTYPE=54, 
+		IF=55, INTERSECTS=56, IMPLIES=57, IMPORT=58, IN=59, INPUT=60, INTERACTION=61, 
+		INV=62, INVERSE=63, INVERTING=64, ISTYPE=65, LANGUAGE=66, MEMBER=67, METACLASS=68, 
+		METADATA=69, MULTIPLICITY=70, NAMESPACE=71, NONUNIQUE=72, NOT=73, NULL=74, 
+		OF=75, OR=76, ORDERED=77, OUT=78, PACKAGE=79, PORTION=80, PREDICATE=81, 
+		PRIAVTE=82, PROTECTED=83, PUBLIC=84, READONLY=85, REDEFINES=86, REDEFINITION=87, 
+		RFERENCES=88, REP=89, RETURN=90, SPECIALIZTION=91, SPECIALIZES=92, STEP=93, 
+		STRCUT=94, SUBCLASSIFIER=95, SUBSET=96, SUBSETS=97, SUBTYPE=98, SUCCESSION=99, 
+		THEN=100, TO=101, TRUE=102, TYPE=103, TYPED=104, TYPING=105, UNIONS=106, 
+		XOR=107;
 	public static final int
 		RULE_expression = 0, RULE_featureExpressions = 1, RULE_subsettingExpression = 2, 
 		RULE_redefinitionExpression = 3, RULE_typingExpression = 4, RULE_valueExpression = 5;
@@ -60,7 +61,7 @@ public class DirectEditParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "':>'", "':>>'", "':'", "'='", "'.*'", null, null, null, null, 
+			null, "':>'", "':>>'", "':'", "'='", null, null, null, null, null, null, 
 			null, "'about'", "'abstract'", "'alias'", "'all'", "'and'", "'as'", "'assign'", 
 			"'assoc'", "'behavior'", "'binding'", "'bool'", "'by'", "'chains'", "'class'", 
 			"'classifier'", "'comment'", "'composite'", "'conjugate'", "'conjugates'", 
@@ -82,21 +83,22 @@ public class DirectEditParser extends Parser {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, "WS", "Integer", "Real", "String", 
-			"Ident", "ABOUT", "ABSTRACT", "ALIAS", "ALL", "AND", "AS", "ASSIGN", 
-			"ASSOC", "BEAHVIOR", "BINDING", "BOOL", "BY", "CHAINS", "CLASS", "CLASSIFIER", 
-			"COMMENT", "COMPOSITE", "CONJUGATE", "CONJUGATES", "CONJUGATION", "CONNECTOR", 
-			"DATATYPE", "DEFAULT", "DEPENDENCY", "DERIVED", "DIFFERENCES", "DISJOINING", 
-			"DISJOINT", "DOC", "ELSE", "END", "EXPR", "FALSE", "FEATURE", "FEATURED", 
-			"FEATURING", "FILTER", "FIRST", "FLOW", "FOR", "FROM", "FUNCTION", "HASTYPE", 
-			"IF", "INTERSECTS", "IMPLIES", "IMPORT", "IN", "INPUT", "INTERACTION", 
-			"INV", "INVERSE", "INVERTING", "ISTYPE", "LANGUAGE", "MEMBER", "METACLASS", 
-			"METADATA", "MULTIPLICITY", "NAMESPACE", "NONUNIQUE", "NOT", "NULL", 
-			"OF", "OR", "ORDERED", "OUT", "PACKAGE", "PORTION", "PREDICATE", "PRIAVTE", 
-			"PROTECTED", "PUBLIC", "READONLY", "REDEFINES", "REDEFINITION", "RFERENCES", 
-			"REP", "RETURN", "SPECIALIZTION", "SPECIALIZES", "STEP", "STRCUT", "SUBCLASSIFIER", 
-			"SUBSET", "SUBSETS", "SUBTYPE", "SUCCESSION", "THEN", "TO", "TRUE", "TYPE", 
-			"TYPED", "TYPING", "UNIONS", "XOR"
+			null, null, null, null, null, "WS", "Boolean", "Integer", "Real", "SingleQuotedString", 
+			"DoubleQuotedString", "Ident", "ABOUT", "ABSTRACT", "ALIAS", "ALL", "AND", 
+			"AS", "ASSIGN", "ASSOC", "BEAHVIOR", "BINDING", "BOOL", "BY", "CHAINS", 
+			"CLASS", "CLASSIFIER", "COMMENT", "COMPOSITE", "CONJUGATE", "CONJUGATES", 
+			"CONJUGATION", "CONNECTOR", "DATATYPE", "DEFAULT", "DEPENDENCY", "DERIVED", 
+			"DIFFERENCES", "DISJOINING", "DISJOINT", "DOC", "ELSE", "END", "EXPR", 
+			"FALSE", "FEATURE", "FEATURED", "FEATURING", "FILTER", "FIRST", "FLOW", 
+			"FOR", "FROM", "FUNCTION", "HASTYPE", "IF", "INTERSECTS", "IMPLIES", 
+			"IMPORT", "IN", "INPUT", "INTERACTION", "INV", "INVERSE", "INVERTING", 
+			"ISTYPE", "LANGUAGE", "MEMBER", "METACLASS", "METADATA", "MULTIPLICITY", 
+			"NAMESPACE", "NONUNIQUE", "NOT", "NULL", "OF", "OR", "ORDERED", "OUT", 
+			"PACKAGE", "PORTION", "PREDICATE", "PRIAVTE", "PROTECTED", "PUBLIC", 
+			"READONLY", "REDEFINES", "REDEFINITION", "RFERENCES", "REP", "RETURN", 
+			"SPECIALIZTION", "SPECIALIZES", "STEP", "STRCUT", "SUBCLASSIFIER", "SUBSET", 
+			"SUBSETS", "SUBTYPE", "SUCCESSION", "THEN", "TO", "TRUE", "TYPE", "TYPED", 
+			"TYPING", "UNIONS", "XOR"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -251,6 +253,9 @@ public class DirectEditParser extends Parser {
 				case EOF:
 				case T__2:
 				case T__3:
+				case Boolean:
+				case Real:
+				case DoubleQuotedString:
 					break;
 				default:
 					break;
@@ -268,7 +273,7 @@ public class DirectEditParser extends Parser {
 				setState(24);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==T__3) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << Boolean) | (1L << Real) | (1L << DoubleQuotedString))) != 0)) {
 					{
 					setState(23);
 					valueExpression();
@@ -307,6 +312,9 @@ public class DirectEditParser extends Parser {
 					break;
 				case EOF:
 				case T__3:
+				case Boolean:
+				case Real:
+				case DoubleQuotedString:
 					break;
 				default:
 					break;
@@ -314,7 +322,7 @@ public class DirectEditParser extends Parser {
 				setState(34);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==T__3) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__3) | (1L << Boolean) | (1L << Real) | (1L << DoubleQuotedString))) != 0)) {
 					{
 					setState(33);
 					valueExpression();
@@ -454,6 +462,10 @@ public class DirectEditParser extends Parser {
 	}
 
 	public static class ValueExpressionContext extends ParserRuleContext {
+		public TerminalNode Integer() { return getToken(DirectEditParser.Integer, 0); }
+		public TerminalNode Real() { return getToken(DirectEditParser.Real, 0); }
+		public TerminalNode Boolean() { return getToken(DirectEditParser.Boolean, 0); }
+		public TerminalNode DoubleQuotedString() { return getToken(DirectEditParser.DoubleQuotedString, 0); }
 		public ValueExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -472,12 +484,41 @@ public class DirectEditParser extends Parser {
 		ValueExpressionContext _localctx = new ValueExpressionContext(_ctx, getState());
 		enterRule(_localctx, 10, RULE_valueExpression);
 		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(47);
-			match(T__3);
-			setState(48);
-			match(T__4);
+			setState(52);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case T__3:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(47);
+				match(T__3);
+				setState(48);
+				match(Integer);
+				}
+				break;
+			case Real:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(49);
+				match(Real);
+				}
+				break;
+			case Boolean:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(50);
+				match(Boolean);
+				}
+				break;
+			case DoubleQuotedString:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(51);
+				match(DoubleQuotedString);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -492,7 +533,7 @@ public class DirectEditParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001j3\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002\u0002"+
+		"\u0004\u0001k7\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002\u0002"+
 		"\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002\u0005"+
 		"\u0007\u0005\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0001"+
 		"\u0001\u0001\u0003\u0001\u0013\b\u0001\u0001\u0001\u0003\u0001\u0016\b"+
@@ -500,32 +541,34 @@ public class DirectEditParser extends Parser {
 		"\b\u0001\u0001\u0001\u0001\u0001\u0003\u0001 \b\u0001\u0001\u0001\u0003"+
 		"\u0001#\b\u0001\u0003\u0001%\b\u0001\u0001\u0002\u0001\u0002\u0001\u0002"+
 		"\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0000\u0000\u0006\u0000"+
-		"\u0002\u0004\u0006\b\n\u0000\u00005\u0000\f\u0001\u0000\u0000\u0000\u0002"+
-		"$\u0001\u0000\u0000\u0000\u0004&\u0001\u0000\u0000\u0000\u0006)\u0001"+
-		"\u0000\u0000\u0000\b,\u0001\u0000\u0000\u0000\n/\u0001\u0000\u0000\u0000"+
-		"\f\r\u0005\n\u0000\u0000\r\u000e\u0003\u0002\u0001\u0000\u000e\u000f\u0005"+
-		"\u0000\u0000\u0001\u000f\u0001\u0001\u0000\u0000\u0000\u0010\u0013\u0003"+
-		"\u0004\u0002\u0000\u0011\u0013\u0003\u0006\u0003\u0000\u0012\u0010\u0001"+
-		"\u0000\u0000\u0000\u0012\u0011\u0001\u0000\u0000\u0000\u0012\u0013\u0001"+
-		"\u0000\u0000\u0000\u0013\u0015\u0001\u0000\u0000\u0000\u0014\u0016\u0003"+
-		"\b\u0004\u0000\u0015\u0014\u0001\u0000\u0000\u0000\u0015\u0016\u0001\u0000"+
-		"\u0000\u0000\u0016\u0018\u0001\u0000\u0000\u0000\u0017\u0019\u0003\n\u0005"+
-		"\u0000\u0018\u0017\u0001\u0000\u0000\u0000\u0018\u0019\u0001\u0000\u0000"+
-		"\u0000\u0019%\u0001\u0000\u0000\u0000\u001a\u001c\u0003\b\u0004\u0000"+
-		"\u001b\u001a\u0001\u0000\u0000\u0000\u001b\u001c\u0001\u0000\u0000\u0000"+
-		"\u001c\u001f\u0001\u0000\u0000\u0000\u001d \u0003\u0004\u0002\u0000\u001e"+
-		" \u0003\u0006\u0003\u0000\u001f\u001d\u0001\u0000\u0000\u0000\u001f\u001e"+
-		"\u0001\u0000\u0000\u0000\u001f \u0001\u0000\u0000\u0000 \"\u0001\u0000"+
-		"\u0000\u0000!#\u0003\n\u0005\u0000\"!\u0001\u0000\u0000\u0000\"#\u0001"+
-		"\u0000\u0000\u0000#%\u0001\u0000\u0000\u0000$\u0012\u0001\u0000\u0000"+
-		"\u0000$\u001b\u0001\u0000\u0000\u0000%\u0003\u0001\u0000\u0000\u0000&"+
-		"\'\u0005\u0001\u0000\u0000\'(\u0005\n\u0000\u0000(\u0005\u0001\u0000\u0000"+
-		"\u0000)*\u0005\u0002\u0000\u0000*+\u0005\n\u0000\u0000+\u0007\u0001\u0000"+
-		"\u0000\u0000,-\u0005\u0003\u0000\u0000-.\u0005\n\u0000\u0000.\t\u0001"+
-		"\u0000\u0000\u0000/0\u0005\u0004\u0000\u000001\u0005\u0005\u0000\u0000"+
-		"1\u000b\u0001\u0000\u0000\u0000\u0007\u0012\u0015\u0018\u001b\u001f\""+
-		"$";
+		"\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0003\u0005"+
+		"5\b\u0005\u0001\u0005\u0000\u0000\u0006\u0000\u0002\u0004\u0006\b\n\u0000"+
+		"\u0000<\u0000\f\u0001\u0000\u0000\u0000\u0002$\u0001\u0000\u0000\u0000"+
+		"\u0004&\u0001\u0000\u0000\u0000\u0006)\u0001\u0000\u0000\u0000\b,\u0001"+
+		"\u0000\u0000\u0000\n4\u0001\u0000\u0000\u0000\f\r\u0005\u000b\u0000\u0000"+
+		"\r\u000e\u0003\u0002\u0001\u0000\u000e\u000f\u0005\u0000\u0000\u0001\u000f"+
+		"\u0001\u0001\u0000\u0000\u0000\u0010\u0013\u0003\u0004\u0002\u0000\u0011"+
+		"\u0013\u0003\u0006\u0003\u0000\u0012\u0010\u0001\u0000\u0000\u0000\u0012"+
+		"\u0011\u0001\u0000\u0000\u0000\u0012\u0013\u0001\u0000\u0000\u0000\u0013"+
+		"\u0015\u0001\u0000\u0000\u0000\u0014\u0016\u0003\b\u0004\u0000\u0015\u0014"+
+		"\u0001\u0000\u0000\u0000\u0015\u0016\u0001\u0000\u0000\u0000\u0016\u0018"+
+		"\u0001\u0000\u0000\u0000\u0017\u0019\u0003\n\u0005\u0000\u0018\u0017\u0001"+
+		"\u0000\u0000\u0000\u0018\u0019\u0001\u0000\u0000\u0000\u0019%\u0001\u0000"+
+		"\u0000\u0000\u001a\u001c\u0003\b\u0004\u0000\u001b\u001a\u0001\u0000\u0000"+
+		"\u0000\u001b\u001c\u0001\u0000\u0000\u0000\u001c\u001f\u0001\u0000\u0000"+
+		"\u0000\u001d \u0003\u0004\u0002\u0000\u001e \u0003\u0006\u0003\u0000\u001f"+
+		"\u001d\u0001\u0000\u0000\u0000\u001f\u001e\u0001\u0000\u0000\u0000\u001f"+
+		" \u0001\u0000\u0000\u0000 \"\u0001\u0000\u0000\u0000!#\u0003\n\u0005\u0000"+
+		"\"!\u0001\u0000\u0000\u0000\"#\u0001\u0000\u0000\u0000#%\u0001\u0000\u0000"+
+		"\u0000$\u0012\u0001\u0000\u0000\u0000$\u001b\u0001\u0000\u0000\u0000%"+
+		"\u0003\u0001\u0000\u0000\u0000&\'\u0005\u0001\u0000\u0000\'(\u0005\u000b"+
+		"\u0000\u0000(\u0005\u0001\u0000\u0000\u0000)*\u0005\u0002\u0000\u0000"+
+		"*+\u0005\u000b\u0000\u0000+\u0007\u0001\u0000\u0000\u0000,-\u0005\u0003"+
+		"\u0000\u0000-.\u0005\u000b\u0000\u0000.\t\u0001\u0000\u0000\u0000/0\u0005"+
+		"\u0004\u0000\u000005\u0005\u0007\u0000\u000015\u0005\b\u0000\u000025\u0005"+
+		"\u0006\u0000\u000035\u0005\n\u0000\u00004/\u0001\u0000\u0000\u000041\u0001"+
+		"\u0000\u0000\u000042\u0001\u0000\u0000\u000043\u0001\u0000\u0000\u0000"+
+		"5\u000b\u0001\u0000\u0000\u0000\b\u0012\u0015\u0018\u001b\u001f\"$4";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
@@ -82,17 +83,20 @@ public class ToolService {
     /**
      * Called by "Drop Node tool" from General View diagram.
      *
-     * @param element
-     *            the {@link Element} to drop to a General View diagram.
+     * @param droppedElement
+     *            the dropped {@link Element}.
+     * @param droppedNode
+     *            the dropped {@link Node}.
+     * @param targetElement
+     *            the new semantic container.
+     * @param targetElement
+     *            the new graphical container.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
      * @param diagramContext
      *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
-     * @param selectedNode
-     *            the selected node on which the element has been dropped (may be null if the tool has been called from
-     *            the diagram). It corresponds to a variable accessible from the variable manager.
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
@@ -104,10 +108,49 @@ public class ToolService {
         return droppedElement;
     }
 
-    protected List<Node> getChildNodes(IDiagramContext diagramContext, Node selectedNode) {
+    /**
+     * Get the parent node of the given {@link Element}. This could be a {@link Node} or a {@link Diagram}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param node
+     *            the {@link Node} corresponding to the given {@link Element}.
+     * @param diagramContext
+     *            the diagram context in which to find the parent node.
+     * @return a {@link Node} or a {@link Diagram}.
+     */
+    public Object getParentNode(Element element, Node node, IDiagramContext diagramContext) {
+        Object parentNode = null;
+        Diagram diagram = diagramContext.getDiagram();
+        List<Node> nodes = diagram.getNodes();
+        if (nodes.contains(node)) {
+            parentNode = diagram;
+        } else {
+            parentNode = nodes.stream()
+                    .map(subNode -> this.getParentNode(node, subNode))
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return parentNode;
+    }
+
+    protected Node getParentNode(Node node, Node nodeContainer) {
+        List<Node> nodes = nodeContainer.getChildNodes();
+        if (nodes.contains(node)) {
+            return nodeContainer;
+        }
+        return nodes.stream()
+                .map(subNode -> this.getParentNode(node, subNode))
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
+    }
+
+    protected List<Node> getChildNodes(IDiagramContext diagramContext, Object selectedNode) {
         var childNodes = new ArrayList<Node>();
-        if (selectedNode != null) {
-            childNodes.addAll(selectedNode.getChildNodes());
+        if (selectedNode instanceof Node node) {
+            childNodes.addAll(node.getChildNodes());
         } else {
             var diagram = diagramContext.getDiagram();
             childNodes.addAll(diagram.getNodes());
@@ -119,7 +162,7 @@ public class ToolService {
         return nodes.stream().anyMatch(node -> node.getTargetObjectId().equals(this.objectService.getId(element)));
     }
 
-    protected void createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    protected void createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var parentElementId = this.getParentElementId(diagramContext, selectedNode);
         var descriptionId = this.getDescriptionId(element, editingContext, diagramContext, selectedNode, convertedNodes);
@@ -131,28 +174,28 @@ public class ToolService {
         }
     }
 
-    protected String getParentElementId(IDiagramContext diagramContext, Node selectedNode) {
-        if (selectedNode != null) {
-            return selectedNode.getId();
+    protected String getParentElementId(IDiagramContext diagramContext, Object selectedNode) {
+        if (selectedNode instanceof Node node) {
+            return node.getId();
         }
         return diagramContext.getDiagram().getId();
     }
 
-    protected Optional<String> getDescriptionId(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    protected Optional<String> getDescriptionId(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         // The NodeDescription must be a child of the Parent Node/Diagram
         var generalViewDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
 
         final var childNodeDescriptions = new ArrayList<>();
 
-        if (selectedNode == null) {
+        if (selectedNode instanceof Node node) {
+            childNodeDescriptions.addAll(convertedNodes.values().stream().filter(nodeDesc -> nodeDesc.getId().equals(node.getDescriptionId())).flatMap(nodeDesc -> Stream
+                    .concat(nodeDesc.getChildNodeDescriptions().stream(), convertedNodes.values().stream().filter(convNode -> nodeDesc.getReusedChildNodeDescriptionIds().contains(convNode.getId()))))
+                    .toList());
+        } else {
             childNodeDescriptions.addAll(generalViewDescription.filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::cast)
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription::getNodeDescriptions).orElse(List.of()));
-        } else {
-            childNodeDescriptions.addAll(convertedNodes.values().stream().filter(nodeDesc -> nodeDesc.getId().equals(selectedNode.getDescriptionId())).flatMap(nodeDesc -> Stream
-                    .concat(nodeDesc.getChildNodeDescriptions().stream(), convertedNodes.values().stream().filter(convNode -> nodeDesc.getReusedChildNodeDescriptionIds().contains(convNode.getId()))))
-                    .toList());
         }
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(element.eClass());

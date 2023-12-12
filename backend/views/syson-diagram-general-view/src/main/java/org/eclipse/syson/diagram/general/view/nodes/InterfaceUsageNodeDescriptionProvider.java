@@ -44,7 +44,6 @@ public class InterfaceUsageNodeDescriptionProvider extends AbstractNodeDescripti
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getInterfaceUsage());
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createUsageAttributesCompartment(NAME), this.createUsagePortsCompartment(NAME))
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
@@ -76,6 +75,9 @@ public class InterfaceUsageNodeDescriptionProvider extends AbstractNodeDescripti
         var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
         var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
 
+        var optAttributesCompartmentNodeDescription = cache.getNodeDescription(UsageAttributesCompartmentNodeDescriptionProvider.NAME);
+        var optPortsCompartmentNodeDescription = cache.getNodeDescription(UsagePortsCompartmentNodeDescriptionProvider.NAME);
+
         dependencyTargetNodeDescriptions.add(optAttributeDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optAttributeUsageNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
@@ -93,6 +95,8 @@ public class InterfaceUsageNodeDescriptionProvider extends AbstractNodeDescripti
         if (optPartUsageNodeDescription.isPresent()) {
             NodeDescription nodeDescription = optInterfaceUsageNodeDescription.get();
             diagramDescription.getNodeDescriptions().add(nodeDescription);
+            nodeDescription.getReusedChildNodeDescriptions().add(optAttributesCompartmentNodeDescription.get());
+            nodeDescription.getReusedChildNodeDescriptions().add(optPortsCompartmentNodeDescription.get());
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, dependencyTargetNodeDescriptions));
         }
     }

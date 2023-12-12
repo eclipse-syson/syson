@@ -44,7 +44,6 @@ public class ItemUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getItemUsage());
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createUsageAttributesCompartment(NAME))
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
@@ -76,6 +75,8 @@ public class ItemUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
         var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
 
+        var optAttributesCompartmentNodeDescription = cache.getNodeDescription(UsageAttributesCompartmentNodeDescriptionProvider.NAME);
+
         dependencyTargetNodeDescriptions.add(optAttributeDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optAttributeUsageNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
@@ -93,6 +94,7 @@ public class ItemUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         if (optPartUsageNodeDescription.isPresent()) {
             NodeDescription nodeDescription = optItemUsageNodeDescription.get();
             diagramDescription.getNodeDescriptions().add(nodeDescription);
+            nodeDescription.getReusedChildNodeDescriptions().add(optAttributesCompartmentNodeDescription.get());
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, dependencyTargetNodeDescriptions));
         }
     }

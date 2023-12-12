@@ -12,13 +12,18 @@
  */
 package org.eclipse.syson.sysml.impl;
 
+import java.util.Optional;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -180,13 +185,14 @@ public class FeatureValueImpl extends OwningMembershipImpl implements FeatureVal
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Expression basicGetValue() {
-        // TODO: implement this method to return the 'Value' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        Optional<LiteralExpression> optLiteralExpression = this.getOwnedRelatedElement().stream()
+            .filter(LiteralExpression.class::isInstance)
+            .map(LiteralExpression.class::cast)
+            .findFirst();
+        return optLiteralExpression.orElse(null);
     }
 
     /**

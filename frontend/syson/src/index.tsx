@@ -96,14 +96,10 @@ const propertySectionRegistryValue: PropertySectionContextValue = {
 };
 
 ReactDOM.render(
-  <div>
-    <PropertySectionContext.Provider value={propertySectionRegistryValue}>
-      <div>
-        <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} theme={sysonTheme}>
-          <Views applicationIcon={<SysONIcon />} applicationBarMenu={<Help />} />
-        </SiriusWebApplication>
-      </div>
-    </PropertySectionContext.Provider>
-  </div>,
+  <PropertySectionContext.Provider value={propertySectionRegistryValue}>
+    <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} theme={sysonTheme}>
+      <Views applicationIcon={<SysONIcon />} applicationBarMenu={<Help />} />
+    </SiriusWebApplication>
+  </PropertySectionContext.Provider>,
   document.getElementById('root')
 );

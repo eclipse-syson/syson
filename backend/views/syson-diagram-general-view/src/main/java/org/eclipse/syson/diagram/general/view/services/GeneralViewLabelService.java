@@ -24,7 +24,13 @@ import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditPars
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.LiteralBoolean;
+import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.LiteralRational;
+import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Usage;
@@ -44,14 +50,15 @@ public class GeneralViewLabelService extends LabelService {
      *            the given {@link Usage}.
      * @return the label for the given {@link Usage}.
      */
-    public String getUsageLabel(Usage usage) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(usage.getDeclaredName());
-        builder.append(this.getTypingLabel(usage));
-        builder.append(this.getRedefinitionLabel(usage));
-        builder.append(this.getSubsettingLabel(usage));
-        builder.append(this.getValueLabel(usage));
-        return builder.toString();
+    public String getCompartmentItemUsageLabel(Usage usage) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(usage.getDeclaredName())
+            .append(this.getTypingLabel(usage))
+            .append(this.getRedefinitionLabel(usage))
+            .append(this.getSubsettingLabel(usage))
+            .append(this.getValueLabel(usage));
+        return label.toString();
     }
 
     /**
@@ -62,85 +69,120 @@ public class GeneralViewLabelService extends LabelService {
      * @return the label of the value part of the given {@link Usage} if there is one, an empty string otherwise.
      */
     private String getValueLabel(Usage usage) {
-        return "";
+        StringBuilder label = new StringBuilder();
+        var featureValue = usage.getOwnedRelationship().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst();
+        if (featureValue.isPresent()) {
+            var literalExpression = featureValue.get().getValue();
+            String valueAsString = null;
+            if (literalExpression != null) {
+                valueAsString = getValue(literalExpression);
+            }
+            label
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.EQUAL)
+                .append(LabelConstants.SPACE)
+                .append(valueAsString);
+        }
+        return label.toString();
+    }
+
+    private String getValue(Expression literalExpression) {
+        String value = null;
+        if (literalExpression instanceof LiteralInteger literal) {
+            value = String.valueOf(literal.getValue());
+        } else if (literalExpression instanceof LiteralRational literal) {
+            value = String.valueOf(literal.getValue());
+        } else if (literalExpression instanceof LiteralBoolean literal) {
+            value = String.valueOf(literal.isValue());
+        } else if (literalExpression instanceof LiteralString literal) {
+            value = String.valueOf(literal.getValue());
+        }
+        return value;
     }
 
     /**
-     * Return the label of the typing part of the given {@link Usage}.
+     * Return the label of the typing part of the given {@link Element}.
      *
      * @param usage
-     *            the given {@link Usage}.
-     * @return the label of the typing part of the given {@link Usage} if there is one, an empty string otherwise.
+     *            the given {@link Element}.
+     * @return the label of the typing part of the given {@link Element} if there is one, an empty string otherwise.
      */
-    private String getTypingLabel(Usage usage) {
-        StringBuilder builder = new StringBuilder();
-        var featureTyping = usage.getOwnedRelationship().stream()
+    private String getTypingLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        var featureTyping = element.getOwnedRelationship().stream()
                 .filter(FeatureTyping.class::isInstance)
                 .map(FeatureTyping.class::cast)
                 .findFirst();
         if (featureTyping.isPresent()) {
             var type = featureTyping.get().getType();
+            String typeName = null;
             if (type != null) {
-                builder
-                    .append(LabelConstants.SPACE)
-                    .append(LabelConstants.COLON)
-                    .append(LabelConstants.SPACE)
-                    .append(type.getDeclaredName());
+                typeName = type.getDeclaredName();
             }
+            label
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.COLON)
+                .append(LabelConstants.SPACE)
+                .append(typeName);
         }
-        return builder.toString();
+        return label.toString();
     }
 
     /**
-     * Return the label of the subsetting part of the given {@link Usage}.
+     * Return the label of the subsetting of the given {@link Element}.
      *
      * @param usage
-     *            the given {@link Usage}.
-     * @return the label of the subsetting part of the given {@link Usage} if there is one, an empty string otherwise.
+     *            the given {@link Element}.
+     * @return the label of the subsetting of the given {@link Element} if there is one, an empty string otherwise.
      */
-    private String getSubsettingLabel(Usage usage) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("");
-        var subsetting = usage.getOwnedRelationship().stream()
+    private String getSubsettingLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        var subsetting = element.getOwnedRelationship().stream()
                 .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition))
                 .map(Subsetting.class::cast)
                 .findFirst();
         if (subsetting.isPresent()) {
             var subsettedFeature = subsetting.get().getSubsettedFeature();
+            String subsettedFeatureName = null;
             if (subsettedFeature != null) {
-                builder.append(LabelConstants.SPACE)
-                    .append(LabelConstants.SUBSETTING)
-                    .append(LabelConstants.SPACE)
-                    .append(subsettedFeature.getDeclaredName());
+                subsettedFeatureName = subsettedFeature.getDeclaredName();
             }
+            label
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.SUBSETTING)
+                .append(LabelConstants.SPACE)
+                .append(subsettedFeatureName);
         }
-        return builder.toString();
+        return label.toString();
     }
 
     /**
-     * Return the label of the redefinition part of the given {@link Usage}.
+     * Return the label of the redefinition of the given {@link Element}.
      *
-     * @param usage
-     *            the given {@link Usage}.
-     * @return the label of the redefinition part of the given {@link Usage} if there is one, an empty string otherwise.
+     * @param element
+     *            the given {@link Element}.
+     * @return the label of the redefinition of the given {@link Element} if there is one, an empty string otherwise.
      */
-    private String getRedefinitionLabel(Usage usage) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("");
-        var redefinition = usage.getOwnedRelationship().stream()
+    private String getRedefinitionLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        var redefinition = element.getOwnedRelationship().stream()
                 .filter(Redefinition.class::isInstance)
                 .map(Redefinition.class::cast)
                 .findFirst();
         if (redefinition.isPresent()) {
             var redefinedFeature = redefinition.get().getRedefinedFeature();
             if (redefinedFeature != null) {
-                builder.append(LabelConstants.SPACE)
+                label
+                    .append(LabelConstants.SPACE)
                     .append(LabelConstants.REDEFINITION)
                     .append(LabelConstants.SPACE)
                     .append(redefinedFeature.getDeclaredName());
             }
         }
-        return builder.toString();
+        return label.toString();
     }
 
     /**
@@ -182,7 +224,12 @@ public class GeneralViewLabelService extends LabelService {
      * @return the value to display.
      */
     public String getDefaultInitialDirectEditLabel(Element element) {
-        return element.getDeclaredName();
+        StringBuilder builder = new StringBuilder();
+        builder.append(element.getDeclaredName());
+        builder.append(this.getTypingLabel(element));
+        builder.append(this.getRedefinitionLabel(element));
+        builder.append(this.getSubsettingLabel(element));
+        return builder.toString();
     }
 
     /**
@@ -193,6 +240,6 @@ public class GeneralViewLabelService extends LabelService {
      * @return the value to display.
      */
     public String getUsageInitialDirectEditLabel(Usage usage) {
-        return this.getUsageLabel(usage);
+        return this.getCompartmentItemUsageLabel(usage);
     }
 }

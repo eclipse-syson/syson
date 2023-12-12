@@ -82,4 +82,35 @@ public class GeneralViewToolService extends ToolService {
         }
         return partUsage;
     }
+
+    /**
+     * Called by "Add existing nested PartUsage" tool from General View PartUsage node. Add nodes that are not present
+     * in selectedNode (i.e. a PartUsage).
+     *
+     * @param partUsage
+     *            the {@link PartUsage} corresponding to the target object of the Diagram or the {@link Node} Package on
+     *            which the tool has been called.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param selectedNode
+     *            the selected node on which the tool has been called (may be null if the tool has been called from the
+     *            diagram). It corresponds to a variable accessible from the variable manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @return the input {@link PartUsage}.
+     */
+    public PartUsage addExistingElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var nestedParts = partUsage.getNestedPart();
+        Object parentNode = this.getParentNode(partUsage, selectedNode, diagramContext);
+        nestedParts.stream()
+                .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, parentNode)))
+                .forEach(member -> this.createView(member, editingContext, diagramContext, parentNode, convertedNodes));
+        return partUsage;
+    }
 }

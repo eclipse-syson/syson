@@ -177,8 +177,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<ActionUsage> getOwnedAction() {
-        List<ActionUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), data.size(), data.toArray());
+        List<ActionUsage> actions = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(ActionUsage.class::isInstance)
+            .map(ActionUsage.class::cast)
+            .forEach(actions::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), actions.size(), actions.toArray());
     }
 
     /**
@@ -188,8 +195,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<AllocationUsage> getOwnedAllocation() {
-        List<AllocationUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedAllocation(), data.size(), data.toArray());
+        List<AllocationUsage> allocations = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(AllocationUsage.class::isInstance)
+            .map(AllocationUsage.class::cast)
+            .forEach(allocations::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedAllocation(), allocations.size(), allocations.toArray());
     }
 
     /**
@@ -199,8 +213,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<AnalysisCaseUsage> getOwnedAnalysisCase() {
-        List<AnalysisCaseUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedAnalysisCase(), data.size(), data.toArray());
+        List<AnalysisCaseUsage> analysisCases = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(AnalysisCaseUsage.class::isInstance)
+            .map(AnalysisCaseUsage.class::cast)
+            .forEach(analysisCases::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedAnalysisCase(), analysisCases.size(), analysisCases.toArray());
     }
 
     /**
@@ -228,8 +249,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<CalculationUsage> getOwnedCalculation() {
-        List<CalculationUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedCalculation(), data.size(), data.toArray());
+        List<CalculationUsage> calculations = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(CalculationUsage.class::isInstance)
+            .map(CalculationUsage.class::cast)
+            .forEach(calculations::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedCalculation(), calculations.size(), calculations.toArray());
     }
 
     /**
@@ -239,8 +267,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<CaseUsage> getOwnedCase() {
-        List<CaseUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedCase(), data.size(), data.toArray());
+        List<CaseUsage> cases = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(CaseUsage.class::isInstance)
+            .map(CaseUsage.class::cast)
+            .forEach(cases::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedCase(), cases.size(), cases.toArray());
     }
 
     /**
@@ -250,8 +285,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<ConcernUsage> getOwnedConcern() {
-        List<ConcernUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedConcern(), data.size(), data.toArray());
+        List<ConcernUsage> concerns = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(ConcernUsage.class::isInstance)
+            .map(ConcernUsage.class::cast)
+            .forEach(concerns::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedConcern(), concerns.size(), concerns.toArray());
     }
 
     /**
@@ -261,8 +303,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<ConnectorAsUsage> getOwnedConnection() {
-        List<ConnectorAsUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedConnection(), data.size(), data.toArray());
+        List<ConnectorAsUsage> connections = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(ConnectorAsUsage.class::isInstance)
+            .map(ConnectorAsUsage.class::cast)
+            .forEach(connections::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedConnection(), connections.size(), connections.toArray());
     }
 
     /**
@@ -272,8 +321,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<ConstraintUsage> getOwnedConstraint() {
-        List<ConstraintUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint(), data.size(), data.toArray());
+        List<ConstraintUsage> constraints = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(ConstraintUsage.class::isInstance)
+            .map(ConstraintUsage.class::cast)
+            .forEach(constraints::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint(), constraints.size(), constraints.toArray());
     }
 
     /**
@@ -283,8 +339,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<EnumerationUsage> getOwnedEnumeration() {
-        List<EnumerationUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedEnumeration(), data.size(), data.toArray());
+        List<EnumerationUsage> enumerations = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(EnumerationUsage.class::isInstance)
+            .map(EnumerationUsage.class::cast)
+            .forEach(enumerations::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedEnumeration(), enumerations.size(), enumerations.toArray());
     }
 
     /**
@@ -294,8 +357,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<FlowConnectionUsage> getOwnedFlow() {
-        List<FlowConnectionUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedFlow(), data.size(), data.toArray());
+        List<FlowConnectionUsage> flows = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(FlowConnectionUsage.class::isInstance)
+            .map(FlowConnectionUsage.class::cast)
+            .forEach(flows::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedFlow(), flows.size(), flows.toArray());
     }
 
     /**
@@ -305,8 +375,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<InterfaceUsage> getOwnedInterface() {
-        List<InterfaceUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), data.size(), data.toArray());
+        List<InterfaceUsage> interfaces = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(InterfaceUsage.class::isInstance)
+            .map(InterfaceUsage.class::cast)
+            .forEach(interfaces::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), interfaces.size(), interfaces.toArray());
     }
 
     /**
@@ -334,8 +411,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<MetadataUsage> getOwnedMetadata() {
-        List<MetadataUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedMetadata(), data.size(), data.toArray());
+        List<MetadataUsage> metadatas = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(MetadataUsage.class::isInstance)
+            .map(MetadataUsage.class::cast)
+            .forEach(metadatas::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedMetadata(), metadatas.size(), metadatas.toArray());
     }
 
     /**
@@ -345,8 +429,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<OccurrenceUsage> getOwnedOccurrence() {
-        List<OccurrenceUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence(), data.size(), data.toArray());
+        List<OccurrenceUsage> occurences = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(OccurrenceUsage.class::isInstance)
+            .map(OccurrenceUsage.class::cast)
+            .forEach(occurences::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence(), occurences.size(), occurences.toArray());
     }
 
     /**
@@ -392,8 +483,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<ReferenceUsage> getOwnedReference() {
-        List<ReferenceUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), data.size(), data.toArray());
+        List<ReferenceUsage> references = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(ReferenceUsage.class::isInstance)
+            .map(ReferenceUsage.class::cast)
+            .forEach(references::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedReference(), references.size(), references.toArray());
     }
 
     /**
@@ -403,8 +501,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<RenderingUsage> getOwnedRendering() {
-        List<RenderingUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedRendering(), data.size(), data.toArray());
+        List<RenderingUsage> renderings = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(RenderingUsage.class::isInstance)
+            .map(RenderingUsage.class::cast)
+            .forEach(renderings::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedRendering(), renderings.size(), renderings.toArray());
     }
 
     /**
@@ -414,8 +519,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<RequirementUsage> getOwnedRequirement() {
-        List<RequirementUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), data.size(), data.toArray());
+        List<RequirementUsage> requirements = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(RequirementUsage.class::isInstance)
+            .map(RequirementUsage.class::cast)
+            .forEach(requirements::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), requirements.size(), requirements.toArray());
     }
 
     /**
@@ -425,8 +537,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<StateUsage> getOwnedState() {
-        List<StateUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), data.size(), data.toArray());
+        List<StateUsage> states = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(StateUsage.class::isInstance)
+            .map(StateUsage.class::cast)
+            .forEach(states::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), states.size(), states.toArray());
     }
 
     /**
@@ -436,8 +555,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<TransitionUsage> getOwnedTransition() {
-        List<TransitionUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedTransition(), data.size(), data.toArray());
+        List<TransitionUsage> transitions = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(TransitionUsage.class::isInstance)
+            .map(TransitionUsage.class::cast)
+            .forEach(transitions::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedTransition(), transitions.size(), transitions.toArray());
     }
 
     /**
@@ -447,8 +573,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<Usage> getOwnedUsage() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedUsage(), data.size(), data.toArray());
+        List<Usage> usages = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(Usage.class::isInstance)
+            .map(Usage.class::cast)
+            .forEach(usages::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedUsage(), usages.size(), usages.toArray());
     }
 
     /**
@@ -458,8 +591,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<UseCaseUsage> getOwnedUseCase() {
-        List<UseCaseUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedUseCase(), data.size(), data.toArray());
+        List<UseCaseUsage> useCases = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(UseCaseUsage.class::isInstance)
+            .map(UseCaseUsage.class::cast)
+            .forEach(useCases::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedUseCase(), useCases.size(), useCases.toArray());
     }
 
     /**
@@ -469,8 +609,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<VerificationCaseUsage> getOwnedVerificationCase() {
-        List<VerificationCaseUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedVerificationCase(), data.size(), data.toArray());
+        List<VerificationCaseUsage> verificationCases = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(VerificationCaseUsage.class::isInstance)
+            .map(VerificationCaseUsage.class::cast)
+            .forEach(verificationCases::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedVerificationCase(), verificationCases.size(), verificationCases.toArray());
     }
 
     /**
@@ -480,8 +627,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<ViewUsage> getOwnedView() {
-        List<ViewUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedView(), data.size(), data.toArray());
+        List<ViewUsage> views = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(ViewUsage.class::isInstance)
+            .map(ViewUsage.class::cast)
+            .forEach(views::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedView(), views.size(), views.toArray());
     }
 
     /**
@@ -491,8 +645,15 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<ViewpointUsage> getOwnedViewpoint() {
-        List<ViewpointUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedViewpoint(), data.size(), data.toArray());
+        List<ViewpointUsage> viewpoints = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(FeatureMembership.class::isInstance)
+            .map(FeatureMembership.class::cast)
+            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+            .filter(ViewpointUsage.class::isInstance)
+            .map(ViewpointUsage.class::cast)
+            .forEach(viewpoints::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_OwnedViewpoint(), viewpoints.size(), viewpoints.toArray());
     }
 
     /**

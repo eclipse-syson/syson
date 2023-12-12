@@ -20,6 +20,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.LiteralBoolean;
+import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.LiteralRational;
+import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Specialization;
@@ -63,6 +67,38 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         var features = new ArrayList<EStructuralFeature>();
         features.addAll(this.caseSpecialization(object));
         features.add(SysmlPackage.eINSTANCE.getFeatureTyping_Type());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseLiteralBoolean(LiteralBoolean object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getLiteralBoolean_Value());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseLiteralInteger(LiteralInteger object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getLiteralInteger_Value());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseLiteralRational(LiteralRational object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getLiteralRational_Value());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseLiteralString(LiteralString object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getLiteralString_Value());
         return features;
     }
 

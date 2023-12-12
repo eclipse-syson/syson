@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -49,7 +50,6 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createUsageAttributesCompartment(NAME), this.createUsagePortsCompartment(NAME))
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
@@ -81,6 +81,9 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
         var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
 
+        var optAttributesCompartmentNodeDescription = cache.getNodeDescription(UsageAttributesCompartmentNodeDescriptionProvider.NAME);
+        var optPortsCompartmentNodeDescription = cache.getNodeDescription(UsagePortsCompartmentNodeDescriptionProvider.NAME);
+
         dependencyTargetNodeDescriptions.add(optAttributeDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optAttributeUsageNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
@@ -98,13 +101,13 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         if (optPartUsageNodeDescription.isPresent()) {
             NodeDescription nodeDescription = optPartUsageNodeDescription.get();
             diagramDescription.getNodeDescriptions().add(nodeDescription);
+            nodeDescription.getReusedChildNodeDescriptions().add(optAttributesCompartmentNodeDescription.get());
+            nodeDescription.getReusedChildNodeDescriptions().add(optPortsCompartmentNodeDescription.get());
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, dependencyTargetNodeDescriptions));
         }
     }
 
     private NodePalette createNodePalette(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
-        var nodeTool = this.createNestedPartNodeTool(nodeDescription);
-
         var changeContext = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:self.deleteFromModel()");
 
@@ -117,18 +120,26 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getUsageInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
                 .body(callEditService.build());
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .nodeTools(nodeTool)
+                .toolSections(this.createElementsToolSection(nodeDescription), this.addElementsToolSection())
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions),
                         this.createRedefinitionEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()),
                         this.createBecomeNestedPartEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
                 .build();
     }
+
+    private NodeToolSection createElementsToolSection(NodeDescription nodeDescription) {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name("Create")
+                .nodeTools(this.createNestedPartNodeTool(nodeDescription))
+                .build();
+    }
+
 
     private NodeTool createNestedPartNodeTool(NodeDescription nodeDescription) {
         var setValue = this.viewBuilderHelper.newSetValue()
@@ -148,7 +159,7 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(nodeDescription)
-                .parentViewExpression("aql:diagram")
+                .parentViewExpression("aql:self.getParentNode(selectedNode, diagramContext)")
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 
@@ -163,7 +174,7 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name("PartUsage")
+                .name("New nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
                 .body(createMembership.build())
                 .build();
     }
@@ -178,6 +189,25 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .name("Become nested" + SysmlPackage.eINSTANCE.getPartUsage().getName())
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
+                .build();
+    }
+
+    private NodeToolSection addElementsToolSection() {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name("Add")
+                .nodeTools(this.addExistingNestedPartsTool())
+                .build();
+    }
+
+    private NodeTool addExistingNestedPartsTool() {
+        var builder = this.diagramBuilderHelper.newNodeTool();
+
+        var addExistingelements = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes)");
+
+        return builder
+                .name("Add existing nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .body(addExistingelements.build())
                 .build();
     }
 }

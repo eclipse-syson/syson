@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
-import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -47,102 +46,6 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     public AbstractNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
-    }
-
-    protected NodeDescription createDefinitionAttributesCompartment(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createDefinitionAttributesCompartmentItem(name))
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
-                .labelExpression("attributes")
-                .name(name + " AttributesCompartment")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
-                .style(this.createDefinitionCompartmentNodeStyle())
-                .userResizable(false)
-                .palette(this.createAttributesCompartmentPalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
-    }
-
-    protected NodeDescription createDefinitionAttributesCompartmentItem(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getAttributeUsage()))
-                .labelExpression("aql:self.getUsageLabel()")
-                .name(name + " AttributesCompartmentItem")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute().getName())
-                .style(this.createDefinitionCompartmentItemNodeStyle())
-                .userResizable(false)
-                .palette(this.createCompartmentItemNodePalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
-    }
-
-    protected NodeDescription createDefinitionPortsCompartment(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createDefinitionPortsCompartmentItem(name))
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
-                .labelExpression("ports")
-                .name(name + " PortsCompartment")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
-                .style(this.createDefinitionCompartmentNodeStyle())
-                .userResizable(false)
-                .palette(this.createPortsCompartmentPalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
-    }
-
-    protected NodeDescription createDefinitionPortsCompartmentItem(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPortUsage()))
-                .labelExpression(AQLConstants.DEFAULT_LABEL_EXPRESSION)
-                .name(name + " PortsCompartmentItem")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDefinition_OwnedPort().getName())
-                .style(this.createDefinitionCompartmentItemNodeStyle())
-                .userResizable(false)
-                .palette(this.createCompartmentItemNodePalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
-    }
-
-    protected NodeDescription createDefinitionItemsCompartment(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createDefinitionItemsCompartmentItem(name))
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
-                .labelExpression("items")
-                .name(name + " ItemsCompartment")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
-                .style(this.createDefinitionCompartmentNodeStyle())
-                .userResizable(false)
-                .palette(this.createItemsCompartmentPalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
-    }
-
-    protected NodeDescription createDefinitionItemsCompartmentItem(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getItemUsage()))
-                .labelExpression(AQLConstants.DEFAULT_LABEL_EXPRESSION)
-                .name(name + " ItemsCompartmentItem")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDefinition_OwnedItem().getName())
-                .style(this.createDefinitionCompartmentItemNodeStyle())
-                .userResizable(false)
-                .palette(this.createCompartmentItemNodePalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
     }
 
     protected NodeStyleDescription createDefinitionNodeStyle() {
@@ -178,70 +81,6 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(true)
-                .build();
-    }
-
-    protected NodeDescription createUsageAttributesCompartment(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createUsageAttributesCompartmentItem(name))
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
-                .labelExpression("attributes")
-                .name(name + " AttributesCompartment")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
-                .style(this.createUsageCompartmentNodeStyle())
-                .userResizable(false)
-                .palette(this.createAttributesCompartmentPalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
-    }
-
-    protected NodeDescription createUsageAttributesCompartmentItem(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getAttributeUsage()))
-                .labelExpression(AQLConstants.DEFAULT_LABEL_EXPRESSION)
-                .name(name + " AttributesCompartmentItem")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedAttribute().getName())
-                .style(this.createUsageCompartmentItemNodeStyle())
-                .userResizable(false)
-                .palette(this.createCompartmentItemNodePalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
-    }
-
-    protected NodeDescription createUsagePortsCompartment(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .childrenDescriptions(this.createUsagePortsCompartmentItem(name))
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
-                .labelExpression("ports")
-                .name(name + " PortsCompartment")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
-                .style(this.createUsageCompartmentNodeStyle())
-                .userResizable(false)
-                .palette(this.createPortsCompartmentPalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
-    }
-
-    protected NodeDescription createUsagePortsCompartmentItem(String name) {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPortUsage()))
-                .labelExpression(AQLConstants.DEFAULT_LABEL_EXPRESSION)
-                .name(name + " PortsCompartmentItem")
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName())
-                .style(this.createUsageCompartmentItemNodeStyle())
-                .userResizable(false)
-                .palette(this.createCompartmentItemNodePalette())
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
 
@@ -303,24 +142,6 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .build();
     }
 
-    protected NodePalette createAttributesCompartmentPalette() {
-        return this.diagramBuilderHelper.newNodePalette()
-                .nodeTools(this.createCompartmentNodeTool(SysmlPackage.eINSTANCE.getAttributeUsage(), "attribute"))
-                .build();
-    }
-
-    protected NodePalette createPortsCompartmentPalette() {
-        return this.diagramBuilderHelper.newNodePalette()
-                .nodeTools(this.createCompartmentNodeTool(SysmlPackage.eINSTANCE.getPortUsage(), "port"))
-                .build();
-    }
-
-    protected NodePalette createItemsCompartmentPalette() {
-        return this.diagramBuilderHelper.newNodePalette()
-                .nodeTools(this.createCompartmentNodeTool(SysmlPackage.eINSTANCE.getItemUsage(), "item"))
-                .build();
-    }
-
     protected NodeTool createCompartmentNodeTool(EClass eClass, String defaultLabel) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
@@ -349,7 +170,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .children(changeContextMembership.build());
 
         return builder
-                .name(eClass.getName())
+                .name("New " + eClass.getName())
                 .body(createMembership.build())
                 .build();
     }
