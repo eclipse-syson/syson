@@ -28,6 +28,7 @@ import org.eclipse.syson.diagram.general.view.nodes.AttributeDefinitionNodeDescr
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.InterfaceDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ItemDefinitionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.MetadataDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PartDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PortDefinitionNodeDescriptionProvider;
@@ -73,6 +74,7 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
         var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
         var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(InterfaceDefinitionNodeDescriptionProvider.NAME);
         var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
+        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
         var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
         var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
@@ -88,6 +90,8 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
             edgeDescription.getTargetNodeDescriptions().add(optInterfaceDefinitionNodeDescription.get());
             edgeDescription.getSourceNodeDescriptions().add(optItemDefinitionNodeDescription.get());
             edgeDescription.getTargetNodeDescriptions().add(optItemDefinitionNodeDescription.get());
+            edgeDescription.getSourceNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
+            edgeDescription.getTargetNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
             edgeDescription.getSourceNodeDescriptions().add(optPackageNodeDescription.get());
             edgeDescription.getTargetNodeDescriptions().add(optPackageNodeDescription.get());
             edgeDescription.getSourceNodeDescriptions().add(optPartDefinitionNodeDescription.get());

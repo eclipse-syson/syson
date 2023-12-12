@@ -95,24 +95,22 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
         dependencyTargetNodeDescriptions.add(optPortDefinitionNodeDescription.get());
         dependencyTargetNodeDescriptions.add(optPortUsageNodeDescription.get());
 
-        if (optPartUsageNodeDescription.isPresent()) {
-            NodeDescription packageNodeDescription = optPackageNodeDescription.get();
-            diagramDescription.getNodeDescriptions().add(packageNodeDescription);
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optAttributeDefinitionNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optAttributeUsageNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optInterfaceDefinitionNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optItemDefinitionNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optItemUsageNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(packageNodeDescription);
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optPartDefinitionNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optPartUsageNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optPortDefinitionNodeDescription.get());
-            packageNodeDescription.getReusedChildNodeDescriptions().add(optPortUsageNodeDescription.get());
-            packageNodeDescription.setPalette(this.createNodePalette(packageNodeDescription, cache, dependencyTargetNodeDescriptions));
-        }
+        NodeDescription packageNodeDescription = optPackageNodeDescription.get();
+        diagramDescription.getNodeDescriptions().add(packageNodeDescription);
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optAttributeDefinitionNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optAttributeUsageNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optInterfaceDefinitionNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optItemDefinitionNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optItemUsageNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(packageNodeDescription);
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optPartDefinitionNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optPartUsageNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optPortDefinitionNodeDescription.get());
+        packageNodeDescription.getReusedChildNodeDescriptions().add(optPortUsageNodeDescription.get());
+        packageNodeDescription.setPalette(this.createNodePalette(packageNodeDescription, cache, dependencyTargetNodeDescriptions));
     }
 
     protected NodeStyleDescription createPackageNodeStyle() {
@@ -246,7 +244,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .children(changeContexMembership.build());
 
         return builder
-                .name(eClass.getName())
+                .name("New " + eClass.getName())
                 .body(createMembership.build())
                 .build();
     }

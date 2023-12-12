@@ -36,7 +36,14 @@ import org.eclipse.syson.diagram.general.view.edges.RedefinitionEdgeDescriptionP
 import org.eclipse.syson.diagram.general.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.AttributeDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.AttributeUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.DefinitionAttributesCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.DefinitionAttributesCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.DefinitionItemsCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.DefinitionItemsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.DefinitionPortsCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.DefinitionPortsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.InterfaceDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.InterfaceUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ItemDefinitionNodeDescriptionProvider;
@@ -47,6 +54,10 @@ import org.eclipse.syson.diagram.general.view.nodes.PartDefinitionNodeDescriptio
 import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PortDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PortUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.UsageAttributesCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.UsageAttributesCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.UsagePortsCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.UsagePortsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -78,6 +89,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
         var cache = new GeneralViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
+                new FakeNodeDescriptionProvider(colorProvider),
                 new AttributeDefinitionNodeDescriptionProvider(colorProvider),
                 new AttributeUsageNodeDescriptionProvider(colorProvider),
                 new EnumerationDefinitionNodeDescriptionProvider(colorProvider),
@@ -91,6 +103,16 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 new PartUsageNodeDescriptionProvider(colorProvider),
                 new PortDefinitionNodeDescriptionProvider(colorProvider),
                 new PortUsageNodeDescriptionProvider(colorProvider),
+                new DefinitionAttributesCompartmentItemNodeDescriptionProvider(colorProvider),
+                new DefinitionAttributesCompartmentNodeDescriptionProvider(colorProvider),
+                new DefinitionItemsCompartmentItemNodeDescriptionProvider(colorProvider),
+                new DefinitionItemsCompartmentNodeDescriptionProvider(colorProvider),
+                new DefinitionPortsCompartmentItemNodeDescriptionProvider(colorProvider),
+                new DefinitionPortsCompartmentNodeDescriptionProvider(colorProvider),
+                new UsageAttributesCompartmentItemNodeDescriptionProvider(colorProvider),
+                new UsageAttributesCompartmentNodeDescriptionProvider(colorProvider),
+                new UsagePortsCompartmentItemNodeDescriptionProvider(colorProvider),
+                new UsagePortsCompartmentNodeDescriptionProvider(colorProvider),
                 new NestedPartEdgeDescriptionProvider(colorProvider),
                 new DependencyEdgeDescriptionProvider(colorProvider),
                 new SubclassificationEdgeDescriptionProvider(colorProvider),

@@ -13,8 +13,10 @@
 package org.eclipse.syson.diagram.general.view.directedit;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.antlr.v4.runtime.tree.ErrorNode;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -30,6 +32,10 @@ import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.LiteralBoolean;
+import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.LiteralRational;
+import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -181,7 +187,36 @@ public class GeneralViewDirectEditListener extends DirectEditBaseListener {
 
     @Override
     public void exitValueExpression(ValueExpressionContext ctx) {
-        super.exitValueExpression(ctx);
+        if (this.element instanceof Usage valueOwner) {
+            TerminalNode integerTN = ctx.Integer();
+            TerminalNode realTN = ctx.Real();
+            TerminalNode booleanTN = ctx.Boolean();
+            TerminalNode doubleQuotedStringTN = ctx.DoubleQuotedString();
+            FeatureValue featureValue = null;
+            var optFeatureValue = this.element.getOwnedRelationship().stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .findFirst();
+            if (optFeatureValue.isPresent()) {
+                featureValue = optFeatureValue.get();
+            } else {
+                featureValue = SysmlFactory.eINSTANCE.createFeatureValue();
+                valueOwner.getOwnedRelationship().add(featureValue);
+            }
+            if (integerTN != null) {
+                LiteralInteger literalInteger = this.getOrCreateLiteralInteger(featureValue);
+                literalInteger.setValue(Integer.parseInt(integerTN.getText()));
+            } else if (realTN != null) {
+                LiteralRational literalRational = this.getOrCreateLiteralRational(featureValue);
+                literalRational.setValue(Double.parseDouble(realTN.getText()));
+            } else if (booleanTN != null) {
+                LiteralBoolean literalBoolean = this.getOrCreateLiteralBoolean(featureValue);
+                literalBoolean.setValue(Boolean.parseBoolean(booleanTN.getText()));
+            } else if (doubleQuotedStringTN != null) {
+                LiteralString literalString = this.getOrCreateLiteralString(featureValue);
+                literalString.setValue(doubleQuotedStringTN.getText());
+            }
+        }
     }
 
     @Override
@@ -230,7 +265,7 @@ public class GeneralViewDirectEditListener extends DirectEditBaseListener {
 
     private void handleMissingValueExpression(ExpressionContext ctx) {
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.typingExpression() == null)) {
+        if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.valueExpression() == null)) {
             var featureValue = this.element.getOwnedRelationship().stream()
                     .filter(FeatureValue.class::isInstance)
                     .map(FeatureValue.class::cast)
@@ -239,5 +274,61 @@ public class GeneralViewDirectEditListener extends DirectEditBaseListener {
                 EcoreUtil.remove(featureValue.get());
             }
         }
+    }
+
+    private LiteralBoolean getOrCreateLiteralBoolean(FeatureValue featureValue) {
+        Optional<LiteralBoolean> optLiteral = featureValue.getOwnedRelatedElement().stream()
+            .filter(LiteralBoolean.class::isInstance)
+            .map(LiteralBoolean.class::cast)
+            .findFirst();
+        if (optLiteral.isPresent()) {
+            return optLiteral.get();
+        }
+        LiteralBoolean literal = SysmlFactory.eINSTANCE.createLiteralBoolean();
+        featureValue.getOwnedRelatedElement().clear();
+        featureValue.getOwnedRelatedElement().add(literal);
+        return literal;
+    }
+
+    private LiteralInteger getOrCreateLiteralInteger(FeatureValue featureValue) {
+        Optional<LiteralInteger> optLiteral = featureValue.getOwnedRelatedElement().stream()
+            .filter(LiteralInteger.class::isInstance)
+            .map(LiteralInteger.class::cast)
+            .findFirst();
+        if (optLiteral.isPresent()) {
+            return optLiteral.get();
+        }
+        LiteralInteger literal = SysmlFactory.eINSTANCE.createLiteralInteger();
+        featureValue.getOwnedRelatedElement().clear();
+        featureValue.getOwnedRelatedElement().add(literal);
+        return literal;
+    }
+
+    private LiteralRational getOrCreateLiteralRational(FeatureValue featureValue) {
+        Optional<LiteralRational> optLiteral = featureValue.getOwnedRelatedElement().stream()
+            .filter(LiteralRational.class::isInstance)
+            .map(LiteralRational.class::cast)
+            .findFirst();
+        if (optLiteral.isPresent()) {
+            return optLiteral.get();
+        }
+        LiteralRational literal = SysmlFactory.eINSTANCE.createLiteralRational();
+        featureValue.getOwnedRelatedElement().clear();
+        featureValue.getOwnedRelatedElement().add(literal);
+        return literal;
+    }
+
+    private LiteralString getOrCreateLiteralString(FeatureValue featureValue) {
+        Optional<LiteralString> optLiteral = featureValue.getOwnedRelatedElement().stream()
+            .filter(LiteralString.class::isInstance)
+            .map(LiteralString.class::cast)
+            .findFirst();
+        if (optLiteral.isPresent()) {
+            return optLiteral.get();
+        }
+        LiteralString literal = SysmlFactory.eINSTANCE.createLiteralString();
+        featureValue.getOwnedRelatedElement().clear();
+        featureValue.getOwnedRelatedElement().add(literal);
+        return literal;
     }
 }

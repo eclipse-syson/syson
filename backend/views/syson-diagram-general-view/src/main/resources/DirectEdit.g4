@@ -49,11 +49,15 @@ typingExpression :
 ;
 
 valueExpression :
-	'=' '.*'
+	'=' Integer|Real|Boolean|DoubleQuotedString
 ;
 
 WS :
 	[ \t\r\n\u000C]+ -> skip
+;
+
+Boolean :
+	TRUE|FALSE
 ;
 
 Integer :
@@ -64,11 +68,15 @@ Real :
 	[0-9]+'.'[0-9]+
 ;
 
-String :
-	'\'' (Escape|.)*? '\''
+SingleQuotedString :
+	'\'' (SingleQuoteEscape|.)*? '\''
 ;
 
-fragment Escape : '\\\\' | '\\\''
+fragment SingleQuoteEscape : '\\\\' | '\\\''
+;
+
+DoubleQuotedString :
+	'"' (~[\r\n"] | '""')* '"'
 ;
 
 Ident :

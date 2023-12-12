@@ -32,6 +32,7 @@ import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
@@ -78,7 +79,8 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
             .append(this.featureTyping(object))
-            .append(this.redefinition(object));
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -121,7 +123,8 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
             .append(this.featureTyping(object))
-            .append(this.redefinition(object));
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -150,7 +153,8 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
             .append(this.featureTyping(object))
-            .append(this.redefinition(object));
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -205,7 +209,8 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
             .append(this.featureTyping(object))
-            .append(this.redefinition(object));
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -234,7 +239,8 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
             .append(this.featureTyping(object))
-            .append(this.redefinition(object));
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -260,6 +266,26 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(LabelConstants.COLON)
                 .append(LabelConstants.SPACE)
                 .append(definition.getDeclaredName());
+        }
+        return label.toString();
+    }
+
+    private String subsetting(Element element) {
+        StringBuilder label = new StringBuilder();
+        var subsetting = element.getOwnedRelationship().stream()
+                .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition))
+                .map(Subsetting.class::cast)
+                .findFirst();
+        if (subsetting.isPresent()) {
+            var subsettedFeature = subsetting.get().getSubsettedFeature();
+            String subsettedFeatureName = null;
+            if (subsettedFeature != null) {
+                subsettedFeatureName = subsettedFeature.getDeclaredName();
+            }
+            label.append(LabelConstants.SPACE)
+                .append(LabelConstants.SUBSETTING)
+                .append(LabelConstants.SPACE)
+                .append(subsettedFeatureName);
         }
         return label.toString();
     }
