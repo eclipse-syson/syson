@@ -187,7 +187,8 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
                 .acceptedNodeTypes(acceptedNodeTypes.toArray(new NodeDescription[acceptedNodeTypes.size()]))
-                .body(dropElementFromDiagram.build()).build();
+                .body(dropElementFromDiagram.build())
+                .build();
     }
 
     private NodeToolSection createNodeToolSection(IViewDiagramElementFinder cache) {

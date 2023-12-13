@@ -133,7 +133,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newDiagramPalette()
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
-                .dropTool(this.createDropFromExplorerTool(cache))
+                .dropTool(this.createDropFromExplorerTool())
                 .toolSections(this.createElementsToolSection(cache), this.addElementsToolSection(cache))
                 .build();
     }
@@ -179,7 +179,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .build();
     }
 
-    private DropTool createDropFromExplorerTool(IViewDiagramElementFinder cache) {
+    private DropTool createDropFromExplorerTool() {
         var dropElementFromExplorer = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:self.dropElementFromExplorer(editingContext, diagramContext, selectedNode, convertedNodes)");
 

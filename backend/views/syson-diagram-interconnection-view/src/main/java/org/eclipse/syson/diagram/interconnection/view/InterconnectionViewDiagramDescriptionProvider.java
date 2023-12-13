@@ -17,13 +17,15 @@ import java.util.List;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.syson.diagram.interconnection.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.nodes.PartUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.RootPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.PortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -38,6 +40,8 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
     public static final String DESCRIPTION_NAME = "Interconnection View";
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+
+    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
@@ -54,7 +58,7 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
 
         var cache = new InterconnectionViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
-                new PartUsageNodeDescriptionProvider(colorProvider),
+                new RootPartUsageNodeDescriptionProvider(colorProvider),
                 new ChildPartUsageNodeDescriptionProvider(colorProvider),
                 new PortUsageBorderNodeDescriptionProvider(colorProvider),
                 new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider)
@@ -73,6 +77,17 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
 
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newDiagramPalette()
+                .dropTool(this.createDropFromExplorerTool())
+                .build();
+    }
+
+    private DropTool createDropFromExplorerTool() {
+        var dropElementFromExplorer = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.dropElementFromExplorer(editingContext, diagramContext, selectedNode, convertedNodes)");
+
+        return this.diagramBuilderHelper.newDropTool()
+                .name("Drop from Explorer")
+                .body(dropElementFromExplorer.build())
                 .build();
     }
 }

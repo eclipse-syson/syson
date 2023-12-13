@@ -6,6 +6,5 @@
   </fileset>s
   <filter name="FilesFromPackage" enabled="true">
     <filter-data value="src/main/resources"/>
-    <filter-data value="src/main/generated"/>
   </filter>
 </fileset-config>

@@ -30,6 +30,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<sirius.web.version>2023.12.1</sirius.web.version>
+		<antlr.version>4.10.1</antlr.version>
 	</properties>
 
 	<repositories>
@@ -82,16 +83,42 @@
 			<artifactId>syson-sysml-metamodel</artifactId>
 			<version>2023.12.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>antlr4-runtime</artifactId>
+			<version>${antlr.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr4-maven-plugin</artifactId>
+				<version>${antlr.version}</version>
+				<configuration>
+					<sourceDirectory>${basedir}/src/main/resources</sourceDirectory>
+					<outputDirectory>${basedir}/src/main/generated/org/eclipse/syson/services/grammars</outputDirectory>
+					<outputEncoding>UTF-8</outputEncoding>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>antlr4</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.2.0</version>
 				<configuration>
 					<configLocation>../../releng/syson-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
+					<sourceDirectories>
+						<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory> 
+						<sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory> 
+					</sourceDirectories>
 					<failsOnError>true</failsOnError>
 					<consoleOutput>true</consoleOutput>
 				</configuration>

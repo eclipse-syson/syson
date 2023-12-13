@@ -27,10 +27,13 @@ import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.syson.diagram.interconnection.view.nodes.PortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -79,7 +82,7 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
             diagramDescription.getEdgeDescriptions().add(edgeDescription);
             edgeDescription.getSourceNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
             edgeDescription.getTargetNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
-            edgeDescription.setPalette(this.createEdgePalette(List.of()));
+            edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
         }
     }
 
@@ -105,6 +108,30 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
                 .newEdgePalette()
                 .deleteTool(deleteTool.build())
                 .edgeReconnectionTools(edgeReconnectionTools.toArray(new EdgeReconnectionTool[edgeReconnectionTools.size()]))
+                .build();
+    }
+
+    private SourceEdgeEndReconnectionTool createSourceReconnectTool() {
+        var builder = this.diagramBuilderHelper.newSourceEdgeEndReconnectionTool();
+
+        var setSourcePort = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".setSourcePort(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
+
+        return builder
+                .name("Reconnect Source")
+                .body(setSourcePort.build())
+                .build();
+    }
+
+    private TargetEdgeEndReconnectionTool createTargetReconnectTool() {
+        var builder = this.diagramBuilderHelper.newTargetEdgeEndReconnectionTool();
+
+        var setTargetPort = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".setTargetPort(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
+
+        return builder
+                .name("Reconnect Target")
+                .body(setTargetPort.build())
                 .build();
     }
 }

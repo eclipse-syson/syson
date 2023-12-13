@@ -12,7 +12,19 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.syson.services.grammars.DirectEditLexer;
+import org.eclipse.syson.services.grammars.DirectEditListener;
+import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.util.LabelConstants;
 
 /**
  * Label-related Java services used by SysON representations.
@@ -31,4 +43,152 @@ public class LabelService {
     public String getContainerLabel(Element element) {
         return new MultiLineLabelSwitch().doSwitch(element);
     }
+
+    /**
+     * Apply the direct edit result (i.e. the newLabel) to the given {@link Element}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param newLabel
+     *            the new value to apply.
+     * @return the given {@link Element}.
+     */
+    public Element directEdit(Element element, String newLabel) {
+        DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(newLabel));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        DirectEditParser parser = new DirectEditParser(tokens);
+        ParseTree tree = parser.expression();
+        ParseTreeWalker walker = new ParseTreeWalker();
+        DirectEditListener listener = new DiagramDirectEditListener(element);
+        walker.walk(listener, tree);
+        return element;
+    }
+
+    /**
+     * Get the value to display when a direct edit has been called on the given {@link Element}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the value to display.
+     */
+    public String getDefaultInitialDirectEditLabel(Element element) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(element.getDeclaredName());
+        builder.append(this.getTypingLabel(element));
+        builder.append(this.getRedefinitionLabel(element));
+        builder.append(this.getSubsettingLabel(element));
+        builder.append(this.getSubclassificationLabel(element));
+        return builder.toString();
+    }
+
+    /**
+     * Return the label of the typing part of the given {@link Element}.
+     *
+     * @param usage
+     *            the given {@link Element}.
+     * @return the label of the typing part of the given {@link Element} if there is one, an empty string otherwise.
+     */
+    protected String getTypingLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        var featureTyping = element.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .findFirst();
+        if (featureTyping.isPresent()) {
+            var type = featureTyping.get().getType();
+            String typeName = null;
+            if (type != null) {
+                typeName = type.getDeclaredName();
+            }
+            label
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.COLON)
+                .append(LabelConstants.SPACE)
+                .append(typeName);
+        }
+        return label.toString();
+    }
+
+    /**
+     * Return the label of the subclassification of the given {@link Element}.
+     *
+     * @param usage
+     *            the given {@link Element}.
+     * @return the label of the subclassification of the given {@link Element} if there is one, an empty string otherwise.
+     */
+    protected String getSubclassificationLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        var subclassification = element.getOwnedRelationship().stream()
+                .filter(Subclassification.class::isInstance)
+                .map(Subclassification.class::cast)
+                .findFirst();
+        if (subclassification.isPresent()) {
+            var superclassifier = subclassification.get().getSuperclassifier();
+            String superclassifierName = null;
+            if (superclassifier != null) {
+                superclassifierName = superclassifier.getDeclaredName();
+            }
+            label
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.SUBCLASSIFICATION)
+                .append(LabelConstants.SPACE)
+                .append(superclassifierName);
+        }
+        return label.toString();
+    }
+
+    /**
+     * Return the label of the subsetting of the given {@link Element}.
+     *
+     * @param usage
+     *            the given {@link Element}.
+     * @return the label of the subsetting of the given {@link Element} if there is one, an empty string otherwise.
+     */
+    protected String getSubsettingLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        var subsetting = element.getOwnedRelationship().stream()
+                .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition))
+                .map(Subsetting.class::cast)
+                .findFirst();
+        if (subsetting.isPresent()) {
+            var subsettedFeature = subsetting.get().getSubsettedFeature();
+            String subsettedFeatureName = null;
+            if (subsettedFeature != null) {
+                subsettedFeatureName = subsettedFeature.getDeclaredName();
+            }
+            label
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.SUBSETTING)
+                .append(LabelConstants.SPACE)
+                .append(subsettedFeatureName);
+        }
+        return label.toString();
+    }
+
+    /**
+     * Return the label of the redefinition of the given {@link Element}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the label of the redefinition of the given {@link Element} if there is one, an empty string otherwise.
+     */
+    protected String getRedefinitionLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        var redefinition = element.getOwnedRelationship().stream()
+                .filter(Redefinition.class::isInstance)
+                .map(Redefinition.class::cast)
+                .findFirst();
+        if (redefinition.isPresent()) {
+            var redefinedFeature = redefinition.get().getRedefinedFeature();
+            if (redefinedFeature != null) {
+                label
+                    .append(LabelConstants.SPACE)
+                    .append(LabelConstants.REDEFINITION)
+                    .append(LabelConstants.SPACE)
+                    .append(redefinedFeature.getDeclaredName());
+            }
+        }
+        return label.toString();
+    }
+
 }
