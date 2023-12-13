@@ -164,12 +164,21 @@ public class ToolService {
 
     protected void createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        this.createView(element, editingContext, diagramContext, selectedNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+    }
+
+    protected void createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, NodeContainmentKind nodeKind) {
         var parentElementId = this.getParentElementId(diagramContext, selectedNode);
         var descriptionId = this.getDescriptionId(element, editingContext, diagramContext, selectedNode, convertedNodes);
 
         if (descriptionId.isPresent()) {
-            var request = ViewCreationRequest.newViewCreationRequest().containmentKind(NodeContainmentKind.CHILD_NODE).descriptionId(descriptionId.get()).parentElementId(parentElementId)
-                    .targetObjectId(this.objectService.getId(element)).build();
+            var request = ViewCreationRequest.newViewCreationRequest()
+                    .containmentKind(nodeKind)
+                    .descriptionId(descriptionId.get())
+                    .parentElementId(parentElementId)
+                    .targetObjectId(this.objectService.getId(element))
+                    .build();
             diagramContext.getViewCreationRequests().add(request);
         }
     }
@@ -211,7 +220,7 @@ public class ToolService {
         } else {
             return;
         }
-        this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
+        this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
     }
 }

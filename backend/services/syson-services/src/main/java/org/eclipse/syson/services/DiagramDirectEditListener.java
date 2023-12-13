@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.directedit;
+package org.eclipse.syson.services;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -20,14 +20,13 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditBaseListener;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser.ExpressionContext;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser.FeatureExpressionsContext;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser.RedefinitionExpressionContext;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser.SubsettingExpressionContext;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser.TypingExpressionContext;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser.ValueExpressionContext;
-import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.grammars.DirectEditBaseListener;
+import org.eclipse.syson.services.grammars.DirectEditParser.ExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.SubsettingExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.TypingExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.ValueExpressionContext;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -43,17 +42,17 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * The ANTLR Listener for the direct edit grammar for General View.
+ * The ANTLR Listener for the direct edit grammar for SysON diagrams.
  *
  * @author arichard
  */
-public class GeneralViewDirectEditListener extends DirectEditBaseListener {
+public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private final Element element;
 
     private final UtilService utilService;
 
-    public GeneralViewDirectEditListener(Element element) {
+    public DiagramDirectEditListener(Element element) {
         this.element = Objects.requireNonNull(element);
         this.utilService = new UtilService();
     }

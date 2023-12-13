@@ -99,8 +99,7 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
             edgeDescription.getSourceNodeDescriptions().add(optPortDefinitionNodeDescription.get());
             edgeDescription.getTargetNodeDescriptions().add(optPortDefinitionNodeDescription.get());
 
-            edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(),
-                    this.createTargetReconnectTool())));
+            edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
         }
     }
 

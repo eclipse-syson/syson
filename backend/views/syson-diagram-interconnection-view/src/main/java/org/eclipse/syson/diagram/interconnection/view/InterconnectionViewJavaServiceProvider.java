@@ -18,9 +18,9 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewCreateService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewEdgeService;
+import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewLabelService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewToolService;
 import org.eclipse.syson.services.DeleteService;
-import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.services.UtilService;
 import org.springframework.context.annotation.Configuration;
 
@@ -41,9 +41,9 @@ public class InterconnectionViewJavaServiceProvider implements IJavaServiceProvi
         if (optGVDescription.isPresent()) {
             return List.of(DeleteService.class,
                     InterconnectionViewCreateService.class,
-                    InterconnectionViewToolService.class,
                     InterconnectionViewEdgeService.class,
-                    LabelService.class,
+                    InterconnectionViewLabelService.class,
+                    InterconnectionViewToolService.class,
                     UtilService.class);
         }
         return List.of();

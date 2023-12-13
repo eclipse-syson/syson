@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.nodes;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
@@ -22,6 +23,7 @@ import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -39,7 +41,7 @@ import org.eclipse.syson.util.ViewConstants;
  *
  * @author arichard
  */
-public class PartUsageNodeDescriptionProvider implements INodeDescriptionProvider {
+public class RootPartUsageNodeDescriptionProvider implements INodeDescriptionProvider {
 
     public static final String NAME = "IV Node PartUsage";
 
@@ -49,7 +51,7 @@ public class PartUsageNodeDescriptionProvider implements INodeDescriptionProvide
 
     private final IColorProvider colorProvider;
 
-    public PartUsageNodeDescriptionProvider(IColorProvider colorProvider) {
+    public RootPartUsageNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
@@ -72,17 +74,15 @@ public class PartUsageNodeDescriptionProvider implements INodeDescriptionProvide
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
+        var optRootPartUsageNodeDescription = cache.getNodeDescription(RootPartUsageNodeDescriptionProvider.NAME);
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
 
-        if (optPartUsageNodeDescription.isPresent() && optChildPartUsageNodeDescription.isPresent() && optPortUsageBorderNodeDescription.isPresent()) {
-            NodeDescription nodeDescription = optPartUsageNodeDescription.get();
-            diagramDescription.getNodeDescriptions().add(nodeDescription);
-            nodeDescription.getChildrenDescriptions().add(optChildPartUsageNodeDescription.get());
-            nodeDescription.getBorderNodesDescriptions().add(optPortUsageBorderNodeDescription.get());
-            nodeDescription.setPalette(this.createNodePalette(cache));
-        }
+        NodeDescription nodeDescription = optRootPartUsageNodeDescription.get();
+        diagramDescription.getNodeDescriptions().add(nodeDescription);
+        nodeDescription.getChildrenDescriptions().add(optChildPartUsageNodeDescription.get());
+        nodeDescription.getBorderNodesDescriptions().add(optPortUsageBorderNodeDescription.get());
+        nodeDescription.setPalette(this.createNodePalette(cache));
     }
 
     private NodeStyleDescription createPartUsageNodeStyle() {
@@ -98,8 +98,17 @@ public class PartUsageNodeDescriptionProvider implements INodeDescriptionProvide
     }
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
+        var callEditService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+
+        var editTool = this.diagramBuilderHelper.newLabelEditTool()
+                .name("Edit")
+                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .body(callEditService.build());
 
         return this.diagramBuilderHelper.newNodePalette()
+                .labelEditTool(editTool.build())
+                .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .toolSections(this.createNodeToolSection(cache), this.addElementsToolSection(cache))
                 .build();
     }
@@ -147,7 +156,7 @@ public class PartUsageNodeDescriptionProvider implements INodeDescriptionProvide
                 .children(changeContexMembership.build());
 
         return builder
-                .name(eClass.getName())
+                .name("New " + eClass.getName())
                 .body(createMembership.build())
                 .build();
     }
@@ -168,6 +177,25 @@ public class PartUsageNodeDescriptionProvider implements INodeDescriptionProvide
         return builder
                 .name("Add existing elements")
                 .body(addExistingelements.build())
+                .build();
+    }
+
+    private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
+        var acceptedNodeTypes = new ArrayList<NodeDescription>();
+
+        var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
+        var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
+
+        acceptedNodeTypes.add(optPortUsageBorderNodeDescription.get());
+        acceptedNodeTypes.add(optChildPartUsageNodeDescription.get());
+
+        var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
+
+        return this.diagramBuilderHelper.newDropNodeTool()
+                .name("Drop from Diagram")
+                .acceptedNodeTypes(acceptedNodeTypes.toArray(new NodeDescription[acceptedNodeTypes.size()]))
+                .body(dropElementFromDiagram.build())
                 .build();
     }
 }

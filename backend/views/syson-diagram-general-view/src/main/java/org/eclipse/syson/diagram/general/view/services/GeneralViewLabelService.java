@@ -12,27 +12,15 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.services;
 
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.directedit.GeneralViewDirectEditListener;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditLexer;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditListener;
-import org.eclipse.syson.diagram.general.view.directedit.grammars.DirectEditParser;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.sysml.Dependency;
-import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
-import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
-import org.eclipse.syson.sysml.Redefinition;
-import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.LabelConstants;
 
@@ -78,7 +66,7 @@ public class GeneralViewLabelService extends LabelService {
             var literalExpression = featureValue.get().getValue();
             String valueAsString = null;
             if (literalExpression != null) {
-                valueAsString = getValue(literalExpression);
+                valueAsString = this.getValue(literalExpression);
             }
             label
                 .append(LabelConstants.SPACE)
@@ -104,88 +92,6 @@ public class GeneralViewLabelService extends LabelService {
     }
 
     /**
-     * Return the label of the typing part of the given {@link Element}.
-     *
-     * @param usage
-     *            the given {@link Element}.
-     * @return the label of the typing part of the given {@link Element} if there is one, an empty string otherwise.
-     */
-    private String getTypingLabel(Element element) {
-        StringBuilder label = new StringBuilder();
-        var featureTyping = element.getOwnedRelationship().stream()
-                .filter(FeatureTyping.class::isInstance)
-                .map(FeatureTyping.class::cast)
-                .findFirst();
-        if (featureTyping.isPresent()) {
-            var type = featureTyping.get().getType();
-            String typeName = null;
-            if (type != null) {
-                typeName = type.getDeclaredName();
-            }
-            label
-                .append(LabelConstants.SPACE)
-                .append(LabelConstants.COLON)
-                .append(LabelConstants.SPACE)
-                .append(typeName);
-        }
-        return label.toString();
-    }
-
-    /**
-     * Return the label of the subsetting of the given {@link Element}.
-     *
-     * @param usage
-     *            the given {@link Element}.
-     * @return the label of the subsetting of the given {@link Element} if there is one, an empty string otherwise.
-     */
-    private String getSubsettingLabel(Element element) {
-        StringBuilder label = new StringBuilder();
-        var subsetting = element.getOwnedRelationship().stream()
-                .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition))
-                .map(Subsetting.class::cast)
-                .findFirst();
-        if (subsetting.isPresent()) {
-            var subsettedFeature = subsetting.get().getSubsettedFeature();
-            String subsettedFeatureName = null;
-            if (subsettedFeature != null) {
-                subsettedFeatureName = subsettedFeature.getDeclaredName();
-            }
-            label
-                .append(LabelConstants.SPACE)
-                .append(LabelConstants.SUBSETTING)
-                .append(LabelConstants.SPACE)
-                .append(subsettedFeatureName);
-        }
-        return label.toString();
-    }
-
-    /**
-     * Return the label of the redefinition of the given {@link Element}.
-     *
-     * @param element
-     *            the given {@link Element}.
-     * @return the label of the redefinition of the given {@link Element} if there is one, an empty string otherwise.
-     */
-    private String getRedefinitionLabel(Element element) {
-        StringBuilder label = new StringBuilder();
-        var redefinition = element.getOwnedRelationship().stream()
-                .filter(Redefinition.class::isInstance)
-                .map(Redefinition.class::cast)
-                .findFirst();
-        if (redefinition.isPresent()) {
-            var redefinedFeature = redefinition.get().getRedefinedFeature();
-            if (redefinedFeature != null) {
-                label
-                    .append(LabelConstants.SPACE)
-                    .append(LabelConstants.REDEFINITION)
-                    .append(LabelConstants.SPACE)
-                    .append(redefinedFeature.getDeclaredName());
-            }
-        }
-        return label.toString();
-    }
-
-    /**
      * Return the edge label for the given {@link Dependency}.
      *
      * @param dependency
@@ -194,42 +100,6 @@ public class GeneralViewLabelService extends LabelService {
      */
     public String getDependencyEdgeLabel(Dependency dependency) {
         return LabelConstants.OPEN_QUOTE + "dependency" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + dependency.getDeclaredName();
-    }
-
-    /**
-     * Apply the direct edit result (i.e. the newLabel) to the given {@link Element}.
-     *
-     * @param element
-     *            the given {@link Element}.
-     * @param newLabel
-     *            the new value to apply.
-     * @return the given {@link Element}.
-     */
-    public Element directEdit(Element element, String newLabel) {
-        DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(newLabel));
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        DirectEditParser parser = new DirectEditParser(tokens);
-        ParseTree tree = parser.expression();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        DirectEditListener listener = new GeneralViewDirectEditListener(element);
-        walker.walk(listener, tree);
-        return element;
-    }
-
-    /**
-     * Get the value to display when a direct edit has been called on the given {@link Element}.
-     *
-     * @param element
-     *            the given {@link Element}.
-     * @return the value to display.
-     */
-    public String getDefaultInitialDirectEditLabel(Element element) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(element.getDeclaredName());
-        builder.append(this.getTypingLabel(element));
-        builder.append(this.getRedefinitionLabel(element));
-        builder.append(this.getSubsettingLabel(element));
-        return builder.toString();
     }
 
     /**

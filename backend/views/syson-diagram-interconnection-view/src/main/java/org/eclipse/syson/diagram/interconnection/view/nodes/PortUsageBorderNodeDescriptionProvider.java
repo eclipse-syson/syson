@@ -58,7 +58,7 @@ public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionP
                 .defaultHeightExpression("10")
                 .defaultWidthExpression("10")
                 .domainType(domainType)
-                .labelExpression("aql:self.declaredName")
+                .labelExpression(AQLConstants.AQL_SELF + ".getBorderNodePortUsageLabel()")
                 .name(NAME)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName())
                 .style(this.createPortUsageNodeStyle())
@@ -71,10 +71,8 @@ public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionP
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
 
-        if (optPortUsageBorderNodeDescription.isPresent()) {
-            NodeDescription nodeDescription = optPortUsageBorderNodeDescription.get();
-            nodeDescription.setPalette(this.createNodePalette(nodeDescription));
-        }
+        NodeDescription nodeDescription = optPortUsageBorderNodeDescription.get();
+        nodeDescription.setPalette(this.createNodePalette(nodeDescription));
     }
 
     private NodeStyleDescription createPortUsageNodeStyle() {
@@ -97,8 +95,17 @@ public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionP
                 .name("Delete from Model")
                 .body(changeContext.build());
 
+        var callEditService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+
+        var editTool = this.diagramBuilderHelper.newLabelEditTool()
+                .name("Edit")
+                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .body(callEditService.build());
+
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
+                .labelEditTool(editTool.build())
                 .edgeTools(this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription)))
                 .build();
     }

@@ -25,7 +25,7 @@ grammar DirectEdit;
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.directedit.grammars;
+package org.eclipse.syson.services.grammars;
 }
 
 expression :
