@@ -21,7 +21,7 @@
       "dependsOn": ["build"]
     },
     "start": {
-      "dependsOn": ["build"]
+      "dependsOn": ["format-lint", "^start"]
     }
   }
 }

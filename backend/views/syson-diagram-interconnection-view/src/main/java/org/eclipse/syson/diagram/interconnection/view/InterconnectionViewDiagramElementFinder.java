@@ -58,5 +58,19 @@ public class InterconnectionViewDiagramElementFinder implements IViewObjectCache
                 .findFirst();
     }
 
+    @Override
+    public List<NodeDescription> getNodeDescriptions() {
+        return this.data.getOrDefault("NodeDescription", List.of()).stream()
+                .filter(NodeDescription.class::isInstance)
+                .map(NodeDescription.class::cast)
+                .toList();
+    }
 
+    @Override
+    public List<EdgeDescription> getEdgeDescriptions() {
+        return this.data.getOrDefault("EdgeDescription", List.of()).stream()
+                .filter(EdgeDescription.class::isInstance)
+                .map(EdgeDescription.class::cast)
+                .toList();
+    }
 }
