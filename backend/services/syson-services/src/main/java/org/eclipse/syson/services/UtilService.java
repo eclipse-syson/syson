@@ -16,11 +16,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
@@ -31,6 +28,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
@@ -141,13 +139,29 @@ public class UtilService {
             }
 
             return this.getSysMLv2Resources(rs.getResources())
-                    .flatMap(r -> this.eAllContentsStreamWithSelf(r))
-                    .filter(predicate)
-                    .map(EObject.class::cast)
+                    .flatMap(r -> r.getContents().stream())
+                    .flatMap(rootElt -> this.getAllElementsOfType(rootElt, predicate).stream())
                     .toList();
         } else {
             return List.of();
         }
+    }
+
+    private List<EObject> getAllElementsOfType(EObject element, Predicate<Notifier> predicate) {
+        List<EObject> allElementsOfType = new ArrayList<>();
+        if (predicate.test(element)) {
+            allElementsOfType.add(element);
+        }
+        if (element instanceof Package pkg) {
+            pkg.getOwnedElement().forEach(child -> allElementsOfType.addAll(this.getAllElementsOfType(child, predicate)));
+        } else if (element instanceof Definition definition) {
+            definition.getOwnedRelationship().forEach(child -> allElementsOfType.addAll(this.getAllElementsOfType(child, predicate)));
+        } else if (element instanceof Usage usage) {
+            usage.getOwnedRelationship().forEach(child -> allElementsOfType.addAll(this.getAllElementsOfType(child, predicate)));
+        } else if (element instanceof Membership membership) {
+            membership.getOwnedRelatedElement().forEach(child -> allElementsOfType.addAll(this.getAllElementsOfType(child, predicate)));
+        }
+        return allElementsOfType;
     }
 
     /**
@@ -308,12 +322,5 @@ public class UtilService {
 
     private Stream<Resource> getSysMLv2Resources(EList<Resource> resources) {
         return resources.stream().filter(r -> !r.getContents().isEmpty() && r.getContents().get(0) instanceof Element);
-    }
-
-    private Stream<Notifier> eAllContentsStreamWithSelf(Resource r) {
-        if (r == null) {
-            return Stream.empty();
-        }
-        return Stream.concat(Stream.of(r), StreamSupport.stream(Spliterators.spliteratorUnknownSize(r.getAllContents(), Spliterator.NONNULL), false));
     }
 }
