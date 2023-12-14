@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.general.view.nodes.ItemUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PartDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -32,17 +33,17 @@ import org.eclipse.syson.util.ViewConstants;
  *
  * @author arichard
  */
-public class PartDefinitionNestedPartEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
+public class PartDefinitionOwnedItemEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
-    public static final String NAME = "GV Edge PartDefinition Nested PartUsage";
+    public static final String NAME = "GV Edge PartDefinition OwnedItem";
 
-    public PartDefinitionNestedPartEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public PartDefinitionOwnedItemEdgeDescriptionProvider(IColorProvider colorProvider) {
         super(colorProvider);
     }
 
     @Override
     public EdgeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getItemUsage());
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(false)
@@ -51,7 +52,7 @@ public class PartDefinitionNestedPartEdgeDescriptionProvider extends AbstractEdg
                 .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDefinition_OwnedPart().getName())
+                .targetNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDefinition_OwnedItem().getName())
                 .build();
     }
 
@@ -60,11 +61,13 @@ public class PartDefinitionNestedPartEdgeDescriptionProvider extends AbstractEdg
         var optEdgeDescription = cache.getEdgeDescription(NAME);
         var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
         var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
+        var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
         edgeDescription.getSourceNodeDescriptions().add(optPartDefinitionNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optPartUsageNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optItemUsageNodeDescription.get());
     }
 
     private EdgeStyle createEdgeStyle() {
