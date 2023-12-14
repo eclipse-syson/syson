@@ -19,8 +19,11 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.ListLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -120,6 +123,72 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
                 .labelEditTool(editTool.build())
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions),
                         this.createSubclassificationEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
+                .toolSections(this.createElementsToolSection(allNodeDescriptions.stream().filter(nodeDesc -> PartUsageNodeDescriptionProvider.NAME.equals(nodeDesc.getName())).findFirst().get()),
+                        this.addElementsToolSection())
+                .build();
+    }
+
+    private NodeToolSection createElementsToolSection(NodeDescription nodeDescription) {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name("Create")
+                .nodeTools(this.createNestedPartNodeTool(nodeDescription))
+                .build();
+    }
+
+    private NodeTool createNestedPartNodeTool(NodeDescription nodeDescription) {
+        var setValue = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
+                .valueExpression("PartUsage");
+
+        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:newInstance")
+                .children(setValue.build());
+
+        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage()))
+                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
+                .variableName("newInstance")
+                .children(changeContextNewInstance.build());
+
+        var createView = this.diagramBuilderHelper.newCreateView()
+                .containmentKind(NodeContainmentKind.CHILD_NODE)
+                .elementDescription(nodeDescription)
+                .parentViewExpression("aql:self.getParentNode(selectedNode, diagramContext)")
+                .semanticElementExpression("aql:newInstance")
+                .variableName("newInstanceView");
+
+        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:newFeatureMembership")
+                .children(createEClassInstance.build(), createView.build());
+
+        var createMembership = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureMembership()))
+                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
+                .variableName("newFeatureMembership")
+                .children(changeContexMembership.build());
+
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("New nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .body(createMembership.build())
+                .build();
+    }
+
+    private NodeToolSection addElementsToolSection() {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name("Add")
+                .nodeTools(this.addExistingNestedPartsTool())
+                .build();
+    }
+
+    private NodeTool addExistingNestedPartsTool() {
+        var builder = this.diagramBuilderHelper.newNodeTool();
+
+        var addExistingelements = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes)");
+
+        return builder
+                .name("Add existing nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .body(addExistingelements.build())
                 .build();
     }
 }
