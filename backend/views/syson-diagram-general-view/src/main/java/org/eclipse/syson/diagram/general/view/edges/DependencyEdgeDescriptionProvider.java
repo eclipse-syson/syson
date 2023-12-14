@@ -65,10 +65,10 @@ public class DependencyEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
                 .labelExpression("")
                 .name(NAME)
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceNodesExpression("aql:self." + SysmlPackage.eINSTANCE.getDependency_Client().getName())
+                .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Client().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression("aql:self." + SysmlPackage.eINSTANCE.getDependency_Supplier().getName())
+                .targetNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Supplier().getName())
                 .build();
     }
 

@@ -57,10 +57,10 @@ public class RedefinitionEdgeDescriptionProvider extends AbstractEdgeDescription
                 .labelExpression("")
                 .name(NAME)
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceNodesExpression("aql:self." + SysmlPackage.eINSTANCE.getRedefinition_RedefiningFeature().getName())
+                .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getRedefinition_RedefiningFeature().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression("aql:self." + SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName())
+                .targetNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName())
                 .build();
     }
 
@@ -73,22 +73,20 @@ public class RedefinitionEdgeDescriptionProvider extends AbstractEdgeDescription
         var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
         var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
 
-        if (optEdgeDescription.isPresent()) {
-            EdgeDescription edgeDescription = optEdgeDescription.get();
-            diagramDescription.getEdgeDescriptions().add(edgeDescription);
-            edgeDescription.getSourceNodeDescriptions().add(optAttributeUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optAttributeUsageNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optItemUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optItemUsageNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optPartUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optPartUsageNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optPortUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optPortUsageNodeDescription.get());
+        EdgeDescription edgeDescription = optEdgeDescription.get();
+        diagramDescription.getEdgeDescriptions().add(edgeDescription);
+        edgeDescription.getSourceNodeDescriptions().add(optAttributeUsageNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optAttributeUsageNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optItemUsageNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optItemUsageNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optPartUsageNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optPartUsageNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optPortUsageNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optPortUsageNodeDescription.get());
 
-            edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
-        }
+        edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
     }
 
     private EdgeStyle createEdgeStyle() {

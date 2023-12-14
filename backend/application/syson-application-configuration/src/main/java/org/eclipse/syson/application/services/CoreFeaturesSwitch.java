@@ -67,6 +67,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         var features = new ArrayList<EStructuralFeature>();
         features.addAll(this.caseSpecialization(object));
         features.add(SysmlPackage.eINSTANCE.getFeatureTyping_Type());
+        features.add(SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature());
         return features;
     }
 

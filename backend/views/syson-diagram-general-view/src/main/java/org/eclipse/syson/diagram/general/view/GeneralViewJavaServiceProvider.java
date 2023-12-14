@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewCreateService;
-import org.eclipse.syson.diagram.general.view.services.GeneralViewEditService;
+import org.eclipse.syson.diagram.general.view.services.GeneralViewEdgeService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewLabelService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewToolService;
 import org.eclipse.syson.services.DeleteService;
@@ -41,7 +41,7 @@ public class GeneralViewJavaServiceProvider implements IJavaServiceProvider {
         if (optGVDescription.isPresent()) {
             return List.of(GeneralViewCreateService.class,
                     DeleteService.class,
-                    GeneralViewEditService.class,
+                    GeneralViewEdgeService.class,
                     GeneralViewLabelService.class,
                     GeneralViewToolService.class,
                     UtilService.class);
