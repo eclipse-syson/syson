@@ -69,7 +69,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     @Override
     public void exitTypingExpression(TypingExpressionContext ctx) {
-        if (this.element instanceof Usage) {
+        if (this.element instanceof Usage usage) {
             var identifier = ctx.Ident();
             var typeAsString = identifier.getText();
             var definition = this.utilService.findDefinitionByName(this.element, typeAsString);
@@ -85,17 +85,24 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 }
             }
             if (definition != null) {
-                var featureTyping = this.element.getOwnedRelationship().stream()
+                var optFeatureTyping = this.element.getOwnedRelationship().stream()
                         .filter(FeatureTyping.class::isInstance)
                         .map(FeatureTyping.class::cast)
                         .findFirst();
-                if (featureTyping.isPresent()) {
-                    featureTyping.get().setType(definition);
+                if (optFeatureTyping.isPresent()) {
+                    FeatureTyping featureTyping = optFeatureTyping.get();
+                    featureTyping.setType(definition);
+                    featureTyping.setGeneral(definition);
+                    featureTyping.setSpecific(usage);
+                    featureTyping.setTypedFeature(usage);
+
                 } else {
                     var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
                     this.element.getOwnedRelationship().add(newFeatureTyping);
                     newFeatureTyping.setType(definition);
                     newFeatureTyping.setGeneral(definition);
+                    newFeatureTyping.setSpecific(usage);
+                    newFeatureTyping.setTypedFeature(usage);
                 }
             }
         }
