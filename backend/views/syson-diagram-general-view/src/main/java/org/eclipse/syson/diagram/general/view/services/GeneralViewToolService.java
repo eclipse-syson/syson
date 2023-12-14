@@ -116,8 +116,8 @@ public class GeneralViewToolService extends ToolService {
     }
 
     /**
-     * Called by "Add existing nested PartDefinition" tool from General View PartDefinition node. Add nodes that are not
-     * present in selectedNode (i.e. a PartUsage).
+     * Called by "Add existing nested elements" tool from General View PartDefinition node. Add nodes that are not
+     * present in selectedNode (i.e. a PartUsage/ItemUsage).
      *
      * @param partDef
      *            the {@link PartDefinition} corresponding to the target object of the Diagram or the {@link Node}
@@ -138,9 +138,9 @@ public class GeneralViewToolService extends ToolService {
      */
     public PartDefinition addExistingElements(PartDefinition partDef, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var nestedParts = partDef.getOwnedPart();
+        var nestedItems = partDef.getOwnedItem();
         Object parentNode = this.getParentNode(partDef, selectedNode, diagramContext);
-        nestedParts.stream()
+        nestedItems.stream()
                 .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, parentNode)))
                 .forEach(member -> this.createView(member, editingContext, diagramContext, parentNode, convertedNodes));
         return partDef;

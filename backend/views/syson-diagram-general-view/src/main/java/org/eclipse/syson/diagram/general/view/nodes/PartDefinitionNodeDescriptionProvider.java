@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.general.view.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.ListLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -123,29 +124,32 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
                 .labelEditTool(editTool.build())
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions),
                         this.createSubclassificationEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
-                .toolSections(this.createElementsToolSection(allNodeDescriptions.stream().filter(nodeDesc -> PartUsageNodeDescriptionProvider.NAME.equals(nodeDesc.getName())).findFirst().get()),
+                .toolSections(
+                        this.createElementsToolSection(allNodeDescriptions.stream().filter(nodeDesc -> PartUsageNodeDescriptionProvider.NAME.equals(nodeDesc.getName())).findFirst().get(),
+                                allNodeDescriptions.stream().filter(nodeDesc -> ItemUsageNodeDescriptionProvider.NAME.equals(nodeDesc.getName())).findFirst().get()),
                         this.addElementsToolSection())
                 .build();
     }
 
-    private NodeToolSection createElementsToolSection(NodeDescription nodeDescription) {
+    private NodeToolSection createElementsToolSection(NodeDescription partUsageNodeDescription, NodeDescription itemUsageNodeDescription) {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
-                .nodeTools(this.createNestedPartNodeTool(nodeDescription))
+                .nodeTools(this.createNestedUsageNodeTool(partUsageNodeDescription, SysmlPackage.eINSTANCE.getPartUsage()),
+                        this.createNestedUsageNodeTool(itemUsageNodeDescription, SysmlPackage.eINSTANCE.getItemUsage()))
                 .build();
     }
 
-    private NodeTool createNestedPartNodeTool(NodeDescription nodeDescription) {
+    private NodeTool createNestedUsageNodeTool(NodeDescription nodeDescription, EClass eClass) {
         var setValue = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression("PartUsage");
+                .valueExpression(eClass.getName());
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
                 .children(setValue.build());
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage()))
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
                 .variableName("newInstance")
                 .children(changeContextNewInstance.build());
@@ -168,7 +172,7 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name("New nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .name("New nested " + eClass.getName())
                 .body(createMembership.build())
                 .build();
     }
@@ -187,7 +191,7 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
                 .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes)");
 
         return builder
-                .name("Add existing nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .name("Add existing nested elements")
                 .body(addExistingelements.build())
                 .build();
     }
