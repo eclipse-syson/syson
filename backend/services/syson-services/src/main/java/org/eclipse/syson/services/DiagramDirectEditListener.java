@@ -95,6 +95,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
                     this.element.getOwnedRelationship().add(newFeatureTyping);
                     newFeatureTyping.setType(definition);
+                    newFeatureTyping.setGeneral(definition);
                 }
             }
         }

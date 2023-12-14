@@ -25,77 +25,77 @@ import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.syson.diagram.general.view.nodes.AttributeDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.AttributeUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.InterfaceDefinitionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.InterfaceUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ItemDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.MetadataDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.ItemUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PartDefinitionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PortDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.diagram.general.view.nodes.PortUsageNodeDescriptionProvider;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the {@link Subclassification} edge description.
+ * Used to create the {@link FeatureTyping} edge description.
  *
  * @author arichard
  */
-public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
+public class FeatureTypingEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
-    public static final String NAME = "GV Edge Subclassification";
+    public static final String NAME = "GV Edge FeatureTyping";
 
-    public SubclassificationEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public FeatureTypingEdgeDescriptionProvider(IColorProvider colorProvider) {
         super(colorProvider);
     }
 
     @Override
     public EdgeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSubclassification());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureTyping());
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
                 .labelExpression("")
                 .name(NAME)
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getSubclassification_Subclassifier().getName())
+                .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName())
+                .targetNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName())
                 .build();
     }
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(NAME);
+
+        var optAttributeUsageNodeDescription = cache.getNodeDescription(AttributeUsageNodeDescriptionProvider.NAME);
+        var optInterfaceUsageNodeDescription = cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME);
+        var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
+        var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
+        var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
+
         var optAttributeDefinitionNodeDescription = cache.getNodeDescription(AttributeDefinitionNodeDescriptionProvider.NAME);
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
         var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(InterfaceDefinitionNodeDescriptionProvider.NAME);
         var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
-        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
-        var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
         var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
         var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
-        edgeDescription.getSourceNodeDescriptions().add(optAttributeDefinitionNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optAttributeUsageNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optAttributeDefinitionNodeDescription.get());
-        edgeDescription.getSourceNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
-        edgeDescription.getTargetNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
-        edgeDescription.getSourceNodeDescriptions().add(optInterfaceDefinitionNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optInterfaceDefinitionNodeDescription.get());
-        edgeDescription.getSourceNodeDescriptions().add(optItemDefinitionNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optItemUsageNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optItemDefinitionNodeDescription.get());
-        edgeDescription.getSourceNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
-        edgeDescription.getTargetNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
-        edgeDescription.getSourceNodeDescriptions().add(optPackageNodeDescription.get());
-        edgeDescription.getTargetNodeDescriptions().add(optPackageNodeDescription.get());
-        edgeDescription.getSourceNodeDescriptions().add(optPartDefinitionNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optPartUsageNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optPartDefinitionNodeDescription.get());
-        edgeDescription.getSourceNodeDescriptions().add(optPortDefinitionNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optPortUsageNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optPortDefinitionNodeDescription.get());
 
         edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
@@ -107,19 +107,19 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
                 .edgeWidth(1)
                 .lineStyle(LineStyle.SOLID)
                 .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW)
+                .targetArrowStyle(ArrowStyle.CLOSED_ARROW_WITH_DOTS)
                 .build();
     }
 
     private SourceEdgeEndReconnectionTool createSourceReconnectTool() {
         var builder = this.diagramBuilderHelper.newSourceEdgeEndReconnectionTool();
 
-        var unsetOldSubclassifier = this.viewBuilderHelper.newUnsetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSubclassification_Subclassifier().getName())
+        var unsetOldTypedFeature = this.viewBuilderHelper.newUnsetValue()
+                .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature().getName())
                 .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
 
-        var setNewSubclassifier = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSubclassification_Subclassifier().getName())
+        var setNewTypedFeature = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature().getName())
                 .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
 
         var unsetOldSpecific = this.viewBuilderHelper.newUnsetValue()
@@ -140,7 +140,7 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
 
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
-                .children(unsetOldSubclassifier.build(), unsetOldSpecific.build(), setNewSubclassifier.build(), setNewSpecific.build(), changeContextNewContainer.build());
+                .children(unsetOldTypedFeature.build(), unsetOldSpecific.build(), setNewTypedFeature.build(), setNewSpecific.build(), changeContextNewContainer.build());
 
         return builder
                 .name("Reconnect Source")
@@ -151,12 +151,12 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
     private TargetEdgeEndReconnectionTool createTargetReconnectTool() {
         var builder = this.diagramBuilderHelper.newTargetEdgeEndReconnectionTool();
 
-        var unsetOldSuperclassifier = this.viewBuilderHelper.newUnsetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName())
+        var unsetOldType = this.viewBuilderHelper.newUnsetValue()
+                .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName())
                 .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
 
-        var setNewSuperclassifier = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName())
+        var setNewType = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName())
                 .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
 
         var unsetOldGeneral = this.viewBuilderHelper.newUnsetValue()
@@ -169,10 +169,11 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
 
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
-                .children(unsetOldSuperclassifier.build(), unsetOldGeneral.build(), setNewSuperclassifier.build(), setNewGeneral.build());
+                .children(unsetOldType.build(), unsetOldGeneral.build(), setNewType.build(), setNewGeneral.build());
 
         return builder
                 .name("Reconnect Target")
+                .preconditionExpression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".checkFeatureTypingEdgeReconnectionTarget(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")")
                 .body(body.build())
                 .build();
     }
