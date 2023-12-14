@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -30,11 +31,11 @@ import org.eclipse.syson.util.ViewConstants;
  *
  * @author arichard
  */
-public class NestedPartEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
+public class PartUsageNestedPartEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
-    public static final String NAME = "GV Edge Nested Part Usage";
+    public static final String NAME = "GV Edge PartUsage Nested PartUsage";
 
-    public NestedPartEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public PartUsageNestedPartEdgeDescriptionProvider(IColorProvider colorProvider) {
         super(colorProvider);
     }
 
@@ -46,10 +47,10 @@ public class NestedPartEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
                 .isDomainBasedEdge(false)
                 .labelExpression("")
                 .name(NAME)
-                .sourceNodesExpression("aql:self")
+                .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression("aql:self." + SysmlPackage.eINSTANCE.getUsage_NestedPart().getName())
+                .targetNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPart().getName())
                 .build();
     }
 
@@ -57,12 +58,11 @@ public class NestedPartEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(NAME);
         var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
-        if (optEdgeDescription.isPresent() && optPartUsageNodeDescription.isPresent()) {
-            EdgeDescription edgeDescription = optEdgeDescription.get();
-            diagramDescription.getEdgeDescriptions().add(edgeDescription);
-            edgeDescription.getSourceNodeDescriptions().add(optPartUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optPartUsageNodeDescription.get());
-        }
+
+        EdgeDescription edgeDescription = optEdgeDescription.get();
+        diagramDescription.getEdgeDescriptions().add(edgeDescription);
+        edgeDescription.getSourceNodeDescriptions().add(optPartUsageNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optPartUsageNodeDescription.get());
     }
 
     private EdgeStyle createEdgeStyle() {

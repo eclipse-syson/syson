@@ -26,6 +26,7 @@ import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 
@@ -88,8 +89,8 @@ public class GeneralViewToolService extends ToolService {
      * in selectedNode (i.e. a PartUsage).
      *
      * @param partUsage
-     *            the {@link PartUsage} corresponding to the target object of the Diagram or the {@link Node} Package on
-     *            which the tool has been called.
+     *            the {@link PartUsage} corresponding to the target object of the Diagram or the {@link Node} PartUsage
+     *            on which the tool has been called.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
@@ -112,5 +113,36 @@ public class GeneralViewToolService extends ToolService {
                 .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, parentNode)))
                 .forEach(member -> this.createView(member, editingContext, diagramContext, parentNode, convertedNodes));
         return partUsage;
+    }
+
+    /**
+     * Called by "Add existing nested PartDefinition" tool from General View PartDefinition node. Add nodes that are not
+     * present in selectedNode (i.e. a PartUsage).
+     *
+     * @param partDef
+     *            the {@link PartDefinition} corresponding to the target object of the Diagram or the {@link Node}
+     *            PartDefinition on which the tool has been called.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param selectedNode
+     *            the selected node on which the tool has been called (may be null if the tool has been called from the
+     *            diagram). It corresponds to a variable accessible from the variable manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @return the input {@link PartDefinition}.
+     */
+    public PartDefinition addExistingElements(PartDefinition partDef, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var nestedParts = partDef.getOwnedPart();
+        Object parentNode = this.getParentNode(partDef, selectedNode, diagramContext);
+        nestedParts.stream()
+                .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, parentNode)))
+                .forEach(member -> this.createView(member, editingContext, diagramContext, parentNode, convertedNodes));
+        return partDef;
     }
 }

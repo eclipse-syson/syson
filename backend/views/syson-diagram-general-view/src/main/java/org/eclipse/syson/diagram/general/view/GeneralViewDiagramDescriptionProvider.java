@@ -31,7 +31,8 @@ import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.general.view.edges.DependencyEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.edges.NestedPartEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.edges.PartDefinitionNestedPartEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.edges.PartUsageNestedPartEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.RedefinitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.AttributeDefinitionNodeDescriptionProvider;
@@ -113,7 +114,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 new UsageAttributesCompartmentNodeDescriptionProvider(colorProvider),
                 new UsagePortsCompartmentItemNodeDescriptionProvider(colorProvider),
                 new UsagePortsCompartmentNodeDescriptionProvider(colorProvider),
-                new NestedPartEdgeDescriptionProvider(colorProvider),
+                new PartDefinitionNestedPartEdgeDescriptionProvider(colorProvider),
+                new PartUsageNestedPartEdgeDescriptionProvider(colorProvider),
                 new DependencyEdgeDescriptionProvider(colorProvider),
                 new SubclassificationEdgeDescriptionProvider(colorProvider),
                 new RedefinitionEdgeDescriptionProvider(colorProvider)
