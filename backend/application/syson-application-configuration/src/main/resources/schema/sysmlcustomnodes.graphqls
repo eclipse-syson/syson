@@ -1,6 +1,6 @@
-extend union INodeStyle = EllipseNodeStyle
+extend union INodeStyle = SysMLPackageNodeStyle
 
-type EllipseNodeStyle {
+type SysMLPackageNodeStyle {
   borderColor: String!
   borderSize: Int!
   borderStyle: LineStyle!

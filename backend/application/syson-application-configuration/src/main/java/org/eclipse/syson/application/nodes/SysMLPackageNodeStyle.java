@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.nodes.ellipse;
+package org.eclipse.syson.application.nodes;
 
 import java.text.MessageFormat;
 import java.util.Objects;
@@ -20,12 +20,13 @@ import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 
 /**
- * The ellipse node style.
+ * The SysML package node style. This code has been fully inspired from PackageNodeStyle.java in
+ * https://github.com/PapyrusSirius/papyrus-web
  *
- * @author frouene
+ * @author arichard
  */
 @Immutable
-public final class EllipseNodeStyle implements INodeStyle {
+public final class SysMLPackageNodeStyle implements INodeStyle {
 
     private String color;
 
@@ -35,11 +36,11 @@ public final class EllipseNodeStyle implements INodeStyle {
 
     private LineStyle borderStyle;
 
-    private EllipseNodeStyle() {
+    private SysMLPackageNodeStyle() {
         // Prevent instantiation
     }
 
-    public static Builder newEllipseNodeStyle() {
+    public static Builder newSysMLPackageNodeStyle() {
         return new Builder();
     }
 
@@ -66,9 +67,9 @@ public final class EllipseNodeStyle implements INodeStyle {
     }
 
     /**
-     * The builder used to create the ellipse node style.
+     * The builder used to create the package node style.
      *
-     * @author hmarchadour
+     * @author arichard
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
@@ -105,8 +106,8 @@ public final class EllipseNodeStyle implements INodeStyle {
             return this;
         }
 
-        public EllipseNodeStyle build() {
-            EllipseNodeStyle nodeStyleDescription = new EllipseNodeStyle();
+        public SysMLPackageNodeStyle build() {
+            SysMLPackageNodeStyle nodeStyleDescription = new SysMLPackageNodeStyle();
             nodeStyleDescription.color = Objects.requireNonNull(this.color);
             nodeStyleDescription.borderColor = Objects.requireNonNull(this.borderColor);
             nodeStyleDescription.borderSize = this.borderSize;

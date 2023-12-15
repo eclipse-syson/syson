@@ -173,6 +173,7 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
 
         return this.diagramBuilderHelper.newNodeTool()
                 .name("New nested " + eClass.getName())
+                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
     }

@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
+import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -114,15 +116,13 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
     }
 
     protected NodeStyleDescription createPackageNodeStyle() {
-        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
-                .borderRadius(0)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
-                .displayHeaderSeparator(false)
-                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
-                .withHeader(true)
-                .build();
+        SysMLPackageNodeStyleDescription nodeStyleDescription = SysMLCustomnodesFactory.eINSTANCE.createSysMLPackageNodeStyleDescription();
+        nodeStyleDescription.setBorderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR));
+        nodeStyleDescription.setBorderRadius(0);
+        nodeStyleDescription.setColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR));
+        nodeStyleDescription.setLabelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR));
+        nodeStyleDescription.setShowIcon(true);
+        return nodeStyleDescription;
     }
 
     private NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache, List<NodeDescription> allNodeDescriptions) {
@@ -246,6 +246,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
 
         return builder
                 .name("New " + eClass.getName())
+                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
     }

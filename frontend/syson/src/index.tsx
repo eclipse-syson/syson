@@ -25,13 +25,23 @@ import {
   ReferencePreview,
   ReferencePropertySection,
 } from '@eclipse-sirius/sirius-components-widget-reference';
-import { SiriusWebApplication, Views } from '@eclipse-sirius/sirius-web-application';
+import {
+  DiagramRepresentationConfiguration,
+  SiriusWebApplication,
+  Views,
+} from '@eclipse-sirius/sirius-web-application';
 import ReactDOM from 'react-dom';
 import { Help } from './core/Help';
 import { SysONIcon } from './core/SysONIcon';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { sysonTheme } from './theme/sysonTheme';
 
+import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import {
+  SysMLPackageNode,
+  SysMLPackageNodeConverterHandler,
+  SysMLPackageNodeLayoutHandler,
+} from '@eclipse-syson/syson-components';
 import './Sprotty.css';
 import './fonts.css';
 import './reset.css';
@@ -95,10 +105,23 @@ const propertySectionRegistryValue: PropertySectionContextValue = {
   propertySectionsRegistry,
 };
 
+const nodeTypeRegistry = {
+  graphQLNodeStyleFragments: [
+    {
+      type: 'SysMLPackageNodeStyle',
+      fields: `borderColor borderSize borderStyle color`,
+    },
+  ],
+  nodeLayoutHandlers: [new SysMLPackageNodeLayoutHandler()],
+  nodeConverterHandlers: [new SysMLPackageNodeConverterHandler()],
+  nodeTypeContributions: [<NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />],
+};
+
 ReactDOM.render(
   <PropertySectionContext.Provider value={propertySectionRegistryValue}>
     <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} theme={sysonTheme}>
       <Views applicationIcon={<SysONIcon />} applicationBarMenu={<Help />} />
+      <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
     </SiriusWebApplication>
   </PropertySectionContext.Provider>,
   document.getElementById('root')
