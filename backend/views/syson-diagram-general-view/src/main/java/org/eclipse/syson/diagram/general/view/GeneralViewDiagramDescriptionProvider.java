@@ -251,6 +251,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
         return builder
                 .name("New  " + eClass.getName())
+                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
     }

@@ -1,0 +1,71 @@
+{
+  "name": "@eclipse-syson/syson-components",
+  "version": "2023.12.0",
+  "author": "Eclipse SysON",
+  "license": "EPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-syson/syson"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "main": "./dist/syson-components.umd.js",
+  "module": "./dist/syson-components.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/syson-components.umd.js",
+      "import": "./dist/syson-components.es.js"
+    }
+  },
+  "scripts": {
+    "start": "vite build --mode 'development' && tsc",
+    "build": "vite build && tsc",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "publish:local": "yalc push"
+  },
+  "peerDependencies": {
+    "@apollo/client": "3.8.1",
+    "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-diagrams-reactflow": "*",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "graphql": "16.8.0",
+    "html-to-image": "1.11.11",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "reactflow": "11.8.1",
+    "xstate": "4.32.1"
+  },
+  "devDependencies": {
+    "@apollo/client": "3.8.1",
+    "@eclipse-sirius/sirius-components-core": "*",
+    "@eclipse-sirius/sirius-components-diagrams-reactflow": "*",
+    "@eclipse-sirius/sirius-components-tsconfig": "*",
+    "@material-ui/core": "4.12.4",
+    "@material-ui/icons": "4.11.3",
+    "@rollup/plugin-image": "2.1.1",
+    "@types/react": "17.0.37",
+    "@types/react-dom": "17.0.9",
+    "@vitejs/plugin-react": "4.0.4",
+    "@vitest/coverage-v8": "0.34.2",
+    "@xstate/react": "1.6.3",
+    "graphql": "16.8.0",
+    "html-to-image": "1.11.11",
+    "jsdom": "16.7.0",
+    "prettier": "2.7.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "reactflow": "11.8.1",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "typescript": "5.1.6",
+    "vite": "4.4.9",
+    "vitest": "0.34.2",
+    "xstate": "4.32.1"
+  }
+}

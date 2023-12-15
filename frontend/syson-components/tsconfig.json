@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@eclipse-sirius/sirius-components-tsconfig/strict-react-library.json",
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "outDir": "./dist"
+  },
+  "include": ["./src/index.ts"],
+  "exclude": ["dist", "build", "node_modules"]
+}

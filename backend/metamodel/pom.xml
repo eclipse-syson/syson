@@ -34,5 +34,7 @@
 	<modules>
 		<module>syson-sysml-metamodel</module>
 		<module>syson-sysml-metamodel-edit</module>
+		<module>syson-siriusweb-customnodes-metamodel</module>
+		<module>syson-siriusweb-customnodes-metamodel-edit</module>
 	</modules>
 </project>
