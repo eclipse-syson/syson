@@ -27,6 +27,7 @@ import {
 } from '@eclipse-sirius/sirius-components-widget-reference';
 import {
   DiagramRepresentationConfiguration,
+  NodeTypeRegistry,
   SiriusWebApplication,
   Views,
 } from '@eclipse-sirius/sirius-web-application';
@@ -105,7 +106,7 @@ const propertySectionRegistryValue: PropertySectionContextValue = {
   propertySectionsRegistry,
 };
 
-const nodeTypeRegistry = {
+const nodeTypeRegistry: NodeTypeRegistry = {
   graphQLNodeStyleFragments: [
     {
       type: 'SysMLPackageNodeStyle',
