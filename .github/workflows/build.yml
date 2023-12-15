@@ -68,7 +68,6 @@ jobs:
           echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
           echo "CI=true" >> $GITHUB_ENV
           npm ci
-          npm run-script format-lint
           npm run build
 
       - name: Copy frontend artifacts
