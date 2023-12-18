@@ -29,7 +29,7 @@ package org.eclipse.syson.services.grammars;
 }
 
 expression :
-	Ident featureExpressions EOF
+	Name? featureExpressions EOF
 ;
 
 featureExpressions :
@@ -37,15 +37,15 @@ featureExpressions :
 	| (typingExpression)? (subsettingExpression|redefinitionExpression)? (valueExpression)?
 ;
 subsettingExpression :
-	':>' Ident
+	':>' Name
 ;
 
 redefinitionExpression :
-	':>>' Ident
+	':>>' Name
 ;
 
 typingExpression :
-	':' Ident
+	':' Name
 ;
 
 valueExpression :
@@ -79,11 +79,30 @@ DoubleQuotedString :
 	'"' (~[\r\n"] | '""')* '"'
 ;
 
-Ident :
-	'_'? Letter (Letter | [0-9] | '_')*
+Name :
+	BasicName | UnrestrictedName
+;
+
+BasicName :
+	BasicInitialCharacter BasicNameCharacter*
+;
+
+BasicInitialCharacter :
+	Letter | '_'
+;
+
+BasicNameCharacter :
+	BasicInitialCharacter | DeciamlDigit
+;
+
+UnrestrictedName :
+	'\'' ~[\\']* '\''
 ;
 
 fragment Letter : [a-zA-Z]
+;
+
+fragment DeciamlDigit : [0-9]
 ;
 
 // Reserved Keywords
