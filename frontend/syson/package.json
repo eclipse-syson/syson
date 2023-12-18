@@ -69,8 +69,8 @@
     }
   },
   "scripts": {
-    "start": "vite --host",
-    "build": "vite build",
+    "start": "tsc && vite --host",
+    "build": "vite build && tsc",
     "test": "vitest --run --config vite.config.js",
     "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
     "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\""
