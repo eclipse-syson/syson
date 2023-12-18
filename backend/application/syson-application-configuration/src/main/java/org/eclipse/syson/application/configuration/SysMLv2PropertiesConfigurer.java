@@ -248,7 +248,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         refWidget.setName("ExtraReferenceWidget");
-        refWidget.setLabelExpression("Type");
+        refWidget.setLabelExpression("Typed by");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression("aql:true");

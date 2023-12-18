@@ -40,8 +40,11 @@ public class GeneralViewLabelService extends LabelService {
      */
     public String getCompartmentItemUsageLabel(Usage usage) {
         StringBuilder label = new StringBuilder();
+        String declaredName = usage.getDeclaredName();
+        if (declaredName != null) {
+            label.append(declaredName);
+        }
         label
-            .append(usage.getDeclaredName())
             .append(this.getTypingLabel(usage))
             .append(this.getRedefinitionLabel(usage))
             .append(this.getSubsettingLabel(usage))

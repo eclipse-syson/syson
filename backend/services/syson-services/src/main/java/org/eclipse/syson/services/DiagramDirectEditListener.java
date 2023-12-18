@@ -59,8 +59,12 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     @Override
     public void exitExpression(ExpressionContext ctx) {
-        var identifier = ctx.Ident();
-        this.element.setDeclaredName(identifier.getText());
+        var identifier = ctx.Name();
+        if (identifier != null && !identifier.getText().isBlank()) {
+            this.element.setDeclaredName(identifier.getText());
+        } else {
+            this.element.setDeclaredName(null);
+        }
         this.handleMissingSubsettingExpression(ctx);
         this.handleMissingRedefinitionExpression(ctx);
         this.handleMissingTypingExpression(ctx);
@@ -70,39 +74,41 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     @Override
     public void exitTypingExpression(TypingExpressionContext ctx) {
         if (this.element instanceof Usage usage) {
-            var identifier = ctx.Ident();
-            var typeAsString = identifier.getText();
-            var definition = this.utilService.findDefinitionByName(this.element, typeAsString);
-            if (definition == null) {
-                var containerPackage = this.utilService.getContainerPackage(this.element);
-                var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
-                containerPackage.getOwnedRelationship().add(newMembership);
-                EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(this.element.eClass().getName().replace("Usage", "Definition"));
-                if (eClassifier instanceof EClass eClass) {
-                    definition = (Definition) SysmlFactory.eINSTANCE.create(eClass);
-                    definition.setDeclaredName(typeAsString);
-                    newMembership.getOwnedRelatedElement().add(definition);
+            var identifier = ctx.Name();
+            if (identifier != null) {
+                var typeAsString = identifier.getText();
+                var definition = this.utilService.findDefinitionByName(this.element, typeAsString);
+                if (definition == null) {
+                    var containerPackage = this.utilService.getContainerPackage(this.element);
+                    var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                    containerPackage.getOwnedRelationship().add(newMembership);
+                    EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(this.element.eClass().getName().replace("Usage", "Definition"));
+                    if (eClassifier instanceof EClass eClass) {
+                        definition = (Definition) SysmlFactory.eINSTANCE.create(eClass);
+                        definition.setDeclaredName(typeAsString);
+                        newMembership.getOwnedRelatedElement().add(definition);
+                    }
                 }
-            }
-            if (definition != null) {
-                var optFeatureTyping = this.element.getOwnedRelationship().stream()
-                        .filter(FeatureTyping.class::isInstance)
-                        .map(FeatureTyping.class::cast)
-                        .findFirst();
-                if (optFeatureTyping.isPresent()) {
-                    FeatureTyping featureTyping = optFeatureTyping.get();
-                    featureTyping.setType(definition);
-                    featureTyping.setGeneral(definition);
-                    featureTyping.setSpecific(usage);
-                    featureTyping.setTypedFeature(usage);
+                if (definition != null) {
+                    var optFeatureTyping = this.element.getOwnedRelationship().stream()
+                            .filter(FeatureTyping.class::isInstance)
+                            .map(FeatureTyping.class::cast)
+                            .findFirst();
+                    if (optFeatureTyping.isPresent()) {
+                        FeatureTyping featureTyping = optFeatureTyping.get();
+                        featureTyping.setType(definition);
+                        featureTyping.setGeneral(definition);
+                        featureTyping.setSpecific(usage);
+                        featureTyping.setTypedFeature(usage);
 
-                } else {
-                    var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
-                    this.element.getOwnedRelationship().add(newFeatureTyping);
-                    newFeatureTyping.setType(definition);
-                    newFeatureTyping.setGeneral(definition);
-                    newFeatureTyping.setSpecific(usage);
-                    newFeatureTyping.setTypedFeature(usage);
+                    } else {
+                        var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+                        this.element.getOwnedRelationship().add(newFeatureTyping);
+                        newFeatureTyping.setType(definition);
+                        newFeatureTyping.setGeneral(definition);
+                        newFeatureTyping.setSpecific(usage);
+                        newFeatureTyping.setTypedFeature(usage);
+                    }
                 }
             }
         }
@@ -111,38 +117,40 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     @Override
     public void exitSubsettingExpression(SubsettingExpressionContext ctx) {
         if (this.element instanceof Usage subsettingUsage) {
-            var identifier = ctx.Ident();
-            var usageAsString = identifier.getText();
-            var usage = this.utilService.findUsageByName(subsettingUsage, usageAsString);
-            if (usage == null) {
-                var containerPackage = this.utilService.getContainerPackage(subsettingUsage);
-                var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
-                containerPackage.getOwnedRelationship().add(newMembership);
-                EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(subsettingUsage.eClass().getName());
-                if (eClassifier instanceof EClass eClass) {
-                    usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
-                    usage.setDeclaredName(usageAsString);
-                    newMembership.getOwnedRelatedElement().add(usage);
+            var identifier = ctx.Name();
+            if (identifier != null) {
+                var usageAsString = identifier.getText();
+                var usage = this.utilService.findUsageByName(subsettingUsage, usageAsString);
+                if (usage == null) {
+                    var containerPackage = this.utilService.getContainerPackage(subsettingUsage);
+                    var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                    containerPackage.getOwnedRelationship().add(newMembership);
+                    EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(subsettingUsage.eClass().getName());
+                    if (eClassifier instanceof EClass eClass) {
+                        usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
+                        usage.setDeclaredName(usageAsString);
+                        newMembership.getOwnedRelatedElement().add(usage);
+                    }
                 }
-            }
-            if (usage != null) {
-                var optSubsetting = subsettingUsage.getOwnedRelationship().stream()
-                        .filter(Subsetting.class::isInstance)
-                        .map(Subsetting.class::cast)
-                        .findFirst();
-                if (optSubsetting.isPresent()) {
-                    Subsetting subsetting = optSubsetting.get();
-                    subsetting.setSubsettedFeature(usage);
-                    subsetting.setGeneral(usage);
-                    subsetting.setSubsettingFeature(subsettingUsage);
-                    subsetting.setSpecific(subsettingUsage);
-                } else {
-                    var newSubsetting = SysmlFactory.eINSTANCE.createSubsetting();
-                    subsettingUsage.getOwnedRelationship().add(newSubsetting);
-                    newSubsetting.setSubsettedFeature(usage);
-                    newSubsetting.setGeneral(usage);
-                    newSubsetting.setSubsettingFeature(subsettingUsage);
-                    newSubsetting.setSpecific(subsettingUsage);
+                if (usage != null) {
+                    var optSubsetting = subsettingUsage.getOwnedRelationship().stream()
+                            .filter(Subsetting.class::isInstance)
+                            .map(Subsetting.class::cast)
+                            .findFirst();
+                    if (optSubsetting.isPresent()) {
+                        Subsetting subsetting = optSubsetting.get();
+                        subsetting.setSubsettedFeature(usage);
+                        subsetting.setGeneral(usage);
+                        subsetting.setSubsettingFeature(subsettingUsage);
+                        subsetting.setSpecific(subsettingUsage);
+                    } else {
+                        var newSubsetting = SysmlFactory.eINSTANCE.createSubsetting();
+                        subsettingUsage.getOwnedRelationship().add(newSubsetting);
+                        newSubsetting.setSubsettedFeature(usage);
+                        newSubsetting.setGeneral(usage);
+                        newSubsetting.setSubsettingFeature(subsettingUsage);
+                        newSubsetting.setSpecific(subsettingUsage);
+                    }
                 }
             }
         }
@@ -151,42 +159,44 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     @Override
     public void exitRedefinitionExpression(RedefinitionExpressionContext ctx) {
         if (this.element instanceof Usage redefining) {
-            var identifier = ctx.Ident();
-            var usageAsString = identifier.getText();
-            var usage = this.utilService.findUsageByName(redefining, usageAsString);
-            if (usage == null) {
-                var containerPackage = this.utilService.getContainerPackage(redefining);
-                var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
-                containerPackage.getOwnedRelationship().add(newMembership);
-                EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(redefining.eClass().getName());
-                if (eClassifier instanceof EClass eClass) {
-                    usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
-                    usage.setDeclaredName(usageAsString);
-                    newMembership.getOwnedRelatedElement().add(usage);
+            var identifier = ctx.Name();
+            if (identifier != null) {
+                var usageAsString = identifier.getText();
+                var usage = this.utilService.findUsageByName(redefining, usageAsString);
+                if (usage == null) {
+                    var containerPackage = this.utilService.getContainerPackage(redefining);
+                    var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                    containerPackage.getOwnedRelationship().add(newMembership);
+                    EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(redefining.eClass().getName());
+                    if (eClassifier instanceof EClass eClass) {
+                        usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
+                        usage.setDeclaredName(usageAsString);
+                        newMembership.getOwnedRelatedElement().add(usage);
+                    }
                 }
-            }
-            if (usage != null) {
-                var optRedefinition = redefining.getOwnedRelationship().stream()
-                        .filter(Redefinition.class::isInstance)
-                        .map(Redefinition.class::cast)
-                        .findFirst();
-                if (optRedefinition.isPresent()) {
-                    Redefinition redefinition = optRedefinition.get();
-                    redefinition.setRedefinedFeature(usage);
-                    redefinition.setSubsettedFeature(usage);
-                    redefinition.setGeneral(usage);
-                    redefinition.setRedefiningFeature(redefining);
-                    redefinition.setSubsettingFeature(redefining);
-                    redefinition.setSpecific(redefining);
-                } else {
-                    var newRedefinition = SysmlFactory.eINSTANCE.createRedefinition();
-                    redefining.getOwnedRelationship().add(newRedefinition);
-                    newRedefinition.setRedefinedFeature(usage);
-                    newRedefinition.setSubsettedFeature(usage);
-                    newRedefinition.setGeneral(usage);
-                    newRedefinition.setRedefiningFeature(redefining);
-                    newRedefinition.setSubsettingFeature(redefining);
-                    newRedefinition.setSpecific(redefining);
+                if (usage != null) {
+                    var optRedefinition = redefining.getOwnedRelationship().stream()
+                            .filter(Redefinition.class::isInstance)
+                            .map(Redefinition.class::cast)
+                            .findFirst();
+                    if (optRedefinition.isPresent()) {
+                        Redefinition redefinition = optRedefinition.get();
+                        redefinition.setRedefinedFeature(usage);
+                        redefinition.setSubsettedFeature(usage);
+                        redefinition.setGeneral(usage);
+                        redefinition.setRedefiningFeature(redefining);
+                        redefinition.setSubsettingFeature(redefining);
+                        redefinition.setSpecific(redefining);
+                    } else {
+                        var newRedefinition = SysmlFactory.eINSTANCE.createRedefinition();
+                        redefining.getOwnedRelationship().add(newRedefinition);
+                        newRedefinition.setRedefinedFeature(usage);
+                        newRedefinition.setSubsettedFeature(usage);
+                        newRedefinition.setGeneral(usage);
+                        newRedefinition.setRedefiningFeature(redefining);
+                        newRedefinition.setSubsettingFeature(redefining);
+                        newRedefinition.setSpecific(redefining);
+                    }
                 }
             }
         }
