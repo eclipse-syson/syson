@@ -15,12 +15,8 @@ package org.eclipse.syson.diagram.general.view.services;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.sysml.Dependency;
-import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.LiteralBoolean;
-import org.eclipse.syson.sysml.LiteralInteger;
-import org.eclipse.syson.sysml.LiteralRational;
-import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.LabelConstants;
 
@@ -45,6 +41,7 @@ public class GeneralViewLabelService extends LabelService {
             label.append(declaredName);
         }
         label
+            .append(this.getMultiplicityLabel(usage))
             .append(this.getTypingLabel(usage))
             .append(this.getRedefinitionLabel(usage))
             .append(this.getSubsettingLabel(usage))
@@ -80,20 +77,6 @@ public class GeneralViewLabelService extends LabelService {
         return label.toString();
     }
 
-    private String getValue(Expression literalExpression) {
-        String value = null;
-        if (literalExpression instanceof LiteralInteger literal) {
-            value = String.valueOf(literal.getValue());
-        } else if (literalExpression instanceof LiteralRational literal) {
-            value = String.valueOf(literal.getValue());
-        } else if (literalExpression instanceof LiteralBoolean literal) {
-            value = String.valueOf(literal.isValue());
-        } else if (literalExpression instanceof LiteralString literal) {
-            value = String.valueOf(literal.getValue());
-        }
-        return value;
-    }
-
     /**
      * Return the edge label for the given {@link Dependency}.
      *
@@ -114,5 +97,13 @@ public class GeneralViewLabelService extends LabelService {
      */
     public String getUsageInitialDirectEditLabel(Usage usage) {
         return this.getCompartmentItemUsageLabel(usage);
+    }
+
+    public String getMultiplicityRangeInitialDirectEditLabel(Element element) {
+        return this.getMultiplicityLabel(element);
+    }
+
+    public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {
+        return this.directEdit(element, newLabel, LabelService.NAME_OFF, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.TYPING_OFF, LabelService.VALUE_OFF);
     }
 }

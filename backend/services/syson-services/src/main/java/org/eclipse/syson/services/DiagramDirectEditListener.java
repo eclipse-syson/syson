@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -23,6 +25,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.services.grammars.DirectEditBaseListener;
 import org.eclipse.syson.services.grammars.DirectEditParser.ExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionMemberContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.SubsettingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TypingExpressionContext;
@@ -32,9 +36,12 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralBoolean;
+import org.eclipse.syson.sysml.LiteralInfinity;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
+import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -52,19 +59,28 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private final UtilService utilService;
 
-    public DiagramDirectEditListener(Element element) {
+    private List<String> options;
+
+    public DiagramDirectEditListener(Element element, String... options) {
         this.element = Objects.requireNonNull(element);
+        this.options = List.of();
+        if (options != null) {
+            this.options = Arrays.asList(options);
+        }
         this.utilService = new UtilService();
     }
 
     @Override
     public void exitExpression(ExpressionContext ctx) {
-        var identifier = ctx.Name();
-        if (identifier != null && !identifier.getText().isBlank()) {
-            this.element.setDeclaredName(identifier.getText());
-        } else {
-            this.element.setDeclaredName(null);
+        if (!this.options.contains(LabelService.NAME_OFF)) {
+            var identifier = ctx.Name();
+            if (identifier != null && !identifier.getText().isBlank()) {
+                this.element.setDeclaredName(identifier.getText());
+            } else {
+                this.element.setDeclaredName(null);
+            }
         }
+        this.handleMissingMultiplicityExpression(ctx);
         this.handleMissingSubsettingExpression(ctx);
         this.handleMissingRedefinitionExpression(ctx);
         this.handleMissingTypingExpression(ctx);
@@ -72,7 +88,42 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     @Override
+    public void exitMultiplicityExpression(MultiplicityExpressionContext ctx) {
+        if (this.options.contains(LabelService.MULTIPLICITY_OFF)) {
+            return;
+        }
+        MultiplicityRange multiplicityRange = this.getOrCreateMultiplicityRange(this.element);
+        List<MultiplicityExpressionMemberContext> bounds = ctx.multiplicityExpressionMember();
+        for (MultiplicityExpressionMemberContext bound : bounds) {
+            int boundIndex = bounds.indexOf(bound);
+            OwningMembership membership = this.getOrCreateOwningMembership(multiplicityRange, boundIndex);
+            if (membership != null) {
+                MultiplicityExpressionMemberContext boundExpression = bounds.get(boundIndex);
+                TerminalNode boundExpressionValue = boundExpression.Integer();
+                if (boundExpressionValue == null) {
+                    this.getOrCreateLiteralInfinity(membership);
+                } else {
+                    LiteralInteger literalInteger = this.getOrCreateLiteralInteger(membership);
+                    literalInteger.setValue(Integer.parseInt(boundExpressionValue.getText()));
+                }
+            }
+        }
+        if (bounds.size() == 1) {
+            var memberships = multiplicityRange.getOwnedRelationship().stream()
+                    .filter(OwningMembership.class::isInstance)
+                    .map(OwningMembership.class::cast)
+                    .toList();
+            if (memberships.size() == 2) {
+                multiplicityRange.getOwnedRelationship().remove(1);
+            }
+        }
+    }
+
+    @Override
     public void exitTypingExpression(TypingExpressionContext ctx) {
+        if (this.options.contains(LabelService.TYPING_OFF)) {
+            return;
+        }
         if (this.element instanceof Usage usage) {
             var identifier = ctx.Name();
             if (identifier != null) {
@@ -100,7 +151,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         featureTyping.setGeneral(definition);
                         featureTyping.setSpecific(usage);
                         featureTyping.setTypedFeature(usage);
-
                     } else {
                         var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
                         this.element.getOwnedRelationship().add(newFeatureTyping);
@@ -116,6 +166,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     @Override
     public void exitSubsettingExpression(SubsettingExpressionContext ctx) {
+        if (this.options.contains(LabelService.SUBSETTING_OFF)) {
+            return;
+        }
         if (this.element instanceof Usage subsettingUsage) {
             var identifier = ctx.Name();
             if (identifier != null) {
@@ -158,6 +211,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     @Override
     public void exitRedefinitionExpression(RedefinitionExpressionContext ctx) {
+        if (this.options.contains(LabelService.REDEFINITION_OFF)) {
+            return;
+        }
         if (this.element instanceof Usage redefining) {
             var identifier = ctx.Name();
             if (identifier != null) {
@@ -204,6 +260,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     @Override
     public void exitValueExpression(ValueExpressionContext ctx) {
+        if (this.options.contains(LabelService.VALUE_OFF)) {
+            return;
+        }
         if (this.element instanceof Usage valueOwner) {
             TerminalNode integerTN = ctx.Integer();
             TerminalNode realTN = ctx.Real();
@@ -241,7 +300,30 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         super.visitErrorNode(node);
     }
 
+    private void handleMissingMultiplicityExpression(ExpressionContext ctx) {
+        if (this.options.contains(LabelService.MULTIPLICITY_OFF)) {
+            return;
+        }
+        MultiplicityExpressionContext multiplicityExpression = ctx.multiplicityExpression();
+        if (this.element instanceof Usage usage && multiplicityExpression == null) {
+            var optMultiplicityRange = this.element.getOwnedRelationship().stream()
+                    .filter(OwningMembership.class::isInstance)
+                    .map(OwningMembership.class::cast)
+                    .flatMap(m -> m.getOwnedRelatedElement().stream())
+                    .filter(MultiplicityRange.class::isInstance)
+                    .map(MultiplicityRange.class::cast)
+                    .findFirst();
+            if (optMultiplicityRange.isPresent()) {
+                MultiplicityRange multiplicityRange = optMultiplicityRange.get();
+                EcoreUtil.remove(multiplicityRange.eContainer());
+            }
+        }
+    }
+
     private void handleMissingSubsettingExpression(ExpressionContext ctx) {
+        if (this.options.contains(LabelService.SUBSETTING_OFF)) {
+            return;
+        }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
         if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.subsettingExpression() == null)) {
             var subsetting = this.element.getOwnedRelationship().stream()
@@ -255,6 +337,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     private void handleMissingRedefinitionExpression(ExpressionContext ctx) {
+        if (this.options.contains(LabelService.REDEFINITION_OFF)) {
+            return;
+        }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
         if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.redefinitionExpression() == null)) {
             var redefinition = this.element.getOwnedRelationship().stream()
@@ -268,6 +353,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     private void handleMissingTypingExpression(ExpressionContext ctx) {
+        if (this.options.contains(LabelService.TYPING_OFF)) {
+            return;
+        }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
         if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.typingExpression() == null)) {
             var featureTyping = this.element.getOwnedRelationship().stream()
@@ -281,6 +369,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     private void handleMissingValueExpression(ExpressionContext ctx) {
+        if (this.options.contains(LabelService.VALUE_OFF)) {
+            return;
+        }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
         if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.valueExpression() == null)) {
             var featureValue = this.element.getOwnedRelationship().stream()
@@ -347,5 +438,77 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         featureValue.getOwnedRelatedElement().clear();
         featureValue.getOwnedRelatedElement().add(literal);
         return literal;
+    }
+
+    private MultiplicityRange getOrCreateMultiplicityRange(Element elt) {
+        MultiplicityRange multiplicityRange = null;
+        var optMultiplicityRange = elt.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .filter(MultiplicityRange.class::isInstance)
+                .map(MultiplicityRange.class::cast)
+                .findFirst();
+        if (optMultiplicityRange.isEmpty()) {
+            var membership = SysmlFactory.eINSTANCE.createOwningMembership();
+            elt.getOwnedRelationship().add(membership);
+            multiplicityRange = SysmlFactory.eINSTANCE.createMultiplicityRange();
+            membership.getOwnedRelatedElement().add(multiplicityRange);
+        } else {
+            multiplicityRange = optMultiplicityRange.get();
+        }
+        return multiplicityRange;
+    }
+
+    private OwningMembership getOrCreateOwningMembership(MultiplicityRange multiplicityRange, int index) {
+        OwningMembership owningMembership = null;
+        var memberships = multiplicityRange.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .toList();
+        if (memberships.size() == 0) {
+            owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+            multiplicityRange.getOwnedRelationship().add(owningMembership);
+        } else if (memberships.size() >= 1 && index == 0) {
+            owningMembership = memberships.get(0);
+        } else if (memberships.size() == 1 && index == 1) {
+            owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+            multiplicityRange.getOwnedRelationship().add(owningMembership);
+        } else if (memberships.size() == 2 && index == 1) {
+            owningMembership = memberships.get(1);
+        }
+        return owningMembership;
+    }
+
+    private LiteralInteger getOrCreateLiteralInteger(OwningMembership membership) {
+        LiteralInteger literalInteger = null;
+        var optLiteralInteger = membership.getOwnedRelatedElement().stream()
+                .filter(LiteralInteger.class::isInstance)
+                .map(LiteralInteger.class::cast)
+                .findFirst();
+        if (optLiteralInteger.isPresent()) {
+            literalInteger = optLiteralInteger.get();
+        } else {
+            membership.getOwnedRelatedElement().clear();
+            literalInteger = SysmlFactory.eINSTANCE.createLiteralInteger();
+            membership.getOwnedRelatedElement().add(literalInteger);
+        }
+        return literalInteger;
+    }
+
+    private LiteralInfinity getOrCreateLiteralInfinity(OwningMembership membership) {
+        LiteralInfinity literalInfinity = null;
+        var optLiteralInfinity = membership.getOwnedRelatedElement().stream()
+                .filter(LiteralInfinity.class::isInstance)
+                .map(LiteralInfinity.class::cast)
+                .findFirst();
+        if (optLiteralInfinity.isPresent()) {
+            literalInfinity = optLiteralInfinity.get();
+        } else {
+            membership.getOwnedRelatedElement().clear();
+            literalInfinity = SysmlFactory.eINSTANCE.createLiteralInfinity();
+            membership.getOwnedRelatedElement().add(literalInfinity);
+        }
+        return literalInfinity;
     }
 }

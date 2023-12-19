@@ -32,6 +32,26 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitExpression(DirectEditParser.ExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#multiplicityExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiplicityExpression(DirectEditParser.MultiplicityExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#multiplicityExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiplicityExpression(DirectEditParser.MultiplicityExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#multiplicityExpressionMember}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiplicityExpressionMember(DirectEditParser.MultiplicityExpressionMemberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#multiplicityExpressionMember}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiplicityExpressionMember(DirectEditParser.MultiplicityExpressionMemberContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#featureExpressions}.
 	 * @param ctx the parse tree
 	 */

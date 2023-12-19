@@ -29,13 +29,22 @@ package org.eclipse.syson.services.grammars;
 }
 
 expression :
-	Name? featureExpressions EOF
+	Name? multiplicityExpression? featureExpressions EOF
+;
+
+multiplicityExpression :
+	'[' (lowerBound=multiplicityExpressionMember '..') ? upperBound=multiplicityExpressionMember ']'
+;
+
+multiplicityExpressionMember :
+	Integer | '*'
 ;
 
 featureExpressions :
 	(subsettingExpression|redefinitionExpression)? (typingExpression)? (valueExpression)?
 	| (typingExpression)? (subsettingExpression|redefinitionExpression)? (valueExpression)?
 ;
+
 subsettingExpression :
 	':>' Name
 ;
