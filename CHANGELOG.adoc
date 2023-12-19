@@ -59,6 +59,7 @@ They will be only accessible through the model browser dialog.
 - https://github.com/eclipse-syson/syson/issues/93[#93] [diagrams] Add the following new diagrams:
   * Action Flow view 
   * Requirement view
+- https://github.com/eclipse-syson/syson/issues/140[#140] [import] It is now possible to import SysMLv2 textual files into SysON, through the existing document upload modal.
 
 == v2024.1.0
 

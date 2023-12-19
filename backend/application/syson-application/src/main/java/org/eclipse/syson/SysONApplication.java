@@ -12,7 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson;
 
-import org.eclipse.sirius.web.services.validation.EMFValidationService;
+import org.eclipse.sirius.web.services.documents.UploadDocumentEventHandler;
+import org.eclipse.syson.services.EMFValidationService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -36,7 +37,9 @@ import org.springframework.context.annotation.FilterType;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = { "org.eclipse.syson", "org.eclipse.sirius.web", "org.eclipse.sirius.components" },
-        excludeFilters = { @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = EMFValidationService.class) })
+        excludeFilters = {
+            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = UploadDocumentEventHandler.class),
+            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = EMFValidationService.class)})
 public class SysONApplication {
 
     /**

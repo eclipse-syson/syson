@@ -35,5 +35,6 @@
 		<module>syson-application</module>
 		<module>syson-application-configuration</module>
 		<module>syson-frontend</module>
+		<module>syson-sysml-import</module>
 	</modules>
 </project>

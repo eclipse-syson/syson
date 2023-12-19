@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023 Obeo.
+ /*******************************************************************************
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- */
+ *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.helper.PrettyPrinter;
 
 /**
  * <!-- begin-user-doc -->
@@ -117,6 +119,40 @@ public class PackageImpl extends NamespaceImpl implements org.eclipse.syson.sysm
                 return includeAsMember((Element)arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
+    }
+
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public EList<TextualRepresentation> getTextualRepresentation() {
+        String subTextualRepresentation = "";
+        TextualRepresentationImpl repr = new TextualRepresentationImpl();
+        repr.setLanguage("fr");
+        StringBuilder builder = new StringBuilder();
+        builder.append("package ");
+        builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));
+        builder.append("{");
+        /*
+        for(var elements: getOwnedElement()){
+            for(var textualRepr: elements.getTextualRepresentation()){
+                builder.append("\n");
+                builder.append(textualRepr.getBody());
+            }
+        } */
+        for(var relationship: getOwnedRelationship()){
+            for(var textualRepr: relationship.getTextualRepresentation()){
+                builder.append("\n");
+                builder.append(textualRepr.getBody());
+            }
+        }
+        builder.append("\n}");
+        repr.setBody(builder.toString());
+        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
 } //PackageImpl

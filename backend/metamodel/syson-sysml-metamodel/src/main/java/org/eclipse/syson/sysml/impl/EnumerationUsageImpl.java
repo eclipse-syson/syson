@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023 Obeo.
+ /*******************************************************************************
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,12 +9,15 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- */
+ *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
+
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.DataType;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationDefinition;
@@ -22,6 +25,7 @@ import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Type;
 
 /**
@@ -121,6 +125,22 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
                 return basicGetEnumerationDefinition() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public EList<TextualRepresentation> getTextualRepresentation() {
+        TextualRepresentationImpl repr = new TextualRepresentationImpl();
+        repr.setLanguage("fr");
+        StringBuilder builder = new StringBuilder();
+        repr.setBody(getDeclaredName());
+        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
 } //EnumerationUsageImpl

@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023 Obeo.
+ /*******************************************************************************
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,16 +9,25 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- */
+ *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.EventOccurrenceUsage;
+import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.helper.PrettyPrinter;
 
 /**
  * <!-- begin-user-doc -->
@@ -164,6 +173,40 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+    }
+
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public EList<TextualRepresentation> getTextualRepresentation() {
+        TextualRepresentationImpl repr = new TextualRepresentationImpl();
+        repr.setLanguage("fr");
+        StringBuilder builder = new StringBuilder();
+        builder.append("perform action  ");
+        builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));
+
+        List<FeatureMembership> featureMemberships = getOwnedFeatureMembership().stream().filter(t -> SysmlPackage.eINSTANCE.getFeatureMembership().isSuperTypeOf(t.eClass())).map(t -> (FeatureMembership) t).toList();
+
+        if(! featureMemberships.isEmpty()){
+            builder.append("{");
+            for(FeatureMembership featureMembership: featureMemberships){
+                for(var textualRepr: featureMembership.getTextualRepresentation()){
+                    builder.append("\n");
+                    builder.append(textualRepr.getBody());
+                }
+            }
+            builder.append("\n}");
+        } else {
+            builder.append(";");
+        }
+    
+        repr.setBody(builder.toString());
+        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
 } //PerformActionUsageImpl

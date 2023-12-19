@@ -12,13 +12,17 @@
  */
 package org.eclipse.syson.sysml.impl;
 
+import java.util.List;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
 
 /**
  * <!-- begin-user-doc -->
@@ -194,6 +198,27 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
                 return basicGetOwnedMemberElement() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public EList<TextualRepresentation> getTextualRepresentation() {
+        TextualRepresentationImpl repr = new TextualRepresentationImpl();
+        repr.setLanguage("fr");
+        StringBuilder builder = new StringBuilder();
+        for(var element: getOwnedRelatedElement()){
+            for(var textualRepr: element.getTextualRepresentation()){
+                builder.append(textualRepr.getBody());
+            }
+        }
+        repr.setBody(builder.toString());
+        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
 } //OwningMembershipImpl

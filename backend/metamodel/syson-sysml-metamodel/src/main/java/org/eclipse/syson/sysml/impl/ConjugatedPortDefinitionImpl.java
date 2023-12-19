@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -67,12 +68,13 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public PortDefinition basicGetOriginalPortDefinition() {
-        // TODO: implement this method to return the 'Original Port Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Namespace owningNamespace = this.getOwningNamespace();
+        if(owningNamespace instanceof PortDefinition portDefinition) {
+            return portDefinition;
+        }
         return null;
     }
 
@@ -131,6 +133,11 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
                 return basicGetOwnedPortConjugator() != null;
         }
         return super.eIsSet(featureID);
+    }
+    
+    @Override
+    public boolean isIsConjugated() {
+        return true;
     }
 
 } //ConjugatedPortDefinitionImpl
