@@ -1,0 +1,10 @@
+= User guide
+
+== Introduction
+This document aims to provide users with an understanding of the sysON file import.
+
+== File import
+Before importing a file, you need to make sure that all the dependences of this file are also imported, and this, recursively. Otherwise some relationship won't be resolved.
+
+For example if you want to import a file that uses third party libraries, you will need to import the third party libraries before the actual file, otherwise you might have unreferenced relations.
+

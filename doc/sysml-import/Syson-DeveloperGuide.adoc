@@ -1,0 +1,33 @@
+= Developer guide
+
+== Introduction
+This document aims to provide developers with an understanding of the parsing pattern used in our application and how objects are mapped using the Object Finder utility.
+
+== Key Concepts
+
+- *AST (Abstract Syntax Tree)*: When imported, the file will be converted into AST (Abstract syntax tree) format. Every SysML concept will be represented as JSON node, which will help us with mapping.
+
+- *ObjectFinder*: The ObjectFinder is the class that will store the objects to facilitate the reconstruction of the relations between the components.
+
+- *Mapper*: A Mapper is a component or pattern used in software development to map or convert objects from one representation to another. In our case we have two kinds of mappers. Generic ones and specific ones. The mapper will first add the node mapping into a map that will then be resolved and converted into Java objects. 
+
+== File upload
+image::assets/UploadFileProcess.drawio.svg [width=50%, alt="File upload process"]
+
+=== Process Flow
+1. The parser receives input file.
+2. It then converts the file into AST.
+3. Each mapping is converted into Java object while resolving the dependencies.
+
+== Object Finder
+After the file is converted to AST, the file is browsed to store the names of the mapping in the ObjectFinder so, every time we are mapping a node we can search them with their name and type and then construct their Java Object.
+
+== Mappers
+image::assets/ASTTransformer.drawio.svg [width=50%, alt="File upload process"]
+
+=== Process Flow
+Then, it loops on each mapper.
+1. It will check if the mapping can be visited by this mapper by checking certain node's value. For the generic mappers, the vast majority of the mappings will be visited.
+2. If it can be visited it will then add the mapping into a Java map of mappings to resolve.
+3. Once added into this map, it will resolve the mapping and its dependencies. It will use the findObject class to retrieve the subelement of this particular mapping and resolve the relation.
+

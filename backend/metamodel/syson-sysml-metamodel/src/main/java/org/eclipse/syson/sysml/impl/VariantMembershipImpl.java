@@ -1,5 +1,5 @@
-/**
- * Copyright (c) 2023 Obeo.
+ /*******************************************************************************
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,12 +9,17 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- */
+ *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.List;
+
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
 
@@ -101,6 +106,27 @@ public class VariantMembershipImpl extends OwningMembershipImpl implements Varia
                 return basicGetOwnedVariantUsage() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public EList<TextualRepresentation> getTextualRepresentation() {
+        TextualRepresentationImpl repr = new TextualRepresentationImpl();
+        repr.setLanguage("fr");
+        StringBuilder builder = new StringBuilder();
+        if(getOwnedVariantUsage() != null){
+        for(var textualRepr: getOwnedVariantUsage().getTextualRepresentation()){
+                builder.append(textualRepr.getBody());
+            }
+        }
+        repr.setBody(builder.toString());
+        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
 } //VariantMembershipImpl

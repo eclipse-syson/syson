@@ -1,27 +1,32 @@
-/**
- * Copyright (c) 2023 Obeo.
+ /*******************************************************************************
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
- */
+ *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import org.eclipse.emf.common.notify.Notification;
+import java.util.List;
 
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.helper.PrettyPrinter;
 
 /**
  * <!-- begin-user-doc -->
@@ -163,6 +168,32 @@ public class NamespaceImportImpl extends ImportImpl implements NamespaceImport {
                 return importedNamespace != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public EList<TextualRepresentation> getTextualRepresentation() {
+        TextualRepresentationImpl repr = new TextualRepresentationImpl();
+        repr.setLanguage("fr");
+        StringBuilder builder = new StringBuilder();
+        if( ! getVisibility().equals(VisibilityKind.PUBLIC) ){
+        builder.append(getVisibility() + " ");
+        }
+        builder.append("import ");
+        if( getImportedNamespace() != null ){
+            builder.append(PrettyPrinter.prettyPrintName(getImportedNamespace().getDeclaredName()));
+        } else {
+            builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));
+        }
+        builder.append("::*");
+        builder.append(";");
+        repr.setBody(builder.toString());
+        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
 } //NamespaceImportImpl
