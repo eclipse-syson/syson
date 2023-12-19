@@ -19,12 +19,21 @@ import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.LiteralBoolean;
+import org.eclipse.syson.sysml.LiteralExpression;
+import org.eclipse.syson.sysml.LiteralInfinity;
+import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.LiteralRational;
+import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.MetadataDefinition;
+import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
@@ -78,6 +87,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
             .append(this.featureTyping(object))
             .append(this.redefinition(object))
             .append(this.subsetting(object));
@@ -122,6 +132,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
             .append(this.featureTyping(object))
             .append(this.redefinition(object))
             .append(this.subsetting(object));
@@ -152,6 +163,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
             .append(this.featureTyping(object))
             .append(this.redefinition(object))
             .append(this.subsetting(object));
@@ -208,6 +220,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
             .append(this.featureTyping(object))
             .append(this.redefinition(object))
             .append(this.subsetting(object));
@@ -237,7 +250,8 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append("port")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
-            .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
+            .append(this.featureTyping(object))
             .append(this.featureTyping(object))
             .append(this.redefinition(object))
             .append(this.subsetting(object));
@@ -252,6 +266,46 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append("abstract")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR);
+        }
+        return label.toString();
+    }
+
+    private String multiplicityRange(Usage usage) {
+        StringBuilder label = new StringBuilder();
+        var optMultiplicityRange = usage.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .filter(MultiplicityRange.class::isInstance)
+                .map(MultiplicityRange.class::cast)
+                .findFirst();
+        if (optMultiplicityRange.isPresent()) {
+            var range = optMultiplicityRange.get();
+            String firstBound = null;
+            String secondBound = null;
+            var bounds = range.getOwnedRelationship().stream()
+                    .filter(OwningMembership.class::isInstance)
+                    .map(OwningMembership.class::cast)
+                    .flatMap(m -> m.getOwnedRelatedElement().stream())
+                    .filter(LiteralExpression.class::isInstance)
+                    .map(LiteralExpression.class::cast)
+                    .toList();
+            if (bounds.size() == 1) {
+                firstBound = this.getValue(bounds.get(0));
+            } else if (bounds.size() == 2) {
+                firstBound = this.getValue(bounds.get(0));
+                secondBound = this.getValue(bounds.get(1));
+            }
+            label.append(LabelConstants.OPEN_BRACKET);
+            if (firstBound != null) {
+                label.append(firstBound);
+            }
+            if (secondBound != null) {
+                label.append("..");
+                label.append(secondBound);
+            }
+            label.append(LabelConstants.CLOSE_BRACKET);
+            label.append(LabelConstants.SPACE);
         }
         return label.toString();
     }
@@ -326,5 +380,21 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(superclassifierName);
         }
         return label.toString();
+    }
+
+    private String getValue(Expression literalExpression) {
+        String value = null;
+        if (literalExpression instanceof LiteralInteger literal) {
+            value = String.valueOf(literal.getValue());
+        } else if (literalExpression instanceof LiteralRational literal) {
+            value = String.valueOf(literal.getValue());
+        } else if (literalExpression instanceof LiteralBoolean literal) {
+            value = String.valueOf(literal.isValue());
+        } else if (literalExpression instanceof LiteralString literal) {
+            value = String.valueOf(literal.getValue());
+        } else if (literalExpression instanceof LiteralInfinity literal) {
+            value = "*";
+        }
+        return value;
     }
 }

@@ -20,7 +20,16 @@ import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditListener;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.LiteralBoolean;
+import org.eclipse.syson.sysml.LiteralExpression;
+import org.eclipse.syson.sysml.LiteralInfinity;
+import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.LiteralRational;
+import org.eclipse.syson.sysml.LiteralString;
+import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
@@ -32,6 +41,18 @@ import org.eclipse.syson.util.LabelConstants;
  * @author arichard
  */
 public class LabelService {
+
+    public static final String MULTIPLICITY_OFF = "MULTIPLICITY_OFF";
+
+    public static final String NAME_OFF = "NAME_OFF";
+
+    public static final String REDEFINITION_OFF = "REDEFINITION_OFF";
+
+    public static final String SUBSETTING_OFF = "SUBSETTING_OFF";
+
+    public static final String TYPING_OFF = "TYPING_OFF";
+
+    public static final String VALUE_OFF = "VALUE_OFF";
 
     /**
      * Return the container label for the given {@link Element}.
@@ -54,12 +75,25 @@ public class LabelService {
      * @return the given {@link Element}.
      */
     public Element directEdit(Element element, String newLabel) {
+        return this.directEdit(element, newLabel, (String[]) null);
+    }
+
+    /**
+     * Apply the direct edit result (i.e. the newLabel) to the given {@link Element}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param newLabel
+     *            the new value to apply.
+     * @return the given {@link Element}.
+     */
+    public Element directEdit(Element element, String newLabel, String... options) {
         DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(newLabel));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         DirectEditParser parser = new DirectEditParser(tokens);
         ParseTree tree = parser.expression();
         ParseTreeWalker walker = new ParseTreeWalker();
-        DirectEditListener listener = new DiagramDirectEditListener(element);
+        DirectEditListener listener = new DiagramDirectEditListener(element, options);
         walker.walk(listener, tree);
         return element;
     }
@@ -74,11 +108,59 @@ public class LabelService {
     public String getDefaultInitialDirectEditLabel(Element element) {
         StringBuilder builder = new StringBuilder();
         builder.append(element.getDeclaredName());
+        builder.append(this.getMultiplicityLabel(element));
         builder.append(this.getTypingLabel(element));
         builder.append(this.getRedefinitionLabel(element));
         builder.append(this.getSubsettingLabel(element));
         builder.append(this.getSubclassificationLabel(element));
         return builder.toString();
+    }
+
+    /**
+     * Return the label of the multiplicity part of the given {@link Element}.
+     *
+     * @param usage
+     *            the given {@link Element}.
+     * @return the label of the multiplicity part of the given {@link Element} if there is one, an empty string
+     *         otherwise.
+     */
+    public String getMultiplicityLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        var optMultiplicityRange = element.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .filter(MultiplicityRange.class::isInstance)
+                .map(MultiplicityRange.class::cast)
+                .findFirst();
+        if (optMultiplicityRange.isPresent()) {
+            var range = optMultiplicityRange.get();
+            String firstBound = null;
+            String secondBound = null;
+            var bounds = range.getOwnedRelationship().stream()
+                    .filter(OwningMembership.class::isInstance)
+                    .map(OwningMembership.class::cast)
+                    .flatMap(m -> m.getOwnedRelatedElement().stream())
+                    .filter(LiteralExpression.class::isInstance)
+                    .map(LiteralExpression.class::cast)
+                    .toList();
+            if (bounds.size() == 1) {
+                firstBound = this.getValue(bounds.get(0));
+            } else if (bounds.size() == 2) {
+                firstBound = this.getValue(bounds.get(0));
+                secondBound = this.getValue(bounds.get(1));
+            }
+            label.append(LabelConstants.OPEN_BRACKET);
+            if (firstBound != null) {
+                label.append(firstBound);
+            }
+            if (secondBound != null) {
+                label.append("..");
+                label.append(secondBound);
+            }
+            label.append(LabelConstants.CLOSE_BRACKET);
+        }
+        return label.toString();
     }
 
     /**
@@ -191,4 +273,26 @@ public class LabelService {
         return label.toString();
     }
 
+    /**
+     * Get the value of the given {@link Expression} as a string.
+     *
+     * @param literalExpression
+     *            the given {@link Expression}.
+     * @return the value of the given {@link Expression} as a string.
+     */
+    protected String getValue(Expression literalExpression) {
+        String value = null;
+        if (literalExpression instanceof LiteralInteger literal) {
+            value = String.valueOf(literal.getValue());
+        } else if (literalExpression instanceof LiteralRational literal) {
+            value = String.valueOf(literal.getValue());
+        } else if (literalExpression instanceof LiteralBoolean literal) {
+            value = String.valueOf(literal.isValue());
+        } else if (literalExpression instanceof LiteralString literal) {
+            value = String.valueOf(literal.getValue());
+        } else if (literalExpression instanceof LiteralInfinity literal) {
+            value = "*";
+        }
+        return value;
+    }
 }

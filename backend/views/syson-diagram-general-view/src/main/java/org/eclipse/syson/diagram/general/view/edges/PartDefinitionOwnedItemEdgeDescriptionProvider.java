@@ -12,11 +12,15 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.edges;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
+import org.eclipse.sirius.components.view.diagram.EdgePalette;
+import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -47,7 +51,7 @@ public class PartDefinitionOwnedItemEdgeDescriptionProvider extends AbstractEdge
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(false)
-                .labelExpression("")
+                .labelExpression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityLabel()")
                 .name(NAME)
                 .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
@@ -68,6 +72,8 @@ public class PartDefinitionOwnedItemEdgeDescriptionProvider extends AbstractEdge
         edgeDescription.getSourceNodeDescriptions().add(optPartDefinitionNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optPartUsageNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optItemUsageNodeDescription.get());
+
+        edgeDescription.setPalette(this.createEdgePalette(List.of()));
     }
 
     private EdgeStyle createEdgeStyle() {
@@ -77,6 +83,32 @@ public class PartDefinitionOwnedItemEdgeDescriptionProvider extends AbstractEdge
                 .lineStyle(LineStyle.SOLID)
                 .sourceArrowStyle(ArrowStyle.FILL_DIAMOND)
                 .targetArrowStyle(ArrowStyle.NONE)
+                .build();
+    }
+
+    @Override
+    protected EdgePalette createEdgePalette(List<EdgeReconnectionTool> edgeReconnectionTools) {
+        var changeContext = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.deleteFromModel()");
+
+        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
+                .name("Delete from Model")
+                .body(changeContext.build());
+
+        var callEditService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".editMultiplicityRangeCenterLabel(newLabel)");
+
+        var centerLabelEditTool = this.diagramBuilderHelper.newLabelEditTool()
+                .name("Center Label Edit Tool")
+                .initialDirectEditLabelExpression(
+                        AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityRangeInitialDirectEditLabel()")
+                .body(callEditService.build());
+
+        return this.diagramBuilderHelper
+                .newEdgePalette()
+                .deleteTool(deleteTool.build())
+                .centerLabelEditTool(centerLabelEditTool.build())
+                .edgeReconnectionTools(edgeReconnectionTools.toArray(new EdgeReconnectionTool[edgeReconnectionTools.size()]))
                 .build();
     }
 }
