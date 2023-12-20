@@ -217,6 +217,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
         return builder
                 .name("New " + SysmlPackage.eINSTANCE.getDependency().getName())
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getDependency().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
                 .build();
@@ -261,6 +262,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
         return builder
                 .name("New " + SysmlPackage.eINSTANCE.getSubclassification().getName())
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getSubclassification().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
                 .build();
@@ -314,6 +316,7 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
         return builder
                 .name("New " + SysmlPackage.eINSTANCE.getRedefinition().getName())
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getRedefinition().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
                 .build();
