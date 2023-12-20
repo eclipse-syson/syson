@@ -43,6 +43,7 @@ import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -170,40 +171,85 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         if (this.element instanceof Usage subsettingUsage) {
-            var identifier = ctx.Name();
-            if (identifier != null) {
-                var usageAsString = identifier.getText();
-                var usage = this.utilService.findUsageByName(subsettingUsage, usageAsString);
-                if (usage == null) {
-                    var containerPackage = this.utilService.getContainerPackage(subsettingUsage);
-                    var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
-                    containerPackage.getOwnedRelationship().add(newMembership);
-                    EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(subsettingUsage.eClass().getName());
-                    if (eClassifier instanceof EClass eClass) {
-                        usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
-                        usage.setDeclaredName(usageAsString);
-                        newMembership.getOwnedRelatedElement().add(usage);
-                    }
+            this.handleSubsetting(ctx, subsettingUsage);
+        } else if (this.element instanceof Definition subclassificationDef) {
+            this.handleSubclassification(ctx, subclassificationDef);
+        }
+    }
+
+    private void handleSubclassification(SubsettingExpressionContext ctx, Definition subclassificationDef) {
+        var identifier = ctx.Name();
+        if (identifier != null) {
+            var definitionAsString = identifier.getText();
+            var definition = this.utilService.findDefinitionByName(subclassificationDef, definitionAsString);
+            if (definition == null) {
+                var containerPackage = this.utilService.getContainerPackage(subclassificationDef);
+                var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                containerPackage.getOwnedRelationship().add(newMembership);
+                EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(subclassificationDef.eClass().getName());
+                if (eClassifier instanceof EClass eClass) {
+                    definition = (Definition) SysmlFactory.eINSTANCE.create(eClass);
+                    definition.setDeclaredName(definitionAsString);
+                    newMembership.getOwnedRelatedElement().add(definition);
                 }
-                if (usage != null) {
-                    var optSubsetting = subsettingUsage.getOwnedRelationship().stream()
-                            .filter(Subsetting.class::isInstance)
-                            .map(Subsetting.class::cast)
-                            .findFirst();
-                    if (optSubsetting.isPresent()) {
-                        Subsetting subsetting = optSubsetting.get();
-                        subsetting.setSubsettedFeature(usage);
-                        subsetting.setGeneral(usage);
-                        subsetting.setSubsettingFeature(subsettingUsage);
-                        subsetting.setSpecific(subsettingUsage);
-                    } else {
-                        var newSubsetting = SysmlFactory.eINSTANCE.createSubsetting();
-                        subsettingUsage.getOwnedRelationship().add(newSubsetting);
-                        newSubsetting.setSubsettedFeature(usage);
-                        newSubsetting.setGeneral(usage);
-                        newSubsetting.setSubsettingFeature(subsettingUsage);
-                        newSubsetting.setSpecific(subsettingUsage);
-                    }
+            }
+            if (definition != null) {
+                var optSubsetting = subclassificationDef.getOwnedRelationship().stream()
+                        .filter(Subclassification.class::isInstance)
+                        .map(Subclassification.class::cast)
+                        .findFirst();
+                if (optSubsetting.isPresent()) {
+                    Subclassification subclassification = optSubsetting.get();
+                    subclassification.setSuperclassifier(definition);
+                    subclassification.setGeneral(definition);
+                    subclassification.setSubclassifier(subclassificationDef);
+                    subclassification.setSpecific(subclassificationDef);
+                } else {
+                    var newSubclassification = SysmlFactory.eINSTANCE.createSubclassification();
+                    subclassificationDef.getOwnedRelationship().add(newSubclassification);
+                    newSubclassification.setSuperclassifier(definition);
+                    newSubclassification.setGeneral(definition);
+                    newSubclassification.setSubclassifier(subclassificationDef);
+                    newSubclassification.setSpecific(subclassificationDef);
+                }
+            }
+        }
+    }
+
+    private void handleSubsetting(SubsettingExpressionContext ctx, Usage subsettingUsage) {
+        var identifier = ctx.Name();
+        if (identifier != null) {
+            var usageAsString = identifier.getText();
+            var usage = this.utilService.findUsageByName(subsettingUsage, usageAsString);
+            if (usage == null) {
+                var containerPackage = this.utilService.getContainerPackage(subsettingUsage);
+                var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                containerPackage.getOwnedRelationship().add(newMembership);
+                EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(subsettingUsage.eClass().getName());
+                if (eClassifier instanceof EClass eClass) {
+                    usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
+                    usage.setDeclaredName(usageAsString);
+                    newMembership.getOwnedRelatedElement().add(usage);
+                }
+            }
+            if (usage != null) {
+                var optSubsetting = subsettingUsage.getOwnedRelationship().stream()
+                        .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
+                        .map(Subsetting.class::cast)
+                        .findFirst();
+                if (optSubsetting.isPresent()) {
+                    Subsetting subsetting = optSubsetting.get();
+                    subsetting.setSubsettedFeature(usage);
+                    subsetting.setGeneral(usage);
+                    subsetting.setSubsettingFeature(subsettingUsage);
+                    subsetting.setSpecific(subsettingUsage);
+                } else {
+                    var newSubsetting = SysmlFactory.eINSTANCE.createSubsetting();
+                    subsettingUsage.getOwnedRelationship().add(newSubsetting);
+                    newSubsetting.setSubsettedFeature(usage);
+                    newSubsetting.setGeneral(usage);
+                    newSubsetting.setSubsettingFeature(subsettingUsage);
+                    newSubsetting.setSpecific(subsettingUsage);
                 }
             }
         }
