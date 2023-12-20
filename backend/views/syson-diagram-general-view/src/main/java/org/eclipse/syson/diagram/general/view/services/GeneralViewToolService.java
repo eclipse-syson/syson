@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.services.ToolService;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
@@ -71,7 +72,7 @@ public class GeneralViewToolService extends ToolService {
         return pkg;
     }
 
-    public PartUsage becomeNestedPart(PartUsage partUsage, PartUsage newContainer) {
+    public PartUsage becomeNestedPart(PartUsage partUsage, Element newContainer) {
         var eContainer = partUsage.eContainer();
         if (eContainer instanceof FeatureMembership featureMembership) {
             newContainer.getOwnedRelationship().add(featureMembership);
@@ -79,6 +80,19 @@ public class GeneralViewToolService extends ToolService {
             var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
             newFeatureMembership.getOwnedRelatedElement().add(partUsage);
             newContainer.getOwnedRelationship().add(newFeatureMembership);
+            EcoreUtil.delete(owningMembership);
+        }
+        return partUsage;
+    }
+
+    public PartUsage addAsNestedPart(PartDefinition partDefinition, PartUsage partUsage) {
+        var eContainer = partUsage.eContainer();
+        if (eContainer instanceof FeatureMembership featureMembership) {
+            partDefinition.getOwnedRelationship().add(featureMembership);
+        } else if (eContainer instanceof OwningMembership owningMembership) {
+            var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            newFeatureMembership.getOwnedRelatedElement().add(partUsage);
+            partDefinition.getOwnedRelationship().add(newFeatureMembership);
             EcoreUtil.delete(owningMembership);
         }
         return partUsage;

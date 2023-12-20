@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.ListLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -124,7 +126,8 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions),
-                        this.createSubclassificationEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
+                        this.createSubclassificationEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()),
+                        this.createAddAsNestedPartEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> PartUsageNodeDescriptionProvider.NAME.equals(nodeDesc.getName())).toList()))
                 .toolSections(
                         this.createElementsToolSection(allNodeDescriptions.stream().filter(nodeDesc -> PartUsageNodeDescriptionProvider.NAME.equals(nodeDesc.getName())).findFirst().get(),
                                 allNodeDescriptions.stream().filter(nodeDesc -> ItemUsageNodeDescriptionProvider.NAME.equals(nodeDesc.getName())).findFirst().get()),
@@ -176,6 +179,20 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
                 .name("New nested " + eClass.getName())
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
+                .build();
+    }
+
+    private EdgeTool createAddAsNestedPartEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var callService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".addAsNestedPart(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+
+        return builder
+                .name("Add Part Usage as nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getMembership().getName() + ".svg")
+                .body(callService.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
                 .build();
     }
 
