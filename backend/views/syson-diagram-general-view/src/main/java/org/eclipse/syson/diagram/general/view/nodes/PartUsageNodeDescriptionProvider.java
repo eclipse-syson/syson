@@ -129,7 +129,8 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions),
                         this.createRedefinitionEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()),
                         this.createSubsettingEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()),
-                        this.createBecomeNestedPartEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
+                        this.createBecomeNestedPartEdgeTool(
+                                allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName()) || PartDefinitionNodeDescriptionProvider.NAME.equals(nodeDesc.getName())).toList()))
                 .build();
     }
 
@@ -187,7 +188,7 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".becomeNestedPart(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
 
         return builder
-                .name("Become nested" + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .name("Become nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getMembership().getName() + ".svg")
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
