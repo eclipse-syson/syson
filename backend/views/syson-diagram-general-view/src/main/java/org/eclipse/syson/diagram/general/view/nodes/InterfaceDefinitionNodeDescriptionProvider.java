@@ -45,6 +45,7 @@ public class InterfaceDefinitionNodeDescriptionProvider extends AbstractNodeDesc
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getInterfaceDefinition());
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
+                .collapsible(true)
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)

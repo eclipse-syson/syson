@@ -52,6 +52,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPackage());
         return this.diagramBuilderHelper.newNodeDescription()
+                .collapsible(true)
                 .childrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression("300")
                 .defaultWidthExpression("300")
