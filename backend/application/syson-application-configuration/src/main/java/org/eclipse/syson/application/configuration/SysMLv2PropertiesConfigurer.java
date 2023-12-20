@@ -174,7 +174,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(REDEFINITION_PROPERTIES);
-        group.setLabelExpression(REDEFINITION_PROPERTIES);
+        group.setLabelExpression("");
         group.setSemanticCandidatesExpression("aql:self.ownedRelationship->filter(sysml::Redefinition)");
 
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
@@ -197,7 +197,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(SUBCLASSIFICATION_PROPERTIES);
-        group.setLabelExpression(SUBCLASSIFICATION_PROPERTIES);
+        group.setLabelExpression("");
         group.setSemanticCandidatesExpression("aql:self.ownedRelationship->filter(sysml::Subclassification)");
 
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
@@ -220,7 +220,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(SUBSETTING_PROPERTIES);
-        group.setLabelExpression(SUBSETTING_PROPERTIES);
+        group.setLabelExpression("");
         group.setSemanticCandidatesExpression("aql:self.ownedRelationship->select(r | r.oclIsTypeOf(sysml::Subsetting))");
 
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
@@ -243,7 +243,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(TYPING_PROPERTIES);
-        group.setLabelExpression(TYPING_PROPERTIES);
+        group.setLabelExpression("");
         group.setSemanticCandidatesExpression("aql:self.ownedRelationship->filter(sysml::FeatureTyping)");
 
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
