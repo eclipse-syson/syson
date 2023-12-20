@@ -120,7 +120,8 @@ public class InterfaceUsageNodeDescriptionProvider extends AbstractNodeDescripti
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions),
-                        this.createRedefinitionEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
+                        this.createRedefinitionEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()),
+                        this.createSubsettingEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
                 .build();
     }
 }

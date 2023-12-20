@@ -128,6 +128,7 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .toolSections(this.createElementsToolSection(nodeDescription), this.addElementsToolSection())
                 .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions),
                         this.createRedefinitionEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()),
+                        this.createSubsettingEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()),
                         this.createBecomeNestedPartEdgeTool(allNodeDescriptions.stream().filter(nodeDesc -> NAME.equals(nodeDesc.getName())).toList()))
                 .build();
     }
