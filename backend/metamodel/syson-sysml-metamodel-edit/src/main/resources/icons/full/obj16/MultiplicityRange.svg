@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="18"
+   height="16"
+   viewBox="0 0 4.7624999 4.2333332"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="LiteralInteger.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient872">
+      <stop
+         style="stop-color:#e8e9f0;stop-opacity:1;"
+         offset="0"
+         id="stop868" />
+      <stop
+         style="stop-color:#fdfeff;stop-opacity:1"
+         offset="1"
+         id="stop870" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient872"
+       id="linearGradient865"
+       x1="-47.666786"
+       y1="112.97314"
+       x2="-163.75984"
+       y2="34.596439"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.0398479,0,0,0.03150634,6.6619203,-0.17479152)" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="31.852963"
+     inkscape:cx="15.414579"
+     inkscape:cy="-1.2557701"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g882"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:pagecheckerboard="false"
+     inkscape:window-width="1665"
+     inkscape:window-height="1113"
+     inkscape:window-x="26"
+     inkscape:window-y="23"
+     inkscape:window-maximized="0"
+     units="px"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g882">
+      <rect
+         style="fill:url(#linearGradient865);fill-opacity:1;stroke:none;stroke-width:0.242884;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect840"
+         width="4.7624998"
+         height="2.5664582"
+         x="0"
+         y="0.81811953" />
+      <rect
+         style="fill:#4d81b4;fill-opacity:1;stroke:#4e4184;stroke-width:0.211667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect840-2"
+         width="4.6154552"
+         height="0.1175378"
+         x="0.073523"
+         y="0.63103175" />
+      <rect
+         style="fill:#4d81b4;fill-opacity:1;stroke:#4e4184;stroke-width:0.211667;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect840-2-9"
+         width="4.6154552"
+         height="0.1175378"
+         x="0.073523"
+         y="3.4548981" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.15713px;line-height:1.25;font-family:Arial;-inkscape-font-specification:Arial;letter-spacing:0.105161px;word-spacing:0px;fill:#4e4184;fill-opacity:1;stroke:none;stroke-width:0.269641"
+         x="0.042213757"
+         y="2.7196729"
+         id="text857"><tspan
+           sodipodi:role="line"
+           id="tspan855"
+           x="0.042213757"
+           y="2.7196729"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.15713px;font-family:Arial;-inkscape-font-specification:Arial;fill:#4e4184;fill-opacity:1;stroke-width:0.269641">-1,0,</tspan></text>
+    </g>
+  </g>
+</svg>
