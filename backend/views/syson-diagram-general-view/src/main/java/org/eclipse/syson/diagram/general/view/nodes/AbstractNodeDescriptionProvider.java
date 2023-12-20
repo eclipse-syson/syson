@@ -321,4 +321,50 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
                 .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
                 .build();
     }
+
+    protected EdgeTool createSubsettingEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var setName = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
+                .valueExpression("subsets");
+
+        var setSubsettingFeature = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE);
+
+        var setSubsettedFeature = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
+
+        var setSpecific = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSpecialization_Specific().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE);
+
+        var setGeneral = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSpecialization_General().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
+
+        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:newInstance")
+                .children(setName.build(), setSubsettingFeature.build(), setSubsettedFeature.build(), setSpecific.build(),
+                        setGeneral.build());
+
+        var createInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSubsetting()))
+                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
+                .variableName("newInstance")
+                .children(changeContextNewInstance.build());
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE)
+                .children(createInstance.build());
+
+        return builder
+                .name("New " + SysmlPackage.eINSTANCE.getSubsetting().getName())
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getSubsetting().getName() + ".svg")
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
+                .build();
+    }
 }

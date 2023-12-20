@@ -36,6 +36,7 @@ import org.eclipse.syson.diagram.general.view.edges.PartDefinitionOwnedItemEdgeD
 import org.eclipse.syson.diagram.general.view.edges.PartUsageNestedPartEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.RedefinitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.SubclassificationEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.edges.SubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.AttributeDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.AttributeUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.DefinitionAttributesCompartmentItemNodeDescriptionProvider;
@@ -120,6 +121,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 new DependencyEdgeDescriptionProvider(colorProvider),
                 new SubclassificationEdgeDescriptionProvider(colorProvider),
                 new RedefinitionEdgeDescriptionProvider(colorProvider),
+                new SubsettingEdgeDescriptionProvider(colorProvider),
                 new FeatureTypingEdgeDescriptionProvider(colorProvider)
         );
 
