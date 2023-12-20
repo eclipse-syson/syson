@@ -47,6 +47,7 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getEnumerationDefinition());
         return this.diagramBuilderHelper.newNodeDescription()
+                .collapsible(true)
                 .childrenDescriptions(this.createEnumerationCompartment(NAME))
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)

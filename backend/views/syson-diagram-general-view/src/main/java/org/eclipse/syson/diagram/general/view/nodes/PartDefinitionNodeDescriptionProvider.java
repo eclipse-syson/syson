@@ -48,6 +48,7 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartDefinition());
         return this.diagramBuilderHelper.newNodeDescription()
+                .collapsible(true)
                 .childrenLayoutStrategy(new ListLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
