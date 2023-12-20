@@ -118,6 +118,7 @@ public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionP
 
         return builder
                 .name("New " + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName())
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
                 .build();

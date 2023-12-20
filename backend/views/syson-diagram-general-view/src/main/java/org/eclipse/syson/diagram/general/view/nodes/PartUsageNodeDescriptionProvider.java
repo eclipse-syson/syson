@@ -187,6 +187,7 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
 
         return builder
                 .name("Become nested" + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getMembership().getName() + ".svg")
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(new NodeDescription[targetElementDescriptions.size()]))
                 .build();
