@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.application.services;
 
-import static org.eclipse.syson.application.services.EditingContextActionProvider.EMPTY_ACTION_ID;
 import static org.eclipse.syson.application.services.EditingContextActionProvider.EMPTY_SYSML_ID;
 
 import java.io.ByteArrayOutputStream;
@@ -52,14 +51,14 @@ import org.springframework.stereotype.Service;
 /**
  * Handler used to perform an action on the editingContext.
  *
- * @author frouene
+ * @author arichard
  */
 @Service
 public class EditingContextActionHandler implements IEditingContextActionHandler {
 
     private static final XMLParserPool PARSER_POOL = new XMLParserPoolImpl();
 
-    private static final List<String> HANDLED_ACTIONS = List.of(EMPTY_ACTION_ID, EMPTY_SYSML_ID);
+    private static final List<String> HANDLED_ACTIONS = List.of(EMPTY_SYSML_ID);
 
     private final Logger logger = LoggerFactory.getLogger(EditingContextActionHandler.class);
 
@@ -81,7 +80,6 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
     private IStatus performActionOnResourceSet(ResourceSet resourceSet, String actionId) {
         return switch (actionId) {
-            case EMPTY_ACTION_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createEmptyResource);
             case EMPTY_SYSML_ID -> this.createResourceAndReturnSuccess(resourceSet, this::createEmptySysMLResource);
             default -> new Failure("Unknown action.");
         };
@@ -91,12 +89,6 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
     private IStatus createResourceAndReturnSuccess(ResourceSet resourceSet, Consumer<ResourceSet> createResource) {
         createResource.accept(resourceSet);
         return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
-    }
-
-    private void createEmptyResource(ResourceSet resourceSet) {
-        JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
-        resource.eAdapters().add(new ResourceMetadataAdapter("Others..."));
-        resourceSet.getResources().add(resource);
     }
 
     private void createEmptySysMLResource(ResourceSet resourceSet) {

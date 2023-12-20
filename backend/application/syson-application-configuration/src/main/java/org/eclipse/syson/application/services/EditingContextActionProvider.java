@@ -24,25 +24,20 @@ import org.springframework.stereotype.Service;
 /**
  * Provides the list of possible actions on the editingContext.
  *
- * @author frouene
+ * @author arichard
  */
 @Service
 public class EditingContextActionProvider implements IEditingContextActionProvider {
 
-    public static final String EMPTY_ACTION_ID = "empty";
+    public static final String EMPTY_SYSML_ID = "empty_sysmlv2";
 
-    public static final String EMPTY_SYSML_ID = "empty_sysml";
-
-    private static final EditingContextAction EMPTY_EDITING_CONTEXT_ACTION = new EditingContextAction(EMPTY_ACTION_ID, "Others...");
-
-    private static final EditingContextAction EMPTY_FLOW_EDITING_CONTEXT_ACTION = new EditingContextAction(EMPTY_SYSML_ID, "SysMLv2");
+    private static final EditingContextAction EMPTY_SYSML_EDITING_CONTEXT_ACTION = new EditingContextAction(EMPTY_SYSML_ID, "SysMLv2");
 
     @Override
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {
         var actions = new ArrayList<EditingContextAction>();
         if (editingContext instanceof EditingContext emfEditingContext) {
-            actions.add(EMPTY_FLOW_EDITING_CONTEXT_ACTION);
-            actions.add(EMPTY_EDITING_CONTEXT_ACTION);
+            actions.add(EMPTY_SYSML_EDITING_CONTEXT_ACTION);
         }
         return actions;
     }

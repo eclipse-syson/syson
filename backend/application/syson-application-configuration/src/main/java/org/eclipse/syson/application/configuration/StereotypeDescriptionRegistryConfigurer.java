@@ -50,8 +50,8 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     @Override
     public void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry) {
-        registry.add(new StereotypeDescription(EMPTY_ID, EMPTY_LABEL, "New", this::getEmptyContent));
         registry.add(new StereotypeDescription(EMPTY_SYSMLV2_ID, EMPTY_SYSMLV2_LABEL, this::getEmptySysMLv2StereotypeBody));
+        registry.add(new StereotypeDescription(EMPTY_ID, EMPTY_LABEL, "New", this::getEmptyContent));
     }
 
     private String getEmptyContent() {
