@@ -67,7 +67,8 @@ public class DefinitionPortsCompartmentNodeDescriptionProvider extends AbstractN
 
     private NodePalette createAttributesCompartmentPalette(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newNodePalette()
-                .dropNodeTool(this.createPortsCompartmentDropFromDiagramTool(cache)).nodeTools(this.createCompartmentNodeTool(SysmlPackage.eINSTANCE.getPortUsage(), "port"))
+                .dropNodeTool(this.createPortsCompartmentDropFromDiagramTool(cache))
+                .nodeTools(this.createCompartmentNodeTool(SysmlPackage.eINSTANCE.getPortUsage(), "port"))
                 .build();
     }
 

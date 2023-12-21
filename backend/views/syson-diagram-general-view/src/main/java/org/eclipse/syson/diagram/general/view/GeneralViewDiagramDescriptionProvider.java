@@ -45,6 +45,8 @@ import org.eclipse.syson.diagram.general.view.nodes.DefinitionItemsCompartmentIt
 import org.eclipse.syson.diagram.general.view.nodes.DefinitionItemsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.DefinitionPortsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.DefinitionPortsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.EnumerationCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.EnumerationCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.InterfaceDefinitionNodeDescriptionProvider;
@@ -116,6 +118,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 new UsageAttributesCompartmentNodeDescriptionProvider(colorProvider),
                 new UsagePortsCompartmentItemNodeDescriptionProvider(colorProvider),
                 new UsagePortsCompartmentNodeDescriptionProvider(colorProvider),
+                new EnumerationCompartmentItemNodeDescriptionProvider(colorProvider),
+                new EnumerationCompartmentNodeDescriptionProvider(colorProvider),
                 new PartDefinitionOwnedItemEdgeDescriptionProvider(colorProvider),
                 new PartUsageNestedPartEdgeDescriptionProvider(colorProvider),
                 new DependencyEdgeDescriptionProvider(colorProvider),
