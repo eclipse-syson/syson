@@ -26,16 +26,16 @@ import {
   getBorderNodeExtent,
   getChildNodePosition,
   getEastBorderNodeFootprintHeight,
+  getHeaderFootprint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
-import { Node } from 'reactflow';
+import { Dimensions, Node, Rect } from 'reactflow';
 import { SysMLPackageNodeData } from './SysMLPackageNode.types';
 
 const rectangularNodePadding: number = 8;
-const headerHeightFootprint = 33;
 
 export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPackageNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>): boolean {
@@ -82,11 +82,12 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
+    const nodeIndex: number = findNodeIndex(visibleNodes, node.id);
+    const labelElement: HTMLElement | null = document.getElementById(`${node.id}-label-${nodeIndex}`);
+    const headerHeightFootprint: number = labelElement ? getHeaderFootprint(labelElement, true, false) : 33;
 
-    const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
-    const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
+    const borderNodes: Node<NodeData, string>[] = directChildren.filter((node) => node.data.isBorderNode);
+    const directNodesChildren: Node<NodeData, string>[] = directChildren.filter((child) => !child.data.isBorderNode);
 
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
@@ -120,12 +121,21 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
 
     // Update node to layout size
     // WARN: We suppose label are always on top of children (that wrong)
-    const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
-    const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
-    const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
+    const childrenContentBox: Rect = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
+    const directChildrenAwareNodeWidth: number =
+      childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
+    const northBorderNodeFootprintWidth: number = getNorthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousDiagram
+    );
+    const southBorderNodeFootprintWidth: number = getSouthBorderNodeFootprintWidth(
+      visibleNodes,
+      borderNodes,
+      previousDiagram
+    );
 
-    const nodeWidth =
+    const nodeWidth: number =
       Math.max(
         directChildrenAwareNodeWidth,
         northBorderNodeFootprintWidth,
@@ -135,11 +145,20 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
       borderWidth * 2;
 
     // WARN: the label is not used for the height because children are already position under the label
-    const directChildrenAwareNodeHeight = childrenContentBox.y + childrenContentBox.height + rectangularNodePadding;
-    const eastBorderNodeFootprintHeight = getEastBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
-    const westBorderNodeFootprintHeight = getWestBorderNodeFootprintHeight(visibleNodes, borderNodes, previousDiagram);
+    const directChildrenAwareNodeHeight: number =
+      childrenContentBox.y + childrenContentBox.height + rectangularNodePadding;
+    const eastBorderNodeFootprintHeight: number = getEastBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousDiagram
+    );
+    const westBorderNodeFootprintHeight: number = getWestBorderNodeFootprintHeight(
+      visibleNodes,
+      borderNodes,
+      previousDiagram
+    );
 
-    const nodeHeight =
+    const nodeHeight: number =
       Math.max(
         directChildrenAwareNodeHeight,
         eastBorderNodeFootprintHeight,
@@ -148,11 +167,13 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
       ) +
       borderWidth * 2;
 
-    const minNodeWith = nodeWidth;
-    const minNodeHeight = nodeHeight;
+    const minNodeWith: number = nodeWidth;
+    const minNodeHeight: number = nodeHeight;
 
-    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
-    const previousDimensions = computePreviousSize(previousNode, node);
+    const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
+      (previouseNode) => previouseNode.id === node.id
+    );
+    const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
     if (node.data.nodeDescription?.userResizable) {
       if (minNodeWith > previousDimensions.width) {
         node.width = minNodeWith;
@@ -183,17 +204,19 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     _borderWidth: number,
     _forceWidth?: number
   ) {
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
+    const nodeIndex: number = findNodeIndex(visibleNodes, node.id);
+    const labelElement: HTMLElement | null = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
-    const labelHeight =
+    const labelHeight: number =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
 
-    const minNodeWith = Math.max(node.data.defaultWidth ? node.data.defaultWidth : 0);
-    const minNodeHeight = Math.max(labelHeight, node.data.defaultHeight ? node.data.defaultHeight : 0);
+    const minNodeWith: number = Math.max(node.data.defaultWidth ? node.data.defaultWidth : 0);
+    const minNodeHeight: number = Math.max(labelHeight, node.data.defaultHeight ? node.data.defaultHeight : 0);
 
-    const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
-    const previousDimensions = computePreviousSize(previousNode, node);
+    const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
+      (prevNode) => prevNode.id === node.id
+    );
+    const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
 
     if (node.data.nodeDescription?.userResizable) {
       if (minNodeWith > previousDimensions.width) {
