@@ -183,6 +183,7 @@ public class ChildPartUsageNodeDescriptionProvider implements INodeDescriptionPr
 
         return builder
                 .name("Add existing elements")
+                .iconURLsExpression("/icons/AddExistingElements.svg")
                 .body(addExistingelements.build())
                 .build();
     }

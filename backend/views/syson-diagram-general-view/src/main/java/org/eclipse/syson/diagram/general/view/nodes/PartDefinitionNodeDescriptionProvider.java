@@ -211,6 +211,7 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
 
         return builder
                 .name("Add existing nested elements")
+                .iconURLsExpression("/icons/AddExistingElements.svg")
                 .body(addExistingelements.build())
                 .build();
     }
