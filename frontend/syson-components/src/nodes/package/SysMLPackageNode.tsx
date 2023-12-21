@@ -155,6 +155,7 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
         color={theme.palette.selected}
         isVisible={selected}
         shouldResize={() => !data.isBorderNode}
+        keepAspectRatio={data.nodeDescription?.keepAspectRatio}
       />
       <div
         style={{
