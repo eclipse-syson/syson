@@ -155,31 +155,6 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
             AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
             ResourceSet resourceSet = adapterFactoryEditingDomain.getResourceSet();
 
-            var optionalSIDocumentEntity = this.projectRepository.findById(editingContextUUID.get()).map(projectEntity -> {
-                DocumentEntity documentEntity = new DocumentEntity();
-                documentEntity.setProject(projectEntity);
-                documentEntity.setName("SI");
-                documentEntity.setContent(this.getSIContent());
-
-                documentEntity = this.documentRepository.save(documentEntity);
-                return documentEntity;
-            });
-
-            if (optionalSIDocumentEntity.isPresent()) {
-                DocumentEntity documentEntity = optionalSIDocumentEntity.get();
-
-                JsonResource resource = new JSONResourceFactory().createResourceFromPath(documentEntity.getId().toString());
-                try (var inputStream = new ByteArrayInputStream(documentEntity.getContent().getBytes())) {
-                    resource.load(inputStream, null);
-                } catch (IOException exception) {
-                    this.logger.warn(exception.getMessage(), exception);
-                }
-
-                resource.eAdapters().add(new ResourceMetadataAdapter("SI"));
-
-                resourceSet.getResources().add(resource);
-            }
-
             var optionalBatmobileDocumentEntity = this.projectRepository.findById(editingContextUUID.get()).map(projectEntity -> {
                 DocumentEntity documentEntity = new DocumentEntity();
                 documentEntity.setProject(projectEntity);
@@ -189,7 +164,6 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                 documentEntity = this.documentRepository.save(documentEntity);
                 return documentEntity;
             });
-
 
             if (optionalBatmobileDocumentEntity.isPresent()) {
                 DocumentEntity documentEntity = optionalBatmobileDocumentEntity.get();
@@ -235,9 +209,5 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
 
     private String getBatmobileContent() {
         return this.stereotypeBuilder.getStereotypeBodyFromJSONResource(new ClassPathResource("templates/Batmobile.json"));
-    }
-
-    private String getSIContent() {
-        return this.stereotypeBuilder.getStereotypeBodyFromJSONResource(new ClassPathResource("templates/SI.json"));
     }
 }
