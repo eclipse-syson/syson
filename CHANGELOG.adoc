@@ -1,5 +1,17 @@
 = Changelog
 
+== v2024.01.0 (work in progress)
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== New Features
+
+- https://github.com/eclipse-syson/syson/issues/48[#48] [general-view] Display help background message on empty general-view diagram.
+
 
 == v2023.12.0
 

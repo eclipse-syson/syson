@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,7 @@ import org.eclipse.syson.diagram.general.view.nodes.DefinitionItemsCompartmentIt
 import org.eclipse.syson.diagram.general.view.nodes.DefinitionItemsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.DefinitionPortsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.DefinitionPortsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.EmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
@@ -95,6 +96,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         var cache = new GeneralViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
                 new FakeNodeDescriptionProvider(colorProvider),
+                new EmptyDiagramNodeDescriptionProvider(colorProvider),
                 new AttributeDefinitionNodeDescriptionProvider(colorProvider),
                 new AttributeUsageNodeDescriptionProvider(colorProvider),
                 new EnumerationDefinitionNodeDescriptionProvider(colorProvider),
