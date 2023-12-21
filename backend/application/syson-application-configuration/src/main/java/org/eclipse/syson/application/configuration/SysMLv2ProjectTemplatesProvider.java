@@ -28,6 +28,8 @@ public class SysMLv2ProjectTemplatesProvider implements IProjectTemplateProvider
 
     public static final String SYSMLV2_TEMPLATE_ID = "sysmlv2-template";
 
+    public static final String BATMOBILE_TEMPLATE_ID = "batmobile-template";
+
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
         var sysmlv2Template = ProjectTemplate.newProjectTemplate(SYSMLV2_TEMPLATE_ID)
@@ -35,7 +37,12 @@ public class SysMLv2ProjectTemplatesProvider implements IProjectTemplateProvider
                 .imageURL("/images/sysmlv2-logo.png")
                 .natures(List.of())
                 .build();
-        return List.of(sysmlv2Template);
+        var batmobileTemplate = ProjectTemplate.newProjectTemplate(BATMOBILE_TEMPLATE_ID)
+                .label("Batmobile")
+                .imageURL("/images/sysmlv2-logo.png")
+                .natures(List.of())
+                .build();
+        return List.of(sysmlv2Template, batmobileTemplate);
     }
 
 }
