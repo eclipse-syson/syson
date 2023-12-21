@@ -12,8 +12,8 @@
 
 - This is the first release of SysON.
 It contains:
-** The ability to create SysMLv2 models.
-** The ability to create General View diagrams on Package elements. Only some elements can be created in this diagram:
+** The ability to create and edit SysMLv2 models.
+** The ability to create and edit General View diagrams on Package elements. Only some elements can be created/edited in this diagram:
 *** Attribute Definition
 *** Attribute Usage
 *** Enumeration Definition
@@ -28,4 +28,6 @@ It contains:
 *** Part Usage
 *** Port Definition
 *** Port Usage
-** The ability to create Interconnection View diagrams on Part Usage elements.
+** The ability to create and edit Interconnection View diagrams on Part Usage elements.
+** An example of a SysMLv2 model named _Batmobile_, accessible from the homepage.
+** The ability to download and upload SysMLv2 projects.
