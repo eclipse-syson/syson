@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.configuration;
+package org.eclipse.syson.application.configuration;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -32,12 +32,12 @@ import org.springframework.stereotype.Component;
 /**
  * Import custom images into the database on startup.
  *
- * @author pcdavid
+ * @author arichard
  */
 @Component
-public class CustomImagesLoader implements CommandLineRunner {
+public class SysONCustomImagesLoader implements CommandLineRunner {
 
-    private final Logger logger = LoggerFactory.getLogger(CustomImagesLoader.class);
+    private final Logger logger = LoggerFactory.getLogger(SysONCustomImagesLoader.class);
 
     private final ICustomImageRepository customImageRepository;
 
@@ -45,7 +45,7 @@ public class CustomImagesLoader implements CommandLineRunner {
 
     private final PathMatchingResourcePatternResolver patternResolver;
 
-    public CustomImagesLoader(ICustomImageRepository customImageRepository, @Value("${org.eclipse.sirius.web.customImages.pattern:#{null}}") String imagesPathPattern, ResourceLoader resourceLoader) {
+    public SysONCustomImagesLoader(ICustomImageRepository customImageRepository, @Value("${org.eclipse.syson.customImages.pattern:#{null}}") String imagesPathPattern, ResourceLoader resourceLoader) {
         this.customImageRepository = Objects.requireNonNull(customImageRepository);
         this.imagesPathPattern = imagesPathPattern;
         this.patternResolver = new PathMatchingResourcePatternResolver(Objects.requireNonNull(resourceLoader));
