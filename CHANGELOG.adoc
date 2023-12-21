@@ -1,7 +1,7 @@
 = Changelog
 
 
-== v2023.12.0 (work in progress)
+== v2023.12.0
 
 === Architectural decision records
 
@@ -11,3 +11,21 @@
 === New Features
 
 - This is the first release of SysON.
+It contains:
+** The ability to create SysMLv2 models.
+** The ability to create General View diagrams on Package elements. Only some elements can be created in this diagram:
+*** Attribute Definition
+*** Attribute Usage
+*** Enumeration Definition
+*** Enumeration Usage
+*** Interface Definition
+*** Interface Usage
+*** Item Definition
+*** Item Usage
+*** Metadata Definition
+*** Package
+*** Part Definition
+*** Part Usage
+*** Port Definition
+*** Port Usage
+** The ability to create Interconnection View diagrams on Part Usage elements.
