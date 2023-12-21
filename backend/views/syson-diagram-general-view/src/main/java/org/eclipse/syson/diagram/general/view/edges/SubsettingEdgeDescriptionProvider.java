@@ -56,7 +56,7 @@ public class SubsettingEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
                 .isDomainBasedEdge(true)
                 .labelExpression("")
                 .name(NAME)
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
+                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ", false)")
                 .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
