@@ -273,6 +273,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
         return builder
                 .name("Add existing elements")
+                .iconURLsExpression("/icons/AddExistingElements.svg")
                 .body(addExistingelements.build())
                 .build();
     }

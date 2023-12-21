@@ -210,6 +210,7 @@ public class PartUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
 
         return builder
                 .name("Add existing nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .iconURLsExpression("/icons/AddExistingElements.svg")
                 .body(addExistingelements.build())
                 .build();
     }
