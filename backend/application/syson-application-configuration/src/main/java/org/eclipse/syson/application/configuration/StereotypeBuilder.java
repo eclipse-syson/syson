@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -91,10 +92,35 @@ public class StereotypeBuilder {
         return content;
     }
 
+    public String getStereotypeBodyFromJSONResource(ClassPathResource classPathResource) {
+        long start = System.currentTimeMillis();
+
+        String content = "";
+        try (var inputStream = classPathResource.getInputStream()) {
+            // URI uri = new JSONResourceFactory().createResourceURI(classPathResource.getFilename());
+            // Resource inputResource = this.loadFromJSON(uri, inputStream);
+            // content = this.saveAsJSON(uri, inputResource);
+            content = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException exception) {
+            this.logger.error(exception.getMessage(), exception);
+        }
+
+        long end = System.currentTimeMillis();
+        this.timer.record(end - start, TimeUnit.MILLISECONDS);
+
+        return content;
+    }
+
     private Resource loadFromXMI(URI uri, InputStream inputStream) throws IOException {
         Resource inputResource = new XMIResourceImpl(uri);
         Map<String, Object> xmiLoadOptions = new EMFResourceUtils().getXMILoadOptions(parserPool);
         inputResource.load(inputStream, xmiLoadOptions);
+        return inputResource;
+    }
+
+    private Resource loadFromJSON(URI uri, InputStream inputStream) throws IOException {
+        JsonResource inputResource = new JSONResourceFactory().createResource(uri);
+        inputResource.load(inputStream, null);
         return inputResource;
     }
 

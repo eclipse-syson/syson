@@ -1,0 +1,33 @@
+{
+  "json": { "version": "1.0", "encoding": "utf-8" },
+  "ns": { "sysml": "http://www.eclipse.org/syson/sysml" },
+  "content": [
+    {
+      "id": "1de496b8-9840-4a72-b781-a22c513918d7",
+      "eClass": "sysml:Package",
+      "data": {
+        "declaredName": "SI",
+        "elementId": "1bf96155-2ad3-4dbe-964b-c77988a15aa7",
+        "ownedRelationship": [
+          {
+            "id": "f735dc28-ecdc-4706-9bf6-82480435f225",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "75ada599-84dc-4fdc-b787-36202d0fe1ca",
+              "ownedRelatedElement": [
+                {
+                  "id": "ac7c72cb-1c73-4b0a-90ad-0b56dd3a43e6",
+                  "eClass": "sysml:AttributeDefinition",
+                  "data": {
+                    "declaredName": "SpeedUnit",
+                    "elementId": "8ae8b558-dc66-4b75-970d-6ee27aa40194"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

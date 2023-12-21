@@ -1,0 +1,241 @@
+{
+  "json": { "version": "1.0", "encoding": "utf-8" },
+  "ns": { "sysml": "http://www.eclipse.org/syson/sysml" },
+  "content": [
+    {
+      "id": "028c3bfe-c95b-4889-a81c-7ad14c54b73a",
+      "eClass": "sysml:Package",
+      "data": {
+        "declaredName": "User Model",
+        "elementId": "ab3d3fe3-b495-4619-b944-51d7afbbee80",
+        "ownedRelationship": [
+          {
+            "id": "d2b62b12-26ba-4bb0-8e15-ec32b978ea14",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "8aca85c2-28a8-4a48-993a-822bf88fcd4e",
+              "ownedRelatedElement": [
+                {
+                  "id": "c3d9c583-ff4b-4921-82f7-2ee2d019a306",
+                  "eClass": "sysml:PartDefinition",
+                  "data": {
+                    "declaredName": "Batmobile",
+                    "elementId": "17065dd8-13f0-462d-aba5-b60c7928dd32",
+                    "ownedRelationship": [
+                      {
+                        "id": "f449ae57-1e87-48a4-800b-25d1995c92d3",
+                        "eClass": "sysml:Subclassification",
+                        "data": {
+                          "declaredName": "specializes",
+                          "elementId": "b44a0f90-bb71-450e-abda-da1cd7d433d1",
+                          "general": "b34562dd-4639-4bd9-9954-6198f178180c",
+                          "specific": "17065dd8-13f0-462d-aba5-b60c7928dd32",
+                          "subclassifier": "17065dd8-13f0-462d-aba5-b60c7928dd32",
+                          "superclassifier": "b34562dd-4639-4bd9-9954-6198f178180c"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "4d660e70-38e5-46cc-86e4-7721459bc821",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "7b174c75-71d0-48c0-89a9-2f149da35105",
+              "ownedRelatedElement": [
+                {
+                  "id": "87844fbe-44b0-499c-acef-cf6ca4380116",
+                  "eClass": "sysml:PartUsage",
+                  "data": {
+                    "declaredName": "engine",
+                    "elementId": "7c2c9b44-b0eb-4418-9319-5739e8e0fc9a"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "e58da2a6-2e87-4c99-a3d0-17195460e14a",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "c35fdeb2-f41c-4ddc-a13f-d9befe9bc80f",
+              "ownedRelatedElement": [
+                {
+                  "id": "55116dca-c7b8-4117-8be0-4d7fde7e32aa",
+                  "eClass": "sysml:PartUsage",
+                  "data": {
+                    "declaredName": "body",
+                    "elementId": "ab422f4f-18f7-4f44-acba-581b4fb09706"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "e3201b8c-b27e-4b00-8f97-4eb14b52d583",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "0169a717-80b6-4e60-a162-ba119f4e043f",
+              "ownedRelatedElement": [
+                {
+                  "id": "2952d5fb-9d47-495b-92e4-228b425dfd64",
+                  "eClass": "sysml:PartUsage",
+                  "data": {
+                    "declaredName": "seat",
+                    "elementId": "3b1bc1ca-2afc-4124-90fd-ab716dcf4052"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "d5100faa-146d-42dc-bc25-63dbf8aea001",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "64cb9f8b-4b0c-4c8c-9a7c-fdfc61971420",
+              "ownedRelatedElement": [
+                {
+                  "id": "4b43991c-15ff-4a80-a68d-48526486098b",
+                  "eClass": "sysml:PartDefinition",
+                  "data": {
+                    "declaredName": "Wheel",
+                    "elementId": "99e4db85-c3aa-458c-b741-5ab69e178a4d"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "6e113a53-8571-4537-a255-7389b0fccf9f",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "1f687e62-8dc1-4fa2-8f93-a0873b1d66c4",
+              "ownedRelatedElement": [
+                {
+                  "id": "e1149ba2-a25a-40e4-ba90-80df5ae9283c",
+                  "eClass": "sysml:PartUsage",
+                  "data": {
+                    "declaredName": "frontLeftWheel",
+                    "elementId": "196d4af4-4733-49b7-96f7-aa249a4e4c05",
+                    "ownedRelationship": [
+                      {
+                        "id": "1534008c-d664-4eff-9527-8bfdb01b1b7a",
+                        "eClass": "sysml:FeatureTyping",
+                        "data": {
+                          "elementId": "150da810-a3ba-4f3c-a4af-58d77d8fbf5a",
+                          "type": "99e4db85-c3aa-458c-b741-5ab69e178a4d"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "84b498cb-d52c-4fc1-9684-8ccb2285b959",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "4a2010d1-6486-43eb-875d-0a6075260cf4",
+              "ownedRelatedElement": [
+                {
+                  "id": "52c83b94-a256-493e-8482-b0c2be0071e0",
+                  "eClass": "sysml:ItemUsage",
+                  "data": {
+                    "declaredName": "driver",
+                    "elementId": "01ee24e0-b2a0-4a05-90c1-2b9b91655bb0"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "9f184880-6c9c-4f99-ad25-e0a2cfd76fd5",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "61de25c7-5ea3-4608-b9ec-3c4c808df4b9",
+              "ownedRelatedElement": [
+                {
+                  "id": "6dbf20e6-1ff5-46f3-b2d7-285938a8bf92",
+                  "eClass": "sysml:PartDefinition",
+                  "data": {
+                    "declaredName": "Vehicle",
+                    "elementId": "b34562dd-4639-4bd9-9954-6198f178180c",
+                    "ownedRelationship": [
+                      {
+                        "id": "b41d6545-ceab-4484-88f9-c31e0b0f96eb",
+                        "eClass": "sysml:FeatureMembership",
+                        "data": {
+                          "elementId": "85950b6a-2723-4cf8-abcb-79dcee37377d",
+                          "ownedRelatedElement": [
+                            {
+                              "id": "c57803d5-c367-442f-a135-98538dd9a0f6",
+                              "eClass": "sysml:AttributeUsage",
+                              "data": {
+                                "declaredName": "actualSpeed",
+                                "elementId": "17f357aa-9d47-4df6-8aa7-72454da37aa7",
+                                "ownedRelationship": [
+                                  {
+                                    "id": "08f79713-e832-4067-8a15-b8a39dd9917d",
+                                    "eClass": "sysml:FeatureTyping",
+                                    "data": {
+                                      "elementId": "b8d5e3ce-f85e-4888-8929-3b14985a7491",
+                                      "type": "5ef875e6-621e-4e10-879a-365a54d48547"
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "28dc2864-11de-4e92-9640-24347f752903",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "72e55796-4f0b-456f-895e-3e622c1cbd67",
+              "ownedRelatedElement": [
+                {
+                  "id": "064e1387-9021-4fc0-abfd-38254b97ad52",
+                  "eClass": "sysml:AttributeDefinition",
+                  "data": {
+                    "declaredName": "SI",
+                    "elementId": "5ef875e6-621e-4e10-879a-365a54d48547"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "id": "4ef4317b-baef-4d8c-bbf9-6a3cf7536174",
+            "eClass": "sysml:OwningMembership",
+            "data": {
+              "elementId": "a6316774-9350-443c-a2d6-0599aaced34c",
+              "ownedRelatedElement": [
+                {
+                  "id": "9cca7690-cc9b-4b04-ae69-85929b26b0b7",
+                  "eClass": "sysml:Dependency",
+                  "data": {
+                    "declaredName": "dependency",
+                    "elementId": "f75c8bce-960a-459b-9c98-50f6a4496c46",
+                    "client": ["196d4af4-4733-49b7-96f7-aa249a4e4c05"],
+                    "supplier": ["99e4db85-c3aa-458c-b741-5ab69e178a4d"]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
