@@ -114,6 +114,13 @@ const packageContainerStyle = (
   return packageNodeStyle;
 };
 
+const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
+  return {
+    width: theme.spacing(0.75),
+    height: theme.spacing(0.75),
+  };
+};
+
 export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPackageNodeData>) => {
   const theme: Theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
@@ -143,7 +150,12 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
 
   return (
     <>
-      <NodeResizer color={theme.palette.selected} isVisible={selected} />
+      <NodeResizer
+        handleStyle={{ ...resizeHandleStyle(theme) }}
+        color={theme.palette.selected}
+        isVisible={selected}
+        shouldResize={() => !data.isBorderNode}
+      />
       <div
         style={{
           ...sysMLPackageNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
