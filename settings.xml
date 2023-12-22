@@ -38,11 +38,6 @@
 
   <servers>
     <server>
-      <id>github</id>
-      <username>${env.USERNAME}</username>
-      <password>${env.PASSWORD}</password>
-    </server>
-    <server>
       <id>github-sirius-web</id>
       <username>${env.USERNAME}</username>
       <password>${env.PASSWORD}</password>
