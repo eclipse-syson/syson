@@ -42,7 +42,10 @@
   </pluginRepositories>
 
 	<modules>
-		<module>/backend</module>
+		<module>backend/application</module>
+		<module>backend/metamodel</module>
+		<module>backend/services</module>
+		<module>backend/views</module>
 	</modules>
 
 	<profiles>
