@@ -28,7 +28,7 @@
           <url>https://maven.pkg.github.com/eclipse-sirius/sirius-emf-json</url>
         </repository>
         <repository>
-          <id>github-syson</id>
+          <id>github</id>
           <name>SysON - Maven Packages</name>
           <url>https://maven.pkg.github.com/eclipse-syson/syson</url>
         </repository>
