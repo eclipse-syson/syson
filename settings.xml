@@ -27,11 +27,21 @@
           <name>Sirius EMF JSON - Maven Packages</name>
           <url>https://maven.pkg.github.com/eclipse-sirius/sirius-emf-json</url>
         </repository>
+        <repository>
+          <id>github-syson</id>
+          <name>SysON - Maven Packages</name>
+          <url>https://maven.pkg.github.com/eclipse-syson/syson</url>
+        </repository>
       </repositories>
     </profile>
   </profiles>
 
   <servers>
+    <server>
+      <id>github</id>
+      <username>${env.USERNAME}</username>
+      <password>${env.PASSWORD}</password>
+    </server>
     <server>
       <id>github-sirius-web</id>
       <username>${env.USERNAME}</username>
