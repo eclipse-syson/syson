@@ -90,7 +90,7 @@ jobs:
           USERNAME: ${{github.actor}}
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: mvn -B deploy -DdeployAtEnd=true --settings settings.xml
+        run: mvn -B deploy -DskipTests --settings settings.xml
 
       - name: Publish the frontend packages
         if: startsWith(github.ref, 'refs/tags/v')
