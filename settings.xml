@@ -47,5 +47,16 @@
       <username>${env.USERNAME}</username>
       <password>${env.PASSWORD}</password>
     </server>
+    <server>
+      <id>github</id>
+      <configuration>
+      <httpHeaders>
+        <property>
+        <name>Authorization</name>
+        <value>${env.PASSWORD}</value>
+        </property>
+      </httpHeaders>
+      </configuration>
+    </server>
   </servers>
 </settings>
