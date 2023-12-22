@@ -49,13 +49,15 @@
     </server>
     <server>
       <id>github</id>
+      <username>${env.USERNAME}</username>
+      <password>${env.PASSWORD}</password>
       <configuration>
-      <httpHeaders>
-        <property>
-        <name>Authorization</name>
-        <value>${env.PASSWORD}</value>
-        </property>
-      </httpHeaders>
+        <httpHeaders>
+          <property>
+          <name>Authorization</name>
+          <value>${env.PASSWORD}</value>
+          </property>
+        </httpHeaders>
       </configuration>
     </server>
   </servers>
