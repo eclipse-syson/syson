@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,16 +14,17 @@
  * This code has been fully inspired from PackageNodeConverterHandler.ts in https://github.com/PapyrusSirius/papyrus-web
  */
 import {
-  BorderNodePositon,
+  BorderNodePosition,
   ConnectionHandle,
   GQLDiagram,
+  GQLDiagramDescription,
   GQLEdge,
   GQLNode,
   GQLNodeDescription,
   GQLNodeStyle,
   GQLViewModifier,
   IConvertEngine,
-  INodeConverterHandler,
+  INodeConverter,
   convertHandles,
   convertLabelStyle,
   convertLineStyle,
@@ -68,13 +69,14 @@ const toPackageNode = (
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
     },
-    label: undefined,
+    insideLabel: null,
+    outsideLabels: {},
     faded: state === GQLViewModifier.Faded,
     isBorderNode: isBorderNode,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
     defaultHeight: gqlNode.defaultHeight,
-    borderNodePosition: isBorderNode ? BorderNodePositon.EAST : null,
+    borderNodePosition: isBorderNode ? BorderNodePosition.EAST : null,
     connectionHandles,
     labelEditable,
     isNew,
@@ -82,10 +84,11 @@ const toPackageNode = (
 
   if (insideLabel) {
     const labelStyle = insideLabel.style;
-    data.label = {
+    data.insideLabel = {
       id: insideLabel.id,
       text: insideLabel.text,
       isHeader: insideLabel.isHeader,
+      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
       style: {
         display: 'flex',
         flexDirection: 'row',
@@ -137,7 +140,7 @@ const toPackageNode = (
   return node;
 };
 
-export class SysMLPackageNodeConverterHandler implements INodeConverterHandler {
+export class SysMLPackageNodeConverter implements INodeConverter {
   canHandle(gqlNode: GQLNode<GQLNodeStyle>) {
     return gqlNode.style.__typename === 'SysMLPackageNodeStyle';
   }
@@ -150,38 +153,34 @@ export class SysMLPackageNodeConverterHandler implements INodeConverterHandler {
     parentNode: GQLNode<GQLNodeStyle> | null,
     isBorderNode: boolean,
     nodes: Node[],
+    diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
-    const nodeDescription = this.findNodeDescription(nodeDescriptions, gqlNode.descriptionId);
-    nodes.push(toPackageNode(gqlDiagram, gqlNode, parentNode, nodeDescription ?? undefined, isBorderNode, gqlEdges));
+    const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
+    nodes.push(toPackageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
+    const childNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.childNodeDescriptionIds ?? []).flatMap(
+      (nodeDescriptionId) =>
+        diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)
+    );
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.borderNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.borderNodeDescriptions ?? []
+      diagramDescription,
+      borderNodeDescriptions
     );
     convertEngine.convertNodes(
       gqlDiagram,
       gqlNode.childNodes ?? [],
       gqlNode,
       nodes,
-      nodeDescription?.childNodeDescriptions ?? []
+      diagramDescription,
+      childNodeDescriptions
     );
-  }
-
-  findNodeDescription(nodeDescriptions: GQLNodeDescription[], id: string): GQLNodeDescription | null {
-    for (let nodeDescription of nodeDescriptions) {
-      if (nodeDescription.id === id) {
-        return nodeDescription;
-      }
-      if (nodeDescription.childNodeDescriptions) {
-        let subNodeDescription = this.findNodeDescription(nodeDescription.childNodeDescriptions, id);
-        if (subNodeDescription !== null) {
-          return subNodeDescription;
-        }
-      }
-    }
-    return null;
   }
 }

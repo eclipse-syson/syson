@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -133,9 +133,9 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
   };
 
   const label: any = {
-    ...data.label,
+    ...data.insideLabel,
     style: {
-      ...data?.label?.style,
+      ...data?.insideLabel?.style,
       whiteSpace: 'pre',
       overflow: 'hidden',
       justifyContent: 'flex-start',
@@ -163,8 +163,10 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
-        data-testid={`SysMLPackage - ${data?.label?.text}`}>
-        {selected ? <DiagramElementPalette diagramElementId={id} labelId={data.label ? data.label.id : null} /> : null}
+        data-testid={`SysMLPackage - ${data?.insideLabel?.text}`}>
+        {selected ? (
+          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+        ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
@@ -176,12 +178,12 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
               selected,
               hoveredNode?.id === id,
               data.faded,
-              data.label ? data.label.text.length : 0
+              data.insideLabel ? data.insideLabel.text.length : 0
             ),
             ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
             ...dropFeedbackStyle,
           }}>
-          {data.label ? <Label diagramElementId={id} label={label} faded={data.faded} transform="" /> : null}
+          {data.insideLabel ? <Label diagramElementId={id} label={label} faded={data.faded} transform="" /> : null}
         </div>
         <div
           style={{

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ import { sysonTheme } from './theme/sysonTheme';
 import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import {
   SysMLPackageNode,
-  SysMLPackageNodeConverterHandler,
+  SysMLPackageNodeConverter,
   SysMLPackageNodeLayoutHandler,
 } from '@eclipse-syson/syson-components';
 import './Sprotty.css';
@@ -114,7 +114,7 @@ const nodeTypeRegistry: NodeTypeRegistry = {
     },
   ],
   nodeLayoutHandlers: [new SysMLPackageNodeLayoutHandler()],
-  nodeConverterHandlers: [new SysMLPackageNodeConverterHandler()],
+  nodeConverters: [new SysMLPackageNodeConverter()],
   nodeTypeContributions: [<NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />],
 };
 
