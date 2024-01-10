@@ -1,0 +1,75 @@
+= Handle imports and namespaces in SysON
+
+== Problem
+
+Imports and namespaces are not handled in SysON.
+Today, even if you can create those elements from the Explorer view, you can also reference an element that is outside of the scope without any error.
+For exemple, you have:
+
+* a PartDefinition in a Package P1
+* a PartUsage in a Package P2.
+P2 is not a sub-package of P1.
+P2 does not import P1, nor any of its elements.
+
+Then, PartUsage can have PartDefinition as type without any error in SysON.
+
+== Key Result
+
+The solution should allow users to handle imports easily (i.e. add and remove them automatically) when referencing outside elements from a diagram or the Details view.
+
+In any case, the solution must warn users that an outside element (i.e. which is out of the current scope) is referenced without import.
+
+== Solution
+
+There are 3 main types of imports:
+
+1. `MembershipImport` (e.g. import MyPackage::MyType)
+2. `NamespaceImport` (e.g. import MyPackage::*)
+3. recursive `NamespaceImport`  (e.g. import MyPackage::**)
+
+These 3 types cannot be easily handled together, automatically.
+
+Only one will be, the `NamespaceImport` (solution 2 above).
+
+=== Referencing an outside element
+
+When referencing an outside element from a diagram (e.g. through direct edit, or by connect an element to another), then a `NamespaceImport` should be automatically created if needed.
+
+When referencing an outside element from the Details view (i.e. through a reference widget), then a `NamespaceImport` should be automatically created if needed.
+
+For both cases, if an existing `Import` (`MembershipImport` or `NamespaceImport`) already handles the element to import, then no new `Import` will be created.
+
+When referencing an outside element with its qualified name, nothing will happen, as of today.
+No import is required when referencing an element with its qualified name.
+
+When referencing an outside element, and its name is used by severals elements in standard libraries and other models, the following rule will apply:
+
+1. If an element with this name exists in a standard library, then this element will be used for the import (e.g. the String type).
+2. If an element with this name does not exist in a standard library, then the first element found in models with this name will be used.
+3. If any element with this name exists, then a new element will be created.
+
+=== Unreferencing an outside element
+
+When unreferencing an outside element, then if it is the last outside element corresponding to an `Import` (`MembershipImport` or `NamespaceImport`), this `Import` should be automatically removed.
+It will allow to keep the models as clean as possible.
+
+=== Referencing a element from the scope
+
+When referencing an element from the scope, nothing will happen, as of today.
+There is nothing to do about imports regarding the SysMLv2 specification about that.
+
+=== Inheritance for imports
+
+It is important to remember that any sub-element (e.g. a `PartUsage` inside a `PartDefinition`, a `Package` inside another `Package`)) benefits from all imports of its container `Element` (and recursively).
+
+=== Display imports in diagrams
+
+It will be possible to display `Import` (`MembershipImport` or `NamespaceImport`) on diagrams, by drag & dropping them from the Explorer view.
+
+The existing "add all elements" action will not add the `Import` elements.
+
+=== Validation
+
+The Validation view will display a message when, in a given scope, an outside element is used without its associated `Import`.
+
+A quick-fix will be available somewhere in the UI in the future, allowing to fix imports problems.
