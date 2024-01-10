@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.emf.services.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.springframework.stereotype.Service;
 
 /**
@@ -49,8 +49,8 @@ public class EMFValidationService implements IValidationService {
     public List<Object> validate(IEditingContext editingContext) {
         // @formatter:off
         return Optional.of(editingContext)
-            .filter(EditingContext.class::isInstance)
-            .map(EditingContext.class::cast)
+            .filter(IEMFEditingContext.class::isInstance)
+            .map(IEMFEditingContext.class::cast)
             .map(this::validate)
             .orElseGet(List::of);
         // @formatter:on
@@ -93,10 +93,6 @@ public class EMFValidationService implements IValidationService {
             // @formatter:on
         }
         return false;
-    }
-
-    private List<Object> validate(EditingContext editingContext) {
-        return List.of();
     }
 
     private Diagnostician getNewDiagnostician() {

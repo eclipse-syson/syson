@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
-import org.eclipse.sirius.components.emf.services.EditingContext;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -58,6 +58,7 @@ import org.eclipse.sirius.web.services.api.document.UploadDocumentInput;
 import org.eclipse.sirius.web.services.api.document.UploadDocumentSuccessPayload;
 import org.eclipse.sirius.web.services.api.projects.Nature;
 import org.eclipse.sirius.web.services.documents.EObjectRandomIDManager;
+import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.messages.IServicesMessageService;
 import org.eclipse.sirius.web.services.projects.api.IEditingContextMetadataProvider;
 import org.slf4j.Logger;
@@ -118,9 +119,9 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
             UploadFile file = uploadDocumentInput.file();
 
             Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
-                    .filter(EditingContext.class::isInstance)
-                    .map(EditingContext.class::cast)
-                    .map(EditingContext::getDomain);
+                    .filter(IEMFEditingContext.class::isInstance)
+                    .map(IEMFEditingContext.class::cast)
+                    .map(IEMFEditingContext::getDomain);
 
             String name = file.getName().trim();
             if (optionalEditingDomain.isPresent()) {
