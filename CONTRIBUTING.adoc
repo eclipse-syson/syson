@@ -1,0 +1,70 @@
+= Contributing to Eclipse SysON
+
+Thanks for your interest in this project.
+
+== Project description
+
+The Eclipse SysON project provides an open-source web-based tooling to edit
+SysML v2 models. It includes a set of editors (graphical, textual, form-based,
+etc.) enabling users to build the various parts of system models. Capitalizing
+on the capabilities of the Sirius Web platform, SysON offers a user-friendly
+interface, facilitating seamless model creation, modification, and
+visualization. Furthermore, Eclipse SysON is the core of the SysMLv2 model
+editing feature of Papyrus and seamlessly enables co-design of SysMLv2 models
+alongside Eclipse Capella. Additionally, Eclipse SysON embraces the standard API
+for interconnection, enhancing the interoperability of these vital modeling
+resources and will support the SysML v2 textual specifications as an exchange
+format, to ensure seamless transitions.Â Through this initiative, we seek to
+foster growth within the MBSE community by providing a robust and accessible
+tool that harmonizes seamlessly with modern modeling landscapes. Â
+
+- https://projects.eclipse.org/projects/modeling.syson
+
+== Terms of Use
+
+This repository is subject to the Terms of Use of the Eclipse Foundation
+
+- https://www.eclipse.org/legal/termsofuse.php
+
+== Developer resources
+
+Information regarding source code management, builds, coding standards, and
+more.
+
+- https://projects.eclipse.org/projects/modeling.syson/developer
+
+The project maintains the following source code repositories
+
+- https://github.com/eclipse-syson/eclipse-syson.github.io
+- https://github.com/eclipse-syson/syson
+- https://github.com/eclipse-syson/syson-website
+
+== Eclipse Development Process
+
+This Eclipse Foundation open project is governed by the Eclipse Foundation
+Development Process and operates under the terms of the Eclipse IP Policy.
+
+- https://eclipse.org/projects/dev_process
+- https://www.eclipse.org/org/documents/Eclipse_IP_Policy.pdf
+
+== Eclipse Contributor Agreement
+
+In order to be able to contribute to Eclipse Foundation projects you must
+electronically sign the Eclipse Contributor Agreement (ECA).
+
+- https://www.eclipse.org/legal/ECA.php
+
+The ECA provides the Eclipse Foundation with a permanent record that you agree
+that each of your contributions will comply with the commitments documented in
+the Developer Certificate of Origin (DCO). Having an ECA on file associated with
+the email address matching the "Author" field of your contribution's Git commits
+fulfills the DCO's requirement that you sign-off on your contributions.
+
+For more information, please see the Eclipse Committer Handbook:
+https://www.eclipse.org/projects/handbook/#resources-commit
+
+== Contact
+
+Contact the project developers via the project's "dev" list.
+
+- https://accounts.eclipse.org/mailing-list/syson-dev
