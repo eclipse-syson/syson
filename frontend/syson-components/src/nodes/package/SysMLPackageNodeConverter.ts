@@ -21,6 +21,7 @@ import {
   GQLEdge,
   GQLNode,
   GQLNodeDescription,
+  GQLNodeLayoutData,
   GQLNodeStyle,
   GQLViewModifier,
   IConvertEngine,
@@ -28,6 +29,7 @@ import {
   convertHandles,
   convertLabelStyle,
   convertLineStyle,
+  convertOutsideLabels,
 } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
 import { Node, XYPosition } from 'reactflow';
 import { GQLSysMLPackageNodeStyle, SysMLPackageNodeData } from './SysMLPackageNode.types';
@@ -40,7 +42,7 @@ const toPackageNode = (
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
   nodeDescription: GQLNodeDescription | undefined,
   isBorderNode: boolean,
-  gqlEdge: GQLEdge[]
+  gqlEdges: GQLEdge[]
 ): Node<SysMLPackageNodeData> => {
   const {
     targetObjectId,
@@ -49,13 +51,19 @@ const toPackageNode = (
     descriptionId,
     id,
     insideLabel,
+    outsideLabels,
     state,
+    pinned,
     style,
     labelEditable,
   } = gqlNode;
 
-  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdge);
+  const connectionHandles: ConnectionHandle[] = convertHandles(gqlNode, gqlEdges);
+  const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
+    (nodeLayoutData) => nodeLayoutData.id === id
+  );
   const isNew = gqlDiagram.layoutData.nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id) === undefined;
+  const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
 
   const data: SysMLPackageNodeData = {
     targetObjectId,
@@ -70,8 +78,9 @@ const toPackageNode = (
       borderStyle: convertLineStyle(style.borderStyle),
     },
     insideLabel: null,
-    outsideLabels: {},
+    outsideLabels: convertOutsideLabels(outsideLabels),
     faded: state === GQLViewModifier.Faded,
+    pinned,
     isBorderNode: isBorderNode,
     nodeDescription,
     defaultWidth: gqlNode.defaultWidth,
@@ -80,6 +89,7 @@ const toPackageNode = (
     connectionHandles,
     labelEditable,
     isNew,
+    resizedByUser,
   };
 
   if (insideLabel) {
