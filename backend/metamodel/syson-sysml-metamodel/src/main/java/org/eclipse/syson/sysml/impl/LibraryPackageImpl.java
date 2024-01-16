@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,11 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.sysml.LibraryPackage;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -95,6 +97,16 @@ public class LibraryPackageImpl extends PackageImpl implements LibraryPackage {
         isStandard = newIsStandard;
         if (eNotificationRequired())
             eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.LIBRARY_PACKAGE__IS_STANDARD, oldIsStandard, isStandard));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public Namespace libraryNamespace() {
+        return this;
     }
 
     /**

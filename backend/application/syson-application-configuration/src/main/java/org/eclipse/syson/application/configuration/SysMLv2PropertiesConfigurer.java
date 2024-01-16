@@ -182,11 +182,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("Redefines");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
-        refWidget.setIsEnabledExpression("aql:true");
-        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression("aql:self.setNewValue(self.eClass().getEStructuralFeature(" + SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName() + "), "
-                + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
-        refWidget.getBody().add(setNewValueOperation);
+        refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
 
         group.getChildren().add(refWidget);
 
@@ -205,11 +201,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("Specializes");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
-        refWidget.setIsEnabledExpression("aql:true");
-        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression("aql:self.setNewValue(self.eClass().getEStructuralFeature(" + SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName() + "), "
-                + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
-        refWidget.getBody().add(setNewValueOperation);
+        refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
 
         group.getChildren().add(refWidget);
 
@@ -228,11 +220,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("Subsets");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
-        refWidget.setIsEnabledExpression("aql:true");
-        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression("aql:self.setNewValue(self.eClass().getEStructuralFeature(" + SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName() + "), "
-                + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
-        refWidget.getBody().add(setNewValueOperation);
+        refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
 
         group.getChildren().add(refWidget);
 
@@ -251,11 +239,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("Typed by");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
-        refWidget.setIsEnabledExpression("aql:true");
-        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression("aql:self.setNewValue(self.eClass().getEStructuralFeature(" + SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName() + "), "
-                + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
-        refWidget.getBody().add(setNewValueOperation);
+        refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
 
         group.getChildren().add(refWidget);
 
@@ -335,7 +319,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         textfield.setName("TextfieldWidget");
         textfield.setLabelExpression("aql:self.getDetailsViewLabel(eStructuralFeature)");
         textfield.setValueExpression("aql:self.eGet(eStructuralFeature)");
-        textfield.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly())");
+        textfield.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly() or self.isReadOnly())");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue(eStructuralFeature, " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
         textfield.getBody().add(setNewValueOperation);
@@ -347,7 +331,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         checkbox.setName("CheckboxWidget");
         checkbox.setLabelExpression("aql:self.getDetailsViewLabel(eStructuralFeature)");
         checkbox.setValueExpression("aql:self.eGet(eStructuralFeature)");
-        checkbox.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly())");
+        checkbox.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly() or self.isReadOnly())");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue(eStructuralFeature, " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
         checkbox.getBody().add(setNewValueOperation);
@@ -361,7 +345,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         radio.setCandidatesExpression("aql:self.getEnumCandidates(eStructuralFeature)");
         radio.setCandidateLabelExpression("aql:candidate.name");
         radio.setValueExpression("aql:self.getEnumValue(eStructuralFeature)");
-        radio.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly())");
+        radio.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly() or self.isReadOnly())");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue(eStructuralFeature, newValue.instance)");
         radio.getBody().add(setNewValueOperation);
@@ -374,10 +358,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("aql:self.getDetailsViewLabel(eStructuralFeature)");
         refWidget.setReferenceNameExpression("aql:eStructuralFeature.name");
         refWidget.setReferenceOwnerExpression("aql:self");
-        refWidget.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly())");
-        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression("aql:self.setNewValue(eStructuralFeature, " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
-        refWidget.getBody().add(setNewValueOperation);
+        refWidget.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly() or self.isReadOnly())");
         return refWidget;
     }
 }

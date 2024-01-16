@@ -4,16 +4,19 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/52[#52] [services] All `findUsageByName` and `findDefinitionByName` method have been replaced by the new `findByNameAndType` in `org.eclipse.syson.services.UtilService`.
+
 === Dependency update
 
 - Switch to Sirius Web 2023.12.11
+- https://github.com/eclipse-syson/syson/issues/52[#52] [metamodel] SysON SysMLv2 metamodel module now depends on `org.eclipse.emf.ecore.xmi` and `java-uuid-generator`.
 
 === Bug fixes
 
 === New Features
 
 - https://github.com/eclipse-syson/syson/issues/48[#48] [general-view] Display help background message on empty general-view diagram.
-
+- https://github.com/eclipse-syson/syson/issues/52[#52] [syson] Add support for SysMLv2 standard librairies.
 
 == v2023.12.0
 

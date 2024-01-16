@@ -9,7 +9,7 @@
     editorPluginID="syson-sysml-metamodel-editor" testsPluginID="syson-sysml-metamodel-tests"
     operationReflection="true" importOrganizing="true">
   <foreignModel>sysml.ecore</foreignModel>
-  <genPackages prefix="Sysml" basePackage="org.eclipse.syson" disposableProviderFactory="true"
+  <genPackages prefix="Sysml" basePackage="org.eclipse.syson" resource="XMI" disposableProviderFactory="true"
       literalsInterface="false" extensibleProviderFactory="true" childCreationExtenders="true"
       ecorePackage="sysml.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="sysml.ecore#//FeatureDirectionKind">

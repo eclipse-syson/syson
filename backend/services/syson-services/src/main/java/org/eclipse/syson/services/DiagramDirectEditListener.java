@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,8 +31,10 @@ import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressi
 import org.eclipse.syson.services.grammars.DirectEditParser.SubsettingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TypingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ValueExpressionContext;
+import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralBoolean;
@@ -47,6 +49,7 @@ import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 
 /**
@@ -129,7 +132,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             var identifier = ctx.Name();
             if (identifier != null) {
                 var typeAsString = identifier.getText();
-                var definition = this.utilService.findDefinitionByName(this.element, typeAsString);
+                var definition = this.utilService.findByNameAndType(this.element, typeAsString, Type.class);
                 if (definition == null) {
                     var containerPackage = this.utilService.getContainerPackage(this.element);
                     var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
@@ -181,7 +184,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         var identifier = ctx.Name();
         if (identifier != null) {
             var definitionAsString = identifier.getText();
-            var definition = this.utilService.findDefinitionByName(subclassificationDef, definitionAsString);
+            var definition = this.utilService.findByNameAndType(subclassificationDef, definitionAsString, Classifier.class);
             if (definition == null) {
                 var containerPackage = this.utilService.getContainerPackage(subclassificationDef);
                 var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
@@ -220,7 +223,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         var identifier = ctx.Name();
         if (identifier != null) {
             var usageAsString = identifier.getText();
-            var usage = this.utilService.findUsageByName(subsettingUsage, usageAsString);
+            var usage = this.utilService.findByNameAndType(subsettingUsage, usageAsString, Feature.class);
             if (usage == null) {
                 var containerPackage = this.utilService.getContainerPackage(subsettingUsage);
                 var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
@@ -264,7 +267,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             var identifier = ctx.Name();
             if (identifier != null) {
                 var usageAsString = identifier.getText();
-                var usage = this.utilService.findUsageByName(redefining, usageAsString);
+                var usage = this.utilService.findByNameAndType(redefining, usageAsString, Feature.class);
                 if (usage == null) {
                     var containerPackage = this.utilService.getContainerPackage(redefining);
                     var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();

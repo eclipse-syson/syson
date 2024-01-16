@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRe
 import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.springframework.context.annotation.Configuration;
 
 import io.micrometer.core.instrument.MeterRegistry;
@@ -65,6 +66,7 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
     public static List<EObject> getEmptySysMLv2Content() {
         var package1 = SysmlFactory.eINSTANCE.createPackage();
         package1.setDeclaredName("Package 1");
+        package1.setElementId(ElementUtil.generateUUID(package1).toString());
         return List.of(package1);
     }
 }

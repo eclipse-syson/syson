@@ -36,7 +36,6 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -149,8 +148,10 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
 
     private Optional<RepresentationMetadata> initializeBatmobileProject(IEditingContext editingContext) {
         Optional<RepresentationMetadata> result = Optional.empty();
-        Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext).filter(EditingContext.class::isInstance).map(EditingContext.class::cast)
-                .map(EditingContext::getDomain);
+        Optional<AdapterFactoryEditingDomain> optionalEditingDomain = Optional.of(editingContext)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain);
         Optional<UUID> editingContextUUID = new IDParser().parse(editingContext.getId());
         if (optionalEditingDomain.isPresent() && editingContextUUID.isPresent()) {
             AdapterFactoryEditingDomain adapterFactoryEditingDomain = optionalEditingDomain.get();
