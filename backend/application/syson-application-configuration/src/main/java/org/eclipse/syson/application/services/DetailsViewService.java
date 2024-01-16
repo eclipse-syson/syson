@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,10 +23,12 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -76,6 +78,15 @@ public class DetailsViewService {
 
     public boolean isReadOnly(EStructuralFeature eStructuralFeature) {
         return eStructuralFeature.isDerived() || !eStructuralFeature.isChangeable();
+    }
+
+    public boolean isReadOnly(Element element) {
+        Resource resource = element.eResource();
+        if (resource != null) {
+            return resource.getURI().toString().startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME)
+                    || resource.getURI().toString().startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME);
+        }
+        return false;
     }
 
     public boolean isReadOnlyStringAttribute(EStructuralFeature eStructuralFeature) {

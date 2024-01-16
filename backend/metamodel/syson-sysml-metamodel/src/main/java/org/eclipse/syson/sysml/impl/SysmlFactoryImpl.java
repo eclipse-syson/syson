@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  */
 package org.eclipse.syson.sysml.impl;
 
-import java.util.UUID;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EObject;
@@ -21,6 +19,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.syson.sysml.*;
+import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -297,7 +296,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AcceptActionUsage createAcceptActionUsage() {
         AcceptActionUsageImpl acceptActionUsage = new AcceptActionUsageImpl();
-        acceptActionUsage.setElementId(UUID.randomUUID().toString());
+        acceptActionUsage.setElementId(ElementUtil.generateUUID(acceptActionUsage).toString());
         return acceptActionUsage;
     }
 
@@ -309,7 +308,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ActionDefinition createActionDefinition() {
         ActionDefinitionImpl actionDefinition = new ActionDefinitionImpl();
-        actionDefinition.setElementId(UUID.randomUUID().toString());
+        actionDefinition.setElementId(ElementUtil.generateUUID(actionDefinition).toString());
         return actionDefinition;
     }
 
@@ -321,7 +320,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ActionUsage createActionUsage() {
         ActionUsageImpl actionUsage = new ActionUsageImpl();
-        actionUsage.setElementId(UUID.randomUUID().toString());
+        actionUsage.setElementId(ElementUtil.generateUUID(actionUsage).toString());
         return actionUsage;
     }
 
@@ -333,7 +332,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ActorMembership createActorMembership() {
         ActorMembershipImpl actorMembership = new ActorMembershipImpl();
-        actorMembership.setElementId(UUID.randomUUID().toString());
+        actorMembership.setElementId(ElementUtil.generateUUID(actorMembership).toString());
         return actorMembership;
     }
 
@@ -345,7 +344,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AllocationDefinition createAllocationDefinition() {
         AllocationDefinitionImpl allocationDefinition = new AllocationDefinitionImpl();
-        allocationDefinition.setElementId(UUID.randomUUID().toString());
+        allocationDefinition.setElementId(ElementUtil.generateUUID(allocationDefinition).toString());
         return allocationDefinition;
     }
 
@@ -357,7 +356,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AllocationUsage createAllocationUsage() {
         AllocationUsageImpl allocationUsage = new AllocationUsageImpl();
-        allocationUsage.setElementId(UUID.randomUUID().toString());
+        allocationUsage.setElementId(ElementUtil.generateUUID(allocationUsage).toString());
         return allocationUsage;
     }
 
@@ -369,7 +368,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AnalysisCaseDefinition createAnalysisCaseDefinition() {
         AnalysisCaseDefinitionImpl analysisCaseDefinition = new AnalysisCaseDefinitionImpl();
-        analysisCaseDefinition.setElementId(UUID.randomUUID().toString());
+        analysisCaseDefinition.setElementId(ElementUtil.generateUUID(analysisCaseDefinition).toString());
         return analysisCaseDefinition;
     }
 
@@ -381,7 +380,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AnalysisCaseUsage createAnalysisCaseUsage() {
         AnalysisCaseUsageImpl analysisCaseUsage = new AnalysisCaseUsageImpl();
-        analysisCaseUsage.setElementId(UUID.randomUUID().toString());
+        analysisCaseUsage.setElementId(ElementUtil.generateUUID(analysisCaseUsage).toString());
         return analysisCaseUsage;
     }
 
@@ -393,7 +392,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AnnotatingElement createAnnotatingElement() {
         AnnotatingElementImpl annotatingElement = new AnnotatingElementImpl();
-        annotatingElement.setElementId(UUID.randomUUID().toString());
+        annotatingElement.setElementId(ElementUtil.generateUUID(annotatingElement).toString());
         return annotatingElement;
     }
 
@@ -405,7 +404,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Annotation createAnnotation() {
         AnnotationImpl annotation = new AnnotationImpl();
-        annotation.setElementId(UUID.randomUUID().toString());
+        annotation.setElementId(ElementUtil.generateUUID(annotation).toString());
         return annotation;
     }
 
@@ -417,7 +416,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AssertConstraintUsage createAssertConstraintUsage() {
         AssertConstraintUsageImpl assertConstraintUsage = new AssertConstraintUsageImpl();
-        assertConstraintUsage.setElementId(UUID.randomUUID().toString());
+        assertConstraintUsage.setElementId(ElementUtil.generateUUID(assertConstraintUsage).toString());
         return assertConstraintUsage;
     }
 
@@ -429,7 +428,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AssignmentActionUsage createAssignmentActionUsage() {
         AssignmentActionUsageImpl assignmentActionUsage = new AssignmentActionUsageImpl();
-        assignmentActionUsage.setElementId(UUID.randomUUID().toString());
+        assignmentActionUsage.setElementId(ElementUtil.generateUUID(assignmentActionUsage).toString());
         return assignmentActionUsage;
     }
 
@@ -441,7 +440,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Association createAssociation() {
         AssociationImpl association = new AssociationImpl();
-        association.setElementId(UUID.randomUUID().toString());
+        association.setElementId(ElementUtil.generateUUID(association).toString());
         return association;
     }
 
@@ -453,7 +452,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AssociationStructure createAssociationStructure() {
         AssociationStructureImpl associationStructure = new AssociationStructureImpl();
-        associationStructure.setElementId(UUID.randomUUID().toString());
+        associationStructure.setElementId(ElementUtil.generateUUID(associationStructure).toString());
         return associationStructure;
     }
 
@@ -465,7 +464,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AttributeDefinition createAttributeDefinition() {
         AttributeDefinitionImpl attributeDefinition = new AttributeDefinitionImpl();
-        attributeDefinition.setElementId(UUID.randomUUID().toString());
+        attributeDefinition.setElementId(ElementUtil.generateUUID(attributeDefinition).toString());
         return attributeDefinition;
     }
 
@@ -477,7 +476,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public AttributeUsage createAttributeUsage() {
         AttributeUsageImpl attributeUsage = new AttributeUsageImpl();
-        attributeUsage.setElementId(UUID.randomUUID().toString());
+        attributeUsage.setElementId(ElementUtil.generateUUID(attributeUsage).toString());
         return attributeUsage;
     }
 
@@ -489,7 +488,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Behavior createBehavior() {
         BehaviorImpl behavior = new BehaviorImpl();
-        behavior.setElementId(UUID.randomUUID().toString());
+        behavior.setElementId(ElementUtil.generateUUID(behavior).toString());
         return behavior;
     }
 
@@ -501,7 +500,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public BindingConnector createBindingConnector() {
         BindingConnectorImpl bindingConnector = new BindingConnectorImpl();
-        bindingConnector.setElementId(UUID.randomUUID().toString());
+        bindingConnector.setElementId(ElementUtil.generateUUID(bindingConnector).toString());
         return bindingConnector;
     }
 
@@ -513,7 +512,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public BindingConnectorAsUsage createBindingConnectorAsUsage() {
         BindingConnectorAsUsageImpl bindingConnectorAsUsage = new BindingConnectorAsUsageImpl();
-        bindingConnectorAsUsage.setElementId(UUID.randomUUID().toString());
+        bindingConnectorAsUsage.setElementId(ElementUtil.generateUUID(bindingConnectorAsUsage).toString());
         return bindingConnectorAsUsage;
     }
 
@@ -525,7 +524,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public BooleanExpression createBooleanExpression() {
         BooleanExpressionImpl booleanExpression = new BooleanExpressionImpl();
-        booleanExpression.setElementId(UUID.randomUUID().toString());
+        booleanExpression.setElementId(ElementUtil.generateUUID(booleanExpression).toString());
         return booleanExpression;
     }
 
@@ -537,7 +536,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public CalculationDefinition createCalculationDefinition() {
         CalculationDefinitionImpl calculationDefinition = new CalculationDefinitionImpl();
-        calculationDefinition.setElementId(UUID.randomUUID().toString());
+        calculationDefinition.setElementId(ElementUtil.generateUUID(calculationDefinition).toString());
         return calculationDefinition;
     }
 
@@ -549,7 +548,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public CalculationUsage createCalculationUsage() {
         CalculationUsageImpl calculationUsage = new CalculationUsageImpl();
-        calculationUsage.setElementId(UUID.randomUUID().toString());
+        calculationUsage.setElementId(ElementUtil.generateUUID(calculationUsage).toString());
         return calculationUsage;
     }
 
@@ -561,7 +560,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public CaseDefinition createCaseDefinition() {
         CaseDefinitionImpl caseDefinition = new CaseDefinitionImpl();
-        caseDefinition.setElementId(UUID.randomUUID().toString());
+        caseDefinition.setElementId(ElementUtil.generateUUID(caseDefinition).toString());
         return caseDefinition;
     }
 
@@ -573,7 +572,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public CaseUsage createCaseUsage() {
         CaseUsageImpl caseUsage = new CaseUsageImpl();
-        caseUsage.setElementId(UUID.randomUUID().toString());
+        caseUsage.setElementId(ElementUtil.generateUUID(caseUsage).toString());
         return caseUsage;
     }
 
@@ -585,7 +584,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public org.eclipse.syson.sysml.Class createClass() {
         ClassImpl class_ = new ClassImpl();
-        class_.setElementId(UUID.randomUUID().toString());
+        class_.setElementId(ElementUtil.generateUUID(class_).toString());
         return class_;
     }
 
@@ -597,7 +596,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Classifier createClassifier() {
         ClassifierImpl classifier = new ClassifierImpl();
-        classifier.setElementId(UUID.randomUUID().toString());
+        classifier.setElementId(ElementUtil.generateUUID(classifier).toString());
         return classifier;
     }
 
@@ -609,7 +608,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public CollectExpression createCollectExpression() {
         CollectExpressionImpl collectExpression = new CollectExpressionImpl();
-        collectExpression.setElementId(UUID.randomUUID().toString());
+        collectExpression.setElementId(ElementUtil.generateUUID(collectExpression).toString());
         return collectExpression;
     }
 
@@ -621,7 +620,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Comment createComment() {
         CommentImpl comment = new CommentImpl();
-        comment.setElementId(UUID.randomUUID().toString());
+        comment.setElementId(ElementUtil.generateUUID(comment).toString());
         return comment;
     }
 
@@ -633,7 +632,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ConcernDefinition createConcernDefinition() {
         ConcernDefinitionImpl concernDefinition = new ConcernDefinitionImpl();
-        concernDefinition.setElementId(UUID.randomUUID().toString());
+        concernDefinition.setElementId(ElementUtil.generateUUID(concernDefinition).toString());
         return concernDefinition;
     }
 
@@ -645,7 +644,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ConcernUsage createConcernUsage() {
         ConcernUsageImpl concernUsage = new ConcernUsageImpl();
-        concernUsage.setElementId(UUID.randomUUID().toString());
+        concernUsage.setElementId(ElementUtil.generateUUID(concernUsage).toString());
         return concernUsage;
     }
 
@@ -657,7 +656,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ConjugatedPortDefinition createConjugatedPortDefinition() {
         ConjugatedPortDefinitionImpl conjugatedPortDefinition = new ConjugatedPortDefinitionImpl();
-        conjugatedPortDefinition.setElementId(UUID.randomUUID().toString());
+        conjugatedPortDefinition.setElementId(ElementUtil.generateUUID(conjugatedPortDefinition).toString());
         return conjugatedPortDefinition;
     }
 
@@ -669,7 +668,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ConjugatedPortTyping createConjugatedPortTyping() {
         ConjugatedPortTypingImpl conjugatedPortTyping = new ConjugatedPortTypingImpl();
-        conjugatedPortTyping.setElementId(UUID.randomUUID().toString());
+        conjugatedPortTyping.setElementId(ElementUtil.generateUUID(conjugatedPortTyping).toString());
         return conjugatedPortTyping;
     }
 
@@ -681,7 +680,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Conjugation createConjugation() {
         ConjugationImpl conjugation = new ConjugationImpl();
-        conjugation.setElementId(UUID.randomUUID().toString());
+        conjugation.setElementId(ElementUtil.generateUUID(conjugation).toString());
         return conjugation;
     }
 
@@ -693,7 +692,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ConnectionDefinition createConnectionDefinition() {
         ConnectionDefinitionImpl connectionDefinition = new ConnectionDefinitionImpl();
-        connectionDefinition.setElementId(UUID.randomUUID().toString());
+        connectionDefinition.setElementId(ElementUtil.generateUUID(connectionDefinition).toString());
         return connectionDefinition;
     }
 
@@ -705,7 +704,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ConnectionUsage createConnectionUsage() {
         ConnectionUsageImpl connectionUsage = new ConnectionUsageImpl();
-        connectionUsage.setElementId(UUID.randomUUID().toString());
+        connectionUsage.setElementId(ElementUtil.generateUUID(connectionUsage).toString());
         return connectionUsage;
     }
 
@@ -717,7 +716,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Connector createConnector() {
         ConnectorImpl connector = new ConnectorImpl();
-        connector.setElementId(UUID.randomUUID().toString());
+        connector.setElementId(ElementUtil.generateUUID(connector).toString());
         return connector;
     }
 
@@ -729,7 +728,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ConstraintDefinition createConstraintDefinition() {
         ConstraintDefinitionImpl constraintDefinition = new ConstraintDefinitionImpl();
-        constraintDefinition.setElementId(UUID.randomUUID().toString());
+        constraintDefinition.setElementId(ElementUtil.generateUUID(constraintDefinition).toString());
         return constraintDefinition;
     }
 
@@ -741,7 +740,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ConstraintUsage createConstraintUsage() {
         ConstraintUsageImpl constraintUsage = new ConstraintUsageImpl();
-        constraintUsage.setElementId(UUID.randomUUID().toString());
+        constraintUsage.setElementId(ElementUtil.generateUUID(constraintUsage).toString());
         return constraintUsage;
     }
 
@@ -753,7 +752,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public DataType createDataType() {
         DataTypeImpl dataType = new DataTypeImpl();
-        dataType.setElementId(UUID.randomUUID().toString());
+        dataType.setElementId(ElementUtil.generateUUID(dataType).toString());
         return dataType;
     }
 
@@ -765,7 +764,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public DecisionNode createDecisionNode() {
         DecisionNodeImpl decisionNode = new DecisionNodeImpl();
-        decisionNode.setElementId(UUID.randomUUID().toString());
+        decisionNode.setElementId(ElementUtil.generateUUID(decisionNode).toString());
         return decisionNode;
     }
 
@@ -777,7 +776,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Definition createDefinition() {
         DefinitionImpl definition = new DefinitionImpl();
-        definition.setElementId(UUID.randomUUID().toString());
+        definition.setElementId(ElementUtil.generateUUID(definition).toString());
         return definition;
     }
 
@@ -789,7 +788,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Dependency createDependency() {
         DependencyImpl dependency = new DependencyImpl();
-        dependency.setElementId(UUID.randomUUID().toString());
+        dependency.setElementId(ElementUtil.generateUUID(dependency).toString());
         return dependency;
     }
 
@@ -801,7 +800,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Differencing createDifferencing() {
         DifferencingImpl differencing = new DifferencingImpl();
-        differencing.setElementId(UUID.randomUUID().toString());
+        differencing.setElementId(ElementUtil.generateUUID(differencing).toString());
         return differencing;
     }
 
@@ -813,7 +812,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Disjoining createDisjoining() {
         DisjoiningImpl disjoining = new DisjoiningImpl();
-        disjoining.setElementId(UUID.randomUUID().toString());
+        disjoining.setElementId(ElementUtil.generateUUID(disjoining).toString());
         return disjoining;
     }
 
@@ -825,7 +824,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Documentation createDocumentation() {
         DocumentationImpl documentation = new DocumentationImpl();
-        documentation.setElementId(UUID.randomUUID().toString());
+        documentation.setElementId(ElementUtil.generateUUID(documentation).toString());
         return documentation;
     }
 
@@ -837,7 +836,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ElementFilterMembership createElementFilterMembership() {
         ElementFilterMembershipImpl elementFilterMembership = new ElementFilterMembershipImpl();
-        elementFilterMembership.setElementId(UUID.randomUUID().toString());
+        elementFilterMembership.setElementId(ElementUtil.generateUUID(elementFilterMembership).toString());
         return elementFilterMembership;
     }
 
@@ -849,7 +848,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public EndFeatureMembership createEndFeatureMembership() {
         EndFeatureMembershipImpl endFeatureMembership = new EndFeatureMembershipImpl();
-        endFeatureMembership.setElementId(UUID.randomUUID().toString());
+        endFeatureMembership.setElementId(ElementUtil.generateUUID(endFeatureMembership).toString());
         return endFeatureMembership;
     }
 
@@ -861,7 +860,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public EnumerationDefinition createEnumerationDefinition() {
         EnumerationDefinitionImpl enumerationDefinition = new EnumerationDefinitionImpl();
-        enumerationDefinition.setElementId(UUID.randomUUID().toString());
+        enumerationDefinition.setElementId(ElementUtil.generateUUID(enumerationDefinition).toString());
         return enumerationDefinition;
     }
 
@@ -873,7 +872,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public EnumerationUsage createEnumerationUsage() {
         EnumerationUsageImpl enumerationUsage = new EnumerationUsageImpl();
-        enumerationUsage.setElementId(UUID.randomUUID().toString());
+        enumerationUsage.setElementId(ElementUtil.generateUUID(enumerationUsage).toString());
         return enumerationUsage;
     }
 
@@ -885,7 +884,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public EventOccurrenceUsage createEventOccurrenceUsage() {
         EventOccurrenceUsageImpl eventOccurrenceUsage = new EventOccurrenceUsageImpl();
-        eventOccurrenceUsage.setElementId(UUID.randomUUID().toString());
+        eventOccurrenceUsage.setElementId(ElementUtil.generateUUID(eventOccurrenceUsage).toString());
         return eventOccurrenceUsage;
     }
 
@@ -897,7 +896,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ExhibitStateUsage createExhibitStateUsage() {
         ExhibitStateUsageImpl exhibitStateUsage = new ExhibitStateUsageImpl();
-        exhibitStateUsage.setElementId(UUID.randomUUID().toString());
+        exhibitStateUsage.setElementId(ElementUtil.generateUUID(exhibitStateUsage).toString());
         return exhibitStateUsage;
     }
 
@@ -909,7 +908,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Expression createExpression() {
         ExpressionImpl expression = new ExpressionImpl();
-        expression.setElementId(UUID.randomUUID().toString());
+        expression.setElementId(ElementUtil.generateUUID(expression).toString());
         return expression;
     }
 
@@ -921,7 +920,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Feature createFeature() {
         FeatureImpl feature = new FeatureImpl();
-        feature.setElementId(UUID.randomUUID().toString());
+        feature.setElementId(ElementUtil.generateUUID(feature).toString());
         return feature;
     }
 
@@ -933,7 +932,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FeatureChainExpression createFeatureChainExpression() {
         FeatureChainExpressionImpl featureChainExpression = new FeatureChainExpressionImpl();
-        featureChainExpression.setElementId(UUID.randomUUID().toString());
+        featureChainExpression.setElementId(ElementUtil.generateUUID(featureChainExpression).toString());
         return featureChainExpression;
     }
 
@@ -945,7 +944,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FeatureChaining createFeatureChaining() {
         FeatureChainingImpl featureChaining = new FeatureChainingImpl();
-        featureChaining.setElementId(UUID.randomUUID().toString());
+        featureChaining.setElementId(ElementUtil.generateUUID(featureChaining).toString());
         return featureChaining;
     }
 
@@ -957,7 +956,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FeatureInverting createFeatureInverting() {
         FeatureInvertingImpl featureInverting = new FeatureInvertingImpl();
-        featureInverting.setElementId(UUID.randomUUID().toString());
+        featureInverting.setElementId(ElementUtil.generateUUID(featureInverting).toString());
         return featureInverting;
     }
 
@@ -969,7 +968,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FeatureMembership createFeatureMembership() {
         FeatureMembershipImpl featureMembership = new FeatureMembershipImpl();
-        featureMembership.setElementId(UUID.randomUUID().toString());
+        featureMembership.setElementId(ElementUtil.generateUUID(featureMembership).toString());
         return featureMembership;
     }
 
@@ -981,7 +980,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FeatureReferenceExpression createFeatureReferenceExpression() {
         FeatureReferenceExpressionImpl featureReferenceExpression = new FeatureReferenceExpressionImpl();
-        featureReferenceExpression.setElementId(UUID.randomUUID().toString());
+        featureReferenceExpression.setElementId(ElementUtil.generateUUID(featureReferenceExpression).toString());
         return featureReferenceExpression;
     }
 
@@ -993,7 +992,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FeatureTyping createFeatureTyping() {
         FeatureTypingImpl featureTyping = new FeatureTypingImpl();
-        featureTyping.setElementId(UUID.randomUUID().toString());
+        featureTyping.setElementId(ElementUtil.generateUUID(featureTyping).toString());
         return featureTyping;
     }
 
@@ -1005,7 +1004,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FeatureValue createFeatureValue() {
         FeatureValueImpl featureValue = new FeatureValueImpl();
-        featureValue.setElementId(UUID.randomUUID().toString());
+        featureValue.setElementId(ElementUtil.generateUUID(featureValue).toString());
         return featureValue;
     }
 
@@ -1017,7 +1016,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FlowConnectionDefinition createFlowConnectionDefinition() {
         FlowConnectionDefinitionImpl flowConnectionDefinition = new FlowConnectionDefinitionImpl();
-        flowConnectionDefinition.setElementId(UUID.randomUUID().toString());
+        flowConnectionDefinition.setElementId(ElementUtil.generateUUID(flowConnectionDefinition).toString());
         return flowConnectionDefinition;
     }
 
@@ -1029,7 +1028,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FlowConnectionUsage createFlowConnectionUsage() {
         FlowConnectionUsageImpl flowConnectionUsage = new FlowConnectionUsageImpl();
-        flowConnectionUsage.setElementId(UUID.randomUUID().toString());
+        flowConnectionUsage.setElementId(ElementUtil.generateUUID(flowConnectionUsage).toString());
         return flowConnectionUsage;
     }
 
@@ -1041,7 +1040,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ForkNode createForkNode() {
         ForkNodeImpl forkNode = new ForkNodeImpl();
-        forkNode.setElementId(UUID.randomUUID().toString());
+        forkNode.setElementId(ElementUtil.generateUUID(forkNode).toString());
         return forkNode;
     }
 
@@ -1053,7 +1052,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ForLoopActionUsage createForLoopActionUsage() {
         ForLoopActionUsageImpl forLoopActionUsage = new ForLoopActionUsageImpl();
-        forLoopActionUsage.setElementId(UUID.randomUUID().toString());
+        forLoopActionUsage.setElementId(ElementUtil.generateUUID(forLoopActionUsage).toString());
         return forLoopActionUsage;
     }
 
@@ -1065,7 +1064,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public FramedConcernMembership createFramedConcernMembership() {
         FramedConcernMembershipImpl framedConcernMembership = new FramedConcernMembershipImpl();
-        framedConcernMembership.setElementId(UUID.randomUUID().toString());
+        framedConcernMembership.setElementId(ElementUtil.generateUUID(framedConcernMembership).toString());
         return framedConcernMembership;
     }
 
@@ -1077,7 +1076,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Function createFunction() {
         FunctionImpl function = new FunctionImpl();
-        function.setElementId(UUID.randomUUID().toString());
+        function.setElementId(ElementUtil.generateUUID(function).toString());
         return function;
     }
 
@@ -1089,7 +1088,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public IfActionUsage createIfActionUsage() {
         IfActionUsageImpl ifActionUsage = new IfActionUsageImpl();
-        ifActionUsage.setElementId(UUID.randomUUID().toString());
+        ifActionUsage.setElementId(ElementUtil.generateUUID(ifActionUsage).toString());
         return ifActionUsage;
     }
 
@@ -1101,7 +1100,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public IncludeUseCaseUsage createIncludeUseCaseUsage() {
         IncludeUseCaseUsageImpl includeUseCaseUsage = new IncludeUseCaseUsageImpl();
-        includeUseCaseUsage.setElementId(UUID.randomUUID().toString());
+        includeUseCaseUsage.setElementId(ElementUtil.generateUUID(includeUseCaseUsage).toString());
         return includeUseCaseUsage;
     }
 
@@ -1113,7 +1112,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Interaction createInteraction() {
         InteractionImpl interaction = new InteractionImpl();
-        interaction.setElementId(UUID.randomUUID().toString());
+        interaction.setElementId(ElementUtil.generateUUID(interaction).toString());
         return interaction;
     }
 
@@ -1125,7 +1124,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public InterfaceDefinition createInterfaceDefinition() {
         InterfaceDefinitionImpl interfaceDefinition = new InterfaceDefinitionImpl();
-        interfaceDefinition.setElementId(UUID.randomUUID().toString());
+        interfaceDefinition.setElementId(ElementUtil.generateUUID(interfaceDefinition).toString());
         return interfaceDefinition;
     }
 
@@ -1137,7 +1136,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public InterfaceUsage createInterfaceUsage() {
         InterfaceUsageImpl interfaceUsage = new InterfaceUsageImpl();
-        interfaceUsage.setElementId(UUID.randomUUID().toString());
+        interfaceUsage.setElementId(ElementUtil.generateUUID(interfaceUsage).toString());
         return interfaceUsage;
     }
 
@@ -1149,7 +1148,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Intersecting createIntersecting() {
         IntersectingImpl intersecting = new IntersectingImpl();
-        intersecting.setElementId(UUID.randomUUID().toString());
+        intersecting.setElementId(ElementUtil.generateUUID(intersecting).toString());
         return intersecting;
     }
 
@@ -1161,7 +1160,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Invariant createInvariant() {
         InvariantImpl invariant = new InvariantImpl();
-        invariant.setElementId(UUID.randomUUID().toString());
+        invariant.setElementId(ElementUtil.generateUUID(invariant).toString());
         return invariant;
     }
 
@@ -1173,7 +1172,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public InvocationExpression createInvocationExpression() {
         InvocationExpressionImpl invocationExpression = new InvocationExpressionImpl();
-        invocationExpression.setElementId(UUID.randomUUID().toString());
+        invocationExpression.setElementId(ElementUtil.generateUUID(invocationExpression).toString());
         return invocationExpression;
     }
 
@@ -1185,7 +1184,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ItemDefinition createItemDefinition() {
         ItemDefinitionImpl itemDefinition = new ItemDefinitionImpl();
-        itemDefinition.setElementId(UUID.randomUUID().toString());
+        itemDefinition.setElementId(ElementUtil.generateUUID(itemDefinition).toString());
         return itemDefinition;
     }
 
@@ -1197,7 +1196,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ItemFeature createItemFeature() {
         ItemFeatureImpl itemFeature = new ItemFeatureImpl();
-        itemFeature.setElementId(UUID.randomUUID().toString());
+        itemFeature.setElementId(ElementUtil.generateUUID(itemFeature).toString());
         return itemFeature;
     }
 
@@ -1209,7 +1208,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ItemFlow createItemFlow() {
         ItemFlowImpl itemFlow = new ItemFlowImpl();
-        itemFlow.setElementId(UUID.randomUUID().toString());
+        itemFlow.setElementId(ElementUtil.generateUUID(itemFlow).toString());
         return itemFlow;
     }
 
@@ -1221,7 +1220,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ItemFlowEnd createItemFlowEnd() {
         ItemFlowEndImpl itemFlowEnd = new ItemFlowEndImpl();
-        itemFlowEnd.setElementId(UUID.randomUUID().toString());
+        itemFlowEnd.setElementId(ElementUtil.generateUUID(itemFlowEnd).toString());
         return itemFlowEnd;
     }
 
@@ -1233,7 +1232,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ItemUsage createItemUsage() {
         ItemUsageImpl itemUsage = new ItemUsageImpl();
-        itemUsage.setElementId(UUID.randomUUID().toString());
+        itemUsage.setElementId(ElementUtil.generateUUID(itemUsage).toString());
         return itemUsage;
     }
 
@@ -1245,7 +1244,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public JoinNode createJoinNode() {
         JoinNodeImpl joinNode = new JoinNodeImpl();
-        joinNode.setElementId(UUID.randomUUID().toString());
+        joinNode.setElementId(ElementUtil.generateUUID(joinNode).toString());
         return joinNode;
     }
 
@@ -1257,7 +1256,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public LibraryPackage createLibraryPackage() {
         LibraryPackageImpl libraryPackage = new LibraryPackageImpl();
-        libraryPackage.setElementId(UUID.randomUUID().toString());
+        libraryPackage.setElementId(ElementUtil.generateUUID(libraryPackage).toString());
         return libraryPackage;
     }
 
@@ -1269,7 +1268,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public LifeClass createLifeClass() {
         LifeClassImpl lifeClass = new LifeClassImpl();
-        lifeClass.setElementId(UUID.randomUUID().toString());
+        lifeClass.setElementId(ElementUtil.generateUUID(lifeClass).toString());
         return lifeClass;
     }
 
@@ -1281,7 +1280,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public LiteralBoolean createLiteralBoolean() {
         LiteralBooleanImpl literalBoolean = new LiteralBooleanImpl();
-        literalBoolean.setElementId(UUID.randomUUID().toString());
+        literalBoolean.setElementId(ElementUtil.generateUUID(literalBoolean).toString());
         return literalBoolean;
     }
 
@@ -1293,7 +1292,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public LiteralExpression createLiteralExpression() {
         LiteralExpressionImpl literalExpression = new LiteralExpressionImpl();
-        literalExpression.setElementId(UUID.randomUUID().toString());
+        literalExpression.setElementId(ElementUtil.generateUUID(literalExpression).toString());
         return literalExpression;
     }
 
@@ -1305,7 +1304,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public LiteralInfinity createLiteralInfinity() {
         LiteralInfinityImpl literalInfinity = new LiteralInfinityImpl();
-        literalInfinity.setElementId(UUID.randomUUID().toString());
+        literalInfinity.setElementId(ElementUtil.generateUUID(literalInfinity).toString());
         return literalInfinity;
     }
 
@@ -1317,7 +1316,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public LiteralInteger createLiteralInteger() {
         LiteralIntegerImpl literalInteger = new LiteralIntegerImpl();
-        literalInteger.setElementId(UUID.randomUUID().toString());
+        literalInteger.setElementId(ElementUtil.generateUUID(literalInteger).toString());
         return literalInteger;
     }
 
@@ -1329,7 +1328,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public LiteralRational createLiteralRational() {
         LiteralRationalImpl literalRational = new LiteralRationalImpl();
-        literalRational.setElementId(UUID.randomUUID().toString());
+        literalRational.setElementId(ElementUtil.generateUUID(literalRational).toString());
         return literalRational;
     }
 
@@ -1341,7 +1340,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public LiteralString createLiteralString() {
         LiteralStringImpl literalString = new LiteralStringImpl();
-        literalString.setElementId(UUID.randomUUID().toString());
+        literalString.setElementId(ElementUtil.generateUUID(literalString).toString());
         return literalString;
     }
 
@@ -1353,7 +1352,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Membership createMembership() {
         MembershipImpl membership = new MembershipImpl();
-        membership.setElementId(UUID.randomUUID().toString());
+        membership.setElementId(ElementUtil.generateUUID(membership).toString());
         return membership;
     }
 
@@ -1365,7 +1364,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public MembershipExpose createMembershipExpose() {
         MembershipExposeImpl membershipExpose = new MembershipExposeImpl();
-        membershipExpose.setElementId(UUID.randomUUID().toString());
+        membershipExpose.setElementId(ElementUtil.generateUUID(membershipExpose).toString());
         return membershipExpose;
     }
 
@@ -1377,7 +1376,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public MembershipImport createMembershipImport() {
         MembershipImportImpl membershipImport = new MembershipImportImpl();
-        membershipImport.setElementId(UUID.randomUUID().toString());
+        membershipImport.setElementId(ElementUtil.generateUUID(membershipImport).toString());
         return membershipImport;
     }
 
@@ -1389,7 +1388,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public MergeNode createMergeNode() {
         MergeNodeImpl mergeNode = new MergeNodeImpl();
-        mergeNode.setElementId(UUID.randomUUID().toString());
+        mergeNode.setElementId(ElementUtil.generateUUID(mergeNode).toString());
         return mergeNode;
     }
 
@@ -1401,7 +1400,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Metaclass createMetaclass() {
         MetaclassImpl metaclass = new MetaclassImpl();
-        metaclass.setElementId(UUID.randomUUID().toString());
+        metaclass.setElementId(ElementUtil.generateUUID(metaclass).toString());
         return metaclass;
     }
 
@@ -1413,7 +1412,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public MetadataAccessExpression createMetadataAccessExpression() {
         MetadataAccessExpressionImpl metadataAccessExpression = new MetadataAccessExpressionImpl();
-        metadataAccessExpression.setElementId(UUID.randomUUID().toString());
+        metadataAccessExpression.setElementId(ElementUtil.generateUUID(metadataAccessExpression).toString());
         return metadataAccessExpression;
     }
 
@@ -1425,7 +1424,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public MetadataDefinition createMetadataDefinition() {
         MetadataDefinitionImpl metadataDefinition = new MetadataDefinitionImpl();
-        metadataDefinition.setElementId(UUID.randomUUID().toString());
+        metadataDefinition.setElementId(ElementUtil.generateUUID(metadataDefinition).toString());
         return metadataDefinition;
     }
 
@@ -1437,7 +1436,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public MetadataFeature createMetadataFeature() {
         MetadataFeatureImpl metadataFeature = new MetadataFeatureImpl();
-        metadataFeature.setElementId(UUID.randomUUID().toString());
+        metadataFeature.setElementId(ElementUtil.generateUUID(metadataFeature).toString());
         return metadataFeature;
     }
 
@@ -1449,7 +1448,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public MetadataUsage createMetadataUsage() {
         MetadataUsageImpl metadataUsage = new MetadataUsageImpl();
-        metadataUsage.setElementId(UUID.randomUUID().toString());
+        metadataUsage.setElementId(ElementUtil.generateUUID(metadataUsage).toString());
         return metadataUsage;
     }
 
@@ -1461,7 +1460,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Multiplicity createMultiplicity() {
         MultiplicityImpl multiplicity = new MultiplicityImpl();
-        multiplicity.setElementId(UUID.randomUUID().toString());
+        multiplicity.setElementId(ElementUtil.generateUUID(multiplicity).toString());
         return multiplicity;
     }
 
@@ -1473,7 +1472,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public MultiplicityRange createMultiplicityRange() {
         MultiplicityRangeImpl multiplicityRange = new MultiplicityRangeImpl();
-        multiplicityRange.setElementId(UUID.randomUUID().toString());
+        multiplicityRange.setElementId(ElementUtil.generateUUID(multiplicityRange).toString());
         return multiplicityRange;
     }
 
@@ -1485,7 +1484,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Namespace createNamespace() {
         NamespaceImpl namespace = new NamespaceImpl();
-        namespace.setElementId(UUID.randomUUID().toString());
+        namespace.setElementId(ElementUtil.generateUUID(namespace).toString());
         return namespace;
     }
 
@@ -1497,7 +1496,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public NamespaceExpose createNamespaceExpose() {
         NamespaceExposeImpl namespaceExpose = new NamespaceExposeImpl();
-        namespaceExpose.setElementId(UUID.randomUUID().toString());
+        namespaceExpose.setElementId(ElementUtil.generateUUID(namespaceExpose).toString());
         return namespaceExpose;
     }
 
@@ -1509,7 +1508,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public NamespaceImport createNamespaceImport() {
         NamespaceImportImpl namespaceImport = new NamespaceImportImpl();
-        namespaceImport.setElementId(UUID.randomUUID().toString());
+        namespaceImport.setElementId(ElementUtil.generateUUID(namespaceImport).toString());
         return namespaceImport;
     }
 
@@ -1521,7 +1520,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public NullExpression createNullExpression() {
         NullExpressionImpl nullExpression = new NullExpressionImpl();
-        nullExpression.setElementId(UUID.randomUUID().toString());
+        nullExpression.setElementId(ElementUtil.generateUUID(nullExpression).toString());
         return nullExpression;
     }
 
@@ -1533,7 +1532,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ObjectiveMembership createObjectiveMembership() {
         ObjectiveMembershipImpl objectiveMembership = new ObjectiveMembershipImpl();
-        objectiveMembership.setElementId(UUID.randomUUID().toString());
+        objectiveMembership.setElementId(ElementUtil.generateUUID(objectiveMembership).toString());
         return objectiveMembership;
     }
 
@@ -1545,7 +1544,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public OccurrenceDefinition createOccurrenceDefinition() {
         OccurrenceDefinitionImpl occurrenceDefinition = new OccurrenceDefinitionImpl();
-        occurrenceDefinition.setElementId(UUID.randomUUID().toString());
+        occurrenceDefinition.setElementId(ElementUtil.generateUUID(occurrenceDefinition).toString());
         return occurrenceDefinition;
     }
 
@@ -1557,7 +1556,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public OccurrenceUsage createOccurrenceUsage() {
         OccurrenceUsageImpl occurrenceUsage = new OccurrenceUsageImpl();
-        occurrenceUsage.setElementId(UUID.randomUUID().toString());
+        occurrenceUsage.setElementId(ElementUtil.generateUUID(occurrenceUsage).toString());
         return occurrenceUsage;
     }
 
@@ -1569,7 +1568,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public OperatorExpression createOperatorExpression() {
         OperatorExpressionImpl operatorExpression = new OperatorExpressionImpl();
-        operatorExpression.setElementId(UUID.randomUUID().toString());
+        operatorExpression.setElementId(ElementUtil.generateUUID(operatorExpression).toString());
         return operatorExpression;
     }
 
@@ -1581,7 +1580,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public OwningMembership createOwningMembership() {
         OwningMembershipImpl owningMembership = new OwningMembershipImpl();
-        owningMembership.setElementId(UUID.randomUUID().toString());
+        owningMembership.setElementId(ElementUtil.generateUUID(owningMembership).toString());
         return owningMembership;
     }
 
@@ -1593,7 +1592,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public org.eclipse.syson.sysml.Package createPackage() {
         PackageImpl package_ = new PackageImpl();
-        package_.setElementId(UUID.randomUUID().toString());
+        package_.setElementId(ElementUtil.generateUUID(package_).toString());
         return package_;
     }
 
@@ -1605,7 +1604,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ParameterMembership createParameterMembership() {
         ParameterMembershipImpl parameterMembership = new ParameterMembershipImpl();
-        parameterMembership.setElementId(UUID.randomUUID().toString());
+        parameterMembership.setElementId(ElementUtil.generateUUID(parameterMembership).toString());
         return parameterMembership;
     }
 
@@ -1617,7 +1616,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public PartDefinition createPartDefinition() {
         PartDefinitionImpl partDefinition = new PartDefinitionImpl();
-        partDefinition.setElementId(UUID.randomUUID().toString());
+        partDefinition.setElementId(ElementUtil.generateUUID(partDefinition).toString());
         return partDefinition;
     }
 
@@ -1629,7 +1628,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public PartUsage createPartUsage() {
         PartUsageImpl partUsage = new PartUsageImpl();
-        partUsage.setElementId(UUID.randomUUID().toString());
+        partUsage.setElementId(ElementUtil.generateUUID(partUsage).toString());
         return partUsage;
     }
 
@@ -1641,7 +1640,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public PerformActionUsage createPerformActionUsage() {
         PerformActionUsageImpl performActionUsage = new PerformActionUsageImpl();
-        performActionUsage.setElementId(UUID.randomUUID().toString());
+        performActionUsage.setElementId(ElementUtil.generateUUID(performActionUsage).toString());
         return performActionUsage;
     }
 
@@ -1653,7 +1652,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public PortConjugation createPortConjugation() {
         PortConjugationImpl portConjugation = new PortConjugationImpl();
-        portConjugation.setElementId(UUID.randomUUID().toString());
+        portConjugation.setElementId(ElementUtil.generateUUID(portConjugation).toString());
         return portConjugation;
     }
 
@@ -1665,7 +1664,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public PortDefinition createPortDefinition() {
         PortDefinitionImpl portDefinition = new PortDefinitionImpl();
-        portDefinition.setElementId(UUID.randomUUID().toString());
+        portDefinition.setElementId(ElementUtil.generateUUID(portDefinition).toString());
         return portDefinition;
     }
 
@@ -1677,7 +1676,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public PortUsage createPortUsage() {
         PortUsageImpl portUsage = new PortUsageImpl();
-        portUsage.setElementId(UUID.randomUUID().toString());
+        portUsage.setElementId(ElementUtil.generateUUID(portUsage).toString());
         return portUsage;
     }
 
@@ -1689,7 +1688,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Predicate createPredicate() {
         PredicateImpl predicate = new PredicateImpl();
-        predicate.setElementId(UUID.randomUUID().toString());
+        predicate.setElementId(ElementUtil.generateUUID(predicate).toString());
         return predicate;
     }
 
@@ -1701,7 +1700,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Redefinition createRedefinition() {
         RedefinitionImpl redefinition = new RedefinitionImpl();
-        redefinition.setElementId(UUID.randomUUID().toString());
+        redefinition.setElementId(ElementUtil.generateUUID(redefinition).toString());
         return redefinition;
     }
 
@@ -1713,7 +1712,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ReferenceSubsetting createReferenceSubsetting() {
         ReferenceSubsettingImpl referenceSubsetting = new ReferenceSubsettingImpl();
-        referenceSubsetting.setElementId(UUID.randomUUID().toString());
+        referenceSubsetting.setElementId(ElementUtil.generateUUID(referenceSubsetting).toString());
         return referenceSubsetting;
     }
 
@@ -1725,7 +1724,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ReferenceUsage createReferenceUsage() {
         ReferenceUsageImpl referenceUsage = new ReferenceUsageImpl();
-        referenceUsage.setElementId(UUID.randomUUID().toString());
+        referenceUsage.setElementId(ElementUtil.generateUUID(referenceUsage).toString());
         return referenceUsage;
     }
 
@@ -1737,7 +1736,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public RenderingDefinition createRenderingDefinition() {
         RenderingDefinitionImpl renderingDefinition = new RenderingDefinitionImpl();
-        renderingDefinition.setElementId(UUID.randomUUID().toString());
+        renderingDefinition.setElementId(ElementUtil.generateUUID(renderingDefinition).toString());
         return renderingDefinition;
     }
 
@@ -1749,7 +1748,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public RenderingUsage createRenderingUsage() {
         RenderingUsageImpl renderingUsage = new RenderingUsageImpl();
-        renderingUsage.setElementId(UUID.randomUUID().toString());
+        renderingUsage.setElementId(ElementUtil.generateUUID(renderingUsage).toString());
         return renderingUsage;
     }
 
@@ -1761,7 +1760,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public RequirementConstraintMembership createRequirementConstraintMembership() {
         RequirementConstraintMembershipImpl requirementConstraintMembership = new RequirementConstraintMembershipImpl();
-        requirementConstraintMembership.setElementId(UUID.randomUUID().toString());
+        requirementConstraintMembership.setElementId(ElementUtil.generateUUID(requirementConstraintMembership).toString());
         return requirementConstraintMembership;
     }
 
@@ -1773,7 +1772,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public RequirementDefinition createRequirementDefinition() {
         RequirementDefinitionImpl requirementDefinition = new RequirementDefinitionImpl();
-        requirementDefinition.setElementId(UUID.randomUUID().toString());
+        requirementDefinition.setElementId(ElementUtil.generateUUID(requirementDefinition).toString());
         return requirementDefinition;
     }
 
@@ -1785,7 +1784,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public RequirementUsage createRequirementUsage() {
         RequirementUsageImpl requirementUsage = new RequirementUsageImpl();
-        requirementUsage.setElementId(UUID.randomUUID().toString());
+        requirementUsage.setElementId(ElementUtil.generateUUID(requirementUsage).toString());
         return requirementUsage;
     }
 
@@ -1797,7 +1796,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public RequirementVerificationMembership createRequirementVerificationMembership() {
         RequirementVerificationMembershipImpl requirementVerificationMembership = new RequirementVerificationMembershipImpl();
-        requirementVerificationMembership.setElementId(UUID.randomUUID().toString());
+        requirementVerificationMembership.setElementId(ElementUtil.generateUUID(requirementVerificationMembership).toString());
         return requirementVerificationMembership;
     }
 
@@ -1809,7 +1808,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ResultExpressionMembership createResultExpressionMembership() {
         ResultExpressionMembershipImpl resultExpressionMembership = new ResultExpressionMembershipImpl();
-        resultExpressionMembership.setElementId(UUID.randomUUID().toString());
+        resultExpressionMembership.setElementId(ElementUtil.generateUUID(resultExpressionMembership).toString());
         return resultExpressionMembership;
     }
 
@@ -1821,7 +1820,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ReturnParameterMembership createReturnParameterMembership() {
         ReturnParameterMembershipImpl returnParameterMembership = new ReturnParameterMembershipImpl();
-        returnParameterMembership.setElementId(UUID.randomUUID().toString());
+        returnParameterMembership.setElementId(ElementUtil.generateUUID(returnParameterMembership).toString());
         return returnParameterMembership;
     }
 
@@ -1833,7 +1832,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public SatisfyRequirementUsage createSatisfyRequirementUsage() {
         SatisfyRequirementUsageImpl satisfyRequirementUsage = new SatisfyRequirementUsageImpl();
-        satisfyRequirementUsage.setElementId(UUID.randomUUID().toString());
+        satisfyRequirementUsage.setElementId(ElementUtil.generateUUID(satisfyRequirementUsage).toString());
         return satisfyRequirementUsage;
     }
 
@@ -1845,7 +1844,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public SelectExpression createSelectExpression() {
         SelectExpressionImpl selectExpression = new SelectExpressionImpl();
-        selectExpression.setElementId(UUID.randomUUID().toString());
+        selectExpression.setElementId(ElementUtil.generateUUID(selectExpression).toString());
         return selectExpression;
     }
 
@@ -1857,7 +1856,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public SendActionUsage createSendActionUsage() {
         SendActionUsageImpl sendActionUsage = new SendActionUsageImpl();
-        sendActionUsage.setElementId(UUID.randomUUID().toString());
+        sendActionUsage.setElementId(ElementUtil.generateUUID(sendActionUsage).toString());
         return sendActionUsage;
     }
 
@@ -1869,7 +1868,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Specialization createSpecialization() {
         SpecializationImpl specialization = new SpecializationImpl();
-        specialization.setElementId(UUID.randomUUID().toString());
+        specialization.setElementId(ElementUtil.generateUUID(specialization).toString());
         return specialization;
     }
 
@@ -1881,7 +1880,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public StakeholderMembership createStakeholderMembership() {
         StakeholderMembershipImpl stakeholderMembership = new StakeholderMembershipImpl();
-        stakeholderMembership.setElementId(UUID.randomUUID().toString());
+        stakeholderMembership.setElementId(ElementUtil.generateUUID(stakeholderMembership).toString());
         return stakeholderMembership;
     }
 
@@ -1893,7 +1892,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public StateDefinition createStateDefinition() {
         StateDefinitionImpl stateDefinition = new StateDefinitionImpl();
-        stateDefinition.setElementId(UUID.randomUUID().toString());
+        stateDefinition.setElementId(ElementUtil.generateUUID(stateDefinition).toString());
         return stateDefinition;
     }
 
@@ -1905,7 +1904,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public StateSubactionMembership createStateSubactionMembership() {
         StateSubactionMembershipImpl stateSubactionMembership = new StateSubactionMembershipImpl();
-        stateSubactionMembership.setElementId(UUID.randomUUID().toString());
+        stateSubactionMembership.setElementId(ElementUtil.generateUUID(stateSubactionMembership).toString());
         return stateSubactionMembership;
     }
 
@@ -1917,7 +1916,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public StateUsage createStateUsage() {
         StateUsageImpl stateUsage = new StateUsageImpl();
-        stateUsage.setElementId(UUID.randomUUID().toString());
+        stateUsage.setElementId(ElementUtil.generateUUID(stateUsage).toString());
         return stateUsage;
     }
 
@@ -1929,7 +1928,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Step createStep() {
         StepImpl step = new StepImpl();
-        step.setElementId(UUID.randomUUID().toString());
+        step.setElementId(ElementUtil.generateUUID(step).toString());
         return step;
     }
 
@@ -1941,7 +1940,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Structure createStructure() {
         StructureImpl structure = new StructureImpl();
-        structure.setElementId(UUID.randomUUID().toString());
+        structure.setElementId(ElementUtil.generateUUID(structure).toString());
         return structure;
     }
 
@@ -1953,7 +1952,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Subclassification createSubclassification() {
         SubclassificationImpl subclassification = new SubclassificationImpl();
-        subclassification.setElementId(UUID.randomUUID().toString());
+        subclassification.setElementId(ElementUtil.generateUUID(subclassification).toString());
         return subclassification;
     }
 
@@ -1965,7 +1964,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public SubjectMembership createSubjectMembership() {
         SubjectMembershipImpl subjectMembership = new SubjectMembershipImpl();
-        subjectMembership.setElementId(UUID.randomUUID().toString());
+        subjectMembership.setElementId(ElementUtil.generateUUID(subjectMembership).toString());
         return subjectMembership;
     }
 
@@ -1977,7 +1976,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Subsetting createSubsetting() {
         SubsettingImpl subsetting = new SubsettingImpl();
-        subsetting.setElementId(UUID.randomUUID().toString());
+        subsetting.setElementId(ElementUtil.generateUUID(subsetting).toString());
         return subsetting;
     }
 
@@ -1989,7 +1988,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Succession createSuccession() {
         SuccessionImpl succession = new SuccessionImpl();
-        succession.setElementId(UUID.randomUUID().toString());
+        succession.setElementId(ElementUtil.generateUUID(succession).toString());
         return succession;
     }
 
@@ -2001,7 +2000,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public SuccessionAsUsage createSuccessionAsUsage() {
         SuccessionAsUsageImpl successionAsUsage = new SuccessionAsUsageImpl();
-        successionAsUsage.setElementId(UUID.randomUUID().toString());
+        successionAsUsage.setElementId(ElementUtil.generateUUID(successionAsUsage).toString());
         return successionAsUsage;
     }
 
@@ -2013,7 +2012,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public SuccessionFlowConnectionUsage createSuccessionFlowConnectionUsage() {
         SuccessionFlowConnectionUsageImpl successionFlowConnectionUsage = new SuccessionFlowConnectionUsageImpl();
-        successionFlowConnectionUsage.setElementId(UUID.randomUUID().toString());
+        successionFlowConnectionUsage.setElementId(ElementUtil.generateUUID(successionFlowConnectionUsage).toString());
         return successionFlowConnectionUsage;
     }
 
@@ -2025,7 +2024,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public SuccessionItemFlow createSuccessionItemFlow() {
         SuccessionItemFlowImpl successionItemFlow = new SuccessionItemFlowImpl();
-        successionItemFlow.setElementId(UUID.randomUUID().toString());
+        successionItemFlow.setElementId(ElementUtil.generateUUID(successionItemFlow).toString());
         return successionItemFlow;
     }
 
@@ -2037,7 +2036,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public TextualRepresentation createTextualRepresentation() {
         TextualRepresentationImpl textualRepresentation = new TextualRepresentationImpl();
-        textualRepresentation.setElementId(UUID.randomUUID().toString());
+        textualRepresentation.setElementId(ElementUtil.generateUUID(textualRepresentation).toString());
         return textualRepresentation;
     }
 
@@ -2049,7 +2048,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public TransitionFeatureMembership createTransitionFeatureMembership() {
         TransitionFeatureMembershipImpl transitionFeatureMembership = new TransitionFeatureMembershipImpl();
-        transitionFeatureMembership.setElementId(UUID.randomUUID().toString());
+        transitionFeatureMembership.setElementId(ElementUtil.generateUUID(transitionFeatureMembership).toString());
         return transitionFeatureMembership;
     }
 
@@ -2061,7 +2060,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public TransitionUsage createTransitionUsage() {
         TransitionUsageImpl transitionUsage = new TransitionUsageImpl();
-        transitionUsage.setElementId(UUID.randomUUID().toString());
+        transitionUsage.setElementId(ElementUtil.generateUUID(transitionUsage).toString());
         return transitionUsage;
     }
 
@@ -2073,7 +2072,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public TriggerInvocationExpression createTriggerInvocationExpression() {
         TriggerInvocationExpressionImpl triggerInvocationExpression = new TriggerInvocationExpressionImpl();
-        triggerInvocationExpression.setElementId(UUID.randomUUID().toString());
+        triggerInvocationExpression.setElementId(ElementUtil.generateUUID(triggerInvocationExpression).toString());
         return triggerInvocationExpression;
     }
 
@@ -2085,7 +2084,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Type createType() {
         TypeImpl type = new TypeImpl();
-        type.setElementId(UUID.randomUUID().toString());
+        type.setElementId(ElementUtil.generateUUID(type).toString());
         return type;
     }
 
@@ -2097,7 +2096,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public TypeFeaturing createTypeFeaturing() {
         TypeFeaturingImpl typeFeaturing = new TypeFeaturingImpl();
-        typeFeaturing.setElementId(UUID.randomUUID().toString());
+        typeFeaturing.setElementId(ElementUtil.generateUUID(typeFeaturing).toString());
         return typeFeaturing;
     }
 
@@ -2109,7 +2108,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Unioning createUnioning() {
         UnioningImpl unioning = new UnioningImpl();
-        unioning.setElementId(UUID.randomUUID().toString());
+        unioning.setElementId(ElementUtil.generateUUID(unioning).toString());
         return unioning;
     }
 
@@ -2121,7 +2120,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public Usage createUsage() {
         UsageImpl usage = new UsageImpl();
-        usage.setElementId(UUID.randomUUID().toString());
+        usage.setElementId(ElementUtil.generateUUID(usage).toString());
         return usage;
     }
 
@@ -2133,7 +2132,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public UseCaseDefinition createUseCaseDefinition() {
         UseCaseDefinitionImpl useCaseDefinition = new UseCaseDefinitionImpl();
-        useCaseDefinition.setElementId(UUID.randomUUID().toString());
+        useCaseDefinition.setElementId(ElementUtil.generateUUID(useCaseDefinition).toString());
         return useCaseDefinition;
     }
 
@@ -2145,7 +2144,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public UseCaseUsage createUseCaseUsage() {
         UseCaseUsageImpl useCaseUsage = new UseCaseUsageImpl();
-        useCaseUsage.setElementId(UUID.randomUUID().toString());
+        useCaseUsage.setElementId(ElementUtil.generateUUID(useCaseUsage).toString());
         return useCaseUsage;
     }
 
@@ -2157,7 +2156,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public VariantMembership createVariantMembership() {
         VariantMembershipImpl variantMembership = new VariantMembershipImpl();
-        variantMembership.setElementId(UUID.randomUUID().toString());
+        variantMembership.setElementId(ElementUtil.generateUUID(variantMembership).toString());
         return variantMembership;
     }
 
@@ -2169,7 +2168,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public VerificationCaseDefinition createVerificationCaseDefinition() {
         VerificationCaseDefinitionImpl verificationCaseDefinition = new VerificationCaseDefinitionImpl();
-        verificationCaseDefinition.setElementId(UUID.randomUUID().toString());
+        verificationCaseDefinition.setElementId(ElementUtil.generateUUID(verificationCaseDefinition).toString());
         return verificationCaseDefinition;
     }
 
@@ -2181,7 +2180,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public VerificationCaseUsage createVerificationCaseUsage() {
         VerificationCaseUsageImpl verificationCaseUsage = new VerificationCaseUsageImpl();
-        verificationCaseUsage.setElementId(UUID.randomUUID().toString());
+        verificationCaseUsage.setElementId(ElementUtil.generateUUID(verificationCaseUsage).toString());
         return verificationCaseUsage;
     }
 
@@ -2193,7 +2192,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ViewDefinition createViewDefinition() {
         ViewDefinitionImpl viewDefinition = new ViewDefinitionImpl();
-        viewDefinition.setElementId(UUID.randomUUID().toString());
+        viewDefinition.setElementId(ElementUtil.generateUUID(viewDefinition).toString());
         return viewDefinition;
     }
 
@@ -2205,7 +2204,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ViewpointDefinition createViewpointDefinition() {
         ViewpointDefinitionImpl viewpointDefinition = new ViewpointDefinitionImpl();
-        viewpointDefinition.setElementId(UUID.randomUUID().toString());
+        viewpointDefinition.setElementId(ElementUtil.generateUUID(viewpointDefinition).toString());
         return viewpointDefinition;
     }
 
@@ -2217,7 +2216,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ViewpointUsage createViewpointUsage() {
         ViewpointUsageImpl viewpointUsage = new ViewpointUsageImpl();
-        viewpointUsage.setElementId(UUID.randomUUID().toString());
+        viewpointUsage.setElementId(ElementUtil.generateUUID(viewpointUsage).toString());
         return viewpointUsage;
     }
 
@@ -2229,7 +2228,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ViewRenderingMembership createViewRenderingMembership() {
         ViewRenderingMembershipImpl viewRenderingMembership = new ViewRenderingMembershipImpl();
-        viewRenderingMembership.setElementId(UUID.randomUUID().toString());
+        viewRenderingMembership.setElementId(ElementUtil.generateUUID(viewRenderingMembership).toString());
         return viewRenderingMembership;
     }
 
@@ -2241,7 +2240,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public ViewUsage createViewUsage() {
         ViewUsageImpl viewUsage = new ViewUsageImpl();
-        viewUsage.setElementId(UUID.randomUUID().toString());
+        viewUsage.setElementId(ElementUtil.generateUUID(viewUsage).toString());
         return viewUsage;
     }
 
@@ -2253,7 +2252,7 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     @Override
     public WhileLoopActionUsage createWhileLoopActionUsage() {
         WhileLoopActionUsageImpl whileLoopActionUsage = new WhileLoopActionUsageImpl();
-        whileLoopActionUsage.setElementId(UUID.randomUUID().toString());
+        whileLoopActionUsage.setElementId(ElementUtil.generateUUID(whileLoopActionUsage).toString());
         return whileLoopActionUsage;
     }
 

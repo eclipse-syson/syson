@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -165,32 +165,36 @@ public class UtilService {
     }
 
     /**
-     * Find a {@link Definition} element that match the given name in the ResourceSet of the given element.
+     * Find an {@link Element} that match the given name and type in the ResourceSet of the given element.
      *
      * @param object
      *            the object for which to find a corresponding type.
-     * @param typeName
-     *            the type name to match.
-     * @return the found {@link Definition} element or <code>null</code>
+     * @param elementName
+     *            the element name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
      */
-    public Definition findDefinitionByName(EObject object, String typeName) {
-        final Definition result = this.findDefinitionByName(this.getAllRootsInResourceSet(object), typeName);
+    public <T extends Element> T findByNameAndType(EObject object, String elementName, Class<T> elementType) {
+        final T result = this.findByNameAndType(this.getAllRootsInResourceSet(object), elementName, elementType);
         return result;
     }
 
     /**
-     * Iterate over the given {@link Collection} of root elements to find a {@link Definition} element with the given
-     * name.
+     * Iterate over the given {@link Collection} of root elements to find a element with the given
+     * name and type.
      *
      * @param roots
-     *            the elements to inspect
-     * @param typeName
-     *            the name to match
-     * @return the found {@link Definition} or <code>null</code>
+     *            the elements to inspect.
+     * @param elementName
+     *            the name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
      */
-    public Definition findDefinitionByName(Collection<EObject> roots, String typeName) {
+    public <T extends Element> T findByNameAndType(Collection<EObject> roots, String elementName, Class<T> elementType) {
         for (final EObject root : roots) {
-            final Definition result = this.findDefinitionByNameFrom(root, typeName);
+            final T result = this.findByNameAndTypeFrom(root, elementName, elementType);
             if (result != null) {
                 return result;
             }
@@ -199,90 +203,32 @@ public class UtilService {
     }
 
     /**
-     * Iterate over the root children to find a {@link Definition} element with the given name.
+     * Iterate over the root children to find a {@link Element} with the given name and type.
      *
      * @param root
      *            the root object to iterate.
-     * @param typeName
-     *            the name to match
-     * @return the found {@link Definition} or <code>null</code>
+     * @param elementName
+     *            the name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
      */
-    private Definition findDefinitionByNameFrom(EObject root, String typeName) {
-        Definition definition = null;
+    private <T extends Element> T findByNameAndTypeFrom(EObject root, String elementName, Class<T> elementType) {
+        T element = null;
 
-        if (root instanceof Definition && this.nameMatches((Definition) root, typeName)) {
-            return (Definition) root;
+        if (elementType.isInstance(root) && this.nameMatches(elementType.cast(root), elementName)) {
+            return elementType.cast(root);
         }
 
         TreeIterator<EObject> eAllContents = root.eAllContents();
         while (eAllContents.hasNext()) {
             EObject obj = eAllContents.next();
-            if (obj instanceof Definition && this.nameMatches((Definition) obj, typeName)) {
-                definition = (Definition) obj;
+            if (elementType.isInstance(obj) && this.nameMatches(elementType.cast(obj), elementName)) {
+                element = elementType.cast(obj);
             }
         }
 
-        return definition;
-    }
-
-    /**
-     * Find a {@link Usage} element that match the given name in the ResourceSet of the given element.
-     *
-     * @param object
-     *            the object for which to find a corresponding type.
-     * @param usageName
-     *            the type name to match.
-     * @return the found {@link Usage} element or <code>null</code>
-     */
-    public Usage findUsageByName(EObject object, String usageName) {
-        final Usage result = this.findUsageByName(this.getAllRootsInResourceSet(object), usageName);
-        return result;
-    }
-
-    /**
-     * Iterate over the given {@link Collection} of root elements to find a {@link Usage} element with the given name.
-     *
-     * @param roots
-     *            the elements to inspect
-     * @param usageName
-     *            the name to match
-     * @return the found {@link Usage} or <code>null</code>
-     */
-    public Usage findUsageByName(Collection<EObject> roots, String usageName) {
-        for (final EObject root : roots) {
-            final Usage result = this.findUsageByNameFrom(root, usageName);
-            if (result != null) {
-                return result;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Iterate over the root children to find a {@link Usage} element with the given name.
-     *
-     * @param root
-     *            the root object to iterate.
-     * @param usageName
-     *            the name to match
-     * @return the found {@link Usage} or <code>null</code>
-     */
-    private Usage findUsageByNameFrom(EObject root, String usageName) {
-        Usage usage = null;
-
-        if (root instanceof Usage && this.nameMatches((Definition) root, usageName)) {
-            return (Usage) root;
-        }
-
-        TreeIterator<EObject> eAllContents = root.eAllContents();
-        while (eAllContents.hasNext()) {
-            EObject obj = eAllContents.next();
-            if (obj instanceof Usage && this.nameMatches((Usage) obj, usageName)) {
-                usage = (Usage) obj;
-            }
-        }
-
-        return usage;
+        return element;
     }
 
     /**

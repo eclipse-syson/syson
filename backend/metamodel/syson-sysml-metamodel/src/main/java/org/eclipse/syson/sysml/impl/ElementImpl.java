@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -31,16 +32,17 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.syson.sysml.Annotation;
-import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
  * <!-- begin-user-doc -->
@@ -355,7 +357,7 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
      */
     @Override
     public boolean isIsLibraryElement() {
-        return false;
+        return ElementUtil.isFromLibrary(this, false);
     }
 
     /**

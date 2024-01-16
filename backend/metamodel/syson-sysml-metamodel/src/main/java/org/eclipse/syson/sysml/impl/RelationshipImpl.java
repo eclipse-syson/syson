@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -233,6 +234,22 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
             target = new EObjectResolvingEList<Element>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET);
         }
         return target;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public Namespace libraryNamespace() {
+        Namespace libraryNamespace = null;
+        if (getOwningRelatedElement() != null) {
+            libraryNamespace = getOwningRelatedElement().libraryNamespace();
+        } else if (getOwningRelationship() != null) {
+            libraryNamespace = getOwningRelationship().libraryNamespace();
+        }
+        return libraryNamespace;
     }
 
     /**
