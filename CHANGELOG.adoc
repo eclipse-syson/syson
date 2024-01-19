@@ -6,6 +6,8 @@
 
 === Dependency update
 
+- Switch to Sirius Web 2023.12.11
+
 === Bug fixes
 
 === New Features

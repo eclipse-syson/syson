@@ -31,8 +31,8 @@
   },
   "peerDependencies": {
     "@apollo/client": "3.8.1",
-    "@eclipse-sirius/sirius-components-core": "2023.12.10",
-    "@eclipse-sirius/sirius-components-diagrams-reactflow": "2023.12.10",
+    "@eclipse-sirius/sirius-components-core": "2023.12.11",
+    "@eclipse-sirius/sirius-components-diagrams-reactflow": "2023.12.11",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "graphql": "16.8.0",
@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@apollo/client": "3.8.1",
-    "@eclipse-sirius/sirius-components-core": "2023.12.10",
-    "@eclipse-sirius/sirius-components-diagrams-reactflow": "2023.12.10",
-    "@eclipse-sirius/sirius-components-tsconfig": "2023.12.10",
+    "@eclipse-sirius/sirius-components-core": "2023.12.11",
+    "@eclipse-sirius/sirius-components-diagrams-reactflow": "2023.12.11",
+    "@eclipse-sirius/sirius-components-tsconfig": "2023.12.11",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "@rollup/plugin-image": "2.1.1",
@@ -69,15 +69,15 @@
     "xstate": "4.32.1"
   },
   "dependencies": {
-    "@eclipse-sirius/sirius-components-charts": "2023.12.10",
-    "@eclipse-sirius/sirius-components-deck": "2023.12.10",
-    "@eclipse-sirius/sirius-components-formdescriptioneditors": "2023.12.10",
-    "@eclipse-sirius/sirius-components-forms": "2023.12.10",
-    "@eclipse-sirius/sirius-components-gantt": "2023.12.10",
-    "@eclipse-sirius/sirius-components-selection": "2023.12.10",
-    "@eclipse-sirius/sirius-components-trees": "2023.12.10",
-    "@eclipse-sirius/sirius-components-validation": "2023.12.10",
-    "@eclipse-sirius/sirius-components-widget-reference": "2023.12.10",
-    "@eclipse-sirius/sirius-web-application": "2023.12.10"
+    "@eclipse-sirius/sirius-components-charts": "2023.12.11",
+    "@eclipse-sirius/sirius-components-deck": "2023.12.11",
+    "@eclipse-sirius/sirius-components-formdescriptioneditors": "2023.12.11",
+    "@eclipse-sirius/sirius-components-forms": "2023.12.11",
+    "@eclipse-sirius/sirius-components-gantt": "2023.12.11",
+    "@eclipse-sirius/sirius-components-selection": "2023.12.11",
+    "@eclipse-sirius/sirius-components-trees": "2023.12.11",
+    "@eclipse-sirius/sirius-components-validation": "2023.12.11",
+    "@eclipse-sirius/sirius-components-widget-reference": "2023.12.11",
+    "@eclipse-sirius/sirius-web-application": "2023.12.11"
   }
 }
