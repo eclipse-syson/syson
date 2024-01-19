@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,8 +91,8 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
 
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
-      const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
-      const previousPosition = computePreviousPosition(previousNode, node);
+      const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === child.id);
+      const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
@@ -171,7 +171,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     const minNodeHeight: number = nodeHeight;
 
     const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
-      (previouseNode) => previouseNode.id === node.id
+      (prevNode) => prevNode.id === node.id
     );
     const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
     if (node.data.nodeDescription?.userResizable) {
