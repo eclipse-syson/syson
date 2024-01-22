@@ -10,6 +10,7 @@
 
 - Switch to Sirius Web 2023.12.11
 - https://github.com/eclipse-syson/syson/issues/52[#52] [metamodel] SysON SysMLv2 metamodel module now depends on `org.eclipse.emf.ecore.xmi` and `java-uuid-generator`.
+- Switch to vite 4.5.2
 
 === Bug fixes
 

@@ -64,7 +64,7 @@
     "reactflow": "11.10.1",
     "rollup-plugin-peer-deps-external": "2.2.4",
     "typescript": "5.1.6",
-    "vite": "4.4.9",
+    "vite": "4.5.2",
     "vitest": "0.34.2",
     "xstate": "4.32.1"
   },
