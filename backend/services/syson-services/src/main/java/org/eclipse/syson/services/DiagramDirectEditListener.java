@@ -63,6 +63,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private final UtilService utilService;
 
+    private final ImportService importService;
+
     private List<String> options;
 
     public DiagramDirectEditListener(Element element, String... options) {
@@ -72,6 +74,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             this.options = Arrays.asList(options);
         }
         this.utilService = new UtilService();
+        this.importService = new ImportService();
     }
 
     @Override
@@ -85,6 +88,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
         }
         this.handleMissingMultiplicityExpression(ctx);
+        this.handleMissingSubclassificationExpression(ctx);
         this.handleMissingSubsettingExpression(ctx);
         this.handleMissingRedefinitionExpression(ctx);
         this.handleMissingTypingExpression(ctx);
@@ -163,6 +167,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         newFeatureTyping.setSpecific(usage);
                         newFeatureTyping.setTypedFeature(usage);
                     }
+                    this.importService.handleImport(this.element, definition);
                 }
             }
         }
@@ -215,6 +220,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     newSubclassification.setSubclassifier(subclassificationDef);
                     newSubclassification.setSpecific(subclassificationDef);
                 }
+                this.importService.handleImport(this.element, definition);
             }
         }
     }
@@ -254,6 +260,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     newSubsetting.setSubsettingFeature(subsettingUsage);
                     newSubsetting.setSpecific(subsettingUsage);
                 }
+                this.importService.handleImport(this.element, usage);
             }
         }
     }
@@ -302,6 +309,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         newRedefinition.setSubsettingFeature(redefining);
                         newRedefinition.setSpecific(redefining);
                     }
+                    this.importService.handleImport(this.element, usage);
                 }
             }
         }
@@ -365,6 +373,22 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             if (optMultiplicityRange.isPresent()) {
                 MultiplicityRange multiplicityRange = optMultiplicityRange.get();
                 EcoreUtil.remove(multiplicityRange.eContainer());
+            }
+        }
+    }
+
+    private void handleMissingSubclassificationExpression(ExpressionContext ctx) {
+        if (this.options.contains(LabelService.SUBSETTING_OFF)) {
+            return;
+        }
+        FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
+        if (this.element instanceof Definition definition && (featureExpressions == null || featureExpressions.subsettingExpression() == null)) {
+            var subclassification = this.element.getOwnedRelationship().stream()
+                    .filter(Subclassification.class::isInstance)
+                    .map(Subclassification.class::cast)
+                    .findFirst();
+            if (subclassification.isPresent()) {
+                EcoreUtil.remove(subclassification.get());
             }
         }
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,12 @@
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.Element;
@@ -190,8 +192,10 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
      */
     @Override
     public String getMemberElementId() {
-        // TODO: implement this method to return the 'Member Element Id' attribute
-        // Ensure that you remove @generated or mark it @generated NOT
+        Element element = this.getMemberElement();
+        if (element != null) {
+            return element.getElementId();
+        }
         return null;
     }
 
@@ -232,12 +236,13 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Namespace basicGetMembershipOwningNamespace() {
-        // TODO: implement this method to return the 'Membership Owning Namespace' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        EObject container = this.eContainer();
+        if (container instanceof Namespace ns) {
+            return ns;
+        }
         return null;
     }
 

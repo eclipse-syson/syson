@@ -25,7 +25,7 @@ There are 3 main types of imports:
 
 1. `MembershipImport` (e.g. import MyPackage::MyType)
 2. `NamespaceImport` (e.g. import MyPackage::*)
-3. recursive `NamespaceImport`  (e.g. import MyPackage::**)
+3. recursive `NamespaceImport`/`MembershipImport`  (e.g. import MyPackage::**)
 
 These 3 types cannot be easily handled together, automatically.
 

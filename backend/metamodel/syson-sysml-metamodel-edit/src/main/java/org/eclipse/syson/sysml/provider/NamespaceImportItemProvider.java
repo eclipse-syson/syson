@@ -18,10 +18,10 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -89,7 +89,7 @@ public class NamespaceImportItemProvider extends ImportItemProvider {
     @Override
     public Object getImage(Object object) {
         String imagePath = "full/obj16/NamespaceImport.svg";
-        boolean isRecursive = ((MembershipImport)object).isIsRecursive();
+        boolean isRecursive = ((NamespaceImport)object).isIsRecursive();
         if (isRecursive) {
             imagePath = "full/obj16/NamespaceImportRecursive.svg";
         }
@@ -100,10 +100,18 @@ public class NamespaceImportItemProvider extends ImportItemProvider {
      * This returns the label text for the adapted class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public String getText(Object object) {
+        Namespace importedNamespace = ((NamespaceImport)object).getImportedNamespace();
+        if (importedNamespace != null) {
+            StringBuilder text = new StringBuilder();
+            text.append("import ");
+            text.append(importedNamespace.getQualifiedName());
+            text.append("::*");
+            return text.toString();
+        }
         String label = ((NamespaceImport)object).getName();
         return label == null || label.length() == 0 ?
             getString("_UI_NamespaceImport_type") :

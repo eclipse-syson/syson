@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,10 +14,13 @@ package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
@@ -71,9 +74,8 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public EList<Membership> getImportedMembership() {
-        List<Membership> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_ImportedMembership(), data.size(), data.toArray());
-
+        List<Membership> importedMemberships = new ArrayList<>();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_ImportedMembership(), importedMemberships.size(), importedMemberships.toArray());
     }
 
     /**
@@ -84,6 +86,9 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     @Override
     public EList<Element> getMember() {
         List<Element> members = new ArrayList<>();
+        this.getMembership().stream()
+            .map(membership -> membership.getMemberElement())
+            .forEach(members::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Member(), members.size(), members.toArray());
     }
 
@@ -94,8 +99,10 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public EList<Membership> getMembership() {
-        List<Element> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), data.size(), data.toArray());
+        List<Element> memberships = new ArrayList<>();
+        memberships.addAll(this.getOwnedMembership());
+        memberships.addAll(this.getImportedMembership());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), memberships.size(), memberships.toArray());
     }
 
     /**
@@ -105,8 +112,13 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public EList<Import> getOwnedImport() {
-        List<Element> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_OwnedImport(), data.size(), data.toArray());
+        List<Element> ownedImports = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(Import.class::isInstance)
+            .map(Import.class::cast)
+            .filter(imprt -> this.equals(imprt.getImportOwningNamespace()))
+            .forEach(ownedImports::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_OwnedImport(), ownedImports.size(), ownedImports.toArray());
     }
 
     /**
@@ -117,9 +129,7 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     @Override
     public EList<Element> getOwnedMember() {
         List<Element> ownedMembers = new ArrayList<>();
-        this.getOwnedRelationship().stream()
-            .filter(Membership.class::isInstance)
-            .map(Membership.class::cast)
+        this.getOwnedMembership().stream()
             .flatMap(m -> m.getOwnedRelatedElement().stream())
             .forEach(ownedMembers::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_OwnedMember(), ownedMembers.size(), ownedMembers.toArray());
@@ -132,32 +142,58 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public EList<Membership> getOwnedMembership() {
-        List<Membership> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_OwnedMembership(), data.size(), data.toArray());
+        List<Membership> ownedMemberships = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+            .filter(Membership.class::isInstance)
+            .map(Membership.class::cast)
+            .filter(m -> this.equals(m.getMembershipOwningNamespace()))
+            .forEach(ownedMemberships::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_OwnedMembership(), ownedMemberships.size(), ownedMemberships.toArray());
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Membership> importedMemberships(EList<Namespace> excluded) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        List<Membership> importedMemberships = new ArrayList<>();
+        EList<Namespace> excludedAndSelf = new BasicEList();
+        excludedAndSelf.addAll(excluded);
+        excludedAndSelf.add(this);
+        this.getOwnedImport().stream()
+            .map(imprt -> imprt.importedMemberships(excludedAndSelf))
+            .flatMap(Collection::stream)
+            .filter(Membership.class::isInstance)
+            .map(Membership.class::cast)
+            .forEach(importedMemberships::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_ImportedMembership(), importedMemberships.size(), importedMemberships.toArray());
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<String> namesOf(Element element) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        EDataTypeUniqueEList<String> namesOfs = new EDataTypeUniqueEList<>(String.class, this, SysmlPackage.eINSTANCE.getNamespace__NamesOf__Element().getOperationID());
+        List<Membership> elementMemberships = new ArrayList<>();
+        this.getMembership().stream()
+            .filter(membership -> element != null && element.equals(membership.getMemberElement()))
+            .forEach(elementMemberships::add);
+        elementMemberships.forEach(elt -> {
+            String shortName = elt.getMemberShortName();
+            String name = elt.getMemberName();
+            if (shortName != null) {
+                namesOfs.add(shortName);
+            }
+            if (name != null) {
+                namesOfs.add(name);
+            }
+        });
+        return namesOfs;
     }
 
     /**
