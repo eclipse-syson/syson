@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -84,11 +84,16 @@ public class MembershipImportItemProvider extends ImportItemProvider {
      * This returns MembershipImport.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/MembershipImport"));
+        String imagePath = "full/obj16/MembershipImport.svg";
+        boolean isRecursive = ((MembershipImport)object).isIsRecursive();
+        if (isRecursive) {
+            imagePath = "full/obj16/MembershipImportRecursive.svg";
+        }
+        return overlayImage(object, getResourceLocator().getImage(imagePath));
     }
 
     /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-
+import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -84,11 +84,16 @@ public class NamespaceImportItemProvider extends ImportItemProvider {
      * This returns NamespaceImport.gif.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/NamespaceImport"));
+        String imagePath = "full/obj16/NamespaceImport.svg";
+        boolean isRecursive = ((MembershipImport)object).isIsRecursive();
+        if (isRecursive) {
+            imagePath = "full/obj16/NamespaceImportRecursive.svg";
+        }
+        return overlayImage(object, getResourceLocator().getImage(imagePath));
     }
 
     /**
