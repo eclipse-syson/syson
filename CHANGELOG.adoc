@@ -17,7 +17,8 @@
 === New Features
 
 - https://github.com/eclipse-syson/syson/issues/48[#48] [general-view] Display help background message on empty general-view diagram.
-- https://github.com/eclipse-syson/syson/issues/52[#52] [syson] Add support for SysMLv2 standard librairies.
+- https://github.com/eclipse-syson/syson/issues/52[#52] [syson] Add support for SysMLv2 standard libraries.
+- https://github.com/eclipse-syson/syson/issues/60[#60] [syson] Add support for automatic imports.
 
 == v2023.12.0
 

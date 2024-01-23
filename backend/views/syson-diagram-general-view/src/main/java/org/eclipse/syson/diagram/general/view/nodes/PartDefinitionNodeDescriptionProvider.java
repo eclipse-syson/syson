@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,7 +107,7 @@ public class PartDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
 
     private NodePalette createNodePalette(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.deleteFromModel()");
+                .expression(AQLConstants.AQL_SELF + ".deleteFromModel()");
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,11 @@
  */
 package org.eclipse.syson.sysml.impl;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -98,12 +100,16 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Element basicGetOwnedMemberElement() {
-        // TODO: implement this method to return the 'Owned Member Element' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Namespace membershipOwningNamespace = this.getMembershipOwningNamespace();
+        if (membershipOwningNamespace != null) {
+            EList<Element> ownedMembers = membershipOwningNamespace.getOwnedMember();
+            if (ownedMembers != null && !ownedMembers.isEmpty()) {
+                return ownedMembers.get(0);
+            }
+        }
         return null;
     }
 
@@ -114,8 +120,10 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
      */
     @Override
     public String getOwnedMemberElementId() {
-        // TODO: implement this method to return the 'Owned Member Element Id' attribute
-        // Ensure that you remove @generated or mark it @generated NOT
+        Element ownedMemberElement = this.getOwnedMemberElement();
+        if (ownedMemberElement != null) {
+            return ownedMemberElement.getElementId();
+        }
         return null;
     }
 
@@ -126,8 +134,10 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
      */
     @Override
     public String getOwnedMemberName() {
-        // TODO: implement this method to return the 'Owned Member Name' attribute
-        // Ensure that you remove @generated or mark it @generated NOT
+        Element ownedMemberElement = this.getOwnedMemberElement();
+        if (ownedMemberElement != null) {
+            return ownedMemberElement.getName();
+        }
         return null;
     }
 
@@ -138,8 +148,10 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
      */
     @Override
     public String getOwnedMemberShortName() {
-        // TODO: implement this method to return the 'Owned Member Short Name' attribute
-        // Ensure that you remove @generated or mark it @generated NOT
+        Element ownedMemberElement = this.getOwnedMemberElement();
+        if (ownedMemberElement != null) {
+            return ownedMemberElement.getShortName();
+        }
         return null;
     }
 

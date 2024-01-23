@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -160,12 +160,13 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Namespace basicGetImportOwningNamespace() {
-        // TODO: implement this method to return the 'Import Owning Namespace' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Element owningRelatedElement = this.getOwningRelatedElement();
+        if (owningRelatedElement instanceof Namespace ns) {
+            return ns;
+        }
         return null;
     }
 
