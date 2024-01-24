@@ -34,7 +34,7 @@ import org.junit.jupiter.api.Test;
 public class ElementUtilTest {
 
     /**
-     * All expected UIIDs have been produced with https://www.uuidtools.com/v5.
+     * All expected UUIDs have been produced with https://www.uuidtools.com/v5.
      */
     @Test
     void testGenerateUUIDv5() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ grammar DirectEdit;
 
 @header {
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ package org.eclipse.syson.services.grammars;
 }
 
 expression :
-	Name? multiplicityExpression? featureExpressions EOF
+	name? multiplicityExpression? featureExpressions EOF
 ;
 
 multiplicityExpression :
@@ -46,15 +46,15 @@ featureExpressions :
 ;
 
 subsettingExpression :
-	':>' Name
+	':>' qualifiedName
 ;
 
 redefinitionExpression :
-	':>>' Name
+	':>>' qualifiedName
 ;
 
 typingExpression :
-	':' Name
+	':' qualifiedName
 ;
 
 valueExpression :
@@ -88,8 +88,12 @@ DoubleQuotedString :
 	'"' (~[\r\n"] | '""')* '"'
 ;
 
-Name :
-	BasicName | UnrestrictedName
+qualifiedName :
+	name ('::' name)*
+;
+
+name :
+	BasicName | SingleQuotedString
 ;
 
 BasicName :
@@ -102,10 +106,6 @@ BasicInitialCharacter :
 
 BasicNameCharacter :
 	BasicInitialCharacter | DeciamlDigit
-;
-
-UnrestrictedName :
-	'\'' ~[\\']* '\''
 ;
 
 fragment Letter : [a-zA-Z]

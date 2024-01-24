@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.services;
 
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.sysml.Dependency;
@@ -26,6 +27,10 @@ import org.eclipse.syson.util.LabelConstants;
  * @author arichard
  */
 public class GeneralViewLabelService extends LabelService {
+
+    public GeneralViewLabelService(IFeedbackMessageService feedbackMessageService) {
+        super(feedbackMessageService);
+    }
 
     /**
      * Return the label for the given {@link Usage}.

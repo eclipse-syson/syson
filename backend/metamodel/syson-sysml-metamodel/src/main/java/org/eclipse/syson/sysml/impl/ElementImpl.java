@@ -550,7 +550,11 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
             qualifiedName.append(element.getQualifiedName());
             qualifiedName.append("::");
         }
-        qualifiedName.append(this.getName());
+        String name = this.getName();
+        if (name != null && name.contains("\s")) {
+            name = "'" + name + "'";
+        }
+        qualifiedName.append(name);
         return qualifiedName.toString();
     }
 

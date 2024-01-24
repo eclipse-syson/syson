@@ -13,9 +13,11 @@
 package org.eclipse.syson.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -105,7 +107,8 @@ public class UtilService {
     }
 
     /**
-     * Get all reachable elements of the type given by the {@link EClass} in the {@link ResourceSet} of the given {@link EObject}.
+     * Get all reachable elements of the type given by the {@link EClass} in the {@link ResourceSet} of the given
+     * {@link EObject}.
      *
      * @param eObject
      *            the {@link EObject} stored in a {@link ResourceSet}
@@ -118,7 +121,8 @@ public class UtilService {
     }
 
     /**
-     * Get all reachable elements of the type given by the {@link EClass} in the {@link ResourceSet} of the given {@link EObject}.
+     * Get all reachable elements of the type given by the {@link EClass} in the {@link ResourceSet} of the given
+     * {@link EObject}.
      *
      * @param eObject
      *            the {@link EObject} stored in a {@link ResourceSet}
@@ -181,8 +185,7 @@ public class UtilService {
     }
 
     /**
-     * Iterate over the given {@link Collection} of root elements to find a element with the given
-     * name and type.
+     * Iterate over the given {@link Collection} of root elements to find a element with the given name and type.
      *
      * @param roots
      *            the elements to inspect.
@@ -193,8 +196,15 @@ public class UtilService {
      * @return the found element or <code>null</code>.
      */
     public <T extends Element> T findByNameAndType(Collection<EObject> roots, String elementName, Class<T> elementType) {
+        String[] splitElementName = elementName.split("::");
+        List<String> qualifiedName = Arrays.asList(splitElementName);
         for (final EObject root : roots) {
-            final T result = this.findByNameAndTypeFrom(root, elementName, elementType);
+            final T result;
+            if (qualifiedName.size() > 1) {
+                result = this.findInRootByQualifiedNameAndTypeFrom(root, qualifiedName, elementType);
+            } else {
+                result = this.findByNameAndTypeFrom(root, elementName, elementType);
+            }
             if (result != null) {
                 return result;
             }
@@ -203,7 +213,56 @@ public class UtilService {
     }
 
     /**
-     * Iterate over the root children to find a {@link Element} with the given name and type.
+     * Iterate over the children of the given root {@link EObject} to find an {@link Element} with the given qualified
+     * name and type.
+     *
+     * @param root
+     *            the root object to iterate.
+     * @param qualifiedName
+     *            the qualified name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
+     */
+    private <T extends Element> T findInRootByQualifiedNameAndTypeFrom(EObject root, List<String> qualifiedName, Class<T> elementType) {
+        T element = null;
+        if (root instanceof Element rootElt && this.nameMatches(rootElt, qualifiedName.get(0))) {
+            element = this.findByQualifiedNameAndTypeFrom(rootElt, qualifiedName.subList(1, qualifiedName.size()), elementType);
+        }
+        return element;
+    }
+
+    /**
+     * Iterate over the children of the given parent {@link EObject} to find an {@link Element} with the given qualified
+     * name and type.
+     *
+     * @param parent
+     *            the parent object to iterate.
+     * @param qualifiedName
+     *            the qualified name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
+     */
+    private <T extends Element> T findByQualifiedNameAndTypeFrom(Element parent, List<String> qualifiedName, Class<T> elementType) {
+        T element = null;
+
+        Optional<Element> child = parent.getOwnedElement().stream()
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .filter(elt -> this.nameMatches(elt, qualifiedName.get(0)))
+                .findFirst();
+        if (child.isPresent() && qualifiedName.size() > 1) {
+            element = this.findByQualifiedNameAndTypeFrom(child.get(), qualifiedName.subList(1, qualifiedName.size()), elementType);
+        } else if (child.isPresent() && elementType.isInstance(child.get())) {
+            element = elementType.cast(child.get());
+        }
+        return element;
+    }
+
+    /**
+     * Iterate over the children of the given root {@link EObject} to find an {@link Element} with the given name and
+     * type.
      *
      * @param root
      *            the root object to iterate.
@@ -225,6 +284,7 @@ public class UtilService {
             EObject obj = eAllContents.next();
             if (elementType.isInstance(obj) && this.nameMatches(elementType.cast(obj), elementName)) {
                 element = elementType.cast(obj);
+                break;
             }
         }
 
@@ -260,13 +320,36 @@ public class UtilService {
      * @return <code>true</code> if the name match, <code>false</code> otherwise.
      */
     private boolean nameMatches(Element element, String name) {
-        if (element != null && element.getName() != null && name != null) {
-            return element.getName().trim().equalsIgnoreCase(name.trim());
+        boolean matches = false;
+        if (element != null && name != null) {
+            String elementName = element.getName();
+            if (elementName != null) {
+                if (name.contains("\s")) {
+                    elementName = "'" + elementName + "'";
+                }
+                matches = elementName.trim().equals(name.trim());
+            }
         }
-        return false;
+        return matches;
     }
 
     private Stream<Resource> getSysMLv2Resources(EList<Resource> resources) {
         return resources.stream().filter(r -> !r.getContents().isEmpty() && r.getContents().get(0) instanceof Element);
+    }
+
+    /**
+     * Check if the given element name is a qualified name.
+     * 
+     * @param elementName
+     *            the given element name.
+     * @return <code>true</code> if the given element name is a qualified name, <code>false</code> otherwise.
+     */
+    public boolean isQualifiedName(String elementName) {
+        boolean isQualifiedName = false;
+        if (elementName != null) {
+            String[] splitElementName = elementName.split("::");
+            isQualifiedName = splitElementName.length > 1;
+        }
+        return isQualifiedName;
     }
 }

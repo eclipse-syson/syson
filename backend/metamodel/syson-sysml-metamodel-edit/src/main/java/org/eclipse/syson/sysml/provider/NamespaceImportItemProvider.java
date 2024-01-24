@@ -89,7 +89,7 @@ public class NamespaceImportItemProvider extends ImportItemProvider {
     @Override
     public Object getImage(Object object) {
         String imagePath = "full/obj16/NamespaceImport.svg";
-        boolean isRecursive = ((NamespaceImport)object).isIsRecursive();
+        boolean isRecursive = ((NamespaceImport) object).isIsRecursive();
         if (isRecursive) {
             imagePath = "full/obj16/NamespaceImportRecursive.svg";
         }
@@ -104,12 +104,16 @@ public class NamespaceImportItemProvider extends ImportItemProvider {
      */
     @Override
     public String getText(Object object) {
-        Namespace importedNamespace = ((NamespaceImport)object).getImportedNamespace();
+        Namespace importedNamespace = ((NamespaceImport) object).getImportedNamespace();
         if (importedNamespace != null) {
             StringBuilder text = new StringBuilder();
             text.append("import ");
             text.append(importedNamespace.getQualifiedName());
-            text.append("::*");
+            if (((NamespaceImport) object).isIsRecursive()) {
+                text.append("::**");
+            } else {
+                text.append("::*");
+            }
             return text.toString();
         }
         String label = ((NamespaceImport)object).getName();
