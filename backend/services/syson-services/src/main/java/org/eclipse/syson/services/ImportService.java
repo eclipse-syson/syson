@@ -47,13 +47,15 @@ public class ImportService {
             List<Import> allImports = namespacesHierarchy.stream().map(ns -> ns.getOwnedImport()).flatMap(Collection::stream).toList();
             boolean existingImport = allImports.stream().anyMatch(imprt -> isImportForElement(imprt, elementToImport));
             if (!existingImport) {
-                NamespaceImport namespaceImport = SysmlFactory.eINSTANCE.createNamespaceImport();
                 Namespace elementNamespace = getPackageParent(element);
                 if (elementNamespace == null) {
                     elementNamespace = element.getOwningNamespace();
                 }
-                elementNamespace.getOwnedRelationship().add(0, namespaceImport);
-                namespaceImport.setImportedNamespace(elementToImportNamespace);
+                if (elementNamespace != null && !elementNamespace.equals(elementToImportNamespace)) {
+                    NamespaceImport namespaceImport = SysmlFactory.eINSTANCE.createNamespaceImport();
+                    elementNamespace.getOwnedRelationship().add(0, namespaceImport);
+                    namespaceImport.setImportedNamespace(elementToImportNamespace);
+                }
             }
         }
     }
@@ -102,13 +104,31 @@ public class ImportService {
             Namespace elementToImportNamespace = elementToImport.getOwningNamespace();
             if (importedNamespace != null && importedNamespace.equals(elementToImportNamespace)) {
                 isImportForElement = true;
+            } else if (imprt.isIsRecursive()) {
+                isImportForElement = isParentOf(importedNamespace, elementToImportNamespace);
             }
         } else if (imprt instanceof MembershipImport membershipImport) {
             Element importedElement = membershipImport.getImportedElement();
             if (importedElement != null && importedElement.equals(elementToImport)) {
                 isImportForElement = true;
+            } else if (imprt.isIsRecursive()) {
+                isImportForElement = isParentOf(importedElement, elementToImport);
             }
         }
         return isImportForElement;
+    }
+
+    private boolean isParentOf(EObject parent, EObject child) {
+        boolean isParentOf = false;
+        if (parent != null && child != null) {
+            if (child.equals(parent)) {
+                isParentOf = true;
+            }
+            EObject eContainer = child.eContainer();
+            if (eContainer != null) {
+                isParentOf = isParentOf(parent, eContainer);
+            }
+        }
+        return isParentOf;
     }
 }

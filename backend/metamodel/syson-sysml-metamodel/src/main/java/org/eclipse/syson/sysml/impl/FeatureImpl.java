@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -593,8 +593,14 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<FeatureTyping> getOwnedTyping() {
-        List<FeatureTyping> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedTyping(), data.size(), data.toArray());
+        List<FeatureTyping> ownedTypings = new ArrayList<>();
+        //The ownedSpecializations of this Feature that are FeatureTypings, for which the Feature is the typedFeature.
+        this.getOwnedSpecialization().stream()
+            .filter(FeatureTyping.class::isInstance)
+            .map(FeatureTyping.class::cast)
+            .filter(ft -> this.equals(ft.getTypedFeature()))
+            .forEach(ownedTypings::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedTyping(), ownedTypings.size(), ownedTypings.toArray());
     }
 
     /**

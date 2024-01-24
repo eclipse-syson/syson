@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:sysml="http://www.eclipse.org/syson/sysml">
+  <sysml:Package declaredName="Package1" elementId="9a7349aa-57ef-4683-b867-2aaedf6de885">
+    <ownedRelationship xmi:type="sysml:OwningMembership" elementId="99dfe7d3-f990-4c06-950c-fcf7a391398f">
+      <ownedRelatedElement xmi:type="sysml:PartDefinition" declaredName="P1Def1" elementId="5408ae27-f62d-41c9-813d-f35f8f4d732f"/>
+    </ownedRelationship>
+    <ownedRelationship xmi:type="sysml:OwningMembership" elementId="fd769f44-91b9-4834-80f4-5f17475caa84">
+      <ownedRelatedElement xmi:type="sysml:PartDefinition" declaredName="P1Def2" elementId="d4615b6b-c13c-43af-b665-985db4ceb90c"/>
+    </ownedRelationship>
+    <ownedRelationship xmi:type="sysml:OwningMembership" elementId="e15b6ced-1eff-4505-aa1a-2498d2415e52">
+      <ownedRelatedElement xmi:type="sysml:Package" declaredName="Package11" elementId="2ed1abe1-acc7-4bcb-b54f-0a7c4df11943">
+        <ownedRelationship xmi:type="sysml:OwningMembership" elementId="ffd3a12e-8222-4f0a-ba19-84d0371d3bf0">
+          <ownedRelatedElement xmi:type="sysml:Package" declaredName="Package111" elementId="9205873c-6eb0-464b-a9f4-f0460711d779">
+            <ownedRelationship xmi:type="sysml:OwningMembership" elementId="579c4c87-aac5-4de5-a804-22f32cfdac2c">
+              <ownedRelatedElement xmi:type="sysml:PartDefinition" declaredName="P111Def1" elementId="7390a6e5-f063-464d-94de-eba98c5ef85a"/>
+            </ownedRelationship>
+          </ownedRelatedElement>
+        </ownedRelationship>
+        <ownedRelationship xmi:type="sysml:OwningMembership" elementId="2dd656de-e899-4b59-a847-4fee2d05f829">
+          <ownedRelatedElement xmi:type="sysml:PartDefinition" declaredName="P11Def1" elementId="64caa8ec-0c08-4592-815f-727b48fa1769"/>
+        </ownedRelationship>
+      </ownedRelatedElement>
+    </ownedRelationship>
+    <ownedRelationship xmi:type="sysml:OwningMembership" elementId="b57cf30c-de27-4dc5-a675-602eda7d2c58">
+      <ownedRelatedElement xmi:type="sysml:Package" declaredName="Package12" elementId="4ee485b6-04be-49a3-b7f8-930a66799a92">
+        <ownedRelationship xmi:type="sysml:OwningMembership" elementId="c6cd0472-05fd-497c-bf57-65a055bb6b1e">
+          <ownedRelatedElement xmi:type="sysml:PartDefinition" declaredName="P12Def1" elementId="6c0e3148-ebf4-4c06-8135-35d3ae2b5a38"/>
+        </ownedRelationship>
+      </ownedRelatedElement>
+    </ownedRelationship>
+  </sysml:Package>
+  <sysml:Package declaredName="Package2" elementId="70e52d0a-58b3-474a-a0fd-b95d1a859665">
+    <ownedRelationship xmi:type="sysml:OwningMembership" elementId="271ba7f8-8ae5-4a1a-8db3-d25172aa4852">
+      <ownedRelatedElement xmi:type="sysml:PartUsage" declaredName="usage1" elementId="3ebdee69-3032-46a9-8fbf-f337034829c9">
+        <ownedRelationship xmi:type="sysml:FeatureTyping" elementId="1ae3be77-6cad-4e62-8671-70a59e8e1b65" general="5408ae27-f62d-41c9-813d-f35f8f4d732f" specific="3ebdee69-3032-46a9-8fbf-f337034829c9" type="5408ae27-f62d-41c9-813d-f35f8f4d732f" typedFeature="3ebdee69-3032-46a9-8fbf-f337034829c9"/>
+      </ownedRelatedElement>
+    </ownedRelationship>
+    <ownedRelationship xmi:type="sysml:OwningMembership" elementId="7dfe78ea-bd80-4fc9-8004-5fc21a0d174f">
+      <ownedRelatedElement xmi:type="sysml:PartDefinition" declaredName="P2Def1" elementId="1dfe41cb-f833-4b6f-a9ca-df367428cf09"/>
+    </ownedRelationship>
+    <ownedRelationship xmi:type="sysml:OwningMembership" elementId="a3dd6750-030c-401f-9733-6650865ddd24">
+      <ownedRelatedElement xmi:type="sysml:PartUsage" declaredName="usage2" elementId="28e306bc-1329-4be0-be10-d2b4f792c383">
+        <ownedRelationship xmi:type="sysml:FeatureTyping" elementId="14faaa8c-8260-40a4-9017-6acce22a310a" general="1dfe41cb-f833-4b6f-a9ca-df367428cf09" specific="28e306bc-1329-4be0-be10-d2b4f792c383" type="1dfe41cb-f833-4b6f-a9ca-df367428cf09" typedFeature="28e306bc-1329-4be0-be10-d2b4f792c383"/>
+      </ownedRelatedElement>
+    </ownedRelationship>
+  </sysml:Package>
+</xmi:XMI>

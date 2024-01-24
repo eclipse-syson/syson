@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import java.util.Objects;
+
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditListener;
 import org.eclipse.syson.services.grammars.DirectEditParser;
@@ -53,6 +56,12 @@ public class LabelService {
     public static final String TYPING_OFF = "TYPING_OFF";
 
     public static final String VALUE_OFF = "VALUE_OFF";
+
+    private final IFeedbackMessageService feedbackMessageService;
+
+    public LabelService(IFeedbackMessageService feedbackMessageService) {
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+    }
 
     /**
      * Return the container label for the given {@link Element}.
@@ -93,7 +102,7 @@ public class LabelService {
         DirectEditParser parser = new DirectEditParser(tokens);
         ParseTree tree = parser.expression();
         ParseTreeWalker walker = new ParseTreeWalker();
-        DirectEditListener listener = new DiagramDirectEditListener(element, options);
+        DirectEditListener listener = new DiagramDirectEditListener(element, feedbackMessageService, options);
         walker.walk(listener, tree);
         return element;
     }

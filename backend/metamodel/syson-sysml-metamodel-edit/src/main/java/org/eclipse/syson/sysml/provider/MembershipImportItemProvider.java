@@ -22,7 +22,10 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -89,7 +92,7 @@ public class MembershipImportItemProvider extends ImportItemProvider {
     @Override
     public Object getImage(Object object) {
         String imagePath = "full/obj16/MembershipImport.svg";
-        boolean isRecursive = ((MembershipImport)object).isIsRecursive();
+        boolean isRecursive = ((MembershipImport) object).isIsRecursive();
         if (isRecursive) {
             imagePath = "full/obj16/MembershipImportRecursive.svg";
         }
@@ -104,6 +107,16 @@ public class MembershipImportItemProvider extends ImportItemProvider {
      */
     @Override
     public String getText(Object object) {
+        Element importedElement = ((MembershipImport) object).getImportedElement();
+        if (importedElement != null) {
+            StringBuilder text = new StringBuilder();
+            text.append("import ");
+            text.append(importedElement.getQualifiedName());
+            if (((MembershipImport) object).isIsRecursive()) {
+                text.append("::**");
+            }
+            return text.toString();
+        }
         String label = ((MembershipImport)object).getName();
         return label == null || label.length() == 0 ?
             getString("_UI_MembershipImport_type") :

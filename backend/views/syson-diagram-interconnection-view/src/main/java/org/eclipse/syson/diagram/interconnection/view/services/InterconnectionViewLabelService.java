@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.services;
 
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.sysml.PortUsage;
@@ -22,6 +23,10 @@ import org.eclipse.syson.sysml.PortUsage;
  * @author arichard
  */
 public class InterconnectionViewLabelService extends LabelService {
+
+    public InterconnectionViewLabelService(IFeedbackMessageService feedbackMessageService) {
+        super(feedbackMessageService);
+    }
 
     /**
      * Return the label for the given {@link PortUsage}.

@@ -22,6 +22,9 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.grammars.DirectEditBaseListener;
 import org.eclipse.syson.services.grammars.DirectEditParser.ExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsContext;
@@ -61,14 +64,17 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private final Element element;
 
+    private final IFeedbackMessageService feedbackMessageService;
+
     private final UtilService utilService;
 
     private final ImportService importService;
 
     private List<String> options;
 
-    public DiagramDirectEditListener(Element element, String... options) {
+    public DiagramDirectEditListener(Element element, IFeedbackMessageService feedbackMessageService, String... options) {
         this.element = Objects.requireNonNull(element);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.options = List.of();
         if (options != null) {
             this.options = Arrays.asList(options);
@@ -80,7 +86,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     @Override
     public void exitExpression(ExpressionContext ctx) {
         if (!this.options.contains(LabelService.NAME_OFF)) {
-            var identifier = ctx.Name();
+            var identifier = ctx.name();
             if (identifier != null && !identifier.getText().isBlank()) {
                 this.element.setDeclaredName(identifier.getText());
             } else {
@@ -133,41 +139,45 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         if (this.element instanceof Usage usage) {
-            var identifier = ctx.Name();
+            var identifier = ctx.qualifiedName();
             if (identifier != null) {
                 var typeAsString = identifier.getText();
-                var definition = this.utilService.findByNameAndType(this.element, typeAsString, Type.class);
-                if (definition == null) {
+                var type = this.utilService.findByNameAndType(this.element, typeAsString, Type.class);
+                if (type == null && this.utilService.isQualifiedName(typeAsString)) {
+                    this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the typing does not exist", MessageLevel.ERROR));
+                    return;
+                } else if (type == null) {
                     var containerPackage = this.utilService.getContainerPackage(this.element);
                     var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
                     containerPackage.getOwnedRelationship().add(newMembership);
                     EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(this.element.eClass().getName().replace("Usage", "Definition"));
                     if (eClassifier instanceof EClass eClass) {
-                        definition = (Definition) SysmlFactory.eINSTANCE.create(eClass);
-                        definition.setDeclaredName(typeAsString);
-                        newMembership.getOwnedRelatedElement().add(definition);
+                        type = (Definition) SysmlFactory.eINSTANCE.create(eClass);
+                        type.setDeclaredName(typeAsString);
+                        newMembership.getOwnedRelatedElement().add(type);
                     }
+                } else {
+                    this.importService.handleImport(this.element, type);
                 }
-                if (definition != null) {
+                if (type != null) {
                     var optFeatureTyping = this.element.getOwnedRelationship().stream()
                             .filter(FeatureTyping.class::isInstance)
                             .map(FeatureTyping.class::cast)
                             .findFirst();
                     if (optFeatureTyping.isPresent()) {
                         FeatureTyping featureTyping = optFeatureTyping.get();
-                        featureTyping.setType(definition);
-                        featureTyping.setGeneral(definition);
+                        featureTyping.setType(type);
+                        featureTyping.setGeneral(type);
                         featureTyping.setSpecific(usage);
                         featureTyping.setTypedFeature(usage);
                     } else {
                         var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
                         this.element.getOwnedRelationship().add(newFeatureTyping);
-                        newFeatureTyping.setType(definition);
-                        newFeatureTyping.setGeneral(definition);
+                        newFeatureTyping.setType(type);
+                        newFeatureTyping.setGeneral(type);
                         newFeatureTyping.setSpecific(usage);
                         newFeatureTyping.setTypedFeature(usage);
                     }
-                    this.importService.handleImport(this.element, definition);
                 }
             }
         }
@@ -186,11 +196,14 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     private void handleSubclassification(SubsettingExpressionContext ctx, Definition subclassificationDef) {
-        var identifier = ctx.Name();
+        var identifier = ctx.qualifiedName();
         if (identifier != null) {
             var definitionAsString = identifier.getText();
             var definition = this.utilService.findByNameAndType(subclassificationDef, definitionAsString, Classifier.class);
-            if (definition == null) {
+            if (definition == null && this.utilService.isQualifiedName(definitionAsString)) {
+                this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the subclassification does not exist", MessageLevel.ERROR));
+                return;
+            } else if (definition == null) {
                 var containerPackage = this.utilService.getContainerPackage(subclassificationDef);
                 var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
                 containerPackage.getOwnedRelationship().add(newMembership);
@@ -200,7 +213,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     definition.setDeclaredName(definitionAsString);
                     newMembership.getOwnedRelatedElement().add(definition);
                 }
+            } else {
+                this.importService.handleImport(this.element, definition);
             }
+
             if (definition != null) {
                 var optSubsetting = subclassificationDef.getOwnedRelationship().stream()
                         .filter(Subclassification.class::isInstance)
@@ -220,17 +236,19 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     newSubclassification.setSubclassifier(subclassificationDef);
                     newSubclassification.setSpecific(subclassificationDef);
                 }
-                this.importService.handleImport(this.element, definition);
             }
         }
     }
 
     private void handleSubsetting(SubsettingExpressionContext ctx, Usage subsettingUsage) {
-        var identifier = ctx.Name();
+        var identifier = ctx.qualifiedName();
         if (identifier != null) {
             var usageAsString = identifier.getText();
             var usage = this.utilService.findByNameAndType(subsettingUsage, usageAsString, Feature.class);
-            if (usage == null) {
+            if (usage == null && this.utilService.isQualifiedName(usageAsString)) {
+                this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the subsetting does not exist", MessageLevel.ERROR));
+                return;
+            } else if (usage == null) {
                 var containerPackage = this.utilService.getContainerPackage(subsettingUsage);
                 var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
                 containerPackage.getOwnedRelationship().add(newMembership);
@@ -240,7 +258,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     usage.setDeclaredName(usageAsString);
                     newMembership.getOwnedRelatedElement().add(usage);
                 }
+            } else {
+                this.importService.handleImport(this.element, usage);
             }
+
             if (usage != null) {
                 var optSubsetting = subsettingUsage.getOwnedRelationship().stream()
                         .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
@@ -260,7 +281,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     newSubsetting.setSubsettingFeature(subsettingUsage);
                     newSubsetting.setSpecific(subsettingUsage);
                 }
-                this.importService.handleImport(this.element, usage);
             }
         }
     }
@@ -271,11 +291,14 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         if (this.element instanceof Usage redefining) {
-            var identifier = ctx.Name();
+            var identifier = ctx.qualifiedName();
             if (identifier != null) {
                 var usageAsString = identifier.getText();
                 var usage = this.utilService.findByNameAndType(redefining, usageAsString, Feature.class);
-                if (usage == null) {
+                if (usage == null && this.utilService.isQualifiedName(usageAsString)) {
+                    this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the redefinition does not exist", MessageLevel.ERROR));
+                    return;
+                } else if (usage == null) {
                     var containerPackage = this.utilService.getContainerPackage(redefining);
                     var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
                     containerPackage.getOwnedRelationship().add(newMembership);
@@ -285,7 +308,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         usage.setDeclaredName(usageAsString);
                         newMembership.getOwnedRelatedElement().add(usage);
                     }
+                } else {
+                    this.importService.handleImport(this.element, usage);
                 }
+
                 if (usage != null) {
                     var optRedefinition = redefining.getOwnedRelationship().stream()
                             .filter(Redefinition.class::isInstance)
@@ -309,7 +335,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         newRedefinition.setSubsettingFeature(redefining);
                         newRedefinition.setSpecific(redefining);
                     }
-                    this.importService.handleImport(this.element, usage);
                 }
             }
         }

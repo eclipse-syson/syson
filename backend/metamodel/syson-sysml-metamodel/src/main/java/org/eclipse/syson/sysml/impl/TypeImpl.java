@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -432,8 +432,14 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Specialization> getOwnedSpecialization() {
-        List<Specialization> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedSpecialization(), data.size(), data.toArray());
+        List<Specialization> ownedSpecializations = new ArrayList<>();
+        // The ownedRelationships of this Type that are Specializations, for which the Type is the specific Type.
+        this.getOwnedRelationship().stream()
+            .filter(Specialization.class::isInstance)
+            .map(Specialization.class::cast)
+            .filter(spec -> this.equals(spec.getSpecific()))
+            .forEach(ownedSpecializations::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedSpecialization(), ownedSpecializations.size(), ownedSpecializations.toArray());
     }
 
     /**

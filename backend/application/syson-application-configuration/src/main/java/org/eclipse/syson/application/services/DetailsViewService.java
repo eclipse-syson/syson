@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.application.services;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
@@ -30,6 +31,7 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
+import org.eclipse.syson.services.ImportService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -44,9 +46,12 @@ public class DetailsViewService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
+    private final ImportService importService;
+
     public DetailsViewService(ComposedAdapterFactory composedAdapterFactory, IFeedbackMessageService feedbackMessageService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.importService = new ImportService();
     }
 
     public String getDetailsViewLabel(Element element, EStructuralFeature eStructuralFeature) {
@@ -158,5 +163,22 @@ public class DetailsViewService {
 
     public boolean isReference(EStructuralFeature eStructuralFeature) {
         return eStructuralFeature instanceof EReference eReference && !eReference.isContainment() && !eReference.isContainer() && eReference.isChangeable();
+    }
+
+    public Element handleReferenceWidgetNewValue(Element element, String eStructuralFeature, Object newValue) {
+        setNewValue(element, element.eClass().getEStructuralFeature(eStructuralFeature), newValue);
+        if (element.eContainer() instanceof Element parent) {
+            if (newValue instanceof Element elementToImport) {
+                this.importService.handleImport(parent, elementToImport);
+            } else if (newValue instanceof Collection<?> newValues) {
+                newValues.stream()
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .forEach(elementToImport -> {
+                        this.importService.handleImport(parent, elementToImport);
+                    });
+            }
+        }
+        return element;
     }
 }
