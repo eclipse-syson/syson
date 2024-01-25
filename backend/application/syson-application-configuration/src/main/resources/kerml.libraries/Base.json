@@ -1,0 +1,44 @@
+{
+	"json": {
+		"version": "1.0",
+		"encoding": "utf-8"
+	},
+	"ns": {
+		"sysml": "http://www.eclipse.org/syson/sysml"
+	},
+	"content": [
+		{
+			"eClass": "sysml:LibraryPackage",
+			"data": {
+				"declaredName": "Base",
+				"elementId": "f7218d2c-0a8a-4b94-8530-ee1e23964450",
+				"ownedRelationship": [
+					{
+						"eClass": "sysml:OwningMembership",
+						"data": {
+							"elementId": "08e6cddf-97be-4c56-b5f1-f557e828d2e6",
+							"memberElement": "08e6cddf-97be-4c56-b5f1-f557e828d2e6"
+						}
+					},
+					{
+						"eClass": "sysml:OwningMembership",
+						"data": {
+							"elementId": "db907235-44f0-4bbe-99d8-fcb1407a9fc1",
+							"ownedRelatedElement": [
+								{
+									"eClass": "sysml:Classifier",
+									"data": {
+										"declaredName": "Anything",
+										"elementId": "de2687f3-d797-44cf-b300-5242b29b1299"
+									}
+								}
+							],
+							"memberElement": "db907235-44f0-4bbe-99d8-fcb1407a9fc1"
+						}
+					}
+				],
+				"isStandard": true
+			}
+		}
+	]
+}

@@ -1,6 +1,6 @@
 = Changelog
 
-== v2024.01.0 (work in progress)
+== v2024.1.0 (work in progress)
 
 === Breaking changes
 
@@ -8,7 +8,7 @@
 
 === Dependency update
 
-- Switch to Sirius Web 2023.12.11
+- Switch to Sirius Web 2024.1.1 (Please do not use new Portal representation introduced by this release of Sirius Web, it will be removed in SysON soon (see this ticket in Sirius Web)[https://github.com/eclipse-sirius/sirius-web/issues/3013], when Sirius Web will allow to configure which representations can be used or not in Sirius Web-based applications).
 - https://github.com/eclipse-syson/syson/issues/52[#52] [metamodel] SysON SysMLv2 metamodel module now depends on `org.eclipse.emf.ecore.xmi` and `java-uuid-generator`.
 - Switch to vite 4.5.2
 
