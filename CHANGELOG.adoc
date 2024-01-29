@@ -5,6 +5,7 @@
 === Breaking changes
 
 - https://github.com/eclipse-syson/syson/issues/52[#52] [services] All `findUsageByName` and `findDefinitionByName` method have been replaced by the new `findByNameAndType` in `org.eclipse.syson.services.UtilService`.
+- Delete useless fork of `UploadDocumentEventHandler` & `DocumentController` from Sirius Web.
 
 === Dependency update
 
