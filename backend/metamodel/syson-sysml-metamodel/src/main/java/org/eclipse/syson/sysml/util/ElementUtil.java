@@ -19,7 +19,9 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.LibraryPackage;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 
 /**
@@ -93,14 +95,13 @@ public class ElementUtil {
         if (element instanceof LibraryPackage libraryPackage && libraryPackage.isIsStandard()) {
             Resource resource = element.eResource();
             if (resource != null) {
-                String uri = resource.getURI().toString().startsWith("kermllibrary:")?
-                        ElementUtil.KERML_LIBRARY_BASE_URI: ElementUtil.SYSML_LIBRARY_BASE_URI;
+                String uri = resource.getURI().toString().startsWith("kermllibrary:") ? ElementUtil.KERML_LIBRARY_BASE_URI : ElementUtil.SYSML_LIBRARY_BASE_URI;
                 String qualifiedName = element.getQualifiedName();
                 if (qualifiedName != null) {
                     uuid = generateUUIDv5(ElementUtil.NAME_SPACE_URL_UUID, uri + qualifiedName);
                 }
             }
-        } else if (isFromStandardLibrary(element)) {
+        } else if (isFromStandardLibrary(element) && element.getDeclaredName() != null && !(element instanceof Import || element instanceof Membership)) {
             String qualifiedName = element.getQualifiedName();
             Namespace libraryNamespace = element.libraryNamespace();
             if (qualifiedName != null && libraryNamespace != null) {
