@@ -9,6 +9,5 @@
   "[javascript]": {
     "editor.formatOnSave": true
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "asciidoc.antora.enableAntoraSupport": false
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
