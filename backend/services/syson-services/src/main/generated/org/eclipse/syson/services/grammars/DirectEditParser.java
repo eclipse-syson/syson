@@ -389,9 +389,6 @@ public class DirectEditParser extends Parser {
 				case EOF:
 				case T__6:
 				case T__7:
-				case Boolean:
-				case Real:
-				case DoubleQuotedString:
 					break;
 				default:
 					break;
@@ -409,7 +406,7 @@ public class DirectEditParser extends Parser {
 				setState(48);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__7) | (1L << Boolean) | (1L << Real) | (1L << DoubleQuotedString))) != 0)) {
+				if (_la==T__7) {
 					{
 					setState(47);
 					valueExpression();
@@ -448,9 +445,6 @@ public class DirectEditParser extends Parser {
 					break;
 				case EOF:
 				case T__7:
-				case Boolean:
-				case Real:
-				case DoubleQuotedString:
 					break;
 				default:
 					break;
@@ -458,7 +452,7 @@ public class DirectEditParser extends Parser {
 				setState(58);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__7) | (1L << Boolean) | (1L << Real) | (1L << DoubleQuotedString))) != 0)) {
+				if (_la==T__7) {
 					{
 					setState(57);
 					valueExpression();
@@ -604,9 +598,9 @@ public class DirectEditParser extends Parser {
 	}
 
 	public static class ValueExpressionContext extends ParserRuleContext {
-		public TerminalNode Integer() { return getToken(DirectEditParser.Integer, 0); }
 		public TerminalNode Real() { return getToken(DirectEditParser.Real, 0); }
 		public TerminalNode Boolean() { return getToken(DirectEditParser.Boolean, 0); }
+		public TerminalNode Integer() { return getToken(DirectEditParser.Integer, 0); }
 		public TerminalNode DoubleQuotedString() { return getToken(DirectEditParser.DoubleQuotedString, 0); }
 		public ValueExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -625,42 +619,22 @@ public class DirectEditParser extends Parser {
 	public final ValueExpressionContext valueExpression() throws RecognitionException {
 		ValueExpressionContext _localctx = new ValueExpressionContext(_ctx, getState());
 		enterRule(_localctx, 14, RULE_valueExpression);
+		int _la;
 		try {
-			setState(76);
-			_errHandler.sync(this);
-			switch (_input.LA(1)) {
-			case T__7:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(71);
-				match(T__7);
-				setState(72);
-				match(Integer);
-				}
-				break;
-			case Real:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(73);
-				match(Real);
-				}
-				break;
-			case Boolean:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(74);
-				match(Boolean);
-				}
-				break;
-			case DoubleQuotedString:
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(75);
-				match(DoubleQuotedString);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(71);
+			match(T__7);
+			setState(72);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -702,21 +676,21 @@ public class DirectEditParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(78);
+			setState(74);
 			name();
-			setState(83);
+			setState(79);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__8) {
 				{
 				{
-				setState(79);
+				setState(75);
 				match(T__8);
-				setState(80);
+				setState(76);
 				name();
 				}
 				}
-				setState(85);
+				setState(81);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -757,7 +731,7 @@ public class DirectEditParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(86);
+			setState(82);
 			_la = _input.LA(1);
 			if ( !(_la==SingleQuotedString || _la==BasicName) ) {
 			_errHandler.recoverInline(this);
@@ -781,7 +755,7 @@ public class DirectEditParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001rY\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002\u0002"+
+		"\u0004\u0001rU\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002\u0002"+
 		"\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002\u0005"+
 		"\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002\b\u0007"+
 		"\b\u0002\t\u0007\t\u0001\u0000\u0003\u0000\u0016\b\u0000\u0001\u0000\u0003"+
@@ -793,47 +767,44 @@ public class DirectEditParser extends Parser {
 		"\u00038\b\u0003\u0001\u0003\u0003\u0003;\b\u0003\u0003\u0003=\b\u0003"+
 		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0005\u0001\u0005\u0001\u0005"+
 		"\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007"+
-		"\u0001\u0007\u0001\u0007\u0003\u0007M\b\u0007\u0001\b\u0001\b\u0001\b"+
-		"\u0005\bR\b\b\n\b\f\bU\t\b\u0001\t\u0001\t\u0001\t\u0000\u0000\n\u0000"+
-		"\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0000\u0002\u0002\u0000\u0004"+
-		"\u0004\f\f\u0002\u0000\u000e\u000e\u0010\u0010^\u0000\u0015\u0001\u0000"+
-		"\u0000\u0000\u0002\u001d\u0001\u0000\u0000\u0000\u0004&\u0001\u0000\u0000"+
-		"\u0000\u0006<\u0001\u0000\u0000\u0000\b>\u0001\u0000\u0000\u0000\nA\u0001"+
-		"\u0000\u0000\u0000\fD\u0001\u0000\u0000\u0000\u000eL\u0001\u0000\u0000"+
-		"\u0000\u0010N\u0001\u0000\u0000\u0000\u0012V\u0001\u0000\u0000\u0000\u0014"+
-		"\u0016\u0003\u0012\t\u0000\u0015\u0014\u0001\u0000\u0000\u0000\u0015\u0016"+
-		"\u0001\u0000\u0000\u0000\u0016\u0018\u0001\u0000\u0000\u0000\u0017\u0019"+
-		"\u0003\u0002\u0001\u0000\u0018\u0017\u0001\u0000\u0000\u0000\u0018\u0019"+
-		"\u0001\u0000\u0000\u0000\u0019\u001a\u0001\u0000\u0000\u0000\u001a\u001b"+
-		"\u0003\u0006\u0003\u0000\u001b\u001c\u0005\u0000\u0000\u0001\u001c\u0001"+
-		"\u0001\u0000\u0000\u0000\u001d!\u0005\u0001\u0000\u0000\u001e\u001f\u0003"+
-		"\u0004\u0002\u0000\u001f \u0005\u0002\u0000\u0000 \"\u0001\u0000\u0000"+
-		"\u0000!\u001e\u0001\u0000\u0000\u0000!\"\u0001\u0000\u0000\u0000\"#\u0001"+
-		"\u0000\u0000\u0000#$\u0003\u0004\u0002\u0000$%\u0005\u0003\u0000\u0000"+
-		"%\u0003\u0001\u0000\u0000\u0000&\'\u0007\u0000\u0000\u0000\'\u0005\u0001"+
-		"\u0000\u0000\u0000(+\u0003\b\u0004\u0000)+\u0003\n\u0005\u0000*(\u0001"+
-		"\u0000\u0000\u0000*)\u0001\u0000\u0000\u0000*+\u0001\u0000\u0000\u0000"+
-		"+-\u0001\u0000\u0000\u0000,.\u0003\f\u0006\u0000-,\u0001\u0000\u0000\u0000"+
-		"-.\u0001\u0000\u0000\u0000.0\u0001\u0000\u0000\u0000/1\u0003\u000e\u0007"+
-		"\u00000/\u0001\u0000\u0000\u000001\u0001\u0000\u0000\u00001=\u0001\u0000"+
-		"\u0000\u000024\u0003\f\u0006\u000032\u0001\u0000\u0000\u000034\u0001\u0000"+
-		"\u0000\u000047\u0001\u0000\u0000\u000058\u0003\b\u0004\u000068\u0003\n"+
-		"\u0005\u000075\u0001\u0000\u0000\u000076\u0001\u0000\u0000\u000078\u0001"+
-		"\u0000\u0000\u00008:\u0001\u0000\u0000\u00009;\u0003\u000e\u0007\u0000"+
-		":9\u0001\u0000\u0000\u0000:;\u0001\u0000\u0000\u0000;=\u0001\u0000\u0000"+
-		"\u0000<*\u0001\u0000\u0000\u0000<3\u0001\u0000\u0000\u0000=\u0007\u0001"+
-		"\u0000\u0000\u0000>?\u0005\u0005\u0000\u0000?@\u0003\u0010\b\u0000@\t"+
-		"\u0001\u0000\u0000\u0000AB\u0005\u0006\u0000\u0000BC\u0003\u0010\b\u0000"+
-		"C\u000b\u0001\u0000\u0000\u0000DE\u0005\u0007\u0000\u0000EF\u0003\u0010"+
-		"\b\u0000F\r\u0001\u0000\u0000\u0000GH\u0005\b\u0000\u0000HM\u0005\f\u0000"+
-		"\u0000IM\u0005\r\u0000\u0000JM\u0005\u000b\u0000\u0000KM\u0005\u000f\u0000"+
-		"\u0000LG\u0001\u0000\u0000\u0000LI\u0001\u0000\u0000\u0000LJ\u0001\u0000"+
-		"\u0000\u0000LK\u0001\u0000\u0000\u0000M\u000f\u0001\u0000\u0000\u0000"+
-		"NS\u0003\u0012\t\u0000OP\u0005\t\u0000\u0000PR\u0003\u0012\t\u0000QO\u0001"+
-		"\u0000\u0000\u0000RU\u0001\u0000\u0000\u0000SQ\u0001\u0000\u0000\u0000"+
-		"ST\u0001\u0000\u0000\u0000T\u0011\u0001\u0000\u0000\u0000US\u0001\u0000"+
-		"\u0000\u0000VW\u0007\u0001\u0000\u0000W\u0013\u0001\u0000\u0000\u0000"+
-		"\f\u0015\u0018!*-037:<LS";
+		"\u0001\b\u0001\b\u0001\b\u0005\bN\b\b\n\b\f\bQ\t\b\u0001\t\u0001\t\u0001"+
+		"\t\u0000\u0000\n\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0000"+
+		"\u0003\u0002\u0000\u0004\u0004\f\f\u0002\u0000\u000b\r\u000f\u000f\u0002"+
+		"\u0000\u000e\u000e\u0010\u0010W\u0000\u0015\u0001\u0000\u0000\u0000\u0002"+
+		"\u001d\u0001\u0000\u0000\u0000\u0004&\u0001\u0000\u0000\u0000\u0006<\u0001"+
+		"\u0000\u0000\u0000\b>\u0001\u0000\u0000\u0000\nA\u0001\u0000\u0000\u0000"+
+		"\fD\u0001\u0000\u0000\u0000\u000eG\u0001\u0000\u0000\u0000\u0010J\u0001"+
+		"\u0000\u0000\u0000\u0012R\u0001\u0000\u0000\u0000\u0014\u0016\u0003\u0012"+
+		"\t\u0000\u0015\u0014\u0001\u0000\u0000\u0000\u0015\u0016\u0001\u0000\u0000"+
+		"\u0000\u0016\u0018\u0001\u0000\u0000\u0000\u0017\u0019\u0003\u0002\u0001"+
+		"\u0000\u0018\u0017\u0001\u0000\u0000\u0000\u0018\u0019\u0001\u0000\u0000"+
+		"\u0000\u0019\u001a\u0001\u0000\u0000\u0000\u001a\u001b\u0003\u0006\u0003"+
+		"\u0000\u001b\u001c\u0005\u0000\u0000\u0001\u001c\u0001\u0001\u0000\u0000"+
+		"\u0000\u001d!\u0005\u0001\u0000\u0000\u001e\u001f\u0003\u0004\u0002\u0000"+
+		"\u001f \u0005\u0002\u0000\u0000 \"\u0001\u0000\u0000\u0000!\u001e\u0001"+
+		"\u0000\u0000\u0000!\"\u0001\u0000\u0000\u0000\"#\u0001\u0000\u0000\u0000"+
+		"#$\u0003\u0004\u0002\u0000$%\u0005\u0003\u0000\u0000%\u0003\u0001\u0000"+
+		"\u0000\u0000&\'\u0007\u0000\u0000\u0000\'\u0005\u0001\u0000\u0000\u0000"+
+		"(+\u0003\b\u0004\u0000)+\u0003\n\u0005\u0000*(\u0001\u0000\u0000\u0000"+
+		"*)\u0001\u0000\u0000\u0000*+\u0001\u0000\u0000\u0000+-\u0001\u0000\u0000"+
+		"\u0000,.\u0003\f\u0006\u0000-,\u0001\u0000\u0000\u0000-.\u0001\u0000\u0000"+
+		"\u0000.0\u0001\u0000\u0000\u0000/1\u0003\u000e\u0007\u00000/\u0001\u0000"+
+		"\u0000\u000001\u0001\u0000\u0000\u00001=\u0001\u0000\u0000\u000024\u0003"+
+		"\f\u0006\u000032\u0001\u0000\u0000\u000034\u0001\u0000\u0000\u000047\u0001"+
+		"\u0000\u0000\u000058\u0003\b\u0004\u000068\u0003\n\u0005\u000075\u0001"+
+		"\u0000\u0000\u000076\u0001\u0000\u0000\u000078\u0001\u0000\u0000\u0000"+
+		"8:\u0001\u0000\u0000\u00009;\u0003\u000e\u0007\u0000:9\u0001\u0000\u0000"+
+		"\u0000:;\u0001\u0000\u0000\u0000;=\u0001\u0000\u0000\u0000<*\u0001\u0000"+
+		"\u0000\u0000<3\u0001\u0000\u0000\u0000=\u0007\u0001\u0000\u0000\u0000"+
+		">?\u0005\u0005\u0000\u0000?@\u0003\u0010\b\u0000@\t\u0001\u0000\u0000"+
+		"\u0000AB\u0005\u0006\u0000\u0000BC\u0003\u0010\b\u0000C\u000b\u0001\u0000"+
+		"\u0000\u0000DE\u0005\u0007\u0000\u0000EF\u0003\u0010\b\u0000F\r\u0001"+
+		"\u0000\u0000\u0000GH\u0005\b\u0000\u0000HI\u0007\u0001\u0000\u0000I\u000f"+
+		"\u0001\u0000\u0000\u0000JO\u0003\u0012\t\u0000KL\u0005\t\u0000\u0000L"+
+		"N\u0003\u0012\t\u0000MK\u0001\u0000\u0000\u0000NQ\u0001\u0000\u0000\u0000"+
+		"OM\u0001\u0000\u0000\u0000OP\u0001\u0000\u0000\u0000P\u0011\u0001\u0000"+
+		"\u0000\u0000QO\u0001\u0000\u0000\u0000RS\u0007\u0002\u0000\u0000S\u0013"+
+		"\u0001\u0000\u0000\u0000\u000b\u0015\u0018!*-037:<O";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
