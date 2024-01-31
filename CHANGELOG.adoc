@@ -1,5 +1,16 @@
 = Changelog
 
+== v2024.3.0 (work in progress)
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== New features
+
+
 == v2024.1.0
 
 === Breaking changes
@@ -13,7 +24,7 @@
 - https://github.com/eclipse-syson/syson/issues/52[#52] [metamodel] SysON SysMLv2 metamodel module now depends on `org.eclipse.emf.ecore.xmi` and `java-uuid-generator`.
 - Switch to vite 4.5.2
 
-=== New Features
+=== New features
 
 - https://github.com/eclipse-syson/syson/issues/48[#48] [general-view] Display help background message on empty general-view diagram.
 - https://github.com/eclipse-syson/syson/issues/52[#52] [syson] Add support for SysMLv2 standard libraries.
