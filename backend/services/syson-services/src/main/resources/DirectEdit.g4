@@ -58,7 +58,7 @@ typingExpression :
 ;
 
 valueExpression :
-	'=' Integer|Real|Boolean|DoubleQuotedString
+	'=' (Real | Boolean | Integer | DoubleQuotedString)
 ;
 
 WS :
