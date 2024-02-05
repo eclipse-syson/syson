@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,46 +14,50 @@ package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewEdgeToolSwitch;
-import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.diagram.general.view.services.GeneralViewNodeToolSectionSwitch;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the enumeration definition node description.
- *
+ * Node description provider for all SysMLv2 Definitions elements.
+ * 
  * @author arichard
  */
-public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+public class DefinitionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    public static final String NAME = "GV Node EnumerationDefinition";
+    private final EClass eClass;
 
-    public EnumerationDefinitionNodeDescriptionProvider(IColorProvider colorProvider) {
+    public DefinitionNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
         super(colorProvider);
+        this.eClass = Objects.requireNonNull(eClass);
     }
 
     @Override
     public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getEnumerationDefinition());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
         return this.diagramBuilderHelper.newNodeDescription()
-                .collapsible(true)
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().areChildNodesDraggableExpression("false").build())
+                .collapsible(true)
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .labelExpression("aql:self.getContainerLabel()")
-                .name(NAME)
+                .name(GVDescriptionNameGenerator.getNodeName(this.eClass))
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .style(this.createDefinitionNodeStyle())
                 .userResizable(true)
@@ -63,6 +67,9 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        NodeDescription nodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(this.eClass)).get();
+        diagramDescription.getNodeDescriptions().add(nodeDescription);
+
         var allTargetNodeDescriptions = new ArrayList<NodeDescription>();
 
         GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
@@ -75,23 +82,27 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
             allTargetNodeDescriptions.add(optNodeDescription.get());
         });
 
+        GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            if (type.equals(this.eClass)) {
+                listItems.forEach(eReference -> {
+                    var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getCompartmentName(type, eReference));
+                    nodeDescription.getReusedChildNodeDescriptions().add(optNodeDescription.get());
+                });
+            }
+        });
+
         var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-
-        var optEnumerationCompartmentNodeDescription = cache.getNodeDescription(EnumerationCompartmentNodeDescriptionProvider.NAME);
 
         allTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
         allTargetNodeDescriptions.add(optPackageNodeDescription.get());
 
-        NodeDescription nodeDescription = optEnumerationDefinitionNodeDescription.get();
-        diagramDescription.getNodeDescriptions().add(nodeDescription);
-        nodeDescription.getChildrenDescriptions().add(optEnumerationCompartmentNodeDescription.get());
         nodeDescription.setPalette(this.createNodePalette(nodeDescription, allTargetNodeDescriptions));
     }
 
     private NodePalette createNodePalette(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.deleteFromModel()");
+                .expression(AQLConstants.AQL_SELF + ".deleteFromModel()");
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
@@ -108,16 +119,26 @@ public class EnumerationDefinitionNodeDescriptionProvider extends AbstractNodeDe
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.addAll(getEdgeTools(nodeDescription, allNodeDescriptions));
 
+        var toolSections = new ArrayList<NodeToolSection>();
+        toolSections.addAll(getToolSections(nodeDescription, allNodeDescriptions));
+
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
+                .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }
 
     private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
         GeneralViewEdgeToolSwitch edgeToolSwitch = new GeneralViewEdgeToolSwitch(nodeDescription, allNodeDescriptions);
-        edgeToolSwitch.doSwitch(SysmlPackage.eINSTANCE.getEnumerationDefinition());
+        edgeToolSwitch.doSwitch(this.eClass);
         return edgeToolSwitch.getEdgeTools();
+    }
+
+    private List<NodeToolSection> getToolSections(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
+        GeneralViewNodeToolSectionSwitch toolSectionSwitch = new GeneralViewNodeToolSectionSwitch(nodeDescription, allNodeDescriptions);
+        toolSectionSwitch.doSwitch(this.eClass);
+        return toolSectionSwitch.getNodeToolSections();
     }
 }

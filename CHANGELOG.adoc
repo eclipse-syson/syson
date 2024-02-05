@@ -4,6 +4,8 @@
 
 === Breaking changes
 
+- Refactor Node Descriptions Providers in General View: all Definitions and Usages Node Descriptions Providers (e.g. `PartDefinitionNodeDescriptionProvider` or `ItemUsageNodeDescriptionProvider`) have been replaced by two new Node Descriptions Providers: `DefinitionNodeDescriptionProvider` and `UsageNodeDescriptionProvider`.
+
 === Dependency update
 
 === Bug fixes

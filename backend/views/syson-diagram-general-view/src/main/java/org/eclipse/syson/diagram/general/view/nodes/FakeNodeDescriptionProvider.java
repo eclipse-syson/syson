@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
+import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -62,19 +64,15 @@ public class FakeNodeDescriptionProvider implements INodeDescriptionProvider {
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optFakeNodeDescription = cache.getNodeDescription(NAME);
-        var optDefinitionAttributesCompartmentNodeDescription = cache.getNodeDescription(DefinitionAttributesCompartmentNodeDescriptionProvider.NAME);
-        var optDefinitionItemsCompartmentNodeDescription = cache.getNodeDescription(DefinitionItemsCompartmentNodeDescriptionProvider.NAME);
-        var optDefinitionPortsCompartmentNodeDescription = cache.getNodeDescription(DefinitionPortsCompartmentNodeDescriptionProvider.NAME);
-        var optUsageAttributesCompartmentNodeDescription = cache.getNodeDescription(UsageAttributesCompartmentNodeDescriptionProvider.NAME);
-        var optUsagePortsCompartmentNodeDescription = cache.getNodeDescription(UsagePortsCompartmentNodeDescriptionProvider.NAME);
-
         NodeDescription nodeDescription = optFakeNodeDescription.get();
         diagramDescription.getNodeDescriptions().add(nodeDescription);
-        nodeDescription.getChildrenDescriptions().add(optDefinitionAttributesCompartmentNodeDescription.get());
-        nodeDescription.getChildrenDescriptions().add(optDefinitionItemsCompartmentNodeDescription.get());
-        nodeDescription.getChildrenDescriptions().add(optDefinitionPortsCompartmentNodeDescription.get());
-        nodeDescription.getChildrenDescriptions().add(optUsageAttributesCompartmentNodeDescription.get());
-        nodeDescription.getChildrenDescriptions().add(optUsagePortsCompartmentNodeDescription.get());
+
+        GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            listItems.forEach(eReference -> {
+                var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getCompartmentName(type, eReference));
+                nodeDescription.getChildrenDescriptions().add(optNodeDescription.get());
+            });
+        });
     }
 
     protected NodeStyleDescription createFakeNodeStyle() {

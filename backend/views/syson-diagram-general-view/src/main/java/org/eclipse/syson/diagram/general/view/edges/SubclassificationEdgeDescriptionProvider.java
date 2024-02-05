@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,14 +24,9 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
-import org.eclipse.syson.diagram.general.view.nodes.AttributeDefinitionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.InterfaceDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.ItemDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.MetadataDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PartDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PortDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -70,14 +65,14 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(NAME);
-        var optAttributeDefinitionNodeDescription = cache.getNodeDescription(AttributeDefinitionNodeDescriptionProvider.NAME);
+        var optAttributeDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeDefinition()));
         var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
-        var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(InterfaceDefinitionNodeDescriptionProvider.NAME);
-        var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
-        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
+        var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getInterfaceDefinition()));
+        var optItemDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition()));
+        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getMetadataDefinition()));
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-        var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
-        var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
+        var optPartDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()));
+        var optPortDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortDefinition()));
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);

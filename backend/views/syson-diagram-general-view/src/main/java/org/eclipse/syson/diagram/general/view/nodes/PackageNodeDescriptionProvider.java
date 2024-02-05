@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.generated.FreeFormLayoutStrate
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -28,6 +29,9 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
+import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.services.GeneralViewEdgeToolSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
@@ -68,52 +72,32 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var dependencyTargetNodeDescriptions = new ArrayList<NodeDescription>();
-
-        var optAttributeDefinitionNodeDescription = cache.getNodeDescription(AttributeDefinitionNodeDescriptionProvider.NAME);
-        var optAttributeUsageNodeDescription = cache.getNodeDescription(AttributeUsageNodeDescriptionProvider.NAME);
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
-        var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(InterfaceDefinitionNodeDescriptionProvider.NAME);
-        var optInterfaceUsageNodeDescription = cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME);
-        var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
-        var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
-        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-        var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
-        var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
-        var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
-        var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
-
-        dependencyTargetNodeDescriptions.add(optAttributeDefinitionNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optAttributeUsageNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optInterfaceDefinitionNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optInterfaceUsageNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optItemDefinitionNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optItemUsageNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optMetadataDefinitionNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optPackageNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optPartDefinitionNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optPartUsageNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optPortDefinitionNodeDescription.get());
-        dependencyTargetNodeDescriptions.add(optPortUsageNodeDescription.get());
-
         NodeDescription packageNodeDescription = optPackageNodeDescription.get();
         diagramDescription.getNodeDescriptions().add(packageNodeDescription);
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optAttributeDefinitionNodeDescription.get());
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optAttributeUsageNodeDescription.get());
+
+        var allTargetNodeDescriptions = new ArrayList<NodeDescription>();
+
+        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
+            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition));
+            allTargetNodeDescriptions.add(optNodeDescription.get());
+            packageNodeDescription.getReusedChildNodeDescriptions().add(optNodeDescription.get());
+        });
+
+        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
+            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage));
+            allTargetNodeDescriptions.add(optNodeDescription.get());
+            packageNodeDescription.getReusedChildNodeDescriptions().add(optNodeDescription.get());
+        });
+
+        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
+
+        allTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
+        allTargetNodeDescriptions.add(optPackageNodeDescription.get());
+
         packageNodeDescription.getReusedChildNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optInterfaceDefinitionNodeDescription.get());
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optItemDefinitionNodeDescription.get());
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optItemUsageNodeDescription.get());
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
         packageNodeDescription.getReusedChildNodeDescriptions().add(packageNodeDescription);
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optPartDefinitionNodeDescription.get());
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optPartUsageNodeDescription.get());
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optPortDefinitionNodeDescription.get());
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optPortUsageNodeDescription.get());
-        packageNodeDescription.setPalette(this.createNodePalette(packageNodeDescription, cache, dependencyTargetNodeDescriptions));
+        packageNodeDescription.setPalette(this.createNodePalette(packageNodeDescription, cache, allTargetNodeDescriptions));
     }
 
     protected NodeStyleDescription createPackageNodeStyle() {
@@ -142,78 +126,76 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
                 .body(callEditService.build());
 
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.addAll(getEdgeTools(nodeDescription, allNodeDescriptions));
+
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .toolSections(this.createNodeToolSection(cache), this.addElementsToolSection())
-                .edgeTools(this.createDependencyEdgeTool(allNodeDescriptions))
+                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .build();
+    }
+
+    private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
+        GeneralViewEdgeToolSwitch edgeToolSwitch = new GeneralViewEdgeToolSwitch(nodeDescription, allNodeDescriptions);
+        edgeToolSwitch.doSwitch(SysmlPackage.eINSTANCE.getPackage());
+        return edgeToolSwitch.getEdgeTools();
     }
 
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
-        var optAttributeDefinitionNodeDescription = cache.getNodeDescription(AttributeDefinitionNodeDescriptionProvider.NAME);
-        var optAttributeUsageNodeDescription = cache.getNodeDescription(AttributeUsageNodeDescriptionProvider.NAME);
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
-        var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(InterfaceDefinitionNodeDescriptionProvider.NAME);
-        var optInterfaceUsageNodeDescription = cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME);
-        var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
-        var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
-        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
-        var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-        var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
-        var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
-        var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
-        var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
+        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
+            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition));
+            acceptedNodeTypes.add(optNodeDescription.get());
+        });
 
-        acceptedNodeTypes.add(optAttributeDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optAttributeUsageNodeDescription.get());
+        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
+            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage));
+            acceptedNodeTypes.add(optNodeDescription.get());
+        });
+
+        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
+        var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
+
         acceptedNodeTypes.add(optEnumerationDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optInterfaceDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optInterfaceUsageNodeDescription.get());
-        acceptedNodeTypes.add(optItemDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optItemUsageNodeDescription.get());
-        acceptedNodeTypes.add(optMetadataDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optPackageNodeDescription.get());
-        acceptedNodeTypes.add(optPartDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optPartUsageNodeDescription.get());
-        acceptedNodeTypes.add(optPortDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optPortUsageNodeDescription.get());
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
-                .acceptedNodeTypes(acceptedNodeTypes.toArray(new NodeDescription[acceptedNodeTypes.size()]))
+                .acceptedNodeTypes(acceptedNodeTypes.toArray(NodeDescription[]::new))
                 .body(dropElementFromDiagram.build())
                 .build();
     }
 
     private NodeToolSection createNodeToolSection(IViewDiagramElementFinder cache) {
+        var nodeTools = new ArrayList<NodeTool>();
+
+        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
+            nodeTools.add(this.createNodeTool(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition)).get(), definition));
+        });
+
+        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
+            nodeTools.add(this.createNodeTool(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage)).get(), usage));
+        });
+
+        nodeTools.add(this.createNodeTool(cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getEnumerationDefinition()));
+        nodeTools.add(this.createNodeTool(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()));
+
+        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
+
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
-                .nodeTools(this.createNodeTool(cache.getNodeDescription(AttributeDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getAttributeDefinition()),
-                           this.createNodeTool(cache.getNodeDescription(AttributeUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getAttributeUsage()),
-                           this.createNodeTool(cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getEnumerationDefinition()),
-                           this.createNodeTool(cache.getNodeDescription(InterfaceDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getInterfaceDefinition()),
-                           this.createNodeTool(cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getInterfaceUsage()),
-                           this.createNodeTool(cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getItemDefinition()),
-                           this.createNodeTool(cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getItemUsage()),
-                           this.createNodeTool(cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getMetadataDefinition()),
-                           this.createNodeTool(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()),
-                           this.createNodeTool(cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartDefinition()),
-                           this.createNodeTool(cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage()),
-                           this.createNodeTool(cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPortDefinition()),
-                           this.createNodeTool(cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPortUsage()))
+                .nodeTools(nodeTools.toArray(NodeTool[]::new))
                 .build();
     }
 
     private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
         var setValue = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
                 .valueExpression(eClass.getName());
@@ -245,7 +227,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .variableName("newOwningMembership")
                 .children(changeContexMembership.build());
 
-        return builder
+        return this.diagramBuilderHelper.newNodeTool()
                 .name("New " + eClass.getName())
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
@@ -260,12 +242,10 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
     }
 
     private NodeTool addExistingElementsTool() {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
         var addExistingelements = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes)");
 
-        return builder
+        return this.diagramBuilderHelper.newNodeTool()
                 .name("Add existing elements")
                 .iconURLsExpression("/icons/AddExistingElements.svg")
                 .body(addExistingelements.build())
