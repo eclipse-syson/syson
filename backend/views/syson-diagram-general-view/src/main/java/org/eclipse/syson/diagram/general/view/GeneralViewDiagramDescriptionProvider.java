@@ -14,8 +14,11 @@ package org.eclipse.syson.diagram.general.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
@@ -23,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
@@ -37,33 +41,16 @@ import org.eclipse.syson.diagram.general.view.edges.PartUsageNestedPartEdgeDescr
 import org.eclipse.syson.diagram.general.view.edges.RedefinitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.SubsettingEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.AttributeDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.AttributeUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.DefinitionAttributesCompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.DefinitionAttributesCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.DefinitionItemsCompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.DefinitionItemsCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.DefinitionPortsCompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.DefinitionPortsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.CompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.CompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.DefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.FakeNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.InterfaceDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.InterfaceUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.ItemDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.ItemUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.MetadataDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PartDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PortDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PortUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UsageAttributesCompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UsageAttributesCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UsagePortsCompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UsagePortsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -75,6 +62,35 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 public class GeneralViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
     public static final String DESCRIPTION_NAME = "General View";
+
+    public static  final List<EClass> DEFINITIONS = List.of(
+            SysmlPackage.eINSTANCE.getAttributeDefinition(),
+            SysmlPackage.eINSTANCE.getInterfaceDefinition(),
+            SysmlPackage.eINSTANCE.getItemDefinition(),
+            SysmlPackage.eINSTANCE.getMetadataDefinition(),
+            SysmlPackage.eINSTANCE.getPartDefinition(),
+            SysmlPackage.eINSTANCE.getPortDefinition());
+
+    public static  final List<EClass> USAGES = List.of(
+            SysmlPackage.eINSTANCE.getAttributeUsage(),
+            SysmlPackage.eINSTANCE.getInterfaceUsage(),
+            SysmlPackage.eINSTANCE.getItemUsage(),
+            SysmlPackage.eINSTANCE.getPartUsage(),
+            SysmlPackage.eINSTANCE.getPortUsage());
+
+    public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
+            Map.entry(SysmlPackage.eINSTANCE.getAttributeDefinition(), List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
+            Map.entry(SysmlPackage.eINSTANCE.getInterfaceDefinition(), List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getItemDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
+            Map.entry(SysmlPackage.eINSTANCE.getMetadataDefinition(),  List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getPartDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getAttributeUsage(),      List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getInterfaceUsage(),      List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference()))
+            );
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
@@ -94,42 +110,36 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         var diagramDescription = diagramDescriptionBuilder.build();
 
         var cache = new GeneralViewDiagramElementFinder();
-        var diagramElementDescriptionProviders = List.of(
-                new FakeNodeDescriptionProvider(colorProvider),
-                new EmptyDiagramNodeDescriptionProvider(colorProvider),
-                new AttributeDefinitionNodeDescriptionProvider(colorProvider),
-                new AttributeUsageNodeDescriptionProvider(colorProvider),
-                new EnumerationDefinitionNodeDescriptionProvider(colorProvider),
-                new InterfaceDefinitionNodeDescriptionProvider(colorProvider),
-                new InterfaceUsageNodeDescriptionProvider(colorProvider),
-                new ItemDefinitionNodeDescriptionProvider(colorProvider),
-                new ItemUsageNodeDescriptionProvider(colorProvider),
-                new MetadataDefinitionNodeDescriptionProvider(colorProvider),
-                new PackageNodeDescriptionProvider(colorProvider),
-                new PartDefinitionNodeDescriptionProvider(colorProvider),
-                new PartUsageNodeDescriptionProvider(colorProvider),
-                new PortDefinitionNodeDescriptionProvider(colorProvider),
-                new PortUsageNodeDescriptionProvider(colorProvider),
-                new DefinitionAttributesCompartmentItemNodeDescriptionProvider(colorProvider),
-                new DefinitionAttributesCompartmentNodeDescriptionProvider(colorProvider),
-                new DefinitionItemsCompartmentItemNodeDescriptionProvider(colorProvider),
-                new DefinitionItemsCompartmentNodeDescriptionProvider(colorProvider),
-                new DefinitionPortsCompartmentItemNodeDescriptionProvider(colorProvider),
-                new DefinitionPortsCompartmentNodeDescriptionProvider(colorProvider),
-                new UsageAttributesCompartmentItemNodeDescriptionProvider(colorProvider),
-                new UsageAttributesCompartmentNodeDescriptionProvider(colorProvider),
-                new UsagePortsCompartmentItemNodeDescriptionProvider(colorProvider),
-                new UsagePortsCompartmentNodeDescriptionProvider(colorProvider),
-                new EnumerationCompartmentItemNodeDescriptionProvider(colorProvider),
-                new EnumerationCompartmentNodeDescriptionProvider(colorProvider),
-                new PartDefinitionOwnedItemEdgeDescriptionProvider(colorProvider),
-                new PartUsageNestedPartEdgeDescriptionProvider(colorProvider),
-                new DependencyEdgeDescriptionProvider(colorProvider),
-                new SubclassificationEdgeDescriptionProvider(colorProvider),
-                new RedefinitionEdgeDescriptionProvider(colorProvider),
-                new SubsettingEdgeDescriptionProvider(colorProvider),
-                new FeatureTypingEdgeDescriptionProvider(colorProvider)
-        );
+        var diagramElementDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
+        diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new EmptyDiagramNodeDescriptionProvider(colorProvider));
+        
+        diagramElementDescriptionProviders.add(new EnumerationDefinitionNodeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new EnumerationCompartmentItemNodeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new EnumerationCompartmentNodeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new PartDefinitionOwnedItemEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new PartUsageNestedPartEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
+
+        DEFINITIONS.forEach(definition -> {
+            diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider));
+        });
+
+        USAGES.forEach(usage -> {
+            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider));
+        });
+
+        COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
+            listItems.forEach(eReference -> {
+                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
+                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider));
+            });
+        });
 
         diagramElementDescriptionProviders.stream().
                 map(IDiagramElementDescriptionProvider::create)
@@ -153,40 +163,28 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
-        var optAttributeDefinitionNodeDescription = cache.getNodeDescription(AttributeDefinitionNodeDescriptionProvider.NAME);
-        var optAttributeUsageNodeDescription = cache.getNodeDescription(AttributeUsageNodeDescriptionProvider.NAME);
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
-        var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(InterfaceDefinitionNodeDescriptionProvider.NAME);
-        var optInterfaceUsageNodeDescription = cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME);
-        var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
-        var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
-        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
-        var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-        var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
-        var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
-        var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
-        var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
+        DEFINITIONS.forEach(definition -> {
+            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition));
+            acceptedNodeTypes.add(optNodeDescription.get());
+        });
 
-        acceptedNodeTypes.add(optAttributeDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optAttributeUsageNodeDescription.get());
+        USAGES.forEach(usage -> {
+            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage));
+            acceptedNodeTypes.add(optNodeDescription.get());
+        });
+
+        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
+        var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
+
         acceptedNodeTypes.add(optEnumerationDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optInterfaceDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optInterfaceUsageNodeDescription.get());
-        acceptedNodeTypes.add(optItemDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optItemUsageNodeDescription.get());
-        acceptedNodeTypes.add(optMetadataDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optPackageNodeDescription.get());
-        acceptedNodeTypes.add(optPartDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optPartUsageNodeDescription.get());
-        acceptedNodeTypes.add(optPortDefinitionNodeDescription.get());
-        acceptedNodeTypes.add(optPortUsageNodeDescription.get());
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
-                .acceptedNodeTypes(acceptedNodeTypes.toArray(new NodeDescription[acceptedNodeTypes.size()]))
+                .acceptedNodeTypes(acceptedNodeTypes.toArray(NodeDescription[]::new))
                 .body(dropElementFromDiagram.build())
                 .build();
     }
@@ -202,25 +200,28 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     }
 
     private DiagramToolSection createElementsToolSection(IViewDiagramElementFinder cache) {
+        var nodeTools = new ArrayList<NodeTool>();
+
+        DEFINITIONS.forEach(definition -> {
+            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition)).get(), definition));
+        });
+
+        USAGES.forEach(usage -> {
+            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage)).get(), usage));
+        });
+
+        nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getEnumerationDefinition()));
+        nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()));
+
+        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
+
         return this.diagramBuilderHelper.newDiagramToolSection()
                 .name("Create")
-                .nodeTools(this.createNodeToolFromPackage(cache.getNodeDescription(AttributeDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getAttributeDefinition()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(AttributeUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getAttributeUsage()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getEnumerationDefinition()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(InterfaceDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getInterfaceDefinition()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getInterfaceUsage()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getItemDefinition()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getItemUsage()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getMetadataDefinition()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartDefinition()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPortDefinition()),
-                           this.createNodeToolFromPackage(cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPortUsage()))
+                .nodeTools(nodeTools.toArray(NodeTool[]::new))
                 .build();
     }
 
-    private NodeTool createNodeToolFromPackage(NodeDescription nodeDescription, EClass eClass) {
+    private NodeTool createNodeToolFromPackage(NodeDescription nodeDescription, EClassifier eClass) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var callElementInitializerService = this.viewBuilderHelper.newChangeContext()

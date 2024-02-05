@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,9 +24,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.syson.diagram.general.view.nodes.ItemUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PartDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -63,9 +61,9 @@ public class PartDefinitionOwnedItemEdgeDescriptionProvider extends AbstractEdge
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(NAME);
-        var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
-        var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
-        var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
+        var optPartDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()));
+        var optPartUsageNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
+        var optItemUsageNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemUsage()));
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
@@ -108,7 +106,7 @@ public class PartDefinitionOwnedItemEdgeDescriptionProvider extends AbstractEdge
                 .newEdgePalette()
                 .deleteTool(deleteTool.build())
                 .centerLabelEditTool(centerLabelEditTool.build())
-                .edgeReconnectionTools(edgeReconnectionTools.toArray(new EdgeReconnectionTool[edgeReconnectionTools.size()]))
+                .edgeReconnectionTools(edgeReconnectionTools.toArray(EdgeReconnectionTool[]::new))
                 .build();
     }
 }

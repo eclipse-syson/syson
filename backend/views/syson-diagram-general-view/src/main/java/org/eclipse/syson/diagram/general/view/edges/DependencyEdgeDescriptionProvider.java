@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,19 +24,10 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
-import org.eclipse.syson.diagram.general.view.nodes.AttributeDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.AttributeUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
+import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.InterfaceDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.InterfaceUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.ItemDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.ItemUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.MetadataDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PartDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PartUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PortDefinitionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.PortUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -75,53 +66,30 @@ public class DependencyEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(NAME);
-        var optAttributeDefinitionNodeDescription = cache.getNodeDescription(AttributeDefinitionNodeDescriptionProvider.NAME);
-        var optAttributeUsageNodeDescription = cache.getNodeDescription(AttributeUsageNodeDescriptionProvider.NAME);
+        EdgeDescription edgeDescription = optEdgeDescription.get();
+        diagramDescription.getEdgeDescriptions().add(edgeDescription);
+
+        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
+            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition));
+            edgeDescription.getSourceNodeDescriptions().add(optNodeDescription.get());
+            edgeDescription.getTargetNodeDescriptions().add(optNodeDescription.get());
+        });
+
+        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
+            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage));
+            edgeDescription.getSourceNodeDescriptions().add(optNodeDescription.get());
+            edgeDescription.getTargetNodeDescriptions().add(optNodeDescription.get());
+        });
+
         var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
-        var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(InterfaceDefinitionNodeDescriptionProvider.NAME);
-        var optInterfaceUsageNodeDescription = cache.getNodeDescription(InterfaceUsageNodeDescriptionProvider.NAME);
-        var optItemDefinitionNodeDescription = cache.getNodeDescription(ItemDefinitionNodeDescriptionProvider.NAME);
-        var optItemUsageNodeDescription = cache.getNodeDescription(ItemUsageNodeDescriptionProvider.NAME);
-        var optMetadataDefinitionNodeDescription = cache.getNodeDescription(MetadataDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-        var optPartDefinitionNodeDescription = cache.getNodeDescription(PartDefinitionNodeDescriptionProvider.NAME);
-        var optPartUsageNodeDescription = cache.getNodeDescription(PartUsageNodeDescriptionProvider.NAME);
-        var optPortDefinitionNodeDescription = cache.getNodeDescription(PortDefinitionNodeDescriptionProvider.NAME);
-        var optPortUsageNodeDescription = cache.getNodeDescription(PortUsageNodeDescriptionProvider.NAME);
+        edgeDescription.getSourceNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optPackageNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optPackageNodeDescription.get());
 
-        if (optEdgeDescription.isPresent()) {
-            EdgeDescription edgeDescription = optEdgeDescription.get();
-            diagramDescription.getEdgeDescriptions().add(edgeDescription);
-            edgeDescription.getSourceNodeDescriptions().add(optAttributeDefinitionNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optAttributeDefinitionNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optAttributeUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optAttributeUsageNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optInterfaceDefinitionNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optInterfaceDefinitionNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optInterfaceUsageNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optItemDefinitionNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optItemDefinitionNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optItemUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optItemUsageNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optMetadataDefinitionNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optPackageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optPackageNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optPartDefinitionNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optPartDefinitionNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optPartUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optPartUsageNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optPortDefinitionNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optPortDefinitionNodeDescription.get());
-            edgeDescription.getSourceNodeDescriptions().add(optPortUsageNodeDescription.get());
-            edgeDescription.getTargetNodeDescriptions().add(optPortUsageNodeDescription.get());
-
-            edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(),
-                    this.createTargetReconnectTool())));
-        }
+        edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(),
+                this.createTargetReconnectTool())));
     }
 
     private EdgeStyle createEdgeStyle() {

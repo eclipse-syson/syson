@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,14 +27,14 @@ public final class SysMLMetamodelHelper {
     }
 
     /**
-     * Build the qualified name of the given {@link EClass} (e.g.: ePackageName::eClassName).
+     * Build the qualified name of the given {@link EClassifier} (e.g.: ePackageName::eClassName).
      *
      * @param eClass
-     *            an {@link EClass}
+     *            an {@link EClassifier}
      * @return the qualified name
      */
-    public static String buildQualifiedName(EClass eClass) {
-        return eClass.getEPackage().getName() + "::" + eClass.getName();
+    public static String buildQualifiedName(EClassifier eClassifier) {
+        return eClassifier.getEPackage().getName() + "::" + eClassifier.getName();
     }
 
     /**
