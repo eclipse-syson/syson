@@ -8,7 +8,10 @@
 
 === Dependency update
 
+- https://github.com/eclipse-syson/syson/issues/71[#71] [releng] Add `commons-io 2.11.0` dependency explicitly in `syson-application-configuration`.
+
 === Bug fixes
+
 
 === New features
 
