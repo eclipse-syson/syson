@@ -19,43 +19,32 @@ import java.util.Optional;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
-import org.eclipse.sirius.components.core.api.IDefaultObjectService;
-import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectServiceDelegate;
+import org.eclipse.sirius.components.core.api.IDefaultLabelService;
+import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.springframework.stereotype.Service;
 
 /**
- * Specific {@link IObjectServiceDelegate} to handle edition of SysML elements.
+ * Specific {@link ILabelServiceDelegate} to handle labels of SysML elements.
  *
  * @author arichard
  */
 @Service
-public class SysMLv2ObjectService implements IObjectServiceDelegate {
+public class SysMLv2LabelService implements ILabelServiceDelegate {
 
-    private final IDefaultObjectService defaultObjectService;
+    private final IDefaultLabelService defaultLabelService;
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
-    public SysMLv2ObjectService(IDefaultObjectService defaultObjectService, ComposedAdapterFactory composedAdapterFactory) {
-        this.defaultObjectService = Objects.requireNonNull(defaultObjectService);
+    public SysMLv2LabelService(IDefaultLabelService defaultObjectService, ComposedAdapterFactory composedAdapterFactory) {
+        this.defaultLabelService = Objects.requireNonNull(defaultObjectService);
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
     }
 
     @Override
     public boolean canHandle(Object object) {
         return object instanceof Element;
-    }
-
-    @Override
-    public boolean canHandle(IEditingContext editingContext) {
-        return false;
-    }
-
-    @Override
-    public String getId(Object object) {
-        return this.defaultObjectService.getId(object);
     }
 
     @Override
@@ -67,43 +56,28 @@ public class SysMLv2ObjectService implements IObjectServiceDelegate {
                 label = labelProvider.getText(object);
             }
         } else {
-            label = this.defaultObjectService.getLabel(object);
+            label = this.defaultLabelService.getLabel(object);
         }
         return label;
     }
 
     @Override
-    public String getKind(Object object) {
-        return this.defaultObjectService.getKind(object);
-    }
-
-    @Override
     public String getFullLabel(Object object) {
-        return this.defaultObjectService.getFullLabel(object);
+        return this.defaultLabelService.getFullLabel(object);
     }
 
     @Override
     public List<String> getImagePath(Object object) {
-        return this.defaultObjectService.getImagePath(object);
-    }
-
-    @Override
-    public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-        return this.defaultObjectService.getObject(editingContext, objectId);
-    }
-
-    @Override
-    public List<Object> getContents(IEditingContext editingContext, String objectId) {
-        return this.defaultObjectService.getContents(editingContext, objectId);
+        return this.defaultLabelService.getImagePath(object);
     }
 
     @Override
     public Optional<String> getLabelField(Object object) {
-        return this.defaultObjectService.getLabelField(object);
+        return this.defaultLabelService.getLabelField(object);
     }
 
     @Override
     public boolean isLabelEditable(Object object) {
-        return this.defaultObjectService.isLabelEditable(object);
+        return this.defaultLabelService.isLabelEditable(object);
     }
 }

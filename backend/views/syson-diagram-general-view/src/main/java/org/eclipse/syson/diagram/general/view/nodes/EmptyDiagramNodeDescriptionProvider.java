@@ -58,8 +58,8 @@ public class EmptyDiagramNodeDescriptionProvider implements INodeDescriptionProv
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement());
         return this.diagramBuilderHelper.newNodeDescription()
-                .defaultHeightExpression("0")
-                .defaultWidthExpression("0")
+                .defaultHeightExpression("476")
+                .defaultWidthExpression("1061")
                 .domainType(domainType)
                 .labelExpression("")
                 .name(NAME)

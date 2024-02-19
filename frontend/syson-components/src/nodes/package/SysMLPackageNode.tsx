@@ -18,6 +18,8 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
+  DiagramContext,
+  DiagramContextValue,
   DiagramElementPalette,
   Label,
   NodeContext,
@@ -26,7 +28,7 @@ import {
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@material-ui/core/styles';
 import React, { memo, useContext } from 'react';
 import { NodeProps, NodeResizer } from 'reactflow';
@@ -114,10 +116,15 @@ const packageContainerStyle = (
   return packageNodeStyle;
 };
 
+const resizeLineStyle = (theme: Theme): React.CSSProperties => {
+  return { borderWidth: theme.spacing(0.15) };
+};
+
 const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   return {
-    width: theme.spacing(0.75),
-    height: theme.spacing(0.75),
+    width: theme.spacing(1),
+    height: theme.spacing(1),
+    borderRadius: '100%',
   };
 };
 
@@ -127,6 +134,7 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
   const { newConnectionStyleProvider } = useConnector();
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -150,13 +158,16 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
 
   return (
     <>
-      <NodeResizer
-        handleStyle={{ ...resizeHandleStyle(theme) }}
-        color={theme.palette.selected}
-        isVisible={selected}
-        shouldResize={() => !data.isBorderNode}
-        keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-      />
+      {data.nodeDescription?.userResizable && !readOnly ? (
+        <NodeResizer
+          handleStyle={{ ...resizeHandleStyle(theme) }}
+          lineStyle={{ ...resizeLineStyle(theme) }}
+          color={theme.palette.selected}
+          isVisible={selected}
+          shouldResize={() => !data.isBorderNode}
+          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
+        />
+      ) : null}
       <div
         style={{
           ...sysMLPackageNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),

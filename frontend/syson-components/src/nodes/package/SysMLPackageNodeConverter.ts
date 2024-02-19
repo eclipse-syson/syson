@@ -30,7 +30,7 @@ import {
   convertLabelStyle,
   convertLineStyle,
   convertOutsideLabels,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from 'reactflow';
 import { GQLSysMLPackageNodeStyle, SysMLPackageNodeData } from './SysMLPackageNode.types';
 
@@ -40,7 +40,7 @@ const toPackageNode = (
   gqlDiagram: GQLDiagram,
   gqlNode: GQLNode<GQLSysMLPackageNodeStyle>,
   gqlParentNode: GQLNode<GQLNodeStyle> | null,
-  nodeDescription: GQLNodeDescription | undefined,
+  nodeDescription: GQLNodeDescription,
   isBorderNode: boolean,
   gqlEdges: GQLEdge[]
 ): Node<SysMLPackageNodeData> => {
@@ -166,8 +166,12 @@ export class SysMLPackageNodeConverter implements INodeConverter {
     diagramDescription: GQLDiagramDescription,
     nodeDescriptions: GQLNodeDescription[]
   ) {
-    const nodeDescription = nodeDescriptions.find((description) => description.id === gqlNode.descriptionId);
-    nodes.push(toPackageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    const nodeDescription: GQLNodeDescription | undefined = nodeDescriptions.find(
+      (description) => description.id === gqlNode.descriptionId
+    );
+    if (nodeDescription) {
+      nodes.push(toPackageNode(gqlDiagram, gqlNode, parentNode, nodeDescription, isBorderNode, gqlEdges));
+    }
     const borderNodeDescriptions: GQLNodeDescription[] = (nodeDescription?.borderNodeDescriptionIds ?? []).flatMap(
       (nodeDescriptionId) =>
         diagramDescription.nodeDescriptions.filter((nodeDescription) => nodeDescription.id === nodeDescriptionId)

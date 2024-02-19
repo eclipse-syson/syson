@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,7 @@
 /*
  * This code has been fully inspired from PackageNode.types.ts in https://github.com/PapyrusSirius/papyrus-web
  */
-import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
 
 export interface SysMLPackageNodeData extends NodeData {}
 

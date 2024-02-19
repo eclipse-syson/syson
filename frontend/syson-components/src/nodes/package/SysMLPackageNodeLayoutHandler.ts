@@ -25,13 +25,15 @@ import {
   findNodeIndex,
   getBorderNodeExtent,
   getChildNodePosition,
+  getDefaultOrMinHeight,
+  getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
   getHeaderFootprint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
-} from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+} from '@eclipse-sirius/sirius-components-diagrams';
 import { Dimensions, Node, Rect } from 'reactflow';
 import { SysMLPackageNodeData } from './SysMLPackageNode.types';
 
@@ -135,7 +137,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
       previousDiagram
     );
 
-    const nodeWidth: number =
+    const nodeMinComputeWidth: number =
       Math.max(
         directChildrenAwareNodeWidth,
         northBorderNodeFootprintWidth,
@@ -158,7 +160,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
       previousDiagram
     );
 
-    const nodeHeight: number =
+    const nodeMinComputeHeight: number =
       Math.max(
         directChildrenAwareNodeHeight,
         eastBorderNodeFootprintHeight,
@@ -167,27 +169,27 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
       ) +
       borderWidth * 2;
 
-    const minNodeWith: number = nodeWidth;
-    const minNodeHeight: number = nodeHeight;
+    const nodeWith: number = _forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    const nodeHeight: number = getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
       (prevNode) => prevNode.id === node.id
     );
     const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
     if (node.data.nodeDescription?.userResizable) {
-      if (minNodeWith > previousDimensions.width) {
-        node.width = minNodeWith;
+      if (nodeMinComputeWidth > previousDimensions.width) {
+        node.width = nodeMinComputeWidth;
       } else {
         node.width = previousDimensions.width;
       }
-      if (minNodeHeight > previousDimensions.height) {
-        node.height = minNodeHeight;
+      if (nodeMinComputeHeight > previousDimensions.height) {
+        node.height = nodeMinComputeHeight;
       } else {
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = minNodeWith;
-      node.height = minNodeHeight;
+      node.width = nodeWith;
+      node.height = nodeHeight;
     }
 
     // Update border nodes positions
