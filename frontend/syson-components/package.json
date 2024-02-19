@@ -31,8 +31,8 @@
   },
   "peerDependencies": {
     "@apollo/client": "3.8.1",
-    "@eclipse-sirius/sirius-components-core": "2024.1.3",
-    "@eclipse-sirius/sirius-components-diagrams": "2024.1.3",
+    "@eclipse-sirius/sirius-components-core": "2024.1.4",
+    "@eclipse-sirius/sirius-components-diagrams": "2024.1.4",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "graphql": "16.8.0",
@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@apollo/client": "3.8.1",
-    "@eclipse-sirius/sirius-components-core": "2024.1.3",
-    "@eclipse-sirius/sirius-components-diagrams": "2024.1.3",
-    "@eclipse-sirius/sirius-components-tsconfig": "2024.1.3",
+    "@eclipse-sirius/sirius-components-core": "2024.1.4",
+    "@eclipse-sirius/sirius-components-diagrams": "2024.1.4",
+    "@eclipse-sirius/sirius-components-tsconfig": "2024.1.4",
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
     "@rollup/plugin-image": "2.1.1",
@@ -69,15 +69,15 @@
     "xstate": "4.32.1"
   },
   "dependencies": {
-    "@eclipse-sirius/sirius-components-charts": "2024.1.3",
-    "@eclipse-sirius/sirius-components-deck": "2024.1.3",
-    "@eclipse-sirius/sirius-components-formdescriptioneditors": "2024.1.3",
-    "@eclipse-sirius/sirius-components-forms": "2024.1.3",
-    "@eclipse-sirius/sirius-components-gantt": "2024.1.3",
-    "@eclipse-sirius/sirius-components-selection": "2024.1.3",
-    "@eclipse-sirius/sirius-components-trees": "2024.1.3",
-    "@eclipse-sirius/sirius-components-validation": "2024.1.3",
-    "@eclipse-sirius/sirius-components-widget-reference": "2024.1.3",
-    "@eclipse-sirius/sirius-web-application": "2024.1.3"
+    "@eclipse-sirius/sirius-components-charts": "2024.1.4",
+    "@eclipse-sirius/sirius-components-deck": "2024.1.4",
+    "@eclipse-sirius/sirius-components-formdescriptioneditors": "2024.1.4",
+    "@eclipse-sirius/sirius-components-forms": "2024.1.4",
+    "@eclipse-sirius/sirius-components-gantt": "2024.1.4",
+    "@eclipse-sirius/sirius-components-selection": "2024.1.4",
+    "@eclipse-sirius/sirius-components-trees": "2024.1.4",
+    "@eclipse-sirius/sirius-components-validation": "2024.1.4",
+    "@eclipse-sirius/sirius-components-widget-reference": "2024.1.4",
+    "@eclipse-sirius/sirius-web-application": "2024.1.4"
   }
 }

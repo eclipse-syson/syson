@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.web.services.editingcontext.EditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -51,7 +51,7 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
     @Override
     public void preProcess(IEditingContext editingContext) {
         Instant start = Instant.now();
-        if (editingContext instanceof EditingContext siriusWebEditingContext) {
+        if (editingContext instanceof IEMFEditingContext siriusWebEditingContext) {
             ResourceSet sourceResourceSet = this.standardLibraries.getLibrariesResourceSet();
             ResourceSet targetResourceSet = siriusWebEditingContext.getDomain().getResourceSet();
             sourceResourceSet.getResources().forEach(sourceResource -> {
