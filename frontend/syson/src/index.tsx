@@ -27,9 +27,12 @@ import {
 } from '@eclipse-sirius/sirius-components-widget-reference';
 import {
   DiagramRepresentationConfiguration,
+  NavigationBarIconProps,
+  NavigationBarMenuProps,
   NodeTypeRegistry,
   SiriusWebApplication,
-  Views,
+  navigationBarIconExtensionPoint,
+  navigationBarMenuExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
 import ReactDOM from 'react-dom';
 import { Help } from './core/Help';
@@ -37,7 +40,8 @@ import { SysONIcon } from './core/SysONIcon';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { sysonTheme } from './theme/sysonTheme';
 
-import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams-reactflow';
+import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
+import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   SysMLPackageNode,
   SysMLPackageNodeConverter,
@@ -117,10 +121,27 @@ const nodeTypeRegistry: NodeTypeRegistry = {
   nodeTypeContributions: [<NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />],
 };
 
+const SysONNavigationBarIcon = ({}: NavigationBarIconProps) => {
+  return <SysONIcon />;
+};
+const SysONNavigationBarMenu = ({}: NavigationBarMenuProps) => {
+  return <Help />;
+};
+
+const extensionRegistry: ExtensionRegistry = new ExtensionRegistry();
+extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
+  Component: SysONNavigationBarIcon,
+});
+extensionRegistry.addComponent(navigationBarMenuExtensionPoint, {
+  Component: SysONNavigationBarMenu,
+});
 ReactDOM.render(
   <PropertySectionContext.Provider value={propertySectionRegistryValue}>
-    <SiriusWebApplication httpOrigin={httpOrigin} wsOrigin={wsOrigin} theme={sysonTheme}>
-      <Views applicationIcon={<SysONIcon />} applicationBarMenu={<Help />} />
+    <SiriusWebApplication
+      httpOrigin={httpOrigin}
+      wsOrigin={wsOrigin}
+      theme={sysonTheme}
+      extensionRegistry={extensionRegistry}>
       <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
     </SiriusWebApplication>
   </PropertySectionContext.Provider>,

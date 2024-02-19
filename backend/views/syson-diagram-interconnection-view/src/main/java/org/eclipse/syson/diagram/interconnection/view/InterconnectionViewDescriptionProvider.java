@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view;
+package org.eclipse.syson.diagram.interconnection.view;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,11 +18,12 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IRepresentationDescriptionRegistryConfigurer;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilder;
@@ -34,14 +35,14 @@ import org.eclipse.syson.services.ColorProvider;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Allows to register the General View diagram in the application.
- * 
+ * Allows to register the Interconnection View diagram in the application.
+ *
  * @author arichard
  */
 @Configuration
-public class GeneralViewRegistryConfigurer implements IRepresentationDescriptionRegistryConfigurer {
+public class InterconnectionViewDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
 
-    private static final String GENERAL_VIEW_DIAGRAM_ID = "GeneralViewDiagram";
+    private static final String INTERCONNECTION_VIEW_DIAGRAM_ID = "InterconnectionViewDiagram";
 
     private final IViewConverter viewConverter;
 
@@ -49,22 +50,22 @@ public class GeneralViewRegistryConfigurer implements IRepresentationDescription
 
     private final IInMemoryViewRegistry inMemoryViewRegistry;
 
-    public GeneralViewRegistryConfigurer(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
+    public InterconnectionViewDescriptionProvider(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.viewConverter = viewConverter;
         this.ePackagesRegistry = ePackagesRegistry;
         this.inMemoryViewRegistry = inMemoryViewRegistry;
     }
 
     @Override
-    public void addRepresentationDescriptions(IRepresentationDescriptionRegistry registry) {
+    public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
         // Create org.eclipse.sirius.components.view.View
         ViewBuilder viewBuilder = new ViewBuilder();
         View view = viewBuilder.build();
         IColorProvider colorProvider = new ColorProvider(view);
 
         // Create org.eclipse.sirius.components.view.RepresentationDescription
-        GeneralViewDiagramDescriptionProvider generalViewDiagramDescriptionProvider = new GeneralViewDiagramDescriptionProvider();
-        RepresentationDescription viewRepresentationDescription = generalViewDiagramDescriptionProvider.create(colorProvider);
+        InterconnectionViewDiagramDescriptionProvider diagramDescriptionProvider = new InterconnectionViewDiagramDescriptionProvider();
+        RepresentationDescription viewRepresentationDescription = diagramDescriptionProvider.create(colorProvider);
         view.getDescriptions().add(viewRepresentationDescription);
 
         // Add an ID to all view elements
@@ -73,17 +74,15 @@ public class GeneralViewRegistryConfigurer implements IRepresentationDescription
         });
 
         // All programmatic Views need to be stored in a Resource and registered in IInMemoryViewRegistry
-        String resourcePath = UUID.nameUUIDFromBytes(GENERAL_VIEW_DIAGRAM_ID.getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes(INTERCONNECTION_VIEW_DIAGRAM_ID.getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter(GENERAL_VIEW_DIAGRAM_ID));
+        resource.eAdapters().add(new ResourceMetadataAdapter(INTERCONNECTION_VIEW_DIAGRAM_ID));
         resource.getContents().add(view);
         this.inMemoryViewRegistry.register(view);
 
         // Convert org.eclipse.sirius.components.view.RepresentationDescription to org.eclipse.sirius.components.representations.IRepresentationDescription
         List<EPackage> staticEPackages = this.ePackagesRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast).toList();
-        var representationDescriptions = this.viewConverter.convert(List.of(view), staticEPackages);
 
-        // Register org.eclipse.sirius.components.representations.IRepresentationDescription
-        representationDescriptions.forEach(registry::add);
+        return this.viewConverter.convert(List.of(view), staticEPackages);
     }
 }
