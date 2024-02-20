@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.antlr.v4.runtime.InputMismatchException;
+import org.antlr.v4.runtime.NoViableAltException;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.emf.ecore.EClass;
@@ -54,6 +57,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.util.LabelConstants;
 
 /**
  * The ANTLR Listener for the direct edit grammar for SysON diagrams.
@@ -87,10 +91,12 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     public void exitExpression(ExpressionContext ctx) {
         if (!this.options.contains(LabelService.NAME_OFF)) {
             var identifier = ctx.name();
-            if (identifier != null && !identifier.getText().isBlank()) {
-                this.element.setDeclaredName(identifier.getText());
-            } else {
-                this.element.setDeclaredName(null);
+            if (identifier != null) {
+                if (identifier.getText().isBlank()) {
+                    this.element.setDeclaredName(null);
+                } else {
+                    this.element.setDeclaredName(identifier.getText());
+                }
             }
         }
         this.handleMissingMultiplicityExpression(ctx);
@@ -387,7 +393,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         MultiplicityExpressionContext multiplicityExpression = ctx.multiplicityExpression();
-        if (this.element instanceof Usage usage && multiplicityExpression == null) {
+        if (this.element instanceof Usage usage && multiplicityExpression != null && isDeleteMultiplicityExpression(multiplicityExpression)) {
             var optMultiplicityRange = this.element.getOwnedRelationship().stream()
                     .filter(OwningMembership.class::isInstance)
                     .map(OwningMembership.class::cast)
@@ -402,12 +408,19 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
+    private boolean isDeleteMultiplicityExpression(MultiplicityExpressionContext multiplicityExpression) {
+        return multiplicityExpression.exception instanceof InputMismatchException 
+                && multiplicityExpression.getChildCount() == 2 
+                && LabelConstants.OPEN_BRACKET.equals(multiplicityExpression.getChild(0).getText()) 
+                && LabelConstants.CLOSE_BRACKET.equals(multiplicityExpression.getChild(1).getText());
+    }
+
     private void handleMissingSubclassificationExpression(ExpressionContext ctx) {
         if (this.options.contains(LabelService.SUBSETTING_OFF)) {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Definition definition && (featureExpressions == null || featureExpressions.subsettingExpression() == null)) {
+        if (this.element instanceof Definition definition && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBCLASSIFICATION)) {
             var subclassification = this.element.getOwnedRelationship().stream()
                     .filter(Subclassification.class::isInstance)
                     .map(Subclassification.class::cast)
@@ -423,7 +436,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.subsettingExpression() == null)) {
+        if (this.element instanceof Usage usage && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBSETTING)) {
             var subsetting = this.element.getOwnedRelationship().stream()
                     .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
                     .map(Subsetting.class::cast)
@@ -439,7 +452,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.redefinitionExpression() == null)) {
+        if (this.element instanceof Usage usage && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.redefinitionExpression(), LabelConstants.REDEFINITION)) {
             var redefinition = this.element.getOwnedRelationship().stream()
                     .filter(Redefinition.class::isInstance)
                     .map(Redefinition.class::cast)
@@ -455,7 +468,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.typingExpression() == null)) {
+        if (this.element instanceof Usage usage && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.typingExpression(), LabelConstants.COLON)) {
             var featureTyping = this.element.getOwnedRelationship().stream()
                     .filter(FeatureTyping.class::isInstance)
                     .map(FeatureTyping.class::cast)
@@ -471,7 +484,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && (featureExpressions == null || featureExpressions.valueExpression() == null)) {
+        if (this.element instanceof Usage usage && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.valueExpression(), LabelConstants.EQUAL)) {
             var featureValue = this.element.getOwnedRelationship().stream()
                     .filter(FeatureValue.class::isInstance)
                     .map(FeatureValue.class::cast)
@@ -480,6 +493,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 EcoreUtil.remove(featureValue.get());
             }
         }
+    }
+
+    private boolean isDeleteFeatureExpression(FeatureExpressionsContext featureExpressions, ParserRuleContext expression, String symbol) {
+        return expression == null && featureExpressions.exception instanceof NoViableAltException && symbol.equals(featureExpressions.getChild(0).getText());
     }
 
     private LiteralBoolean getOrCreateLiteralBoolean(FeatureValue featureValue) {
