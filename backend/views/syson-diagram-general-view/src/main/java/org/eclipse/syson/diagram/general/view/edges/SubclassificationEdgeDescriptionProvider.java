@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
-import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -66,7 +65,7 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(NAME);
         var optAttributeDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeDefinition()));
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
+        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getEnumerationDefinition()));
         var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getInterfaceDefinition()));
         var optItemDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition()));
         var optMetadataDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getMetadataDefinition()));

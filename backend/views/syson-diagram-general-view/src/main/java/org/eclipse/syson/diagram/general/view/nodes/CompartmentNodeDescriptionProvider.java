@@ -167,7 +167,7 @@ public class CompartmentNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .children(createInstance.build());
 
         var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureMembership()))
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(getMembership(type)))
                 .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
                 .variableName("newFeatureMembership")
                 .children(changeContextMembership.build());
@@ -177,5 +177,13 @@ public class CompartmentNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
+    }
+
+    private EClass getMembership(EClassifier type) {
+        EClass membershipClass = SysmlPackage.eINSTANCE.getFeatureMembership();
+        if (type.equals(SysmlPackage.eINSTANCE.getEnumerationUsage())) {
+            membershipClass = SysmlPackage.eINSTANCE.getVariantMembership();
+        }
+        return membershipClass;
     }
 }

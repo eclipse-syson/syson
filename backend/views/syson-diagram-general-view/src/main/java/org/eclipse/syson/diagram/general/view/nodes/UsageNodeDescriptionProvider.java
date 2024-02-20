@@ -92,10 +92,7 @@ public class UsageNodeDescriptionProvider extends AbstractNodeDescriptionProvide
             }
         });
 
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-
-        allTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
         allTargetNodeDescriptions.add(optPackageNodeDescription.get());
 
         nodeDescription.setPalette(this.createNodePalette(nodeDescription, allTargetNodeDescriptions));
