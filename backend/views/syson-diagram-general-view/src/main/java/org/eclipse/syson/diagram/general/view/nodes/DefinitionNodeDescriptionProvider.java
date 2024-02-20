@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
@@ -91,13 +92,23 @@ public class DefinitionNodeDescriptionProvider extends AbstractNodeDescriptionPr
             }
         });
 
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
 
-        allTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
         allTargetNodeDescriptions.add(optPackageNodeDescription.get());
 
         nodeDescription.setPalette(this.createNodePalette(nodeDescription, allTargetNodeDescriptions));
+    }
+
+    private NodeStyleDescription createDefinitionNodeStyle() {
+        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
+                .borderRadius(0)
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .displayHeaderSeparator(true)
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
+                .showIcon(true)
+                .withHeader(true)
+                .build();
     }
 
     private NodePalette createNodePalette(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {

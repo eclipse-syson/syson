@@ -90,12 +90,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
             packageNodeDescription.getReusedChildNodeDescriptions().add(optNodeDescription.get());
         });
 
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
-
-        allTargetNodeDescriptions.add(optEnumerationDefinitionNodeDescription.get());
-        allTargetNodeDescriptions.add(optPackageNodeDescription.get());
-
-        packageNodeDescription.getReusedChildNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
+        allTargetNodeDescriptions.add(packageNodeDescription);
         packageNodeDescription.getReusedChildNodeDescriptions().add(packageNodeDescription);
         packageNodeDescription.setPalette(this.createNodePalette(packageNodeDescription, cache, allTargetNodeDescriptions));
     }
@@ -157,10 +152,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
             acceptedNodeTypes.add(optNodeDescription.get());
         });
 
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-
-        acceptedNodeTypes.add(optEnumerationDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optPackageNodeDescription.get());
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
@@ -184,7 +176,6 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
             nodeTools.add(this.createNodeTool(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage)).get(), usage));
         });
 
-        nodeTools.add(this.createNodeTool(cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getEnumerationDefinition()));
         nodeTools.add(this.createNodeTool(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()));
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

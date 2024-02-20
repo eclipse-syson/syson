@@ -20,9 +20,7 @@ import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
-import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.ViewConstants;
 
 /**
  * Common pieces of node descriptions shared by {@link INodeDescriptionProvider} in General View.
@@ -39,18 +37,6 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
 
     public AbstractNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
-    }
-
-    protected NodeStyleDescription createDefinitionNodeStyle() {
-        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
-                .borderRadius(0)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
-                .displayHeaderSeparator(true)
-                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
-                .withHeader(true)
-                .build();
     }
 
     protected String getNewElementDefaultName(EClassifier eClassifier) {

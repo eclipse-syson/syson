@@ -45,9 +45,6 @@ import org.eclipse.syson.diagram.general.view.nodes.CompartmentItemNodeDescripti
 import org.eclipse.syson.diagram.general.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.DefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EmptyDiagramNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.EnumerationCompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.EnumerationCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.UsageNodeDescriptionProvider;
@@ -65,6 +62,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
     public static  final List<EClass> DEFINITIONS = List.of(
             SysmlPackage.eINSTANCE.getAttributeDefinition(),
+            SysmlPackage.eINSTANCE.getEnumerationDefinition(),
             SysmlPackage.eINSTANCE.getInterfaceDefinition(),
             SysmlPackage.eINSTANCE.getItemDefinition(),
             SysmlPackage.eINSTANCE.getMetadataDefinition(),
@@ -79,17 +77,18 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getPortUsage());
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
-            Map.entry(SysmlPackage.eINSTANCE.getAttributeDefinition(), List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
-            Map.entry(SysmlPackage.eINSTANCE.getInterfaceDefinition(), List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
-            Map.entry(SysmlPackage.eINSTANCE.getItemDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
-            Map.entry(SysmlPackage.eINSTANCE.getMetadataDefinition(),  List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
-            Map.entry(SysmlPackage.eINSTANCE.getPartDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
-            Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
-            Map.entry(SysmlPackage.eINSTANCE.getAttributeUsage(),      List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
-            Map.entry(SysmlPackage.eINSTANCE.getInterfaceUsage(),      List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
-            Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
-            Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
-            Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference()))
+            Map.entry(SysmlPackage.eINSTANCE.getAttributeDefinition(),   List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
+            Map.entry(SysmlPackage.eINSTANCE.getEnumerationDefinition(), List.of(SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue())),
+            Map.entry(SysmlPackage.eINSTANCE.getInterfaceDefinition(),   List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getItemDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
+            Map.entry(SysmlPackage.eINSTANCE.getMetadataDefinition(),    List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getPartDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getAttributeUsage(),        List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getInterfaceUsage(),        List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference()))
             );
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
@@ -113,11 +112,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         var diagramElementDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new EmptyDiagramNodeDescriptionProvider(colorProvider));
-        
-        diagramElementDescriptionProviders.add(new EnumerationDefinitionNodeDescriptionProvider(colorProvider));
+
         diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new EnumerationCompartmentItemNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new EnumerationCompartmentNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new PartDefinitionOwnedItemEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new PartUsageNestedPartEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
@@ -173,10 +169,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             acceptedNodeTypes.add(optNodeDescription.get());
         });
 
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-
-        acceptedNodeTypes.add(optEnumerationDefinitionNodeDescription.get());
         acceptedNodeTypes.add(optPackageNodeDescription.get());
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
@@ -210,7 +203,6 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage)).get(), usage));
         });
 
-        nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getEnumerationDefinition()));
         nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()));
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

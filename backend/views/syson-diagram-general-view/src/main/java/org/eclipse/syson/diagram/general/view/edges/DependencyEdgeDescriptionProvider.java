@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.EnumerationDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -81,10 +80,7 @@ public class DependencyEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
             edgeDescription.getTargetNodeDescriptions().add(optNodeDescription.get());
         });
 
-        var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(EnumerationDefinitionNodeDescriptionProvider.NAME);
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-        edgeDescription.getSourceNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
-        edgeDescription.getTargetNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
         edgeDescription.getSourceNodeDescriptions().add(optPackageNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optPackageNodeDescription.get());
 
