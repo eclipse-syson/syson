@@ -31,9 +31,11 @@ The partial edit allows to:
 ** ":>> newType" -> set a new redefinition
 ** "= newValue" -> set a new value
 ** "[newRange]" -> set a new range
+- https://github.com/eclipse-syson/syson/issues/78[#78] [explorer] Review new objects candidates in Explorer view context menu.
+Only provides candidates that will make sense.
+Also allow the creation of elements with their containing Membership in one click.
 
 === New features
-
 
 
 == v2024.1.0

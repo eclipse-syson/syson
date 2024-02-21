@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EmptyDiagramNodeDescriptionProvider;
+import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.PartUsage;
