@@ -20,9 +20,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationUsage;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.LiteralExpression;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
@@ -54,15 +55,18 @@ public class GetIntermediateContainerCreationSwitch extends SysmlEClassSwitch<Op
     }
 
     @Override
-    public Optional<EClass> caseLiteralExpression(LiteralExpression object) {
-        return Optional.of(SysmlPackage.eINSTANCE.getFeatureValue());
+    public Optional<EClass> caseFeature(Feature object) {
+        Optional<EClass> intermediateContainer = Optional.empty();
+        if (container instanceof Definition) {
+            intermediateContainer = Optional.of(SysmlPackage.eINSTANCE.getFeatureMembership());
+        } else if (!(container instanceof Membership)) {
+            intermediateContainer = Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
+        }
+        return intermediateContainer;
     }
 
     @Override
-    public Optional<EClass> caseUsage(Usage object) {
-        if (container instanceof Definition) {
-            return Optional.of(SysmlPackage.eINSTANCE.getFeatureMembership());
-        }
-        return Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
+    public Optional<EClass> caseLiteralExpression(LiteralExpression object) {
+        return Optional.of(SysmlPackage.eINSTANCE.getFeatureValue());
     }
 }

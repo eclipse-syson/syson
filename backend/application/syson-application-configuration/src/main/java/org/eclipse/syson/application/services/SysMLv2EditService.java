@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -117,6 +118,8 @@ public class SysMLv2EditService implements IEditServiceDelegate {
                 }
             } else if (eObject instanceof Relationship newElement) {
                 container.getOwnedRelationship().add(newElement);
+            } else if (container instanceof Membership membership && eObject instanceof Element newElement) {
+                membership.getOwnedRelatedElement().add(newElement);
             }
             new ElementInitializerSwitch().doSwitch(eObject);
             return Optional.of(eObject);
