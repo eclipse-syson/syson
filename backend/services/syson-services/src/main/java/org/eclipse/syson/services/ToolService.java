@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,25 +13,48 @@
 package org.eclipse.syson.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.InsideLabel;
+import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.Position;
+import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
+import org.eclipse.sirius.components.diagrams.Size;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
+import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tool-related Java services used by SysON representations.
@@ -40,9 +63,11 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public class ToolService {
 
-    private final IObjectService objectService;
+    protected final IObjectService objectService;
 
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+    protected final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+    
+    private final Logger logger = LoggerFactory.getLogger(ToolService.class);
 
     public ToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
         this.objectService = Objects.requireNonNull(objectService);
@@ -193,7 +218,7 @@ public class ToolService {
     protected Optional<String> getDescriptionId(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         // The NodeDescription must be a child of the Parent Node/Diagram
-        var generalViewDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
+        var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
 
         final var childNodeDescriptions = new ArrayList<>();
 
@@ -202,15 +227,19 @@ public class ToolService {
                     .concat(nodeDesc.getChildNodeDescriptions().stream(), convertedNodes.values().stream().filter(convNode -> nodeDesc.getReusedChildNodeDescriptionIds().contains(convNode.getId()))))
                     .toList());
         } else {
-            childNodeDescriptions.addAll(generalViewDescription.filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
+            childNodeDescriptions.addAll(diagramDescription.filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::cast)
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription::getNodeDescriptions).orElse(List.of()));
         }
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(element.eClass());
 
-        return convertedNodes.keySet().stream().filter(viewNodeDesc -> viewNodeDesc.getDomainType().equals(domainType)).map(viewNodeDesc -> convertedNodes.get(viewNodeDesc))
-                .filter(nodeDesc -> childNodeDescriptions.contains(nodeDesc)).map(NodeDescription::getId).findFirst();
+        return convertedNodes.keySet().stream()
+                .filter(viewNodeDesc -> viewNodeDesc.getDomainType().equals(domainType))
+                .map(viewNodeDesc -> convertedNodes.get(viewNodeDesc))
+                .filter(nodeDesc -> childNodeDescriptions.contains(nodeDesc))
+                .map(NodeDescription::getId)
+                .findFirst();
     }
 
     protected void moveElement(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
@@ -222,5 +251,143 @@ public class ToolService {
         }
         this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+    }
+
+    protected Node createFakeNode(EObject semanticElement, Object parentNode, IDiagramContext diagramContext, DiagramDescription diagramDescription, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        String targetObjectId = this.objectService.getId(semanticElement);
+        String parentElementId = null;
+        org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = null;
+
+        if (parentNode == null) {
+            parentElementId = diagramContext.getDiagram().getId();
+            childrenType = this.getChildrenNodeDescriptionsOfType(diagramDescription, null, semanticElement.eClass());
+        } else if (parentNode instanceof Node pNode) {
+            parentElementId = pNode.getId();
+            org.eclipse.sirius.components.view.diagram.NodeDescription targetNodeDescription = this.getViewNodeDescription(pNode.getDescriptionId(), diagramDescription, convertedNodes).orElse(null);
+            childrenType = this.getChildrenNodeDescriptionsOfType(diagramDescription, targetNodeDescription, semanticElement.eClass());
+        }
+
+        NodeDescription nodeDescription = convertedNodes.get(childrenType);
+        var targetObjectKind = this.objectService.getKind(semanticElement);
+        var targetObjectLabel = this.objectService.getLabel(semanticElement);
+        String nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), NodeContainmentKind.CHILD_NODE, targetObjectId);
+
+        var labelStyle = LabelStyle.newLabelStyle()
+                .color("")
+                .fontSize(14)
+                .iconURL(List.of())
+                .build();
+
+        var insideLabel = InsideLabel.newLabel("")
+                .alignment(Position.UNDEFINED)
+                .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
+                .isHeader(false)
+                .position(Position.UNDEFINED)
+                .size(Size.UNDEFINED)
+                .style(labelStyle)
+                .text("")
+                .type("")
+                .build();
+
+        var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle().color("").borderColor("").borderStyle(LineStyle.Solid).build();
+
+        return Node.newNode(nodeId)
+                .type("")
+                .targetObjectId(targetObjectId)
+                .targetObjectKind(targetObjectKind)
+                .targetObjectLabel(targetObjectLabel)
+                .descriptionId(nodeDescription.getId())
+                .borderNode(false)
+                .modifiers(Set.of())
+                .state(ViewModifier.Normal)
+                .collapsingState(CollapsingState.EXPANDED)
+                .insideLabel(insideLabel)
+                .style(nodeStyle)
+                .childrenLayoutStrategy(new FreeFormLayoutStrategy())
+                .position(Position.UNDEFINED)
+                .size(Size.UNDEFINED)
+                .userResizable(true)
+                .borderNodes(List.of())
+                .childNodes(List.of())
+                .customizedProperties(Set.of())
+                .build();
+    }
+
+    private org.eclipse.sirius.components.view.diagram.NodeDescription getChildrenNodeDescriptionsOfType(DiagramDescription diagramDescription, org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription, EClass eClass) {
+        final List<org.eclipse.sirius.components.view.diagram.NodeDescription> descriptions = new ArrayList<>();
+        final String parentName;
+        if (nodeDescription == null) {
+            parentName = diagramDescription.getName();
+            descriptions.addAll(diagramDescription.getNodeDescriptions());
+        } else {
+            parentName = nodeDescription.getName();
+            descriptions.addAll(nodeDescription.getChildrenDescriptions());
+            descriptions.addAll(nodeDescription.getBorderNodesDescriptions());
+            descriptions.addAll(nodeDescription.getReusedBorderNodeDescriptions());
+            descriptions.addAll(nodeDescription.getReusedChildNodeDescriptions());
+        }
+
+        List<org.eclipse.sirius.components.view.diagram.NodeDescription> candidates = descriptions.stream()
+                .distinct()
+                .filter(c -> this.isCompliant(SysMLMetamodelHelper.toEClass(c.getDomainType()), eClass))
+                .sorted(Comparator.comparingInt(n -> -1 * this.computeDistanceToElement(SysMLMetamodelHelper.toEClass(n.getDomainType()))))
+                .toList();
+        if (candidates.isEmpty()) {
+            this.logger.error("No candidate for children of type {} on {}", eClass.getName(), parentName);
+            return null;
+        } else {
+            Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> perfectCandidate = candidates.stream().filter(c -> SysMLMetamodelHelper.toEClass(c.getDomainType()) == eClass).findFirst();
+            org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = null;
+            if (perfectCandidate.isPresent()) {
+                byDefault = perfectCandidate.get();
+            } else {
+                byDefault = candidates.get(0);
+                if (candidates.size() > 1) {
+                    this.logger.info("More than one candidate for children of type {} on {}. By default use the more specific type {}", eClass.getName(), parentName, byDefault.getName());
+                }
+            }
+            return byDefault;
+        }
+    }
+
+    private int computeDistanceToElement(EClassifier source) {
+        return this.computeDistanceToElement(source, 0);
+    }
+
+    private int computeDistanceToElement(EClassifier source, int current) {
+        if (source == SysmlPackage.eINSTANCE.getElement()) {
+            return current;
+        } else {
+            int distance = Integer.MAX_VALUE;
+            if (source instanceof EClass) {
+                EClass sourceEClass = (EClass) source;
+                for (EClass superType : sourceEClass.getESuperTypes()) {
+                    distance = Math.min(distance, this.computeDistanceToElement(superType, current + 1));
+                }
+            }
+            return distance;
+        }
+    }
+
+    private boolean isCompliant(EClassifier expected, EClass toTest) {
+        return toTest == expected || toTest.getEAllSuperTypes().contains(expected);
+    }
+
+    private Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescription(String descriptionId, DiagramDescription diagramDescription, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return eAllContentStreamWithSelf(diagramDescription)
+                .filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
+                .map(org.eclipse.sirius.components.view.diagram.NodeDescription.class::cast)
+                .filter(nodeDesc -> {
+                    NodeDescription convertedNodeDesc = convertedNodes.get(nodeDesc);
+                    return convertedNodeDesc != null && descriptionId.equals(convertedNodeDesc.getId());
+                })
+                .findFirst();
+    }
+
+    private Stream<EObject> eAllContentStreamWithSelf(EObject o) {
+        if (o == null) {
+            return Stream.empty();
+        }
+        return Stream.concat(Stream.of(o), StreamSupport.stream(Spliterators.spliteratorUnknownSize(o.eAllContents(), Spliterator.NONNULL), false));
     }
 }
