@@ -39,7 +39,7 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
  */
 public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
-    private static final String METAMODEL_ICNS_PATH = "/icons/full/obj16/";
+    private static final String METAMODEL_ICONS_PATH = "/icons/full/obj16/";
 
     private static final String SVG = ".svg";
 
@@ -142,7 +142,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         return builder
                 .name("New " + SysmlPackage.eINSTANCE.getDependency().getName())
-                .iconURLsExpression(METAMODEL_ICNS_PATH + SysmlPackage.eINSTANCE.getDependency().getName() + SVG)
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getDependency().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
@@ -187,7 +187,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         return builder
                 .name("New " + SysmlPackage.eINSTANCE.getSubclassification().getName())
-                .iconURLsExpression(METAMODEL_ICNS_PATH + SysmlPackage.eINSTANCE.getSubclassification().getName() + SVG)
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSubclassification().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
@@ -241,7 +241,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         return builder
                 .name("New " + SysmlPackage.eINSTANCE.getRedefinition().getName())
-                .iconURLsExpression(METAMODEL_ICNS_PATH + SysmlPackage.eINSTANCE.getRedefinition().getName() + SVG)
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getRedefinition().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
@@ -287,7 +287,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         return builder
                 .name("New " + SysmlPackage.eINSTANCE.getSubsetting().getName())
-                .iconURLsExpression(METAMODEL_ICNS_PATH + SysmlPackage.eINSTANCE.getSubsetting().getName() + SVG)
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSubsetting().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
@@ -301,7 +301,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         return builder
                 .name("Add Part Usage as nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
-                .iconURLsExpression(METAMODEL_ICNS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
@@ -315,7 +315,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         return builder
                 .name("Become nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
-                .iconURLsExpression(METAMODEL_ICNS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
