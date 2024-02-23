@@ -54,7 +54,7 @@ public class CompartmentNodeDescriptionProvider extends AbstractNodeDescriptionP
     @Override
     public NodeDescription create() {
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().build())
+                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().bottomGapExpression("10").build())
                 .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
