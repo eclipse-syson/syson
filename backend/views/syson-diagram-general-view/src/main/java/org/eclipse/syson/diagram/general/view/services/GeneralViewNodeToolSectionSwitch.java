@@ -27,6 +27,7 @@ import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
@@ -122,7 +123,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name("New nested " + eClass.getName())
+                .name(DescriptionNameGenerator.getCreationToolName("New nested ", eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
@@ -161,7 +162,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name("New nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .name(DescriptionNameGenerator.getCreationToolName("New nested ", SysmlPackage.eINSTANCE.getPartUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getPartUsage().getName() + ".svg")
                 .body(createMembership.build())
                 .build();

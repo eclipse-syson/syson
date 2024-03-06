@@ -37,6 +37,7 @@ Also allow the creation of elements with their containing Membership in one clic
 - https://github.com/eclipse-syson/syson/issues/80[#80] [diagrams] Improves "Add existing elements" tool by making it recursive.
 - https://github.com/eclipse-syson/syson/issues/86[#86] [general-view] Improves Package headers' width to better handle longer labels and prevents Package children from overlapping the Package body's west border.
 - https://github.com/eclipse-syson/syson/issues/52[#52] [syson] Add all KerML and SysML standard libraries.
+- https://github.com/eclipse-syson/syson/issues/88[#88] [diagrams] Improves creation tool names by adding spaces between type words and removing "Usage" from tool names.
 
 === New features
 
