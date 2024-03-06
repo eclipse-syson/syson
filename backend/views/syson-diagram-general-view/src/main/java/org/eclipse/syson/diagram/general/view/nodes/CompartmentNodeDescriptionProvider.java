@@ -31,6 +31,7 @@ import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -173,7 +174,7 @@ public class CompartmentNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .children(changeContextMembership.build());
 
         return builder
-                .name("New " + type.getName())
+                .name(DescriptionNameGenerator.getCreationToolName(type))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();

@@ -29,6 +29,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
@@ -141,7 +142,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
                 .children(createMembership.build());
 
         return builder
-                .name("New " + SysmlPackage.eINSTANCE.getDependency().getName())
+                .name(DescriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getDependency()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getDependency().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -186,7 +187,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
                 .children(createInstance.build());
 
         return builder
-                .name("New " + SysmlPackage.eINSTANCE.getSubclassification().getName())
+                .name(DescriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSubclassification()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSubclassification().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -240,7 +241,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
                 .children(createInstance.build());
 
         return builder
-                .name("New " + SysmlPackage.eINSTANCE.getRedefinition().getName())
+                .name(DescriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getRedefinition()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getRedefinition().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -286,7 +287,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
                 .children(createInstance.build());
 
         return builder
-                .name("New " + SysmlPackage.eINSTANCE.getSubsetting().getName())
+                .name(DescriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSubsetting()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSubsetting().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -300,7 +301,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".addAsNestedPart(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
 
         return builder
-                .name("Add Part Usage as nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .name(DescriptionNameGenerator.getCreationToolName("Add Part as nested ", SysmlPackage.eINSTANCE.getPartUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -314,7 +315,7 @@ public class GeneralViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".becomeNestedPart(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
 
         return builder
-                .name("Become nested " + SysmlPackage.eINSTANCE.getPartUsage().getName())
+                .name(DescriptionNameGenerator.getCreationToolName("Become nested ", SysmlPackage.eINSTANCE.getPartUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
