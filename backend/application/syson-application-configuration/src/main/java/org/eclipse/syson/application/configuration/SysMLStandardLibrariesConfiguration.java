@@ -22,12 +22,14 @@ import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -43,9 +45,9 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 @Configuration
 public class SysMLStandardLibrariesConfiguration {
 
-    public static final String SYSML_LIBRARY_SCHEME = "sysmllibrary";
-    
     public static final String KERML_LIBRARY_SCHEME = "kermllibrary";
+
+    public static final String SYSML_LIBRARY_SCHEME = "sysmllibrary";
 
     private final Logger logger = LoggerFactory.getLogger(SysMLStandardLibrariesConfiguration.class);
 
@@ -54,11 +56,14 @@ public class SysMLStandardLibrariesConfiguration {
     public SysMLStandardLibrariesConfiguration() {
         Instant start = Instant.now();
         librariesResourceSet = new ResourceSetImpl();
+        EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
+        ePackageRegistry.put(SysmlPackage.eNS_URI, SysmlPackage.eINSTANCE);
+        librariesResourceSet.setPackageRegistry(ePackageRegistry);
         loadResourcesFrom(librariesResourceSet, "kerml.libraries/", KERML_LIBRARY_SCHEME);
         loadResourcesFrom(librariesResourceSet, "sysml.libraries/", SYSML_LIBRARY_SCHEME);
         Instant finish = Instant.now();
-        long timeElapsed = Duration.between(start, finish).toMillis();
-        this.logger.info("SysML standard libraries initialization completed in {} ms", timeElapsed);
+        long timeElapsed = Duration.between(start, finish).toSeconds();
+        this.logger.info("SysML standard libraries initialization completed in {} s", timeElapsed);
     }
 
     public ResourceSet getLibrariesResourceSet() {
