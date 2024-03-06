@@ -88,8 +88,7 @@ public class DetailsViewService {
     public boolean isReadOnly(Element element) {
         Resource resource = element.eResource();
         if (resource != null) {
-            return resource.getURI().toString().startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME)
-                    || resource.getURI().toString().startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME);
+            return resource.getURI().toString().startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME);
         }
         return false;
     }

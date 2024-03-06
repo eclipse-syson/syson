@@ -19,10 +19,12 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Featuring;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.Specialization;
 
 /**
  * Util class for SysML elements.
@@ -101,7 +103,8 @@ public class ElementUtil {
                     uuid = generateUUIDv5(ElementUtil.NAME_SPACE_URL_UUID, uri + qualifiedName);
                 }
             }
-        } else if (isFromStandardLibrary(element) && element.getDeclaredName() != null && !(element instanceof Import || element instanceof Membership)) {
+        } else if (isFromStandardLibrary(element) && element.getDeclaredName() != null
+                && !(element instanceof Import || element instanceof Membership || element instanceof Specialization || element instanceof Featuring)) {
             String qualifiedName = element.getQualifiedName();
             Namespace libraryNamespace = element.libraryNamespace();
             if (qualifiedName != null && libraryNamespace != null) {
