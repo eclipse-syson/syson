@@ -64,16 +64,15 @@ const packageHeaderStyle = (
   style: React.CSSProperties,
   selected: boolean,
   hovered: boolean,
-  faded: boolean,
-  labelWidth: number
+  faded: boolean
 ): React.CSSProperties => {
   const packageHeaderStyle: React.CSSProperties = {
     display: 'inline-flex',
     flexDirection: 'row',
     flexWrap: 'nowrap',
-    padding: '0px',
-    width: 'calc(' + labelWidth + 'ch + 56px)',
-    maxWidth: '45%',
+    padding: '0 16px 0 0',
+    width: 'fit-content',
+    maxWidth: '70%',
     opacity: faded ? '0.4' : '',
     ...style,
     backgroundColor: getCSSColor(String(style.backgroundColor), theme),
@@ -146,11 +145,9 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
       ...data?.insideLabel?.style,
       whiteSpace: 'pre',
       overflow: 'hidden',
+      paddingRight: '0',
       justifyContent: 'flex-start',
       textAlign: 'left',
-      columnGap: '16px',
-      textOverflow: 'ellipsis',
-      '& div': {},
     },
   };
 
@@ -183,14 +180,7 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
         <ConnectionHandles connectionHandles={data.connectionHandles} />
         <div
           style={{
-            ...packageHeaderStyle(
-              theme,
-              data.style,
-              selected,
-              hoveredNode?.id === id,
-              data.faded,
-              data.insideLabel ? data.insideLabel.text.length : 0
-            ),
+            ...packageHeaderStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
             ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
             ...dropFeedbackStyle,
           }}>
