@@ -20,7 +20,6 @@ import {
   INodeLayoutHandler,
   NodeData,
   computeNodesBox,
-  computePreviousPosition,
   computePreviousSize,
   findNodeIndex,
   getBorderNodeExtent,
@@ -94,7 +93,6 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === child.id);
-      const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNode?.id === child.id ? newlyAddedNode : undefined;
 
       if (!!createdNode) {
@@ -102,12 +100,15 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
         if (child.position.y < borderWidth + headerHeightFootprint + rectangularNodePadding) {
           child.position = { ...child.position, y: borderWidth + headerHeightFootprint + rectangularNodePadding };
         }
-      } else if (previousPosition) {
-        child.position = previousPosition;
+      } else if (previousNode) {
+        child.position = previousNode.position;
         if (previousNode && previousNode.position.y < headerHeightFootprint + rectangularNodePadding) {
           child.position = { ...child.position, y: headerHeightFootprint + rectangularNodePadding };
         } else {
           child.position = child.position;
+        }
+        if (previousNode && previousNode.position.x < 0) {
+          child.position = { ...child.position, x: rectangularNodePadding };
         }
       } else {
         child.position = getChildNodePosition(visibleNodes, child, labelElement, false, false, borderWidth);
@@ -116,7 +117,18 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
         }
         const previousSibling = directNodesChildren[index - 1];
         if (previousSibling) {
-          child.position = getChildNodePosition(visibleNodes, child, labelElement, false, false, borderWidth);
+          child.position = getChildNodePosition(
+            visibleNodes,
+            child,
+            labelElement,
+            false,
+            false,
+            borderWidth,
+            previousSibling
+          );
+        }
+        if (child.position.x < 0) {
+          child.position = { ...child.position, x: rectangularNodePadding };
         }
       }
     });
