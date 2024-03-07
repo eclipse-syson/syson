@@ -18,6 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -62,11 +63,11 @@ public class DescriptionNameGenerator {
 
     public static String getCreationToolName(String prefix, EClassifier eClassifier) {
         String nameToParse = eClassifier.getName();
-        if (eClassifier.getName().endsWith("Usage")) {
-            String baseClassifierName = eClassifier.getName().substring(0, eClassifier.getName().length() - 5);
-            EClassifier definitionEClassifier = SysmlPackage.eINSTANCE.getEClassifier(baseClassifierName + "Definition");
-            if (definitionEClassifier != null) {
-                nameToParse = baseClassifierName;
+        if (eClassifier instanceof EClass eClass) {
+            if (SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass) && !SysmlPackage.eINSTANCE.getConnector().isSuperTypeOf(eClass)) {
+                if (eClass.getName().endsWith("Usage")) {
+                    nameToParse = eClass.getName().substring(0, eClass.getName().length() - 5);
+                }
             }
         }
         return prefix + findWordsInMixedCase(nameToParse).stream().collect(Collectors.joining(" "));
