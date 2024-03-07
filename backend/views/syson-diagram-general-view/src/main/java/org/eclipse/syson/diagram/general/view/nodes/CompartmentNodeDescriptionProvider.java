@@ -25,13 +25,12 @@ import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -118,9 +117,12 @@ public class CompartmentNodeDescriptionProvider extends AbstractNodeDescriptionP
     }
 
     private NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
+
+        CompartmentNodeToolProvider compartmentNodeToolProvider = new CompartmentNodeToolProvider(this.eReference.getEType());
+
         return this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache))
-                .nodeTools(this.createCompartmentNodeTool(this.eReference.getEType(), this.getNewElementDefaultName(this.eReference.getEType())))
+                .nodeTools(compartmentNodeToolProvider.create(cache))
                 .build();
     }
 
@@ -144,47 +146,5 @@ public class CompartmentNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .acceptedNodeTypes(acceptedNodeTypes.toArray(NodeDescription[]::new))
                 .body(dropElementFromDiagram.build())
                 .build();
-    }
-
-    private NodeTool createCompartmentNodeTool(EClassifier type, String label) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var setValue = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression(label);
-
-        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
-                .children(setValue.build());
-
-        var createInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(type))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
-
-        var changeContextMembership = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newFeatureMembership")
-                .children(createInstance.build());
-
-        var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(getMembership(type)))
-                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newFeatureMembership")
-                .children(changeContextMembership.build());
-
-        return builder
-                .name(DescriptionNameGenerator.getCreationToolName(type))
-                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
-                .body(createMembership.build())
-                .build();
-    }
-
-    private EClass getMembership(EClassifier type) {
-        EClass membershipClass = SysmlPackage.eINSTANCE.getFeatureMembership();
-        if (type.equals(SysmlPackage.eINSTANCE.getEnumerationUsage())) {
-            membershipClass = SysmlPackage.eINSTANCE.getVariantMembership();
-        }
-        return membershipClass;
     }
 }

@@ -13,6 +13,7 @@
 package org.eclipse.syson.util;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -25,6 +26,7 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
 public class SysmlEClassSwitch<T> extends SysmlSwitch<T> {
 
     public T doSwitch(EClass eClass) {
-        return doSwitch(eClass, null);
+        // Create a dummy instance of eClass to let switch cases access the switched EClass.
+        return doSwitch(eClass, SysmlFactory.eINSTANCE.create(eClass));
     }
 }

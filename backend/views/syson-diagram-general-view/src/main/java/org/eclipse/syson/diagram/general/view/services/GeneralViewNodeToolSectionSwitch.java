@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.general.view.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
@@ -24,9 +25,14 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
+import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysmlEClassSwitch;
@@ -61,6 +67,12 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
     }
 
     @Override
+    public Void caseDefinition(Definition object) {
+        this.createToolsForCompartmentItems(object);
+        return super.caseDefinition(object);
+    }
+
+    @Override
     public Void casePartDefinition(PartDefinition object) {
         this.nodeToolSections.add(this.createPartDefinitionElementsToolSection(this.allNodeDescriptions.stream().filter(nodeDesc -> GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()).equals(nodeDesc.getName())).findFirst().get(),
                 this.allNodeDescriptions.stream().filter(nodeDesc -> GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemUsage()).equals(nodeDesc.getName())).findFirst().get()));
@@ -73,6 +85,12 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
         this.nodeToolSections.add(this.createPartUsageElementsToolSection(this.nodeDescription));
         this.nodeToolSections.add(this.addElementsToolSection());
         return super.casePartUsage(object);
+    }
+
+    @Override
+    public Void caseUsage(Usage object) {
+        this.createToolsForCompartmentItems(object);
+        return super.caseUsage(object);
     }
 
     private NodeToolSection createPartDefinitionElementsToolSection(NodeDescription partUsageNodeDescription, NodeDescription itemUsageNodeDescription) {
@@ -184,5 +202,29 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 .iconURLsExpression("/icons/AddExistingElements.svg")
                 .body(addExistingelements.build())
                 .build();
+    }
+
+    private void createToolsForCompartmentItems(Element object) {
+        List<NodeTool> compartmentNodeTools = new ArrayList<>();
+        GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
+            if (compartmentEClass.equals(object.eClass())) {
+                listItems.forEach(eReference -> {
+                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference.getEType());
+                    compartmentNodeTools.add(provider.create(null));
+                });
+            }
+        });
+        Optional<NodeToolSection> createToolSection = this.nodeToolSections.stream()
+                .filter(toolSection -> toolSection.getName().equals("Create"))
+                .findFirst();
+        if (createToolSection.isPresent()) {
+            createToolSection.get().getNodeTools().addAll(compartmentNodeTools);
+        } else {
+            NodeToolSection toolSection = this.diagramBuilderHelper.newNodeToolSection()
+                    .name("Create")
+                    .nodeTools(compartmentNodeTools.toArray(NodeTool[]::new))
+                    .build();
+            this.nodeToolSections.add(toolSection);
+        }
     }
 }
