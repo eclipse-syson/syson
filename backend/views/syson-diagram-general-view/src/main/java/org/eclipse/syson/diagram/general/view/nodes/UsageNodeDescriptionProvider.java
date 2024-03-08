@@ -82,7 +82,7 @@ public class UsageNodeDescriptionProvider extends AbstractNodeDescriptionProvide
             var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage));
             allTargetNodeDescriptions.add(optNodeDescription.get());
         });
-
+        
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
@@ -127,10 +127,10 @@ public class UsageNodeDescriptionProvider extends AbstractNodeDescriptionProvide
                 .body(callEditService.build());
 
         var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.addAll(getEdgeTools(nodeDescription, allNodeDescriptions));
+        edgeTools.addAll(this.getEdgeTools(nodeDescription, allNodeDescriptions));
 
         var toolSections = new ArrayList<NodeToolSection>();
-        toolSections.addAll(getToolSections(nodeDescription, allNodeDescriptions));
+        toolSections.addAll(this.getToolSections(nodeDescription, allNodeDescriptions));
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())

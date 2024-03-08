@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.FreeFormLayoutStrategyDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.NodeToolSectionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
@@ -123,13 +124,13 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .body(callEditService.build());
 
         var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.addAll(getEdgeTools(nodeDescription, allNodeDescriptions));
+        edgeTools.addAll(this.getEdgeTools(nodeDescription, allNodeDescriptions));
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
-                .toolSections(this.createNodeToolSection(cache), this.addElementsToolSection())
+                .toolSections(this.createToolSections(cache))
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .build();
     }
@@ -163,27 +164,6 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .name("Drop from Diagram")
                 .acceptedNodeTypes(acceptedNodeTypes.toArray(NodeDescription[]::new))
                 .body(dropElementFromDiagram.build())
-                .build();
-    }
-
-    private NodeToolSection createNodeToolSection(IViewDiagramElementFinder cache) {
-        var nodeTools = new ArrayList<NodeTool>();
-
-        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
-            nodeTools.add(this.createNodeTool(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition)).get(), definition));
-        });
-
-        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            nodeTools.add(this.createNodeTool(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage)).get(), usage));
-        });
-
-        nodeTools.add(this.createNodeTool(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()));
-
-        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
-
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Create")
-                .nodeTools(nodeTools.toArray(NodeTool[]::new))
                 .build();
     }
 
@@ -242,5 +222,32 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .iconURLsExpression("/icons/AddExistingElements.svg")
                 .body(addExistingelements.build())
                 .build();
+    }
+    
+    private NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
+        var sections = new ArrayList<NodeToolSection>();
+        
+        GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach((sectionName, elements) -> {
+            NodeToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newNodeToolSection()
+                    .name(sectionName)
+                    .nodeTools(this.createElementsOfToolSection(cache, elements));
+            sections.add(sectionBuilder.build());
+        });
+        
+        sections.add(this.addElementsToolSection());
+        
+        return sections.toArray(NodeToolSection[]::new);
+    }
+    
+    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, List<EClass> elements) {
+        var nodeTools = new ArrayList<NodeTool>();
+
+        elements.forEach(definition -> {
+            nodeTools.add(this.createNodeTool(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition)).get(), definition));
+        });
+
+        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
+
+        return nodeTools.toArray(NodeTool[]::new);
     }
 }

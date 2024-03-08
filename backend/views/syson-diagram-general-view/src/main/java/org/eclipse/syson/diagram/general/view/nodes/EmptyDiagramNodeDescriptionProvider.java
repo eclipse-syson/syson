@@ -13,11 +13,13 @@
 package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.NodeToolSectionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
@@ -91,26 +93,7 @@ public class EmptyDiagramNodeDescriptionProvider implements INodeDescriptionProv
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newNodePalette()
-                .toolSections(this.createElementsToolSection(cache), this.addElementsToolSection(cache))
-                .build();
-    }
-
-    private NodeToolSection createElementsToolSection(IViewDiagramElementFinder cache) {
-        var nodeTools = new ArrayList<NodeTool>();
-
-        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
-            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition)).get(), definition));
-        });
-
-        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage)).get(), usage));
-        });
-
-        nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()));
-
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Create")
-                .nodeTools(nodeTools.toArray(NodeTool[]::new))
+                .toolSections(this.createToolSections(cache))
                 .build();
     }
 
@@ -176,5 +159,32 @@ public class EmptyDiagramNodeDescriptionProvider implements INodeDescriptionProv
                 .iconURLsExpression("/icons/AddExistingElements.svg")
                 .body(addExistingelements.build())
                 .build();
+    }
+    
+    private NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
+        var sections = new ArrayList<NodeToolSection>();
+        
+        GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach((sectionName, elements) -> {
+            NodeToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newNodeToolSection()
+                    .name(sectionName)
+                    .nodeTools(this.createElementsOfToolSection(cache, elements));
+            sections.add(sectionBuilder.build());
+        });
+        
+        sections.add(this.addElementsToolSection(cache));
+        
+        return sections.toArray(NodeToolSection[]::new);
+    }
+    
+    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, List<EClass> elements) {
+        var nodeTools = new ArrayList<NodeTool>();
+
+        elements.forEach(element -> {
+            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(element)).get(), element));
+        });
+
+        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
+
+        return nodeTools.toArray(NodeTool[]::new);
     }
 }
