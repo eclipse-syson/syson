@@ -24,6 +24,7 @@ import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
+import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -101,6 +102,15 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         var features = new ArrayList<EStructuralFeature>();
         features.addAll(this.caseElement(object));
         features.add(SysmlPackage.eINSTANCE.getLiteralString_Value());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseMembershipImport(MembershipImport object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.add(SysmlPackage.eINSTANCE.getMembershipImport_ImportedMembership());
+        features.add(SysmlPackage.eINSTANCE.getImport_IsImportAll());
+        features.add(SysmlPackage.eINSTANCE.getImport_IsRecursive());
         return features;
     }
 
