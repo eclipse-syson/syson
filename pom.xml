@@ -45,6 +45,7 @@
 		<module>backend/application</module>
 		<module>backend/metamodel</module>
 		<module>backend/services</module>
+		<module>backend/tests</module>
 		<module>backend/views</module>
 	</modules>
 

@@ -47,7 +47,7 @@ public final class SysMLMetamodelHelper {
      */
     public static EClass toEClass(String type) {
         if (type != null && type.startsWith("sysml::")) {
-            return toEClass(type.replace("sysml::", "")); //$NON-NLS-1$
+            return toEClass(type.replace("sysml::", ""));
         }
         final EClass eClass;
         EClassifier classifier = SysmlPackage.eINSTANCE.getEClassifier(type);
