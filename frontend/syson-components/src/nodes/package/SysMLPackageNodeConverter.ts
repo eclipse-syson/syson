@@ -30,6 +30,7 @@ import {
   convertLabelStyle,
   convertLineStyle,
   convertOutsideLabels,
+  isListLayoutStrategy,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Node, XYPosition } from 'reactflow';
 import { GQLSysMLPackageNodeStyle, SysMLPackageNodeData } from './SysMLPackageNode.types';
@@ -90,6 +91,7 @@ const toPackageNode = (
     labelEditable,
     isNew,
     resizedByUser,
+    isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
   };
 
   if (insideLabel) {

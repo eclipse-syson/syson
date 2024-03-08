@@ -16,6 +16,7 @@
 import {
   Diagram,
   DiagramNodeType,
+  ForcedDimensions,
   ILayoutEngine,
   INodeLayoutHandler,
   NodeData,
@@ -50,7 +51,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
-    forceWidth?: number
+    forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-rectangularNode-${nodeIndex}`)?.children[0];
@@ -64,10 +65,10 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
         directChildren,
         newlyAddedNode,
         borderWidth,
-        forceWidth
+        forceDimensions
       );
     } else {
-      this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth, forceWidth);
+      this.handleLeafNode(previousDiagram, node, visibleNodes, borderWidth, forceDimensions);
     }
   }
 
@@ -79,7 +80,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     borderWidth: number,
-    _forceWidth?: number
+    _forceDimensions?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
@@ -181,7 +182,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
       ) +
       borderWidth * 2;
 
-    const nodeWith: number = _forceWidth ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    const nodeWidth: number = _forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight: number = getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
@@ -200,7 +201,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = nodeWith;
+      node.width = nodeWidth;
       node.height = nodeHeight;
     }
 
@@ -216,7 +217,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     node: Node<SysMLPackageNodeData, 'sysMLPackageNode'>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     _borderWidth: number,
-    _forceWidth?: number
+    _forceDimensions?: ForcedDimensions
   ) {
     const nodeIndex: number = findNodeIndex(visibleNodes, node.id);
     const labelElement: HTMLElement | null = document.getElementById(`${node.id}-label-${nodeIndex}`);

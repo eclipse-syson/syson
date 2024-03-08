@@ -22,8 +22,8 @@ import org.eclipse.emf.ecore.EValidator.Registry;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
-import org.eclipse.sirius.components.collaborative.validation.api.IValidationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IValidationService;
 import org.springframework.stereotype.Service;
 
 /**
