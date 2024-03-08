@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.DiagramToolSectionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
@@ -43,11 +44,10 @@ import org.eclipse.syson.diagram.general.view.edges.SubclassificationEdgeDescrip
 import org.eclipse.syson.diagram.general.view.edges.SubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.CompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.DefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.EmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.FakeNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.GeneralViewNodeDescriptionProviderSwitch;
 import org.eclipse.syson.diagram.general.view.nodes.PackageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -91,6 +91,28 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference()))
             );
+    
+    public static final Map<String, List<EClass>> TOOL_SECTIONS = Map.ofEntries(
+            Map.entry("Structure", List.of(
+                    SysmlPackage.eINSTANCE.getAttributeUsage(),
+                    SysmlPackage.eINSTANCE.getAttributeDefinition(),
+                    SysmlPackage.eINSTANCE.getEnumerationDefinition(),
+                    SysmlPackage.eINSTANCE.getItemUsage(),
+                    SysmlPackage.eINSTANCE.getItemDefinition(),
+                    SysmlPackage.eINSTANCE.getPackage(),
+                    SysmlPackage.eINSTANCE.getPartUsage(),
+                    SysmlPackage.eINSTANCE.getPartDefinition()
+                    )),
+            Map.entry("Interconnection", List.of(
+                    SysmlPackage.eINSTANCE.getInterfaceUsage(), 
+                    SysmlPackage.eINSTANCE.getInterfaceDefinition(), 
+                    SysmlPackage.eINSTANCE.getPortUsage(), 
+                    SysmlPackage.eINSTANCE.getPortDefinition()
+                    )),
+            Map.entry("Extension", List.of(
+                    SysmlPackage.eINSTANCE.getMetadataDefinition() 
+                    ))
+            );
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
@@ -113,8 +135,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         var diagramElementDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new EmptyDiagramNodeDescriptionProvider(colorProvider));
-
-        diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
+   
         diagramElementDescriptionProviders.add(new PartDefinitionOwnedItemEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new PartUsageNestedPartEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
@@ -123,12 +144,12 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
 
-        DEFINITIONS.forEach(definition -> {
-            diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider));
-        });
-
-        USAGES.forEach(usage -> {
-            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider));
+        // create a node description provider for each element found in a section
+        var nodeDescriptionProviderSwitch = new GeneralViewNodeDescriptionProviderSwitch(colorProvider);
+        TOOL_SECTIONS.forEach((sectionName, elements) -> {
+            elements.forEach(eClass -> {
+                diagramElementDescriptionProviders.add(nodeDescriptionProviderSwitch.doSwitch(eClass));
+            });
         });
 
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
@@ -153,21 +174,18 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         return this.diagramBuilderHelper.newDiagramPalette()
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .dropTool(this.createDropFromExplorerTool())
-                .toolSections(this.createElementsToolSection(cache), this.addElementsToolSection(cache))
+                .toolSections(this.createToolSections(cache))
                 .build();
     }
 
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
-        DEFINITIONS.forEach(definition -> {
-            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition));
-            acceptedNodeTypes.add(optNodeDescription.get());
-        });
-
-        USAGES.forEach(usage -> {
-            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage));
-            acceptedNodeTypes.add(optNodeDescription.get());
+        GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach((sectionName, elements) -> {
+            elements.forEach(element -> {
+                var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(element));
+                acceptedNodeTypes.add(optNodeDescription.get());                
+            });
         });
 
         var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
@@ -196,12 +214,11 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     private DiagramToolSection createElementsToolSection(IViewDiagramElementFinder cache) {
         var nodeTools = new ArrayList<NodeTool>();
 
-        DEFINITIONS.forEach(definition -> {
-            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition)).get(), definition));
-        });
-
-        USAGES.forEach(usage -> {
-            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage)).get(), usage));
+        GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach((sectionName, elements) -> {
+            elements.forEach(element -> {
+                var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(element));
+                nodeTools.add(this.createNodeToolFromPackage(optNodeDescription.get(), element));                
+            });
         });
 
         nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()));
@@ -276,5 +293,32 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .iconURLsExpression("/icons/AddExistingElements.svg")
                 .body(addExistingelements.build())
                 .build();
+    }
+    
+    private DiagramToolSection[] createToolSections(IViewDiagramElementFinder cache) {
+        var sections = new ArrayList<DiagramToolSection>();
+        
+        TOOL_SECTIONS.forEach((sectionName, elements) -> {
+            DiagramToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newDiagramToolSection()
+                    .name(sectionName)
+                    .nodeTools(this.createElementsOfToolSection(cache, elements));
+            sections.add(sectionBuilder.build());
+        });
+        
+        sections.add(this.addElementsToolSection(cache));
+        
+        return sections.toArray(DiagramToolSection[]::new);
+    }
+    
+    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, List<EClass> elements) {
+        var nodeTools = new ArrayList<NodeTool>();
+
+        elements.forEach(definition -> {
+            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition)).get(), definition));
+        });
+
+        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
+
+        return nodeTools.toArray(NodeTool[]::new);
     }
 }

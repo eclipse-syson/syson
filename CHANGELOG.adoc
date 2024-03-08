@@ -39,6 +39,7 @@ Also allow the creation of elements with their containing Membership in one clic
 - https://github.com/eclipse-syson/syson/issues/52[#52] [syson] Add all KerML and SysML standard libraries.
 - https://github.com/eclipse-syson/syson/issues/88[#88] [diagrams] Improves creation tool names by adding spaces between type words and removing "Usage" from tool names.
 - https://github.com/eclipse-syson/syson/issues/91[#91] [general-view] Add NodeTools to create compartment elements from the compartment's parent node. For example, it is now possible to create an `AttributeUsage` in the `PartDefinition` palette.
+- https://github.com/eclipse-syson/syson/issues/93[#93] [diagrams] Reorganize General View diagram palette with several tool sections.
 
 === New features
 
