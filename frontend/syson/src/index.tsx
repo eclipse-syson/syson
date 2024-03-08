@@ -47,7 +47,6 @@ import {
   SysMLPackageNodeConverter,
   SysMLPackageNodeLayoutHandler,
 } from '@eclipse-syson/syson-components';
-import './Sprotty.css';
 import './fonts.css';
 import './reset.css';
 import './variables.css';
