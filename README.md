@@ -38,15 +38,19 @@ SysML® is a trademark owned by OMG with specific guidelines detailed here: <htt
 
 ## Project Scheduling
 
-* 2023
-  * Q4: Initial Contribution, project and continuous integration setup, builds.
-* 2024
-  * Reach a level of maturity suitable for basic System modeling, which implies to:
-  * Improve coverage and compliance of the standard in the metamodel implementations
-  * Improve the editors, notably the  "General View"
-  * Link with Capella and Capella-based products
-  * Interoperability with the textual syntax and/or API
+- 2023
+  - Q4: Initial Contribution, project and continuous integration setup, builds.
+- 2024
+  - Reach a level of maturity suitable for basic System modeling, which implies to:
+  - Improve coverage and compliance of the standard in the metamodel implementations
+  - Improve the editors, notably the "General View"
+  - Link with Capella and Capella-based products
+  - Interoperability with the textual syntax and/or API
 
 ## Future Work
 
 Realizing the implementation of such a standard via a user-friendly tool constitutes a substantial, long-term endeavor. Our aspiration is to achieve an initial level of practicality by 2024, followed by iterative enhancements.
+
+## More about SysON
+
+You can visit the [SysON Website](https://mbse-syson.org/) or contact [Obeo](https://www.obeosoft.com/en/contact) for more information.
