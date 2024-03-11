@@ -157,7 +157,7 @@ public class RootPartUsageNodeDescriptionProvider implements INodeDescriptionPro
                 .children(changeContexMembership.build());
 
         return builder
-                .name(DescriptionNameGenerator.getCreationToolName(eClass))
+                .name(new DescriptionNameGenerator("").getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();

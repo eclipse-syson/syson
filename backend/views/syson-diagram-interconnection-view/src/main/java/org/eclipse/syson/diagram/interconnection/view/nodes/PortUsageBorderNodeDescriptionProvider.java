@@ -118,7 +118,7 @@ public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionP
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createBindingConnectorAsUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
 
         return builder
-                .name(DescriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
+                .name(new DescriptionNameGenerator("").getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))

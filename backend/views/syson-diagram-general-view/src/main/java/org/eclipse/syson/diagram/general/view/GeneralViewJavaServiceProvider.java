@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,9 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewCreateService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewEdgeService;
-import org.eclipse.syson.diagram.general.view.services.GeneralViewLabelService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewToolService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
@@ -42,7 +42,7 @@ public class GeneralViewJavaServiceProvider implements IJavaServiceProvider {
             return List.of(GeneralViewCreateService.class,
                     DeleteService.class,
                     GeneralViewEdgeService.class,
-                    GeneralViewLabelService.class,
+                    ViewLabelService.class,
                     GeneralViewToolService.class,
                     UtilService.class);
         }

@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.EmptyDiagramNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -92,7 +92,7 @@ public class GeneralViewCreateService {
             List<Node> previousNodes = previousDiagram.getNodes();
             List<ViewCreationRequest> viewCreationRequests = diagramContext.getViewCreationRequests();
             if (viewCreationRequests.isEmpty() && (previousNodes.isEmpty() || previousNodes.stream().anyMatch(node -> this.viewRepresentationDescriptionSearchService
-                    .findViewNodeDescriptionById(editingContext, node.getDescriptionId()).stream().anyMatch(nd -> EmptyDiagramNodeDescriptionProvider.NAME.equals(nd.getName()))))) {
+                    .findViewNodeDescriptionById(editingContext, node.getDescriptionId()).stream().anyMatch(nd -> GeneralViewEmptyDiagramNodeDescriptionProvider.NAME.equals(nd.getName()))))) {
                 emptyDiagram = true;
             }
         } else {

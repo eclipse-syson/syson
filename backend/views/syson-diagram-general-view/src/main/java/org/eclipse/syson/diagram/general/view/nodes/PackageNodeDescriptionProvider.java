@@ -30,14 +30,14 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.services.GeneralViewEdgeToolSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -48,7 +48,7 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    public static final String NAME = "GV Node Package";
+    private final GVDescriptionNameGenerator nameGenerator = new GVDescriptionNameGenerator();
 
     public PackageNodeDescriptionProvider(IColorProvider colorProvider) {
         super(colorProvider);
@@ -64,7 +64,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .defaultWidthExpression("300")
                 .domainType(domainType)
                 .labelExpression("aql:self.getContainerLabel()")
-                .name(NAME)
+                .name(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .style(this.createPackageNodeStyle())
                 .userResizable(true)
@@ -74,20 +74,20 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
+        var optPackageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()));
         NodeDescription packageNodeDescription = optPackageNodeDescription.get();
         diagramDescription.getNodeDescriptions().add(packageNodeDescription);
 
         var allTargetNodeDescriptions = new ArrayList<NodeDescription>();
 
         GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
-            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition));
+            var optNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(definition));
             allTargetNodeDescriptions.add(optNodeDescription.get());
             packageNodeDescription.getReusedChildNodeDescriptions().add(optNodeDescription.get());
         });
 
         GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage));
+            var optNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(usage));
             allTargetNodeDescriptions.add(optNodeDescription.get());
             packageNodeDescription.getReusedChildNodeDescriptions().add(optNodeDescription.get());
         });
@@ -136,7 +136,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
     }
 
     private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
-        GeneralViewEdgeToolSwitch edgeToolSwitch = new GeneralViewEdgeToolSwitch(nodeDescription, allNodeDescriptions);
+        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, allNodeDescriptions, this.nameGenerator);
         edgeToolSwitch.doSwitch(SysmlPackage.eINSTANCE.getPackage());
         return edgeToolSwitch.getEdgeTools();
     }
@@ -145,16 +145,16 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
         GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
-            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition));
+            var optNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(definition));
             acceptedNodeTypes.add(optNodeDescription.get());
         });
 
         GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage));
+            var optNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(usage));
             acceptedNodeTypes.add(optNodeDescription.get());
         });
 
-        var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
+        var optPackageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()));
         acceptedNodeTypes.add(optPackageNodeDescription.get());
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
@@ -200,7 +200,7 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name(DescriptionNameGenerator.getCreationToolName(eClass))
+                .name(this.nameGenerator.getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
@@ -223,27 +223,27 @@ public class PackageNodeDescriptionProvider extends AbstractNodeDescriptionProvi
                 .body(addExistingelements.build())
                 .build();
     }
-    
+
     private NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
         var sections = new ArrayList<NodeToolSection>();
-        
+
         GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach(sectionTool -> {
             NodeToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newNodeToolSection()
                     .name(sectionTool.name())
                     .nodeTools(this.createElementsOfToolSection(cache, sectionTool.elements()));
             sections.add(sectionBuilder.build());
         });
-        
+
         sections.add(this.addElementsToolSection());
-        
+
         return sections.toArray(NodeToolSection[]::new);
     }
-    
+
     private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, List<EClass> elements) {
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            nodeTools.add(this.createNodeTool(cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition)).get(), definition));
+            nodeTools.add(this.createNodeTool(cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).get(), definition));
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

@@ -24,16 +24,15 @@ import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
@@ -53,6 +52,8 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
     private final NodeDescription nodeDescription;
 
     private final List<NodeDescription> allNodeDescriptions;
+
+    private final GVDescriptionNameGenerator nameGenerator = new GVDescriptionNameGenerator();
 
     public GeneralViewNodeToolSectionSwitch(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
         this.viewBuilderHelper = new ViewBuilders();
@@ -74,8 +75,8 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
 
     @Override
     public Void casePartDefinition(PartDefinition object) {
-        this.nodeToolSections.add(this.createPartDefinitionElementsToolSection(this.allNodeDescriptions.stream().filter(nodeDesc -> GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()).equals(nodeDesc.getName())).findFirst().get(),
-                this.allNodeDescriptions.stream().filter(nodeDesc -> GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemUsage()).equals(nodeDesc.getName())).findFirst().get()));
+        this.nodeToolSections.add(this.createPartDefinitionElementsToolSection(this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()).equals(nodeDesc.getName())).findFirst().get(),
+                this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemUsage()).equals(nodeDesc.getName())).findFirst().get()));
         this.nodeToolSections.add(this.addElementsToolSection());
         return super.casePartDefinition(object);
     }
@@ -141,7 +142,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name(DescriptionNameGenerator.getCreationToolName("New nested ", eClass))
+                .name(this.nameGenerator.getCreationToolName("New nested ", eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
@@ -180,7 +181,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name(DescriptionNameGenerator.getCreationToolName("New nested ", SysmlPackage.eINSTANCE.getPartUsage()))
+                .name(this.nameGenerator.getCreationToolName("New nested ", SysmlPackage.eINSTANCE.getPartUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getPartUsage().getName() + ".svg")
                 .body(createMembership.build())
                 .build();
@@ -209,7 +210,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
             if (compartmentEClass.equals(object.eClass())) {
                 listItems.forEach(eReference -> {
-                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference.getEType());
+                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference.getEType(), this.nameGenerator);
                     compartmentNodeTools.add(provider.create(null));
                 });
             }
