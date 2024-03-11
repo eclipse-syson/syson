@@ -91,9 +91,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference()))
             );
-    
-    public static final Map<String, List<EClass>> TOOL_SECTIONS = Map.ofEntries(
-            Map.entry("Structure", List.of(
+      
+    public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
+            new ToolSectionDescription("Structure", List.of(
                     SysmlPackage.eINSTANCE.getAttributeUsage(),
                     SysmlPackage.eINSTANCE.getAttributeDefinition(),
                     SysmlPackage.eINSTANCE.getEnumerationDefinition(),
@@ -103,13 +103,13 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                     SysmlPackage.eINSTANCE.getPartUsage(),
                     SysmlPackage.eINSTANCE.getPartDefinition()
                     )),
-            Map.entry("Interconnection", List.of(
+            new ToolSectionDescription("Interconnection", List.of(
                     SysmlPackage.eINSTANCE.getInterfaceUsage(), 
                     SysmlPackage.eINSTANCE.getInterfaceDefinition(), 
                     SysmlPackage.eINSTANCE.getPortUsage(), 
                     SysmlPackage.eINSTANCE.getPortDefinition()
                     )),
-            Map.entry("Extension", List.of(
+            new ToolSectionDescription("Extension", List.of(
                     SysmlPackage.eINSTANCE.getMetadataDefinition() 
                     ))
             );
@@ -146,8 +146,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
         // create a node description provider for each element found in a section
         var nodeDescriptionProviderSwitch = new GeneralViewNodeDescriptionProviderSwitch(colorProvider);
-        TOOL_SECTIONS.forEach((sectionName, elements) -> {
-            elements.forEach(eClass -> {
+        TOOL_SECTIONS.forEach(sectionTool -> {
+            sectionTool.elements().forEach(eClass -> {
                 diagramElementDescriptionProviders.add(nodeDescriptionProviderSwitch.doSwitch(eClass));
             });
         });
@@ -181,8 +181,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
-        GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach((sectionName, elements) -> {
-            elements.forEach(element -> {
+        GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach(sectionTool -> {
+            sectionTool.elements().forEach(element -> {
                 var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(element));
                 acceptedNodeTypes.add(optNodeDescription.get());                
             });
@@ -208,26 +208,6 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         return this.diagramBuilderHelper.newDropTool()
                 .name("Drop from Explorer")
                 .body(dropElementFromExplorer.build())
-                .build();
-    }
-
-    private DiagramToolSection createElementsToolSection(IViewDiagramElementFinder cache) {
-        var nodeTools = new ArrayList<NodeTool>();
-
-        GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach((sectionName, elements) -> {
-            elements.forEach(element -> {
-                var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(element));
-                nodeTools.add(this.createNodeToolFromPackage(optNodeDescription.get(), element));                
-            });
-        });
-
-        nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(PackageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPackage()));
-
-        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
-
-        return this.diagramBuilderHelper.newDiagramToolSection()
-                .name("Create")
-                .nodeTools(nodeTools.toArray(NodeTool[]::new))
                 .build();
     }
 
@@ -298,13 +278,14 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     private DiagramToolSection[] createToolSections(IViewDiagramElementFinder cache) {
         var sections = new ArrayList<DiagramToolSection>();
         
-        TOOL_SECTIONS.forEach((sectionName, elements) -> {
+        TOOL_SECTIONS.forEach(sectionTool -> {
             DiagramToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newDiagramToolSection()
-                    .name(sectionName)
-                    .nodeTools(this.createElementsOfToolSection(cache, elements));
+                    .name(sectionTool.name())
+                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.elements()));
             sections.add(sectionBuilder.build());
         });
         
+        // add extra section for existing elements
         sections.add(this.addElementsToolSection(cache));
         
         return sections.toArray(DiagramToolSection[]::new);
