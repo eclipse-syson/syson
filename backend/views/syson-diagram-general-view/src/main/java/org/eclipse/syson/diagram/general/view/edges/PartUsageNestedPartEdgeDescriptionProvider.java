@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -56,8 +57,9 @@ public class PartUsageNestedPartEdgeDescriptionProvider extends AbstractEdgeDesc
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var nameGenerator = new GVDescriptionNameGenerator();
         var optEdgeDescription = cache.getEdgeDescription(NAME);
-        var optPartUsageNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
+        var optPartUsageNodeDescription = cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,138 +13,42 @@
 package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodePalette;
-import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.tools.CompartmentNodeToolProvider;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
-import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the Compartment node description.
- * 
- * @author arichard
+ * Used to create the Compartment node description inside the General View diagram.
+ *
+ * @author Jerome Gout
  */
-public class CompartmentNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
-
-    private final EClass eClass;
-
-    private final EReference eReference;
+public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
     public CompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider) {
-        super(colorProvider);
-        this.eClass = Objects.requireNonNull(eClass);
-        this.eReference = Objects.requireNonNull(eReference);
+        super(eClass, eReference, colorProvider, new GVDescriptionNameGenerator());
     }
 
     @Override
-    public NodeDescription create() {
-        return this.diagramBuilderHelper.newNodeDescription()
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().bottomGapExpression("10").build())
-                .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
-                .labelExpression(this.getCompartmentLabel())
-                .name(GVDescriptionNameGenerator.getCompartmentName(this.eClass, this.eReference))
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF)
-                .style(this.createCompartmentNodeStyle())
-                .userResizable(false)
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .build();
-    }
-
-    @Override
-    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optCompartmentNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getCompartmentName(this.eClass, this.eReference));
-        NodeDescription nodeDescription = optCompartmentNodeDescription.get();
-
-        GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
-            if (type.equals(this.eClass)) {
-                listItems.forEach(ref -> {
-                    if (ref.equals(this.eReference)) {
-                        var optCompartmentItemNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getCompartmentItemName(type, ref));
-                        nodeDescription.getChildrenDescriptions().add(optCompartmentItemNodeDescription.get());
-                    }
-                });
-            }
-        });
-
-        nodeDescription.setPalette(this.createCompartmentPalette(cache));
-    }
-
-    private String getCompartmentLabel() {
-        String defaultName = "";
-        EClassifier eType = this.eReference.getEType();
-        if (eType instanceof EClass eTypeClass && SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eTypeClass)) {
-            char[] charArray = eTypeClass.getName().toCharArray();
-            charArray[0] = Character.toLowerCase(charArray[0]);
-            defaultName = new String(charArray);
-            if (defaultName.endsWith("Usage")) {
-                defaultName = defaultName.substring(0, defaultName.length() - 5) + "s";
-            }
-        } else {
-            defaultName = eType.getName();
-        }
-        return defaultName;
-    }
-
-    private NodeStyleDescription createCompartmentNodeStyle() {
-        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
-                .borderRadius(0)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
-                .displayHeaderSeparator(false)
-                .fontSize(12)
-                .italic(true)
-                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(false)
-                .withHeader(true)
-                .build();
-    }
-
-    private NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
-
-        CompartmentNodeToolProvider compartmentNodeToolProvider = new CompartmentNodeToolProvider(this.eReference.getEType());
-
-        return this.diagramBuilderHelper.newNodePalette()
-                .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache))
-                .nodeTools(compartmentNodeToolProvider.create(cache))
-                .build();
-    }
-
-    private DropNodeTool createCompartmentDropFromDiagramTool(IViewDiagramElementFinder cache) {
+    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
+        var nameGenerator = new GVDescriptionNameGenerator();
 
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(ref -> {
-                if (this.eReference.getEType().equals(ref.getEType())) {
-                    var optCompartmentItemNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getCompartmentItemName(type, ref));
+                if (this.getReference().getEType().equals(ref.getEType())) {
+                    var optCompartmentItemNodeDescription = cache.getNodeDescription(nameGenerator.getCompartmentItemName(type, ref));
                     acceptedNodeTypes.add(optCompartmentItemNodeDescription.get());
                 }
             });
         });
 
-        var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
-
-        return this.diagramBuilderHelper.newDropNodeTool()
-                .name("Drop from Diagram")
-                .acceptedNodeTypes(acceptedNodeTypes.toArray(NodeDescription[]::new))
-                .body(dropElementFromDiagram.build())
-                .build();
+        return acceptedNodeTypes;
     }
 }

@@ -12,16 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.nodes;
 
-import java.util.Objects;
-
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -33,16 +30,12 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  *
  * @author arichard
  */
-public class FakeNodeDescriptionProvider implements INodeDescriptionProvider {
+public class FakeNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
     public static final String NAME = "GV Node Fake";
 
-    protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
-
-    protected final IColorProvider colorProvider;
-
     public FakeNodeDescriptionProvider(IColorProvider colorProvider) {
-        this.colorProvider = Objects.requireNonNull(colorProvider);
+        super(colorProvider);
     }
 
     @Override
@@ -63,13 +56,14 @@ public class FakeNodeDescriptionProvider implements INodeDescriptionProvider {
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        var nameGenerator = new GVDescriptionNameGenerator();
         var optFakeNodeDescription = cache.getNodeDescription(NAME);
         NodeDescription nodeDescription = optFakeNodeDescription.get();
         diagramDescription.getNodeDescriptions().add(nodeDescription);
-
+        
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(eReference -> {
-                var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getCompartmentName(type, eReference));
+                var optNodeDescription = cache.getNodeDescription(nameGenerator.getCompartmentName(type, eReference));
                 nodeDescription.getChildrenDescriptions().add(optNodeDescription.get());
             });
         });

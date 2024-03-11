@@ -32,6 +32,8 @@
 	</distributionManagement>
 
 	<modules>
+		<module>syson-diagram-common-view</module>
+		<module>syson-diagram-actionflow-view</module>
 		<module>syson-diagram-general-view</module>
 		<module>syson-diagram-interconnection-view</module>
 	</modules>

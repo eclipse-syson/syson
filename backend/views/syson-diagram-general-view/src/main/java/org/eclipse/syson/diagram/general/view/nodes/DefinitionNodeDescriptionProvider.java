@@ -26,22 +26,26 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.services.GeneralViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewNodeToolSectionSwitch;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
  * Node description provider for all SysMLv2 Definitions elements.
- * 
+ *
  * @author arichard
  */
 public class DefinitionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
     private final EClass eClass;
+
+    private final GVDescriptionNameGenerator nameGenerator = new GVDescriptionNameGenerator();
 
     public DefinitionNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
         super(colorProvider);
@@ -58,7 +62,7 @@ public class DefinitionNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .labelExpression("aql:self.getContainerLabel()")
-                .name(GVDescriptionNameGenerator.getNodeName(this.eClass))
+                .name(this.nameGenerator.getNodeName(this.eClass))
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .style(this.createDefinitionNodeStyle())
                 .userResizable(true)
@@ -68,32 +72,31 @@ public class DefinitionNodeDescriptionProvider extends AbstractNodeDescriptionPr
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        NodeDescription nodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(this.eClass)).get();
+        NodeDescription nodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass)).get();
         diagramDescription.getNodeDescriptions().add(nodeDescription);
 
         var allTargetNodeDescriptions = new ArrayList<NodeDescription>();
 
         GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
-            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(definition));
+            var optNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(definition));
             allTargetNodeDescriptions.add(optNodeDescription.get());
         });
 
         GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(usage));
+            var optNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(usage));
             allTargetNodeDescriptions.add(optNodeDescription.get());
         });
 
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
-                    var optNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getCompartmentName(type, eReference));
+                    var optNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference));
                     nodeDescription.getReusedChildNodeDescriptions().add(optNodeDescription.get());
                 });
             }
         });
 
-        var optPackageNodeDescription = cache.getNodeDescription(PackageNodeDescriptionProvider.NAME);
-
+        var optPackageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()));
         allTargetNodeDescriptions.add(optPackageNodeDescription.get());
 
         nodeDescription.setPalette(this.createNodePalette(nodeDescription, allTargetNodeDescriptions));
@@ -142,7 +145,7 @@ public class DefinitionNodeDescriptionProvider extends AbstractNodeDescriptionPr
     }
 
     private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
-        GeneralViewEdgeToolSwitch edgeToolSwitch = new GeneralViewEdgeToolSwitch(nodeDescription, allNodeDescriptions);
+        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, allNodeDescriptions, this.nameGenerator);
         edgeToolSwitch.doSwitch(this.eClass);
         return edgeToolSwitch.getEdgeTools();
     }

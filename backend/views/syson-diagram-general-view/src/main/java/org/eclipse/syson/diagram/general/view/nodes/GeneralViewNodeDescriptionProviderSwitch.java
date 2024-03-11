@@ -14,6 +14,8 @@ package org.eclipse.syson.diagram.general.view.nodes;
 
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.syson.sysml.ActionDefinition;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
@@ -45,6 +47,16 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
 
     public GeneralViewNodeDescriptionProviderSwitch(IColorProvider colorProvider) {
         this.colorProvider = colorProvider;
+    }
+    
+    @Override
+    public INodeDescriptionProvider caseActionDefinition(ActionDefinition object) {
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), colorProvider);
+    }
+    
+    @Override
+    public INodeDescriptionProvider caseActionUsage(ActionUsage object) {
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), colorProvider);
     }
     
     @Override

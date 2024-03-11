@@ -26,19 +26,22 @@ public class DescriptionNameGeneratorTest {
 
     @Test
     public void testGetCreationToolNameForUsageWithMatchingDefinition() {
-        String creationToolName = DescriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getAttributeUsage());
+        IDescriptionNameGenerator nameGenerator = new DescriptionNameGenerator("");
+        String creationToolName = nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getAttributeUsage());
         assertEquals("New Attribute", creationToolName);
     }
 
     @Test
     public void testGetCreationToolNameForUsageWithoutMatchingDefinition() {
-        String creationToolName = DescriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getConnectorAsUsage());
+        IDescriptionNameGenerator nameGenerator = new DescriptionNameGenerator("");
+        String creationToolName = nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getConnectorAsUsage());
         assertEquals("New Connector As Usage", creationToolName);
     }
 
     @Test
     public void testGetCreationToolNameForDefinition() {
-        String creationToolName = DescriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getAttributeDefinition());
+        IDescriptionNameGenerator nameGenerator = new DescriptionNameGenerator("");
+        String creationToolName = nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getAttributeDefinition());
         assertEquals("New Attribute Definition", creationToolName);
     }
 

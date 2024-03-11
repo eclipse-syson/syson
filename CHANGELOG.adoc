@@ -7,6 +7,9 @@
 - Refactor Node Descriptions Providers in General View: all Definitions and Usages Node Descriptions Providers (e.g. `PartDefinitionNodeDescriptionProvider` or `ItemUsageNodeDescriptionProvider`) have been replaced by two new Node Descriptions Providers: `DefinitionNodeDescriptionProvider` and `UsageNodeDescriptionProvider`.
 - Switch to Sirius Web 2024.1.5: `GeneralViewRegistryConfigurer` has been renamed to `GeneralViewDescriptionProvider` as it now implements `IEditingContextRepresentationDescriptionProvider` instead of `IRepresentationDescriptionRegistryConfigurer`. Same for `InterconnectionViewRegistryConfigurer`.
 `SysMLv2ObjectService` has been renamed into `SysMLv2LabelService` as it now implements `ILabelServiceDelegate` instead of `IObjectServiceDelegate`.
+- https://github.com/eclipse-syson/syson/issues/93[#93] [diagrams] Refactor diagrams code with creation of the diagram-common-view module to gather all cross diagram tools:
+  * `DescriptionNameGenerator` is no longer a static class with static methods.
+  There should be one name generator per diagram owning the diagram prefix used to prefix all descriptions for this diagram (for instance `GVDescriptionNameGenerator`)
 
 === Dependency update
 
@@ -48,6 +51,7 @@ They will be only accessible through the model browser dialog.
 
 - https://github.com/eclipse-syson/syson/issues/97[#97] [explorer] Add a filter allowing to hide membership elements in the Explorer view.
 - https://github.com/eclipse-syson/syson/issues/98[#98] [explorer] Add filters allowing to hide KerML/SysML libraries in the Explorer view.
+- https://github.com/eclipse-syson/syson/issues/93[#93] [diagrams] Add new Action Flow view diagram.
 
 == v2024.1.0
 
