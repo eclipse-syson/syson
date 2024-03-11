@@ -164,10 +164,10 @@ public class EmptyDiagramNodeDescriptionProvider implements INodeDescriptionProv
     private NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
         var sections = new ArrayList<NodeToolSection>();
         
-        GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach((sectionName, elements) -> {
+        GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach(sectionTool -> {
             NodeToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newNodeToolSection()
-                    .name(sectionName)
-                    .nodeTools(this.createElementsOfToolSection(cache, elements));
+                    .name(sectionTool.name())
+                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.elements()));
             sections.add(sectionBuilder.build());
         });
         
