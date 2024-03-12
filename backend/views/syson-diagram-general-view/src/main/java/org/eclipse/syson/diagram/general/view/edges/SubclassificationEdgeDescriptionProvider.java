@@ -45,6 +45,7 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractSubclassif
 
         cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).ifPresent(sourcesAndTargets::add);
         cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeDefinition())).ifPresent(sourcesAndTargets::add);
+        cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getConstraintDefinition())).ifPresent(sourcesAndTargets::add);
         cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getEnumerationDefinition())).ifPresent(sourcesAndTargets::add);
         cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getInterfaceDefinition())).ifPresent(sourcesAndTargets::add);
         cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition())).ifPresent(sourcesAndTargets::add);

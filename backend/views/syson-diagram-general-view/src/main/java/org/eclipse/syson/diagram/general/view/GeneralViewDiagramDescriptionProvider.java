@@ -64,6 +64,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     public static  final List<EClass> DEFINITIONS = List.of(
             SysmlPackage.eINSTANCE.getActionDefinition(),
             SysmlPackage.eINSTANCE.getAttributeDefinition(),
+            SysmlPackage.eINSTANCE.getConstraintDefinition(),
             SysmlPackage.eINSTANCE.getEnumerationDefinition(),
             SysmlPackage.eINSTANCE.getInterfaceDefinition(),
             SysmlPackage.eINSTANCE.getItemDefinition(),
@@ -75,6 +76,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     public static  final List<EClass> USAGES = List.of(
             SysmlPackage.eINSTANCE.getActionUsage(),
             SysmlPackage.eINSTANCE.getAttributeUsage(),
+            SysmlPackage.eINSTANCE.getConstraintUsage(),
             SysmlPackage.eINSTANCE.getInterfaceUsage(),
             SysmlPackage.eINSTANCE.getItemUsage(),
             SysmlPackage.eINSTANCE.getPartUsage(),
@@ -84,6 +86,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
             Map.entry(SysmlPackage.eINSTANCE.getAttributeDefinition(),   List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
+            Map.entry(SysmlPackage.eINSTANCE.getConstraintDefinition(),  List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getEnumerationDefinition(), List.of(SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue())),
             Map.entry(SysmlPackage.eINSTANCE.getInterfaceDefinition(),   List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getItemDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
@@ -92,6 +95,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAction(), SysmlPackage.eINSTANCE.getUsage_NestedItem())),
             Map.entry(SysmlPackage.eINSTANCE.getAttributeUsage(),        List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getConstraintUsage(),       List.of(SysmlPackage.eINSTANCE.getUsage_NestedConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getInterfaceUsage(),        List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
@@ -118,6 +122,10 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             new ToolSectionDescription("ActionFlow", List.of(
                     SysmlPackage.eINSTANCE.getActionUsage(),
                     SysmlPackage.eINSTANCE.getActionDefinition()
+                    )),
+            new ToolSectionDescription("Requirement", List.of(
+                    SysmlPackage.eINSTANCE.getConstraintUsage(),
+                    SysmlPackage.eINSTANCE.getConstraintDefinition()
                     )),
             new ToolSectionDescription("Extension", List.of(
                     SysmlPackage.eINSTANCE.getMetadataDefinition()
