@@ -65,6 +65,7 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(NAME);
         var optAttributeDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeDefinition()));
+        var optConstraintDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getConstraintDefinition()));
         var optEnumerationDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getEnumerationDefinition()));
         var optInterfaceDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getInterfaceDefinition()));
         var optItemDefinitionNodeDescription = cache.getNodeDescription(GVDescriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition()));
@@ -77,6 +78,8 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractEdgeDescri
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
         edgeDescription.getSourceNodeDescriptions().add(optAttributeDefinitionNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optAttributeDefinitionNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().add(optConstraintDefinitionNodeDescription.get());
+        edgeDescription.getTargetNodeDescriptions().add(optConstraintDefinitionNodeDescription.get());
         edgeDescription.getSourceNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
         edgeDescription.getTargetNodeDescriptions().add(optEnumerationDefinitionNodeDescription.get());
         edgeDescription.getSourceNodeDescriptions().add(optInterfaceDefinitionNodeDescription.get());

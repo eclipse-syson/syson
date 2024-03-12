@@ -16,6 +16,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Classifier;
+import org.eclipse.syson.sysml.ConstraintDefinition;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
@@ -84,6 +86,37 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("attribute")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
+        return label.toString();
+    }
+    
+    @Override
+    public String caseConstraintDefinition(ConstraintDefinition object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("constraint def")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
+        return label.toString();
+    }
+    
+    @Override
+    public String caseConstraintUsage(ConstraintUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("constraint")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
