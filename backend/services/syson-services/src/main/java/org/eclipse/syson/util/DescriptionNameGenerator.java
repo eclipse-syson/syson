@@ -64,7 +64,10 @@ public class DescriptionNameGenerator {
     public static String getCreationToolName(String prefix, EClassifier eClassifier) {
         String nameToParse = eClassifier.getName();
         if (eClassifier instanceof EClass eClass) {
-            if (SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass) && !SysmlPackage.eINSTANCE.getConnector().isSuperTypeOf(eClass)) {
+            if (SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass)
+                    && !SysmlPackage.eINSTANCE.getConnectorAsUsage().equals(eClass)
+                    && !SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().equals(eClass)
+                    && !SysmlPackage.eINSTANCE.getSuccessionAsUsage().equals(eClass)) {
                 if (eClass.getName().endsWith("Usage")) {
                     nameToParse = eClass.getName().substring(0, eClass.getName().length() - 5);
                 }

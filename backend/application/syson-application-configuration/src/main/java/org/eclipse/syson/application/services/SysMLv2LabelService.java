@@ -17,12 +17,16 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,7 +48,7 @@ public class SysMLv2LabelService implements ILabelServiceDelegate {
 
     @Override
     public boolean canHandle(Object object) {
-        return object instanceof Element;
+        return object instanceof Element || (object instanceof EClass eClass && SysmlPackage.eINSTANCE.getElement().isSuperTypeOf(eClass));
     }
 
     @Override
@@ -54,6 +58,12 @@ public class SysMLv2LabelService implements ILabelServiceDelegate {
             Adapter adapter = this.composedAdapterFactory.adapt(nsImport, IItemLabelProvider.class);
             if (adapter instanceof IItemLabelProvider labelProvider) {
                 label = labelProvider.getText(object);
+            }
+        } else if (object instanceof EClass eClass && SysmlPackage.eINSTANCE.getElement().isSuperTypeOf(eClass)) {
+            EObject dummyElement = EcoreUtil.create(eClass);
+            Adapter adapter = this.composedAdapterFactory.adapt(dummyElement, IItemLabelProvider.class);
+            if (adapter instanceof IItemLabelProvider labelProvider) {
+                label = labelProvider.getText(dummyElement);
             }
         } else {
             label = this.defaultLabelService.getLabel(object);

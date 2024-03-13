@@ -90,12 +90,13 @@ public class SysMLv2EditService implements IEditServiceDelegate {
         if (SysmlPackage.eNS_PREFIX.equals(ePackageName)) {
             List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
             String eClassName = this.emfKindService.getEClassName(kind);
-            Optional<EClass> eClass = getEClass(eClassName);
+            Optional<EClass> eClass = this.getEClass(eClassName);
             if (eClass.isPresent()) {
                 List<EClass> childrenCandidates = new GetChildCreationSwitch().doSwitch(eClass.get());
                 childrenCandidates.forEach(candidate -> {
                     List<String> iconURL = this.objectService.getImagePath(EcoreUtil.create(candidate));
-                    ChildCreationDescription childCreationDescription = new ChildCreationDescription(ID_PREFIX + candidate.getName(), candidate.getName(), iconURL);
+                    String label = this.objectService.getLabel(candidate);
+                    ChildCreationDescription childCreationDescription = new ChildCreationDescription(ID_PREFIX + candidate.getName(), label, iconURL);
                     childCreationDescriptions.add(childCreationDescription);
                 });
             }
