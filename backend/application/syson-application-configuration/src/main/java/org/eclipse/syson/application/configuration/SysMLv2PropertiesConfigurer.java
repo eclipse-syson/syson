@@ -25,6 +25,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -83,12 +84,15 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private final IInMemoryViewRegistry viewRegistry;
 
+    private final ILabelService labelService;
+
     public SysMLv2PropertiesConfigurer(ComposedAdapterFactory composedAdapterFactory, ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService,
-            IInMemoryViewRegistry viewRegistry) {
+            IInMemoryViewRegistry viewRegistry, ILabelService labelService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.viewRegistry = Objects.requireNonNull(viewRegistry);
         this.converter = Objects.requireNonNull(converter);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.labelService = Objects.requireNonNull(labelService);
     }
 
     @Override
@@ -110,7 +114,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         this.viewRegistry.register(view);
 
         // Convert the View-based FormDescription and register the result into the system
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService)), List.of(SysmlPackage.eINSTANCE));
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(),
+                List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService), this.labelService), List.of(SysmlPackage.eINSTANCE));
         IRepresentationDescription converted = this.converter.convert(viewFormDescription, List.of(), interpreter);
         if (converted instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
             formDescription.getPageDescriptions().forEach(registry::add);
@@ -150,7 +155,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(CORE_PROPERTIES);
-        group.setLabelExpression("aql:self.eClass().name + ' Properties'");
+        group.setLabelExpression("aql:self.eClass().getLabel() + ' Properties'");
         group.setSemanticCandidatesExpression(AQLConstants.AQL_SELF);
 
         group.getChildren().add(this.createCoreWidgets());
@@ -162,7 +167,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(ADVANCED_PROPERTIES);
-        group.setLabelExpression("aql:self.eClass().name + ' Properties'");
+        group.setLabelExpression("aql:self.eClass().getLabel() + ' Properties'");
         group.setSemanticCandidatesExpression(AQLConstants.AQL_SELF);
 
         group.getChildren().add(this.createAdvancedWidgets());
