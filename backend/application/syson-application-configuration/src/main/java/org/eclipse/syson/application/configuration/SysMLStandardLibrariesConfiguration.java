@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
@@ -55,19 +56,20 @@ public class SysMLStandardLibrariesConfiguration {
 
     public SysMLStandardLibrariesConfiguration() {
         Instant start = Instant.now();
-        librariesResourceSet = new ResourceSetImpl();
+        this.librariesResourceSet = new ResourceSetImpl();
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
         ePackageRegistry.put(SysmlPackage.eNS_URI, SysmlPackage.eINSTANCE);
-        librariesResourceSet.setPackageRegistry(ePackageRegistry);
-        loadResourcesFrom(librariesResourceSet, "kerml.libraries/", KERML_LIBRARY_SCHEME);
-        loadResourcesFrom(librariesResourceSet, "sysml.libraries/", SYSML_LIBRARY_SCHEME);
+        this.librariesResourceSet.setPackageRegistry(ePackageRegistry);
+        loadResourcesFrom(this.librariesResourceSet, "kerml.libraries/", KERML_LIBRARY_SCHEME);
+        loadResourcesFrom(this.librariesResourceSet, "sysml.libraries/", SYSML_LIBRARY_SCHEME);
+        EcoreUtil.resolveAll(this.librariesResourceSet);
         Instant finish = Instant.now();
         long timeElapsed = Duration.between(start, finish).toSeconds();
-        this.logger.info("SysML standard libraries initialization completed in {} s", timeElapsed);
+        this.logger.info("KerML & SysML standard libraries initialization completed in {} s", timeElapsed);
     }
 
     public ResourceSet getLibrariesResourceSet() {
-        return librariesResourceSet;
+        return this.librariesResourceSet;
     }
 
     private void loadResourcesFrom(ResourceSet resourceSet, String librariesDirectoryPath, String scheme) {
@@ -94,7 +96,11 @@ public class SysMLStandardLibrariesConfiguration {
                         resourceSet.getResources().remove(emfResource);
                     }
                 }
-                this.logger.info("Loading {} sysml standard library", currentLibraryName);
+                if (scheme.equals(KERML_LIBRARY_SCHEME)) {
+                    this.logger.info("Loading {} KerML standard library", currentLibraryName);
+                } else {
+                    this.logger.info("Loading {} SysML standard library", currentLibraryName);
+                }
             }
         } catch (IOException e) {
             this.logger.warn("An error occurred while accessing resources from sysml standard libraries directory: {}.", e.getMessage());
