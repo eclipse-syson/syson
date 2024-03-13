@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,6 +61,33 @@ public class ElementItemProvider
      */
     public ElementItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
+    }
+
+    /**
+     * Allow to hide KerML and SysML standard libraries elements from Reference Widget candidates.
+     * These candidates are still available through Reference Widget's "..." action.
+     *
+     * @generated NOT
+     */
+    @Override
+    protected ItemPropertyDescriptor createItemPropertyDescriptor(AdapterFactory adapterFactory, ResourceLocator resourceLocator, String displayName, String description, EStructuralFeature feature,
+            boolean isSettable, boolean multiLine, boolean sortChoices, Object staticImage, String category, String[] filterFlags) {
+        ItemPropertyDescriptor itemPropertyDescriptor = new ItemPropertyDescriptor(adapterFactory, resourceLocator, displayName, description, feature, isSettable, multiLine, sortChoices, staticImage, category, filterFlags) {
+            @Override
+            public Collection<?> getChoiceOfValues(Object object) {
+                Collection<?> choiceOfValues = super.getChoiceOfValues(object);
+                if (object instanceof Element element) {
+                    return choiceOfValues.stream().filter(candidate -> {
+                        if (candidate instanceof Element elt && !(elt.eResource().getURI().toString().startsWith("kermllibrary://") || elt.eResource().getURI().toString().startsWith("sysmllibrary://"))) {
+                            return true;
+                        }
+                        return false;
+                    }).toList();
+                }
+                return choiceOfValues;
+            }
+        };
+        return itemPropertyDescriptor;
     }
 
     /**
