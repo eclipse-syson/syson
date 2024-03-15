@@ -5,7 +5,7 @@
 In General View diagram (and maybe other diagrams existing in the future), we need to perform direct edit (e.g. renaming an element) on some diagram elements (i.e. nodes and edges).
 
 Change the name of a SysML element is the easiest case while performing a direct edit.
-But there are many other direct edit much moe complex than simply change the name of an element.
+But there are many other direct edit much more complex than simply change the name of an element.
 
 For example, the General View diagram displays `PartUsage` as container node.
 These container node contains a compartment for its attributes (i.e. `AttributeUsage`).
