@@ -4,7 +4,7 @@
 
 Imports and namespaces are not handled in SysON.
 Today, even if you can create those elements from the Explorer view, you can also reference an element that is outside of the scope without any error.
-For exemple, you have:
+For example, you have:
 
 * a PartDefinition in a Package P1
 * a PartUsage in a Package P2.
@@ -46,7 +46,7 @@ When referencing an outside element, and its name is used by severals elements i
 
 1. If an element with this name exists in a standard library, then this element will be used for the import (e.g. the String type).
 2. If an element with this name does not exist in a standard library, then the first element found in models with this name will be used.
-3. If any element with this name exists, then a new element will be created.
+3. If no element with this name exists, then a new element will be created.
 
 === Unreferencing an outside element
 
