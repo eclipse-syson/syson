@@ -44,19 +44,22 @@ public abstract class AbstractSubclassificationEdgeDescriptionProvider extends A
 
     /**
      * Implementers should provide the actual name of this {@link EdgeDescription}.
-     * @return
+     *
+     * @return the name of the edge description
      */
     protected abstract String getName();
 
     /**
-     * implementers should provide the list of {@link NodeDescription} that can be a source of this {@link EdgeDescription}.
+     * Implementers should provide the list of {@link NodeDescription} that can be a source of this {@link EdgeDescription}.
+     *
      * @param cache the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that can be a source of this {@link EdgeDescription}.
      */
     protected abstract List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache);
 
     /**
-     * implementers should provide the list of {@link NodeDescription} that can be a target of this {@link EdgeDescription}.
+     * Implementers should provide the list of {@link NodeDescription} that can be a target of this {@link EdgeDescription}.
+     *
      * @param cache the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that can be a target of this {@link EdgeDescription}.
      */
@@ -83,8 +86,8 @@ public abstract class AbstractSubclassificationEdgeDescriptionProvider extends A
         var optEdgeDescription = cache.getEdgeDescription(this.getName());
         EdgeDescription edgeDescription = optEdgeDescription.get();
 
-        this.getSourceNodes(cache).forEach(edgeDescription.getSourceNodeDescriptions()::add);
-        this.getTargetNodes(cache).forEach(edgeDescription.getTargetNodeDescriptions()::add);
+        edgeDescription.getSourceNodeDescriptions().addAll(this.getSourceNodes(cache));
+        edgeDescription.getTargetNodeDescriptions().addAll(this.getTargetNodes(cache));
 
         edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
     }

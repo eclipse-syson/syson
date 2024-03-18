@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewCreateService;
 import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewEdgeService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
+import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +43,8 @@ public class ActionFlowViewJavaServiceProvider implements IJavaServiceProvider {
                     DeleteService.class,
                     ActionFlowViewEdgeService.class,
                     ViewLabelService.class,
-                    UtilService.class);
+                    UtilService.class,
+                    ViewToolService.class);
         }
         return List.of();
     }

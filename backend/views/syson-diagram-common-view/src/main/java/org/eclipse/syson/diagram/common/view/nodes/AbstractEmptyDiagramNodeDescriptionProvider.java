@@ -47,8 +47,18 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
         this.nameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
+    /**
+     * Implementers should provide the actual name of this {@link NodeDescription}.
+     *
+     * @return the name of the node.
+     */
     protected abstract String getName();
 
+    /**
+     * Implementers should provide the list of tool section descriptions used inside this {@link NodeDescription}.
+     *
+     * @return the list of tool section descriptions
+     */
     protected abstract List<ToolSectionDescription> getToolSections();
 
     @Override

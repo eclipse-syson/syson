@@ -125,13 +125,12 @@ public class RootPartUsageNodeDescriptionProvider implements INodeDescriptionPro
     private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var setValue = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression(eClass.getName());
+        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.elementInitializer()");
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
-                .children(setValue.build());
+                .children(callElementInitializerService.build());
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))

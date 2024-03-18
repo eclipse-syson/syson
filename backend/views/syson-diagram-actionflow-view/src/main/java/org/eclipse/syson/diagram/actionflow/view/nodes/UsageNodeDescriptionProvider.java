@@ -14,145 +14,56 @@ package org.eclipse.syson.diagram.actionflow.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodePalette;
-import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewNodeToolSectionSwitch;
-import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
-import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Node description provider for all SysMLv2 Usage elements.
+ * Node description provider for all SysMLv2 Usage elements in the Action Flow View diagram.
  *
  * @author arichard
  */
-public class UsageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
-
-    private final EClass eClass;
-
-    private final AFVDescriptionNameGenerator nameGenerator = new AFVDescriptionNameGenerator();
+public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionProvider {
 
     public UsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
-        super(colorProvider);
-        this.eClass = Objects.requireNonNull(eClass);
+        super(eClass, colorProvider, new AFVDescriptionNameGenerator());
     }
 
     @Override
-    public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
-        return this.diagramBuilderHelper.newNodeDescription()
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().areChildNodesDraggableExpression("false").build())
-                .collapsible(true)
-                .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
-                .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(domainType)
-                .labelExpression("aql:self.getContainerLabel()")
-                .name(this.nameGenerator.getNodeName(this.eClass))
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
-                .style(this.createUsageNodeStyle())
-                .userResizable(true)
-                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
-                .build();
-    }
+    protected List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
+        var reusedChildren = new ArrayList<NodeDescription>();
 
-    @Override
-    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        NodeDescription nodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass)).get();
-        diagramDescription.getNodeDescriptions().add(nodeDescription);
-
-        var allTargetNodeDescriptions = new ArrayList<NodeDescription>();
-
-        ActionFlowViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
-            var optNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(definition));
-            allTargetNodeDescriptions.add(optNodeDescription.get());
-        });
-
-        ActionFlowViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            var optNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(usage));
-            allTargetNodeDescriptions.add(optNodeDescription.get());
-        });
-
-        // for each reference specified retrieve the compartment node associated and add it as a reused child
-        var references = ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.get(this.eClass);
-        if (references != null) {
-            references.forEach(eReference -> {
-                cache.getNodeDescription(this.nameGenerator.getCompartmentName(this.eClass, eReference)).ifPresent(compartmentNode -> {
-                    nodeDescription.getReusedChildNodeDescriptions().add(compartmentNode);
+        ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            if (type.equals(this.eClass)) {
+                listItems.forEach(eReference -> {
+                    cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
                 });
-            });
-        }
-
-        var optPackageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()));
-        allTargetNodeDescriptions.add(optPackageNodeDescription.get());
-
-        nodeDescription.setPalette(this.createNodePalette(nodeDescription, allTargetNodeDescriptions));
+            }
+        });
+        return reusedChildren;
     }
 
-    private NodeStyleDescription createUsageNodeStyle() {
-        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
-                .borderRadius(10)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
-                .displayHeaderSeparator(true)
-                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
-                .withHeader(true)
-                .build();
+    @Override
+    protected List<NodeDescription> getAllNodeDescriptions(IViewDiagramElementFinder cache) {
+        var allNodes = new ArrayList<NodeDescription>();
+
+        ActionFlowViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(allNodes::add));
+        ActionFlowViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(allNodes::add));
+        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
+        return allNodes;
     }
 
-    private NodePalette createNodePalette(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
-        var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.deleteFromModel()");
-
-        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
-                .name("Delete from Model")
-                .body(changeContext.build());
-
-        var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
-
-        var editTool = this.diagramBuilderHelper.newLabelEditTool()
-                .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
-                .body(callEditService.build());
-
-        var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.addAll(this.getEdgeTools(nodeDescription, allNodeDescriptions));
-
-        var toolSections = new ArrayList<NodeToolSection>();
-        toolSections.addAll(this.getToolSections(nodeDescription, allNodeDescriptions));
-
-        return this.diagramBuilderHelper.newNodePalette()
-                .deleteTool(deleteTool.build())
-                .labelEditTool(editTool.build())
-                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
-                .toolSections(toolSections.toArray(NodeToolSection[]::new))
-                .build();
-    }
-
-    private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
-        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, allNodeDescriptions, this.nameGenerator);
-        edgeToolSwitch.doSwitch(this.eClass);
-        return edgeToolSwitch.getEdgeTools();
-    }
-
-    private List<NodeToolSection> getToolSections(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
-        ActionFlowViewNodeToolSectionSwitch toolSectionSwitch = new ActionFlowViewNodeToolSectionSwitch(nodeDescription, allNodeDescriptions);
+    @Override
+    protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
+        ActionFlowViewNodeToolSectionSwitch toolSectionSwitch = new ActionFlowViewNodeToolSectionSwitch(nodeDescription, this.getAllNodeDescriptions(cache));
         toolSectionSwitch.doSwitch(this.eClass);
         return toolSectionSwitch.getNodeToolSections();
     }

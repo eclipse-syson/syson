@@ -38,12 +38,11 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
-        var nameGenerator = new AFVDescriptionNameGenerator();
 
         ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(ref -> {
-                if (this.getReference().getEType().equals(ref.getEType())) {
-                    var optCompartmentItemNodeDescription = cache.getNodeDescription(nameGenerator.getCompartmentItemName(type, ref));
+                if (this.eReference.getEType().equals(ref.getEType())) {
+                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(type, ref));
                     acceptedNodeTypes.add(optCompartmentItemNodeDescription.get());
                 }
             });
