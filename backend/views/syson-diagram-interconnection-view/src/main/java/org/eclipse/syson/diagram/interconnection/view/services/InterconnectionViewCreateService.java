@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.services;
 
+import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
@@ -28,11 +30,12 @@ import org.eclipse.syson.sysml.SysmlFactory;
  *
  * @author arichard
  */
-public class InterconnectionViewCreateService {
+public class InterconnectionViewCreateService extends ViewCreateService {
 
     private final UtilService utilService;
 
-    public InterconnectionViewCreateService() {
+    public InterconnectionViewCreateService(IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
+        super(viewRepresentationDescriptionSearchService);
         this.utilService = new UtilService();
     }
 

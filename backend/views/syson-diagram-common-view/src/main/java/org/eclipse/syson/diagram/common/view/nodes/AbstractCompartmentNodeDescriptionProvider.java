@@ -40,11 +40,11 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractCompartmentNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    private final EClass eClass;
+    protected final EClass eClass;
 
-    private final EReference eReference;
+    protected final EReference eReference;
 
-    private final IDescriptionNameGenerator nameGenerator;
+    protected final IDescriptionNameGenerator nameGenerator;
 
     public AbstractCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
@@ -53,6 +53,12 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
         this.nameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
+    /**
+     * Implementers should provide the list of {@link NodeDescription} that can be dropped inside this compartment {@link NodeDescription}.
+     *
+     * @param cache the cache used to retrieve node descriptions.
+     * @return the list of {@link NodeDescription} that can be dropped inside this compartment.
+     */
     protected abstract List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache);
 
     @Override
@@ -63,7 +69,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .labelExpression(this.getCompartmentLabel())
-                .name(this.nameGenerator.getCompartmentName(this.eClass, this.getReference()))
+                .name(this.nameGenerator.getCompartmentName(this.eClass, this.eReference))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(false)
@@ -73,10 +79,10 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optCompartmentNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentName(this.eClass, this.getReference()));
+        var optCompartmentNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentName(this.eClass, this.eReference));
         NodeDescription nodeDescription = optCompartmentNodeDescription.get();
 
-        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(this.eClass, this.getReference()))
+        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(this.eClass, this.eReference))
             .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
 
         nodeDescription.setPalette(this.createCompartmentPalette(cache));
@@ -84,7 +90,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     private String getCompartmentLabel() {
         String defaultName = "";
-        EClassifier eType = this.getReference().getEType();
+        EClassifier eType = this.eReference.getEType();
         if (eType instanceof EClass eTypeClass && SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eTypeClass)) {
             char[] charArray = eTypeClass.getName().toCharArray();
             charArray[0] = Character.toLowerCase(charArray[0]);
@@ -113,7 +119,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     private NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
-        CompartmentNodeToolProvider compartmentNodeToolProvider = new CompartmentNodeToolProvider(this.getReference().getEType(), this.nameGenerator);
+        CompartmentNodeToolProvider compartmentNodeToolProvider = new CompartmentNodeToolProvider(this.eReference.getEType(), this.nameGenerator);
 
         return this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache))
@@ -130,9 +136,5 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .acceptedNodeTypes(this.getDroppableNodes(cache).toArray(NodeDescription[]::new))
                 .body(dropElementFromDiagram.build())
                 .build();
-    }
-
-    public EReference getReference() {
-        return eReference;
     }
 }

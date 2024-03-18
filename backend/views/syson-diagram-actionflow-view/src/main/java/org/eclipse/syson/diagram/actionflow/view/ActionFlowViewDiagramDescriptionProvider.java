@@ -164,6 +164,9 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
             sections.add(sectionBuilder.build());
         });
 
+        // add extra section for existing elements
+        sections.add(this.addElementsToolSection(cache));
+
         return sections.toArray(DiagramToolSection[]::new);
     }
 
@@ -220,6 +223,26 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
                 .name(this.nameGenerator.getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
+                .build();
+    }
+
+    private DiagramToolSection addElementsToolSection(IViewDiagramElementFinder cache) {
+        return this.diagramBuilderHelper.newDiagramToolSection()
+                .name("Add")
+                .nodeTools(this.addExistingElementsTool())
+                .build();
+    }
+
+    private NodeTool addExistingElementsTool() {
+        var builder = this.diagramBuilderHelper.newNodeTool();
+
+        var addExistingelements = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes)");
+
+        return builder
+                .name("Add existing elements")
+                .iconURLsExpression("/icons/AddExistingElements.svg")
+                .body(addExistingelements.build())
                 .build();
     }
 }

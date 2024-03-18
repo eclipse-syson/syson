@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.services;
+package org.eclipse.syson.diagram.common.view.services;
 
 import java.util.Map;
 import java.util.Objects;
@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -35,15 +34,15 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 
 /**
- * Tool-related Java services used by the {@link GeneralViewDiagramDescriptionProvider}.
+ * Tool-related Java services used by all diagrams.
  *
  * @author arichard
  */
-public class GeneralViewToolService extends ToolService {
+public class ViewToolService extends ToolService {
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
-    public GeneralViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
+    public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
         super(objectService, representationDescriptionSearchService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
     }
@@ -80,14 +79,14 @@ public class GeneralViewToolService extends ToolService {
                 .forEach(member -> {
                     this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes);
                     if (member instanceof PartDefinition partDef) {
-                        Node fakeNode = createFakeNode(partDef, selectedNode, diagramContext, representationDescription, convertedNodes);
-                        addExistingSubElements(partDef, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
+                        Node fakeNode = this.createFakeNode(partDef, selectedNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(partDef, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
                     } else if (member instanceof PartUsage partUsage) {
-                        Node fakeNode = createFakeNode(partUsage, selectedNode, diagramContext, representationDescription, convertedNodes);
-                        addExistingSubElements(partUsage, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
+                        Node fakeNode = this.createFakeNode(partUsage, selectedNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(partUsage, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
                     } else if (member instanceof Package subPkg) {
-                        Node fakeNode = createFakeNode(subPkg, selectedNode, diagramContext, representationDescription, convertedNodes);
-                        addExistingSubElements(subPkg, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                        Node fakeNode = this.createFakeNode(subPkg, selectedNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(subPkg, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
                     }
                 });
         return pkg;
@@ -125,8 +124,8 @@ public class GeneralViewToolService extends ToolService {
                 .filter(subPartUsage -> !this.isPresent(subPartUsage, this.getChildNodes(diagramContext, parentNode)))
                 .forEach(subPartUsage -> {
                     this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                    Node fakeNode = createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
-                    addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
+                    Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
+                    this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
                 });
         return partUsage;
     }
@@ -164,8 +163,8 @@ public class GeneralViewToolService extends ToolService {
                 .forEach(member -> {
                     this.createView(member, editingContext, diagramContext, parentNode, convertedNodes);
                     if (member instanceof PartUsage subPartUsage) {
-                        Node fakeNode = createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
-                        addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
+                        Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
                     }
                 });
         return partDef;
@@ -205,14 +204,14 @@ public class GeneralViewToolService extends ToolService {
                 .forEach(member -> {
                     this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes);
                     if (member instanceof PartDefinition partDef) {
-                        Node fakeNode = createFakeNode(partDef, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                        addExistingSubElements(partDef, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                        Node fakeNode = this.createFakeNode(partDef, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                        this.addExistingSubElements(partDef, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
                     } else if (member instanceof PartUsage partUsage) {
-                        Node fakeNode = createFakeNode(partUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                        addExistingSubElements(partUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                        Node fakeNode = this.createFakeNode(partUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                        this.addExistingSubElements(partUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
                     } else if (member instanceof Package subPkg) {
-                        Node fakeNode = createFakeNode(subPkg, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                        addExistingSubElements(subPkg, editingContext, diagramContext, fakeNode, diagramDescription, convertedNodes);
+                        Node fakeNode = this.createFakeNode(subPkg, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                        this.addExistingSubElements(subPkg, editingContext, diagramContext, fakeNode, diagramDescription, convertedNodes);
                     }
                 });
         return pkg;
@@ -225,8 +224,8 @@ public class GeneralViewToolService extends ToolService {
         nestedParts.stream()
                 .forEach(subPartUsage -> {
                     this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                    Node fakeNode = createFakeNode(subPartUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                    addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+                    Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
+                    this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
                 });
         return partUsage;
     }
@@ -239,8 +238,8 @@ public class GeneralViewToolService extends ToolService {
                 .forEach(member -> {
                     this.createView(member, editingContext, diagramContext, parentNode, convertedNodes);
                     if (member instanceof PartUsage subPartUsage) {
-                        Node fakeNode = createFakeNode(subPartUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                        addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+                        Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
+                        this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
                     }
                 });
         return partDef;
