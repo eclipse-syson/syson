@@ -46,6 +46,7 @@ Also allow the creation of elements with their containing Membership in one clic
 - https://github.com/eclipse-syson/syson/issues/105[#105] [details] In the Details view, display the standard libraries in Reference Widget's model browser dialog.
 Also remove the standard libraries elements in Reference Widget's candidates (when you click in the background part of the widget) for now as it leads to performance issues.
 They will be only accessible through the model browser dialog.
+- https://github.com/eclipse-syson/syson/issues/112[#112] [services] Improves `getAllReachable()` util service, allowing to reduce the time being spent to retrieve the elements of a given type.
 
 === New features
 

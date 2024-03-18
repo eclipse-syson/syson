@@ -70,7 +70,7 @@ public abstract class AbstractSubsettingEdgeDescriptionProvider extends Abstract
                 .isDomainBasedEdge(true)
                 .labelExpression("")
                 .name(this.getName())
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ", false)")
+                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
