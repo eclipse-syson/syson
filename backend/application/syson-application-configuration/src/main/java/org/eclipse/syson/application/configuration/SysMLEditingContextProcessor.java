@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.syson.util.SysONEContentAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -50,8 +51,10 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        Instant start = Instant.now();
         if (editingContext instanceof IEMFEditingContext siriusWebEditingContext) {
+            siriusWebEditingContext.getDomain().getResourceSet().eAdapters().add(new SysONEContentAdapter());
+
+            Instant start = Instant.now();
             ResourceSet sourceResourceSet = this.standardLibraries.getLibrariesResourceSet();
             ResourceSet targetResourceSet = siriusWebEditingContext.getDomain().getResourceSet();
             sourceResourceSet.getResources().forEach(sourceResource -> {
@@ -72,10 +75,10 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
                     }
                 }
             });
+            Instant finish = Instant.now();
+            long timeElapsed = Duration.between(start, finish).toMillis();
+            this.logger.info("Copy all standard libraries in the editing context in {} ms", timeElapsed);
         }
-        Instant finish = Instant.now();
-        long timeElapsed = Duration.between(start, finish).toMillis();
-        this.logger.info("Copy all standard libraries in the editing context in {} ms", timeElapsed);
     }
 
     @Override

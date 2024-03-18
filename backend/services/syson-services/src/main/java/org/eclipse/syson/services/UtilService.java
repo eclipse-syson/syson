@@ -18,24 +18,21 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
-import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.syson.sysml.Definition;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.util.SysONEContentAdapter;
 
 /**
  * Miscellaneous Java services used by the SysON views.
@@ -87,23 +84,8 @@ public class UtilService {
      * @return a list of reachable object
      */
     public List<EObject> getAllReachable(EObject eObject, String type) {
-        return this.getAllReachable(eObject, type, true);
-    }
-
-    /**
-     * Get all reachable elements of a type in the {@link ResourceSet} of the given {@link EObject}.
-     *
-     * @param eObject
-     *            the {@link EObject} stored in a {@link ResourceSet}
-     * @param type
-     *            the searched type (either simple or qualified named of the EClass ("Package" vs "sysml::Package")
-     * @param withSubType
-     *            <code>true</code> to include any element with a compatible type, <code>false</code> otherwise
-     * @return a list of reachable object
-     */
-    public List<EObject> getAllReachable(EObject eObject, String type, boolean withSubType) {
         EClass eClass = SysMLMetamodelHelper.toEClass(type);
-        return this.getAllReachable(eObject, eClass, withSubType);
+        return this.getAllReachable(eObject, eClass);
     }
 
     /**
@@ -117,55 +99,11 @@ public class UtilService {
      * @return a list of reachable object
      */
     public List<EObject> getAllReachable(EObject eObject, EClass eClass) {
-        return this.getAllReachable(eObject, eClass, true);
-    }
-
-    /**
-     * Get all reachable elements of the type given by the {@link EClass} in the {@link ResourceSet} of the given
-     * {@link EObject}.
-     *
-     * @param eObject
-     *            the {@link EObject} stored in a {@link ResourceSet}
-     * @param eClass
-     *            the searched {@link EClass}
-     * @param withSubType
-     *            <code>true</code> to include any element with a compatible type, <code>false</code> otherwise
-     * @return a list of reachable object
-     */
-    public List<EObject> getAllReachable(EObject eObject, EClass eClass, boolean withSubType) {
-        ResourceSet rs = eObject.eResource().getResourceSet();
-        if (rs != null && eClass != null) {
-            final Predicate<Notifier> predicate;
-            if (withSubType) {
-                predicate = e -> e instanceof EObject && eClass.isInstance(e);
-            } else {
-                predicate = e -> e instanceof EObject && eClass == ((EObject) e).eClass();
-            }
-
-            return this.getSysMLv2Resources(rs.getResources())
-                    .flatMap(r -> r.getContents().stream())
-                    .flatMap(rootElt -> this.getAllElementsOfType(rootElt, predicate).stream())
-                    .toList();
-        } else {
-            return List.of();
+        Adapter adapter = EcoreUtil.getAdapter(eObject.eAdapters(), SysONEContentAdapter.class);
+        if (adapter instanceof SysONEContentAdapter cacheAdapter) {
+            return cacheAdapter.getCache().get(eClass);
         }
-    }
-
-    private List<EObject> getAllElementsOfType(EObject element, Predicate<Notifier> predicate) {
-        List<EObject> allElementsOfType = new ArrayList<>();
-        if (predicate.test(element)) {
-            allElementsOfType.add(element);
-        }
-        if (element instanceof Package pkg) {
-            pkg.getOwnedElement().forEach(child -> allElementsOfType.addAll(this.getAllElementsOfType(child, predicate)));
-        } else if (element instanceof Definition definition) {
-            definition.getOwnedRelationship().forEach(child -> allElementsOfType.addAll(this.getAllElementsOfType(child, predicate)));
-        } else if (element instanceof Usage usage) {
-            usage.getOwnedRelationship().forEach(child -> allElementsOfType.addAll(this.getAllElementsOfType(child, predicate)));
-        } else if (element instanceof Membership membership) {
-            membership.getOwnedRelatedElement().forEach(child -> allElementsOfType.addAll(this.getAllElementsOfType(child, predicate)));
-        }
-        return allElementsOfType;
+        return List.of();
     }
 
     /**
@@ -331,10 +269,6 @@ public class UtilService {
             }
         }
         return matches;
-    }
-
-    private Stream<Resource> getSysMLv2Resources(EList<Resource> resources) {
-        return resources.stream().filter(r -> !r.getContents().isEmpty() && r.getContents().get(0) instanceof Element);
     }
 
     /**
