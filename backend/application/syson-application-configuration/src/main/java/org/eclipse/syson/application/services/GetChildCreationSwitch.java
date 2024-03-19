@@ -17,10 +17,16 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.InterfaceUsage;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
@@ -38,6 +44,23 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     }
 
     @Override
+    public List<EClass> caseActionUsage(ActionUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getActionUsage());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getItemUsage());
+        childrenCandidates.addAll(this.caseUsage(object));
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> caseAttributeUsage(AttributeUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
+        childrenCandidates.addAll(this.caseUsage(object));
+        return childrenCandidates;
+    }
+
+    @Override
     public List<EClass> caseDefinition(Definition object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         SysmlPackage.eINSTANCE.getEClassifiers().stream()
@@ -51,6 +74,22 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
                 childrenCandidates.add(eClass);
             });
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubclassification());
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> caseInterfaceUsage(InterfaceUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getPortUsage());
+        childrenCandidates.addAll(this.caseUsage(object));
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> caseItemUsage(ItemUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
+        childrenCandidates.addAll(this.caseUsage(object));
         return childrenCandidates;
     }
 
@@ -95,8 +134,26 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     }
 
     @Override
+    public List<EClass> casePartUsage(PartUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getPartUsage());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getPortUsage());
+        childrenCandidates.addAll(this.caseUsage(object));
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> casePortUsage(PortUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
+        childrenCandidates.addAll(this.caseUsage(object));
+        return childrenCandidates;
+    }
+
+    @Override
     public List<EClass> caseUsage(Usage object) {
         List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getAttributeUsage());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureTyping());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubsetting());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getRedefinition());
