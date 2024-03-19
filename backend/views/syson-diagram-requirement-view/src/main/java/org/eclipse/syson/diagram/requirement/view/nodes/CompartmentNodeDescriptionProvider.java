@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.actionflow.view.nodes;
+package org.eclipse.syson.diagram.requirement.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,26 +20,26 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
-import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.requirement.view.RVDescriptionNameGenerator;
+import org.eclipse.syson.diagram.requirement.view.RequirementViewDiagramDescriptionProvider;
 
 /**
- * Used to create the Compartment node description inside the Action Flow View diagram.
+ * Used to create the Compartment node description inside the Requirement View diagram.
  *
  * @author Jerome Gout
  */
 public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
     public CompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider) {
-        super(eClass, eReference, colorProvider, new AFVDescriptionNameGenerator());
+        super(eClass, eReference, colorProvider, new RVDescriptionNameGenerator());
     }
 
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
-        ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+        RequirementViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(ref -> {
                 if (this.eReference.getEType().equals(ref.getEType())) {
                     var optCompartmentItemNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(type, ref));

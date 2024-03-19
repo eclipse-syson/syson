@@ -52,7 +52,9 @@ They will be only accessible through the model browser dialog.
 
 - https://github.com/eclipse-syson/syson/issues/97[#97] [explorer] Add a filter allowing to hide membership elements in the Explorer view.
 - https://github.com/eclipse-syson/syson/issues/98[#98] [explorer] Add filters allowing to hide KerML/SysML libraries in the Explorer view.
-- https://github.com/eclipse-syson/syson/issues/93[#93] [diagrams] Add new Action Flow view diagram.
+- https://github.com/eclipse-syson/syson/issues/93[#93] [diagrams] Add the following new diagrams:
+  * Action Flow view 
+  * Requirement view
 
 == v2024.1.0
 
