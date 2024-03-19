@@ -97,7 +97,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(this.subsetting(object));
         return label.toString();
     }
-    
+
     @Override
     public String caseAttributeDefinition(AttributeDefinition object) {
         StringBuilder label = new StringBuilder();
@@ -128,7 +128,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(this.subsetting(object));
         return label.toString();
     }
-    
+
     @Override
     public String caseConstraintDefinition(ConstraintDefinition object) {
         StringBuilder label = new StringBuilder();
@@ -142,7 +142,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(this.subclassification(object));
         return label.toString();
     }
-    
+
     @Override
     public String caseConstraintUsage(ConstraintUsage object) {
         StringBuilder label = new StringBuilder();
@@ -316,6 +316,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append("port")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
+            .append(this.caseElement(object))
             .append(this.multiplicityRange(object))
             .append(this.featureTyping(object))
             .append(this.featureTyping(object))
