@@ -66,10 +66,12 @@ public class ViewToolService extends ToolService {
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
+     * @param recursive
+     *            whether the tool should add existing elements recursively or not.
      * @return the input {@link Package}.
      */
     public Package addExistingElements(Package pkg, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
         var members = pkg.getOwnedMember();
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
@@ -78,13 +80,13 @@ public class ViewToolService extends ToolService {
                 .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, selectedNode)))
                 .forEach(member -> {
                     this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes);
-                    if (member instanceof PartDefinition partDef) {
+                    if (recursive && member instanceof PartDefinition partDef) {
                         Node fakeNode = this.createFakeNode(partDef, selectedNode, diagramContext, representationDescription, convertedNodes);
                         this.addExistingSubElements(partDef, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
-                    } else if (member instanceof PartUsage partUsage) {
+                    } else if (recursive && member instanceof PartUsage partUsage) {
                         Node fakeNode = this.createFakeNode(partUsage, selectedNode, diagramContext, representationDescription, convertedNodes);
                         this.addExistingSubElements(partUsage, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
-                    } else if (member instanceof Package subPkg) {
+                    } else if (recursive && member instanceof Package subPkg) {
                         Node fakeNode = this.createFakeNode(subPkg, selectedNode, diagramContext, representationDescription, convertedNodes);
                         this.addExistingSubElements(subPkg, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
                     }
@@ -111,10 +113,12 @@ public class ViewToolService extends ToolService {
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
+     * @param recursive
+     *            whether the tool should add existing elements recursively or not.
      * @return the input {@link PartUsage}.
      */
     public PartUsage addExistingElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
         var nestedParts = partUsage.getNestedPart();
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
@@ -124,8 +128,10 @@ public class ViewToolService extends ToolService {
                 .filter(subPartUsage -> !this.isPresent(subPartUsage, this.getChildNodes(diagramContext, parentNode)))
                 .forEach(subPartUsage -> {
                     this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                    Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
-                    this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
+                    if (recursive) {
+                        Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
+                    }
                 });
         return partUsage;
     }
@@ -149,10 +155,12 @@ public class ViewToolService extends ToolService {
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
+     * @param recursive
+     *            whether the tool should add existing elements recursively or not.
      * @return the input {@link PartDefinition}.
      */
     public PartDefinition addExistingElements(PartDefinition partDef, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
         var nestedItems = partDef.getOwnedItem();
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
@@ -162,7 +170,7 @@ public class ViewToolService extends ToolService {
                 .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, parentNode)))
                 .forEach(member -> {
                     this.createView(member, editingContext, diagramContext, parentNode, convertedNodes);
-                    if (member instanceof PartUsage subPartUsage) {
+                    if (recursive && member instanceof PartUsage subPartUsage) {
                         Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
                         this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
                     }

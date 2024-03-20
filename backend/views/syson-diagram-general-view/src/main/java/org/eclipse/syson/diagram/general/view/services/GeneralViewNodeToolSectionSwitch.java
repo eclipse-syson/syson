@@ -142,7 +142,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name(this.nameGenerator.getCreationToolName("New nested ", eClass))
+                .name(this.nameGenerator.getCreationToolName("New ", eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
@@ -181,7 +181,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name(this.nameGenerator.getCreationToolName("New nested ", SysmlPackage.eINSTANCE.getPartUsage()))
+                .name(this.nameGenerator.getCreationToolName("New ", SysmlPackage.eINSTANCE.getPartUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getPartUsage().getName() + ".svg")
                 .body(createMembership.build())
                 .build();
@@ -190,13 +190,13 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
     private NodeToolSection addElementsToolSection() {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Add")
-                .nodeTools(this.addExistingNestedPartsTool())
+                .nodeTools(this.addExistingNestedPartsTool(false), this.addExistingNestedPartsTool(true))
                 .build();
     }
 
-    private NodeTool addExistingNestedPartsTool() {
+    private NodeTool addExistingNestedPartsTool(boolean recursive) {
         var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes)");
+                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
 
         return this.diagramBuilderHelper.newNodeTool()
                 .name("Add existing nested elements")

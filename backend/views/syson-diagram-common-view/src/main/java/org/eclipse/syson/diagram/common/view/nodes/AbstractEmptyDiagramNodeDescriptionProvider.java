@@ -148,15 +148,15 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
     private NodeToolSection addElementsToolSection(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Add")
-                .nodeTools(this.addExistingElementsTool())
+                .nodeTools(this.addExistingElementsTool(false), this.addExistingElementsTool(true))
                 .build();
     }
 
-    private NodeTool addExistingElementsTool() {
+    private NodeTool addExistingElementsTool(boolean recursive) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingElements(editingContext, diagramContext, null, convertedNodes)");
+                .expression("aql:self.addExistingElements(editingContext, diagramContext, null, convertedNodes, " + recursive + ")");
 
         return builder
                 .name("Add existing elements")

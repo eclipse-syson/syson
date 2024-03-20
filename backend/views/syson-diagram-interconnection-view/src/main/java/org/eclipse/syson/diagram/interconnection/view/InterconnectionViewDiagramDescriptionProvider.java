@@ -16,19 +16,17 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
-import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
-import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
+import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.PortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.RootPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -36,13 +34,11 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  *
  * @author arichard
  */
-public class InterconnectionViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
+public class InterconnectionViewDiagramDescriptionProvider extends AbstractDiagramDescriptionProvider {
 
     public static final String DESCRIPTION_NAME = "Interconnection View";
 
-    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
-
-    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
+    private final IDescriptionNameGenerator nameGenerator = new IVDescriptionNameGenerator();
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
@@ -76,19 +72,14 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
         return diagramDescription;
     }
 
+    @Override
+    protected IDescriptionNameGenerator getNameGenerator() {
+        return this.nameGenerator;
+    }
+
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newDiagramPalette()
                 .dropTool(this.createDropFromExplorerTool())
-                .build();
-    }
-
-    private DropTool createDropFromExplorerTool() {
-        var dropElementFromExplorer = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.dropElementFromExplorer(editingContext, diagramContext, selectedNode, convertedNodes)");
-
-        return this.diagramBuilderHelper.newDropTool()
-                .name("Drop from Explorer")
-                .body(dropElementFromExplorer.build())
                 .build();
     }
 }

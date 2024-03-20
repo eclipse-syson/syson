@@ -213,17 +213,26 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
     private NodeToolSection addElementsToolSection() {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Add")
-                .nodeTools(this.addExistingElementsTool())
+                .nodeTools(this.addExistingElementsTool(false), this.addExistingElementsTool(true))
                 .build();
     }
 
-    private NodeTool addExistingElementsTool() {
-        var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes)");
+    private NodeTool addExistingElementsTool(boolean recursive) {
+        var builder = this.diagramBuilderHelper.newNodeTool();
 
-        return this.diagramBuilderHelper.newNodeTool()
-                .name("Add existing elements")
-                .iconURLsExpression("/icons/AddExistingElements.svg")
+        var addExistingelements = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
+
+        String title = "Add existing elements";
+        String iconURL = "/icons/AddExistingElements.svg";
+        if (recursive) {
+            title += " (recursive)";
+            iconURL = "/icons/AddExistingElementsRecursive.svg";
+        }
+
+        return builder
+                .name(title)
+                .iconURLsExpression(iconURL)
                 .body(addExistingelements.build())
                 .build();
     }
