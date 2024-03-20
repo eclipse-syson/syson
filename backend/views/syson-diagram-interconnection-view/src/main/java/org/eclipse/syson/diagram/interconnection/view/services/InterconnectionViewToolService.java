@@ -60,10 +60,12 @@ public class InterconnectionViewToolService extends ToolService {
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
+     * @param recursive
+     *            whether the tool should add existing elements recursively or not.
      * @return the input {@link PartUsage}.
      */
     public PartUsage addExistingElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
         var nestedParts = partUsage.getNestedPart();
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
@@ -72,8 +74,10 @@ public class InterconnectionViewToolService extends ToolService {
                 .filter(subPartUsage -> !this.isPresent(subPartUsage, this.getChildNodes(diagramContext, selectedNode)))
                 .forEach(subPartUsage -> {
                     this.createView(subPartUsage, editingContext, diagramContext, selectedNode, convertedNodes);
-                    Node fakeNode = createFakeNode(subPartUsage, selectedNode, diagramContext, representationDescription, convertedNodes);
-                    addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                    if (recursive) {
+                        Node fakeNode = createFakeNode(subPartUsage, selectedNode, diagramContext, representationDescription, convertedNodes);
+                        addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                    }
                 });
         return partUsage;
     }

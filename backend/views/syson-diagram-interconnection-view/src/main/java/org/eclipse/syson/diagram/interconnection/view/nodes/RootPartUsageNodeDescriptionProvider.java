@@ -165,19 +165,26 @@ public class RootPartUsageNodeDescriptionProvider implements INodeDescriptionPro
     private NodeToolSection addElementsToolSection(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Add")
-                .nodeTools(this.addExistingElementsTool())
+                .nodeTools(this.addExistingElementsTool(false), this.addExistingElementsTool(true))
                 .build();
     }
 
-    private NodeTool addExistingElementsTool() {
+    private NodeTool addExistingElementsTool(boolean recursive) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes)");
+                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
+
+        String title = "Add existing elements";
+        String iconURL = "/icons/AddExistingElements.svg";
+        if (recursive) {
+            title += " (recursive)";
+            iconURL = "/icons/AddExistingElementsRecursive.svg";
+        }
 
         return builder
-                .name("Add existing elements")
-                .iconURLsExpression("/icons/AddExistingElements.svg")
+                .name(title)
+                .iconURLsExpression(iconURL)
                 .body(addExistingelements.build())
                 .build();
     }
