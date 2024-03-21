@@ -14,16 +14,13 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Node tool provider for elements inside compartments.
@@ -36,12 +33,12 @@ public class CompartmentNodeToolProvider implements INodeToolProvider {
 
     private ViewBuilders viewBuilderHelper = new ViewBuilders();
 
-    private final EClassifier eClassifier;
+    private final EReference eReference;
 
     private final IDescriptionNameGenerator nameGenerator;
 
-    public CompartmentNodeToolProvider(EClassifier eClassifier, IDescriptionNameGenerator nameGenerator) {
-        this.eClassifier = Objects.requireNonNull(eClassifier);
+    public CompartmentNodeToolProvider(EReference eReference, IDescriptionNameGenerator nameGenerator) {
+        this.eReference = Objects.requireNonNull(eReference);
         this.nameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
@@ -49,40 +46,12 @@ public class CompartmentNodeToolProvider implements INodeToolProvider {
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
+        var creationCompartmentItemServiceCall = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.createCompartmentItem('" + this.eReference.getName() + "')");
 
-        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
-                .children(callElementInitializerService.build());
-
-        var createInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(this.eClassifier))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
-
-        var changeContextMembership = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newFeatureMembership")
-                .children(createInstance.build());
-
-        var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(this.getMembership(this.eClassifier)))
-                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newFeatureMembership")
-                .children(changeContextMembership.build());
-
-        return builder.name(this.nameGenerator.getCreationToolName(this.eClassifier))
-                .iconURLsExpression("/icons/full/obj16/" + this.eClassifier.getName() + ".svg")
-                .body(createMembership.build())
+        return builder.name(this.nameGenerator.getCreationToolName(this.eReference))
+                .iconURLsExpression("/icons/full/obj16/" + this.eReference.getEType().getName() + ".svg")
+                .body(creationCompartmentItemServiceCall.build())
                 .build();
-    }
-
-    private EClass getMembership(EClassifier type) {
-        EClass membershipClass = SysmlPackage.eINSTANCE.getFeatureMembership();
-        if (type.equals(SysmlPackage.eINSTANCE.getEnumerationUsage())) {
-            membershipClass = SysmlPackage.eINSTANCE.getVariantMembership();
-        }
-        return membershipClass;
     }
 }

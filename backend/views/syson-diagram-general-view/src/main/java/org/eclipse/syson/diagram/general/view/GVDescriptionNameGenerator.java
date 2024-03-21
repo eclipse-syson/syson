@@ -12,16 +12,29 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view;
 
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.DescriptionNameGenerator;
 
 /**
  * Name generator for all General View description providers.
- * 
+ *
  * @author arichard
  */
 public class GVDescriptionNameGenerator extends DescriptionNameGenerator {
 
     public GVDescriptionNameGenerator() {
         super("GV");
+    }
+
+    @Override
+    public String getCreationToolName(EReference eReference) {
+        String name = super.getCreationToolName(eReference);
+        if (SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint().equals(eReference)) {
+            name = "New Assumed constraint";
+        } else if (SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint().equals(eReference)) {
+            name = "New Required constraint";
+        }
+        return name;
     }
 }

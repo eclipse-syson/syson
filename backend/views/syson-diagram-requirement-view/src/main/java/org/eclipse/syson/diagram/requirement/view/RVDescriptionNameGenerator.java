@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.requirement.view;
 
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.DescriptionNameGenerator;
 
 /**
@@ -25,4 +27,14 @@ public class RVDescriptionNameGenerator extends DescriptionNameGenerator {
         super("RV");
     }
 
+    @Override
+    public String getCreationToolName(EReference eReference) {
+        String name = super.getCreationToolName(eReference);
+        if (SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint().equals(eReference)) {
+            name = "New Assumed constraint";
+        } else if (SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint().equals(eReference)) {
+            name = "New Required constraint";
+        }
+        return name;
+    }
 }

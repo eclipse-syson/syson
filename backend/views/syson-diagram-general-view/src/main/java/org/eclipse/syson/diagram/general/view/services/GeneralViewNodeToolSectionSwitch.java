@@ -31,6 +31,7 @@ import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -92,6 +93,24 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
     public Void caseUsage(Usage object) {
         this.createToolsForCompartmentItems(object);
         return super.caseUsage(object);
+    }
+
+    @Override
+    public Void caseRequirementUsage(RequirementUsage object) {
+        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject(object));
+        return super.caseRequirementUsage(object);
+    }
+
+    private NodeToolSection createPartUsageAsRequirementSubject(RequirementUsage requirementUsage) {
+        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementUsageSubject(self.eContainer().eContainer())");
+        var createSubjectTool = this.diagramBuilderHelper.newNodeTool()
+            .name("New Subject")
+            .iconURLsExpression("/icons/full/obj16/Subject.svg")
+            .body(serviceCall.build()).build();
+        return this.diagramBuilderHelper.newNodeToolSection()
+            .name("Create")
+            .nodeTools(createSubjectTool)
+            .build();
     }
 
     private NodeToolSection createPartDefinitionElementsToolSection(NodeDescription partUsageNodeDescription, NodeDescription itemUsageNodeDescription) {
@@ -210,7 +229,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
             if (compartmentEClass.equals(object.eClass())) {
                 listItems.forEach(eReference -> {
-                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference.getEType(), this.nameGenerator);
+                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.nameGenerator);
                     compartmentNodeTools.add(provider.create(null));
                 });
             }

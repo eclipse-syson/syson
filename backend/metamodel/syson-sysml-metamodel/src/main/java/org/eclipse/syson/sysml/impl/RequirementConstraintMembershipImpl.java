@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,7 +83,7 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
      */
     @Override
     public RequirementConstraintKind getKind() {
-        return kind;
+        return this.kind;
     }
 
     /**
@@ -93,10 +93,11 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
      */
     @Override
     public void setKind(RequirementConstraintKind newKind) {
-        RequirementConstraintKind oldKind = kind;
-        kind = newKind == null ? KIND_EDEFAULT : newKind;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND, oldKind, kind));
+        RequirementConstraintKind oldKind = this.kind;
+        this.kind = newKind == null ? KIND_EDEFAULT : newKind;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND, oldKind, this.kind));
+        }
     }
 
     /**
@@ -106,20 +107,21 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
      */
     @Override
     public ConstraintUsage getOwnedConstraint() {
-        ConstraintUsage ownedConstraint = basicGetOwnedConstraint();
-        return ownedConstraint != null && ownedConstraint.eIsProxy() ? (ConstraintUsage)eResolveProxy((InternalEObject)ownedConstraint) : ownedConstraint;
+        ConstraintUsage ownedConstraint = this.basicGetOwnedConstraint();
+        return ownedConstraint != null && ownedConstraint.eIsProxy() ? (ConstraintUsage)this.eResolveProxy((InternalEObject)ownedConstraint) : ownedConstraint;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public ConstraintUsage basicGetOwnedConstraint() {
-        // TODO: implement this method to return the 'Owned Constraint' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelatedElement().stream()
+                .filter(ConstraintUsage.class::isInstance)
+                .map(ConstraintUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -129,8 +131,8 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
      */
     @Override
     public ConstraintUsage getReferencedConstraint() {
-        ConstraintUsage referencedConstraint = basicGetReferencedConstraint();
-        return referencedConstraint != null && referencedConstraint.eIsProxy() ? (ConstraintUsage)eResolveProxy((InternalEObject)referencedConstraint) : referencedConstraint;
+        ConstraintUsage referencedConstraint = this.basicGetReferencedConstraint();
+        return referencedConstraint != null && referencedConstraint.eIsProxy() ? (ConstraintUsage)this.eResolveProxy((InternalEObject)referencedConstraint) : referencedConstraint;
     }
 
     /**
@@ -154,13 +156,17 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND:
-                return getKind();
+                return this.getKind();
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__OWNED_CONSTRAINT:
-                if (resolve) return getOwnedConstraint();
-                return basicGetOwnedConstraint();
+                if (resolve) {
+                    return this.getOwnedConstraint();
+                }
+                return this.basicGetOwnedConstraint();
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__REFERENCED_CONSTRAINT:
-                if (resolve) return getReferencedConstraint();
-                return basicGetReferencedConstraint();
+                if (resolve) {
+                    return this.getReferencedConstraint();
+                }
+                return this.basicGetReferencedConstraint();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -174,7 +180,7 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND:
-                setKind((RequirementConstraintKind)newValue);
+                this.setKind((RequirementConstraintKind)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -189,7 +195,7 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND:
-                setKind(KIND_EDEFAULT);
+                this.setKind(KIND_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -204,11 +210,11 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND:
-                return kind != KIND_EDEFAULT;
+                return this.kind != KIND_EDEFAULT;
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__OWNED_CONSTRAINT:
-                return basicGetOwnedConstraint() != null;
+                return this.basicGetOwnedConstraint() != null;
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__REFERENCED_CONSTRAINT:
-                return basicGetReferencedConstraint() != null;
+                return this.basicGetReferencedConstraint() != null;
         }
         return super.eIsSet(featureID);
     }
@@ -220,11 +226,13 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy()) {
+            return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (kind: ");
-        result.append(kind);
+        result.append(this.kind);
         result.append(')');
         return result.toString();
     }

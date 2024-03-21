@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
@@ -24,6 +25,7 @@ import org.eclipse.syson.diagram.requirement.view.RVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.requirement.view.RequirementViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysmlEClassSwitch;
@@ -35,6 +37,8 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
  */
 public class RequirementViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
 
+    private final ViewBuilders viewBuilderHelper;
+
     private final DiagramBuilders diagramBuilderHelper;
 
     private final List<NodeToolSection> nodeToolSections;
@@ -42,6 +46,7 @@ public class RequirementViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void
     private final IDescriptionNameGenerator nameGenerator = new RVDescriptionNameGenerator();
 
     public RequirementViewNodeToolSectionSwitch() {
+        this.viewBuilderHelper = new ViewBuilders();
         this.diagramBuilderHelper = new DiagramBuilders();
         this.nodeToolSections = new ArrayList<>();
     }
@@ -67,7 +72,7 @@ public class RequirementViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void
         RequirementViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
             if (compartmentEClass.equals(object.eClass())) {
                 listItems.forEach(eReference -> {
-                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference.getEType(), this.nameGenerator);
+                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.nameGenerator);
                     compartmentNodeTools.add(provider.create(null));
                 });
             }
@@ -85,4 +90,23 @@ public class RequirementViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void
             this.nodeToolSections.add(toolSection);
         }
     }
+
+    @Override
+    public Void caseRequirementUsage(RequirementUsage object) {
+        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject(object));
+        return super.caseRequirementUsage(object);
+    }
+
+    private NodeToolSection createPartUsageAsRequirementSubject(RequirementUsage requirementUsage) {
+        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementUsageSubject(self.eContainer().eContainer())");
+        var createSubjectTool = this.diagramBuilderHelper.newNodeTool()
+            .name("New Subject")
+            .iconURLsExpression("/icons/full/obj16/Subject.svg")
+            .body(serviceCall.build()).build();
+        return this.diagramBuilderHelper.newNodeToolSection()
+            .name("Create")
+            .nodeTools(createSubjectTool)
+            .build();
+    }
+
 }

@@ -88,7 +88,21 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
         nodeDescription.setPalette(this.createCompartmentPalette(cache));
     }
 
+    /**
+     * Implementers might override to specify a custom label for the compartment that is used instead of the default label.<br>
+     * Default implementation returns {@code null}.
+     * @return a custom label for the compartment
+     */
+    protected String getCustomCompartmentLabel() {
+        // default implementation does nothing
+        return null;
+    }
+
     private String getCompartmentLabel() {
+        String customLabel = this.getCustomCompartmentLabel();
+        if (customLabel != null) {
+            return customLabel;
+        }
         String defaultName = "";
         EClassifier eType = this.eReference.getEType();
         if (eType instanceof EClass eTypeClass && SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eTypeClass)) {
@@ -119,7 +133,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     private NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
-        CompartmentNodeToolProvider compartmentNodeToolProvider = new CompartmentNodeToolProvider(this.eReference.getEType(), this.nameGenerator);
+        CompartmentNodeToolProvider compartmentNodeToolProvider = new CompartmentNodeToolProvider(this.eReference, this.nameGenerator);
 
         return this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache))
