@@ -17,6 +17,7 @@
 - Switch to Sirius Web 2024.1.5
 
 === Bug fixes
+- https://github.com/eclipse-syson/syson/issues/118[#118] Subclassification edge has been broken during this release
 
 === Improvements
 
