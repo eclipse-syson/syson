@@ -166,23 +166,23 @@ jobs:
           IMAGE_TAG: ${{ env.git_describe }}
 
       - name: Upload the Docker image to AWS ECR (SysON Enterprise)
-              if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-              env:
-                REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-                REPOSITORY: syson-enterprise
-                IMAGE_TAG: ${{ env.git_describe }}
-              run: |
-                docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: syson-enterprise
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Upload the Docker configuration for AWS Elastic Beanstalk (SysON Enterprise)
-              if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-              env:
-                REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-                REPOSITORY: syson-enterprise
-                IMAGE_TAG: ${{ env.git_describe }}
-              run: |
-                sed -e "s|IMAGE_NAME|$REGISTRY/$REPOSITORY:$IMAGE_TAG|" Dockerrun.aws.json.template > Dockerrun.aws.json
-                aws s3 cp Dockerrun.aws.json s3://syson-enterprise-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: syson-enterprise
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          sed -e "s|IMAGE_NAME|$REGISTRY/$REPOSITORY:$IMAGE_TAG|" Dockerrun.aws.json.template > Dockerrun.aws.json
+          aws s3 cp Dockerrun.aws.json s3://syson-enterprise-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
 
       - name: Create a new ElasticBeanstalk Application Version for SysON Enterprise
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
