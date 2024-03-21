@@ -30,7 +30,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<eef.version>2.1.5-SNAPSHOT</eef.version>
-		<sirius.web.version>2024.1.5</sirius.web.version>
+		<sirius.web.version>2024.1.6</sirius.web.version>
 	</properties>
 	
 	<repositories>
@@ -106,11 +106,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-widget-reference-view-edit</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain-design</artifactId>
 			<version>${sirius.web.version}</version>
 		</dependency>
@@ -151,12 +146,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-widget-reference</artifactId>
+			<artifactId>sirius-components-widget-reference-graphql</artifactId>
 			<version>${sirius.web.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
+			<artifactId>sirius-components-view-emf-widget-reference</artifactId>
 			<version>${sirius.web.version}</version>
 		</dependency>
 		<dependency>

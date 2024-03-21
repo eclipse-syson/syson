@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
-import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -34,12 +34,12 @@ import org.eclipse.syson.sysml.SysmlFactory;
  */
 public class ViewCreateService {
 
-    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
+    private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
     private final ElementInitializerSwitch elementInitializerSwitch;
 
-    public ViewCreateService(IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
-        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
+    public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService) {
+        this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
 
@@ -91,7 +91,7 @@ public class ViewCreateService {
         if (previousDiagram != null && diagramContext != null) {
             List<Node> previousNodes = previousDiagram.getNodes();
             List<ViewCreationRequest> viewCreationRequests = diagramContext.getViewCreationRequests();
-            if (viewCreationRequests.isEmpty() && (previousNodes.isEmpty() || previousNodes.stream().anyMatch(node -> this.viewRepresentationDescriptionSearchService
+            if (viewCreationRequests.isEmpty() && (previousNodes.isEmpty() || previousNodes.stream().anyMatch(node -> this.viewDiagramDescriptionSearchService
                     .findViewNodeDescriptionById(editingContext, node.getDescriptionId()).stream().anyMatch(nd -> emptyNodeName.equals(nd.getName()))))) {
                 emptyDiagram = true;
             }
