@@ -538,24 +538,40 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
      */
     @Override
     public String getQualifiedName() {
-        StringBuilder qualifiedName = new StringBuilder();
+        boolean qualifiedNameContainsNull = false;
+        StringBuilder qualifiedNameBuilder = new StringBuilder();
         EObject container = this.eContainer();
         if (container instanceof Membership membership) {
             EObject membershipContainer = membership.eContainer();
             if (membershipContainer instanceof Element element) {
-                qualifiedName.append(element.getQualifiedName());
-                qualifiedName.append("::");
+                String elementQN = element.getQualifiedName();
+                if (elementQN == null) {
+                    qualifiedNameContainsNull = true;
+                } else {
+                    qualifiedNameBuilder.append(elementQN);
+                    qualifiedNameBuilder.append("::");
+                }
             }
         } else if (container instanceof Element element) {
-            qualifiedName.append(element.getQualifiedName());
-            qualifiedName.append("::");
+            String elementQN = element.getQualifiedName();
+            if (elementQN == null) {
+                qualifiedNameContainsNull = true;
+            } else {
+                qualifiedNameBuilder.append(elementQN);
+                qualifiedNameBuilder.append("::");
+            }
         }
         String name = this.getName();
-        if (name != null && name.contains("\s")) {
+        if (name == null || name.isBlank()) {
+            qualifiedNameContainsNull = true;
+        } else if (name.contains("\s")) {
             name = "'" + name + "'";
         }
-        qualifiedName.append(name);
-        return qualifiedName.toString();
+        qualifiedNameBuilder.append(name);
+        if (qualifiedNameContainsNull) {
+            return null;
+        }
+        return qualifiedNameBuilder.toString();
     }
 
     /**
