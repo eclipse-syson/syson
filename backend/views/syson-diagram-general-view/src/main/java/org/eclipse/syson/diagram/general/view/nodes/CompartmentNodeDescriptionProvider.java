@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
  * Used to create the Compartment node description inside the General View diagram.
@@ -33,6 +34,17 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
 
     public CompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider) {
         super(eClass, eReference, colorProvider, new GVDescriptionNameGenerator());
+    }
+
+    @Override
+    protected String getCustomCompartmentLabel() {
+        String customLabel = super.getCustomCompartmentLabel();
+        if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()) {
+            customLabel = "assume constraints";
+        } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()) {
+            customLabel = "require constraints";
+        }
+        return customLabel;
     }
 
     @Override

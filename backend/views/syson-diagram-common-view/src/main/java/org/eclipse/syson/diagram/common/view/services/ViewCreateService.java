@@ -15,6 +15,8 @@ package org.eclipse.syson.diagram.common.view.services;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
@@ -24,8 +26,17 @@ import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptio
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementConstraintKind;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * Creation-related Java shared services used by several diagrams.
@@ -102,5 +113,98 @@ public class ViewCreateService {
             return element;
         }
         return null;
+    }
+
+    public Element createCompartmentItem(Element element, String eReferenceName) {
+        EStructuralFeature feature = element.eClass().getEStructuralFeature(eReferenceName);
+
+        if (feature.getEType() instanceof EClass itemEClass) {
+            var item = SysmlFactory.eINSTANCE.create(itemEClass);
+            var membership = this.getOwningMembership(feature);
+            membership.getOwnedRelatedElement().add(this.elementInitializer((Element) item));
+            element.getOwnedRelationship().add(membership);
+        }
+        return element;
+    }
+
+    private OwningMembership getOwningMembership(EStructuralFeature feature) {
+        OwningMembership result = SysmlFactory.eINSTANCE.createFeatureMembership();
+        if (feature.getEType().equals(SysmlPackage.eINSTANCE.getEnumerationUsage())) {
+            result = SysmlFactory.eINSTANCE.createVariantMembership();
+        } else if (feature.equals(SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint())) {
+            result = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+            ((RequirementConstraintMembership) result).setKind(RequirementConstraintKind.ASSUMPTION);
+        } else if (feature.equals(SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())) {
+            result = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+            ((RequirementConstraintMembership) result).setKind(RequirementConstraintKind.REQUIREMENT);
+        }
+        return result;
+    }
+
+    /**
+     * Create a new PartUsage and set it as the subject of the self element.
+     * @param self the requirement usage to set the subject for
+     * @param subjectParent the parent of the new part usage used as the subject.
+     * @return
+     */
+    public Element createRequirementUsageSubject(Element self, Element subjectParent) {
+        if (self instanceof RequirementUsage requirementUsage) {
+            // create the part usage that is used as the subject element
+            PartUsage newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+            newPartUsage.setDeclaredName(self.getDeclaredName() + "'s subject");
+            var membership = SysmlFactory.eINSTANCE.createOwningMembership();
+            membership.getOwnedRelatedElement().add(newPartUsage);
+            subjectParent.getOwnedRelationship().add(membership);
+            // create subject model tree
+            // requirement usage might already have a subjectmembership previously defined
+            SubjectMembership subjectMembership = requirementUsage.getOwnedRelationship().stream()
+                .filter(SubjectMembership.class::isInstance)
+                .map(SubjectMembership.class::cast)
+                .findFirst()
+                .orElse(null);
+            if (subjectMembership != null) {
+                // there is already a subject associated to the requirement usage
+                this.updateRequirementUsageSubject(subjectMembership, newPartUsage);
+            } else {
+                var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+                featureTyping.setType(newPartUsage);
+                var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+                referenceUsage.setDeclaredName("subject");
+                referenceUsage.getOwnedRelationship().add(featureTyping);
+                subjectMembership = SysmlFactory.eINSTANCE.createSubjectMembership();
+                subjectMembership.getOwnedRelatedElement().add(referenceUsage);
+                requirementUsage.getOwnedRelationship().add(subjectMembership);
+            }
+        }
+        return self;
+    }
+
+    private void updateRequirementUsageSubject(SubjectMembership subjectMembership, Type newSubject) {
+        var referenceUsage = subjectMembership.getOwnedRelatedElement().stream()
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (referenceUsage != null) {
+            var featureTyping = referenceUsage.getOwnedRelationship()
+                    .stream()
+                    .filter(FeatureTyping.class::isInstance)
+                    .map(FeatureTyping.class::cast)
+                    .findFirst()
+                    .orElse(null);
+            if (featureTyping == null) {
+                featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+                referenceUsage.getOwnedRelationship().add(featureTyping);
+            }
+            featureTyping.setType(newSubject);
+        } else {
+            // no reference usage in the subject membership
+            var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+            featureTyping.setType(newSubject);
+            referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+            referenceUsage.setDeclaredName("subject");
+            referenceUsage.getOwnedRelationship().add(featureTyping);
+            subjectMembership.getOwnedRelatedElement().add(referenceUsage);
+        }
     }
 }

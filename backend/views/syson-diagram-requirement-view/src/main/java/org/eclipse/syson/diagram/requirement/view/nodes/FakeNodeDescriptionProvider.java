@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.requirement.view.RVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.requirement.view.RequirementViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
  * Fake Node Description allowing to store other Node Descriptions that will be reused by other Node Descriptions.
@@ -47,6 +48,9 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         RequirementViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(eReference -> cache.getNodeDescription(nameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
         });
+        // don't forget to add requirement usage subject compartment
+        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+                .ifPresent(childrenNodes::add);
         return childrenNodes;
     }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -58,20 +59,21 @@ public class SubjectMembershipImpl extends ParameterMembershipImpl implements Su
      */
     @Override
     public Usage getOwnedSubjectParameter() {
-        Usage ownedSubjectParameter = basicGetOwnedSubjectParameter();
-        return ownedSubjectParameter != null && ownedSubjectParameter.eIsProxy() ? (Usage)eResolveProxy((InternalEObject)ownedSubjectParameter) : ownedSubjectParameter;
+        Usage ownedSubjectParameter = this.basicGetOwnedSubjectParameter();
+        return ownedSubjectParameter != null && ownedSubjectParameter.eIsProxy() ? (Usage)this.eResolveProxy((InternalEObject)ownedSubjectParameter) : ownedSubjectParameter;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Usage basicGetOwnedSubjectParameter() {
-        // TODO: implement this method to return the 'Owned Subject Parameter' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelatedElement().stream()
+            .filter(ReferenceUsage.class::isInstance)
+            .map(ReferenceUsage.class::cast)
+            .findFirst()
+            .orElse(null);
     }
 
     /**
@@ -83,8 +85,10 @@ public class SubjectMembershipImpl extends ParameterMembershipImpl implements Su
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SUBJECT_MEMBERSHIP__OWNED_SUBJECT_PARAMETER:
-                if (resolve) return getOwnedSubjectParameter();
-                return basicGetOwnedSubjectParameter();
+                if (resolve) {
+                    return this.getOwnedSubjectParameter();
+                }
+                return this.basicGetOwnedSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -98,7 +102,7 @@ public class SubjectMembershipImpl extends ParameterMembershipImpl implements Su
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.SUBJECT_MEMBERSHIP__OWNED_SUBJECT_PARAMETER:
-                return basicGetOwnedSubjectParameter() != null;
+                return this.basicGetOwnedSubjectParameter() != null;
         }
         return super.eIsSet(featureID);
     }

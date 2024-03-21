@@ -66,7 +66,7 @@ public class ActionFlowViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void>
         ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
             if (compartmentEClass.equals(object.eClass())) {
                 listItems.forEach(eReference -> {
-                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference.getEType(), this.nameGenerator);
+                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.nameGenerator);
                     compartmentNodeTools.add(provider.create(null));
                 });
             }

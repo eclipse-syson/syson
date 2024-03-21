@@ -35,125 +35,137 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.RequirementDefinition;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
  * Switch retrieving the list of NodeDescriptionProvider for each SysMLv2 concept represented in the General View diagram.
- * 
+ *
  * @author Jerome Gout
  */
 public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<INodeDescriptionProvider> {
-    
+
     private final IColorProvider colorProvider;
 
     public GeneralViewNodeDescriptionProviderSwitch(IColorProvider colorProvider) {
         this.colorProvider = colorProvider;
     }
-    
+
     @Override
     public INodeDescriptionProvider caseActionDefinition(ActionDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseActionUsage(ActionUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseAllocationDefinition(AllocationDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseAllocationUsage(AllocationUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationUsage(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseAttributeDefinition(AttributeDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseAttributeUsage(AttributeUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeUsage(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseConstraintDefinition(ConstraintDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConstraintDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConstraintDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseConstraintUsage(ConstraintUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConstraintUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConstraintUsage(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseEnumerationDefinition(EnumerationDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getEnumerationDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getEnumerationDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseEnumerationUsage(EnumerationUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getEnumerationUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getEnumerationUsage(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseInterfaceDefinition(InterfaceDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getInterfaceDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getInterfaceDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseInterfaceUsage(InterfaceUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getInterfaceUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getInterfaceUsage(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseItemDefinition(ItemDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getItemDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getItemDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseItemUsage(ItemUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getItemUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getItemUsage(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseMetadataDefinition(MetadataDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getMetadataDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getMetadataDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider caseMetadataUsage(MetadataUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getMetadataUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getMetadataUsage(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider casePackage(Package object) {
-        return new PackageNodeDescriptionProvider(colorProvider);
+        return new PackageNodeDescriptionProvider(this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider casePartDefinition(PartDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider casePartUsage(PartUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider casePortDefinition(PortDefinition object) {
-        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPortDefinition(), colorProvider);
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPortDefinition(), this.colorProvider);
     }
-    
+
     @Override
     public INodeDescriptionProvider casePortUsage(PortUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), colorProvider);
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseRequirementDefinition(RequirementDefinition object) {
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseRequirementUsage(RequirementUsage object) {
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), this.colorProvider);
     }
 
 }

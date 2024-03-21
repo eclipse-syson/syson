@@ -43,6 +43,17 @@ public interface IDescriptionNameGenerator {
     String getCreationToolName(EClassifier eClassifier);
 
     /**
+     * Returns the name of a creation tool using the given {@link EReference}.<br>
+     * The default behavior is to return the creation tool name of the reference's type.
+     *
+     * @param eReference the {@link EReference} that the compartment is containing.
+     * @return a string used to name a creation {@link NodeTool}.
+     */
+    default String getCreationToolName(EReference eReference) {
+        return this.getCreationToolName(eReference.getEType());
+    }
+
+    /**
      * Returns the name of a {@link NodeDescription} using the given string.
      *
      * @param type a string to form the name of the node description.

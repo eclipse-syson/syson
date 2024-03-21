@@ -44,6 +44,7 @@ import org.eclipse.syson.diagram.general.view.nodes.CompartmentNodeDescriptionPr
 import org.eclipse.syson.diagram.general.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewNodeDescriptionProviderSwitch;
+import org.eclipse.syson.diagram.general.view.nodes.RequirementSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -66,7 +67,8 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             SysmlPackage.eINSTANCE.getItemDefinition(),
             SysmlPackage.eINSTANCE.getMetadataDefinition(),
             SysmlPackage.eINSTANCE.getPartDefinition(),
-            SysmlPackage.eINSTANCE.getPortDefinition()
+            SysmlPackage.eINSTANCE.getPortDefinition(),
+            SysmlPackage.eINSTANCE.getRequirementDefinition()
             );
 
     public static  final List<EClass> USAGES = List.of(
@@ -76,7 +78,8 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             SysmlPackage.eINSTANCE.getInterfaceUsage(),
             SysmlPackage.eINSTANCE.getItemUsage(),
             SysmlPackage.eINSTANCE.getPartUsage(),
-            SysmlPackage.eINSTANCE.getPortUsage()
+            SysmlPackage.eINSTANCE.getPortUsage(),
+            SysmlPackage.eINSTANCE.getRequirementUsage()
             );
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
@@ -89,13 +92,16 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             Map.entry(SysmlPackage.eINSTANCE.getMetadataDefinition(),    List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getPartDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(), List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement())),
+
             Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAction(), SysmlPackage.eINSTANCE.getUsage_NestedItem())),
             Map.entry(SysmlPackage.eINSTANCE.getAttributeUsage(),        List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getConstraintUsage(),       List.of(SysmlPackage.eINSTANCE.getUsage_NestedConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getInterfaceUsage(),        List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
-            Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference()))
+            Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),      List.of(SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()))
             );
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
@@ -121,7 +127,9 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
                     )),
             new ToolSectionDescription("Requirement", List.of(
                     SysmlPackage.eINSTANCE.getConstraintUsage(),
-                    SysmlPackage.eINSTANCE.getConstraintDefinition()
+                    SysmlPackage.eINSTANCE.getConstraintDefinition(),
+                    SysmlPackage.eINSTANCE.getRequirementUsage(),
+                    SysmlPackage.eINSTANCE.getRequirementDefinition()
                     )),
             new ToolSectionDescription("Extension", List.of(
                     SysmlPackage.eINSTANCE.getMetadataDefinition()
@@ -155,6 +163,8 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new RequirementSubjectCompartmentNodeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, this.nameGenerator));
 
         // create a node description provider for each element found in a section
         var nodeDescriptionProviderSwitch = new GeneralViewNodeDescriptionProviderSwitch(colorProvider);
@@ -174,12 +184,21 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
         diagramElementDescriptionProviders.stream().
                 map(IDiagramElementDescriptionProvider::create)
                 .forEach(cache::put);
+        // add requirement subject compartment to requirement usage node
+        this.linkRequirementUsageSubjectCompartment(cache);
+        // link elements each other
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
 
         return diagramDescription;
+    }
+
+    private void linkRequirementUsageSubjectCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription nodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage())).get();
+        cache.getNodeDescription(this.nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+                .ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     @Override

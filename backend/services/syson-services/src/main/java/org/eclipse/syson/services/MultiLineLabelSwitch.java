@@ -44,6 +44,8 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.RequirementDefinition;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Type;
@@ -319,6 +321,37 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(this.caseElement(object))
             .append(this.multiplicityRange(object))
             .append(this.featureTyping(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseRequirementDefinition(RequirementDefinition object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("requirement def")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseRequirementUsage(RequirementUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("requirement")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
             .append(this.featureTyping(object))
             .append(this.redefinition(object))
             .append(this.subsetting(object));
