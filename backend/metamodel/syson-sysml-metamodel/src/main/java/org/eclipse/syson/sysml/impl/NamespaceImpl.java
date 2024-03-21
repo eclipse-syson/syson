@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -88,6 +89,7 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
         List<Element> members = new ArrayList<>();
         this.getMembership().stream()
             .map(membership -> membership.getMemberElement())
+            .filter(Objects::nonNull)
             .forEach(members::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Member(), members.size(), members.toArray());
     }
