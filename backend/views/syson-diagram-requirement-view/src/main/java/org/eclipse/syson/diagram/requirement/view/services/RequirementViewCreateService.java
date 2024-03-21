@@ -15,7 +15,7 @@ package org.eclipse.syson.diagram.requirement.view.services;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
-import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.requirement.view.RequirementViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.requirement.view.nodes.RequirementViewEmptyDiagramNodeDescriptionProvider;
@@ -28,8 +28,8 @@ import org.eclipse.syson.sysml.Element;
  */
 public class RequirementViewCreateService extends ViewCreateService {
 
-    public RequirementViewCreateService(IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
-        super(viewRepresentationDescriptionSearchService);
+    public RequirementViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchServic) {
+        super(viewDiagramDescriptionSearchServic);
     }
 
     /**
