@@ -99,14 +99,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Build the Docker image
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: syson
-          IMAGE_TAG: ${{ env.git_describe }}
-        run: |
-          docker build -t syson backend/application/syson-application
-
       - name: Configure AWS CLI for SysON
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v4
@@ -121,6 +113,14 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       # SysON staging
+      - name: Build the Docker image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: syson
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          docker build -t syson backend/application/syson-application
+
       - name: Tag the Docker image
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: docker tag syson $REGISTRY/$REPOSITORY:$IMAGE_TAG
@@ -157,6 +157,14 @@ jobs:
         run: aws elasticbeanstalk update-environment --environment-name "syson-staging" --version-label "${{ env.git_describe }}"
 
       # SysON enterprise
+      - name: Build the Docker image (SysON Enterprise)
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: syson-enterprise
+          IMAGE_TAG: ${{ env.git_describe }}
+        run: |
+          docker build -t syson-enterprise backend/application/syson-application
+
       - name: Tag the Docker image (SysON Enterprise)
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: docker tag syson-enterprise $REGISTRY/$REPOSITORY:$IMAGE_TAG
