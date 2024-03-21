@@ -85,6 +85,7 @@ public abstract class AbstractSubclassificationEdgeDescriptionProvider extends A
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(this.getName());
         EdgeDescription edgeDescription = optEdgeDescription.get();
+        diagramDescription.getEdgeDescriptions().add(edgeDescription);
 
         edgeDescription.getSourceNodeDescriptions().addAll(this.getSourceNodes(cache));
         edgeDescription.getTargetNodeDescriptions().addAll(this.getTargetNodes(cache));
