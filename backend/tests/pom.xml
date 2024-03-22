@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-tests-parent</artifactId>
-	<version>2024.1.0</version>
+	<version>2024.1.1</version>
 
 	<name>syson-tests-parent</name>
 	<description>SysON Tests Parent</description>
