@@ -56,7 +56,7 @@ public class DataTypeItemProvider extends ClassifierItemProvider {
     }
 
     /**
-     * This returns DataType.gif.
+     * This returns DataType.svg.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT

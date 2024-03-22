@@ -1,0 +1,34 @@
+= syson-icons
+
+== Goal
+
+This folder provides SVG (scalable vector graphics) for SysON.
+
+== Colors used in the icons:
+
+`4d81b4ff` - the dark blue
+`d4e5f2ff` - the light blue
+`2e4f6eff` - the darker dark blue (used for letters for instance)
+
+== Edge sizes
+
+When defining edges, use 1px for the edge width for primary elements in the icons or 0,8px for secondary elements. Anything smaller should only be for edges which have no strong meaning considering that if these are displayed in 16x16 images it won't be easy to recognize.
+
+
+== SVG Cleanup ==
+Inkscape tends to add noise into the resulting SVG : inkscape specific properties, unused gradients or transforms and others.
+To cleanup these SVG we use [SVGO](https://github.com/svg/svgo) a NodeJS based command-line application for optimizing SVG files.
+The `svgo.config.js` specifies the settings to be used.
+To launch the cleanup, run these commands from the `papyrus-web-graphics` folder:
+
+`svgo -f backend/metamodel/syson-sysml-metamodel-edit/src/main/resources/icons/full/obj16`
+
+== life-saving shortcuts in Inkscape
+
+`CTRL+MAJ+F` : to open the fill/colors panel
+`CTRL+MAJ+A` : to open the align/distribute panel
+`CTRL+G` and `CTRL+MAJ+G` : to group/ungroup
+
+== References
+
+See Papyrus Web Graphics project

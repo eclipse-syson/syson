@@ -81,7 +81,7 @@ public class ClassifierItemProvider extends TypeItemProvider {
     }
 
     /**
-     * This returns Classifier.gif.
+     * This returns Classifier.svg.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT
