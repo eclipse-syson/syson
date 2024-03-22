@@ -10,26 +10,27 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.requirement.view.nodes;
+package org.eclipse.syson.diagram.common.view.nodes;
 
 import java.util.List;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.requirement.view.RVDescriptionNameGenerator;
+import org.eclipse.syson.diagram.common.view.tools.RequirementSubjectCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Requirement Subject Compartment node description in Requirement View diagram.
+ * Requirement Subject Compartment node description in General View diagram.
  *
  * @author Jerome Gout
  */
 public class RequirementSubjectCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public RequirementSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider) {
-        super(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, new RVDescriptionNameGenerator());
+    public RequirementSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+        super(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, nameGenerator);
     }
 
     @Override
@@ -41,5 +42,10 @@ public class RequirementSubjectCompartmentNodeDescriptionProvider extends Abstra
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         // No drop allowed
         return List.of();
+    }
+
+    @Override
+    protected INodeToolProvider getItemCreationToolProvider() {
+        return new RequirementSubjectCompartmentNodeToolProvider();
     }
 }

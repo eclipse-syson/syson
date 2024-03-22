@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -60,6 +61,14 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      * @return the list of {@link NodeDescription} that can be dropped inside this compartment.
      */
     protected abstract List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache);
+
+    /**
+     * Returns the Compartment Node tool provider used to create a new item inside this compartment.
+     * @return the {@link INodeToolProvider} that handles the item creation inside this compartment.
+     */
+    protected INodeToolProvider getItemCreationToolProvider() {
+        return new CompartmentNodeToolProvider(this.eReference, this.nameGenerator);
+    }
 
     @Override
     public NodeDescription create() {
@@ -133,7 +142,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     private NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
-        CompartmentNodeToolProvider compartmentNodeToolProvider = new CompartmentNodeToolProvider(this.eReference, this.nameGenerator);
+        INodeToolProvider compartmentNodeToolProvider = this.getItemCreationToolProvider();
 
         return this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache))
