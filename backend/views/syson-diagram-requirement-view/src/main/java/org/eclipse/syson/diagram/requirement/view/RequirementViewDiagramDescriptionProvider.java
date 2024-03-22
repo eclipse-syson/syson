@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.RequirementSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.requirement.view.edges.DependencyEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.requirement.view.edges.FeatureTypingEdgeDescriptionProvider;
@@ -41,7 +42,6 @@ import org.eclipse.syson.diagram.requirement.view.nodes.CompartmentNodeDescripti
 import org.eclipse.syson.diagram.requirement.view.nodes.DefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.requirement.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.requirement.view.nodes.PackageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.requirement.view.nodes.RequirementSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.requirement.view.nodes.RequirementViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.requirement.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -110,7 +110,7 @@ public class RequirementViewDiagramDescriptionProvider extends AbstractDiagramDe
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new RequirementViewEmptyDiagramNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new RequirementSubjectCompartmentNodeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new RequirementSubjectCompartmentNodeDescriptionProvider(colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, this.nameGenerator));
 
         DEFINITIONS.forEach(definition -> {

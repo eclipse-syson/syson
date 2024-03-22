@@ -12,38 +12,29 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.syson.util.IDescriptionNameGenerator;
-
 /**
- * Node tool provider for elements inside compartments.
+ * Node tool provider for Subject compartment in the RequirementUsage.
  *
  * @author Jerome Gout
  */
-public class CompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
+public class RequirementSubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
 
-    private final EReference eReference;
-
-    private final IDescriptionNameGenerator nameGenerator;
-
-    public CompartmentNodeToolProvider(EReference eReference, IDescriptionNameGenerator nameGenerator) {
+    public RequirementSubjectCompartmentNodeToolProvider() {
         super();
-        this.eReference = eReference;
-        this.nameGenerator = nameGenerator;
     }
 
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createCompartmentItem('" + this.eReference.getName() + "')";
+        return "aql:self.createRequirementUsageSubject(self.eContainer().eContainer())";
     }
 
     @Override
     protected String getNodeToolName() {
-        return this.nameGenerator.getCreationToolName(this.eReference);
+        return "New Subject";
     }
 
     @Override
     protected String getNodeToolIconURLsExpression() {
-        return "/icons/full/obj16/" + this.eReference.getEType().getName() + ".svg";
+        return "/icons/full/obj16/Subject.svg";
     }
 }
