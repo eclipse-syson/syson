@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,14 +57,14 @@ public class AssociationStructureItemProvider extends AssociationItemProvider {
     }
 
     /**
-     * This returns AssociationStructure.gif.
+     * This returns AssociationStructure.svg.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/AssociationStructure"));
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/AssociationStructure.svg"));
     }
 
     /**
