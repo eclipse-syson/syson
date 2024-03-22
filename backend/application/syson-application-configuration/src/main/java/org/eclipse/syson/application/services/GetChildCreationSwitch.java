@@ -19,14 +19,18 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.RequirementDefinition;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
@@ -56,6 +60,14 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     public List<EClass> caseAttributeUsage(AttributeUsage object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
+        childrenCandidates.addAll(this.caseUsage(object));
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> caseConstraintUsage(ConstraintUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getConcernUsage());
         childrenCandidates.addAll(this.caseUsage(object));
         return childrenCandidates;
     }
@@ -118,6 +130,22 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     }
 
     @Override
+    public List<EClass> caseOwningMembership(OwningMembership object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        SysmlPackage.eINSTANCE.getEClassifiers().stream()
+            .filter(EClass.class::isInstance)
+            .map(EClass.class::cast)
+            .filter(eClass -> {
+                boolean forbiddenClasses = SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(eClass);
+                return !eClass.isAbstract() && !eClass.isInterface() && !forbiddenClasses;
+            })
+            .forEach(eClass -> {
+                childrenCandidates.add(eClass);
+            });
+        return childrenCandidates;
+    }
+
+    @Override
     public List<EClass> casePackage(Package object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         SysmlPackage.eINSTANCE.getEClassifiers().stream()
@@ -130,6 +158,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
             .forEach(eClass -> {
                 childrenCandidates.add(eClass);
             });
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getOwningMembership());
         return childrenCandidates;
     }
 
@@ -151,6 +180,22 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     }
 
     @Override
+    public List<EClass> caseRequirementDefinition(RequirementDefinition object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.addAll(this.caseDefinition(object));
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getSubjectMembership());
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> caseRequirementUsage(RequirementUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.addAll(this.caseUsage(object));
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getSubjectMembership());
+        return childrenCandidates;
+    }
+
+    @Override
     public List<EClass> caseUsage(Usage object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         childrenCandidates.add(SysmlPackage.eINSTANCE.getAttributeUsage());
@@ -162,6 +207,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralInteger());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralRational());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralString());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
         return childrenCandidates;
     }
 }
