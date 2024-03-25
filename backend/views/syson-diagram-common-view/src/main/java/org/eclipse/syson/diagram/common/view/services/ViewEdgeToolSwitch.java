@@ -15,7 +15,9 @@ package org.eclipse.syson.diagram.common.view.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
@@ -101,15 +103,32 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
         this.edgeTools.add(this.createDependencyEdgeTool(this.allNodeDescriptions));
         this.edgeTools.add(this.createRedefinitionEdgeTool(List.of(this.nodeDescription)));
         this.edgeTools.add(this.createSubsettingEdgeTool(List.of(this.nodeDescription)));
+        var definitionNodeDescription = this.getDefinitionNodeDescription(this.getDefinitionFromUsage(object));
+        if (definitionNodeDescription.isPresent()) {
+            this.edgeTools.add(this.createFeatureTypingEdgeTool(List.of(definitionNodeDescription.get())));
+        }
         return super.caseUsage(object);
     }
 
-    protected EdgeTool createDependencyEdgeTool(List<NodeDescription> targetElementDescriptions) {
+    private Optional<NodeDescription> getDefinitionNodeDescription(EClassifier definition) {
+        if (definition == null) {
+            return null;
+        }
+        return this.allNodeDescriptions.stream()
+                .filter(nd -> nd.getDomainType().equals(definition.getEPackage().getNsPrefix() + "::" + definition.getName()))
+                .findFirst();
+    }
+
+    private EClassifier getDefinitionFromUsage(Usage object) {
+        String definitionFromUsage = object.eClass().getName().replace("Usage", "Definition");
+        return SysmlPackage.eINSTANCE.getEClassifier(definitionFromUsage);
+    }
+
+    private EdgeTool createDependencyEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
-        var setName = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression("dependency");
+        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.elementInitializer()");
 
         var setClient = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getDependency_Client().getName())
@@ -121,7 +140,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
-                .children(setName.build(), setClient.build(), setSupplier.build());
+                .children(callElementInitializerService.build(), setClient.build(), setSupplier.build());
 
         var createInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getDependency()))
@@ -154,9 +173,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
     private EdgeTool createSubclassificationEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
-        var setName = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression("specializes");
+        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.elementInitializer()");
 
         var setSubclassifier = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubclassification_Subclassifier().getName())
@@ -176,7 +194,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
-                .children(setName.build(), setSubclassifier.build(), setSuperclassifier.build(), setSpecific.build(), setGeneral.build());
+                .children(callElementInitializerService.build(), setSubclassifier.build(), setSuperclassifier.build(), setSpecific.build(), setGeneral.build());
 
         var createInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSubclassification()))
@@ -196,12 +214,11 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
                 .build();
     }
 
-    protected EdgeTool createRedefinitionEdgeTool(List<NodeDescription> targetElementDescriptions) {
+    private EdgeTool createRedefinitionEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
-        var setName = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression("redefines");
+        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.elementInitializer()");
 
         var setRedefiningFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getRedefinition_RedefiningFeature().getName())
@@ -229,7 +246,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
-                .children(setName.build(), setRedefiningFeature.build(), setRedefinedFeature.build(), setSubsettingFeature.build(), setSubsettedFeature.build(), setSpecific.build(),
+                .children(callElementInitializerService.build(), setRedefiningFeature.build(), setRedefinedFeature.build(), setSubsettingFeature.build(), setSubsettedFeature.build(), setSpecific.build(),
                         setGeneral.build());
 
         var createInstance = this.viewBuilderHelper.newCreateInstance()
@@ -250,12 +267,11 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
                 .build();
     }
 
-    protected EdgeTool createSubsettingEdgeTool(List<NodeDescription> targetElementDescriptions) {
+    private EdgeTool createSubsettingEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
-        var setName = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression("subsets");
+        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.elementInitializer()");
 
         var setSubsettingFeature = this.viewBuilderHelper.newSetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
@@ -275,7 +291,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
-                .children(setName.build(), setSubsettingFeature.build(), setSubsettedFeature.build(), setSpecific.build(),
+                .children(callElementInitializerService.build(), setSubsettingFeature.build(), setSubsettedFeature.build(), setSpecific.build(),
                         setGeneral.build());
 
         var createInstance = this.viewBuilderHelper.newCreateInstance()
@@ -291,6 +307,50 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
         return builder
                 .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSubsetting()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSubsetting().getName() + SVG)
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    private EdgeTool createFeatureTypingEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.elementInitializer()");
+
+        var setTypedFeature = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE);
+
+        var setType = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
+
+        var setSpecific = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSpecialization_Specific().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE);
+
+        var setGeneral = this.viewBuilderHelper.newSetValue()
+                .featureName(SysmlPackage.eINSTANCE.getSpecialization_General().getName())
+                .valueExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET);
+
+        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:newInstance")
+                .children(callElementInitializerService.build(), setTypedFeature.build(), setType.build(), setSpecific.build(), setGeneral.build());
+
+        var createInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureTyping()))
+                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
+                .variableName("newInstance")
+                .children(changeContextNewInstance.build());
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE)
+                .children(createInstance.build());
+
+        return builder
+                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFeatureTyping()))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getFeatureTyping().getName() + SVG)
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
