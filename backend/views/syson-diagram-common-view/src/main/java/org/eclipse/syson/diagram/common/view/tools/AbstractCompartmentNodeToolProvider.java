@@ -46,6 +46,16 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
     protected abstract String getNodeToolName();
 
     /**
+     * Return the node tool precondition expression to control whether the tool is added to the palette or not.<br>
+     * By default no precondition expression is provided. 
+     * Implementers might override this method to explicitly provide this precondition expression.
+     * @return the node tool precondition expression.
+     */
+    protected String getPreconditionExpression() {
+        return null;
+    }
+
+    /**
      * Return the node tool icon URL expression to retrieve the icon of the tool visible in the compartment palette.
      *
      * @return
@@ -62,6 +72,7 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
         return builder.name(this.getNodeToolName())
                 .iconURLsExpression(this.getNodeToolIconURLsExpression())
                 .body(creationCompartmentItemServiceCall.build())
+                .preconditionExpression(this.getPreconditionExpression())
                 .build();
     }
 }

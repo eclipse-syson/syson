@@ -23,7 +23,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Requirement Subject Compartment node description in General View diagram.
+ * Requirement Subject Compartment node description.
  *
  * @author Jerome Gout
  */
@@ -40,8 +40,16 @@ public class RequirementSubjectCompartmentNodeDescriptionProvider extends Abstra
 
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
-        // No drop allowed
+        var subjectNodeDescripion = cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()));
+        if (subjectNodeDescripion.isPresent()) {
+            return List.of(subjectNodeDescripion.get());
+        }
         return List.of();
+    }
+
+    @Override
+    protected String getDropElementFromDiagramExpression() {
+        return "aql:droppedElement.dropRequirementSubjectFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
     }
 
     @Override
