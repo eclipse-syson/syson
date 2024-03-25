@@ -31,6 +31,8 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 
 /**
@@ -251,5 +253,19 @@ public class ViewToolService extends ToolService {
                     }
                 });
         return partDef;
+    }
+
+    public Element dropRequirementSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (targetElement instanceof RequirementUsage requirementUsage) {
+            boolean noExistingSubject = requirementUsage.getOwnedRelationship().stream()
+                    .filter(SubjectMembership.class::isInstance)
+                    .map(SubjectMembership.class::cast)
+                    .findFirst().isEmpty();
+            if (noExistingSubject) {
+                this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+            }
+        }
+        return droppedElement;
     }
 }

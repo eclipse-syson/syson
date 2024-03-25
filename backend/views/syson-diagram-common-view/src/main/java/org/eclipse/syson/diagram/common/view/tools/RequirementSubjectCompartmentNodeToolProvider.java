@@ -37,4 +37,9 @@ public class RequirementSubjectCompartmentNodeToolProvider extends AbstractCompa
     protected String getNodeToolIconURLsExpression() {
         return "/icons/full/obj16/Subject.svg";
     }
+
+    @Override
+    protected String getPreconditionExpression() {
+        return "aql:self.isEmptySubjectCompartment()";
+    }
 }

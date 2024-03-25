@@ -102,6 +102,7 @@ public class RequirementViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void
         var createSubjectTool = this.diagramBuilderHelper.newNodeTool()
             .name("New Subject")
             .iconURLsExpression("/icons/full/obj16/Subject.svg")
+            .preconditionExpression("aql:self.isEmptySubjectCompartment()")
             .body(serviceCall.build()).build();
         return this.diagramBuilderHelper.newNodeToolSection()
             .name("Create")

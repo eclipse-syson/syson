@@ -70,6 +70,14 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
         return new CompartmentNodeToolProvider(this.eReference, this.nameGenerator);
     }
 
+    /**
+     * Returns the AQL expression evaluated to drop an element from the diagram inside this compartment.
+     * @return
+     */
+    protected String getDropElementFromDiagramExpression() {
+        return "aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+    }
+
     @Override
     public NodeDescription create() {
         return this.diagramBuilderHelper.newNodeDescription()
@@ -152,7 +160,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     private DropNodeTool createCompartmentDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
+                .expression(this.getDropElementFromDiagramExpression());
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
