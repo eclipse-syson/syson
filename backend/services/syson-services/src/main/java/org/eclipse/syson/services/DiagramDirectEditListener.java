@@ -74,6 +74,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private final ImportService importService;
 
+    private final ElementInitializerSwitch elementInitializer;
+
     private List<String> options;
 
     public DiagramDirectEditListener(Element element, IFeedbackMessageService feedbackMessageService, String... options) {
@@ -85,6 +87,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
         this.utilService = new UtilService();
         this.importService = new ImportService();
+        this.elementInitializer = new ElementInitializerSwitch();
     }
 
     @Override
@@ -183,6 +186,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         newFeatureTyping.setGeneral(type);
                         newFeatureTyping.setSpecific(usage);
                         newFeatureTyping.setTypedFeature(usage);
+                        this.elementInitializer.caseFeatureTyping(newFeatureTyping);
                     }
                 }
             }
@@ -241,6 +245,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     newSubclassification.setGeneral(definition);
                     newSubclassification.setSubclassifier(subclassificationDef);
                     newSubclassification.setSpecific(subclassificationDef);
+                    this.elementInitializer.caseSubclassification(newSubclassification);
                 }
             }
         }
@@ -286,6 +291,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     newSubsetting.setGeneral(usage);
                     newSubsetting.setSubsettingFeature(subsettingUsage);
                     newSubsetting.setSpecific(subsettingUsage);
+                    this.elementInitializer.caseSubsetting(newSubsetting);
                 }
             }
         }
@@ -340,6 +346,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         newRedefinition.setRedefiningFeature(redefining);
                         newRedefinition.setSubsettingFeature(redefining);
                         newRedefinition.setSpecific(redefining);
+                        this.elementInitializer.caseRedefinition(newRedefinition);
                     }
                 }
             }

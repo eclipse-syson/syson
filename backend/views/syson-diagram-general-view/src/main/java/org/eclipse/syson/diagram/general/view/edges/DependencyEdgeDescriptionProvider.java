@@ -40,6 +40,16 @@ public class DependencyEdgeDescriptionProvider extends AbstractDependencyEdgeDes
         return "GV Edge Dependency";
     }
 
+    @Override
+    protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
+        return this.getSourceAndTarget(cache);
+    }
+
+    @Override
+    protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
+        return this.getSourceAndTarget(cache);
+    }
+
     private List<NodeDescription> getSourceAndTarget(IViewDiagramElementFinder cache) {
         var nameGenerator = new GVDescriptionNameGenerator();
         var sourcesAndTargets = new ArrayList<NodeDescription>();
@@ -51,15 +61,5 @@ public class DependencyEdgeDescriptionProvider extends AbstractDependencyEdgeDes
         });
         cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(sourcesAndTargets::add);
         return sourcesAndTargets;
-    }
-
-    @Override
-    protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
-        return this.getSourceAndTarget(cache);
-    }
-
-    @Override
-    protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
-        return this.getSourceAndTarget(cache);
     }
 }

@@ -13,8 +13,14 @@
 package org.eclipse.syson.services;
 
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
@@ -31,6 +37,12 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     }
 
     @Override
+    public Element caseDependency(Dependency object) {
+        object.setDeclaredName("dependency");
+        return object;
+    }
+
+    @Override
     public Element caseDefinition(Definition object) {
         object.setDeclaredName(object.eClass().getName());
         return object;
@@ -39,6 +51,36 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseEnumerationDefinition(EnumerationDefinition object) {
         object.setIsVariation(true);
+        return object;
+    }
+
+    @Override
+    public Element caseFeatureTyping(FeatureTyping object) {
+        object.setDeclaredName("typed by");
+        return object;
+    }
+
+    @Override
+    public Element caseRedefinition(Redefinition object) {
+        object.setDeclaredName("redefines");
+        return object;
+    }
+
+    @Override
+    public Element caseSpecialization(Specialization object) {
+        object.setDeclaredName("specializes");
+        return object;
+    }
+
+    @Override
+    public Element caseSubclassification(Subclassification object) {
+        object.setDeclaredName("specializes");
+        return object;
+    }
+
+    @Override
+    public Element caseSubsetting(Subsetting object) {
+        object.setDeclaredName("subsets");
         return object;
     }
 
