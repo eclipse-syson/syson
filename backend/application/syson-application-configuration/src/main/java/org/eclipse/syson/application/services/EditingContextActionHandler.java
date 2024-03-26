@@ -47,7 +47,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-
 /**
  * Handler used to perform an action on the editingContext.
  *

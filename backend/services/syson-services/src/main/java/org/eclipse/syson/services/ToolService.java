@@ -66,7 +66,7 @@ public class ToolService {
     protected final IObjectService objectService;
 
     protected final IRepresentationDescriptionSearchService representationDescriptionSearchService;
-    
+
     private final Logger logger = LoggerFactory.getLogger(ToolService.class);
 
     public ToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
@@ -253,7 +253,8 @@ public class ToolService {
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
     }
 
-    protected Node createFakeNode(EObject semanticElement, Object parentNode, IDiagramContext diagramContext, DiagramDescription diagramDescription, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+    protected Node createFakeNode(EObject semanticElement, Object parentNode, IDiagramContext diagramContext, DiagramDescription diagramDescription,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         String targetObjectId = this.objectService.getId(semanticElement);
         String parentElementId = null;
         org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = null;

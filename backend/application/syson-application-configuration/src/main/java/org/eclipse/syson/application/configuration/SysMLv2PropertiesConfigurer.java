@@ -116,8 +116,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         this.viewRegistry.register(view);
 
         // Convert the View-based FormDescription and register the result into the system
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(),
-                List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService), this.labelService), List.of(SysmlPackage.eINSTANCE));
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService), this.labelService),
+                List.of(SysmlPackage.eINSTANCE));
         IRepresentationDescription converted = this.converter.convert(viewFormDescription, List.of(), interpreter);
         if (converted instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
             formDescription.getPageDescriptions().forEach(registry::add);
@@ -192,7 +192,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
+        setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
+                + LabelConstants.CLOSE_PARENTHESIS);
         refWidget.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
@@ -214,7 +215,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
+        setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
+                + LabelConstants.CLOSE_PARENTHESIS);
         refWidget.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
@@ -236,7 +238,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
+        setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
+                + LabelConstants.CLOSE_PARENTHESIS);
         refWidget.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
@@ -258,7 +261,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
+        setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
+                + LabelConstants.CLOSE_PARENTHESIS);
         refWidget.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);

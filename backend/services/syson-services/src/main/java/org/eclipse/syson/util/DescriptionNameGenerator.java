@@ -41,11 +41,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
 
     protected String getName(String prefix, String descType, String type) {
         StringBuilder name = new StringBuilder();
-        name.append(prefix)
-            .append(" ")
-            .append(descType)
-            .append(" ")
-            .append(type);
+        name.append(prefix).append(" ").append(descType).append(" ").append(type);
         return name.toString();
     }
 
@@ -68,10 +64,12 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     /**
      * Returns the name of the creation tool of the given {@link EClassifier} with a specified prefix.
      *
-     * @param prefix the string that should be prepended to the name of the given {@link EClassifier}
-     * @param eClassifier the {@link EClassifier} the creation tool is in charge of.
+     * @param prefix
+     *            the string that should be prepended to the name of the given {@link EClassifier}
+     * @param eClassifier
+     *            the {@link EClassifier} the creation tool is in charge of.
      * @return a string starting with the given prefix and followed by the name of the given {@link EClassifier}.<br>
-     * If the given classifier is a usage, the word "Usage" is removed from the name of the classifier.
+     *         If the given classifier is a usage, the word "Usage" is removed from the name of the classifier.
      */
     @Override
     public String getCreationToolName(String prefix, EClassifier eClassifier) {
@@ -101,7 +99,8 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     /**
      * Returns the name of a creation tool of the given {@link EClassifier}.
      *
-     * @param eClassifier the {@link EClassifier} the creation tool is in charge of.
+     * @param eClassifier
+     *            the {@link EClassifier} the creation tool is in charge of.
      * @return a string starting with the word {@code NEW} and followed by the name of the given {@link EClassifier}.
      */
     @Override
@@ -111,7 +110,9 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
 
     /**
      * Returns the name of a {@link NodeDescription} starting with the diagram prefix and followed by the given string.
-     * @param type a string to form the name of the node description.
+     *
+     * @param type
+     *            a string to form the name of the node description.
      * @return a string starting with the diagram prefix and followed by the given string.
      */
     @Override
@@ -120,9 +121,11 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     }
 
     /**
-     * Returns the name of a {@link NodeDescription} starting with the diagram prefix and followed by the name of the given {@link EClass}.
+     * Returns the name of a {@link NodeDescription} starting with the diagram prefix and followed by the name of the
+     * given {@link EClass}.
      *
-     * @param eClass the {@link EClass} used to compute the name of the {@link NodeDescription}.
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
      * @return a string starting with the diagram prefix and followed by the name of the given {@link EClass}
      */
     @Override
@@ -131,10 +134,15 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     }
 
     /**
-     * Returns the name of a compartment {@link NodeDescription} starting with the diagram prefix, followed by the name of the given {@link EClass} and the name of the given {@link EReference}.
-     * @param eClass the {@link EClass} used to compute the name of the {@link NodeDescription}.
-     * @param eReference the {@link EReference} that the compartment is containing.
-     * @return a string starting with the diagram prefix, followed by the name of the given {@link EClass} and the name of the given {@link EReference}
+     * Returns the name of a compartment {@link NodeDescription} starting with the diagram prefix, followed by the name
+     * of the given {@link EClass} and the name of the given {@link EReference}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
+     * @param eReference
+     *            the {@link EReference} that the compartment is containing.
+     * @return a string starting with the diagram prefix, followed by the name of the given {@link EClass} and the name
+     *         of the given {@link EReference}
      */
     @Override
     public String getCompartmentName(EClass eClass, EReference eReference) {
@@ -142,10 +150,15 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     }
 
     /**
-     * Returns the name of a compartment items {@link NodeDescription} starting with the diagram prefix, followed by the name of the given {@link EClass} and the name of the given {@link EReference}.
-     * @param eClass the {@link EClass} used to compute the name of the {@link NodeDescription}.
-     * @param eReference the {@link EReference} that the compartment is containing.
-     * @return a string starting with the diagram prefix, followed by the name of the given {@link EClass} and the name of the given {@link EReference}
+     * Returns the name of a compartment items {@link NodeDescription} starting with the diagram prefix, followed by the
+     * name of the given {@link EClass} and the name of the given {@link EReference}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
+     * @param eReference
+     *            the {@link EReference} that the compartment is containing.
+     * @return a string starting with the diagram prefix, followed by the name of the given {@link EClass} and the name
+     *         of the given {@link EReference}
      */
     @Override
     public String getCompartmentItemName(EClass eClass, EReference eReference) {
@@ -153,8 +166,11 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     }
 
     /**
-     * Returns the name of a {@link EdgeDescription} starting with the diagram prefix and followed by the given edge type.
-     * @param type a string representing the name of the edge.
+     * Returns the name of a {@link EdgeDescription} starting with the diagram prefix and followed by the given edge
+     * type.
+     *
+     * @param type
+     *            a string representing the name of the edge.
      * @return a string starting with the diagram prefix and followed by the given edge type.
      */
     @Override

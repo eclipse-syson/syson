@@ -40,7 +40,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 /**
  * Load all KerML/SysML standard libraries at SysON start.
- * 
+ *
  * @author arichard
  */
 @Configuration
@@ -60,8 +60,8 @@ public class SysMLStandardLibrariesConfiguration {
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
         ePackageRegistry.put(SysmlPackage.eNS_URI, SysmlPackage.eINSTANCE);
         this.librariesResourceSet.setPackageRegistry(ePackageRegistry);
-        loadResourcesFrom(this.librariesResourceSet, "kerml.libraries/", KERML_LIBRARY_SCHEME);
-        loadResourcesFrom(this.librariesResourceSet, "sysml.libraries/", SYSML_LIBRARY_SCHEME);
+        this.loadResourcesFrom(this.librariesResourceSet, "kerml.libraries/", KERML_LIBRARY_SCHEME);
+        this.loadResourcesFrom(this.librariesResourceSet, "sysml.libraries/", SYSML_LIBRARY_SCHEME);
         EcoreUtil.resolveAll(this.librariesResourceSet);
         Instant finish = Instant.now();
         long timeElapsed = Duration.between(start, finish).toSeconds();
@@ -76,7 +76,8 @@ public class SysMLStandardLibrariesConfiguration {
         try {
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
             String currentLibraryName = "";
-            org.springframework.core.io.Resource[] resources = resolver.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + librariesDirectoryPath + "*." + JsonResourceFactoryImpl.EXTENSION);
+            org.springframework.core.io.Resource[] resources = resolver
+                    .getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + librariesDirectoryPath + "*." + JsonResourceFactoryImpl.EXTENSION);
             for (org.springframework.core.io.Resource resource : resources) {
                 String libraryFilePath = resource.getFilename();
                 currentLibraryName = FilenameUtils.getBaseName(libraryFilePath);

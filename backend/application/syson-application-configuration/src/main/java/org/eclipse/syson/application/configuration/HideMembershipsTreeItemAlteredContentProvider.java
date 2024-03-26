@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 /**
  * An implementation of {@link IExplorerTreeItemAlteredContentProvider} allowing to hide memberships tree items from
  * Explorer tree without hide their children.
- * 
+ *
  * @author arichard
  */
 @Service

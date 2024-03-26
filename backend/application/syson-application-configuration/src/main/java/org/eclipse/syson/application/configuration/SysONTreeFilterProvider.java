@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Specific tree filter provider for SysON.
- * 
+ *
  * @author arichard
  */
 @Service

@@ -28,8 +28,10 @@ public interface IDescriptionNameGenerator {
     /**
      * Returns the name of a creation tool using the given {@link EClassifier} and a prefix.
      *
-     * @param prefix the string that should be prepended to the name of the given {@link EClassifier}
-     * @param eClassifier the {@link EClassifier} the creation tool is in charge of.
+     * @param prefix
+     *            the string that should be prepended to the name of the given {@link EClassifier}
+     * @param eClassifier
+     *            the {@link EClassifier} the creation tool is in charge of.
      * @return a string used to name a creation {@link NodeTool}.
      */
     String getCreationToolName(String prefix, EClassifier eClassifier);
@@ -37,7 +39,8 @@ public interface IDescriptionNameGenerator {
     /**
      * Returns the name of a creation tool using the given {@link EClassifier}.
      *
-     * @param eClassifier the {@link EClassifier} the creation tool is in charge of.
+     * @param eClassifier
+     *            the {@link EClassifier} the creation tool is in charge of.
      * @return a string used to name a creation {@link NodeTool}.
      */
     String getCreationToolName(EClassifier eClassifier);
@@ -46,7 +49,8 @@ public interface IDescriptionNameGenerator {
      * Returns the name of a creation tool using the given {@link EReference}.<br>
      * The default behavior is to return the creation tool name of the reference's type.
      *
-     * @param eReference the {@link EReference} that the compartment is containing.
+     * @param eReference
+     *            the {@link EReference} that the compartment is containing.
      * @return a string used to name a creation {@link NodeTool}.
      */
     default String getCreationToolName(EReference eReference) {
@@ -56,7 +60,8 @@ public interface IDescriptionNameGenerator {
     /**
      * Returns the name of a {@link NodeDescription} using the given string.
      *
-     * @param type a string to form the name of the node description.
+     * @param type
+     *            a string to form the name of the node description.
      * @return a string used to name a {@link NodeDescription}.
      */
     String getNodeName(String type);
@@ -64,7 +69,8 @@ public interface IDescriptionNameGenerator {
     /**
      * Returns the name of a {@link NodeDescription} using the given {@link EClass}.
      *
-     * @param eClass the {@link EClass} used to compute the name of the {@link NodeDescription}.
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
      * @return a string used to name a {@link NodeDescription}.
      */
     String getNodeName(EClass eClass);
@@ -72,17 +78,22 @@ public interface IDescriptionNameGenerator {
     /**
      * Returns the name of a compartment {@link NodeDescription} using the given {@link EClass} and {@link EReference}.
      *
-     * @param eClass the {@link EClass} used to compute the name of the {@link NodeDescription}.
-     * @param eReference the {@link EReference} that the compartment is containing.
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
+     * @param eReference
+     *            the {@link EReference} that the compartment is containing.
      * @return a string used to name a compartment {@link NodeDescription}.
      */
     String getCompartmentName(EClass eClass, EReference eReference);
 
     /**
-     * Returns the name of a compartment item {@link NodeDescription} using the given {@link EClass} and {@link EReference}.
+     * Returns the name of a compartment item {@link NodeDescription} using the given {@link EClass} and
+     * {@link EReference}.
      *
-     * @param eClass the {@link EClass} used to compute the name of the {@link NodeDescription}.
-     * @param eReference the {@link EReference} that the compartment is containing.
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
+     * @param eReference
+     *            the {@link EReference} that the compartment is containing.
      * @return a string used to name a compartment items {@link NodeDescription}.
      */
     String getCompartmentItemName(EClass eClass, EReference eReference);
@@ -90,7 +101,8 @@ public interface IDescriptionNameGenerator {
     /**
      * Returns the name of a {@link EdgeDescription} using given edge type.
      *
-     * @param type a string representing the name of the edge.
+     * @param type
+     *            a string representing the name of the edge.
      * @return a string used to name a {@link EdgeDescription}.
      */
     String getEdgeName(String type);

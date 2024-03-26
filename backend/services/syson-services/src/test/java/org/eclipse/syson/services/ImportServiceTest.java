@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Import-related Java services tests.
- * 
+ *
  * @author arichard
  */
 public class ImportServiceTest extends AbstractServiceTest {
@@ -51,7 +51,7 @@ public class ImportServiceTest extends AbstractServiceTest {
     @DisplayName("A Usage with a type that is a Definition from another Package")
     @Test
     void testHandleImportForTypeFromAnotherPackage() {
-        Resource resource = loadResourcesFrom(this.resourceSet, "testImport.xmi");
+        Resource resource = this.loadResourcesFrom(this.resourceSet, "testImport.xmi");
         assertNotNull(resource);
         EObject usage1 = resource.getEObject("3ebdee69-3032-46a9-8fbf-f337034829c9");
         assertNotNull(usage1);
@@ -87,7 +87,7 @@ public class ImportServiceTest extends AbstractServiceTest {
     @DisplayName("A Usage with a type that is a Definition from the same Package")
     @Test
     void testHandleImportForTypeFromSamePackage() {
-        Resource resource = loadResourcesFrom(this.resourceSet, "testImport.xmi");
+        Resource resource = this.loadResourcesFrom(this.resourceSet, "testImport.xmi");
         assertNotNull(resource);
         EObject usage2 = resource.getEObject("28e306bc-1329-4be0-be10-d2b4f792c383");
         assertNotNull(usage2);
@@ -113,7 +113,7 @@ public class ImportServiceTest extends AbstractServiceTest {
     @DisplayName("A Usage with a type that is a Definition from another Package, but a recursive import already exists")
     @Test
     void testHandleRecursiveImportForTypeFromAnotherPackage() {
-        Resource resource = loadResourcesFrom(this.resourceSet, "testImport.xmi");
+        Resource resource = this.loadResourcesFrom(this.resourceSet, "testImport.xmi");
         assertNotNull(resource);
         EObject usage1 = resource.getEObject("3ebdee69-3032-46a9-8fbf-f337034829c9");
         assertNotNull(usage1);
@@ -147,7 +147,7 @@ public class ImportServiceTest extends AbstractServiceTest {
         // Change the type of usage1 from P1Def1 to P111Def1
         FeatureTyping featureTyping = ((PartUsage) usage1).getOwnedTyping().get(0);
         featureTyping.setType((PartDefinition) p111Def1);
-        
+
         // No new import because the existing recursive import should handle the new type
         this.importService.handleImport((PartUsage) usage1, (PartDefinition) p1Def1);
         ownedImport = ((org.eclipse.syson.sysml.Package) package2).getOwnedImport();

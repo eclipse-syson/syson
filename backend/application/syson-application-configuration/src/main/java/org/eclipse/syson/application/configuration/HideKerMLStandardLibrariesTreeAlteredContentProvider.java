@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 /**
  * An implementation of {@link IExplorerTreeAlteredContentProvider} allowing to hide KerML standard libraries documents
  * from Explorer tree.
- * 
+ *
  * @author arichard
  */
 @Service

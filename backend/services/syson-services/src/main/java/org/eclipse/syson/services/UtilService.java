@@ -273,7 +273,7 @@ public class UtilService {
 
     /**
      * Check if the given element name is a qualified name.
-     * 
+     *
      * @param elementName
      *            the given element name.
      * @return <code>true</code> if the given element name is a qualified name, <code>false</code> otherwise.

@@ -18,7 +18,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
  * Helper class allowing to convert a String into a Sysml metamodel EClass.
- * 
+ *
  * @author arichard
  */
 public final class SysMLMetamodelHelper {
@@ -38,8 +38,8 @@ public final class SysMLMetamodelHelper {
     }
 
     /**
-     * Get the {@link EClass} from the {@link SysmlPackage} using the simple or qualified
-     * name ("Package" vs "sysml::Package").
+     * Get the {@link EClass} from the {@link SysmlPackage} using the simple or qualified name ("Package" vs
+     * "sysml::Package").
      *
      * @param type
      *            the searched type

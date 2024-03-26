@@ -34,7 +34,7 @@ import org.springframework.core.io.ClassPathResource;
 
 /**
  * Abstract tests class, providing useful methods.
- * 
+ *
  * @author arichard
  */
 public abstract class AbstractServiceTest {
@@ -50,9 +50,9 @@ public abstract class AbstractServiceTest {
         if (existingEMFResource.isEmpty()) {
             try (var inputStream = new ByteArrayInputStream(classPathResource.getContentAsByteArray())) {
                 if (classPathResource.getFilename().endsWith(".json")) {
-                    emfResource = loadFromJSON(uri, inputStream);
+                    emfResource = this.loadFromJSON(uri, inputStream);
                 } else {
-                    emfResource = loadFromXMI(uri, inputStream);
+                    emfResource = this.loadFromXMI(uri, inputStream);
                 }
                 resourceSet.getResources().add(emfResource);
                 emfResource.eAdapters().add(new ResourceMetadataAdapter(modelPath));
@@ -63,14 +63,14 @@ public abstract class AbstractServiceTest {
         }
         return emfResource;
     }
-    
+
     private Resource loadFromXMI(URI uri, InputStream inputStream) throws IOException {
         Resource inputResource = new XMIResourceImpl(uri);
         Map<String, Object> xmiLoadOptions = new EMFResourceUtils().getXMILoadOptions(new XMLParserPoolImpl());
         inputResource.load(inputStream, xmiLoadOptions);
         return inputResource;
     }
-    
+
     private Resource loadFromJSON(URI uri, InputStream inputStream) throws IOException {
         Resource inputResource = new JSONResourceFactory().createResource(uri);
         inputResource.load(inputStream, Map.of());

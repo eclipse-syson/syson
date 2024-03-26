@@ -26,7 +26,7 @@ import org.eclipse.syson.sysml.Membership;
 
 /**
  * EContentAdapter for SysON. Allow to cache SysML elements by their type.
- * 
+ *
  * @author arichard
  */
 public class SysONEContentAdapter extends EContentAdapter {
@@ -46,7 +46,7 @@ public class SysONEContentAdapter extends EContentAdapter {
             if (this.cache.containsKey(eClass)) {
                 value = this.cache.get(eClass);
             } else {
-                value = new ArrayList<EObject>();
+                value = new ArrayList<>();
             }
             value.add(element);
             this.cache.put(eClass, value);

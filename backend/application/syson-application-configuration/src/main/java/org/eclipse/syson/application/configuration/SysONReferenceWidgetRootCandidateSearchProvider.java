@@ -25,9 +25,9 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.springframework.stereotype.Service;
 
 /**
- * Provides the list of root elements used to select or add a reference value.
- * ElementItemProvider hided KerML and SysML standard libraries elements from Reference Widget candidates.
- * This implementation allows to show these candidates through the Reference Widget's "..." action.
+ * Provides the list of root elements used to select or add a reference value. ElementItemProvider hided KerML and SysML
+ * standard libraries elements from Reference Widget candidates. This implementation allows to show these candidates
+ * through the Reference Widget's "..." action.
  *
  * @author arichard
  */
