@@ -62,4 +62,17 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
 
         return acceptedNodeTypes;
     }
+
+    @Override
+    protected String getDropElementFromDiagramExpression() {
+        String customExpression = super.getDropElementFromDiagramExpression();
+        if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()) {
+            customExpression = "aql:droppedElement.dropElementFromDiagramInRequirementAssumeConstraintCompartment(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+        } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()) {
+            customExpression = "aql:droppedElement.dropElementFromDiagramInRequirementRequireConstraintCompartment(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+        } else if (this.eReference == SysmlPackage.eINSTANCE.getUsage_NestedConstraint() || this.eReference == SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint()) {
+            customExpression = "aql:droppedElement.dropElementFromDiagramInConstraintCompartment(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+        }
+        return customExpression;
+    }
 }
