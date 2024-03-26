@@ -21,16 +21,21 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.services.ToolService;
+import org.eclipse.syson.sysml.ConstraintDefinition;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -264,6 +269,51 @@ public class ViewToolService extends ToolService {
                     .findFirst().isEmpty();
             if (noExistingSubject) {
                 this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+            }
+        }
+        return droppedElement;
+    }
+
+    public Element dropElementFromDiagramInRequirementAssumeConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (droppedElement instanceof ConstraintUsage droppedConstraint && targetElement instanceof RequirementUsage requirementUsage) {
+            this.moveContraintInRequirementConstraintCompartment(droppedConstraint, requirementUsage, RequirementConstraintKind.ASSUMPTION);
+            this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+            diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+        }
+        return droppedElement;
+    }
+
+    public Element dropElementFromDiagramInRequirementRequireConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (droppedElement instanceof ConstraintUsage droppedConstraint && targetElement instanceof RequirementUsage requirementUsage) {
+            this.moveContraintInRequirementConstraintCompartment(droppedConstraint, requirementUsage, RequirementConstraintKind.REQUIREMENT);
+            this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+            diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+        }
+        return droppedElement;
+    }
+
+    private void moveContraintInRequirementConstraintCompartment(ConstraintUsage droppedConstraint, RequirementUsage requirementUsage, RequirementConstraintKind kind) {
+        var oldMembership = droppedConstraint.eContainer();
+        var membership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+        membership.getOwnedRelatedElement().add(droppedConstraint);
+        membership.setKind(kind);
+        requirementUsage.getOwnedRelationship().add(membership);
+        EcoreUtil.delete(oldMembership);
+    }
+
+    public Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (droppedElement instanceof ConstraintUsage droppedConstraint) {
+            if (targetElement instanceof ConstraintUsage || targetElement instanceof ConstraintDefinition) {
+                var oldMembership = droppedConstraint.eContainer();
+                var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                membership.getOwnedRelatedElement().add(droppedConstraint);
+                targetElement.getOwnedRelationship().add(membership);
+                EcoreUtil.delete(oldMembership);
+                this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+                diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
             }
         }
         return droppedElement;
