@@ -57,9 +57,9 @@ public class GetIntermediateContainerCreationSwitch extends SysmlEClassSwitch<Op
     @Override
     public Optional<EClass> caseFeature(Feature object) {
         Optional<EClass> intermediateContainer = Optional.empty();
-        if (container instanceof Definition) {
+        if (this.container instanceof Definition) {
             intermediateContainer = Optional.of(SysmlPackage.eINSTANCE.getFeatureMembership());
-        } else if (!(container instanceof Membership)) {
+        } else if (!(this.container instanceof Membership)) {
             intermediateContainer = Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
         }
         return intermediateContainer;

@@ -36,7 +36,7 @@ import org.springframework.core.io.ClassPathResource;
 
 /**
  * Implementation of {@link IColorProvider} for the General View diagram.
- * 
+ *
  * @author arichard
  */
 public class ColorProvider implements IColorProvider {
@@ -56,8 +56,8 @@ public class ColorProvider implements IColorProvider {
     @Override
     public UserColor getColor(String colorName) {
         UserColor color = null;
-        if (studioColorPalettesView.isPresent()) {
-            color = this.getColorFromPalette(studioColorPalettesView.get(), colorName);
+        if (this.studioColorPalettesView.isPresent()) {
+            color = this.getColorFromPalette(this.studioColorPalettesView.get(), colorName);
         }
         if (color == null) {
             color = this.getColorFromPalette(this.view, colorName);

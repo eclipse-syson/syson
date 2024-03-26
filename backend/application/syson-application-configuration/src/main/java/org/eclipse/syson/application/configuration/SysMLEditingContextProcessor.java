@@ -35,7 +35,7 @@ import org.springframework.stereotype.Service;
 /**
  * {@link IEditingContextProcessor} for SysML libraries. All SysML standard libraries should be loaded when a project
  * (i.e. an editing context) is loaded.
- * 
+ *
  * @author arichard
  */
 @Service
@@ -44,7 +44,7 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
     private final Logger logger = LoggerFactory.getLogger(SysMLEditingContextProcessor.class);
 
     private final SysMLStandardLibrariesConfiguration standardLibraries;
-    
+
     public SysMLEditingContextProcessor(SysMLStandardLibrariesConfiguration standardLibraries) {
         this.standardLibraries = Objects.requireNonNull(standardLibraries);
     }

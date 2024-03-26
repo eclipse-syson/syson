@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Name generation-related tests.
- * 
+ *
  * @author gdaniel
  */
 public class DescriptionNameGeneratorTest {

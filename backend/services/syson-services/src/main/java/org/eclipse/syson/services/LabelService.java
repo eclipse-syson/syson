@@ -102,7 +102,7 @@ public class LabelService {
         DirectEditParser parser = new DirectEditParser(tokens);
         ParseTree tree = parser.expression();
         ParseTreeWalker walker = new ParseTreeWalker();
-        DirectEditListener listener = new DiagramDirectEditListener(element, feedbackMessageService, options);
+        DirectEditListener listener = new DiagramDirectEditListener(element, this.feedbackMessageService, options);
         walker.walk(listener, tree);
         return element;
     }
@@ -205,7 +205,8 @@ public class LabelService {
      *
      * @param usage
      *            the given {@link Element}.
-     * @return the label of the subclassification of the given {@link Element} if there is one, an empty string otherwise.
+     * @return the label of the subclassification of the given {@link Element} if there is one, an empty string
+     *         otherwise.
      */
     protected String getSubclassificationLabel(Element element) {
         StringBuilder label = new StringBuilder();

@@ -183,7 +183,7 @@ public class DetailsViewService {
         EStructuralFeature eStructuralFeature = element.eClass().getEStructuralFeature(eAttributeName);
         if (eStructuralFeature instanceof EAttribute eAttribute) {
             return this.getEnumValue(element, eAttribute);
-        }   
+        }
         return null;
     }
 
@@ -192,7 +192,7 @@ public class DetailsViewService {
     }
 
     public Element handleReferenceWidgetNewValue(Element element, String eStructuralFeature, Object newValue) {
-        setNewValue(element, element.eClass().getEStructuralFeature(eStructuralFeature), newValue);
+        this.setNewValue(element, element.eClass().getEStructuralFeature(eStructuralFeature), newValue);
         if (element.eContainer() instanceof Element parent) {
             if (newValue instanceof Element elementToImport) {
                 this.importService.handleImport(parent, elementToImport);

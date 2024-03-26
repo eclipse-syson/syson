@@ -18,7 +18,7 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
  * Specific SysmlSwitch with new doSwitch method.
- * 
+ *
  * @param <T>
  *            The type returned by the switch.
  * @author arichard
@@ -27,6 +27,6 @@ public class SysmlEClassSwitch<T> extends SysmlSwitch<T> {
 
     public T doSwitch(EClass eClass) {
         // Create a dummy instance of eClass to let switch cases access the switched EClass.
-        return doSwitch(eClass, SysmlFactory.eINSTANCE.create(eClass));
+        return this.doSwitch(eClass, SysmlFactory.eINSTANCE.create(eClass));
     }
 }

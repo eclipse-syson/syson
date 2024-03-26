@@ -34,20 +34,20 @@ public class ImportService {
     /**
      * Add import corresponding to "elementToImport" in the Package of the given {@link Element}. If an import already
      * handle the "elementToImport" in the namespace hierarchy, then no new import is added.
-     * 
+     *
      * @param element
      *            the given {@link Element}.
      * @param elementToImport
      *            the element for which an import must be added.
      */
     public void handleImport(Element element, Element elementToImport) {
-        List<Namespace> namespacesHierarchy = getAllNamespaces(element);
+        List<Namespace> namespacesHierarchy = this.getAllNamespaces(element);
         Namespace elementToImportNamespace = elementToImport.getOwningNamespace();
         if (!namespacesHierarchy.isEmpty() && elementToImportNamespace != null) {
             List<Import> allImports = namespacesHierarchy.stream().map(ns -> ns.getOwnedImport()).flatMap(Collection::stream).toList();
-            boolean existingImport = allImports.stream().anyMatch(imprt -> isImportForElement(imprt, elementToImport));
+            boolean existingImport = allImports.stream().anyMatch(imprt -> this.isImportForElement(imprt, elementToImport));
             if (!existingImport) {
-                Namespace elementNamespace = getPackageParent(element);
+                Namespace elementNamespace = this.getPackageParent(element);
                 if (elementNamespace == null) {
                     elementNamespace = element.getOwningNamespace();
                 }
@@ -65,7 +65,7 @@ public class ImportService {
         Namespace elementNamespace = element.getOwningNamespace();
         if (elementNamespace != null) {
             namespacesHierarchy.add(elementNamespace);
-            namespacesHierarchy.addAll(getNamespacesHierarchy(elementNamespace));
+            namespacesHierarchy.addAll(this.getNamespacesHierarchy(elementNamespace));
         }
         return namespacesHierarchy;
     }
@@ -78,7 +78,7 @@ public class ImportService {
                 namespacesHierarchy.add(ns);
             }
             if (eContainer instanceof Element parentElement) {
-                namespacesHierarchy.addAll(getNamespacesHierarchy(parentElement));
+                namespacesHierarchy.addAll(this.getNamespacesHierarchy(parentElement));
             }
         }
         return namespacesHierarchy;
@@ -91,7 +91,7 @@ public class ImportService {
             if (eContainer instanceof org.eclipse.syson.sysml.Package parentPkg) {
                 pkg = parentPkg;
             } else if (eContainer instanceof Element parentElement) {
-                pkg = getPackageParent(parentElement);
+                pkg = this.getPackageParent(parentElement);
             }
         }
         return pkg;
@@ -105,14 +105,14 @@ public class ImportService {
             if (importedNamespace != null && importedNamespace.equals(elementToImportNamespace)) {
                 isImportForElement = true;
             } else if (imprt.isIsRecursive()) {
-                isImportForElement = isParentOf(importedNamespace, elementToImportNamespace);
+                isImportForElement = this.isParentOf(importedNamespace, elementToImportNamespace);
             }
         } else if (imprt instanceof MembershipImport membershipImport) {
             Element importedElement = membershipImport.getImportedElement();
             if (importedElement != null && importedElement.equals(elementToImport)) {
                 isImportForElement = true;
             } else if (imprt.isIsRecursive()) {
-                isImportForElement = isParentOf(importedElement, elementToImport);
+                isImportForElement = this.isParentOf(importedElement, elementToImport);
             }
         }
         return isImportForElement;
@@ -126,7 +126,7 @@ public class ImportService {
             }
             EObject eContainer = child.eContainer();
             if (eContainer != null) {
-                isParentOf = isParentOf(parent, eContainer);
+                isParentOf = this.isParentOf(parent, eContainer);
             }
         }
         return isParentOf;
