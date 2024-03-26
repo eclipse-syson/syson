@@ -49,6 +49,8 @@ Also remove the standard libraries elements in Reference Widget's candidates (wh
 They will be only accessible through the model browser dialog.
 - https://github.com/eclipse-syson/syson/issues/112[#112] [services] Improves `getAllReachable()` util service, allowing to reduce the time being spent to retrieve the elements of a given type.
 - https://github.com/eclipse-syson/syson/issues/134[#134] [diagrams] Add FeatureTyping Edge tool, in the same way as other existing links such as Subclassification, Redefinition...
+- https://github.com/eclipse-syson/syson/issues/137[#137] [details] Add kind property from RequirementConstraintMembership on Constraint core properties.
+
 
 === New features
 

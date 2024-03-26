@@ -76,6 +76,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private static final String TYPING_PROPERTIES = "Typing Properties";
 
+    private static final String REQUIREMENT_CONSTRAINT_KIND_PROPERTIES = "Kind Properties";
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final ViewFormDescriptionConverter converter;
@@ -138,6 +140,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createExtraSubclassificationPropertiesGroup());
         pageCore.getGroups().add(this.createExtraSubsettingPropertiesGroup());
         pageCore.getGroups().add(this.createExtraFeatureTypingPropertiesGroup());
+        pageCore.getGroups().add(this.createExtraRequirementConstraintMembershipPropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
         pageAdvanced.setDomainType(domainType);
@@ -259,6 +262,28 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
+
+        return group;
+    }
+
+    private GroupDescription createExtraRequirementConstraintMembershipPropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName(REQUIREMENT_CONSTRAINT_KIND_PROPERTIES);
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression("aql:self.eContainer()->filter(sysml::RequirementConstraintMembership)");
+
+        RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
+        radio.setName("ExtraRadioKindWidget");
+        radio.setLabelExpression("Kind");
+        radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "')");
+        radio.setCandidateLabelExpression("aql:candidate.name");
+        radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "')");
+        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
+        setNewValueOperation.setExpression("aql:self.setNewValue('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "', newValue.instance)");
+        radio.getBody().add(setNewValueOperation);
+
+        group.getChildren().add(radio);
 
         return group;
     }

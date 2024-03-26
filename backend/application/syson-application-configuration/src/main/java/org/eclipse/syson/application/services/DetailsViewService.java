@@ -81,6 +81,16 @@ public class DetailsViewService {
         return true;
     }
 
+    public boolean setNewValue(Element element, String eStructuralFeatureName, Object newValue) {
+        try {
+            element.eSet(element.eClass().getEStructuralFeature(eStructuralFeatureName), newValue);
+        } catch (IllegalArgumentException | ClassCastException | ArrayStoreException e) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Unable to update the value of the " + eStructuralFeatureName + " feature", MessageLevel.ERROR));
+            return false;
+        }
+        return true;
+    }
+
     public boolean isReadOnly(EStructuralFeature eStructuralFeature) {
         return eStructuralFeature.isDerived() || !eStructuralFeature.isChangeable();
     }
@@ -153,11 +163,27 @@ public class DetailsViewService {
         return List.of();
     }
 
+    public List<EEnumLiteral> getEnumCandidates(Element element, String eAttributeName) {
+        EStructuralFeature eStructuralFeature = element.eClass().getEStructuralFeature(eAttributeName);
+        if (eStructuralFeature instanceof EAttribute eAttribute) {
+            return this.getEnumCandidates(element, eAttribute);
+        }
+        return List.of();
+    }
+
     public EEnumLiteral getEnumValue(Element element, EAttribute eAttribute) {
         if (eAttribute.getEAttributeType() instanceof EEnum eEnum) {
             Object eLiteralValue = element.eGet(eAttribute);
             return eEnum.getEEnumLiteralByLiteral(eLiteralValue.toString());
         }
+        return null;
+    }
+
+    public EEnumLiteral getEnumValue(Element element, String eAttributeName) {
+        EStructuralFeature eStructuralFeature = element.eClass().getEStructuralFeature(eAttributeName);
+        if (eStructuralFeature instanceof EAttribute eAttribute) {
+            return this.getEnumValue(element, eAttribute);
+        }   
         return null;
     }
 
