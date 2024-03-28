@@ -259,7 +259,7 @@ public class ToolService {
         String parentElementId = null;
         org.eclipse.sirius.components.view.diagram.NodeDescription childrenType = null;
 
-        if (parentNode == null) {
+        if (parentNode == null || parentNode instanceof Diagram) {
             parentElementId = diagramContext.getDiagram().getId();
             childrenType = this.getChildrenNodeDescriptionsOfType(diagramDescription, null, semanticElement.eClass());
         } else if (parentNode instanceof Node pNode) {
@@ -375,7 +375,7 @@ public class ToolService {
     }
 
     private Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescription(String descriptionId, DiagramDescription diagramDescription, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        return eAllContentStreamWithSelf(diagramDescription)
+        return this.eAllContentStreamWithSelf(diagramDescription)
                 .filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
                 .map(org.eclipse.sirius.components.view.diagram.NodeDescription.class::cast)
                 .filter(nodeDesc -> {

@@ -40,7 +40,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    private IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator nameGenerator;
 
     public AbstractEmptyDiagramNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
@@ -104,16 +104,8 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
     private NodeTool createNodeToolFromPackage(NodeDescription nodeDescription, EClass eClass) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
-
-        var setValue = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression(eClass.getName());
-
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
-                .children(setValue.build(), callElementInitializerService.build());
+                .expression("aql:newInstance.elementInitializer()");
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
@@ -145,26 +137,6 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
                 .build();
     }
 
-    private NodeToolSection addElementsToolSection(IViewDiagramElementFinder cache) {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Add")
-                .nodeTools(this.addExistingElementsTool(false), this.addExistingElementsTool(true))
-                .build();
-    }
-
-    private NodeTool addExistingElementsTool(boolean recursive) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingElements(editingContext, diagramContext, null, convertedNodes, " + recursive + ")");
-
-        return builder
-                .name("Add existing elements")
-                .iconURLsExpression("/icons/AddExistingElements.svg")
-                .body(addExistingelements.build())
-                .build();
-    }
-
     private NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
         var sections = new ArrayList<NodeToolSection>();
 
@@ -175,7 +147,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
             sections.add(sectionBuilder.build());
         });
 
-        sections.add(this.addElementsToolSection(cache));
+        sections.add(this.addElementsToolSection());
 
         return sections.toArray(NodeToolSection[]::new);
     }

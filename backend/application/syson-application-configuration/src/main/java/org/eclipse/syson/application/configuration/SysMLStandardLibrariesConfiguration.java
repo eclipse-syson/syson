@@ -52,7 +52,7 @@ public class SysMLStandardLibrariesConfiguration {
 
     private final Logger logger = LoggerFactory.getLogger(SysMLStandardLibrariesConfiguration.class);
 
-    private ResourceSet librariesResourceSet;
+    private final ResourceSet librariesResourceSet;
 
     public SysMLStandardLibrariesConfiguration() {
         Instant start = Instant.now();

@@ -14,25 +14,28 @@ package org.eclipse.syson.diagram.common.view.nodes;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.syson.diagram.common.view.AbstractViewElementDescriptionProvider;
 
 /**
  * Common pieces of node descriptions shared by {@link INodeDescriptionProvider} in all diagram View.
  *
  * @author arichard
  */
-public abstract class AbstractNodeDescriptionProvider implements INodeDescriptionProvider {
-
-    protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
-
-    protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+public abstract class AbstractNodeDescriptionProvider extends AbstractViewElementDescriptionProvider implements INodeDescriptionProvider {
 
     protected final IColorProvider colorProvider;
 
     public AbstractNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
+    }
+
+    protected NodeToolSection addElementsToolSection() {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name("Add")
+                .nodeTools(this.addExistingElementsTool(false), this.addExistingElementsTool(true))
+                .build();
     }
 }

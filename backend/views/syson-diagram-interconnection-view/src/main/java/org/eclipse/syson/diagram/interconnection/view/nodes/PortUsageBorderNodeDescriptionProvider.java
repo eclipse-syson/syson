@@ -13,20 +13,17 @@
 package org.eclipse.syson.diagram.interconnection.view.nodes;
 
 import java.util.List;
-import java.util.Objects;
 
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.DescriptionNameGenerator;
@@ -38,18 +35,12 @@ import org.eclipse.syson.util.ViewConstants;
  *
  * @author arichard
  */
-public class PortUsageBorderNodeDescriptionProvider implements INodeDescriptionProvider {
+public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
     public static final String NAME = "IV BorderNode PortUsage";
 
-    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
-
-    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
-
-    private final IColorProvider colorProvider;
-
     public PortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider) {
-        this.colorProvider = Objects.requireNonNull(colorProvider);
+        super(colorProvider);
     }
 
     @Override
