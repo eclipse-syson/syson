@@ -13,15 +13,11 @@
 package org.eclipse.syson.diagram.interconnection.view.nodes;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.FreeFormLayoutStrategyDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
@@ -31,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.DescriptionNameGenerator;
@@ -42,18 +39,12 @@ import org.eclipse.syson.util.ViewConstants;
  *
  * @author arichard
  */
-public class RootPartUsageNodeDescriptionProvider implements INodeDescriptionProvider {
+public class RootPartUsageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
     public static final String NAME = "IV Node PartUsage";
 
-    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
-
-    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
-
-    private final IColorProvider colorProvider;
-
     public RootPartUsageNodeDescriptionProvider(IColorProvider colorProvider) {
-        this.colorProvider = Objects.requireNonNull(colorProvider);
+        super(colorProvider);
     }
 
     @Override
@@ -110,7 +101,7 @@ public class RootPartUsageNodeDescriptionProvider implements INodeDescriptionPro
         return this.diagramBuilderHelper.newNodePalette()
                 .labelEditTool(editTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
-                .toolSections(this.createNodeToolSection(cache), this.addElementsToolSection(cache))
+                .toolSections(this.createNodeToolSection(cache), this.addElementsToolSection())
                 .build();
     }
 
@@ -159,33 +150,6 @@ public class RootPartUsageNodeDescriptionProvider implements INodeDescriptionPro
                 .name(new DescriptionNameGenerator("").getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
-                .build();
-    }
-
-    private NodeToolSection addElementsToolSection(IViewDiagramElementFinder cache) {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Add")
-                .nodeTools(this.addExistingElementsTool(false), this.addExistingElementsTool(true))
-                .build();
-    }
-
-    private NodeTool addExistingElementsTool(boolean recursive) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
-
-        String title = "Add existing elements";
-        String iconURL = "/icons/AddExistingElements.svg";
-        if (recursive) {
-            title += " (recursive)";
-            iconURL = "/icons/AddExistingElementsRecursive.svg";
-        }
-
-        return builder
-                .name(title)
-                .iconURLsExpression(iconURL)
-                .body(addExistingelements.build())
                 .build();
     }
 
