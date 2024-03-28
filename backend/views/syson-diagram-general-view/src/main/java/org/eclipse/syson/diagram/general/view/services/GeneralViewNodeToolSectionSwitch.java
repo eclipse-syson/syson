@@ -215,12 +215,21 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
     }
 
     private NodeTool addExistingNestedPartsTool(boolean recursive) {
+        var builder = this.diagramBuilderHelper.newNodeTool();
+
         var addExistingelements = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
 
-        return this.diagramBuilderHelper.newNodeTool()
-                .name("Add existing nested elements")
-                .iconURLsExpression("/icons/AddExistingElements.svg")
+        String title = "Add existing nested elements";
+        String iconURL = "/icons/AddExistingElements.svg";
+        if (recursive) {
+            title += " (recursive)";
+            iconURL = "/icons/AddExistingElementsRecursive.svg";
+        }
+
+        return builder
+                .name(title)
+                .iconURLsExpression(iconURL)
                 .body(addExistingelements.build())
                 .build();
     }

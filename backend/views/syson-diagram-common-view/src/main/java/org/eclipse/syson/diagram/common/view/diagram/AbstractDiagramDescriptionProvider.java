@@ -14,14 +14,13 @@ package org.eclipse.syson.diagram.common.view.diagram;
 
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.syson.diagram.common.view.AbstractViewElementDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -31,11 +30,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  *
  * @author arichard
  */
-public abstract class AbstractDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
-
-    protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
-
-    protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
+public abstract class AbstractDiagramDescriptionProvider extends AbstractViewElementDescriptionProvider implements IRepresentationDescriptionProvider {
 
     protected abstract IDescriptionNameGenerator getNameGenerator();
 
@@ -43,26 +38,6 @@ public abstract class AbstractDiagramDescriptionProvider implements IRepresentat
         return this.diagramBuilderHelper.newDiagramToolSection()
                 .name("Add")
                 .nodeTools(this.addExistingElementsTool(false), this.addExistingElementsTool(true))
-                .build();
-    }
-
-    protected NodeTool addExistingElementsTool(boolean recursive) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
-
-        String title = "Add existing elements";
-        String iconURL = "/icons/AddExistingElements.svg";
-        if (recursive) {
-            title += " (recursive)";
-            iconURL = "/icons/AddExistingElementsRecursive.svg";
-        }
-
-        return builder
-                .name(title)
-                .iconURLsExpression(iconURL)
-                .body(addExistingelements.build())
                 .build();
     }
 

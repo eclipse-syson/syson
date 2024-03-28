@@ -1,6 +1,20 @@
 = Changelog
 
-== v2024.3.0 (work in progress)
+== v2024.5.0 (work in progress)
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+- https://github.com/eclipse-syson/syson/issues/144[#144] [views] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.
+
+=== Improvements
+
+=== New features
+
+== v2024.3.0
 
 === Breaking changes
 
