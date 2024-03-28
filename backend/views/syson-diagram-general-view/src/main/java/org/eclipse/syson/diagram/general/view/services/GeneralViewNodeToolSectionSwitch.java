@@ -130,13 +130,8 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
     }
 
     private NodeTool createNestedUsageNodeTool(NodeDescription nodeDesc, EClass eClass) {
-        var setValue = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression(eClass.getName());
-
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
-                .children(setValue.build());
+                .expression("aql:newInstance.elementInitializer()");
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
@@ -169,13 +164,8 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
     }
 
     private NodeTool createNestedPartNodeTool(NodeDescription nodeDesc) {
-        var setValue = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression(SysmlPackage.eINSTANCE.getPartUsage().getName());
-
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
-                .children(setValue.build());
+                .expression("aql:newInstance.elementInitializer()");
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage()))
