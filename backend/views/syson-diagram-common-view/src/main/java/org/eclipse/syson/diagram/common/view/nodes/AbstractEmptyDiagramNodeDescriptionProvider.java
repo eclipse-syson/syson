@@ -104,16 +104,8 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
     private NodeTool createNodeToolFromPackage(NodeDescription nodeDescription, EClass eClass) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
-
-        var setValue = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression(eClass.getName());
-
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
-                .children(setValue.build(), callElementInitializerService.build());
+                .expression("aql:newInstance.elementInitializer()");
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))

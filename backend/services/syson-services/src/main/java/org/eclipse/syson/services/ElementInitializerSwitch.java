@@ -17,6 +17,7 @@ import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
@@ -57,6 +58,12 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseFeatureTyping(FeatureTyping object) {
         object.setDeclaredName("typed by");
+        return object;
+    }
+
+    @Override
+    public Element casePackage(Package object) {
+        object.setDeclaredName(object.eClass().getName());
         return object;
     }
 

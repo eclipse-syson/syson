@@ -54,12 +54,8 @@ public abstract class AbstractDiagramDescriptionProvider extends AbstractViewEle
     protected NodeTool createNodeToolFromPackage(NodeDescription nodeDescription, EClassifier eClass) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
-
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
-                .children(callElementInitializerService.build());
+                .expression("aql:newInstance.elementInitializer()");
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
