@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-import</artifactId>
-	<version>2024.1.1</version>
+	<version>2024.3.0</version>
 	<name>syson-sysml-import</name>
 	<description>SysON SysML Import</description>
 
@@ -45,14 +45,6 @@
 			<id>github-sirius-web</id>
 			<name>Apache Maven Packages</name>
 			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
-		</repository>
-		<repository>
-			<id>Eclipse EEF</id>
-			<name>EEF Repository - Snapshots</name>
-			<url>https://repo.eclipse.org/content/repositories/eef-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
 		</repository>
 	</repositories>
 
@@ -78,7 +70,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2024.1.1</version>
+			<version>2024.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
@@ -106,25 +98,6 @@
 						<phase>validate</phase>
 						<goals>
 							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.10</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
 						</goals>
 					</execution>
 				</executions>
