@@ -177,8 +177,7 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         if( ! getVisibility().equals(VisibilityKind.PUBLIC) ){
         builder.append(getVisibility() + " ");

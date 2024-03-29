@@ -360,4 +360,9 @@ public interface Element extends EObject {
      */
     Namespace libraryNamespace();
 
+    /**
+     * @generated NOT
+     */
+    TextualRepresentation getOrCreateTextualRepresentation();
+
 } // Element

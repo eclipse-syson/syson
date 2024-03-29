@@ -112,8 +112,7 @@ public class ItemUsageImpl extends OccurrenceUsageImpl implements ItemUsage {
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
 
         if(isIsReference()){

@@ -111,8 +111,7 @@ public class AllocationUsageImpl extends ConnectionUsageImpl implements Allocati
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         builder.append("allocation ");
         builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));

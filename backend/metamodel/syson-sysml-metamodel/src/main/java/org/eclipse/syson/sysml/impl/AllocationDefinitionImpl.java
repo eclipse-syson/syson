@@ -109,8 +109,7 @@ public class AllocationDefinitionImpl extends ConnectionDefinitionImpl implement
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         if(isIsAbstract()){
             builder.append("abstract ");

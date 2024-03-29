@@ -876,4 +876,17 @@ public class ElementItemProvider
         return ((IChildCreationExtender)adapterFactory).getResourceLocator();
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * See org.eclipse.syson.sysml.impl.ElementImpl.eContents().
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public Collection<?> getChildren(Object object) {
+        if (object instanceof Element elt) {
+            return elt.eContents();
+        }
+        return super.getChildren(object);
+    }
 }

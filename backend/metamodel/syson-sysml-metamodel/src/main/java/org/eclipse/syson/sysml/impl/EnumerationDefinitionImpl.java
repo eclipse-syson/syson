@@ -117,8 +117,7 @@ public class EnumerationDefinitionImpl extends AttributeDefinitionImpl implement
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         builder.append("enum def ");
         builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));

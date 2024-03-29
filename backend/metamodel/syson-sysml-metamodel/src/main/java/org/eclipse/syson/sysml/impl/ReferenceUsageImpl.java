@@ -56,8 +56,7 @@ public class ReferenceUsageImpl extends UsageImpl implements ReferenceUsage {
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         for(var element: getOwnedFeatureMembership()){
             for(var textualRepr: element.getTextualRepresentation()){

@@ -117,8 +117,7 @@ public class PartUsageImpl extends ItemUsageImpl implements PartUsage {
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         builder.append("part ");
         builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));
