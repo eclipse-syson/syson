@@ -31,7 +31,8 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.nodes.RequirementSubjectCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.RequirementDefinitionSubjectCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.RequirementUsageSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.requirement.view.edges.DependencyEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.requirement.view.edges.FeatureTypingEdgeDescriptionProvider;
@@ -69,13 +70,16 @@ public class RequirementViewDiagramDescriptionProvider extends AbstractDiagramDe
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getConstraintDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(),     List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement())),
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(),     List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(),
+                    SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(),
+                    SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getConstraintUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),          List.of(SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()))
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),          List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(),
+                    SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()))
             );
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
-            new ToolSectionDescription("Action Flow", List.of(
+            new ToolSectionDescription("Requirement", List.of(
                     SysmlPackage.eINSTANCE.getConstraintDefinition(),
                     SysmlPackage.eINSTANCE.getConstraintUsage(),
                     SysmlPackage.eINSTANCE.getPackage(),
@@ -110,8 +114,12 @@ public class RequirementViewDiagramDescriptionProvider extends AbstractDiagramDe
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new RequirementViewEmptyDiagramNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new RequirementSubjectCompartmentNodeDescriptionProvider(colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new RequirementUsageSubjectCompartmentNodeDescriptionProvider(colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new RequirementDefinitionSubjectCompartmentNodeDescriptionProvider(colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
+                SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter(), colorProvider, this.nameGenerator));
+
 
         DEFINITIONS.forEach(definition -> {
             diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider));
@@ -131,7 +139,7 @@ public class RequirementViewDiagramDescriptionProvider extends AbstractDiagramDe
         diagramElementDescriptionProviders.stream().
                 map(IDiagramElementDescriptionProvider::create)
                 .forEach(cache::put);
-        // add requirement subject compartment to requirement usage node
+        // add requirement subject compartment to requirement usage/definition nodes
         this.linkRequirementUsageSubjectCompartment(cache);
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));
 
@@ -144,6 +152,10 @@ public class RequirementViewDiagramDescriptionProvider extends AbstractDiagramDe
         NodeDescription nodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage())).get();
         cache.getNodeDescription(this.nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
                 .ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+        NodeDescription requirementDefinitionNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition())).get();
+        cache.getNodeDescription(this.nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(),
+                SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
+                .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     @Override

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -27,9 +28,9 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  *
  * @author Jerome Gout
  */
-public class RequirementSubjectCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class RequirementUsageSubjectCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public RequirementSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public RequirementUsageSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, nameGenerator);
     }
 
@@ -40,11 +41,12 @@ public class RequirementSubjectCompartmentNodeDescriptionProvider extends Abstra
 
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
-        var subjectNodeDescripion = cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()));
-        if (subjectNodeDescripion.isPresent()) {
-            return List.of(subjectNodeDescripion.get());
-        }
-        return List.of();
+        List<NodeDescription> droppableNodes = new ArrayList<>();
+        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+                .ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
+                .ifPresent(droppableNodes::add);
+        return droppableNodes;
     }
 
     @Override

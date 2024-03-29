@@ -25,7 +25,7 @@ public class RequirementSubjectCompartmentNodeToolProvider extends AbstractCompa
 
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createRequirementUsageSubject(self.eContainer().eContainer())";
+        return "aql:self.createRequirementSubject(self.eContainer().eContainer())";
     }
 
     @Override
