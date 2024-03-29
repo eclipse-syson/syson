@@ -111,8 +111,7 @@ public class InterfaceUsageImpl extends ConnectionUsageImpl implements Interface
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         builder.append("interface ");
         if( getName() != null){

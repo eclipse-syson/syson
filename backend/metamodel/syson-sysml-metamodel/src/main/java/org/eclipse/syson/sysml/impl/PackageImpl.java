@@ -130,8 +130,7 @@ public class PackageImpl extends NamespaceImpl implements org.eclipse.syson.sysm
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
         String subTextualRepresentation = "";
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         builder.append("package ");
         builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));

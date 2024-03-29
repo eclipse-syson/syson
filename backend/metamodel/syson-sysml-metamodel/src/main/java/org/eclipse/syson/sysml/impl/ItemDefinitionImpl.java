@@ -60,8 +60,7 @@ public class ItemDefinitionImpl extends OccurrenceDefinitionImpl implements Item
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         builder.append("item def ");
         builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));

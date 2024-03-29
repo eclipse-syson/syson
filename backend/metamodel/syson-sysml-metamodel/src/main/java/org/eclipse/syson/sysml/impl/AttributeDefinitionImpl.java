@@ -60,8 +60,7 @@ public class AttributeDefinitionImpl extends DefinitionImpl implements Attribute
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         builder.append("attribute def ");
         builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));

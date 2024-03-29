@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
@@ -116,17 +117,11 @@ public class VariantMembershipImpl extends OwningMembershipImpl implements Varia
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
-        StringBuilder builder = new StringBuilder();
-        if(getOwnedVariantUsage() != null){
-        for(var textualRepr: getOwnedVariantUsage().getTextualRepresentation()){
-                builder.append(textualRepr.getBody());
-            }
-        }
-        repr.setBody(builder.toString());
-        List<TextualRepresentation> textualRepresentation = List.of(repr);
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+        List<TextualRepresentation> textualRepresentations = new ArrayList<>();
+        this.getOwnedRelatedElement().stream()
+            .flatMap(elt -> elt.getTextualRepresentation().stream())
+            .forEach(textualRepresentations::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentations.size(), textualRepresentations.toArray());
     }
 
 } //VariantMembershipImpl

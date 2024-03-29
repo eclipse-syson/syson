@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.BasicInternalEList;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
@@ -34,12 +35,15 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.util.ElementUtil;
@@ -910,4 +914,44 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
         return result.toString();
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * We want to hide TextualRepresentations elements in our model trees representations.
+     * The result must be an org.eclipse.emf.ecore.util.InternalEList.
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public EList<EObject> eContents() {
+        EList<EObject> eContents = super.eContents();
+        EList<EObject> eContentsWithoutTextualRepresentations= new BasicInternalEList<EObject>(EObject.class);
+        eContentsWithoutTextualRepresentations.addAll(eContents);
+        eContents.stream().forEach(elt -> {
+            if (elt instanceof Membership membership && membership.getOwnedRelatedElement().stream().anyMatch(TextualRepresentation.class::isInstance)) {
+                eContentsWithoutTextualRepresentations.remove(membership);
+            }
+        });
+        return eContentsWithoutTextualRepresentations;
+    }
+
+    /**
+     * @generated NOT
+     */
+    @Override
+    public TextualRepresentation getOrCreateTextualRepresentation() {
+        return this.getOwnedRelationship().stream()
+            .filter(OwningMembership.class::isInstance)
+            .map(OwningMembership.class::cast)
+            .flatMap(om -> om.getOwnedRelatedElement().stream())
+            .filter(TextualRepresentation.class::isInstance)
+            .map(TextualRepresentation.class::cast)
+            .findFirst()
+            .orElseGet(() -> {
+                OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                this.getOwnedRelationship().add(owningMembership);
+                TextualRepresentation textualRepreentation = SysmlFactory.eINSTANCE.createTextualRepresentation();
+                owningMembership.getOwnedRelatedElement().add(textualRepreentation);
+                return textualRepreentation;
+            });
+    }
 } //ElementImpl

@@ -118,8 +118,7 @@ public class PortUsageImpl extends OccurrenceUsageImpl implements PortUsage {
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         if(isIsEnd()){
             builder.append("end ");

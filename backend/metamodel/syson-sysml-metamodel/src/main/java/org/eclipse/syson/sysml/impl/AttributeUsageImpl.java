@@ -113,8 +113,7 @@ public class AttributeUsageImpl extends UsageImpl implements AttributeUsage {
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentationImpl repr = new TextualRepresentationImpl();
-        repr.setLanguage("fr");
+        TextualRepresentation repr = getOrCreateTextualRepresentation();
         StringBuilder builder = new StringBuilder();
         builder.append("attribute ");
         if( getName() != null){
