@@ -36,6 +36,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -262,8 +263,8 @@ public class ViewToolService extends ToolService {
 
     public Element dropRequirementSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (targetElement instanceof RequirementUsage requirementUsage) {
-            boolean noExistingSubject = requirementUsage.getOwnedRelationship().stream()
+        if (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition) {
+            boolean noExistingSubject = targetElement.getOwnedRelationship().stream()
                     .filter(SubjectMembership.class::isInstance)
                     .map(SubjectMembership.class::cast)
                     .findFirst().isEmpty();
@@ -276,8 +277,8 @@ public class ViewToolService extends ToolService {
 
     public Element dropElementFromDiagramInRequirementAssumeConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (droppedElement instanceof ConstraintUsage droppedConstraint && targetElement instanceof RequirementUsage requirementUsage) {
-            this.moveContraintInRequirementConstraintCompartment(droppedConstraint, requirementUsage, RequirementConstraintKind.ASSUMPTION);
+        if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
+            this.moveContraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.ASSUMPTION);
             this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
             diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
         }
@@ -286,20 +287,20 @@ public class ViewToolService extends ToolService {
 
     public Element dropElementFromDiagramInRequirementRequireConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (droppedElement instanceof ConstraintUsage droppedConstraint && targetElement instanceof RequirementUsage requirementUsage) {
-            this.moveContraintInRequirementConstraintCompartment(droppedConstraint, requirementUsage, RequirementConstraintKind.REQUIREMENT);
+        if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
+            this.moveContraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.REQUIREMENT);
             this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
             diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
         }
         return droppedElement;
     }
 
-    private void moveContraintInRequirementConstraintCompartment(ConstraintUsage droppedConstraint, RequirementUsage requirementUsage, RequirementConstraintKind kind) {
+    private void moveContraintInRequirementConstraintCompartment(ConstraintUsage droppedConstraint, Element requirement, RequirementConstraintKind kind) {
         var oldMembership = droppedConstraint.eContainer();
         var membership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
         membership.getOwnedRelatedElement().add(droppedConstraint);
         membership.setKind(kind);
-        requirementUsage.getOwnedRelationship().add(membership);
+        requirement.getOwnedRelationship().add(membership);
         EcoreUtil.delete(oldMembership);
     }
 

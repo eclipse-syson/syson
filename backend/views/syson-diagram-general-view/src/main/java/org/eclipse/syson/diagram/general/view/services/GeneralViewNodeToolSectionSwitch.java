@@ -31,6 +31,7 @@ import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -90,28 +91,34 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
     }
 
     @Override
+    public Void caseRequirementUsage(RequirementUsage object) {
+        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject());
+        return super.caseRequirementUsage(object);
+    }
+
+    @Override
+    public Void caseRequirementDefinition(RequirementDefinition object) {
+        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject());
+        return super.caseRequirementDefinition(object);
+    }
+
+    @Override
     public Void caseUsage(Usage object) {
         this.createToolsForCompartmentItems(object);
         return super.caseUsage(object);
     }
 
-    @Override
-    public Void caseRequirementUsage(RequirementUsage object) {
-        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject(object));
-        return super.caseRequirementUsage(object);
-    }
-
-    private NodeToolSection createPartUsageAsRequirementSubject(RequirementUsage requirementUsage) {
-        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementUsageSubject(self.eContainer().eContainer())");
+    private NodeToolSection createPartUsageAsRequirementSubject() {
+        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementSubject(self.eContainer().eContainer())");
         var createSubjectTool = this.diagramBuilderHelper.newNodeTool()
-            .name("New Subject")
-            .iconURLsExpression("/icons/full/obj16/Subject.svg")
-            .preconditionExpression("aql:self.isEmptySubjectCompartment()")
-            .body(serviceCall.build()).build();
+                .name("New Subject")
+                .iconURLsExpression("/icons/full/obj16/Subject.svg")
+                .preconditionExpression("aql:self.isEmptySubjectCompartment()")
+                .body(serviceCall.build()).build();
         return this.diagramBuilderHelper.newNodeToolSection()
-            .name("Create")
-            .nodeTools(createSubjectTool)
-            .build();
+                .name("Create")
+                .nodeTools(createSubjectTool)
+                .build();
     }
 
     private NodeToolSection createPartDefinitionElementsToolSection(NodeDescription partUsageNodeDescription, NodeDescription itemUsageNodeDescription) {

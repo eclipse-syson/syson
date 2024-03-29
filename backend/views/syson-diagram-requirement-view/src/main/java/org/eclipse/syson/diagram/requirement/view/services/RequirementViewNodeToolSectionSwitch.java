@@ -25,6 +25,7 @@ import org.eclipse.syson.diagram.requirement.view.RVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.requirement.view.RequirementViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -62,6 +63,18 @@ public class RequirementViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void
     }
 
     @Override
+    public Void caseRequirementDefinition(RequirementDefinition object) {
+        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject());
+        return super.caseRequirementDefinition(object);
+    }
+
+    @Override
+    public Void caseRequirementUsage(RequirementUsage object) {
+        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject());
+        return super.caseRequirementUsage(object);
+    }
+
+    @Override
     public Void caseUsage(Usage object) {
         this.createToolsForCompartmentItems(object);
         return super.caseUsage(object);
@@ -91,14 +104,8 @@ public class RequirementViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void
         }
     }
 
-    @Override
-    public Void caseRequirementUsage(RequirementUsage object) {
-        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject(object));
-        return super.caseRequirementUsage(object);
-    }
-
-    private NodeToolSection createPartUsageAsRequirementSubject(RequirementUsage requirementUsage) {
-        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementUsageSubject(self.eContainer().eContainer())");
+    private NodeToolSection createPartUsageAsRequirementSubject() {
+        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementSubject(self.eContainer().eContainer())");
         var createSubjectTool = this.diagramBuilderHelper.newNodeTool()
             .name("New Subject")
             .iconURLsExpression("/icons/full/obj16/Subject.svg")

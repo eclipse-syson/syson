@@ -24,7 +24,10 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RequirementConstraintKind;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementDefinition;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
@@ -106,8 +109,16 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public EList<ConstraintUsage> getAssumedConstraint() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), data.size(), data.toArray());
+        List<ConstraintUsage> assumedConstraints = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(RequirementConstraintMembership.class::isInstance)
+                .map(RequirementConstraintMembership.class::cast)
+                .filter(rcm -> RequirementConstraintKind.ASSUMPTION.equals(rcm.getKind()))
+                .flatMap(rcm -> rcm.getOwnedRelatedElement().stream())
+                .filter(ConstraintUsage.class::isInstance)
+                .map(ConstraintUsage.class::cast)
+                .forEach(assumedConstraints::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), assumedConstraints.size(), assumedConstraints.toArray());
     }
 
     /**
@@ -128,7 +139,7 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public String getReqId() {
-        return reqId;
+        return this.reqId;
     }
 
     /**
@@ -138,10 +149,11 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public void setReqId(String newReqId) {
-        String oldReqId = reqId;
-        reqId = newReqId;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID, oldReqId, reqId));
+        String oldReqId = this.reqId;
+        this.reqId = newReqId;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID, oldReqId, this.reqId));
+        }
     }
 
     /**
@@ -151,8 +163,16 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public EList<ConstraintUsage> getRequiredConstraint() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(), data.size(), data.toArray());
+        List<ConstraintUsage> requiredConstraints = new ArrayList<>();
+        this.getOwnedRelationship().stream()
+                .filter(RequirementConstraintMembership.class::isInstance)
+                .map(RequirementConstraintMembership.class::cast)
+                .filter(rcm -> RequirementConstraintKind.REQUIREMENT.equals(rcm.getKind()))
+                .flatMap(rcm -> rcm.getOwnedRelatedElement().stream())
+                .filter(ConstraintUsage.class::isInstance)
+                .map(ConstraintUsage.class::cast)
+                .forEach(requiredConstraints::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(), requiredConstraints.size(), requiredConstraints.toArray());
     }
 
     /**
@@ -173,20 +193,22 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public Usage getSubjectParameter() {
-        Usage subjectParameter = basicGetSubjectParameter();
-        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage)eResolveProxy((InternalEObject)subjectParameter) : subjectParameter;
+        Usage subjectParameter = this.basicGetSubjectParameter();
+        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage)this.eResolveProxy((InternalEObject)subjectParameter) : subjectParameter;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Usage basicGetSubjectParameter() {
-        // TODO: implement this method to return the 'Subject Parameter' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(SubjectMembership.class::isInstance)
+                .map(SubjectMembership.class::cast)
+                .map(sm -> sm.getOwnedSubjectParameter())
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -209,22 +231,24 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID:
-                return getReqId();
+                return this.getReqId();
             case SysmlPackage.REQUIREMENT_DEFINITION__TEXT:
-                return getText();
+                return this.getText();
             case SysmlPackage.REQUIREMENT_DEFINITION__ACTOR_PARAMETER:
-                return getActorParameter();
+                return this.getActorParameter();
             case SysmlPackage.REQUIREMENT_DEFINITION__ASSUMED_CONSTRAINT:
-                return getAssumedConstraint();
+                return this.getAssumedConstraint();
             case SysmlPackage.REQUIREMENT_DEFINITION__FRAMED_CONCERN:
-                return getFramedConcern();
+                return this.getFramedConcern();
             case SysmlPackage.REQUIREMENT_DEFINITION__REQUIRED_CONSTRAINT:
-                return getRequiredConstraint();
+                return this.getRequiredConstraint();
             case SysmlPackage.REQUIREMENT_DEFINITION__STAKEHOLDER_PARAMETER:
-                return getStakeholderParameter();
+                return this.getStakeholderParameter();
             case SysmlPackage.REQUIREMENT_DEFINITION__SUBJECT_PARAMETER:
-                if (resolve) return getSubjectParameter();
-                return basicGetSubjectParameter();
+                if (resolve) {
+                    return this.getSubjectParameter();
+                }
+                return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -239,7 +263,7 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID:
-                setReqId((String)newValue);
+                this.setReqId((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -254,7 +278,7 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID:
-                setReqId(REQ_ID_EDEFAULT);
+                this.setReqId(REQ_ID_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -269,21 +293,21 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID:
-                return REQ_ID_EDEFAULT == null ? reqId != null : !REQ_ID_EDEFAULT.equals(reqId);
+                return REQ_ID_EDEFAULT == null ? this.reqId != null : !REQ_ID_EDEFAULT.equals(this.reqId);
             case SysmlPackage.REQUIREMENT_DEFINITION__TEXT:
-                return !getText().isEmpty();
+                return !this.getText().isEmpty();
             case SysmlPackage.REQUIREMENT_DEFINITION__ACTOR_PARAMETER:
-                return !getActorParameter().isEmpty();
+                return !this.getActorParameter().isEmpty();
             case SysmlPackage.REQUIREMENT_DEFINITION__ASSUMED_CONSTRAINT:
-                return !getAssumedConstraint().isEmpty();
+                return !this.getAssumedConstraint().isEmpty();
             case SysmlPackage.REQUIREMENT_DEFINITION__FRAMED_CONCERN:
-                return !getFramedConcern().isEmpty();
+                return !this.getFramedConcern().isEmpty();
             case SysmlPackage.REQUIREMENT_DEFINITION__REQUIRED_CONSTRAINT:
-                return !getRequiredConstraint().isEmpty();
+                return !this.getRequiredConstraint().isEmpty();
             case SysmlPackage.REQUIREMENT_DEFINITION__STAKEHOLDER_PARAMETER:
-                return !getStakeholderParameter().isEmpty();
+                return !this.getStakeholderParameter().isEmpty();
             case SysmlPackage.REQUIREMENT_DEFINITION__SUBJECT_PARAMETER:
-                return basicGetSubjectParameter() != null;
+                return this.basicGetSubjectParameter() != null;
         }
         return super.eIsSet(featureID);
     }
@@ -295,11 +319,13 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy()) {
+            return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (reqId: ");
-        result.append(reqId);
+        result.append(this.reqId);
         result.append(')');
         return result.toString();
     }

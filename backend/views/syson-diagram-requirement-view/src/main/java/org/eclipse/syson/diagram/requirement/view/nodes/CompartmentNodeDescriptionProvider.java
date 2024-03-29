@@ -39,9 +39,11 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
     @Override
     protected String getCustomCompartmentLabel() {
         String customLabel = super.getCustomCompartmentLabel();
-        if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()) {
+        if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()
+                || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint()) {
             customLabel = "assume constraints";
-        } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()) {
+        } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()
+                || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint()) {
             customLabel = "require constraints";
         }
         return customLabel;
@@ -66,9 +68,11 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
     @Override
     protected String getDropElementFromDiagramExpression() {
         String customExpression = super.getDropElementFromDiagramExpression();
-        if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()) {
+        if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()
+                || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint()) {
             customExpression = "aql:droppedElement.dropElementFromDiagramInRequirementAssumeConstraintCompartment(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
-        } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()) {
+        } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()
+                || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint()) {
             customExpression = "aql:droppedElement.dropElementFromDiagramInRequirementRequireConstraintCompartment(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
         } else if (this.eReference == SysmlPackage.eINSTANCE.getUsage_NestedConstraint() || this.eReference == SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint()) {
             customExpression = "aql:droppedElement.dropElementFromDiagramInConstraintCompartment(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";

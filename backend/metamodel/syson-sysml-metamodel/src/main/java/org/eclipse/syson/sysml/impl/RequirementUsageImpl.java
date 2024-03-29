@@ -227,7 +227,7 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Usage basicGetSubjectParameter() {
         return this.getOwnedRelationship().stream()

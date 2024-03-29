@@ -30,9 +30,11 @@ public class GVDescriptionNameGenerator extends DescriptionNameGenerator {
     @Override
     public String getCreationToolName(EReference eReference) {
         String name = super.getCreationToolName(eReference);
-        if (SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint().equals(eReference)) {
+        if (SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint().equals(eReference)
+                || SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint().equals(eReference)) {
             name = "New Assumed constraint";
-        } else if (SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint().equals(eReference)) {
+        } else if (SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint().equals(eReference)
+                || SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint().equals(eReference)) {
             name = "New Required constraint";
         }
         return name;

@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -128,10 +129,12 @@ public class ViewCreateService {
         OwningMembership result = SysmlFactory.eINSTANCE.createFeatureMembership();
         if (feature.getEType().equals(SysmlPackage.eINSTANCE.getEnumerationUsage())) {
             result = SysmlFactory.eINSTANCE.createVariantMembership();
-        } else if (feature.equals(SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint())) {
+        } else if (feature.equals(SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint())
+                || feature.equals(SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint())) {
             result = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
             ((RequirementConstraintMembership) result).setKind(RequirementConstraintKind.ASSUMPTION);
-        } else if (feature.equals(SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())) {
+        } else if (feature.equals(SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())
+                || feature.equals(SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())) {
             result = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
             ((RequirementConstraintMembership) result).setKind(RequirementConstraintKind.REQUIREMENT);
         }
@@ -140,12 +143,15 @@ public class ViewCreateService {
 
     /**
      * Create a new PartUsage and set it as the subject of the self element.
-     * @param self the requirement usage to set the subject for
-     * @param subjectParent the parent of the new part usage used as the subject.
+     * 
+     * @param self
+     *            the requirement usage to set the subject for
+     * @param subjectParent
+     *            the parent of the new part usage used as the subject.
      * @return
      */
-    public Element createRequirementUsageSubject(Element self, Element subjectParent) {
-        if (self instanceof RequirementUsage requirementUsage) {
+    public Element createRequirementSubject(Element self, Element subjectParent) {
+        if (self instanceof RequirementUsage || self instanceof RequirementDefinition) {
             // create the part usage that is used as the subject element
             PartUsage newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
             newPartUsage.setDeclaredName(self.getDeclaredName() + "'s subject");
@@ -160,24 +166,26 @@ public class ViewCreateService {
             referenceUsage.getOwnedRelationship().add(featureTyping);
             var subjectMembership = SysmlFactory.eINSTANCE.createSubjectMembership();
             subjectMembership.getOwnedRelatedElement().add(referenceUsage);
-            requirementUsage.getOwnedRelationship().add(subjectMembership);
+            self.getOwnedRelationship().add(subjectMembership);
         }
         return self;
     }
 
     /**
-     * Service to check whether the given RequirementUsage has a subject defined or not.
-     * @param self a {@link RequirementUsage}
-     * @return {@code true} if the given RequirementUsage contains a subject and {@code false} otherwise.
+     * Service to check whether the given RequirementUsage or RequirementDefinition has a subject defined or not.
+     * 
+     * @param self
+     *            a {@link RequirementUsage}
+     * @return {@code true} if {@code self} contains a subject and {@code false} otherwise.
      */
     public boolean isEmptySubjectCompartment(Element self) {
-        if (self instanceof RequirementUsage requirementUsage) {
-            return requirementUsage.getOwnedRelationship().stream()
+        if (self instanceof RequirementUsage || self instanceof RequirementDefinition) {
+            return self.getOwnedRelationship().stream()
                     .filter(SubjectMembership.class::isInstance)
                     .map(SubjectMembership.class::cast)
                     .findFirst().isEmpty();
         }
-        // irrelevant case, this service should only be used upon a RequirementUsage
+        // irrelevant case, this service should only be used upon a RequirementUsage/RequirementDefinition
         return true;
     }
 }
