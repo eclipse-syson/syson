@@ -15,7 +15,6 @@ package org.eclipse.syson.diagram.general.view.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
@@ -27,10 +26,15 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.InterfaceDefinition;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -43,100 +47,142 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
 
  * @author arichard
  */
-public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
+public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<NodeToolSection>> {
 
     private final ViewBuilders viewBuilderHelper;
 
     private final DiagramBuilders diagramBuilderHelper;
 
-    private final List<NodeToolSection> nodeToolSections;
-
-    private final NodeDescription nodeDescription;
-
     private final List<NodeDescription> allNodeDescriptions;
 
     private final GVDescriptionNameGenerator nameGenerator = new GVDescriptionNameGenerator();
 
-    public GeneralViewNodeToolSectionSwitch(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions) {
+    public GeneralViewNodeToolSectionSwitch(List<NodeDescription> allNodeDescriptions) {
         this.viewBuilderHelper = new ViewBuilders();
         this.diagramBuilderHelper = new DiagramBuilders();
-        this.nodeToolSections = new ArrayList<>();
-        this.nodeDescription = Objects.requireNonNull(nodeDescription);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
     }
 
-    public List<NodeToolSection> getNodeToolSections() {
-        return this.nodeToolSections;
+    @Override
+    public List<NodeToolSection> caseActionUsage(ActionUsage object) {
+        var createSection = this.buildCreateSection(
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getAttributeUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override
-    public Void caseDefinition(Definition object) {
-        this.createToolsForCompartmentItems(object);
-        return super.caseDefinition(object);
+    public List<NodeToolSection> caseConstraintUsage(ConstraintUsage object) {
+        var createSection = this.buildCreateSection(
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getAttributeUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override
-    public Void casePartDefinition(PartDefinition object) {
-        this.nodeToolSections.add(this.createPartDefinitionElementsToolSection(this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()).equals(nodeDesc.getName())).findFirst().get(),
-                this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemUsage()).equals(nodeDesc.getName())).findFirst().get()));
-        this.nodeToolSections.add(this.addElementsToolSection());
-        return super.casePartDefinition(object);
+    public List<NodeToolSection> caseDefinition(Definition object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection);
     }
 
     @Override
-    public Void casePartUsage(PartUsage object) {
-        this.nodeToolSections.add(this.createPartUsageElementsToolSection(this.nodeDescription));
-        this.nodeToolSections.add(this.addElementsToolSection());
-        return super.casePartUsage(object);
+    public List<NodeToolSection> caseInterfaceDefinition(InterfaceDefinition object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection);
     }
 
     @Override
-    public Void caseRequirementUsage(RequirementUsage object) {
-        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject());
-        return super.caseRequirementUsage(object);
+    public List<NodeToolSection> caseItemUsage(ItemUsage object) {
+        var createSection = this.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
+                        this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
+                        this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override
-    public Void caseRequirementDefinition(RequirementDefinition object) {
-        this.nodeToolSections.add(this.createPartUsageAsRequirementSubject());
-        return super.caseRequirementDefinition(object);
+    public List<NodeToolSection> casePartDefinition(PartDefinition object) {
+        var createSection = this.createPartDefinitionElementsToolSection();
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override
-    public Void caseUsage(Usage object) {
-        this.createToolsForCompartmentItems(object);
-        return super.caseUsage(object);
+    public List<NodeToolSection> casePartUsage(PartUsage object) {
+        var createSection = this.createPartUsageElementsToolSection();
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
     }
 
-    private NodeToolSection createPartUsageAsRequirementSubject() {
+    @Override
+    public List<NodeToolSection> casePortUsage(PortUsage object) {
+        var createSection = this.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseRequirementUsage(RequirementUsage object) {
+        var createSection = this.buildCreateSection(
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()),
+                this.createPartUsageAsRequirementSubjectNodeTool());
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseRequirementDefinition(RequirementDefinition object) {
+        var createSection = this.buildCreateSection(this.createPartUsageAsRequirementSubjectNodeTool());
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseUsage(Usage object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    private NodeToolSection buildCreateSection(NodeTool... nodeTools) {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name("Create")
+                .nodeTools(nodeTools)
+                .build();
+    }
+
+    private NodeTool createPartUsageAsRequirementSubjectNodeTool() {
         var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementSubject(self.eContainer().eContainer())");
-        var createSubjectTool = this.diagramBuilderHelper.newNodeTool()
+        return this.diagramBuilderHelper.newNodeTool()
                 .name("New Subject")
                 .iconURLsExpression("/icons/full/obj16/Subject.svg")
                 .preconditionExpression("aql:self.isEmptySubjectCompartment()")
                 .body(serviceCall.build()).build();
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Create")
-                .nodeTools(createSubjectTool)
-                .build();
     }
 
-    private NodeToolSection createPartDefinitionElementsToolSection(NodeDescription partUsageNodeDescription, NodeDescription itemUsageNodeDescription) {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Create")
-                .nodeTools(this.createNestedUsageNodeTool(partUsageNodeDescription, SysmlPackage.eINSTANCE.getPartUsage()),
-                        this.createNestedUsageNodeTool(itemUsageNodeDescription, SysmlPackage.eINSTANCE.getItemUsage()))
-                .build();
+    private NodeToolSection createPartDefinitionElementsToolSection() {
+        return this.buildCreateSection(
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()));
     }
 
-    private NodeToolSection createPartUsageElementsToolSection(NodeDescription nodeDesc) {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Create")
-                .nodeTools(this.createNestedPartNodeTool(nodeDesc))
-                .build();
+    private NodeToolSection createPartUsageElementsToolSection() {
+        return this.buildCreateSection(
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()));
     }
 
-    private NodeTool createNestedUsageNodeTool(NodeDescription nodeDesc, EClass eClass) {
+    private NodeTool createNestedUsageNodeTool(EClass eClass) {
+        NodeDescription nodeDesc = this.allNodeDescriptions.stream().filter(nd -> this.nameGenerator.getNodeName(eClass).equals(nd.getName())).findFirst().get();
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance.elementInitializer()");
 
@@ -170,40 +216,6 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 .build();
     }
 
-    private NodeTool createNestedPartNodeTool(NodeDescription nodeDesc) {
-        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance.elementInitializer()");
-
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage()))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDesc)
-                .parentViewExpression("aql:self.getParentNode(selectedNode, diagramContext)")
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
-
-        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newFeatureMembership")
-                .children(createEClassInstance.build(), createView.build());
-
-        var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureMembership()))
-                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newFeatureMembership")
-                .children(changeContexMembership.build());
-
-        return this.diagramBuilderHelper.newNodeTool()
-                .name(this.nameGenerator.getCreationToolName("New ", SysmlPackage.eINSTANCE.getPartUsage()))
-                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getPartUsage().getName() + ".svg")
-                .body(createMembership.build())
-                .build();
-    }
-
     private NodeToolSection addElementsToolSection() {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Add")
@@ -231,7 +243,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 .build();
     }
 
-    private void createToolsForCompartmentItems(Element object) {
+    private List<NodeTool> createToolsForCompartmentItems(Element object) {
         List<NodeTool> compartmentNodeTools = new ArrayList<>();
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
             if (compartmentEClass.equals(object.eClass())) {
@@ -241,17 +253,6 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
                 });
             }
         });
-        Optional<NodeToolSection> createToolSection = this.nodeToolSections.stream()
-                .filter(toolSection -> toolSection.getName().equals("Create"))
-                .findFirst();
-        if (createToolSection.isPresent()) {
-            createToolSection.get().getNodeTools().addAll(compartmentNodeTools);
-        } else {
-            NodeToolSection toolSection = this.diagramBuilderHelper.newNodeToolSection()
-                    .name("Create")
-                    .nodeTools(compartmentNodeTools.toArray(NodeTool[]::new))
-                    .build();
-            this.nodeToolSections.add(toolSection);
-        }
+        return compartmentNodeTools;
     }
 }
