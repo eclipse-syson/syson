@@ -197,6 +197,7 @@ public class ViewToolService extends ToolService {
             newContainer.getOwnedRelationship().add(newFeatureMembership);
             EcoreUtil.delete(owningMembership);
         }
+        usage.setIsComposite(true);
         return usage;
     }
 

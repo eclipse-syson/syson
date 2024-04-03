@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -87,7 +88,9 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseItemUsage(ItemUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")).toList();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")
+                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getItemUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
@@ -113,7 +116,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> casePartUsage(PartUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()).equals(nodeDesc.getName())).toList();
+                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPartUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
@@ -122,7 +126,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> casePortUsage(PortUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")).toList();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")
+                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortDefinition()).equals(nodeDesc.getName())).toList();
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPortUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
@@ -134,19 +139,19 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         edgeTools.add(this.createDependencyEdgeTool(this.allNodeDescriptions));
         edgeTools.add(this.createRedefinitionEdgeTool(List.of(this.nodeDescription)));
         edgeTools.add(this.createSubsettingEdgeTool(List.of(this.nodeDescription)));
-        var definitionNodeDescription = this.getDefinitionNodeDescription(this.getDefinitionFromUsage(object));
+        var definitionNodeDescription = this.getNodeDescription(this.getDefinitionFromUsage(object));
         if (definitionNodeDescription.isPresent()) {
             edgeTools.add(this.createFeatureTypingEdgeTool(List.of(definitionNodeDescription.get())));
         }
         return edgeTools;
     }
 
-    private Optional<NodeDescription> getDefinitionNodeDescription(EClassifier definition) {
-        if (definition == null) {
+    private Optional<NodeDescription> getNodeDescription(EClassifier classifier) {
+        if (classifier == null) {
             return null;
         }
         return this.allNodeDescriptions.stream()
-                .filter(nd -> nd.getDomainType().equals(definition.getEPackage().getNsPrefix() + "::" + definition.getName()))
+                .filter(nd -> nd.getDomainType().equals(classifier.getEPackage().getNsPrefix() + "::" + classifier.getName()))
                 .findFirst();
     }
 

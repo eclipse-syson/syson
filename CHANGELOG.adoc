@@ -15,6 +15,7 @@
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/151[#151] [diagrams] Add missing "Become nested" edge tools for AttributeUsage, ItemUsage, PartUsage and PortUsage.
+- https://github.com/eclipse-syson/syson/issues/153[#153] [syson] Forbid composite usages inside PortDefinition/PortUsage.
 
 === New features
 

@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.general.view.edges;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
@@ -26,7 +27,6 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -46,11 +46,11 @@ public class UsageNestedUsageEdgeDescriptionProvider extends AbstractEdgeDescrip
 
     private final EReference eReference;
 
-    public UsageNestedUsageEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider) {
+    public UsageNestedUsageEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
-        this.nameGenerator = new GVDescriptionNameGenerator();
-        this.eClass = eClass;
-        this.eReference = eReference;
+        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.eClass = Objects.requireNonNull(eClass);
+        this.eReference = Objects.requireNonNull(eReference);
     }
 
     @Override
