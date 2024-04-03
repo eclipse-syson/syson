@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -30,6 +31,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -54,6 +56,16 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getActionUsage());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getItemUsage());
         childrenCandidates.addAll(this.caseUsage(object));
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> caseAttributeDefinition(AttributeDefinition object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getAttributeUsage());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getSubclassification());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
         return childrenCandidates;
     }
 
@@ -187,6 +199,14 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     public List<EClass> casePortUsage(PortUsage object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         childrenCandidates.add(SysmlPackage.eINSTANCE.getPortUsage());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
+        childrenCandidates.addAll(this.caseUsage(object));
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> caseReferenceUsage(ReferenceUsage object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
         childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
         childrenCandidates.addAll(this.caseUsage(object));
         return childrenCandidates;

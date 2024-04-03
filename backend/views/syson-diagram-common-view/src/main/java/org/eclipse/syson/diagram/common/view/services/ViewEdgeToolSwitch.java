@@ -25,13 +25,17 @@ import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.AQLConstants;
@@ -49,6 +53,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     private static final String METAMODEL_ICONS_PATH = "/icons/full/obj16/";
 
     private static final String SVG = ".svg";
+
+    private static final String USAGE = "usage";
 
     private final ViewBuilders viewBuilderHelper;
 
@@ -69,10 +75,35 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     }
 
     @Override
+    public List<EdgeTool> caseActionUsage(ActionUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
+                    || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
+        edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getActionUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
+    }
+
+    @Override
     public List<EdgeTool> caseAttributeUsage(AttributeUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")).toList();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
+                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeDefinition()).equals(nodeDesc.getName())).toList();
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAttributeUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
+    }
+
+    @Override
+    public List<EdgeTool> caseConstraintUsage(ConstraintUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
+                    || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getConstraintDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
+        edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getConstraintUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -86,11 +117,24 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     }
 
     @Override
+    public List<EdgeTool> caseInterfaceUsage(InterfaceUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
+                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getInterfaceDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
+        edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getInterfaceUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
+    }
+
+    @Override
     public List<EdgeTool> caseItemUsage(ItemUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
                 || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getItemUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
@@ -115,9 +159,10 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> casePartUsage(PartUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
                 || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPartUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
@@ -126,9 +171,21 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> casePortUsage(PortUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
                 || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortDefinition()).equals(nodeDesc.getName())).toList();
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPortUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
+    }
+
+    @Override
+    public List<EdgeTool> caseRequirementUsage(RequirementUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
+                    || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
+        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
+        edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getRequirementUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }

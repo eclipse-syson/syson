@@ -34,11 +34,11 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the edge description between usages and their nested usages.
+ * Used to create the edge description between definitions and their owned usages.
  *
  * @author arichard
  */
-public class UsageNestedUsageEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
+public class DefinitionOwnedUsageEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
     private final IDescriptionNameGenerator nameGenerator;
 
@@ -46,7 +46,7 @@ public class UsageNestedUsageEdgeDescriptionProvider extends AbstractEdgeDescrip
 
     private final EReference eReference;
 
-    public UsageNestedUsageEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public DefinitionOwnedUsageEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.nameGenerator = Objects.requireNonNull(nameGenerator);
         this.eClass = Objects.requireNonNull(eClass);
@@ -60,7 +60,7 @@ public class UsageNestedUsageEdgeDescriptionProvider extends AbstractEdgeDescrip
                 .domainType(domainType)
                 .isDomainBasedEdge(false)
                 .labelExpression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityLabel()")
-                .name(this.nameGenerator.getEdgeName("Usage Nested " + this.eClass.getName()))
+                .name(this.nameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()))
                 .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -70,12 +70,12 @@ public class UsageNestedUsageEdgeDescriptionProvider extends AbstractEdgeDescrip
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optEdgeDescription = cache.getEdgeDescription(this.nameGenerator.getEdgeName("Usage Nested " + this.eClass.getName()));
+        var optEdgeDescription = cache.getEdgeDescription(this.nameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()));
         var optUsageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass));
         var sourceNodes = new ArrayList<NodeDescription>();
 
-        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(sourceNodes::add);
+        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
+            cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(sourceNodes::add);
         });
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
