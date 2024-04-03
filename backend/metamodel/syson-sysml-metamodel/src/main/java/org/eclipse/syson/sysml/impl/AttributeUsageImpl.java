@@ -80,6 +80,16 @@ public class AttributeUsageImpl extends UsageImpl implements AttributeUsage {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public boolean isIsReference() {
+        return true;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      * @generated
      */
     @Override

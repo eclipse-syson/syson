@@ -48,6 +48,15 @@ public class ReferenceUsageImpl extends UsageImpl implements ReferenceUsage {
         return SysmlPackage.eINSTANCE.getReferenceUsage();
     }
 
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public boolean isIsReference() {
+        return true;
+    }
 
     /**
      * <!-- begin-user-doc -->

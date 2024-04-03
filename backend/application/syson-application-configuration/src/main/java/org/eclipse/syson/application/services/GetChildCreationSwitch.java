@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
@@ -172,8 +173,20 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     }
 
     @Override
+    public List<EClass> casePortDefinition(PortDefinition object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getAttributeUsage());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getPortUsage());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getSubclassification());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
+        return childrenCandidates;
+    }
+
+    @Override
     public List<EClass> casePortUsage(PortUsage object) {
         List<EClass> childrenCandidates = new ArrayList<>();
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getPortUsage());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
         childrenCandidates.addAll(this.caseUsage(object));
         return childrenCandidates;
