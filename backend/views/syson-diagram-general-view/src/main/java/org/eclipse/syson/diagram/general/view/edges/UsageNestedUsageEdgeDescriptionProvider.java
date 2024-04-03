@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.edges;
 
+import java.util.ArrayList;
+
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
@@ -19,11 +23,13 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
-import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -32,39 +38,50 @@ import org.eclipse.syson.util.ViewConstants;
  *
  * @author arichard
  */
-public class PartUsageNestedPartEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
+public class UsageNestedUsageEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
-    public static final String NAME = "GV Edge PartUsage Nested PartUsage";
+    private final IDescriptionNameGenerator nameGenerator;
 
-    public PartUsageNestedPartEdgeDescriptionProvider(IColorProvider colorProvider) {
+    private final EClass eClass;
+
+    private final EReference eReference;
+
+    public UsageNestedUsageEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider) {
         super(colorProvider);
+        this.nameGenerator = new GVDescriptionNameGenerator();
+        this.eClass = eClass;
+        this.eReference = eReference;
     }
 
     @Override
     public EdgeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(false)
                 .labelExpression("")
-                .name(NAME)
+                .name(this.nameGenerator.getEdgeName("Usage Nested " + this.eClass.getName()))
                 .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .targetNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPart().getName())
+                .targetNodesExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
                 .build();
     }
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var nameGenerator = new GVDescriptionNameGenerator();
-        var optEdgeDescription = cache.getEdgeDescription(NAME);
-        var optPartUsageNodeDescription = cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
+        var optEdgeDescription = cache.getEdgeDescription(this.nameGenerator.getEdgeName("Usage Nested " + this.eClass.getName()));
+        var optUsageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass));
+        var sourceNodes = new ArrayList<NodeDescription>();
+
+        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
+            cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(sourceNodes::add);
+        });
 
         EdgeDescription edgeDescription = optEdgeDescription.get();
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
-        edgeDescription.getSourceNodeDescriptions().add(optPartUsageNodeDescription.get());
-        edgeDescription.getTargetNodeDescriptions().add(optPartUsageNodeDescription.get());
+        edgeDescription.getSourceNodeDescriptions().addAll(sourceNodes);
+        edgeDescription.getTargetNodeDescriptions().add(optUsageNodeDescription.get());
     }
 
     private EdgeStyle createEdgeStyle() {

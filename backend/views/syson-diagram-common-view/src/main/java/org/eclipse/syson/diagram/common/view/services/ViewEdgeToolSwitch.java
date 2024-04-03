@@ -17,16 +17,20 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.AQLConstants;
@@ -39,7 +43,7 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
  *
  * @author arichard
  */
-public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
+public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     private static final String METAMODEL_ICONS_PATH = "/icons/full/obj16/";
 
@@ -48,8 +52,6 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
     private final ViewBuilders viewBuilderHelper;
 
     private final DiagramBuilders diagramBuilderHelper;
-
-    private final List<EdgeTool> edgeTools;
 
     private final NodeDescription nodeDescription;
 
@@ -60,54 +62,83 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
     public ViewEdgeToolSwitch(NodeDescription nodeDescription, List<NodeDescription> allNodeDescriptions, IDescriptionNameGenerator nameGenerator) {
         this.viewBuilderHelper = new ViewBuilders();
         this.diagramBuilderHelper = new DiagramBuilders();
-        this.edgeTools = new ArrayList<>();
         this.nodeDescription = Objects.requireNonNull(nodeDescription);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
         this.nameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
-    public List<EdgeTool> getEdgeTools() {
-        return this.edgeTools;
+    @Override
+    public List<EdgeTool> caseAttributeUsage(AttributeUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")).toList();
+        edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAttributeUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
     }
 
     @Override
-    public Void caseDefinition(Definition object) {
-        this.edgeTools.add(this.createDependencyEdgeTool(this.allNodeDescriptions));
-        this.edgeTools.add(this.createSubclassificationEdgeTool(List.of(this.nodeDescription)));
-        return super.caseDefinition(object);
+    public List<EdgeTool> caseDefinition(Definition object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.add(this.createDependencyEdgeTool(this.allNodeDescriptions));
+        edgeTools.add(this.createSubclassificationEdgeTool(List.of(this.nodeDescription)));
+        return edgeTools;
     }
 
     @Override
-    public Void casePackage(Package object) {
-        this.edgeTools.add(this.createDependencyEdgeTool(this.allNodeDescriptions));
-        return super.casePackage(object);
+    public List<EdgeTool> caseItemUsage(ItemUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")).toList();
+        edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getItemUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
     }
 
     @Override
-    public Void casePartDefinition(PartDefinition object) {
-        this.edgeTools.add(this.createAddAsNestedPartEdgeTool(
+    public List<EdgeTool> casePackage(Package object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.add(this.createDependencyEdgeTool(this.allNodeDescriptions));
+        return edgeTools;
+    }
+
+    @Override
+    public List<EdgeTool> casePartDefinition(PartDefinition object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.add(this.createAddAsNestedPartEdgeTool(
                 this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()).equals(nodeDesc.getName())).toList()));
-        return super.casePartDefinition(object);
+        edgeTools.addAll(this.caseDefinition(object));
+        return edgeTools;
     }
 
     @Override
-    public Void casePartUsage(PartUsage object) {
-        this.edgeTools.add(this.createBecomeNestedPartEdgeTool(
-                this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()).equals(nodeDesc.getName())
-                        || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()).equals(nodeDesc.getName())).toList()));
-        return super.casePartUsage(object);
+    public List<EdgeTool> casePartUsage(PartUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")
+                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()).equals(nodeDesc.getName())).toList();
+        edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPartUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
     }
 
     @Override
-    public Void caseUsage(Usage object) {
-        this.edgeTools.add(this.createDependencyEdgeTool(this.allNodeDescriptions));
-        this.edgeTools.add(this.createRedefinitionEdgeTool(List.of(this.nodeDescription)));
-        this.edgeTools.add(this.createSubsettingEdgeTool(List.of(this.nodeDescription)));
+    public List<EdgeTool> casePortUsage(PortUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith("usage")).toList();
+        edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPortUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
+    }
+
+    @Override
+    public List<EdgeTool> caseUsage(Usage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.add(this.createDependencyEdgeTool(this.allNodeDescriptions));
+        edgeTools.add(this.createRedefinitionEdgeTool(List.of(this.nodeDescription)));
+        edgeTools.add(this.createSubsettingEdgeTool(List.of(this.nodeDescription)));
         var definitionNodeDescription = this.getDefinitionNodeDescription(this.getDefinitionFromUsage(object));
         if (definitionNodeDescription.isPresent()) {
-            this.edgeTools.add(this.createFeatureTypingEdgeTool(List.of(definitionNodeDescription.get())));
+            edgeTools.add(this.createFeatureTypingEdgeTool(List.of(definitionNodeDescription.get())));
         }
-        return super.caseUsage(object);
+        return edgeTools;
     }
 
     private Optional<NodeDescription> getDefinitionNodeDescription(EClassifier definition) {
@@ -370,14 +401,14 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<Void> {
                 .build();
     }
 
-    private EdgeTool createBecomeNestedPartEdgeTool(List<NodeDescription> targetElementDescriptions) {
+    private EdgeTool createBecomeNestedElementEdgeTool(EClass eClass, List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".becomeNestedPart(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".becomeNestedUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
 
         return builder
-                .name(this.nameGenerator.getCreationToolName("Become nested ", SysmlPackage.eINSTANCE.getPartUsage()))
+                .name(this.nameGenerator.getCreationToolName("Become nested ", eClass))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))

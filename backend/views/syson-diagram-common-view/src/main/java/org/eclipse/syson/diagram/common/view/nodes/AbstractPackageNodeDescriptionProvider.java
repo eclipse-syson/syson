@@ -156,8 +156,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
 
     private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.nameGenerator);
-        edgeToolSwitch.doSwitch(SysmlPackage.eINSTANCE.getPackage());
-        return edgeToolSwitch.getEdgeTools();
+        return edgeToolSwitch.doSwitch(SysmlPackage.eINSTANCE.getPackage());
     }
 
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
