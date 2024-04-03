@@ -148,7 +148,6 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
 
     private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.nameGenerator);
-        edgeToolSwitch.doSwitch(this.eClass);
-        return edgeToolSwitch.getEdgeTools();
+        return edgeToolSwitch.doSwitch(this.eClass);
     }
 }

@@ -40,6 +40,7 @@ import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.Usage;
 
 /**
  * Tool-related Java services used by all diagrams.
@@ -186,17 +187,17 @@ public class ViewToolService extends ToolService {
         return partDef;
     }
 
-    public PartUsage becomeNestedPart(PartUsage partUsage, Element newContainer) {
-        var eContainer = partUsage.eContainer();
+    public Usage becomeNestedUsage(Usage usage, Element newContainer) {
+        var eContainer = usage.eContainer();
         if (eContainer instanceof FeatureMembership featureMembership) {
             newContainer.getOwnedRelationship().add(featureMembership);
         } else if (eContainer instanceof OwningMembership owningMembership) {
             var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            newFeatureMembership.getOwnedRelatedElement().add(partUsage);
+            newFeatureMembership.getOwnedRelatedElement().add(usage);
             newContainer.getOwnedRelationship().add(newFeatureMembership);
             EcoreUtil.delete(owningMembership);
         }
-        return partUsage;
+        return usage;
     }
 
     public PartUsage addAsNestedPart(PartDefinition partDefinition, PartUsage partUsage) {
