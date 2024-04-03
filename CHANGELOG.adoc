@@ -4,15 +4,19 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/149[#149] [requirement-view] The `requirement-view` diagram has been introduced by error in the last release. This diagram is not defined in the SysMLv2 specification. It has been deleted in this release.
+
 === Dependency update
 
 === Bug fixes
 
-- https://github.com/eclipse-syson/syson/issues/144[#144] [views] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.
+- https://github.com/eclipse-syson/syson/issues/144[#144] [diagrams] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.
 
 === Improvements
 
 === New features
+
+- https://github.com/eclipse-syson/syson/issues/147[#147] [general-view] Refactor compartments of `RequirementDefinition` and `RequirementUsage` to better fit the specification and examples.
 
 == v2024.3.0
 
@@ -64,8 +68,6 @@ They will be only accessible through the model browser dialog.
 - https://github.com/eclipse-syson/syson/issues/112[#112] [services] Improves `getAllReachable()` util service, allowing to reduce the time being spent to retrieve the elements of a given type.
 - https://github.com/eclipse-syson/syson/issues/134[#134] [diagrams] Add FeatureTyping Edge tool, in the same way as other existing links such as Subclassification, Redefinition...
 - https://github.com/eclipse-syson/syson/issues/137[#137] [details] Add kind property from RequirementConstraintMembership on Constraint core properties.
-- https://github.com/eclipse-syson/syson/issues/147[#147] [diagrams] Refactor compartments of `RequirementDefinition` and `RequirementUsage` to better fit the specification and examples.
-
 
 === New features
 
