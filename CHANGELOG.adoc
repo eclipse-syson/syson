@@ -19,6 +19,7 @@
 - https://github.com/eclipse-syson/syson/issues/153[#153] [syson] Forbid composite usages inside PortDefinition/PortUsage.
 - https://github.com/eclipse-syson/syson/issues/155[#155] [syson] Forbid composite usages inside AttributeDefinition/AttributeUsage.
 - https://github.com/eclipse-syson/syson/issues/154[#154] [diagrams] Add missing node tools inside existing usage elements.
+- https://github.com/eclipse-syson/syson/issues/163[#163] [diagrams] Add missing composite edges between usage and compartment content
 
 === New features
 

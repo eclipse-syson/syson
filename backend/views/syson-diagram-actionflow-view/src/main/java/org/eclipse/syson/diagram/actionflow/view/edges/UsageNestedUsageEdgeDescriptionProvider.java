@@ -10,19 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.edges;
+package org.eclipse.syson.diagram.actionflow.view.edges;
 
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.edges.AbstractUsageNestedUsageEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to create the edge description between usages and their nested usages in General View.
+ * Used to create the edge description between usages and their nested usages in Action Flow View.
  *
  * @author Jerome Gout
  */
@@ -34,6 +34,6 @@ public class UsageNestedUsageEdgeDescriptionProvider extends AbstractUsageNested
 
     @Override
     protected List<EClass> getUsages() {
-        return GeneralViewDiagramDescriptionProvider.USAGES;
+        return ActionFlowViewDiagramDescriptionProvider.USAGES;
     }
 }
