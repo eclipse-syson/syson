@@ -31,6 +31,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.InterfaceDefinition;
+import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
@@ -96,6 +97,13 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
         var createSection = this.buildCreateSection();
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection);
+    }
+
+    @Override
+    public List<NodeToolSection> caseItemDefinition(ItemDefinition object) {
+        var createSection = this.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override

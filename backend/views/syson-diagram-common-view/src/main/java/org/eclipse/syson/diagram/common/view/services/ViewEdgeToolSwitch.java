@@ -132,7 +132,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseItemUsage(ItemUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition()).equals(nodeDesc.getName())
+                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getItemUsage(), targetNodes));
