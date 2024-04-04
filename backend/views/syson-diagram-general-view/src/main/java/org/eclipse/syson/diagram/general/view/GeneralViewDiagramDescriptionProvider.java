@@ -170,6 +170,7 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
