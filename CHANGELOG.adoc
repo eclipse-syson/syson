@@ -11,6 +11,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/144[#144] [diagrams] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.
+- https://github.com/eclipse-syson/syson/issues/160[#160] [syson] Add explicit usage of node to call syside javascript file.
 
 === Improvements
 
