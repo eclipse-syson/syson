@@ -59,8 +59,8 @@ public class SysmlToAst {
             input.close();
             outStream.close();
             Path path = Path.of(this.cliPath);
-            this.logger.info("Call syside application : " + path.toString() + " dump " + temp.toString());
-            String[] args = { path.toString(), "dump", temp.toString() };
+            this.logger.info("Call syside application : node " + path.toString() + " dump " + temp.toString());
+            String[] args = { "node", path.toString(), "dump", temp.toString() };
             ProcessBuilder pb = new ProcessBuilder(args);
             pb = pb.redirectErrorStream(false);
             Process p = pb.start();
