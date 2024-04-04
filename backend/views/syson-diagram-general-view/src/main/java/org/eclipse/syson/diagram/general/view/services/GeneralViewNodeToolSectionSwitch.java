@@ -142,6 +142,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getRequirementUsage()),
                 this.createPartUsageAsRequirementSubjectNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
