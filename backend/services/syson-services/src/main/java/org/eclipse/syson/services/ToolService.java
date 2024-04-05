@@ -308,8 +308,8 @@ public class ToolService {
                 .position(Position.UNDEFINED)
                 .size(Size.UNDEFINED)
                 .userResizable(true)
-                .borderNodes(List.of())
-                .childNodes(List.of())
+                .borderNodes(new ArrayList<>())
+                .childNodes(new ArrayList<>())
                 .customizedProperties(Set.of())
                 .build();
     }
