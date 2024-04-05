@@ -37,6 +37,8 @@ import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.OccurrenceDefinition;
+import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
@@ -249,6 +251,39 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(LabelConstants.CR)
             .append(this.caseElement(object))
             .append(this.subclassification(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseOccurrenceDefinition(OccurrenceDefinition object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(this.individual(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("occurrence def")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseOccurrenceUsage(OccurrenceUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(this.individual(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("occurrence")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -496,5 +531,25 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             value = "*";
         }
         return value;
+    }
+
+    private String individual(OccurrenceDefinition occurrenceDefinition) {
+        return this.individual(occurrenceDefinition.isIsIndividual());
+    }
+
+    private String individual(OccurrenceUsage occurrenceUsage) {
+        return this.individual(occurrenceUsage.isIsIndividual());
+    }
+
+    private String individual(boolean isIndividual) {
+        StringBuilder label = new StringBuilder();
+        if (isIndividual) {
+            label
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("individual")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR);
+        }
+        return label.toString();
     }
 }

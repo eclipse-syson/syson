@@ -67,6 +67,7 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             SysmlPackage.eINSTANCE.getInterfaceDefinition(),
             SysmlPackage.eINSTANCE.getItemDefinition(),
             SysmlPackage.eINSTANCE.getMetadataDefinition(),
+            SysmlPackage.eINSTANCE.getOccurrenceDefinition(),
             SysmlPackage.eINSTANCE.getPartDefinition(),
             SysmlPackage.eINSTANCE.getPortDefinition(),
             SysmlPackage.eINSTANCE.getRequirementDefinition()
@@ -78,6 +79,7 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             SysmlPackage.eINSTANCE.getConstraintUsage(),
             SysmlPackage.eINSTANCE.getInterfaceUsage(),
             SysmlPackage.eINSTANCE.getItemUsage(),
+            SysmlPackage.eINSTANCE.getOccurrenceUsage(),
             SysmlPackage.eINSTANCE.getPartUsage(),
             SysmlPackage.eINSTANCE.getPortUsage(),
             SysmlPackage.eINSTANCE.getRequirementUsage()
@@ -91,6 +93,7 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             Map.entry(SysmlPackage.eINSTANCE.getInterfaceDefinition(),   List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getItemDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
             Map.entry(SysmlPackage.eINSTANCE.getMetadataDefinition(),    List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getOccurrenceDefinition(),  List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence())),
             Map.entry(SysmlPackage.eINSTANCE.getPartDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),        List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(), List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())),
@@ -99,6 +102,7 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             Map.entry(SysmlPackage.eINSTANCE.getConstraintUsage(),       List.of(SysmlPackage.eINSTANCE.getUsage_NestedConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getInterfaceUsage(),        List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getOccurrenceUsage(),       List.of(SysmlPackage.eINSTANCE.getUsage_NestedOccurrence())),
             Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),             List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),      List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()))
@@ -133,6 +137,10 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
                     )),
             new ToolSectionDescription("Extension", List.of(
                     SysmlPackage.eINSTANCE.getMetadataDefinition()
+                    )),
+            new ToolSectionDescription("Temporal", List.of(
+                    SysmlPackage.eINSTANCE.getOccurrenceUsage(),
+                    SysmlPackage.eINSTANCE.getOccurrenceDefinition()
                     ))
             );
 
@@ -170,6 +178,7 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConstraintUsage(), SysmlPackage.eINSTANCE.getUsage_NestedConstraint(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getOccurrenceUsage(), SysmlPackage.eINSTANCE.getUsage_NestedOccurrence(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(), colorProvider, this.nameGenerator));
@@ -202,7 +211,7 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
         diagramElementDescriptionProviders.stream().
                 map(IDiagramElementDescriptionProvider::create)
                 .forEach(cache::put);
-        // add requirement subject compartment to requirement usage/definition nodes
+        // link custom compartments
         this.linkRequirementSubjectCompartment(cache);
         // link elements each other
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));

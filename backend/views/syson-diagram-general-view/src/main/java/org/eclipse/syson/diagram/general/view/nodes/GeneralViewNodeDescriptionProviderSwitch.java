@@ -30,6 +30,8 @@ import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
+import org.eclipse.syson.sysml.OccurrenceDefinition;
+import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
@@ -131,6 +133,16 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
     @Override
     public INodeDescriptionProvider caseMetadataUsage(MetadataUsage object) {
         return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getMetadataUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseOccurrenceDefinition(OccurrenceDefinition object) {
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseOccurrenceUsage(OccurrenceUsage object) {
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getOccurrenceUsage(), this.colorProvider);
     }
 
     @Override

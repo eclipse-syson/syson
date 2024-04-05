@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
+import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.edges.AbstractSubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -43,15 +44,10 @@ public class SubclassificationEdgeDescriptionProvider extends AbstractSubclassif
         var nameGenerator = new AFVDescriptionNameGenerator();
         var sourcesAndTargets = new ArrayList<NodeDescription>();
 
-        cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).ifPresent(sourcesAndTargets::add);
-        cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeDefinition())).ifPresent(sourcesAndTargets::add);
-        cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getEnumerationDefinition())).ifPresent(sourcesAndTargets::add);
-        cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getInterfaceDefinition())).ifPresent(sourcesAndTargets::add);
-        cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition())).ifPresent(sourcesAndTargets::add);
-        cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getMetadataDefinition())).ifPresent(sourcesAndTargets::add);
+        ActionFlowViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> {
+            cache.getNodeDescription(nameGenerator.getNodeName(definition)).ifPresent(sourcesAndTargets::add);
+        });
         cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(sourcesAndTargets::add);
-        cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition())).ifPresent(sourcesAndTargets::add);
-        cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortDefinition())).ifPresent(sourcesAndTargets::add);
 
         return sourcesAndTargets;
     }

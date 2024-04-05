@@ -33,6 +33,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
@@ -111,6 +112,13 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
         var createSection = this.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
                         this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
                         this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseOccurrenceDefinition(OccurrenceDefinition object) {
+        var createSection = this.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }

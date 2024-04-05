@@ -20,6 +20,7 @@
 - https://github.com/eclipse-syson/syson/issues/155[#155] [syson] Forbid composite usages inside AttributeDefinition/AttributeUsage.
 - https://github.com/eclipse-syson/syson/issues/154[#154] [diagrams] Add missing node tools inside existing usage elements.
 - https://github.com/eclipse-syson/syson/issues/163[#163] [diagrams] Add missing composite edges between usage and compartment content
+- https://github.com/eclipse-syson/syson/issues/165[#165] [general-view] Handle OccurrenceDefinition and OccurrenceUsage in General View diagram 
 
 === New features
 
