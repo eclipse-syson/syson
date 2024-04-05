@@ -11,7 +11,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/144[#144] [diagrams] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.
-- https://github.com/eclipse-syson/syson/issues/160[#160] [syson] Add explicit usage of node to call syside javascript file.
+- https://github.com/eclipse-syson/syson/issues/167[#167] [interconnection-view] Add attributes compartment in children PartUsage nodes.
 
 === Improvements
 
@@ -21,6 +21,7 @@
 - https://github.com/eclipse-syson/syson/issues/154[#154] [diagrams] Add missing node tools inside existing usage elements.
 - https://github.com/eclipse-syson/syson/issues/163[#163] [diagrams] Add missing composite edges between usage and compartment content
 - https://github.com/eclipse-syson/syson/issues/165[#165] [general-view] Handle OccurrenceDefinition and OccurrenceUsage in General View diagram 
+- https://github.com/eclipse-syson/syson/issues/160[#160] [syson] Add explicit usage of node to call syside javascript file.
 
 === New features
 

@@ -135,7 +135,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
         return defaultName;
     }
 
-    private NodeStyleDescription createCompartmentNodeStyle() {
+    protected NodeStyleDescription createCompartmentNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
@@ -149,16 +149,16 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .build();
     }
 
-    private NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
+    protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
         INodeToolProvider compartmentNodeToolProvider = this.getItemCreationToolProvider();
-
+        
         return this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache))
                 .nodeTools(compartmentNodeToolProvider.create(cache))
                 .build();
     }
 
-    private DropNodeTool createCompartmentDropFromDiagramTool(IViewDiagramElementFinder cache) {
+    protected DropNodeTool createCompartmentDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression(this.getDropElementFromDiagramExpression());
 

@@ -13,10 +13,11 @@
 package org.eclipse.syson.diagram.interconnection.view.nodes;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.FreeFormLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
@@ -28,9 +29,12 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.interconnection.view.tools.ChildrenPartUsageCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.DescriptionNameGenerator;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -43,15 +47,18 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
 
     public static final String NAME = "IV Node ChildPartUsage";
 
-    public ChildPartUsageNodeDescriptionProvider(IColorProvider colorProvider) {
+    private final IDescriptionNameGenerator nameGenerator;
+
+    public ChildPartUsageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
+        this.nameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build())
+                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().areChildNodesDraggableExpression("false").build())
                 .defaultHeightExpression("100")
                 .defaultWidthExpression("150")
                 .domainType(domainType)
@@ -68,9 +75,12 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
+        var optAttributesCompartmentNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()));
+        var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME);
 
         NodeDescription nodeDescription = optChildPartUsageNodeDescription.get();
-        nodeDescription.getReusedChildNodeDescriptions().add(nodeDescription);
+        nodeDescription.getReusedChildNodeDescriptions().add(optAttributesCompartmentNodeDescription.get());
+        nodeDescription.getReusedChildNodeDescriptions().add(optCompartmentFreeFormNodeDescription.get());
         nodeDescription.getReusedBorderNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
         nodeDescription.setPalette(this.createNodePalette(cache));
     }
@@ -80,7 +90,7 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(10)
                 .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
-                .displayHeaderSeparator(false)
+                .displayHeaderSeparator(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(true)
                 .withHeader(true)
@@ -112,10 +122,17 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
     }
 
     private NodeToolSection createNodeToolSection(IViewDiagramElementFinder cache) {
+        List<NodeTool> nodeTools = new ArrayList<>();
+        CompartmentNodeToolProvider attributeTool = new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), this.nameGenerator);
+        nodeTools.add(attributeTool.create(null));
+        ChildrenPartUsageCompartmentNodeToolProvider childPartTool = new ChildrenPartUsageCompartmentNodeToolProvider();
+        nodeTools.add(childPartTool.create(null));
+        NodeTool portBorderNodeTool = this.createNodeTool(cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE);
+        nodeTools.add(portBorderNodeTool);
+
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
-                .nodeTools(this.createNodeTool(cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage(), NodeContainmentKind.CHILD_NODE),
-                           this.createNodeTool(cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE))
+                .nodeTools(nodeTools.toArray(NodeTool[]::new))
                 .build();
     }
 

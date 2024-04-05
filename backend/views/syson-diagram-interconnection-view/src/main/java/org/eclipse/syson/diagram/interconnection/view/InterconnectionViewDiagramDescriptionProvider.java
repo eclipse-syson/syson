@@ -21,8 +21,12 @@ import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescr
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenPartUsageCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.CompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.PortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.RootPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -55,8 +59,12 @@ public class InterconnectionViewDiagramDescriptionProvider extends AbstractDiagr
 
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
+                new FakeNodeDescriptionProvider(colorProvider),
                 new RootPartUsageNodeDescriptionProvider(colorProvider),
-                new ChildPartUsageNodeDescriptionProvider(colorProvider),
+                new ChildPartUsageNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
+                new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider),
+                new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
+                new ChildrenPartUsageCompartmentNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new PortUsageBorderNodeDescriptionProvider(colorProvider),
                 new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider)
         );
