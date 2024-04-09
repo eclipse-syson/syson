@@ -41,6 +41,8 @@ import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
@@ -151,14 +153,14 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()),
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getRequirementUsage()),
-                this.createPartUsageAsRequirementSubjectNodeTool());
+                this.createPartUsageAsSubjectNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override
     public List<NodeToolSection> caseRequirementDefinition(RequirementDefinition object) {
-        var createSection = this.buildCreateSection(this.createPartUsageAsRequirementSubjectNodeTool());
+        var createSection = this.buildCreateSection(this.createPartUsageAsSubjectNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
@@ -170,6 +172,24 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
         return List.of(createSection, this.addElementsToolSection());
     }
 
+    @Override
+    public List<NodeToolSection> caseUseCaseDefinition(UseCaseDefinition object) {
+        var createSection = this.buildCreateSection(this.createPartUsageAsSubjectNodeTool(), this.createRequirementUsageAsObjectiveRequirementNodeTool());
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseUseCaseUsage(UseCaseUsage object) {
+        var createSection = this.buildCreateSection(
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getAttributeUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()),
+                this.createPartUsageAsSubjectNodeTool(),
+                this.createRequirementUsageAsObjectiveRequirementNodeTool());
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
     private NodeToolSection buildCreateSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
@@ -177,12 +197,21 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
                 .build();
     }
 
-    private NodeTool createPartUsageAsRequirementSubjectNodeTool() {
-        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementSubject(self.eContainer().eContainer())");
+    private NodeTool createPartUsageAsSubjectNodeTool() {
+        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createPartUsageAsSubject(self.eContainer().eContainer())");
         return this.diagramBuilderHelper.newNodeTool()
                 .name("New Subject")
                 .iconURLsExpression("/icons/full/obj16/Subject.svg")
                 .preconditionExpression("aql:self.isEmptySubjectCompartment()")
+                .body(serviceCall.build()).build();
+    }
+
+    private NodeTool createRequirementUsageAsObjectiveRequirementNodeTool() {
+        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementUsageAsObjectiveRequirement()");
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("New Ojbective")
+                .iconURLsExpression("/icons/full/obj16/Objective.svg")
+                .preconditionExpression("aql:self.isEmptyObjectiveRequirementCompartment()")
                 .body(serviceCall.build()).build();
     }
 

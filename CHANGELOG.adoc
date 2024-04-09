@@ -25,6 +25,7 @@
 - https://github.com/eclipse-syson/syson/issues/160[#160] [syson] Add explicit usage of node to call syside javascript file.
 - https://github.com/eclipse-syson/syson/issues/172[#172] [details] Add Membership#visibility attribute to Core properties in the Details view.
 - https://github.com/eclipse-syson/syson/issues/171[#171] [details] Add PortUsage#direction attribute to Core properties in the Details view.
+- https://github.com/eclipse-syson/syson/issues/169[#169] [general-view] Handle UseCaseDefinition and UseCaseUsage in General View diagram
 
 === New features
 
