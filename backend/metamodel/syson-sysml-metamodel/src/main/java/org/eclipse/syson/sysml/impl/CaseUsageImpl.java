@@ -21,8 +21,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
+import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
@@ -80,8 +82,8 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
      */
     @Override
     public CaseDefinition getCaseDefinition() {
-        CaseDefinition caseDefinition = basicGetCaseDefinition();
-        return caseDefinition != null && caseDefinition.eIsProxy() ? (CaseDefinition)eResolveProxy((InternalEObject)caseDefinition) : caseDefinition;
+        CaseDefinition caseDefinition = this.basicGetCaseDefinition();
+        return caseDefinition != null && caseDefinition.eIsProxy() ? (CaseDefinition)this.eResolveProxy((InternalEObject)caseDefinition) : caseDefinition;
     }
 
     /**
@@ -103,20 +105,22 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
      */
     @Override
     public RequirementUsage getObjectiveRequirement() {
-        RequirementUsage objectiveRequirement = basicGetObjectiveRequirement();
-        return objectiveRequirement != null && objectiveRequirement.eIsProxy() ? (RequirementUsage)eResolveProxy((InternalEObject)objectiveRequirement) : objectiveRequirement;
+        RequirementUsage objectiveRequirement = this.basicGetObjectiveRequirement();
+        return objectiveRequirement != null && objectiveRequirement.eIsProxy() ? (RequirementUsage)this.eResolveProxy((InternalEObject)objectiveRequirement) : objectiveRequirement;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public RequirementUsage basicGetObjectiveRequirement() {
-        // TODO: implement this method to return the 'Objective Requirement' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(ObjectiveMembership.class::isInstance)
+                .map(ObjectiveMembership.class::cast)
+                .map(om -> om.getOwnedObjectiveRequirement())
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -126,20 +130,22 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
      */
     @Override
     public Usage getSubjectParameter() {
-        Usage subjectParameter = basicGetSubjectParameter();
-        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage)eResolveProxy((InternalEObject)subjectParameter) : subjectParameter;
+        Usage subjectParameter = this.basicGetSubjectParameter();
+        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage)this.eResolveProxy((InternalEObject)subjectParameter) : subjectParameter;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Usage basicGetSubjectParameter() {
-        // TODO: implement this method to return the 'Subject Parameter' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(SubjectMembership.class::isInstance)
+                .map(SubjectMembership.class::cast)
+                .map(sm -> sm.getOwnedSubjectParameter())
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -151,16 +157,22 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CASE_USAGE__ACTOR_PARAMETER:
-                return getActorParameter();
+                return this.getActorParameter();
             case SysmlPackage.CASE_USAGE__CASE_DEFINITION:
-                if (resolve) return getCaseDefinition();
-                return basicGetCaseDefinition();
+                if (resolve) {
+                    return this.getCaseDefinition();
+                }
+                return this.basicGetCaseDefinition();
             case SysmlPackage.CASE_USAGE__OBJECTIVE_REQUIREMENT:
-                if (resolve) return getObjectiveRequirement();
-                return basicGetObjectiveRequirement();
+                if (resolve) {
+                    return this.getObjectiveRequirement();
+                }
+                return this.basicGetObjectiveRequirement();
             case SysmlPackage.CASE_USAGE__SUBJECT_PARAMETER:
-                if (resolve) return getSubjectParameter();
-                return basicGetSubjectParameter();
+                if (resolve) {
+                    return this.getSubjectParameter();
+                }
+                return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -174,13 +186,13 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.CASE_USAGE__ACTOR_PARAMETER:
-                return !getActorParameter().isEmpty();
+                return !this.getActorParameter().isEmpty();
             case SysmlPackage.CASE_USAGE__CASE_DEFINITION:
-                return basicGetCaseDefinition() != null;
+                return this.basicGetCaseDefinition() != null;
             case SysmlPackage.CASE_USAGE__OBJECTIVE_REQUIREMENT:
-                return basicGetObjectiveRequirement() != null;
+                return this.basicGetObjectiveRequirement() != null;
             case SysmlPackage.CASE_USAGE__SUBJECT_PARAMETER:
-                return basicGetSubjectParameter() != null;
+                return this.basicGetSubjectParameter() != null;
         }
         return super.eIsSet(featureID);
     }

@@ -40,6 +40,8 @@ import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
@@ -178,6 +180,16 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
     @Override
     public INodeDescriptionProvider caseRequirementUsage(RequirementUsage object) {
         return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseUseCaseDefinition(UseCaseDefinition object) {
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseDefinition(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseUseCaseUsage(UseCaseUsage object) {
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseUsage(), this.colorProvider);
     }
 
 }

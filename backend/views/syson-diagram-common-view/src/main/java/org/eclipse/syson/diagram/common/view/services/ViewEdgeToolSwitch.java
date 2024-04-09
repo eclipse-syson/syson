@@ -78,7 +78,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseActionUsage(ActionUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                    || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+                    || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getActionUsage(), targetNodes));
@@ -90,9 +90,9 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseAttributeUsage(AttributeUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getMetadataDefinition()).equals(nodeDesc.getName())
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getOccurrenceDefinition()).equals(nodeDesc.getName())
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeDefinition()).equals(nodeDesc.getName())).toList();
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getMetadataDefinition())
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getOccurrenceDefinition())
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeDefinition())).toList();
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAttributeUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
@@ -102,7 +102,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseConstraintUsage(ConstraintUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                    || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getConstraintDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+                    || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getConstraintDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getConstraintUsage(), targetNodes));
@@ -122,7 +122,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseInterfaceUsage(InterfaceUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getInterfaceDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getInterfaceDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getInterfaceUsage(), targetNodes));
@@ -134,8 +134,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseItemUsage(ItemUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getItemDefinition()).equals(nodeDesc.getName())
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getItemDefinition())
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getItemUsage(), targetNodes));
@@ -154,7 +154,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> casePartDefinition(PartDefinition object) {
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.add(this.createAddAsNestedPartEdgeTool(
-                this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()).equals(nodeDesc.getName())).toList()));
+                this.allNodeDescriptions.stream().filter(nodeDesc -> this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartUsage())).toList()));
         edgeTools.addAll(this.caseDefinition(object));
         return edgeTools;
     }
@@ -163,8 +163,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> casePartUsage(PartUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getOccurrenceDefinition()).equals(nodeDesc.getName())
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getOccurrenceDefinition())
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPartUsage(), targetNodes));
@@ -176,7 +176,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> casePortUsage(PortUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortDefinition()).equals(nodeDesc.getName())).toList();
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPortDefinition())).toList();
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPortUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
@@ -186,10 +186,14 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseRequirementUsage(RequirementUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                    || this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
-        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
-        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
+                    || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getRequirementDefinition())).collect(Collectors.toList());
+        targetNodes.removeIf(nodeDesc -> this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPortUsage()));
+        targetNodes.removeIf(nodeDesc -> this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeUsage()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getRequirementUsage(), targetNodes));
+        var objectiveTargets = this.allNodeDescriptions.stream()
+                .filter(n -> this.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseUsage())
+                            || this.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseDefinition())).toList();
+        edgeTools.add(this.createBecomeObjectiveRequirementEdgeTool(objectiveTargets));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -219,6 +223,10 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     private EClassifier getDefinitionFromUsage(Usage object) {
         String definitionFromUsage = object.eClass().getName().replace("Usage", "Definition");
         return SysmlPackage.eINSTANCE.getEClassifier(definitionFromUsage);
+    }
+
+    private boolean isTheNodeDescriptionFor(NodeDescription nd, EClass eClass) {
+        return this.nameGenerator.getNodeName(eClass).equals(nd.getName());
     }
 
     private EdgeTool createDependencyEdgeTool(List<NodeDescription> targetElementDescriptions) {
@@ -477,6 +485,23 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
                 .name(this.nameGenerator.getCreationToolName("Become nested ", eClass))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
                 .body(callService.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    private EdgeTool createBecomeObjectiveRequirementEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var callService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".becomeObjectiveRequirement(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+
+        return builder
+                .name(this.nameGenerator.getCreationToolName("Become objective", SysmlPackage.eINSTANCE.getRequirementUsage()))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + "Objective.svg")
+                .body(callService.build())
+                // maybe in a near future, the following precondition will be active when edge preconditions will be implemented
+                // follow this at https://github.com/eclipse-sirius/sirius-web/issues/2930
+                .preconditionExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET + ".isEmptyObjectiveRequirementCompartment()")
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
     }

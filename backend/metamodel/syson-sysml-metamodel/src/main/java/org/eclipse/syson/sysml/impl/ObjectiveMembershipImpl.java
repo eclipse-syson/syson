@@ -58,20 +58,22 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
      */
     @Override
     public RequirementUsage getOwnedObjectiveRequirement() {
-        RequirementUsage ownedObjectiveRequirement = basicGetOwnedObjectiveRequirement();
-        return ownedObjectiveRequirement != null && ownedObjectiveRequirement.eIsProxy() ? (RequirementUsage)eResolveProxy((InternalEObject)ownedObjectiveRequirement) : ownedObjectiveRequirement;
+        RequirementUsage ownedObjectiveRequirement = this.basicGetOwnedObjectiveRequirement();
+        return ownedObjectiveRequirement != null && ownedObjectiveRequirement.eIsProxy() ? (RequirementUsage)this.eResolveProxy((InternalEObject)ownedObjectiveRequirement) : ownedObjectiveRequirement;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public RequirementUsage basicGetOwnedObjectiveRequirement() {
-        // TODO: implement this method to return the 'Owned Objective Requirement' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelatedElement()
+                .stream()
+                .filter(RequirementUsage.class::isInstance)
+                .map(RequirementUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -83,8 +85,10 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.OBJECTIVE_MEMBERSHIP__OWNED_OBJECTIVE_REQUIREMENT:
-                if (resolve) return getOwnedObjectiveRequirement();
-                return basicGetOwnedObjectiveRequirement();
+                if (resolve) {
+                    return this.getOwnedObjectiveRequirement();
+                }
+                return this.basicGetOwnedObjectiveRequirement();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -98,7 +102,7 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.OBJECTIVE_MEMBERSHIP__OWNED_OBJECTIVE_REQUIREMENT:
-                return basicGetOwnedObjectiveRequirement() != null;
+                return this.basicGetOwnedObjectiveRequirement() != null;
         }
         return super.eIsSet(featureID);
     }

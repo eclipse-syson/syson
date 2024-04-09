@@ -52,6 +52,8 @@ import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 import org.eclipse.syson.util.LabelConstants;
 
@@ -383,6 +385,37 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("requirement")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseUseCaseDefinition(UseCaseDefinition object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("use case def")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseUseCaseUsage(UseCaseUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("use case")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
             .append(this.caseElement(object))

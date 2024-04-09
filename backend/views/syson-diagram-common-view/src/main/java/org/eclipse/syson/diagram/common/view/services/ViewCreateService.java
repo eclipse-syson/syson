@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptio
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
@@ -35,6 +36,8 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.UseCaseUsage;
 
 /**
  * Creation-related Java shared services used by several diagrams.
@@ -143,15 +146,18 @@ public class ViewCreateService {
 
     /**
      * Create a new PartUsage and set it as the subject of the self element.
-     * 
+     *
      * @param self
-     *            the requirement usage to set the subject for
+     *            the element usage to set the subject for
      * @param subjectParent
      *            the parent of the new part usage used as the subject.
      * @return
      */
-    public Element createRequirementSubject(Element self, Element subjectParent) {
-        if (self instanceof RequirementUsage || self instanceof RequirementDefinition) {
+    public Element createPartUsageAsSubject(Element self, Element subjectParent) {
+        if (self instanceof RequirementUsage
+                || self instanceof RequirementDefinition
+                || self instanceof UseCaseUsage
+                || self instanceof UseCaseDefinition) {
             // create the part usage that is used as the subject element
             PartUsage newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
             newPartUsage.setDeclaredName(self.getDeclaredName() + "'s subject");
@@ -172,20 +178,65 @@ public class ViewCreateService {
     }
 
     /**
-     * Service to check whether the given RequirementUsage or RequirementDefinition has a subject defined or not.
-     * 
+     * Create a new RequirementUsage and set it as the objective requirement of the self element.
+     *
      * @param self
-     *            a {@link RequirementUsage}
+     *            the element usage to set the objective for
+     * @return
+     */
+    public Element createRequirementUsageAsObjectiveRequirement(Element self) {
+        if (self instanceof UseCaseUsage
+                || self instanceof UseCaseDefinition) {
+            RequirementUsage newRequirementUsage = SysmlFactory.eINSTANCE.createRequirementUsage();
+            newRequirementUsage.setDeclaredName(self.getDeclaredName() + "'s objective");
+            var objectiveMembership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+            objectiveMembership.getOwnedRelatedElement().add(newRequirementUsage);
+            self.getOwnedRelationship().add(objectiveMembership);
+        }
+        return self;
+    }
+
+    /**
+     * Service to check whether the given element has a subject defined or not.
+     *
+     * @param self
+     *            a {@link RequirementUsage} or a {@link RequirementDefinition} or a {@link UseCaseUsage} or a {@link UseCaseDefinition}
      * @return {@code true} if {@code self} contains a subject and {@code false} otherwise.
      */
     public boolean isEmptySubjectCompartment(Element self) {
-        if (self instanceof RequirementUsage || self instanceof RequirementDefinition) {
+        if (self instanceof RequirementUsage
+                || self instanceof RequirementDefinition
+                || self instanceof UseCaseUsage
+                || self instanceof UseCaseDefinition) {
             return self.getOwnedRelationship().stream()
                     .filter(SubjectMembership.class::isInstance)
                     .map(SubjectMembership.class::cast)
                     .findFirst().isEmpty();
         }
-        // irrelevant case, this service should only be used upon a RequirementUsage/RequirementDefinition
+        // irrelevant case, this service should only be used upon a RequirementUsage/RequirementDefinition/UseCaseUsage or UseCaseDefinition
         return true;
+    }
+
+    /**
+     * Service to check whether the given UseCaseUsage or UseCaseDefinition has an objective requirement defined or not.
+     *
+     * @param self
+     *            a {@link UseCaseUsage} or a {@link UseCaseDefinition}
+     * @return {@code true} if {@code self} contains a subject and {@code false} otherwise.
+     */
+    public boolean isEmptyObjectiveRequirementCompartment(Element self) {
+        return isEmptyObjectiveRequirement(self);
+    }
+
+    /**
+     * Check whether the given element(that should be a {@link UseCaseDefinition} or a {@link UseCaseUsage}) contains an objective requirement or not.
+     * @param self a {@link UseCaseDefinition} or a {@link UseCaseUsage} in which the objective is looked for
+     * @return {@code true} if the given use case contains an objective and {@code false} otherwise.
+     */
+    public static boolean isEmptyObjectiveRequirement(Element self) {
+        return self.getOwnedRelationship().stream()
+                .filter(ObjectiveMembership.class::isInstance)
+                .map(ObjectiveMembership.class::cast)
+                .findFirst().isEmpty();
     }
 }

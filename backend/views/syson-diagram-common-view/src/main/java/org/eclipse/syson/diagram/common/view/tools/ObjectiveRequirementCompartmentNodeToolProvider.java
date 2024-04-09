@@ -13,33 +13,33 @@
 package org.eclipse.syson.diagram.common.view.tools;
 
 /**
- * Node tool provider for Subject compartment in the RequirementUsage.
+ * Node tool provider for Objective Requirement compartment in the element that need such compartment.
  *
  * @author Jerome Gout
  */
-public class RequirementSubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
+public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
 
-    public RequirementSubjectCompartmentNodeToolProvider() {
+    public ObjectiveRequirementCompartmentNodeToolProvider() {
         super();
     }
 
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createRequirementSubject(self.eContainer().eContainer())";
+        return "aql:self.createRequirementUsageAsObjectiveRequirement()";
     }
 
     @Override
     protected String getNodeToolName() {
-        return "New Subject";
+        return "New Objective";
     }
 
     @Override
     protected String getNodeToolIconURLsExpression() {
-        return "/icons/full/obj16/Subject.svg";
+        return "/icons/full/obj16/Objective.svg";
     }
 
     @Override
     protected String getPreconditionExpression() {
-        return "aql:self.isEmptySubjectCompartment()";
+        return "aql:self.isEmptyObjectiveRequirementCompartment()";
     }
 }

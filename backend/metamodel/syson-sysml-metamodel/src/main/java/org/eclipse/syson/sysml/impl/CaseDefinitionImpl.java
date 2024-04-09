@@ -20,8 +20,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.CaseDefinition;
+import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
@@ -85,13 +87,15 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public RequirementUsage basicGetObjectiveRequirement() {
-        // TODO: implement this method to return the 'Objective Requirement' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(ObjectiveMembership.class::isInstance)
+                .map(ObjectiveMembership.class::cast)
+                .map(om -> om.getOwnedObjectiveRequirement())
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -108,13 +112,15 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Usage basicGetSubjectParameter() {
-        // TODO: implement this method to return the 'Subject Parameter' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(SubjectMembership.class::isInstance)
+                .map(SubjectMembership.class::cast)
+                .map(sm -> sm.getOwnedSubjectParameter())
+                .findFirst()
+                .orElse(null);
     }
 
     /**

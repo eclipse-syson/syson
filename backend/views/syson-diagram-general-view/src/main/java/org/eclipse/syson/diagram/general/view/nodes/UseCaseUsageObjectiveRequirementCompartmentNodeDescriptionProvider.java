@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.common.view.nodes;
+package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,43 +19,44 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.syson.diagram.common.view.tools.RequirementSubjectCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Requirement Subject Compartment node description.
+ * UseCase usage Objective Requirement Compartment node description.
  *
  * @author Jerome Gout
  */
-public class RequirementDefinitionSubjectCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public RequirementDefinitionSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter(), colorProvider, nameGenerator);
+    public UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+        super(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement(), colorProvider, nameGenerator);
     }
 
     @Override
     protected String getCustomCompartmentLabel() {
-        return "subject";
+        return "objective";
     }
 
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()))
                 .ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
+        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()))
                 .ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
     @Override
     protected String getDropElementFromDiagramExpression() {
-        return "aql:droppedElement.dropRequirementSubjectFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+        return "aql:droppedElement.dropObjectiveRequirementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
     }
 
     @Override
     protected INodeToolProvider getItemCreationToolProvider() {
-        return new RequirementSubjectCompartmentNodeToolProvider();
+        return new ObjectiveRequirementCompartmentNodeToolProvider();
     }
 }

@@ -31,6 +31,7 @@ import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
@@ -41,6 +42,8 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.UseCaseUsage;
 
 /**
  * Tool-related Java services used by all diagrams.
@@ -201,6 +204,24 @@ public class ViewToolService extends ToolService {
         return usage;
     }
 
+    public RequirementUsage becomeObjectiveRequirement(RequirementUsage requirement, Element newContainer) {
+        if (newContainer instanceof UseCaseUsage || newContainer instanceof UseCaseDefinition) {
+            if (ViewCreateService.isEmptyObjectiveRequirement(newContainer)) {
+                var eContainer = requirement.eContainer();
+                if (eContainer instanceof ObjectiveMembership objectiveMembership) {
+                    // requirement is already an objective of another usecaseXXX
+                    newContainer.getOwnedRelationship().add(objectiveMembership);
+                } else if (eContainer instanceof OwningMembership owningMembership) {
+                    var newObjectiveMembership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+                    newObjectiveMembership.getOwnedRelatedElement().add(requirement);
+                    newContainer.getOwnedRelationship().add(newObjectiveMembership);
+                    EcoreUtil.delete(owningMembership);
+                }
+            }
+        }
+        return requirement;
+    }
+
     public PartUsage addAsNestedPart(PartDefinition partDefinition, PartUsage partUsage) {
         var eContainer = partUsage.eContainer();
         if (eContainer instanceof FeatureMembership featureMembership) {
@@ -263,14 +284,28 @@ public class ViewToolService extends ToolService {
         return partDef;
     }
 
-    public Element dropRequirementSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+    public Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition) {
+        if (targetElement instanceof RequirementUsage
+                || targetElement instanceof RequirementDefinition
+                || targetElement instanceof UseCaseUsage
+                || targetElement instanceof UseCaseDefinition) {
             boolean noExistingSubject = targetElement.getOwnedRelationship().stream()
                     .filter(SubjectMembership.class::isInstance)
                     .map(SubjectMembership.class::cast)
                     .findFirst().isEmpty();
             if (noExistingSubject) {
+                this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+            }
+        }
+        return droppedElement;
+    }
+
+    public Element dropObjectiveRequirementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (targetElement instanceof UseCaseUsage
+                || targetElement instanceof UseCaseDefinition) {
+            if (ViewCreateService.isEmptyObjectiveRequirement(targetElement)) {
                 this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
             }
         }
