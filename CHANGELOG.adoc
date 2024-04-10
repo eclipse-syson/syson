@@ -22,6 +22,7 @@
 - https://github.com/eclipse-syson/syson/issues/163[#163] [diagrams] Add missing composite edges between usage and compartment content
 - https://github.com/eclipse-syson/syson/issues/165[#165] [general-view] Handle OccurrenceDefinition and OccurrenceUsage in General View diagram 
 - https://github.com/eclipse-syson/syson/issues/160[#160] [syson] Add explicit usage of node to call syside javascript file.
+- https://github.com/eclipse-syson/syson/issues/172[#172] [details] Add Membership#visibility attribute to Core properties in the Details view.
 
 === New features
 
