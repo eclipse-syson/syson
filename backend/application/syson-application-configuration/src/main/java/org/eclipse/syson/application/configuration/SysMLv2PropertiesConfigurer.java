@@ -76,6 +76,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private static final String TYPING_PROPERTIES = "Typing Properties";
 
+    private static final String MEMBERSHIP_PROPERTIES = "Membership Properties";
+
     private static final String REQUIREMENT_CONSTRAINT_KIND_PROPERTIES = "Kind Properties";
 
     private final ComposedAdapterFactory composedAdapterFactory;
@@ -136,6 +138,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.setPreconditionExpression("");
         pageCore.setLabelExpression("Core");
         pageCore.getGroups().add(this.createCorePropertiesGroup());
+        pageCore.getGroups().add(this.createExtraMembershipPropertiesGroup());
         pageCore.getGroups().add(this.createExtraRedefinitionPropertiesGroup());
         pageCore.getGroups().add(this.createExtraSubclassificationPropertiesGroup());
         pageCore.getGroups().add(this.createExtraSubsettingPropertiesGroup());
@@ -285,6 +288,28 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "')");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "', newValue.instance)");
+        radio.getBody().add(setNewValueOperation);
+
+        group.getChildren().add(radio);
+
+        return group;
+    }
+
+    private GroupDescription createExtraMembershipPropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName(MEMBERSHIP_PROPERTIES);
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression("aql:self.eContainer()->filter(sysml::Membership)");
+
+        RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
+        radio.setName("ExtraRadioVisibilityWidget");
+        radio.setLabelExpression("Visibility");
+        radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "')");
+        radio.setCandidateLabelExpression("aql:candidate.name");
+        radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "')");
+        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
+        setNewValueOperation.setExpression("aql:self.setNewValue('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "', newValue.instance)");
         radio.getBody().add(setNewValueOperation);
 
         group.getChildren().add(radio);
