@@ -80,6 +80,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private static final String REQUIREMENT_CONSTRAINT_KIND_PROPERTIES = "Kind Properties";
 
+    private static final String AQL_NOT_SELF_IS_READ_ONLY = "aql:not(self.isReadOnly())";
+
     private final ComposedAdapterFactory composedAdapterFactory;
 
     private final ViewFormDescriptionConverter converter;
@@ -193,7 +195,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("Redefines");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
-        refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
+        refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
                 + LabelConstants.CLOSE_PARENTHESIS);
@@ -216,7 +218,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("Specializes");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
-        refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
+        refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
                 + LabelConstants.CLOSE_PARENTHESIS);
@@ -239,7 +241,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("Subsets");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
-        refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
+        refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
                 + LabelConstants.CLOSE_PARENTHESIS);
@@ -262,7 +264,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("Typed by");
         refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName());
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
-        refWidget.setIsEnabledExpression("aql:not(self.isReadOnly())");
+        refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
                 + LabelConstants.CLOSE_PARENTHESIS);
@@ -286,6 +288,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "')");
         radio.setCandidateLabelExpression("aql:candidate.name");
         radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "')");
+        radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "', newValue.instance)");
         radio.getBody().add(setNewValueOperation);
@@ -308,6 +311,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "')");
         radio.setCandidateLabelExpression("aql:candidate.name");
         radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "')");
+        radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "', newValue.instance)");
         radio.getBody().add(setNewValueOperation);
