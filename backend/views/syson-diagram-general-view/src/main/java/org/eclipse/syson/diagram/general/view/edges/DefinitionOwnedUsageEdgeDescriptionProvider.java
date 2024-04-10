@@ -13,11 +13,13 @@
 package org.eclipse.syson.diagram.general.view.edges;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -82,6 +84,8 @@ public class DefinitionOwnedUsageEdgeDescriptionProvider extends AbstractEdgeDes
         diagramDescription.getEdgeDescriptions().add(edgeDescription);
         edgeDescription.getSourceNodeDescriptions().addAll(sourceNodes);
         edgeDescription.getTargetNodeDescriptions().add(optUsageNodeDescription.get());
+
+        edgeDescription.setPalette(this.createEdgePalette());
     }
 
     private EdgeStyle createEdgeStyle() {
@@ -92,5 +96,25 @@ public class DefinitionOwnedUsageEdgeDescriptionProvider extends AbstractEdgeDes
                 .sourceArrowStyle(ArrowStyle.FILL_DIAMOND)
                 .targetArrowStyle(ArrowStyle.NONE)
                 .build();
+    }
+
+    @Override
+    protected boolean isDeletable() {
+        // composition edges are not deletable
+        return false;
+    }
+
+    @Override
+    protected ChangeContextBuilder getSourceReconnectToolBody() {
+        var params = List.of(AQLConstants.SEMANTIC_RECONNECTION_TARGET, AQLConstants.SEMANTIC_OTHER_END);
+        return this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnnectSourceCompositionEdge(" + String.join(",", params) + ")");
+    }
+
+    @Override
+    protected ChangeContextBuilder getTargetReconnectToolBody() {
+        var params = List.of(AQLConstants.SEMANTIC_RECONNECTION_SOURCE, AQLConstants.SEMANTIC_RECONNECTION_TARGET);
+        return this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnnectTargetCompositionEdge(" + String.join(",", params) + ")");
     }
 }

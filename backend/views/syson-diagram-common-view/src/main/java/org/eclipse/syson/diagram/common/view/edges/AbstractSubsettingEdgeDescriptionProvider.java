@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.common.view.edges;
 import java.util.List;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -22,9 +23,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -90,7 +89,7 @@ public abstract class AbstractSubsettingEdgeDescriptionProvider extends Abstract
         edgeDescription.getSourceNodeDescriptions().addAll(this.getSourceNodes(cache));
         edgeDescription.getTargetNodeDescriptions().addAll(this.getTargetNodes(cache));
 
-        edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
+        edgeDescription.setPalette(this.createEdgePalette());
     }
 
     private EdgeStyle createEdgeStyle() {
@@ -103,9 +102,8 @@ public abstract class AbstractSubsettingEdgeDescriptionProvider extends Abstract
                 .build();
     }
 
-    private SourceEdgeEndReconnectionTool createSourceReconnectTool() {
-        var builder = this.diagramBuilderHelper.newSourceEdgeEndReconnectionTool();
-
+    @Override
+    protected ChangeContextBuilder getSourceReconnectToolBody() {
         var unsetOldSubsettingFeature = this.viewBuilderHelper.newUnsetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettingFeature().getName())
                 .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
@@ -130,20 +128,14 @@ public abstract class AbstractSubsettingEdgeDescriptionProvider extends Abstract
                 .expression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET)
                 .children(setNewContainer.build());
 
-        var body = this.viewBuilderHelper.newChangeContext()
+        return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
                 .children(unsetOldSubsettingFeature.build(), unsetOldSpecific.build(), setNewSubsettingFeature.build(),
                         setNewSpecific.build(), changeContextNewContainer.build());
-
-        return builder
-                .name("Reconnect Source")
-                .body(body.build())
-                .build();
     }
 
-    private TargetEdgeEndReconnectionTool createTargetReconnectTool() {
-        var builder = this.diagramBuilderHelper.newTargetEdgeEndReconnectionTool();
-
+    @Override
+    protected ChangeContextBuilder getTargetReconnectToolBody() {
         var unsetOldSubsettedFeature = this.viewBuilderHelper.newUnsetValue()
                 .featureName(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().getName())
                 .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
@@ -160,14 +152,9 @@ public abstract class AbstractSubsettingEdgeDescriptionProvider extends Abstract
                 .featureName(SysmlPackage.eINSTANCE.getSpecialization_General().getName())
                 .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
 
-        var body = this.viewBuilderHelper.newChangeContext()
+        return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
                 .children(unsetOldSubsettedFeature.build(), unsetOldGeneral.build(), setNewSubsettedFeature.build(),
                         setNewGeneral.build());
-
-        return builder
-                .name("Reconnect Target")
-                .body(body.build())
-                .build();
     }
 }
