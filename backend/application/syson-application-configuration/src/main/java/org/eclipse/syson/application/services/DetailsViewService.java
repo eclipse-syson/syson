@@ -19,12 +19,14 @@ import java.util.function.BiFunction;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
@@ -73,7 +75,11 @@ public class DetailsViewService {
 
     public boolean setNewValue(Element element, EStructuralFeature eStructuralFeature, Object newValue) {
         try {
-            element.eSet(eStructuralFeature, newValue);
+            Object valueToSet = newValue;
+            if (eStructuralFeature.getEType() instanceof EDataType eDataType && newValue instanceof String stringValue) {
+                valueToSet = EcoreUtil.createFromString(eDataType, stringValue);
+            }
+            element.eSet(eStructuralFeature, valueToSet);
         } catch (IllegalArgumentException | ClassCastException | ArrayStoreException e) {
             this.feedbackMessageService.addFeedbackMessage(new Message("Unable to update the value of the " + eStructuralFeature.getName() + " feature", MessageLevel.ERROR));
             return false;
@@ -83,7 +89,12 @@ public class DetailsViewService {
 
     public boolean setNewValue(Element element, String eStructuralFeatureName, Object newValue) {
         try {
-            element.eSet(element.eClass().getEStructuralFeature(eStructuralFeatureName), newValue);
+            EStructuralFeature eStructuralFeature = element.eClass().getEStructuralFeature(eStructuralFeatureName);
+            Object valueToSet = newValue;
+            if (eStructuralFeature.getEType() instanceof EDataType eDataType && newValue instanceof String stringValue) {
+                valueToSet = EcoreUtil.createFromString(eDataType, stringValue);
+            }
+            element.eSet(eStructuralFeature, valueToSet);
         } catch (IllegalArgumentException | ClassCastException | ArrayStoreException e) {
             this.feedbackMessageService.addFeedbackMessage(new Message("Unable to update the value of the " + eStructuralFeatureName + " feature", MessageLevel.ERROR));
             return false;
