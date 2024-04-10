@@ -191,17 +191,22 @@ public class ViewToolService extends ToolService {
     }
 
     public Usage becomeNestedUsage(Usage usage, Element newContainer) {
-        var eContainer = usage.eContainer();
+        this.changeOwner(usage, newContainer);
+        usage.setIsComposite(true);
+        return usage;
+    }
+
+    private Element changeOwner(Element element, Element newContainer) {
+        var eContainer = element.eContainer();
         if (eContainer instanceof FeatureMembership featureMembership) {
             newContainer.getOwnedRelationship().add(featureMembership);
         } else if (eContainer instanceof OwningMembership owningMembership) {
             var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            newFeatureMembership.getOwnedRelatedElement().add(usage);
+            newFeatureMembership.getOwnedRelatedElement().add(element);
             newContainer.getOwnedRelationship().add(newFeatureMembership);
             EcoreUtil.delete(owningMembership);
         }
-        usage.setIsComposite(true);
-        return usage;
+        return element;
     }
 
     public RequirementUsage becomeObjectiveRequirement(RequirementUsage requirement, Element newContainer) {
@@ -355,5 +360,35 @@ public class ViewToolService extends ToolService {
             }
         }
         return droppedElement;
+    }
+
+    public Element reconnnectSourceCompositionEdge(Element self, Element newSource, Element otherEnd) {
+        return this.changeOwner(otherEnd, newSource);
+    }
+
+    public Element reconnnectTargetCompositionEdge(Element self, Element oldTarget, Element newTarget) {
+        var oldContainer = oldTarget.eContainer();
+        if (newTarget instanceof Usage && oldContainer instanceof FeatureMembership featureMembership) {
+            // move the old target to the innermost package
+            var pack = this.getClosestContainingPackageFrom(self);
+            if (pack != null) {
+                var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                pack.getOwnedRelationship().add(owningMembership);
+                owningMembership.getOwnedRelatedElement().add(oldTarget);
+                // reuse feature membership of the previous nested
+                var oldMembership = newTarget.eContainer();
+                featureMembership.getOwnedRelatedElement().add(newTarget);
+                EcoreUtil.delete(oldMembership);
+            }
+        }
+        return self;
+    }
+
+    private Package getClosestContainingPackageFrom(Element element) {
+        var owner = element.eContainer();
+        while (!(owner instanceof Package) && owner != null) {
+            owner = owner.eContainer();
+        }
+        return (Package) owner;
     }
 }

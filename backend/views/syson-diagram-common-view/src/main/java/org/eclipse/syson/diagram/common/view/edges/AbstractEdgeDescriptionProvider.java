@@ -15,15 +15,18 @@ package org.eclipse.syson.diagram.common.view.edges;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 
 /**
- * Common pieces of edge descriptions shared by {@link IEdgeDescriptionProvider} in General View.
+ * Common pieces of edge descriptions shared by {@link IEdgeDescriptionProvider} in all view.
  *
  * @author arichard
  */
@@ -39,7 +42,27 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
         this.colorProvider = Objects.requireNonNull(colorProvider);
     }
 
-    protected EdgePalette createEdgePalette(List<EdgeReconnectionTool> edgeReconnectionTools) {
+    /**
+     * Implementers should provide the operation which is executed when a reconnection of the source end of the edge is performed.
+     * @return the {@link ChangeContextBuilder} corresponding to the operation to perform when a reconnection of the source end of the edge occurs.
+     */
+    protected abstract ChangeContextBuilder getSourceReconnectToolBody();
+
+    /**
+     * Implementers should provide the operation which is executed when a reconnection of the target end of the edge is performed.
+     * @return the {@link ChangeContextBuilder} corresponding to the operation to perform when a reconnection of the target end of the edge occurs.
+     */
+    protected abstract ChangeContextBuilder getTargetReconnectToolBody();
+
+    /**
+     * Implementers can override this method to disable the delete tool on specific edge description.
+     * @return {@code true} if the edge can be deleted and {@code false} otherwise.
+     */
+    protected boolean isDeletable() {
+        return true;
+    }
+
+    protected EdgePalette createEdgePalette() {
         var changeContext = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:self.deleteFromModel()");
 
@@ -47,10 +70,33 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
                 .name("Delete from Model")
                 .body(changeContext.build());
 
-        return this.diagramBuilderHelper
+        List<EdgeReconnectionTool> reconnectTools = List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool());
+        var edgeBuilder = this.diagramBuilderHelper
                 .newEdgePalette()
-                .deleteTool(deleteTool.build())
-                .edgeReconnectionTools(edgeReconnectionTools.toArray(EdgeReconnectionTool[]::new))
+                .edgeReconnectionTools(reconnectTools.toArray(EdgeReconnectionTool[]::new));
+
+        if (this.isDeletable()) {
+            edgeBuilder.deleteTool(deleteTool.build());
+        }
+
+        return edgeBuilder.build();
+    }
+
+    private SourceEdgeEndReconnectionTool createSourceReconnectTool() {
+        var builder = this.diagramBuilderHelper.newSourceEdgeEndReconnectionTool();
+
+        return builder
+                .name("Reconnect Source")
+                .body(this.getSourceReconnectToolBody().build())
+                .build();
+    }
+
+    private TargetEdgeEndReconnectionTool createTargetReconnectTool() {
+        var builder = this.diagramBuilderHelper.newTargetEdgeEndReconnectionTool();
+
+        return builder
+                .name("Reconnect Target")
+                .body(this.getTargetReconnectToolBody().build())
                 .build();
     }
 }

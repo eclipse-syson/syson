@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.common.view.edges;
 import java.util.List;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -22,9 +23,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -90,7 +89,7 @@ public abstract class AbstractFeatureTypingEdgeDescriptionProvider extends Abstr
         edgeDescription.getSourceNodeDescriptions().addAll(this.getSourceNodes(cache));
         edgeDescription.getTargetNodeDescriptions().addAll(this.getTargetNodes(cache));
 
-        edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
+        edgeDescription.setPalette(this.createEdgePalette());
     }
 
     private EdgeStyle createEdgeStyle() {
@@ -103,9 +102,8 @@ public abstract class AbstractFeatureTypingEdgeDescriptionProvider extends Abstr
                 .build();
     }
 
-    private SourceEdgeEndReconnectionTool createSourceReconnectTool() {
-        var builder = this.diagramBuilderHelper.newSourceEdgeEndReconnectionTool();
-
+    @Override
+    protected ChangeContextBuilder getSourceReconnectToolBody() {
         var unsetOldTypedFeature = this.viewBuilderHelper.newUnsetValue()
                 .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature().getName())
                 .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
@@ -130,19 +128,14 @@ public abstract class AbstractFeatureTypingEdgeDescriptionProvider extends Abstr
                 .expression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET)
                 .children(setNewContainer.build());
 
-        var body = this.viewBuilderHelper.newChangeContext()
+        return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
                 .children(unsetOldTypedFeature.build(), unsetOldSpecific.build(), setNewTypedFeature.build(), setNewSpecific.build(), changeContextNewContainer.build());
 
-        return builder
-                .name("Reconnect Source")
-                .body(body.build())
-                .build();
     }
 
-    private TargetEdgeEndReconnectionTool createTargetReconnectTool() {
-        var builder = this.diagramBuilderHelper.newTargetEdgeEndReconnectionTool();
-
+    @Override
+    protected ChangeContextBuilder getTargetReconnectToolBody() {
         var unsetOldType = this.viewBuilderHelper.newUnsetValue()
                 .featureName(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName())
                 .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
@@ -159,14 +152,8 @@ public abstract class AbstractFeatureTypingEdgeDescriptionProvider extends Abstr
                 .featureName(SysmlPackage.eINSTANCE.getSpecialization_General().getName())
                 .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
 
-        var body = this.viewBuilderHelper.newChangeContext()
+        return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
                 .children(unsetOldType.build(), unsetOldGeneral.build(), setNewType.build(), setNewGeneral.build());
-
-        return builder
-                .name("Reconnect Target")
-                .preconditionExpression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".checkFeatureTypingEdgeReconnectionTarget(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")")
-                .body(body.build())
-                .build();
     }
 }
