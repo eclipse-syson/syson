@@ -70,7 +70,7 @@ public abstract class AbstractRedefinitionEdgeDescriptionProvider extends Abstra
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .labelExpression("")
+                .centerLabelExpression("")
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getRedefinition_RedefiningFeature().getName())

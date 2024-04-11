@@ -50,7 +50,7 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private IColorProvider colorProvider;
+    private final IColorProvider colorProvider;
 
     public BindingConnectorAsUsageEdgeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
@@ -62,7 +62,7 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .labelExpression("")
+                .centerLabelExpression("")
                 .name(NAME)
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .sourceNodesExpression("aql:self.getSourcePort()")

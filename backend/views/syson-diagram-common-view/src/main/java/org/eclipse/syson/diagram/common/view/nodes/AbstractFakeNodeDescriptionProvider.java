@@ -17,6 +17,9 @@ import java.util.List;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -56,7 +59,7 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
                 .defaultHeightExpression("0")
                 .defaultWidthExpression("0")
                 .domainType(domainType)
-                .labelExpression("")
+                .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
                 .semanticCandidatesExpression("")
                 .style(this.createFakeNodeStyle())
@@ -74,15 +77,28 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
         nodeDescription.getChildrenDescriptions().addAll(this.getChildrenDescription(cache));
     }
 
+    protected InsideLabelDescription createInsideLabelDescription() {
+        return this.diagramBuilderHelper.newInsideLabelDescription()
+                .labelExpression("")
+                .position(InsideLabelPosition.TOP_CENTER)
+                .style(this.createInsideLabelStyle())
+                .build();
+    }
+
+    protected InsideLabelStyle createInsideLabelStyle() {
+        return this.diagramBuilderHelper.newInsideLabelStyle()
+                .displayHeaderSeparator(false)
+                .labelColor(this.colorProvider.getColor("transparent"))
+                .showIcon(false)
+                .withHeader(false)
+                .build();
+    }
+
     protected NodeStyleDescription createFakeNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor("transparent"))
                 .borderRadius(0)
                 .color(this.colorProvider.getColor("transparent"))
-                .displayHeaderSeparator(false)
-                .labelColor(this.colorProvider.getColor("transparent"))
-                .showIcon(false)
-                .withHeader(false)
                 .build();
     }
 }

@@ -65,7 +65,7 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(false)
-                .labelExpression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityLabel()")
+                .centerLabelExpression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityLabel()")
                 .name(this.nameGenerator.getEdgeName("Usage Nested " + this.eClass.getName()))
                 .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())

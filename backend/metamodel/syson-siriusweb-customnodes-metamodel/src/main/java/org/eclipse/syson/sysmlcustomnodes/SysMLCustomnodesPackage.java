@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,46 +79,6 @@ public interface SysMLCustomnodesPackage extends EPackage {
     int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__COLOR;
 
     /**
-     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__FONT_SIZE = DiagramPackage.NODE_STYLE_DESCRIPTION__FONT_SIZE;
-
-    /**
-     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__ITALIC = DiagramPackage.NODE_STYLE_DESCRIPTION__ITALIC;
-
-    /**
-     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BOLD = DiagramPackage.NODE_STYLE_DESCRIPTION__BOLD;
-
-    /**
-     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__UNDERLINE = DiagramPackage.NODE_STYLE_DESCRIPTION__UNDERLINE;
-
-    /**
-     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__STRIKE_THROUGH = DiagramPackage.NODE_STYLE_DESCRIPTION__STRIKE_THROUGH;
-
-    /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -150,30 +110,6 @@ public interface SysMLCustomnodesPackage extends EPackage {
      * @ordered
      */
     int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
-
-    /**
-     * The feature id for the '<em><b>Label Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__LABEL_COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_COLOR;
-
-    /**
-     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__SHOW_ICON = DiagramPackage.NODE_STYLE_DESCRIPTION__SHOW_ICON;
-
-    /**
-     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__LABEL_ICON = DiagramPackage.NODE_STYLE_DESCRIPTION__LABEL_ICON;
 
     /**
      * The number of structural features of the '<em>Sys ML Package Node Style Description</em>' class. <!--

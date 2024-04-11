@@ -28,6 +28,7 @@ const projects = new Map();
 projects.set("syson-application", "application");
 projects.set("syson-application-configuration", "application");
 projects.set("syson-frontend", "application");
+projects.set("syson-sysml-import", "application");
 projects.set("syson-sysml-metamodel", "metamodel");
 projects.set("syson-sysml-metamodel-edit", "metamodel");
 projects.set("syson-siriusweb-customnodes-metamodel", "metamodel");
@@ -37,7 +38,6 @@ projects.set("syson-diagram-actionflow-view", "views");
 projects.set("syson-diagram-common-view", "views");
 projects.set("syson-diagram-general-view", "views");
 projects.set("syson-diagram-interconnection-view", "views");
-projects.set("syson-diagram-requirement-view", "views");
 
 console.log("Updating the following pom.xml:");
 projects.forEach((folder, project) => {

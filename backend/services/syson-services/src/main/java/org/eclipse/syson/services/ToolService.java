@@ -280,14 +280,10 @@ public class ToolService {
                 .build();
 
         var insideLabel = InsideLabel.newLabel("")
-                .alignment(Position.UNDEFINED)
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .isHeader(false)
-                .position(Position.UNDEFINED)
-                .size(Size.UNDEFINED)
                 .style(labelStyle)
                 .text("")
-                .type("")
                 .build();
 
         var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle().color("").borderColor("").borderStyle(LineStyle.Solid).build();

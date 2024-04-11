@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ package org.eclipse.syson.sysmlcustomnodes.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
-import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.Style;
@@ -81,8 +80,6 @@ public class SysMLCustomnodesSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseStyle(sysMLPackageNodeStyleDescription);
                 if (result == null)
-                    result = this.caseLabelStyle(sysMLPackageNodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(sysMLPackageNodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -119,20 +116,6 @@ public class SysMLCustomnodesSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseStyle(Style object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Label Style</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Label Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseLabelStyle(LabelStyle object) {
         return null;
     }
 

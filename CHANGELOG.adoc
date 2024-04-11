@@ -8,6 +8,9 @@
 
 === Dependency update
 
+- Switch to Sirius Web 2024.3.1
+- Switch to @ObeoNetwork/gantt-task-react 0.4.8
+
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/144[#144] [diagrams] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.

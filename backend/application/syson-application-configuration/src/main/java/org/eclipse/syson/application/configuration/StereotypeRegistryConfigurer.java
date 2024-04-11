@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistry;
-import org.eclipse.sirius.components.core.configuration.IStereotypeDescriptionRegistryConfigurer;
-import org.eclipse.sirius.components.core.configuration.StereotypeDescription;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistry;
+import org.eclipse.sirius.web.services.api.document.IStereotypeRegistryConfigurer;
+import org.eclipse.sirius.web.services.api.document.Stereotype;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ import io.micrometer.core.instrument.MeterRegistry;
  * @author sbegaudeau
  */
 @Configuration
-public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescriptionRegistryConfigurer {
+public class StereotypeRegistryConfigurer implements IStereotypeRegistryConfigurer {
 
     public static final UUID EMPTY_ID = UUID.nameUUIDFromBytes("empty".getBytes());
 
@@ -45,14 +45,14 @@ public class StereotypeDescriptionRegistryConfigurer implements IStereotypeDescr
 
     private final StereotypeBuilder stereotypeBuilder;
 
-    public StereotypeDescriptionRegistryConfigurer(MeterRegistry meterRegistry) {
+    public StereotypeRegistryConfigurer(MeterRegistry meterRegistry) {
         this.stereotypeBuilder = new StereotypeBuilder(TIMER_NAME, meterRegistry);
     }
 
     @Override
-    public void addStereotypeDescriptions(IStereotypeDescriptionRegistry registry) {
-        registry.add(new StereotypeDescription(EMPTY_SYSMLV2_ID, EMPTY_SYSMLV2_LABEL, this::getEmptySysMLv2StereotypeBody));
-        registry.add(new StereotypeDescription(EMPTY_ID, EMPTY_LABEL, "New", this::getEmptyContent));
+    public void addStereotypes(IStereotypeRegistry registry) {
+        registry.add(new Stereotype(EMPTY_SYSMLV2_ID, EMPTY_SYSMLV2_LABEL, this::getEmptySysMLv2StereotypeBody));
+        registry.add(new Stereotype(EMPTY_ID, EMPTY_LABEL, this::getEmptyContent));
     }
 
     private String getEmptyContent() {

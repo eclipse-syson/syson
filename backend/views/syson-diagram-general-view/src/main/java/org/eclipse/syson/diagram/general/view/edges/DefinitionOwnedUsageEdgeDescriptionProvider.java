@@ -25,6 +25,9 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -61,7 +64,7 @@ public class DefinitionOwnedUsageEdgeDescriptionProvider extends AbstractEdgeDes
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(false)
-                .labelExpression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityLabel()")
+                .centerLabelExpression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityLabel()")
                 .name(this.nameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()))
                 .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
@@ -86,6 +89,23 @@ public class DefinitionOwnedUsageEdgeDescriptionProvider extends AbstractEdgeDes
         edgeDescription.getTargetNodeDescriptions().add(optUsageNodeDescription.get());
 
         edgeDescription.setPalette(this.createEdgePalette());
+    }
+
+    protected InsideLabelDescription createInsideLabelDescription() {
+        return this.diagramBuilderHelper.newInsideLabelDescription()
+                .labelExpression("aql:self.getContainerLabel()")
+                .position(InsideLabelPosition.TOP_CENTER)
+                .style(this.createInsideLabelStyle())
+                .build();
+    }
+
+    protected InsideLabelStyle createInsideLabelStyle() {
+        return this.diagramBuilderHelper.newInsideLabelStyle()
+                .displayHeaderSeparator(true)
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
+                .showIcon(true)
+                .withHeader(true)
+                .build();
     }
 
     private EdgeStyle createEdgeStyle() {

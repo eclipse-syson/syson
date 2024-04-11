@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
-import org.eclipse.syson.application.configuration.StereotypeDescriptionRegistryConfigurer;
+import org.eclipse.syson.application.configuration.StereotypeRegistryConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -92,7 +92,7 @@ public class EditingContextActionHandler implements IEditingContextActionHandler
 
     private void createEmptySysMLResource(ResourceSet resourceSet) {
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
-        resource.getContents().addAll(StereotypeDescriptionRegistryConfigurer.getEmptySysMLv2Content());
+        resource.getContents().addAll(StereotypeRegistryConfigurer.getEmptySysMLv2Content());
         resource.eAdapters().add(new ResourceMetadataAdapter("SysMLv2"));
         resourceSet.getResources().add(resource);
     }

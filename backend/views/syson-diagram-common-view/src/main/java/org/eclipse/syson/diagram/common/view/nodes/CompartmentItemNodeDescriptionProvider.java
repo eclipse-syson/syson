@@ -17,6 +17,9 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -52,7 +55,7 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(this.eReference.getEType()))
-                .labelExpression(AQLConstants.AQL_SELF + ".getCompartmentItemUsageLabel()")
+                .insideLabel(this.createInsideLabelDescription())
                 .name(this.nameGenerator.getCompartmentItemName(this.eClass, this.eReference))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
                 .style(this.createCompartmentItemNodeStyle())
@@ -62,13 +65,28 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .build();
     }
 
+    protected InsideLabelDescription createInsideLabelDescription() {
+        return this.diagramBuilderHelper.newInsideLabelDescription()
+                .labelExpression(AQLConstants.AQL_SELF + ".getCompartmentItemUsageLabel()")
+                .position(InsideLabelPosition.TOP_CENTER)
+                .style(this.createInsideLabelStyle())
+                .build();
+    }
+
+    protected InsideLabelStyle createInsideLabelStyle() {
+        return this.diagramBuilderHelper.newInsideLabelStyle()
+                .displayHeaderSeparator(false)
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
+                .showIcon(true)
+                .withHeader(false)
+                .build();
+    }
+
     private NodeStyleDescription createCompartmentItemNodeStyle() {
         return this.diagramBuilderHelper.newIconLabelNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
                 .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
-                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
                 .build();
     }
 

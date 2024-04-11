@@ -70,7 +70,7 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .labelExpression("")
+                .centerLabelExpression("")
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Client().getName())

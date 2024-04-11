@@ -21,6 +21,9 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.NodeToolSectionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -32,6 +35,7 @@ import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.util.ViewConstants;
 
 /**
  * This is the welcome node description that is presented if and only if the diagram is empty.
@@ -68,7 +72,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
                 .defaultHeightExpression("476")
                 .defaultWidthExpression("1061")
                 .domainType(domainType)
-                .labelExpression("")
+                .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getDiagramEmptyCandidate(editingContext, diagramContext, previousDiagram)")
                 .style(this.createEmptyDiagramNodeStyle())
@@ -86,11 +90,27 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
         nodeDescription.setPalette(this.createNodePalette(cache));
     }
 
+    protected InsideLabelDescription createInsideLabelDescription() {
+        return this.diagramBuilderHelper.newInsideLabelDescription()
+                .labelExpression("")
+                .position(InsideLabelPosition.TOP_CENTER)
+                .style(this.createInsideLabelStyle())
+                .build();
+    }
+
+    protected InsideLabelStyle createInsideLabelStyle() {
+        return this.diagramBuilderHelper.newInsideLabelStyle()
+                .displayHeaderSeparator(false)
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
+                .showIcon(false)
+                .withHeader(false)
+                .build();
+    }
+
     protected NodeStyleDescription createEmptyDiagramNodeStyle() {
         return this.diagramBuilderHelper.newImageNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor("transparent"))
                 .borderRadius(0)
-                .showIcon(false)
                 .shape("476856ef-857f-30dc-8b3a-8d0539d38a09")
                 .build();
     }
