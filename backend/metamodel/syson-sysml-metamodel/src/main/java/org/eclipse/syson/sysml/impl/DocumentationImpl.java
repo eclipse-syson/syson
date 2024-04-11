@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
@@ -115,12 +116,7 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentation repr = getOrCreateTextualRepresentation();
-        StringBuilder builder = new StringBuilder();
-        builder.append("doc\n");
-        builder.append(getBody());
-        repr.setBody(builder.toString());
-        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 

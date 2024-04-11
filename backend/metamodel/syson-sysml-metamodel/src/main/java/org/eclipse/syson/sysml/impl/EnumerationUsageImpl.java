@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
@@ -135,10 +136,7 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentation repr = getOrCreateTextualRepresentation();
-        StringBuilder builder = new StringBuilder();
-        repr.setBody(getDeclaredName());
-        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 

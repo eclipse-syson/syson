@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,26 +60,7 @@ public class DataTypeImpl extends ClassifierImpl implements DataType {
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentation repr = getOrCreateTextualRepresentation();
-        StringBuilder builder = new StringBuilder();
-        if(isIsAbstract()){
-            builder.append("abstract ");
-        }
-        builder.append("datatype ");
-        if( getDeclaredName() != null){
-            builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));
-        }
-        
-        // Specialize
-        List<Specialization> specialisation = getOwnedRelationship().stream().filter(t -> SysmlPackage.eINSTANCE.getSpecialization().isSuperTypeOf(t.eClass())).map(t -> (Specialization) t).toList();
-        if( !specialisation.isEmpty()){
-            builder.append(":> ");
-            builder.append(String.join(", ", specialisation.stream().filter(t -> t.getGeneral() != null).map(t -> PrettyPrinter.prettyPrintName(t.getGeneral().getQualifiedName())).toList()));
-        }
-
-
-        builder.append(";");
-        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 

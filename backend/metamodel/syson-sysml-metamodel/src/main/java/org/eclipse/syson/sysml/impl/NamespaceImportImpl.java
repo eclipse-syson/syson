@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -177,21 +178,7 @@ public class NamespaceImportImpl extends ImportImpl implements NamespaceImport {
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentation repr = getOrCreateTextualRepresentation();
-        StringBuilder builder = new StringBuilder();
-        if( ! getVisibility().equals(VisibilityKind.PUBLIC) ){
-        builder.append(getVisibility() + " ");
-        }
-        builder.append("import ");
-        if( getImportedNamespace() != null ){
-            builder.append(PrettyPrinter.prettyPrintName(getImportedNamespace().getDeclaredName()));
-        } else {
-            builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));
-        }
-        builder.append("::*");
-        builder.append(";");
-        repr.setBody(builder.toString());
-        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 

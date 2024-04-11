@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -99,8 +98,8 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
      */
     @Override
     public Element getOwnedMemberElement() {
-        Element ownedMemberElement = basicGetOwnedMemberElement();
-        return ownedMemberElement != null && ownedMemberElement.eIsProxy() ? (Element)eResolveProxy((InternalEObject)ownedMemberElement) : ownedMemberElement;
+        Element ownedMemberElement = this.basicGetOwnedMemberElement();
+        return ownedMemberElement != null && ownedMemberElement.eIsProxy() ? (Element)this.eResolveProxy((InternalEObject)ownedMemberElement) : ownedMemberElement;
     }
 
     /**
@@ -170,14 +169,16 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_ELEMENT_ID:
-                return getOwnedMemberElementId();
+                return this.getOwnedMemberElementId();
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_NAME:
-                return getOwnedMemberName();
+                return this.getOwnedMemberName();
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_SHORT_NAME:
-                return getOwnedMemberShortName();
+                return this.getOwnedMemberShortName();
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_ELEMENT:
-                if (resolve) return getOwnedMemberElement();
-                return basicGetOwnedMemberElement();
+                if (resolve) {
+                    return this.getOwnedMemberElement();
+                }
+                return this.basicGetOwnedMemberElement();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -191,13 +192,13 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_ELEMENT_ID:
-                return OWNED_MEMBER_ELEMENT_ID_EDEFAULT == null ? getOwnedMemberElementId() != null : !OWNED_MEMBER_ELEMENT_ID_EDEFAULT.equals(getOwnedMemberElementId());
+                return OWNED_MEMBER_ELEMENT_ID_EDEFAULT == null ? this.getOwnedMemberElementId() != null : !OWNED_MEMBER_ELEMENT_ID_EDEFAULT.equals(this.getOwnedMemberElementId());
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_NAME:
-                return OWNED_MEMBER_NAME_EDEFAULT == null ? getOwnedMemberName() != null : !OWNED_MEMBER_NAME_EDEFAULT.equals(getOwnedMemberName());
+                return OWNED_MEMBER_NAME_EDEFAULT == null ? this.getOwnedMemberName() != null : !OWNED_MEMBER_NAME_EDEFAULT.equals(this.getOwnedMemberName());
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_SHORT_NAME:
-                return OWNED_MEMBER_SHORT_NAME_EDEFAULT == null ? getOwnedMemberShortName() != null : !OWNED_MEMBER_SHORT_NAME_EDEFAULT.equals(getOwnedMemberShortName());
+                return OWNED_MEMBER_SHORT_NAME_EDEFAULT == null ? this.getOwnedMemberShortName() != null : !OWNED_MEMBER_SHORT_NAME_EDEFAULT.equals(this.getOwnedMemberShortName());
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_ELEMENT:
-                return basicGetOwnedMemberElement() != null;
+                return this.basicGetOwnedMemberElement() != null;
         }
         return super.eIsSet(featureID);
     }
@@ -210,11 +211,8 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        List<TextualRepresentation> textualRepresentations = new ArrayList<>();
-        this.getOwnedRelatedElement().stream()
-            .flatMap(elt -> elt.getTextualRepresentation().stream())
-            .forEach(textualRepresentations::add);
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentations.size(), textualRepresentations.toArray());
+        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
 } //OwningMembershipImpl

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
@@ -65,15 +66,7 @@ public class ReferenceUsageImpl extends UsageImpl implements ReferenceUsage {
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentation repr = getOrCreateTextualRepresentation();
-        StringBuilder builder = new StringBuilder();
-        for(var element: getOwnedFeatureMembership()){
-            for(var textualRepr: element.getTextualRepresentation()){
-                builder.append(textualRepr.getBody());
-            }
-        }
-        repr.setBody(builder.toString());
-        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 

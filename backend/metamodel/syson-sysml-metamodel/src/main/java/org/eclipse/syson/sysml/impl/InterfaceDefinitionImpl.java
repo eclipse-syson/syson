@@ -109,45 +109,7 @@ public class InterfaceDefinitionImpl extends ConnectionDefinitionImpl implements
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        TextualRepresentation repr = getOrCreateTextualRepresentation();
-        StringBuilder builder = new StringBuilder();
-        if(isIsAbstract()){
-            builder.append("abstract ");
-        }
-        builder.append("interface def ");
-        builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));
-
-        // Subclassification
-        Optional<Subclassification> subclassification = getOwnedRelationship().stream().filter(t -> SysmlPackage.eINSTANCE.getSubclassification().isSuperTypeOf(t.eClass())).map(t -> (Subclassification) t).findFirst();
-        if(subclassification.isPresent()){
-            builder.append(":> ");
-            builder.append(PrettyPrinter.prettyPrintName(subclassification.get().getSuperclassifier().getQualifiedName()));
-        }
-        List<FeatureMembership> featureMemberships = getOwnedFeatureMembership().stream().filter(t -> SysmlPackage.eINSTANCE.getFeatureMembership().isSuperTypeOf(t.eClass())).map(t -> (FeatureMembership) t).toList();
-
-        List<FeatureMembership> relatedElements = getOwnedRelatedElement().stream().filter(t -> SysmlPackage.eINSTANCE.getFeatureMembership().isSuperTypeOf(t.eClass())).map(t -> (FeatureMembership) t).toList();
-
-        if(! featureMemberships.isEmpty() || ! relatedElements.isEmpty()){
-            builder.append("{");
-            for(FeatureMembership featureMembership: featureMemberships){
-                for(var textualRepr: featureMembership.getTextualRepresentation()){
-                    builder.append("\n");
-                    builder.append(textualRepr.getBody());
-                }
-            }
-            for(FeatureMembership featureMembership: relatedElements){
-                for(var textualRepr: featureMembership.getTextualRepresentation()){
-                    builder.append("\n");
-                    builder.append(textualRepr.getBody());
-                }
-            }
-            builder.append("\n}");
-        } else {
-            builder.append(";");
-        }
-    
-        repr.setBody(builder.toString());
-        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 

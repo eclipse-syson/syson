@@ -129,28 +129,7 @@ public class PackageImpl extends NamespaceImpl implements org.eclipse.syson.sysm
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        String subTextualRepresentation = "";
-        TextualRepresentation repr = getOrCreateTextualRepresentation();
-        StringBuilder builder = new StringBuilder();
-        builder.append("package ");
-        builder.append(PrettyPrinter.prettyPrintName(getDeclaredName()));
-        builder.append("{");
-        /*
-        for(var elements: getOwnedElement()){
-            for(var textualRepr: elements.getTextualRepresentation()){
-                builder.append("\n");
-                builder.append(textualRepr.getBody());
-            }
-        } */
-        for(var relationship: getOwnedRelationship()){
-            for(var textualRepr: relationship.getTextualRepresentation()){
-                builder.append("\n");
-                builder.append(textualRepr.getBody());
-            }
-        }
-        builder.append("\n}");
-        repr.setBody(builder.toString());
-        List<TextualRepresentation> textualRepresentation = List.of(repr);
+        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
