@@ -19,6 +19,9 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -50,7 +53,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .defaultHeightExpression("10")
                 .defaultWidthExpression("10")
                 .domainType(domainType)
-                .labelExpression(AQLConstants.AQL_SELF + ".getBorderNodePortUsageLabel()")
+                .insideLabel(this.createInsideLabelDescription())
                 .name(NAME)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName())
                 .style(this.createPortUsageNodeStyle())
@@ -67,15 +70,28 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
         nodeDescription.setPalette(this.createNodePalette(nodeDescription));
     }
 
+    private InsideLabelDescription createInsideLabelDescription() {
+        return this.diagramBuilderHelper.newInsideLabelDescription()
+                .labelExpression(AQLConstants.AQL_SELF + ".getBorderNodePortUsageLabel()")
+                .position(InsideLabelPosition.TOP_CENTER)
+                .style(this.createInsideLabelStyle())
+                .build();
+    }
+
+    private InsideLabelStyle createInsideLabelStyle() {
+        return this.diagramBuilderHelper.newInsideLabelStyle()
+                .displayHeaderSeparator(false)
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
+                .showIcon(false)
+                .withHeader(false)
+                .build();
+    }
+
     private NodeStyleDescription createPortUsageNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(5)
                 .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
-                .displayHeaderSeparator(false)
-                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(false)
-                .withHeader(false)
                 .build();
     }
 

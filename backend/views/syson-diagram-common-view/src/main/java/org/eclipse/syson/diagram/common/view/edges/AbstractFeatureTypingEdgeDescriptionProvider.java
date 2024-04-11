@@ -70,7 +70,7 @@ public abstract class AbstractFeatureTypingEdgeDescriptionProvider extends Abstr
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .labelExpression("")
+                .centerLabelExpression("")
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getFeatureTyping_TypedFeature().getName())

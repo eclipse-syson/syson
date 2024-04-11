@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -115,15 +115,8 @@ public final class SysMLCustomNodesEditPlugin extends EMFPlugin {
         int index = key.lastIndexOf('.');
         if (index != -1) {
             String extension = key.substring(index + 1);
-            if ("png".equalsIgnoreCase(extension) ||
-                "gif".equalsIgnoreCase(extension) ||
-                "bmp".equalsIgnoreCase(extension) ||
-                "ico".equalsIgnoreCase(extension) ||
-                "jpg".equalsIgnoreCase(extension) ||
-                "jpeg".equalsIgnoreCase(extension) ||
-                "tif".equalsIgnoreCase(extension) ||
-                "tiff".equalsIgnoreCase(extension) ||
-                "svg".equalsIgnoreCase(extension)) {
+            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
+                    || "jpeg".equalsIgnoreCase(extension) || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension) || "svg".equalsIgnoreCase(extension)) {
                 result = "";
             }
         }

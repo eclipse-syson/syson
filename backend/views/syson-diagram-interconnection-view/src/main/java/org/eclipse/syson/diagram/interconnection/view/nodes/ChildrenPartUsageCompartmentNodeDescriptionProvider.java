@@ -19,8 +19,8 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.tools.ChildrenPartUsageCompartmentNodeToolProvider;
@@ -50,7 +50,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
                 .defaultHeightExpression("150")
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
-                .labelExpression("")
+                .insideLabel(this.createInsideLabelDescription())
                 .name(NAME)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
@@ -85,11 +85,8 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     @Override
-    protected NodeStyleDescription createCompartmentNodeStyle() {
-        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
-                .borderRadius(0)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_COMPARTMENT_BACKGROUND_COLOR))
+    protected InsideLabelStyle createInsideLabelStyle() {
+        return this.diagramBuilderHelper.newInsideLabelStyle()
                 .displayHeaderSeparator(false)
                 .fontSize(12)
                 .italic(true)

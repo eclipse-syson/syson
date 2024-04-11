@@ -206,7 +206,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
     }
 
     private String getSysMLv2Content() {
-        return this.stereotypeBuilder.getStereotypeBody(StereotypeDescriptionRegistryConfigurer.getEmptySysMLv2Content());
+        return this.stereotypeBuilder.getStereotypeBody(StereotypeRegistryConfigurer.getEmptySysMLv2Content());
     }
 
     private String getBatmobileContent() {

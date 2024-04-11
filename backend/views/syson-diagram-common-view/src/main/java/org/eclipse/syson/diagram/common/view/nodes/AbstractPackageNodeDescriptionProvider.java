@@ -24,6 +24,9 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -96,7 +99,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .defaultHeightExpression("300")
                 .defaultWidthExpression("300")
                 .domainType(domainType)
-                .labelExpression("aql:self.getContainerLabel()")
+                .insideLabel(this.createInsideLabelDescription())
                 .name(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .style(this.createPackageNodeStyle())
@@ -116,13 +119,28 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         packageNodeDescription.setPalette(this.createNodePalette(packageNodeDescription, cache));
     }
 
+    protected InsideLabelDescription createInsideLabelDescription() {
+        return this.diagramBuilderHelper.newInsideLabelDescription()
+                .labelExpression("aql:self.getContainerLabel()")
+                .position(InsideLabelPosition.TOP_CENTER)
+                .style(this.createInsideLabelStyle())
+                .build();
+    }
+
+    protected InsideLabelStyle createInsideLabelStyle() {
+        return this.diagramBuilderHelper.newInsideLabelStyle()
+                .displayHeaderSeparator(false)
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
+                .showIcon(true)
+                .withHeader(false)
+                .build();
+    }
+
     protected NodeStyleDescription createPackageNodeStyle() {
         SysMLPackageNodeStyleDescription nodeStyleDescription = SysMLCustomnodesFactory.eINSTANCE.createSysMLPackageNodeStyleDescription();
         nodeStyleDescription.setBorderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR));
         nodeStyleDescription.setBorderRadius(0);
         nodeStyleDescription.setColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR));
-        nodeStyleDescription.setLabelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR));
-        nodeStyleDescription.setShowIcon(true);
         return nodeStyleDescription;
     }
 

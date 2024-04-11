@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.Style;
@@ -85,11 +84,6 @@ public class SysMLCustomnodesAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseLabelStyle(LabelStyle object) {
-            return SysMLCustomnodesAdapterFactory.this.createLabelStyleAdapter();
-        }
-
-        @Override
         public Adapter caseBorderStyle(BorderStyle object) {
             return SysMLCustomnodesAdapterFactory.this.createBorderStyleAdapter();
         }
@@ -142,19 +136,6 @@ public class SysMLCustomnodesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createStyleAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.LabelStyle
-     * @generated
-     */
-    public Adapter createLabelStyleAdapter() {
         return null;
     }
 

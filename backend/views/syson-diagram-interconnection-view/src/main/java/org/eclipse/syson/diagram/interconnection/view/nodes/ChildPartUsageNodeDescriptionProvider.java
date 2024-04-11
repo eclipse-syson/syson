@@ -21,6 +21,9 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
+import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -62,7 +65,7 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
                 .defaultHeightExpression("100")
                 .defaultWidthExpression("150")
                 .domainType(domainType)
-                .labelExpression(AQLConstants.AQL_SELF + ".getContainerLabel()")
+                .insideLabel(this.createInsideLabelDescription())
                 .name(NAME)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPart().getName())
                 .style(this.createChildPartUsageNodeStyle())
@@ -85,15 +88,28 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
         nodeDescription.setPalette(this.createNodePalette(cache));
     }
 
+    private InsideLabelDescription createInsideLabelDescription() {
+        return this.diagramBuilderHelper.newInsideLabelDescription()
+                .labelExpression(AQLConstants.AQL_SELF + ".getContainerLabel()")
+                .position(InsideLabelPosition.TOP_CENTER)
+                .style(this.createInsideLabelStyle())
+                .build();
+    }
+
+    private InsideLabelStyle createInsideLabelStyle() {
+        return this.diagramBuilderHelper.newInsideLabelStyle()
+                .displayHeaderSeparator(true)
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
+                .showIcon(true)
+                .withHeader(true)
+                .build();
+    }
+
     private NodeStyleDescription createChildPartUsageNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(10)
                 .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
-                .displayHeaderSeparator(true)
-                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
-                .withHeader(true)
                 .build();
     }
 

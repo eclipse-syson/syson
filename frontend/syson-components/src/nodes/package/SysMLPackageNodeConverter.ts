@@ -27,7 +27,7 @@ import {
   IConvertEngine,
   INodeConverter,
   convertHandles,
-  convertLabelStyle,
+  convertInsideLabel,
   convertLineStyle,
   convertOutsideLabels,
   isListLayoutStrategy,
@@ -94,32 +94,11 @@ const toPackageNode = (
     isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
   };
 
-  if (insideLabel) {
-    const labelStyle = insideLabel.style;
-    data.insideLabel = {
-      id: insideLabel.id,
-      text: insideLabel.text,
-      isHeader: insideLabel.isHeader,
-      displayHeaderSeparator: insideLabel.displayHeaderSeparator,
-      style: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '8px 16px',
-        textAlign: 'center',
-        ...convertLabelStyle(labelStyle),
-      },
-      iconURL: labelStyle.iconURL,
-    };
-
-    data.style = {
-      ...data.style,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-    };
-  }
+  data.insideLabel = convertInsideLabel(
+    insideLabel,
+    data,
+    `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
+  );
 
   const node: Node<SysMLPackageNodeData> = {
     id,
