@@ -117,11 +117,8 @@ public class VariantMembershipImpl extends OwningMembershipImpl implements Varia
      */
     @Override
     public EList<TextualRepresentation> getTextualRepresentation() {
-        List<TextualRepresentation> textualRepresentations = new ArrayList<>();
-        this.getOwnedRelatedElement().stream()
-            .flatMap(elt -> elt.getTextualRepresentation().stream())
-            .forEach(textualRepresentations::add);
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentations.size(), textualRepresentations.toArray());
+        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
 } //VariantMembershipImpl
