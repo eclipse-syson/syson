@@ -30,6 +30,7 @@
 - https://github.com/eclipse-syson/syson/issues/171[#171] [details] Add PortUsage#direction attribute to Core properties in the Details view.
 - https://github.com/eclipse-syson/syson/issues/169[#169] [general-view] Handle UseCaseDefinition and UseCaseUsage in General View diagram
 - https://github.com/eclipse-syson/syson/issues/177[#177] [diagrams] Add reconnect tools for composition edges
+- https://github.com/eclipse-syson/syson/issues/182[#182] [diagrams] Make Definition/Usage node collapsed by default in general-view & actionflow-view diagrams
 
 === New features
 
