@@ -42,4 +42,9 @@ public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCom
     protected String getPreconditionExpression() {
         return "aql:self.isEmptyObjectiveRequirementCompartment()";
     }
+
+    @Override
+    protected boolean expandOnCreate() {
+        return true;
+    }
 }

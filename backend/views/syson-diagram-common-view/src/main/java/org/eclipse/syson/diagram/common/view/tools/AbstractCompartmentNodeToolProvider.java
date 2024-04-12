@@ -12,11 +12,16 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.syson.util.AQLConstants;
 
 /**
  * Node tool provider for elements inside compartments.
@@ -25,9 +30,9 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  */
 public abstract class AbstractCompartmentNodeToolProvider implements INodeToolProvider {
 
-    private DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private ViewBuilders viewBuilderHelper = new ViewBuilders();
+    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     public AbstractCompartmentNodeToolProvider() { }
 
@@ -56,6 +61,13 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
     }
 
     /**
+     * Whether the tool will expand the selected node after its execution or not.
+     *
+     * @return if <code>true</code>, the tool will expand the selected node after the execution of the tool.
+     */
+    protected abstract boolean expandOnCreate();
+
+    /**
      * Return the node tool icon URL expression to retrieve the icon of the tool visible in the compartment palette.
      *
      * @return
@@ -66,12 +78,28 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
+        List<Operation> allOperations = new ArrayList<>();
+
         var creationCompartmentItemServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(this.getServiceCallExpression());
+                .expression(this.getServiceCallExpression())
+                .build();
+        allOperations.add(creationCompartmentItemServiceCall);
+
+        if (this.expandOnCreate()) {
+            var expandOperation = this.viewBuilderHelper.newChangeContext()
+                    .expression("aql:diagramServices.expand(Sequence{selectedNode})")
+                    .build();
+            allOperations.add(expandOperation);
+        }
+
+        var rootChangContext = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL_SELF)
+                .children(allOperations.toArray(Operation[]::new))
+                .build();
 
         return builder.name(this.getNodeToolName())
                 .iconURLsExpression(this.getNodeToolIconURLsExpression())
-                .body(creationCompartmentItemServiceCall.build())
+                .body(rootChangContext)
                 .preconditionExpression(this.getPreconditionExpression())
                 .build();
     }

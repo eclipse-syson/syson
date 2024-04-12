@@ -39,4 +39,9 @@ public class ChildrenPartUsageCompartmentNodeToolProvider extends AbstractCompar
     protected String getNodeToolIconURLsExpression() {
         return "/icons/full/obj16/PartUsage.svg";
     }
+
+    @Override
+    protected boolean expandOnCreate() {
+        return false;
+    }
 }
