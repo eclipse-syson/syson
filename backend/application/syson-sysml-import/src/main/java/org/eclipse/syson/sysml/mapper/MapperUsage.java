@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 
 /**
  * Implements mapping logic specific to Usage in SysML models from AST node.

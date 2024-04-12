@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

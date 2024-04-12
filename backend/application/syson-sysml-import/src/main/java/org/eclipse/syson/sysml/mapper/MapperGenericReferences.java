@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
@@ -23,8 +21,11 @@ import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Maps generic references within SysML models to AST elements, handling various node types.

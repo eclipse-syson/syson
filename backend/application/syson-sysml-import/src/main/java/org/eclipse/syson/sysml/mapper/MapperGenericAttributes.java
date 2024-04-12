@@ -12,16 +12,17 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Maps generic attributes from AST nodes to SysML model elements based on specified mappings.
