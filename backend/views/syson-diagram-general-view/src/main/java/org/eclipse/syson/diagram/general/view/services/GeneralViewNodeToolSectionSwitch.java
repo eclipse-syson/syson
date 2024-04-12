@@ -24,6 +24,8 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -198,21 +200,13 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
     }
 
     private NodeTool createPartUsageAsSubjectNodeTool() {
-        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createPartUsageAsSubject(self.eContainer().eContainer())");
-        return this.diagramBuilderHelper.newNodeTool()
-                .name("New Subject")
-                .iconURLsExpression("/icons/full/obj16/Subject.svg")
-                .preconditionExpression("aql:self.isEmptySubjectCompartment()")
-                .body(serviceCall.build()).build();
+        var subjectCompartmentNodeToolProvider = new SubjectCompartmentNodeToolProvider();
+        return subjectCompartmentNodeToolProvider.create(null);
     }
 
     private NodeTool createRequirementUsageAsObjectiveRequirementNodeTool() {
-        var serviceCall = this.viewBuilderHelper.newChangeContext().expression("aql:self.createRequirementUsageAsObjectiveRequirement()");
-        return this.diagramBuilderHelper.newNodeTool()
-                .name("New Ojbective")
-                .iconURLsExpression("/icons/full/obj16/Objective.svg")
-                .preconditionExpression("aql:self.isEmptyObjectiveRequirementCompartment()")
-                .body(serviceCall.build()).build();
+        var objectiveRequirementCompartmentNodeToolProvider = new ObjectiveRequirementCompartmentNodeToolProvider();
+        return objectiveRequirementCompartmentNodeToolProvider.create(null);
     }
 
     private NodeToolSection createPartDefinitionElementsToolSection() {

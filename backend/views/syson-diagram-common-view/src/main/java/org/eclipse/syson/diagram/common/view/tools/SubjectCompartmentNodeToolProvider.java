@@ -42,4 +42,9 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
     protected String getPreconditionExpression() {
         return "aql:self.isEmptySubjectCompartment()";
     }
+
+    @Override
+    protected boolean expandOnCreate() {
+        return true;
+    }
 }
