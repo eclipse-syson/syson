@@ -10,9 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.sysml.mapper;
-
-import com.fasterxml.jackson.databind.JsonNode;
+package org.eclipse.syson.sysml.finder;
 
 import java.util.Collections;
 import java.util.SortedMap;
@@ -22,6 +20,11 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.syson.sysml.mapper.MappingElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Extends {@link ObjectFinder} with caching capabilities to enhance lookup performance.
@@ -29,6 +32,8 @@ import org.eclipse.emf.ecore.EObject;
  * @author gescande
  */
 public class CachedObjectFinder extends ObjectFinder {
+
+    private final Logger logger = LoggerFactory.getLogger(CachedObjectFinder.class);
 
     private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
@@ -47,6 +52,17 @@ public class CachedObjectFinder extends ObjectFinder {
             this.writeLock.unlock();
         }
         super.addImportMember(importString);
+    }
+
+    @Override
+    public void addImportAlias(final String initial, final String target) {
+        this.writeLock.lock();
+        try {
+            this.cache.clear();
+        } finally {
+            this.writeLock.unlock();
+        }
+        super.addImportAlias(initial, target);
     }
 
     @Override
@@ -75,7 +91,7 @@ public class CachedObjectFinder extends ObjectFinder {
     public EObject findObject(final MappingElement mapping, JsonNode jsonNode, final EClass type) {
 
         EObject result = null;
-        int hash = jsonNode.toString().hashCode();
+        int hash = jsonNode.hashCode();
         if (type != null) {
             hash += type.getName().hashCode();
         }
@@ -99,4 +115,11 @@ public class CachedObjectFinder extends ObjectFinder {
 
         return result;
     }
+
+    @Override
+    public void logStat() {
+        super.logStat();
+        this.logger.debug("CachedObjectFinder Stat - cache.size = " + cache.size());
+    }
+
 }

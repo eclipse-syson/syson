@@ -18,6 +18,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.LogBook;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

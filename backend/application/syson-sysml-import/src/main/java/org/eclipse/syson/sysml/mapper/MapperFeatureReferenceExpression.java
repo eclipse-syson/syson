@@ -12,15 +12,16 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Implements mapping logic specific to FeatureReferenceExpression in SysML models from AST node.

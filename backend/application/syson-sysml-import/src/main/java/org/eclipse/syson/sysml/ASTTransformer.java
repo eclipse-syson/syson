@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -24,7 +21,8 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.syson.sysml.mapper.CachedObjectFinder;
+import org.eclipse.syson.sysml.finder.CachedObjectFinder;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.eclipse.syson.sysml.mapper.MapperArray;
 import org.eclipse.syson.sysml.mapper.MapperComment;
 import org.eclipse.syson.sysml.mapper.MapperConjugatedPortTyping;
@@ -44,7 +42,6 @@ import org.eclipse.syson.sysml.mapper.MapperLiteralString;
 import org.eclipse.syson.sysml.mapper.MapperMembership;
 import org.eclipse.syson.sysml.mapper.MapperMembershipImport;
 import org.eclipse.syson.sysml.mapper.MapperMembershipReference;
-import org.eclipse.syson.sysml.mapper.MapperNamespace;
 import org.eclipse.syson.sysml.mapper.MapperNamespaceImport;
 import org.eclipse.syson.sysml.mapper.MapperOperatorExpression;
 import org.eclipse.syson.sysml.mapper.MapperRedefinition;
@@ -56,9 +53,11 @@ import org.eclipse.syson.sysml.mapper.MapperUsage;
 import org.eclipse.syson.sysml.mapper.MapperVisitorInterface;
 import org.eclipse.syson.sysml.mapper.MappingElement;
 import org.eclipse.syson.sysml.mapper.MappingState;
-import org.eclipse.syson.sysml.mapper.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Transforms AST data using defined mappings and updates resources accordingly.
@@ -85,7 +84,6 @@ public class ASTTransformer {
             new MapperFlowConnectionUsage(this.objectFinder, this.mappingStates),
             new MapperMembership(this.objectFinder, this.mappingStates),
             new MapperMembershipImport(this.objectFinder, this.mappingStates),
-            new MapperNamespace(this.objectFinder, this.mappingStates),
             new MapperNamespaceImport(this.objectFinder, this.mappingStates),
             new MapperRedefinition(this.objectFinder, this.mappingStates),
             new MapperSubclassification(this.objectFinder, this.mappingStates),
@@ -165,6 +163,7 @@ public class ASTTransformer {
                 }
     
                 this.logger.info("End complete mapping loop");
+                this.objectFinder.logStat();
                 rootElements.forEach(t -> result.getContents().add(t.getSelf()));
             }
 

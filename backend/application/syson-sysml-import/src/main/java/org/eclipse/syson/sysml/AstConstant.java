@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import java.util.Arrays;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Defines constants and utility methods for AST node parsing and information extraction.
@@ -136,5 +136,16 @@ public final class AstConstant {
         }
 
         return identifier;
+    }
+
+
+    public static  String getSearchText(final JsonNode jsonNode) {
+        String searchText = null;
+        if (jsonNode.has(AstConstant.REFERENCE_CONST) && !jsonNode.get(AstConstant.REFERENCE_CONST).isNull() && !jsonNode.get(AstConstant.REFERENCE_CONST).asText().isBlank()) {
+            searchText = AstConstant.asCleanedText(jsonNode.get(AstConstant.REFERENCE_CONST));
+        } else if (jsonNode.has(AstConstant.TEXT_CONST) && !jsonNode.get(AstConstant.TEXT_CONST).isNull() && !jsonNode.get(AstConstant.TEXT_CONST).asText().isBlank()) {
+            searchText = AstConstant.asCleanedText(jsonNode.get(AstConstant.TEXT_CONST));
+        }
+        return searchText;
     }
 }

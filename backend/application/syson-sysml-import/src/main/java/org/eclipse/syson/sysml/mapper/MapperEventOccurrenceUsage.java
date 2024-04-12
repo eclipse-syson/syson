@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.EventOccurrenceUsage;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

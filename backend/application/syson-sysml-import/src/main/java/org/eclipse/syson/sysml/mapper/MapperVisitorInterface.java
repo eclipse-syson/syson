@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
+import org.eclipse.syson.sysml.finder.ObjectFinder;
+
 /**
  * Defines the interface for AST mappers with abstract methods for visiting and mapping elements.
  *

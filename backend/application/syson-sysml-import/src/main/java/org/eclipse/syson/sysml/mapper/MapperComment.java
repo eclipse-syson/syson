@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 
 /**
  * Mapping logic specific to Comments in SysML models from AST nodes.

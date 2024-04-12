@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 
 /**
  * Implements mapping logic specific to LiteralInteger in SysML models from AST node.

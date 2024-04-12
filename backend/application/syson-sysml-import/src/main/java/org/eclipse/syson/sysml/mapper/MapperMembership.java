@@ -12,15 +12,16 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Implements mapping logic specific to Membership in SysML models from AST node.
@@ -43,6 +44,13 @@ public class MapperMembership extends MapperVisitorInterface {
     @Override
     public void mappingVisit(final MappingElement mapping) {
         this.logger.debug("Add Membership to map for p  = " + mapping.getSelf());
+
+        if (mapping.getMainNode().has("isAlias") && mapping.getMainNode().get("isAlias").asBoolean()) {
+            String alias = AstConstant.asCleanedText(mapping.getMainNode().get("declaredName"));
+            String target = AstConstant.asCleanedText(mapping.getMainNode().get(AstConstant.TARGET_REF_CONST).get(AstConstant.TEXT_CONST));
+            this.objectFinder.addImportAlias("^" + alias + "$", target);
+        }
+
         this.mappingState.toResolve().add(mapping);
     }
 

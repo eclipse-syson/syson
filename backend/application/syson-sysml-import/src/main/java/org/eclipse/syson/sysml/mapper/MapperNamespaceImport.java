@@ -12,16 +12,17 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Implements mapping logic specific to NamespaceImport in SysML models from AST node.
@@ -53,7 +54,19 @@ public class MapperNamespaceImport extends MapperVisitorInterface {
 
         eObject.setDeclaredName(importText);
 
-        this.objectFinder.addImportNamespace(importText + "::.*");
+        this.objectFinder.addImportNamespace(importText);
+
+
+        JsonNode subElement = mapping.getMainNode().get(AstConstant.TARGET_REF_CONST);
+        Namespace referencedNamespace = (Namespace) this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getNamespace());
+
+        if (referencedNamespace != null) {
+            for (EObject content : referencedNamespace.eContents()) {
+                if (content instanceof NamespaceImport target) {
+                    this.objectFinder.addImportAlias(importText + "::", target.getDeclaredName() + "::");
+                }
+            }
+        }
 
         this.mappingState.toResolve().add(mapping);
     }
@@ -61,16 +74,12 @@ public class MapperNamespaceImport extends MapperVisitorInterface {
     @Override
     public void referenceVisit(final MappingElement mapping) {
         JsonNode subElement = mapping.getMainNode().get(AstConstant.TARGET_REF_CONST);
-        EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getNamespace());
+        Namespace referencedObject = (Namespace) this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getNamespace());
 
         NamespaceImport eObject = (NamespaceImport) mapping.getSelf();
 
-        if (referencedObject instanceof Namespace target) {
-            this.logger.debug("Reference NamespaceImport " + eObject + " to " + target);
-            eObject.setImportedNamespace(target);
-            eObject.getTarget().add(target);
-        } else {
-            this.logger.warn("Reference NamespaceImport not found " + subElement);
-        }
+        this.logger.debug("Reference NamespaceImport " + eObject + " to " + referencedObject);
+        eObject.setImportedNamespace(referencedObject);
+        eObject.getTarget().add(referencedObject);
     }
 }
