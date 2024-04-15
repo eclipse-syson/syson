@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<sirius.web.version>2024.3.1</sirius.web.version>
+		<sirius.web.version>2024.3.2</sirius.web.version>
 	</properties>
 
 	<repositories>
@@ -89,11 +89,6 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-services</artifactId>
 			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius.emfjson</groupId>
-			<artifactId>org.eclipse.sirius.emfjson</artifactId>
-			<version>2.3.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>

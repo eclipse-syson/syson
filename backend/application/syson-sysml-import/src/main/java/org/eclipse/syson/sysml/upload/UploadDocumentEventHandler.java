@@ -157,9 +157,9 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                         resource.eAdapters().add(new ResourceMetadataAdapter(name));
                         resourceSet.getResources().add(resource);
 
-                        payload = new UploadDocumentSuccessPayload(input.id(), document);
+                        String report = LogBook.getReport(name);
+                        payload = new UploadDocumentSuccessPayload(input.id(), document, report);
                         changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
-                        LogBook.getReport(name);
                     }
                 }
             }

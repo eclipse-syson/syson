@@ -173,11 +173,6 @@ public class ObjectFinder {
         return result;
     }
 
-    /**
-     * @param searchText
-     * @param type
-     * @return
-     */
     private EObject findDeclaredShortName(String searchText, EClass type) {
         EObject result = null;
         for (EObject directResult : this.objectListShortName.getOrDefault(searchText, List.of())) {
