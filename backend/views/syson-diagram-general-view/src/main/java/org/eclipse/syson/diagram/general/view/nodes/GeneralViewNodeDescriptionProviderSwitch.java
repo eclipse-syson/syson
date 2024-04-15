@@ -74,7 +74,7 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
 
     @Override
     public INodeDescriptionProvider caseAllocationUsage(AllocationUsage object) {
-        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationUsage(), this.colorProvider);
+        return new AllocationUsageNodeDescriptionProvider(this.colorProvider);
     }
 
     @Override

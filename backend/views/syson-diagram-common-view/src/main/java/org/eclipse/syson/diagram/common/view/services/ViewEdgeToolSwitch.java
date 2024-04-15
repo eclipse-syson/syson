@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -82,6 +83,16 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getActionUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
+    }
+
+    @Override
+    public List<EdgeTool> caseAllocationUsage(AllocationUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAllocationDefinition())).toList();
+        edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAllocationUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }

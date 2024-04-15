@@ -15,6 +15,8 @@ package org.eclipse.syson.services;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AllocationDefinition;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Classifier;
@@ -94,6 +96,37 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             .append(this.abstractType(object))
             .append(LabelConstants.OPEN_QUOTE)
             .append("action")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.multiplicityRange(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseAllocationDefinition(AllocationDefinition object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("allocation def")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.subclassification(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseAllocationUsage(AllocationUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("allocation")
             .append(LabelConstants.CLOSE_QUOTE)
             .append(LabelConstants.CR)
             .append(this.caseElement(object))

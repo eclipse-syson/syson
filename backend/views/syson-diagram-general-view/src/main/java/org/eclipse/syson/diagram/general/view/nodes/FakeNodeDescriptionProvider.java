@@ -48,7 +48,7 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(eReference -> cache.getNodeDescription(nameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
         });
-        // don't forget to add requirement usage/definition subject compartment
+        // don't forget to add custom compartments
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
@@ -60,6 +60,8 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
                 .ifPresent(childrenNodes::add);
         return childrenNodes;
     }
