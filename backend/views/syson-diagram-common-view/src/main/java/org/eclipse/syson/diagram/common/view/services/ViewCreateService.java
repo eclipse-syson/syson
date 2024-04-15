@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
+import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.ObjectiveMembership;
@@ -238,5 +239,30 @@ public class ViewCreateService {
                 .filter(ObjectiveMembership.class::isInstance)
                 .map(ObjectiveMembership.class::cast)
                 .findFirst().isEmpty();
+    }
+
+    /**
+     * Create a new Part Usage which is used as the end given Allocation Definition.
+     *
+     * @param self the Allocation Definition in which the new end is added.
+     * @param endParent the owner of the new part usage used as the end.
+     * @return
+     */
+    public Element createPartUsageAsAllocationDefinitionEnd(AllocationDefinition self, Element endParent) {
+        // create the part usage that is used as the end element
+        PartUsage newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+        newPartUsage.setDeclaredName(self.getDeclaredName() + "'s end");
+        var membership = SysmlFactory.eINSTANCE.createOwningMembership();
+        membership.getOwnedRelatedElement().add(newPartUsage);
+        endParent.getOwnedRelationship().add(membership);
+        var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+        featureTyping.setType(newPartUsage);
+        var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        referenceUsage.setDeclaredName("end");
+        referenceUsage.getOwnedRelationship().add(featureTyping);
+        var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        featureMembership.getOwnedRelatedElement().add(referenceUsage);
+        self.getOwnedRelationship().add(featureMembership);
+        return self;
     }
 }

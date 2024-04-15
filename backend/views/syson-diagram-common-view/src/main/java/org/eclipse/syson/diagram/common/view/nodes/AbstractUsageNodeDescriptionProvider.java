@@ -79,6 +79,17 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
      */
     protected abstract List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache);
 
+    /**
+     * Implementers might provide the expression used to retrieve all semantic candidates.<br>
+     * By default, the expression retrieves all reachable element of the given semantic type.
+     *
+     * @param domainType the semantic type of the element.
+     * @return the AQL expression to retrieve all semantic candidates for this node.
+     */
+    protected String getSemanticCandidatesExpression(String domainType) {
+        return "aql:self.getAllReachable(" + domainType + ")";
+    }
+
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
@@ -91,7 +102,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .insideLabel(this.createInsideLabelDescription())
                 .isCollapsedByDefaultExpression("aql:true")
                 .name(this.nameGenerator.getNodeName(this.eClass))
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
+                .semanticCandidatesExpression(this.getSemanticCandidatesExpression(domainType))
                 .style(this.createUsageNodeStyle())
                 .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)

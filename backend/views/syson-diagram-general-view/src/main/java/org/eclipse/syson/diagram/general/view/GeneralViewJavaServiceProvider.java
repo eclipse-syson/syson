@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewCreateService;
@@ -44,7 +45,8 @@ public class GeneralViewJavaServiceProvider implements IJavaServiceProvider {
                     GeneralViewEdgeService.class,
                     ViewLabelService.class,
                     ViewToolService.class,
-                    UtilService.class);
+                    UtilService.class,
+                    ViewEdgeService.class);
         }
         return List.of();
     }
