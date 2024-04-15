@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
  * @author wldblm
  */
 public class LogBook {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(LogBook.class);
 
     private static final Set<Event> EVENTS = new HashSet<>();
@@ -55,7 +56,6 @@ public class LogBook {
 
     public static String getReport(String fileName) {
         emitLogMessages();
-        saveReportToDownloads(REPORT.toString(), fileName);
         return REPORT.toString();
     }
 
