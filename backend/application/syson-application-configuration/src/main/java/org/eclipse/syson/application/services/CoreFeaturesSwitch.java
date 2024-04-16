@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -49,6 +50,14 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     @Override
     public List<EStructuralFeature> defaultCase(EObject object) {
         return List.of();
+    }
+
+    @Override
+    public List<EStructuralFeature> caseComment(Comment object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getComment_Body());
+        return features;
     }
 
     @Override

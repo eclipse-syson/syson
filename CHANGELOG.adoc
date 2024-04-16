@@ -16,6 +16,7 @@
 - https://github.com/eclipse-syson/syson/issues/144[#144] [diagrams] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.
 - https://github.com/eclipse-syson/syson/issues/167[#167] [interconnection-view] Add attributes compartment in children PartUsage nodes.
 - https://github.com/eclipse-syson/syson/issues/174[#174] [details] Fix an issue where an error raised when setting a valid new value (with primitive type) in the Details view.
+- https://github.com/eclipse-syson/syson/issues/192[#192] [import] Fix an issue where the /* and */ of a Comment's body were imported while importing a textual SysML file. 
 
 === Improvements
 

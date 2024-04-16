@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.syson.sysml.mapper.CachedObjectFinder;
 import org.eclipse.syson.sysml.mapper.MapperArray;
+import org.eclipse.syson.sysml.mapper.MapperComment;
 import org.eclipse.syson.sysml.mapper.MapperConjugatedPortTyping;
 import org.eclipse.syson.sysml.mapper.MapperConnectionUsage;
 import org.eclipse.syson.sysml.mapper.MapperCreateKnownType;
@@ -75,19 +76,36 @@ public class ASTTransformer {
     private final MappingState mappingStates = new MappingState(Collections.synchronizedCollection(new LinkedHashSet<MappingElement>()),
             Collections.synchronizedCollection(new LinkedHashSet<MappingElement>()), Collections.synchronizedCollection(new LinkedHashSet<MappingElement>()));
 
-    private final List<MapperVisitorInterface> mappers = List.of(new MapperArray(this.objectFinder, this.mappingStates), new MapperCreateKnownType(this.objectFinder, this.mappingStates),
-            new MapperGenericAttributes(this.objectFinder, this.mappingStates), new MapperGenericReferences(this.objectFinder, this.mappingStates),
-            new MapperFeatureTyping(this.objectFinder, this.mappingStates), new MapperFlowConnectionUsage(this.objectFinder, this.mappingStates),
-            new MapperMembership(this.objectFinder, this.mappingStates), new MapperMembershipImport(this.objectFinder, this.mappingStates), new MapperNamespace(this.objectFinder, this.mappingStates),
-            new MapperNamespaceImport(this.objectFinder, this.mappingStates), new MapperRedefinition(this.objectFinder, this.mappingStates),
-            new MapperSubclassification(this.objectFinder, this.mappingStates), new MapperFeatureChaining(this.objectFinder, this.mappingStates),
-            new MapperSubsetting(this.objectFinder, this.mappingStates), new MapperUsage(this.objectFinder, this.mappingStates), new MapperOperatorExpression(this.objectFinder, this.mappingStates),
-            new MapperLiteralInteger(this.objectFinder, this.mappingStates), new MapperLiteralRational(this.objectFinder, this.mappingStates),
-            new MapperFeatureReferenceExpression(this.objectFinder, this.mappingStates), new MapperConnectionUsage(this.objectFinder, this.mappingStates),
-            new MapperEventOccurrenceUsage(this.objectFinder, this.mappingStates), new MapperDependency(this.objectFinder, this.mappingStates),
-            new MapperSpecialization(this.objectFinder, this.mappingStates), new MapperMembershipReference(this.objectFinder, this.mappingStates),
-            new MapperLiteralString(this.objectFinder, this.mappingStates), new MapperReferenceSubsetting(this.objectFinder, this.mappingStates),
-            new MapperConjugatedPortTyping(this.objectFinder, this.mappingStates));
+    private final List<MapperVisitorInterface> mappers = List.of(
+            new MapperArray(this.objectFinder, this.mappingStates),
+            new MapperCreateKnownType(this.objectFinder, this.mappingStates),
+            new MapperGenericAttributes(this.objectFinder, this.mappingStates),
+            new MapperGenericReferences(this.objectFinder, this.mappingStates),
+            new MapperFeatureTyping(this.objectFinder, this.mappingStates),
+            new MapperFlowConnectionUsage(this.objectFinder, this.mappingStates),
+            new MapperMembership(this.objectFinder, this.mappingStates),
+            new MapperMembershipImport(this.objectFinder, this.mappingStates),
+            new MapperNamespace(this.objectFinder, this.mappingStates),
+            new MapperNamespaceImport(this.objectFinder, this.mappingStates),
+            new MapperRedefinition(this.objectFinder, this.mappingStates),
+            new MapperSubclassification(this.objectFinder, this.mappingStates),
+            new MapperFeatureChaining(this.objectFinder, this.mappingStates),
+            new MapperSubsetting(this.objectFinder, this.mappingStates),
+            new MapperUsage(this.objectFinder, this.mappingStates),
+            new MapperOperatorExpression(this.objectFinder, this.mappingStates),
+            new MapperLiteralInteger(this.objectFinder, this.mappingStates),
+            new MapperLiteralRational(this.objectFinder, this.mappingStates),
+            new MapperFeatureReferenceExpression(this.objectFinder, this.mappingStates),
+            new MapperConnectionUsage(this.objectFinder, this.mappingStates),
+            new MapperEventOccurrenceUsage(this.objectFinder, this.mappingStates),
+            new MapperDependency(this.objectFinder, this.mappingStates),
+            new MapperSpecialization(this.objectFinder, this.mappingStates),
+            new MapperMembershipReference(this.objectFinder, this.mappingStates),
+            new MapperLiteralString(this.objectFinder, this.mappingStates),
+            new MapperReferenceSubsetting(this.objectFinder, this.mappingStates),
+            new MapperConjugatedPortTyping(this.objectFinder, this.mappingStates),
+            new MapperComment(this.objectFinder, this.mappingStates)
+            );
 
     private final Logger logger = LoggerFactory.getLogger(ASTTransformer.class);
 
