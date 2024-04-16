@@ -211,6 +211,11 @@
 			<artifactId>syson-sysml-import</artifactId>
 			<version>2024.3.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-sysml-export</artifactId>
+			<version>2024.3.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

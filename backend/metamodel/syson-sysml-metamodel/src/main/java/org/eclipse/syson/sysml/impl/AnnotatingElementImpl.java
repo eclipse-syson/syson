@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -84,7 +87,23 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
      */
     @Override
     public EList<Element> getAnnotatedElement() {
-        List<Usage> data = new ArrayList<>();
+        final List<Element> data;
+
+        List<Annotation> annotations = getAnnotation();
+        if (annotations.isEmpty()) {
+            Element owningNamespace = getOwningNamespace();
+            if (owningNamespace != null) {
+                data = Collections.singletonList(owningNamespace);
+            } else {
+                data = Collections.emptyList();
+            }
+        } else {
+            data = annotations.stream()
+                    .map(Annotation::getAnnotatedElement)
+                    .filter(e -> e != null)
+                    .toList();
+        }
+
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_AnnotatedElement(), data.size(), data.toArray());
     }
 
