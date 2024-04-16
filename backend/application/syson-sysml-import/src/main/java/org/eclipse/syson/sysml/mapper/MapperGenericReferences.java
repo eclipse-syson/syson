@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +106,11 @@ public class MapperGenericReferences extends MapperVisitorInterface {
             this.logger.debug("Map object " + mapping.getSelf() + " to source " + mapping.getParent());
             relationship.getSource().add((Element) mapping.getParent());
 
-            target.setOwningRelationship(relationship);
+            if (target instanceof Membership membership) {
+                membership.setOwningRelatedElement(relationship);
+            } else {
+                target.setOwningRelationship(relationship);
+            }
         } else {
             this.logger.warn("Referenced seObject not found " + subElement);
         }
