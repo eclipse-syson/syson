@@ -83,6 +83,9 @@ public class SysMLv2LabelService implements ILabelServiceDelegate {
 
     @Override
     public Optional<String> getLabelField(Object object) {
+        if (object instanceof Element) {
+            return Optional.of(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName());
+        }
         return this.defaultLabelService.getLabelField(object);
     }
 
