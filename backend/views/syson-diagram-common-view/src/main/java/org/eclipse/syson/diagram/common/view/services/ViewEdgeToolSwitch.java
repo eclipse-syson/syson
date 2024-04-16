@@ -510,9 +510,6 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
                 .name(this.nameGenerator.getCreationToolName("Become objective", SysmlPackage.eINSTANCE.getRequirementUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + "Objective.svg")
                 .body(callService.build())
-                // maybe in a near future, the following precondition will be active when edge preconditions will be implemented
-                // follow this at https://github.com/eclipse-sirius/sirius-web/issues/2930
-                .preconditionExpression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET + ".isEmptyObjectiveRequirementCompartment()")
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
     }
