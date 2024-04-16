@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.common.view.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -21,8 +22,10 @@ import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -104,9 +107,30 @@ public class ViewEdgeService {
             .map(ReferenceSubsetting.class::cast)
             .findFirst();
         if (optReference.isPresent()) {
-            return optReference.get().getReferencedFeature();
+            return this.resolveFeatureElement(optReference.get().getReferencedFeature());
         }
         return null;
+    }
+
+    private Usage resolveFeatureElement(Feature feature) {
+        Usage result = null;
+        if (feature instanceof Usage usage) {
+            result = usage;
+        } else {
+            // need to be resolved, retrieve the last feature chaining 's target
+            Optional<FeatureChaining> lastChaining = feature.getOwnedRelationship().stream()
+                    .filter(FeatureChaining.class::isInstance)
+                    .map(FeatureChaining.class::cast)
+                    .reduce((acc, element) -> element);
+            if (lastChaining.isPresent()) {
+                result = lastChaining.get().getTarget().stream()
+                        .filter(Usage.class::isInstance)
+                        .map(Usage.class::cast)
+                        .findFirst()
+                        .orElse(null);
+            }
+        }
+        return result;
     }
 
     public Element getTargetAllocateEdge(AllocationUsage allocationUsage) {
