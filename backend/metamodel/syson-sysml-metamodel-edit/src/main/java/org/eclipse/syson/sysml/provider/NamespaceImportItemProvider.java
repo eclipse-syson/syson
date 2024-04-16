@@ -81,7 +81,7 @@ public class NamespaceImportItemProvider extends ImportItemProvider {
     }
 
     /**
-     * This returns NamespaceImport.gif.
+     * This returns NamespaceImport.svg.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT

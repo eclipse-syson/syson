@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,8 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -50,12 +48,12 @@ public class SubjectMembershipItemProvider extends ParameterMembershipItemProvid
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (itemPropertyDescriptors == null) {
+        if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            addOwnedSubjectParameterPropertyDescriptor(object);
+            this.addOwnedSubjectParameterPropertyDescriptor(object);
         }
-        return itemPropertyDescriptors;
+        return this.itemPropertyDescriptors;
     }
 
     /**
@@ -65,12 +63,12 @@ public class SubjectMembershipItemProvider extends ParameterMembershipItemProvid
      * @generated
      */
     protected void addOwnedSubjectParameterPropertyDescriptor(Object object) {
-        itemPropertyDescriptors.add
-            (createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-                 getResourceLocator(),
-                 getString("_UI_SubjectMembership_ownedSubjectParameter_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_SubjectMembership_ownedSubjectParameter_feature", "_UI_SubjectMembership_type"),
+        this.itemPropertyDescriptors.add
+            (this.createItemPropertyDescriptor
+                (((ComposeableAdapterFactory)this.adapterFactory).getRootAdapterFactory(),
+                 this.getResourceLocator(),
+                 this.getString("_UI_SubjectMembership_ownedSubjectParameter_feature"),
+                 this.getString("_UI_PropertyDescriptor_description", "_UI_SubjectMembership_ownedSubjectParameter_feature", "_UI_SubjectMembership_type"),
                  SysmlPackage.eINSTANCE.getSubjectMembership_OwnedSubjectParameter(),
                  true,
                  false,
@@ -81,14 +79,14 @@ public class SubjectMembershipItemProvider extends ParameterMembershipItemProvid
     }
 
     /**
-     * This returns SubjectMembership.gif.
+     * This returns SubjectMembership.svg.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/SubjectMembership.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/SubjectMembership.svg"));
     }
 
     /**
@@ -101,8 +99,8 @@ public class SubjectMembershipItemProvider extends ParameterMembershipItemProvid
     public String getText(Object object) {
         String label = ((SubjectMembership)object).getName();
         return label == null || label.length() == 0 ?
-            getString("_UI_SubjectMembership_type") :
-            getString("_UI_SubjectMembership_type") + " " + label;
+            this.getString("_UI_SubjectMembership_type") :
+            this.getString("_UI_SubjectMembership_type") + " " + label;
     }
 
 
@@ -115,7 +113,7 @@ public class SubjectMembershipItemProvider extends ParameterMembershipItemProvid
      */
     @Override
     public void notifyChanged(Notification notification) {
-        updateChildren(notification);
+        this.updateChildren(notification);
         super.notifyChanged(notification);
     }
 
@@ -147,9 +145,9 @@ public class SubjectMembershipItemProvider extends ParameterMembershipItemProvid
             childFeature == SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement();
 
         if (qualify) {
-            return getString
+            return this.getString
                 ("_UI_CreateChild_text2",
-                 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+                 new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
         }
         return super.getCreateChildText(owner, feature, child, selection);
     }

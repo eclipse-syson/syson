@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-
 import org.eclipse.syson.sysml.Multiplicity;
 
 /**
@@ -48,22 +46,22 @@ public class MultiplicityItemProvider extends FeatureItemProvider {
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (itemPropertyDescriptors == null) {
+        if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
         }
-        return itemPropertyDescriptors;
+        return this.itemPropertyDescriptors;
     }
 
     /**
-     * This returns Multiplicity.gif.
+     * This returns Multiplicity.svg.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/Multiplicity"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Multiplicity.svg"));
     }
 
     /**
@@ -76,8 +74,8 @@ public class MultiplicityItemProvider extends FeatureItemProvider {
     public String getText(Object object) {
         String label = ((Multiplicity)object).getName();
         return label == null || label.length() == 0 ?
-            getString("_UI_Multiplicity_type") :
-            getString("_UI_Multiplicity_type") + " " + label;
+            this.getString("_UI_Multiplicity_type") :
+            this.getString("_UI_Multiplicity_type") + " " + label;
     }
 
 
@@ -90,7 +88,7 @@ public class MultiplicityItemProvider extends FeatureItemProvider {
      */
     @Override
     public void notifyChanged(Notification notification) {
-        updateChildren(notification);
+        this.updateChildren(notification);
         super.notifyChanged(notification);
     }
 

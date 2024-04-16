@@ -36,6 +36,7 @@
 - https://github.com/eclipse-syson/syson/issues/182[#182] [diagrams] Make Definition/Usage node collapsed by default in general-view & actionflow-view diagrams
 - https://github.com/eclipse-syson/syson/issues/183[#183] [diagrams] Expand Definition/Usage nodes in general-view & actionflow-view when a compartment item is created
 - https://github.com/eclipse-syson/syson/issues/180[#180] [diagrams] Handle Allocation definition and Allocation usage
+- [syson] Add icons for all elements
 
 === New features
 
