@@ -36,7 +36,7 @@ public class MapperConnectionUsage extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getConnectionUsage().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof ConnectionUsage;
     }
 
     @Override
@@ -57,9 +57,8 @@ public class MapperConnectionUsage extends MapperVisitorInterface {
         mapping.getMainNode().get("ends").forEach(subElement -> {
 
             EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getEndFeatureMembership());
-            OwningMembership target = (OwningMembership) referencedObject;
 
-            if (target != null) {
+            if (referencedObject instanceof OwningMembership target) {
                 this.logger.debug("Map ConnectionUsage object " + mapping.getSelf() + " ends to object " + referencedObject);
                 target.setOwningRelatedElement(eObject);
             } else {

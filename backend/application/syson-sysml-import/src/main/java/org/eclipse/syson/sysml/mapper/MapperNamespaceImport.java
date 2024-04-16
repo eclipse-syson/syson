@@ -38,7 +38,7 @@ public class MapperNamespaceImport extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getNamespaceImport().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
+        return mapping.getSelf() instanceof NamespaceImport && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
     }
 
     @Override
@@ -64,9 +64,8 @@ public class MapperNamespaceImport extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getNamespace());
 
         NamespaceImport eObject = (NamespaceImport) mapping.getSelf();
-        Namespace target = (Namespace) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Namespace target) {
             this.logger.debug("Reference NamespaceImport " + eObject + " to " + target);
             eObject.setImportedNamespace(target);
             eObject.getTarget().add(target);

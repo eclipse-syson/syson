@@ -14,9 +14,6 @@ package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.LiteralInteger;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implements mapping logic specific to LiteralInteger in SysML models from AST node.
@@ -25,15 +22,13 @@ import org.slf4j.LoggerFactory;
  */
 public class MapperLiteralInteger extends MapperVisitorInterface {
 
-    private final Logger logger = LoggerFactory.getLogger(MapperLiteralInteger.class);
-
     public MapperLiteralInteger(final ObjectFinder objectFinder, final MappingState mappingState) {
         super(objectFinder, mappingState);
     }
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getLiteralInteger().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof LiteralInteger;
     }
 
     @Override

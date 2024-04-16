@@ -14,7 +14,6 @@ package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.EventOccurrenceUsage;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +32,7 @@ public class MapperEventOccurrenceUsage extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getEventOccurrenceUsage().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof EventOccurrenceUsage;
     }
 
     @Override

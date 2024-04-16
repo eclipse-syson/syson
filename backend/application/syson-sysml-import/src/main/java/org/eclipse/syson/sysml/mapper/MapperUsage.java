@@ -12,10 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implements mapping logic specific to Usage in SysML models from AST node.
@@ -24,15 +21,13 @@ import org.slf4j.LoggerFactory;
  */
 public class MapperUsage extends MapperVisitorInterface {
 
-    private final Logger logger = LoggerFactory.getLogger(MapperUsage.class);
-
     public MapperUsage(final ObjectFinder objectFinder, final MappingState mappingState) {
         super(objectFinder, mappingState);
     }
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof Usage;
     }
 
     @Override

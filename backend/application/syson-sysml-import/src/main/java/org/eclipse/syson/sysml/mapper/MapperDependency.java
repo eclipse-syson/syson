@@ -35,7 +35,7 @@ public class MapperDependency extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getDependency().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof Dependency;
     }
 
     @Override
@@ -51,9 +51,8 @@ public class MapperDependency extends MapperVisitorInterface {
         mapping.getMainNode().get(AstConstant.SUPPLIER_CONST).forEach(subElement -> {
 
             EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getElement());
-            Element target = (Element) referencedObject;
 
-            if (target != null) {
+            if (referencedObject instanceof Element target) {
                 this.logger.debug("Map Dependency object " + mapping.getSelf() + " supplier to object " + referencedObject);
                 eObject.getSupplier().add(target);
             } else {
@@ -64,9 +63,8 @@ public class MapperDependency extends MapperVisitorInterface {
         mapping.getMainNode().get(AstConstant.CLIENT_CONST).forEach(subElement -> {
 
             EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getElement());
-            Element target = (Element) referencedObject;
 
-            if (target != null) {
+            if (referencedObject instanceof Element target) {
                 this.logger.debug("Map Dependency object " + mapping.getSelf() + " client to object " + referencedObject);
                 eObject.getClient().add(target);
             } else {

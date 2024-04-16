@@ -37,7 +37,7 @@ public class MapperSubsetting extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getSubsetting().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
+        return mapping.getSelf() instanceof Subsetting && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
     }
 
     @Override
@@ -60,9 +60,8 @@ public class MapperSubsetting extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getFeature());
 
         Subsetting eObject = (Subsetting) mapping.getSelf();
-        Feature target = (Feature) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Feature target) {
             this.logger.debug("Reference Subsetting " + eObject + " to " + target);
             eObject.setSubsettedFeature(target);
         } else {

@@ -36,7 +36,7 @@ public class MapperMembershipReference extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(mapping.getSelf().eClass())
+        return mapping.getSelf() instanceof Membership
                 && mapping.getMainNode().findValue(AstConstant.TYPE_CONST).textValue().equals("MembershipReference");
     }
 
@@ -50,9 +50,8 @@ public class MapperMembershipReference extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, mapping.getMainNode(), SysmlPackage.eINSTANCE.getElement());
 
         Membership membership = (Membership) mapping.getSelf();
-        Element target = (Element) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Element target) {
             this.logger.debug("Add Membership target between " + membership + " to " + target);
             membership.setMemberElement(target);
         } else {

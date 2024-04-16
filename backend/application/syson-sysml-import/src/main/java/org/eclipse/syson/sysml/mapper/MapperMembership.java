@@ -37,7 +37,7 @@ public class MapperMembership extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof Membership;
     }
 
     @Override
@@ -48,14 +48,13 @@ public class MapperMembership extends MapperVisitorInterface {
 
     @Override
     public void referenceVisit(final MappingElement mapping) {
+        Membership eObject = (Membership) mapping.getSelf();
+
         AstConstant.NODES.stream().filter(n -> mapping.getMainNode().has(n)).forEach(n -> {
             JsonNode subElement = mapping.getMainNode().get(n);
             EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getElement());
 
-            Membership eObject = (Membership) mapping.getSelf();
-            Element target = (Element) referencedObject;
-
-            if (target != null) {
+            if (referencedObject instanceof Element target) {
                 this.logger.debug("Add Membership target between " + eObject + " to " + target);
                 eObject.setMemberElement(target);
                 eObject.setMemberName(target.getDeclaredName());

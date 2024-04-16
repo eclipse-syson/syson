@@ -14,9 +14,6 @@ package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.LiteralString;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implements mapping logic specific to LiteralString in SysML models from AST node.
@@ -25,15 +22,13 @@ import org.slf4j.LoggerFactory;
  */
 public class MapperLiteralString extends MapperVisitorInterface {
 
-    private final Logger logger = LoggerFactory.getLogger(MapperLiteralString.class);
-
     public MapperLiteralString(final ObjectFinder objectFinder, final MappingState mappingState) {
         super(objectFinder, mappingState);
     }
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getLiteralString().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof LiteralString;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class MapperSubclassification extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getSubclassification().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
+        return mapping.getSelf() instanceof Subclassification && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
     }
 
     @Override
@@ -62,9 +62,8 @@ public class MapperSubclassification extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getClassifier());
 
         Subclassification eObject = (Subclassification) mapping.getSelf();
-        Classifier target = (Classifier) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Classifier target) {
             this.logger.debug("Reference Subclassification " + eObject + " to " + target);
             eObject.setSuperclassifier(target);
         } else {

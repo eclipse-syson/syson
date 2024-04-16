@@ -37,7 +37,7 @@ public class MapperFeatureReferenceExpression extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getFeatureReferenceExpression().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof FeatureReferenceExpression;
     }
 
     @Override
@@ -57,9 +57,8 @@ public class MapperFeatureReferenceExpression extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getMembership());
 
         FeatureReferenceExpression eObject = (FeatureReferenceExpression) mapping.getSelf();
-        Membership target = (Membership) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Membership target) {
             this.logger.debug("Map FeatureReferenceExpression object " + mapping.getSelf() + " expression to object " + referencedObject);
             target.setOwningRelatedElement(eObject);
         } else {

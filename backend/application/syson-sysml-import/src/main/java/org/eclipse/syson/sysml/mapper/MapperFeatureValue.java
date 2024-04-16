@@ -37,30 +37,26 @@ public class MapperFeatureValue extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getFeatureValue().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_CONST);
+        return mapping.getSelf() instanceof FeatureValue && mapping.getMainNode().has(AstConstant.TARGET_CONST);
     }
 
     @Override
     public void mappingVisit(final MappingElement mapping) {
         this.logger.debug("Add FeatureValue to map for p  = " + mapping.getSelf());
-
         this.mappingState.toResolve().add(mapping);
     }
 
     @Override
     public void referenceVisit(final MappingElement mapping) {
-
         JsonNode subElement = mapping.getMainNode().get(AstConstant.TARGET_CONST);
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getExpression());
 
         FeatureValue eObject = (FeatureValue) mapping.getSelf();
-        Expression target = (Expression) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Expression target) {
             this.logger.debug("Reference FeatureTyping " + eObject + " to " + target);
         } else {
             this.logger.warn("Reference FeatureTyping not found " + subElement);
         }
-
     }
 }

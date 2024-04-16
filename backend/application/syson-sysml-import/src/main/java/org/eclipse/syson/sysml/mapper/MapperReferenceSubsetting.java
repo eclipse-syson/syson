@@ -38,7 +38,7 @@ public class MapperReferenceSubsetting extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getReferenceSubsetting().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof ReferenceSubsetting;
     }
 
     @Override
@@ -72,9 +72,8 @@ public class MapperReferenceSubsetting extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getFeature());
 
         ReferenceSubsetting eObject = (ReferenceSubsetting) mapping.getSelf();
-        Feature target = (Feature) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Feature target) {
             this.logger.debug("Reference ReferenceSubsetting " + eObject + " to " + target);
             eObject.setReferencedFeature(target);
             eObject.setSubsettedFeature(target);

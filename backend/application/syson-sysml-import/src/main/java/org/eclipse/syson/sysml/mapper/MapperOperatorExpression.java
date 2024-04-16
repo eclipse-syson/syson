@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.mapper;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -36,7 +37,7 @@ public class MapperOperatorExpression extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getOperatorExpression().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof OperatorExpression;
     }
 
     @Override
@@ -56,8 +57,7 @@ public class MapperOperatorExpression extends MapperVisitorInterface {
         mapping.getMainNode().get(AstConstant.OPERANDS).forEach(subElement -> {
 
             EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getExpression());
-            Element target = (Element) referencedObject;
-            if (target != null) {
+            if (referencedObject instanceof Element target) {
                 this.logger.debug("Map OperatorExpression object " + mapping.getSelf() + " operands to object " + referencedObject);
                 OwningMembership relation = SysmlFactory.eINSTANCE.createOwningMembership();
                 relation.setOwningRelatedElement(eObject);
