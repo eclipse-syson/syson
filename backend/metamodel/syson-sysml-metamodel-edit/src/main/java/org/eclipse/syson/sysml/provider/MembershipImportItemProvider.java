@@ -84,7 +84,7 @@ public class MembershipImportItemProvider extends ImportItemProvider {
     }
 
     /**
-     * This returns MembershipImport.gif.
+     * This returns MembershipImport.svg.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT

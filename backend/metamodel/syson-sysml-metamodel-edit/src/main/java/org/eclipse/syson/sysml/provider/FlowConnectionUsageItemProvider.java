@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -288,14 +288,14 @@ public class FlowConnectionUsageItemProvider extends ConnectionUsageItemProvider
     }
 
     /**
-     * This returns FlowConnectionUsage.gif.
+     * This returns FlowConnectionUsage.svg.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return overlayImage(object, getResourceLocator().getImage("full/obj16/FlowConnectionUsage"));
+        return overlayImage(object, getResourceLocator().getImage("full/obj16/FlowConnectionUsage.svg"));
     }
 
     /**
