@@ -76,14 +76,12 @@ public class ObjectFinder {
         String identifier = AstConstant.getIdentifier(mapping.getMainNode());
         if (identifier != null) {
             this.logger.debug("putElement " + identifier + " " + mapping.getSelf());
-
             this.putEObjectKey(target, identifier);
         }
 
         String qualifiedName = AstConstant.getQualifiedName(mapping.getMainNode());
         if (qualifiedName != null) {
             this.logger.debug("putElement " + qualifiedName + " " + mapping.getSelf());
-
             this.putEObjectKey(target, qualifiedName);
         }
     }
@@ -101,32 +99,25 @@ public class ObjectFinder {
 
     public EObject findObject(final MappingElement mapping, final JsonNode jsonNode, final EClass type) {
         EObject result = null;
-
         String identifier = AstConstant.getIdentifier(jsonNode);
         if (identifier == null) {
             result = this.findReference(mapping, jsonNode, type);
         } else {
             result = this.findInstance(jsonNode, type);
         }
-
         return result;
 
     }
 
     private EObject findInstance(final JsonNode jsonNode, final EClass type) {
-        String identifier = AstConstant.getIdentifier(jsonNode);
         EObject result = null;
-
+        String identifier = AstConstant.getIdentifier(jsonNode);
         this.logger.debug("findInstance " + identifier);
-
         result = this.findDirectSearch(identifier, type);
-
         if (result == null) {
             this.logger.debug("not found Instance for searchText = " + identifier + " and type " + type.getName());
         }
-
         return result;
-
     }
 
     private EObject findReference(final MappingElement mapping, final JsonNode jsonNode, final EClass type) {

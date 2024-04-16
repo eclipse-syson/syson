@@ -13,7 +13,7 @@
 package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.AstConstant;
-import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Import;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +32,7 @@ public class MapperImport extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
+        return mapping.getSelf() instanceof Import && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
     }
 
     @Override

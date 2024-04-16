@@ -22,7 +22,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Relationship;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,20 +62,22 @@ public class MapperGenericReferences extends MapperVisitorInterface {
 
     @Override
     public void referenceVisit(final MappingElement mapping) {
-        this.logger.debug("referenceVisit of object " + mapping.getSelf());
-        if (SysmlPackage.eINSTANCE.getRelationship().isSuperTypeOf(mapping.getSelf().eClass())) {
-            this.nodes.stream().filter(node -> mapping.getMainNode().has(node) && !mapping.getMainNode().get(node).isEmpty()).forEach(node -> {
+        EObject self = mapping.getSelf();
+        JsonNode mainNode = mapping.getMainNode();
+        this.logger.debug("referenceVisit of object " + self);
+        if (self instanceof Relationship) {
+            this.nodes.stream().filter(node -> mainNode.has(node) && !mainNode.get(node).isEmpty()).forEach(node -> {
                 this.mapRelationship(mapping.getMainNode().get(node), node, mapping);
             });
-            this.arrayNodes.stream().filter(node -> mapping.getMainNode().has(node) && !mapping.getMainNode().get(node).isEmpty()).forEach(node -> {
-                this.mapRelationshipArray(mapping.getMainNode(), node, mapping);
+            this.arrayNodes.stream().filter(node -> mainNode.has(node) && !mainNode.get(node).isEmpty()).forEach(node -> {
+                this.mapRelationshipArray(mainNode, node, mapping);
             });
-        } else if (SysmlPackage.eINSTANCE.getElement().isSuperTypeOf(mapping.getSelf().eClass())) {
-            this.nodes.stream().filter(node -> mapping.getMainNode().has(node) && !mapping.getMainNode().get(node).isEmpty()).forEach(node -> {
-                this.mapElement(mapping.getMainNode().get(node), node, mapping);
+        } else if (self instanceof Element) {
+            this.nodes.stream().filter(node -> mainNode.has(node) && !mainNode.get(node).isEmpty()).forEach(node -> {
+                this.mapElement(mainNode.get(node), node, mapping);
             });
-            this.arrayNodes.stream().filter(node -> mapping.getMainNode().has(node) && !mapping.getMainNode().get(node).isEmpty()).forEach(node -> {
-                this.mapElementArray(mapping.getMainNode(), node, mapping);
+            this.arrayNodes.stream().filter(node -> mainNode.has(node) && !mainNode.get(node).isEmpty()).forEach(node -> {
+                this.mapElementArray(mainNode, node, mapping);
             });
         }
 
@@ -93,26 +94,20 @@ public class MapperGenericReferences extends MapperVisitorInterface {
     }
 
     private void mapRelationship(final JsonNode subElement, final String jsonPath, final MappingElement mapping) {
-
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement);
 
-        if (referencedObject != null) {
-            this.logger.debug("Map Relationship object " + mapping.getSelf() + " " + jsonPath + "  " + " to object " + referencedObject);
+        if (referencedObject instanceof Element target && mapping.getSelf() instanceof Relationship relationship) {
+            this.logger.debug("Map Relationship object " + relationship + " " + jsonPath + "  " + " to object " + target);
 
-            this.logger.debug("Map object " + mapping.getSelf() + " to target " + referencedObject);
-            ((Relationship) mapping.getSelf()).getTarget().add((Element) referencedObject);
+            this.logger.debug("Map object " + mapping.getSelf() + " to target " + target);
+            relationship.getTarget().add(target);
 
             this.logger.debug("Map object " + mapping.getSelf() + " to source " + mapping.getParent());
-            ((Relationship) mapping.getSelf()).getSource().add((Element) mapping.getParent());
+            relationship.getSource().add((Element) mapping.getParent());
 
-            if (SysmlPackage.eINSTANCE.getRelationship().isSuperTypeOf(referencedObject.eClass())) {
-                ((Relationship) referencedObject).setOwningRelationship((Relationship) mapping.getSelf());
-            }
-            if (SysmlPackage.eINSTANCE.getElement().isSuperTypeOf(referencedObject.eClass())) {
-                ((Element) referencedObject).setOwningRelationship((Relationship) mapping.getSelf());
-            }
+            target.setOwningRelationship(relationship);
         } else {
-            this.logger.warn("Referenced  eObject not found " + subElement);
+            this.logger.warn("Referenced seObject not found " + subElement);
         }
     }
 
@@ -126,13 +121,11 @@ public class MapperGenericReferences extends MapperVisitorInterface {
 
     private void mapElement(final JsonNode subElement, final String jsonPath, final MappingElement mapping) {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement);
-        if (referencedObject != null) {
-            if (SysmlPackage.eINSTANCE.getRelationship().isSuperTypeOf(referencedObject.eClass())) {
-                this.logger.debug("Map Element object " + mapping.getSelf() + " " + jsonPath + "  " + " to object " + referencedObject);
-                ((Relationship) referencedObject).setOwningRelatedElement((Element) mapping.getSelf());
-            }
+        if (referencedObject instanceof Relationship target) {
+            this.logger.debug("Map Element object " + mapping.getSelf() + " " + jsonPath + "  " + " to object " + target);
+            target.setOwningRelatedElement((Element) mapping.getSelf());
         } else {
-            this.logger.warn("Referenced  eObject not found " + subElement);
+            this.logger.warn("Referenced eObject not found " + subElement);
         }
     }
 }

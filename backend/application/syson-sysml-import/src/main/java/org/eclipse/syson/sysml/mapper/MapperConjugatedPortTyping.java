@@ -42,7 +42,7 @@ public class MapperConjugatedPortTyping extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getConjugatedPortTyping().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof ConjugatedPortTyping;
     }
 
     @Override
@@ -66,9 +66,8 @@ public class MapperConjugatedPortTyping extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getPortDefinition());
 
         ConjugatedPortTyping eObject = (ConjugatedPortTyping) mapping.getSelf();
-        PortDefinition target = (PortDefinition) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof PortDefinition target) {
             this.logger.debug("Retrieving ConjugatedPortDefinition from PortDefintion " + target);
             ConjugatedPortDefinition conjugatedPort = target.getConjugatedPortDefinition();
             eObject.getTarget().add(target);

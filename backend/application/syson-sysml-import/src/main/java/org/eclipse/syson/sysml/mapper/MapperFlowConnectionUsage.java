@@ -36,7 +36,7 @@ public class MapperFlowConnectionUsage extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getFlowConnectionUsage().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
+        return mapping.getSelf() instanceof FlowConnectionUsage && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
     }
 
     @Override
@@ -53,19 +53,16 @@ public class MapperFlowConnectionUsage extends MapperVisitorInterface {
 
     @Override
     public void referenceVisit(final MappingElement mapping) {
-        FlowConnectionUsage eObject = (FlowConnectionUsage) mapping.getSelf();
         mapping.getMainNode().get("ends").forEach(subElement -> {
 
             EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getFeatureMembership());
-            FeatureMembership target = (FeatureMembership) referencedObject;
 
-            if (target != null) {
+            if (referencedObject instanceof FeatureMembership target) {
                 this.logger.debug("Map FlowConnectionUsage object " + mapping.getSelf() + " ends to object " + referencedObject);
                 target.setOwningRelationship((Relationship) mapping.getSelf());
             } else {
                 this.logger.warn("Reference FlowConnectionUsage not found " + subElement);
             }
         });
-
     }
 }

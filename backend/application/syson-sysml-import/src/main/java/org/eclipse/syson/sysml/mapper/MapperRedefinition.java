@@ -37,7 +37,7 @@ public class MapperRedefinition extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getRedefinition().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
+        return mapping.getSelf() instanceof Redefinition && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
     }
 
     @Override
@@ -63,9 +63,8 @@ public class MapperRedefinition extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getFeature());
 
         Redefinition eObject = (Redefinition) mapping.getSelf();
-        Feature target = (Feature) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Feature target) {
             this.logger.debug("Reference Redefinition " + eObject + " to " + target);
             eObject.setRedefinedFeature(target);
         } else {

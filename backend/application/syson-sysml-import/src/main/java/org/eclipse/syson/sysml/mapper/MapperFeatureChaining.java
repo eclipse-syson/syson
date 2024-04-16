@@ -37,7 +37,7 @@ public class MapperFeatureChaining extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getFeatureChaining().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
+        return mapping.getSelf() instanceof FeatureChaining && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
     }
 
     @Override
@@ -64,9 +64,8 @@ public class MapperFeatureChaining extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getFeature());
 
         FeatureChaining eObject = (FeatureChaining) mapping.getSelf();
-        Feature target = (Feature) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Feature target) {
             this.logger.debug("Reference FeatureChaining " + eObject + " to " + target);
             eObject.getTarget().add(target);
         } else {

@@ -13,9 +13,6 @@
 package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.Comment;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Mapping logic specific to Comments in SysML models from AST nodes.
@@ -24,15 +21,13 @@ import org.slf4j.LoggerFactory;
  */
 public class MapperComment extends MapperVisitorInterface {
 
-    private final Logger logger = LoggerFactory.getLogger(MapperComment.class);
-
     public MapperComment(final ObjectFinder objectFinder, final MappingState mappingState) {
         super(objectFinder, mappingState);
     }
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getComment().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof Comment;
     }
 
     @Override

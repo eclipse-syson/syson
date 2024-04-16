@@ -13,7 +13,6 @@
 package org.eclipse.syson.sysml.mapper;
 
 import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,23 +31,18 @@ public class MapperNamespace extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getNamespace().isSuperTypeOf(mapping.getSelf().eClass());
+        return mapping.getSelf() instanceof Namespace;
     }
 
     @Override
     public void mappingVisit(final MappingElement mapping) {
         Namespace eObject = (Namespace) mapping.getSelf();
 
-        if (SysmlPackage.eINSTANCE.getNamespace().equals(mapping.getSelf().eClass())) {
-            if (eObject.getDeclaredName() == null || eObject.getDeclaredName().isEmpty()) {
-                this.logger.debug("Set Namespace declareName to ROOT for " + eObject);
-                eObject.setDeclaredName("ROOT");
-            }
-            this.objectFinder.addImportNamespace(eObject.getDeclaredName());
+        if (eObject.getDeclaredName() == null || eObject.getDeclaredName().isEmpty()) {
+            this.logger.debug("Set Namespace declareName to ROOT for " + eObject);
+            eObject.setDeclaredName("ROOT");
         }
-        if (SysmlPackage.eINSTANCE.getPackage().equals(mapping.getSelf().eClass())) {
-            this.objectFinder.addImportNamespace(eObject.getDeclaredName());
-        }
+        this.objectFinder.addImportNamespace(eObject.getDeclaredName());
     }
 
     @Override

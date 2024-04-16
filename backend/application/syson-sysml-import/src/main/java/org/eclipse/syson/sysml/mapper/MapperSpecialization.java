@@ -37,7 +37,7 @@ public class MapperSpecialization extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getSpecialization().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
+        return mapping.getSelf() instanceof Specialization && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
     }
 
     @Override
@@ -65,9 +65,8 @@ public class MapperSpecialization extends MapperVisitorInterface {
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getType());
 
         Specialization eObject = (Specialization) mapping.getSelf();
-        Type target = (Type) referencedObject;
 
-        if (target != null) {
+        if (referencedObject instanceof Type target) {
             this.logger.debug("Reference Specialization " + eObject + " to " + target);
             eObject.setGeneral(target);
         } else {

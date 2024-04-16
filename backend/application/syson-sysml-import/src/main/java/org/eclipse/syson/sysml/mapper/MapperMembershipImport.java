@@ -38,7 +38,7 @@ public class MapperMembershipImport extends MapperVisitorInterface {
 
     @Override
     public boolean canVisit(final MappingElement mapping) {
-        return mapping.getSelf() != null && SysmlPackage.eINSTANCE.getMembershipImport().isSuperTypeOf(mapping.getSelf().eClass()) && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
+        return mapping.getSelf() instanceof MembershipImport && mapping.getMainNode().has(AstConstant.TARGET_REF_CONST);
     }
 
     @Override
@@ -63,24 +63,22 @@ public class MapperMembershipImport extends MapperVisitorInterface {
         JsonNode subElement = mapping.getMainNode().get(AstConstant.TARGET_REF_CONST);
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getElement());
 
-        Element target = (Element) referencedObject;
-
         MembershipImport eObject = (MembershipImport) mapping.getSelf();
-        if (target == null) {
+        if (!(referencedObject instanceof Element)) {
             this.logger.warn("Reference MembershipImport not found " + subElement);
             return;
         }
 
-        this.logger.debug("Reference MembershipImport " + eObject + " to " + target);
+        this.logger.debug("Reference MembershipImport " + eObject + " to " + referencedObject);
 
-        if (target instanceof Membership) {
-            eObject.setImportedMembership((Membership) target);
-        } else if (target.eContainer() instanceof Membership) {
-            eObject.setImportedMembership((Membership) target.eContainer());
-        } else if (target.eContainer() != null) {
-            this.logger.warn(target.eContainer() + " Parent of " + target + " is not a Membership for " + eObject);
+        if (referencedObject instanceof Membership membership) {
+            eObject.setImportedMembership(membership);
+        } else if (referencedObject.eContainer() instanceof Membership membership) {
+            eObject.setImportedMembership(membership);
+        } else if (referencedObject.eContainer() instanceof Element referencedObjectContainer) {
+            this.logger.warn(referencedObjectContainer + " Parent of " + referencedObject + " is not a Membership for " + eObject);
         } else {
-            this.logger.warn("Parent of " + target + " is null for " + eObject);
+            this.logger.warn("Parent of " + referencedObject + " is null for " + eObject);
             this.mappingState.toResolve().add(mapping);
         }
 
