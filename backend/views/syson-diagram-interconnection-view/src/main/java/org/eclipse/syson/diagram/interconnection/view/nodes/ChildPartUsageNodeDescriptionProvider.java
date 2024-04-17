@@ -77,7 +77,7 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
+        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
         var optAttributesCompartmentNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()));
         var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME);
 
@@ -143,7 +143,7 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
         nodeTools.add(attributeTool.create(null));
         ChildrenPartUsageCompartmentNodeToolProvider childPartTool = new ChildrenPartUsageCompartmentNodeToolProvider();
         nodeTools.add(childPartTool.create(null));
-        NodeTool portBorderNodeTool = this.createNodeTool(cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE);
+        NodeTool portBorderNodeTool = this.createNodeTool(cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get(), SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE);
         nodeTools.add(portBorderNodeTool);
 
         return this.diagramBuilderHelper.newNodeToolSection()
@@ -155,13 +155,8 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
     private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var setValue = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getElement_DeclaredName().getName())
-                .valueExpression(eClass.getName());
-
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
-                .children(setValue.build());
+                .expression("aql:newInstance.elementInitializer()");
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
@@ -196,7 +191,7 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
+        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
 
         acceptedNodeTypes.add(optPortUsageBorderNodeDescription.get());

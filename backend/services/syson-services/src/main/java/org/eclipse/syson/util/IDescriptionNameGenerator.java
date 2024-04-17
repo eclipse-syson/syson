@@ -76,6 +76,24 @@ public interface IDescriptionNameGenerator {
     String getNodeName(EClass eClass);
 
     /**
+     * Returns the name of a border {@link NodeDescription} using the given string.
+     *
+     * @param type
+     *            a string to form the name of the border node description.
+     * @return a string used to name a border {@link NodeDescription}.
+     */
+    String getBorderNodeName(String type);
+
+    /**
+     * Returns the name of a border {@link NodeDescription} using the given {@link EClass}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the border {@link NodeDescription}.
+     * @return a string used to name a border {@link NodeDescription}.
+     */
+    String getBorderNodeName(EClass eClass);
+
+    /**
      * Returns the name of a compartment {@link NodeDescription} using the given {@link EClass} and {@link EReference}.
      *
      * @param eClass
@@ -99,11 +117,20 @@ public interface IDescriptionNameGenerator {
     String getCompartmentItemName(EClass eClass, EReference eReference);
 
     /**
+     * Returns the name of a domain based {@link EdgeDescription} using given the given {@link EClass}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of a domain based {@link EdgeDescription}.
+     * @return a string used to name a domain based {@link EdgeDescription}.
+     */
+    String getEdgeName(EClass eClass);
+
+    /**
      * Returns the name of a {@link EdgeDescription} using given edge type.
      *
      * @param type
      *            a string representing the name of the edge.
-     * @return a string used to name a {@link EdgeDescription}.
+     * @return a string used to name an {@link EdgeDescription}.
      */
     String getEdgeName(String type);
 

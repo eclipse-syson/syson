@@ -60,13 +60,13 @@ public class InterconnectionViewDiagramDescriptionProvider extends AbstractDiagr
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
                 new FakeNodeDescriptionProvider(colorProvider),
-                new RootPartUsageNodeDescriptionProvider(colorProvider),
+                new RootPartUsageNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new ChildPartUsageNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider),
                 new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
                 new ChildrenPartUsageCompartmentNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new PortUsageBorderNodeDescriptionProvider(colorProvider),
-                new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider)
+                new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
+                new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getNameGenerator())
         );
 
         diagramElementDescriptionProviders.stream().
