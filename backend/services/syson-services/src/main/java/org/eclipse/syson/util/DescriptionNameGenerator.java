@@ -49,6 +49,10 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
         return this.getName(prefix, "Node", type);
     }
 
+    protected String getBorderNodeName(String prefix, String type) {
+        return this.getName(prefix, "BorderNode", type);
+    }
+
     protected String getCompartmentName(String prefix, String type) {
         return this.getName(prefix, "Compartment", type);
     }
@@ -134,6 +138,31 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     }
 
     /**
+     * Returns the name of a border {@link NodeDescription} starting with the diagram prefix and followed by the given string.
+     *
+     * @param type
+     *            a string to form the name of the border node description.
+     * @return a string starting with the diagram prefix and followed by the given string.
+     */
+    @Override
+    public String getBorderNodeName(String type) {
+        return this.getBorderNodeName(this.diagramPrefix, type);
+    }
+
+    /**
+     * Returns the name of a border {@link NodeDescription} starting with the diagram prefix and followed by the name of the
+     * given {@link EClass}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the border {@link NodeDescription}.
+     * @return a string starting with the diagram prefix and followed by the name of the given {@link EClass}
+     */
+    @Override
+    public String getBorderNodeName(EClass eClass) {
+        return this.getBorderNodeName(this.diagramPrefix, eClass.getName());
+    }
+
+    /**
      * Returns the name of a compartment {@link NodeDescription} starting with the diagram prefix, followed by the name
      * of the given {@link EClass} and the name of the given {@link EReference}.
      *
@@ -166,7 +195,20 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     }
 
     /**
-     * Returns the name of a {@link EdgeDescription} starting with the diagram prefix and followed by the given edge
+     * Returns the name of a domain based {@link EdgeDescription} starting with the diagram prefix and followed by the
+     * given the given {@link EClass}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the domain based {@link NodeDescription}.
+     * @return a string starting with the diagram prefix and followed by the name of the given {@link EClass}.
+     */
+    @Override
+    public String getEdgeName(EClass eClass) {
+        return this.getEdgeName(this.diagramPrefix, eClass.getName());
+    }
+
+    /**
+     * Returns the name of an {@link EdgeDescription} starting with the diagram prefix and followed by the given edge
      * type.
      *
      * @param type

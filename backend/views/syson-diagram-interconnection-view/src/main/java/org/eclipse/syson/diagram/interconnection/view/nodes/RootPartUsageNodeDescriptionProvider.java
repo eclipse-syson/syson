@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.interconnection.view.nodes;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -34,6 +35,7 @@ import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvid
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.DescriptionNameGenerator;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -44,10 +46,11 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public class RootPartUsageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    public static final String NAME = "IV Node PartUsage";
+    private final IDescriptionNameGenerator nameGenerator;
 
-    public RootPartUsageNodeDescriptionProvider(IColorProvider colorProvider) {
+    public RootPartUsageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
+        this.nameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
     @Override
@@ -59,7 +62,7 @@ public class RootPartUsageNodeDescriptionProvider extends AbstractNodeDescriptio
                 .defaultWidthExpression("700")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
-                .name(NAME)
+                .name(this.getName())
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createPartUsageNodeStyle())
                 .userResizable(true)
@@ -69,15 +72,19 @@ public class RootPartUsageNodeDescriptionProvider extends AbstractNodeDescriptio
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optRootPartUsageNodeDescription = cache.getNodeDescription(RootPartUsageNodeDescriptionProvider.NAME);
+        var optRootPartUsageNodeDescription = cache.getNodeDescription(this.getName());
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
+        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
 
         NodeDescription nodeDescription = optRootPartUsageNodeDescription.get();
         diagramDescription.getNodeDescriptions().add(nodeDescription);
         nodeDescription.getChildrenDescriptions().add(optChildPartUsageNodeDescription.get());
         nodeDescription.getBorderNodesDescriptions().add(optPortUsageBorderNodeDescription.get());
         nodeDescription.setPalette(this.createNodePalette(cache));
+    }
+
+    public String getName() {
+        return this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage());
     }
 
     private InsideLabelDescription createInsideLabelDescription() {
@@ -125,7 +132,7 @@ public class RootPartUsageNodeDescriptionProvider extends AbstractNodeDescriptio
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
                 .nodeTools(this.createNodeTool(cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage(), NodeContainmentKind.CHILD_NODE),
-                           this.createNodeTool(cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE))
+                           this.createNodeTool(cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get(), SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE))
                 .build();
     }
 
@@ -172,7 +179,7 @@ public class RootPartUsageNodeDescriptionProvider extends AbstractNodeDescriptio
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
+        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
 
         acceptedNodeTypes.add(optPortUsageBorderNodeDescription.get());

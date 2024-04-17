@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.interconnection.view.nodes;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -30,6 +31,7 @@ import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvid
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.DescriptionNameGenerator;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -40,10 +42,11 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    public static final String NAME = "IV BorderNode PortUsage";
+    private final IDescriptionNameGenerator nameGenerator;
 
-    public PortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider) {
+    public PortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
+        this.nameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
     @Override
@@ -54,7 +57,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .defaultWidthExpression("10")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
-                .name(NAME)
+                .name(this.getName())
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName())
                 .style(this.createPortUsageNodeStyle())
                 .userResizable(true)
@@ -64,10 +67,14 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
+        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.getName());
 
         NodeDescription nodeDescription = optPortUsageBorderNodeDescription.get();
         nodeDescription.setPalette(this.createNodePalette(nodeDescription));
+    }
+
+    public String getName() {
+        return this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage());
     }
 
     private InsideLabelDescription createInsideLabelDescription() {

@@ -30,10 +30,10 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
-import org.eclipse.syson.diagram.interconnection.view.nodes.PortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -44,16 +44,17 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDescriptionProvider {
 
-    public static final String NAME = "IV Edge BindingConnectorAsUsage";
-
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
     private final IColorProvider colorProvider;
 
-    public BindingConnectorAsUsageEdgeDescriptionProvider(IColorProvider colorProvider) {
+    private final IDescriptionNameGenerator nameGenerator;
+
+    public BindingConnectorAsUsageEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
+        this.nameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
     @Override
@@ -63,7 +64,7 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
                 .centerLabelExpression("")
-                .name(NAME)
+                .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .sourceNodesExpression("aql:self.getSourcePort()")
                 .style(this.createEdgeStyle())
@@ -74,8 +75,8 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optEdgeDescription = cache.getEdgeDescription(NAME);
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(PortUsageBorderNodeDescriptionProvider.NAME);
+        var optEdgeDescription = cache.getEdgeDescription(this.getName());
+        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
 
         if (optEdgeDescription.isPresent() && optPortUsageBorderNodeDescription.isPresent()) {
             EdgeDescription edgeDescription = optEdgeDescription.get();
@@ -84,6 +85,10 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
             edgeDescription.getTargetNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
             edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
         }
+    }
+
+    public String getName() {
+        return this.nameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage());
     }
 
     private EdgeStyle createEdgeStyle() {
