@@ -20,12 +20,12 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
-import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
-import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
-import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -56,7 +56,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .defaultHeightExpression("10")
                 .defaultWidthExpression("10")
                 .domainType(domainType)
-                .insideLabel(this.createInsideLabelDescription())
+                .outsideLabels(this.createOutsideLabelDescription())
                 .name(this.getName())
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName())
                 .style(this.createPortUsageNodeStyle())
@@ -77,20 +77,23 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
         return this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage());
     }
 
-    private InsideLabelDescription createInsideLabelDescription() {
-        return this.diagramBuilderHelper.newInsideLabelDescription()
+    private OutsideLabelDescription createOutsideLabelDescription() {
+        return this.diagramBuilderHelper.newOutsideLabelDescription()
                 .labelExpression(AQLConstants.AQL_SELF + ".getBorderNodePortUsageLabel()")
-                .position(InsideLabelPosition.TOP_CENTER)
-                .style(this.createInsideLabelStyle())
+                .position(OutsideLabelPosition.BOTTOM_CENTER)
+                .style(this.createOutsideLabelStyle())
                 .build();
     }
 
-    private InsideLabelStyle createInsideLabelStyle() {
-        return this.diagramBuilderHelper.newInsideLabelStyle()
-                .displayHeaderSeparator(false)
+    private OutsideLabelStyle createOutsideLabelStyle() {
+        return this.diagramBuilderHelper.newOutsideLabelStyle()
+                .bold(false)
+                .fontSize(12)
+                .italic(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(false)
-                .withHeader(false)
+                .strikeThrough(false)
+                .underline(false)
                 .build();
     }
 
