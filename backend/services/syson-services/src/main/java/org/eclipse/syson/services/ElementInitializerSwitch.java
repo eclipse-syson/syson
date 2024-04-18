@@ -52,6 +52,7 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseEnumerationDefinition(EnumerationDefinition object) {
         object.setIsVariation(true);
+        object.setDeclaredName(object.eClass().getName());
         return object;
     }
 
