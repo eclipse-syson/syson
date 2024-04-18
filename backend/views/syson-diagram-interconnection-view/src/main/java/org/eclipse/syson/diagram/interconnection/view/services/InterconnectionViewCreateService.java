@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.services;
 
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
@@ -34,8 +35,8 @@ public class InterconnectionViewCreateService extends ViewCreateService {
 
     private final UtilService utilService;
 
-    public InterconnectionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService) {
-        super(viewDiagramDescriptionSearchService);
+    public InterconnectionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
+        super(viewDiagramDescriptionSearchService, objectService);
         this.utilService = new UtilService();
     }
 

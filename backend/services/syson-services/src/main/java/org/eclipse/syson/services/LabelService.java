@@ -88,6 +88,19 @@ public class LabelService {
     }
 
     /**
+     * Apply the direct edit result (i.e. the newLabel) to the given {@link Element}
+     * without changing the name of the element itself.
+     *
+     * @param element the given {@link Element}.
+     * @param newLabel the new value to apply.
+     * @return the given {@link Element}.
+     */
+    public Element directEditNameOff(Element element, String newLabel) {
+        return this.directEdit(element, newLabel, LabelService.NAME_OFF);
+    }
+
+
+    /**
      * Apply the direct edit result (i.e. the newLabel) to the given {@link Element}.
      *
      * @param element
@@ -300,7 +313,7 @@ public class LabelService {
             value = String.valueOf(literal.isValue());
         } else if (literalExpression instanceof LiteralString literal) {
             value = String.valueOf(literal.getValue());
-        } else if (literalExpression instanceof LiteralInfinity literal) {
+        } else if (literalExpression instanceof LiteralInfinity) {
             value = "*";
         }
         return value;

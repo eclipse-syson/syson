@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -129,5 +130,16 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
         return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
                 .children(unsetOldSource.build(), setNewSource.build());
+    }
+
+    @Override
+    protected LabelEditTool getEdgeEditTool() {
+        var callEditService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL_SELF + ".directEditNameOff(newLabel)");
+
+        return this.diagramBuilderHelper.newLabelEditTool()
+                .name("Edit")
+                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .body(callEditService.build()).build();
     }
 }

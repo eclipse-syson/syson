@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.actionflow.view.services;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
@@ -28,8 +29,8 @@ import org.eclipse.syson.sysml.Element;
  */
 public class ActionFlowViewCreateService extends ViewCreateService {
 
-    public ActionFlowViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService) {
-        super(viewDiagramDescriptionSearchService);
+    public ActionFlowViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
+        super(viewDiagramDescriptionSearchService, objectService);
     }
 
     /**

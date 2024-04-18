@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.Element;
@@ -35,7 +36,7 @@ import org.eclipse.syson.sysml.Usage;
  *
  * @author arichard
  */
-public class InterconnectionViewEdgeService {
+public class InterconnectionViewEdgeService extends ViewEdgeService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
