@@ -14,7 +14,6 @@ package org.eclipse.syson.sysml.export;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.base.Strings.nullToEmpty;
-//import static org.eclipse.syson.sysml.export.utils.StringUtils.toPrintableName;
 import static java.util.stream.Collectors.joining;
 
 import java.util.List;
@@ -253,8 +252,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         Membership importedMembership = membershipImport.getImportedMembership();
         if (importedMembership != null) {
-            EList<Element> memberElements = importedMembership.getRelatedElement();
-
             String qnName = Stream.concat(Stream.ofNullable(importedMembership.getMemberElement()), importedMembership.getOwnedRelatedElement().stream()).filter(e -> e != null).findFirst()
                     .map(e -> this.buildContextRelativeQualifiedName(e, membershipImport)).orElse("");
 
