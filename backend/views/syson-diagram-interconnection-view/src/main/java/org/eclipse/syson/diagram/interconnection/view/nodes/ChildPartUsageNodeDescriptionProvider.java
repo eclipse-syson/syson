@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
@@ -32,6 +33,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.interconnection.view.tools.ChildrenPartUsageCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -149,7 +151,14 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
                 .nodeTools(nodeTools.toArray(NodeTool[]::new))
+                .edgeTools(this.getEdgeTools(cache).toArray(EdgeTool[]::new))
                 .build();
+    }
+
+    private List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
+        NodeDescription nodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME).get();
+        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, cache.getNodeDescriptions(), this.nameGenerator);
+        return edgeToolSwitch.doSwitch(SysmlPackage.eINSTANCE.getPartUsage());
     }
 
     private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind) {

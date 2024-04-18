@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 
@@ -56,10 +57,19 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
 
     /**
      * Implementers can override this method to disable the delete tool on specific edge description.
-     * @return {@code true} if the edge can be deleted and {@code false} otherwise.
+     * @return <code>true</code> if the edge can be deleted and <code>false</code> otherwise.
      */
     protected boolean isDeletable() {
         return true;
+    }
+
+    /**
+     * Implementers can override this method to provide a specific label edit tool to apply on the edge.<br>
+     * By default no edit tool is provided.
+     * @return a label edit tool or <code>null</code> if no edit tool needed.
+     */
+    protected LabelEditTool getEdgeEditTool() {
+        return null;
     }
 
     protected EdgePalette createEdgePalette() {
@@ -77,6 +87,11 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
 
         if (this.isDeletable()) {
             edgeBuilder.deleteTool(deleteTool.build());
+        }
+
+        var centerLabelEditTool = this.getEdgeEditTool();
+        if (centerLabelEditTool != null) {
+            edgeBuilder.centerLabelEditTool(centerLabelEditTool);
         }
 
         return edgeBuilder.build();

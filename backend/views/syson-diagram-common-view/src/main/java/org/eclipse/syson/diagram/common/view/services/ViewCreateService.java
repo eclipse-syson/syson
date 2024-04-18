@@ -18,13 +18,16 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.AllocationDefinition;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
@@ -39,6 +42,7 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
 
@@ -51,10 +55,13 @@ public class ViewCreateService {
 
     private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
+    private final IObjectService objectService;
+
     private final ElementInitializerSwitch elementInitializerSwitch;
 
-    public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService) {
+    public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
+        this.objectService = Objects.requireNonNull(objectService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
 
@@ -284,5 +291,52 @@ public class ViewCreateService {
         featureMembership.getOwnedRelatedElement().add(referenceUsage);
         self.getOwnedRelationship().add(featureMembership);
         return self;
+    }
+
+    public Element createAllocateEdge(Element source, Element target, Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
+        var owner = this.getSourceOwner(sourceNode, editingContext, diagramService);
+        var ownerMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        owner.getOwnedRelationship().add(ownerMembership);
+        var allocation = SysmlFactory.eINSTANCE.createAllocationUsage();
+        allocation.setDeclaredName("allocate");
+        ownerMembership.getOwnedRelatedElement().add(allocation);
+        // create both ends ReferenceSubsetting
+        this.addEndToAllocateEdge(allocation, source);
+        this.addEndToAllocateEdge(allocation, target);
+        return source;
+    }
+
+    private void addEndToAllocateEdge(AllocationUsage edge, Element end) {
+        if (end instanceof Usage usage) {
+            var featureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+            edge.getOwnedRelationship().add(featureMembership);
+            var feature = SysmlFactory.eINSTANCE.createFeature();
+            featureMembership.getOwnedRelatedElement().add(feature);
+            var reference = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+            feature.getOwnedRelationship().add(reference);
+            reference.setReferencedFeature(usage);
+        }
+    }
+
+    /**
+     * Retrieve the parent node semantic element of the given node
+     * @param sourceNode a {@link Node}
+     * @param editingContext
+     * @return the semantic element of the parent graphical node of the given one or <code>null</code> if unable to find it.
+     */
+    private Element getSourceOwner(Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
+        Diagram diagram = diagramService.getDiagramContext().getDiagram();
+        String id;
+        var parentNode = new ParentNodeFinder(diagram).getParent(sourceNode);
+        if (parentNode instanceof Node node) {
+            id = node.getTargetObjectId();
+        } else {
+            // parent is diagram
+            id = diagram.getTargetObjectId();
+        }
+        return this.objectService.getObject(editingContext, id)
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .orElse(null);
     }
 }

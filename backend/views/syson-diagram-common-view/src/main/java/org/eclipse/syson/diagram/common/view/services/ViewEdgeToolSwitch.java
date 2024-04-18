@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
@@ -215,6 +217,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         edgeTools.add(this.createDependencyEdgeTool(this.allNodeDescriptions));
         edgeTools.add(this.createRedefinitionEdgeTool(List.of(this.nodeDescription)));
         edgeTools.add(this.createSubsettingEdgeTool(List.of(this.nodeDescription)));
+        edgeTools.add(this.createAllocateEdgeTool(this.allNodeDescriptions));
         var definitionNodeDescription = this.getNodeDescription(this.getDefinitionFromUsage(object));
         if (definitionNodeDescription.isPresent()) {
             edgeTools.add(this.createFeatureTypingEdgeTool(List.of(definitionNodeDescription.get())));
@@ -224,7 +227,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     private Optional<NodeDescription> getNodeDescription(EClassifier classifier) {
         if (classifier == null) {
-            return null;
+            return Optional.empty();
         }
         return this.allNodeDescriptions.stream()
                 .filter(nd -> nd.getDomainType().equals(classifier.getEPackage().getNsPrefix() + "::" + classifier.getName()))
@@ -511,6 +514,23 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
                 .iconURLsExpression(METAMODEL_ICONS_PATH + "Objective.svg")
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    private EdgeTool createAllocateEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+        var onlyUsages = targetElementDescriptions.stream()
+                .filter(nd -> nd.getName().endsWith("Usage"))
+                .toArray(NodeDescription[]::new);
+
+        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createAllocateEdge(" +  String.join(",", params) + ")");
+
+        return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getAllocationUsage()))
+                .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getDependency().getName() + SVG)
+                .body(body.build())
+                .targetElementDescriptions(onlyUsages)
                 .build();
     }
 }
