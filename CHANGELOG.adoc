@@ -38,6 +38,7 @@
 - https://github.com/eclipse-syson/syson/issues/180[#180] [diagrams] Handle Allocation definition and Allocation usage
 - [syson] Add icons for all elements
 - https://github.com/eclipse-syson/syson/issues/204[#204] [interconnection-view] Change label position (from inside to outside) for ports (Border Nodes)
+- https://github.com/eclipse-syson/syson/issues/202[#202] [general-view] Allow to create general-view diagrams on any Namespace element
 
 === New features
 

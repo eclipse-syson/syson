@@ -27,8 +27,10 @@ import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -66,6 +68,24 @@ public class ViewCreateService {
      */
     public Element elementInitializer(Element element) {
         return this.elementInitializerSwitch.doSwitch(element);
+    }
+
+    /**
+     * Create the appropriate {@link Membership} according to the given {@link Element}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return the newly created {@link Membership}.
+     */
+    public Membership createMembership(Element element) {
+        Membership membership = null;
+        if (element instanceof Package) {
+            membership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+        } else {
+            membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        }
+        element.getOwnedRelationship().add(membership);
+        return membership;
     }
 
     /**

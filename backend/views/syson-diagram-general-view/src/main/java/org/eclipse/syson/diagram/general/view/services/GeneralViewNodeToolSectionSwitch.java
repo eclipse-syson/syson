@@ -267,7 +267,7 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
+                .expression("aql:self.addExistingNestedElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
 
         String title = "Add existing nested elements";
         String iconURL = "/icons/AddExistingElements.svg";

@@ -51,7 +51,7 @@ public abstract class AbstractDiagramDescriptionProvider extends AbstractViewEle
                 .build();
     }
 
-    protected NodeTool createNodeToolFromPackage(NodeDescription nodeDescription, EClassifier eClass) {
+    protected NodeTool createNodeToolFromDiagramBackground(NodeDescription nodeDescription, EClassifier eClass) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
@@ -71,19 +71,13 @@ public abstract class AbstractDiagramDescriptionProvider extends AbstractViewEle
                 .variableName("newInstanceView");
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newOwningMembership")
+                .expression("aql:self.createMembership()")
                 .children(createEClassInstance.build(), createView.build());
-
-        var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getOwningMembership()))
-                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newOwningMembership")
-                .children(changeContexMembership.build());
 
         return builder
                 .name(this.getNameGenerator().getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
-                .body(createMembership.build())
+                .body(changeContexMembership.build())
                 .build();
     }
 }

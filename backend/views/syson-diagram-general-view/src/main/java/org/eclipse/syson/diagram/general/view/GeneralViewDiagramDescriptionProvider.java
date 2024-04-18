@@ -53,6 +53,7 @@ import org.eclipse.syson.diagram.general.view.nodes.UseCaseDefinitionSubjectComp
 import org.eclipse.syson.diagram.general.view.nodes.UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.UseCaseUsageSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -165,7 +166,7 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPackage());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getNamespace());
 
         var diagramDescriptionBuilder = this.diagramBuilderHelper.newDiagramDescription();
         diagramDescriptionBuilder
@@ -346,8 +347,10 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
     private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, List<EClass> elements) {
         var nodeTools = new ArrayList<NodeTool>();
 
-        elements.forEach(definition -> {
-            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).get(), definition));
+        elements.forEach(element -> {
+            NodeTool nodeTool = this.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.nameGenerator.getNodeName(element)).get(), element);
+            nodeTool.setPreconditionExpression(AQLConstants.AQL_SELF + ".toolShouldBeAvailable('" + element.getName() + "')");
+            nodeTools.add(nodeTool);
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
