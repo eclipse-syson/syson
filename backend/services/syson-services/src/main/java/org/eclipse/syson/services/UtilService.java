@@ -99,11 +99,15 @@ public class UtilService {
      * @return a list of reachable object
      */
     public List<EObject> getAllReachable(EObject eObject, EClass eClass) {
+        List<EObject> allReachable = null;
         Adapter adapter = EcoreUtil.getAdapter(eObject.eAdapters(), SysONEContentAdapter.class);
         if (adapter instanceof SysONEContentAdapter cacheAdapter) {
-            return cacheAdapter.getCache().get(eClass);
+            allReachable = cacheAdapter.getCache().get(eClass);
         }
-        return List.of();
+        if (allReachable == null) {
+            allReachable = List.of();
+        }
+        return allReachable;
     }
 
     /**

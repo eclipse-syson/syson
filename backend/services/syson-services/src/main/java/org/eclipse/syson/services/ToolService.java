@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -176,6 +177,10 @@ public class ToolService {
         var childNodes = new ArrayList<Node>();
         if (selectedNode instanceof Node node) {
             childNodes.addAll(node.getChildNodes());
+            if (node.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
+                // childNodes are compartments, so also add childNodes of childNodes
+                node.getChildNodes().stream().forEach(cn -> childNodes.addAll(cn.getChildNodes()));
+            }
         } else {
             var diagram = diagramContext.getDiagram();
             childNodes.addAll(diagram.getNodes());

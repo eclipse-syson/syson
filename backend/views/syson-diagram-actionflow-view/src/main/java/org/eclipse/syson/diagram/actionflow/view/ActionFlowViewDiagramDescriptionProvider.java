@@ -162,7 +162,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).get(), definition));
+            nodeTools.add(this.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).get(), definition));
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

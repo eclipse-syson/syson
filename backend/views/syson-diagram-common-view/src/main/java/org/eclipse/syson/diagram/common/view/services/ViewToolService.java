@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.common.view.services;
 import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -29,8 +30,10 @@ import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSear
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
@@ -41,9 +44,11 @@ import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Tool-related Java services used by all diagrams.
@@ -63,8 +68,8 @@ public class ViewToolService extends ToolService {
      * Called by "Add existing elements" tool from General View diagram or General View Package node. Add nodes that are
      * not present in the diagram or the selectedNode (i.e. a Package).
      *
-     * @param pkg
-     *            the {@link Package} corresponding to the target object of the Diagram or the {@link Node} Package on
+     * @param namespace
+     *            the {@link Namespace} corresponding to the target object of the Diagram or the {@link Node} Package on
      *            which the tool has been called.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
@@ -82,9 +87,9 @@ public class ViewToolService extends ToolService {
      *            whether the tool should add existing elements recursively or not.
      * @return the input {@link Package}.
      */
-    public Package addExistingElements(Package pkg, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Namespace addExistingElements(Namespace namespace, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
-        var members = pkg.getOwnedMember();
+        var members = namespace.getOwnedMember();
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
 
@@ -92,26 +97,26 @@ public class ViewToolService extends ToolService {
                 .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, selectedNode)))
                 .forEach(member -> {
                     this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes);
-                    if (recursive && member instanceof PartDefinition partDef) {
-                        Node fakeNode = this.createFakeNode(partDef, selectedNode, diagramContext, representationDescription, convertedNodes);
-                        this.addExistingSubElements(partDef, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
-                    } else if (recursive && member instanceof PartUsage partUsage) {
-                        Node fakeNode = this.createFakeNode(partUsage, selectedNode, diagramContext, representationDescription, convertedNodes);
-                        this.addExistingSubElements(partUsage, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
-                    } else if (recursive && member instanceof Package subPkg) {
-                        Node fakeNode = this.createFakeNode(subPkg, selectedNode, diagramContext, representationDescription, convertedNodes);
-                        this.addExistingSubElements(subPkg, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                    if (recursive && member instanceof Definition definition) {
+                        Node fakeNode = this.createFakeNode(definition, selectedNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(definition, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
+                    } else if (recursive && member instanceof Usage usage) {
+                        Node fakeNode = this.createFakeNode(usage, selectedNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(usage, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
+                    } else if (recursive && member instanceof Namespace subNs) {
+                        Node fakeNode = this.createFakeNode(subNs, selectedNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(subNs, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
                     }
                 });
-        return pkg;
+        return namespace;
     }
 
     /**
-     * Called by "Add existing nested PartUsage" tool from General View PartUsage node. Add nodes that are not present
-     * in selectedNode (i.e. a PartUsage).
+     * Called by "Add existing nested elements" tool from General View Usage node. Add nodes that are not present
+     * in selectedNode (e.g. a PartUsage).
      *
-     * @param partUsage
-     *            the {@link PartUsage} corresponding to the target object of the Diagram or the {@link Node} PartUsage
+     * @param usage
+     *            the {@link Usage} corresponding to the target object of the Diagram or the {@link Node} Usage
      *            on which the tool has been called.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
@@ -127,33 +132,33 @@ public class ViewToolService extends ToolService {
      *            a variable accessible from the variable manager.
      * @param recursive
      *            whether the tool should add existing elements recursively or not.
-     * @return the input {@link PartUsage}.
+     * @return the input {@link Usage}.
      */
-    public PartUsage addExistingElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Usage addExistingNestedElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
-        var nestedParts = partUsage.getNestedPart();
+        var nestedUsages = usage.getNestedUsage();
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
 
-        Object parentNode = this.getParentNode(partUsage, selectedNode, diagramContext);
-        nestedParts.stream()
-                .filter(subPartUsage -> !this.isPresent(subPartUsage, this.getChildNodes(diagramContext, parentNode)))
-                .forEach(subPartUsage -> {
-                    this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
+        Object parentNode = this.getParentNode(usage, selectedNode, diagramContext);
+        nestedUsages.stream()
+                .filter(nestedUsage -> !this.isPresent(nestedUsage, this.getChildNodes(diagramContext, selectedNode)) && !this.isPresent(nestedUsage, this.getChildNodes(diagramContext, parentNode)))
+                .forEach(nestedUsage -> {
+                    this.createView(nestedUsage, editingContext, diagramContext, parentNode, convertedNodes);
                     if (recursive) {
-                        Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
-                        this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
+                        Node fakeNode = this.createFakeNode(nestedUsage, parentNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(nestedUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
                     }
                 });
-        return partUsage;
+        return usage;
     }
 
     /**
-     * Called by "Add existing nested elements" tool from General View PartDefinition node. Add nodes that are not
-     * present in selectedNode (i.e. a PartUsage/ItemUsage).
+     * Called by "Add existing nested elements" tool from General View Definition node. Add nodes that are not
+     * present in selectedNode (e.g. a PartUsage/ItemUsage).
      *
-     * @param partDef
-     *            the {@link PartDefinition} corresponding to the target object of the Diagram or the {@link Node}
+     * @param definition
+     *            the {@link Definition} corresponding to the target object of the Diagram or the {@link Node}
      *            PartDefinition on which the tool has been called.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
@@ -169,25 +174,48 @@ public class ViewToolService extends ToolService {
      *            a variable accessible from the variable manager.
      * @param recursive
      *            whether the tool should add existing elements recursively or not.
-     * @return the input {@link PartDefinition}.
+     * @return the input {@link Definition}.
      */
-    public PartDefinition addExistingElements(PartDefinition partDef, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Definition addExistingNestedElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
-        var nestedItems = partDef.getOwnedItem();
+        var nestedUsages = definition.getOwnedUsage();
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
 
-        Object parentNode = this.getParentNode(partDef, selectedNode, diagramContext);
-        nestedItems.stream()
-                .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, parentNode)))
-                .forEach(member -> {
-                    this.createView(member, editingContext, diagramContext, parentNode, convertedNodes);
-                    if (recursive && member instanceof PartUsage subPartUsage) {
-                        Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
-                        this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
+        Object parentNode = this.getParentNode(definition, selectedNode, diagramContext);
+        nestedUsages.stream()
+                .filter(nestedUsage -> !this.isPresent(nestedUsage, this.getChildNodes(diagramContext, selectedNode)) && !this.isPresent(nestedUsage, this.getChildNodes(diagramContext, parentNode)))
+                .forEach(nestedUsage -> {
+                    this.createView(nestedUsage, editingContext, diagramContext, parentNode, convertedNodes);
+                    if (recursive) {
+                        Node fakeNode = this.createFakeNode(nestedUsage, parentNode, diagramContext, representationDescription, convertedNodes);
+                        this.addExistingSubElements(nestedUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
                     }
                 });
-        return partDef;
+        return definition;
+    }
+
+    /**
+     * Check if a tool that will create an instance of the given type should be available for a diagram associated to
+     * the given {@link Namespace}.
+     * 
+     * @param ns
+     *            the given {@link Namespace}.
+     * @param type
+     *            the given type.
+     * @return <code>true</code> if the tool should be available, <code>false</code> otherwise.
+     */
+    public boolean toolShouldBeAvailable(Namespace ns, String type) {
+        boolean toolShouldBeAvailable = false;
+        EClass domainClass = SysMLMetamodelHelper.toEClass(type);
+        if (ns instanceof Package) {
+            toolShouldBeAvailable = true;
+        } else if (ns instanceof Usage && !SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(domainClass)) {
+            toolShouldBeAvailable = true;
+        } else if (ns instanceof Definition && !SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(domainClass)) {
+            toolShouldBeAvailable = true;
+        }
+        return toolShouldBeAvailable;
     }
 
     public Usage becomeNestedUsage(Usage usage, Element newContainer) {
@@ -240,53 +268,51 @@ public class ViewToolService extends ToolService {
         return partUsage;
     }
 
-    private Package addExistingSubElements(Package pkg, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, DiagramDescription diagramDescription,
+    private Namespace addExistingSubElements(Namespace namespace, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var members = pkg.getOwnedMember();
+        var members = namespace.getOwnedMember();
 
         members.stream()
                 .forEach(member -> {
                     this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes);
-                    if (member instanceof PartDefinition partDef) {
-                        Node fakeNode = this.createFakeNode(partDef, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                        this.addExistingSubElements(partDef, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
-                    } else if (member instanceof PartUsage partUsage) {
-                        Node fakeNode = this.createFakeNode(partUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                        this.addExistingSubElements(partUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
-                    } else if (member instanceof Package subPkg) {
-                        Node fakeNode = this.createFakeNode(subPkg, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                        this.addExistingSubElements(subPkg, editingContext, diagramContext, fakeNode, diagramDescription, convertedNodes);
+                    if (member instanceof Definition definition) {
+                        Node fakeNode = this.createFakeNode(definition, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                        this.addExistingSubElements(definition, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                    } else if (member instanceof Usage usage) {
+                        Node fakeNode = this.createFakeNode(usage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                        this.addExistingSubElements(usage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                    } else if (member instanceof Namespace subNs) {
+                        Node fakeNode = this.createFakeNode(subNs, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                        this.addExistingSubElements(subNs, editingContext, diagramContext, fakeNode, diagramDescription, convertedNodes);
                     }
                 });
-        return pkg;
+        return namespace;
     }
 
-    private PartUsage addExistingSubElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
+    private Usage addExistingSubElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var nestedParts = partUsage.getNestedPart();
+        var nestedUsages = usage.getNestedUsage();
 
-        nestedParts.stream()
-                .forEach(subPartUsage -> {
-                    this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                    Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                    this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+        nestedUsages.stream()
+                .forEach(subUsage -> {
+                    this.createView(subUsage, editingContext, diagramContext, parentNode, convertedNodes);
+                    Node fakeNode = this.createFakeNode(subUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
                 });
-        return partUsage;
+        return usage;
     }
 
-    private PartDefinition addExistingSubElements(PartDefinition partDef, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
+    private Definition addExistingSubElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var nestedItems = partDef.getOwnedItem();
+        var ownedUsages = definition.getOwnedUsage();
 
-        nestedItems.stream()
-                .forEach(member -> {
-                    this.createView(member, editingContext, diagramContext, parentNode, convertedNodes);
-                    if (member instanceof PartUsage subPartUsage) {
-                        Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                        this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
-                    }
+        ownedUsages.stream()
+                .forEach(subUsage -> {
+                    this.createView(subUsage, editingContext, diagramContext, parentNode, convertedNodes);
+                    Node fakeNode = this.createFakeNode(subUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
                 });
-        return partDef;
+        return definition;
     }
 
     public Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
