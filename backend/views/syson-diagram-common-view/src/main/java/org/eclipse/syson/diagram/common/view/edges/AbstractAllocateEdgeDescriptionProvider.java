@@ -104,32 +104,17 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
 
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
-        var unsetOldSource = this.viewBuilderHelper.newUnsetValue()
-                .featureName(SysmlPackage.eINSTANCE.getDependency_Client().getName())
-                .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
-
-        var setNewSource = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getDependency_Client().getName())
-                .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
-
+        var params = List.of(AQLConstants.SEMANTIC_RECONNECTION_TARGET);
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
-                .children(unsetOldSource.build(), setNewSource.build());
+                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnectSourceAllocateEdge(" + String.join(",", params) + ")");
+
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
-        var unsetOldSource = this.viewBuilderHelper.newUnsetValue()
-                .featureName(SysmlPackage.eINSTANCE.getDependency_Supplier().getName())
-                .elementExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_SOURCE);
-
-        var setNewSource = this.viewBuilderHelper.newSetValue()
-                .featureName(SysmlPackage.eINSTANCE.getDependency_Supplier().getName())
-                .valueExpression(AQLConstants.AQL + AQLConstants.SEMANTIC_RECONNECTION_TARGET);
-
+        var params = List.of(AQLConstants.SEMANTIC_RECONNECTION_TARGET);
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT)
-                .children(unsetOldSource.build(), setNewSource.build());
+                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnectTargetAlocateEdge(" + String.join(",", params) + ")");
     }
 
     @Override
