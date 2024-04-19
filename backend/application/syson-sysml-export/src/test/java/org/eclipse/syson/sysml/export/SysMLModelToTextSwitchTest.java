@@ -16,16 +16,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeDefinition;
+import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.MetadataDefinition;
+import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.VisibilityKind;
-import org.eclipse.syson.sysml.export.utils.Appender;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -64,6 +69,19 @@ public class SysMLModelToTextSwitchTest {
         pack.setDeclaredName("Package 1");
         pack.setDeclaredShortName("T T");
         assertTextualFormEquals("package <'T T'> 'Package 1';", pack);
+    }
+
+    /**
+     * A name need escaping if it contains spaces or it first letter is neither a letter or _.
+     */
+    @Test
+    public void packageWithUnrestrictedName() {
+        Package pack = fact.createPackage();
+        // Need to escape since it start with a digit
+        pack.setDeclaredName("4Package");
+        // No need to escape _ is a valid first character
+        pack.setDeclaredShortName("_T");
+        assertTextualFormEquals("package <_T> '4Package';", pack);
     }
 
     @Test
@@ -367,15 +385,156 @@ public class SysMLModelToTextSwitchTest {
                 }""", pack1);
     }
 
+    /**
+     * Check PartDefinition which inherit from other definitions.
+     */
+    @Test
+    public void partDefinitionWithSuperType() {
+        PartDefinition partDef = fact.createPartDefinition();
+        partDef.setDeclaredName("Part Def 1");
+
+        PartDefinition partDef2 = fact.createPartDefinition();
+        partDef2.setDeclaredName("PartDef2");
+        PartDefinition partDef3 = fact.createPartDefinition();
+        partDef3.setDeclaredName("PartDef 3");
+
+        addSuperType(partDef, partDef2);
+        addSuperType(partDef, partDef3);
+        addSuperType(partDef2, partDef3);
+
+        assertTextualFormEquals("part def 'Part Def 1' :> PartDef2, 'PartDef 3';", partDef);
+        assertTextualFormEquals("part def PartDef2 :> 'PartDef 3';", partDef2);
+        assertTextualFormEquals("part def 'PartDef 3';", partDef3);
+
+    }
+
+    @Test
+    public void partDefinitionIndividual() {
+        PartDefinition partDef = fact.createPartDefinition();
+        partDef.setDeclaredName("PartDef");
+        partDef.setIsIndividual(true);
+
+        assertTextualFormEquals("individual part def PartDef;", partDef);
+    }
+
+    @Test
+    public void partDefinitionAbstract() {
+        PartDefinition partDef = fact.createPartDefinition();
+        partDef.setDeclaredName("PartDef1");
+        partDef.setIsAbstract(true);
+
+        assertTextualFormEquals("abstract part def PartDef1;", partDef);
+    }
+
+    @Test
+    public void partDefinitionWithVariation() {
+        PartDefinition partDef = fact.createPartDefinition();
+        partDef.setDeclaredName("PartDef1");
+        partDef.setIsVariation(true);
+
+        assertTextualFormEquals("variation part def PartDef1;", partDef);
+    }
+
+    @Test
+    public void partDefinitionWithContent() {
+        PartDefinition partDef = fact.createPartDefinition();
+        partDef.setDeclaredName("PartDef1");
+
+        Comment comment = fact.createComment();
+        comment.setBody("A body");
+        addOwnedMembership(partDef, comment);
+
+        assertTextualFormEquals("""
+                part def PartDef1 {
+                    /* A body */
+                }""", partDef);
+    }
+
+    @Test
+    public void partDefinitionFull() {
+
+        Package pack1 = fact.createPackage();
+        pack1.setDeclaredName("Pack1");
+
+        PartDefinition partDef = fact.createPartDefinition();
+        partDef.setDeclaredName("PartDef1");
+        partDef.setIsIndividual(true);
+        partDef.setIsAbstract(true);
+
+        PartDefinition partDef2 = fact.createPartDefinition();
+        partDef2.setDeclaredName("PartDef2");
+
+        addSuperType(partDef, partDef2);
+
+        addOwnedMembership(pack1, partDef, VisibilityKind.PRIVATE);
+
+        assertTextualFormEquals("""
+                package Pack1 {
+                    private abstract individual part def PartDef1 :> PartDef2;
+                }""", pack1);
+    }
+
+    @Test
+    public void partDefinitionWithMetadata() {
+
+        Package pack1 = fact.createPackage();
+        pack1.setDeclaredName("Pack1");
+
+        MetadataDefinition metaData1 = fact.createMetadataDefinition();
+        metaData1.setDeclaredName("m1");
+        MetadataDefinition metaData2 = fact.createMetadataDefinition();
+        metaData2.setDeclaredName("m2");
+
+        MetadataUsage m1u = createMetadataUsage(metaData1);
+        MetadataUsage m2u = createMetadataUsage(metaData2);
+
+        PartDefinition partDef = fact.createPartDefinition();
+        partDef.setDeclaredName("PartDef1");
+
+        addOwnedMembership(partDef, m1u);
+        addOwnedMembership(partDef, m2u);
+        assertTextualFormEquals("#m1 #m2 part def PartDef1;", partDef);
+    }
+
+    private MetadataUsage createMetadataUsage(MetadataDefinition metaData1) {
+        FeatureTyping featuringType = fact.createFeatureTyping();
+        featuringType.setType(metaData1);
+
+        MetadataUsage metaDataUsage = fact.createMetadataUsage();
+        OwningMembership owningMember = fact.createOwningMembership();
+        owningMember.getOwnedRelatedElement().add(featuringType);
+        metaDataUsage.getOwnedRelationship().add(owningMember);
+
+        return metaDataUsage;
+    }
+
+    private void addSuperType(Classifier child, Classifier parent) {
+        Subclassification subClassification = fact.createSubclassification();
+        subClassification.setSuperclassifier(parent);
+        subClassification.setSpecific(child);
+
+        child.getOwnedRelationship().add(subClassification);
+
+    }
+
     private void addOwnedMembership(Element parent, Element ownedElement) {
+        addOwnedMembership(parent, ownedElement, null);
+    }
+
+    private void addOwnedMembership(Element parent, Element ownedElement, VisibilityKind visibility) {
         OwningMembership ownedRelation = fact.createOwningMembership();
         parent.getOwnedRelationship().add(ownedRelation);
         ownedRelation.getOwnedRelatedElement().add(ownedElement);
 
+        if (visibility != null) {
+
+            ownedRelation.setVisibility(visibility);
+        }
+
     }
 
     private String convertToText(Element source, Element context, int indent) {
-        return new SysMLElementSerializer(() -> new Appender("\n", "    ")).doSwitch(source);
+        return new SysMLElementSerializer("\n", "    ").doSwitch(source);
     }
 
     private String convertToText(Element source) {

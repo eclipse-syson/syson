@@ -75,16 +75,28 @@ public class Appender {
 
     private String toPrintableName(String initialName) {
         String name;
-        if (initialName == null) {
+        if (initialName == null || initialName.isEmpty()) {
             name = "";
-        } else if (initialName.contains(" ")) {
+        } else if (initialName.contains(" ") || !isLetterOrUnderscore(initialName.charAt(0))) {
             name = '\'' + initialName + '\'';
         } else {
             name = initialName;
         }
         return name;
     }
-    
+
+    private boolean isLetterOrUnderscore(char c) {
+        return c == '_' || isLowerCaseLetter(c) || isUpperCaseLetter(c);
+    }
+
+    private boolean isUpperCaseLetter(char c) {
+        return c >= 'a' && c <= 'z';
+    }
+
+    private boolean isLowerCaseLetter(char c) {
+        return c >= 'A' && c <= 'Z';
+    }
+
     public String getNewLine() {
         return newLine;
     }
