@@ -27,7 +27,7 @@ import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.VisibilityKind;
-import org.eclipse.syson.sysml.helper.PrettyPrinter;
+
 
 /**
  * <!-- begin-user-doc -->
