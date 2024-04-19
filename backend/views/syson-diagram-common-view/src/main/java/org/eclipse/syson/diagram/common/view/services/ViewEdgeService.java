@@ -23,7 +23,6 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
-import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -77,37 +76,40 @@ public class ViewEdgeService {
 
     private boolean isAnAllocateEdge(AllocationUsage allocationUsage) {
         // an allocate edge is an AllocationUsage that contains 2 EndFeaturesMembership
-        var endFeatures = allocationUsage.getOwnedFeatureMembership().stream()
+        return this.getFeatures(allocationUsage).size() == 2;
+    }
+
+    public Element getSourceAllocateEdge(AllocationUsage allocationUsage) {
+        var features = this.getFeatures(allocationUsage);
+        if (features.size() == 2) {
+            return this.getFeatureElement(features.get(0));
+        }
+        return null;
+    }
+
+    public Element getTargetAllocateEdge(AllocationUsage allocationUsage) {
+        var features = this.getFeatures(allocationUsage);
+        if (features.size() == 2) {
+            return this.getFeatureElement(features.get(1));
+        }
+        return null;
+    }
+
+    private List<Feature> getFeatures(AllocationUsage allocationUsage) {
+        var features = allocationUsage.getOwnedFeatureMembership().stream()
                 .filter(EndFeatureMembership.class::isInstance)
                 .map(EndFeatureMembership.class::cast)
                 .flatMap(efm -> efm.getOwnedRelatedElement().stream())
                 .filter(Feature.class::isInstance)
                 .map(Feature.class::cast)
                 .toList();
-        return endFeatures.size() == 2;
-    }
-
-    public Element getSourceAllocateEdge(AllocationUsage allocationUsage) {
-        var optFirstFeature = allocationUsage.getOwnedFeatureMembership().stream()
-                .filter(EndFeatureMembership.class::isInstance)
-                .map(EndFeatureMembership.class::cast)
-                .flatMap(efm -> efm.getOwnedRelatedElement().stream())
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
-                .findFirst();
-        if (optFirstFeature.isPresent()) {
-            return this.getFeatureElement(optFirstFeature.get());
-        }
-        return null;
+        return features;
     }
 
     private Element getFeatureElement(Feature feature) {
-        var optReference = feature.getOwnedRelationship().stream()
-            .filter(ReferenceSubsetting.class::isInstance)
-            .map(ReferenceSubsetting.class::cast)
-            .findFirst();
-        if (optReference.isPresent()) {
-            return this.resolveFeatureElement(optReference.get().getReferencedFeature());
+        var reference = feature.getOwnedReferenceSubsetting();
+        if (reference != null) {
+            return this.resolveFeatureElement(reference.getReferencedFeature());
         }
         return null;
     }
@@ -133,18 +135,29 @@ public class ViewEdgeService {
         return result;
     }
 
-    public Element getTargetAllocateEdge(AllocationUsage allocationUsage) {
-        var features = allocationUsage.getOwnedFeatureMembership().stream()
-                .filter(EndFeatureMembership.class::isInstance)
-                .map(EndFeatureMembership.class::cast)
-                .flatMap(efm -> efm.getOwnedRelatedElement().stream())
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
-                .toList();
-        if (features.size() == 2) {
-            return this.getFeatureElement(features.get(1));
+    public Element reconnectSourceAllocateEdge(AllocationUsage self, Element newSource) {
+        if (newSource instanceof Usage usage) {
+            var features = this.getFeatures(self);
+            if (features.size() == 2) {
+                var reference = features.get(0).getOwnedReferenceSubsetting();
+                if (reference != null) {
+                    reference.setReferencedFeature(usage);
+                }
+            }
         }
-        return null;
+        return self;
     }
 
+    public Element reconnectTargetAlocateEdge(AllocationUsage self, Element newTarget) {
+        if (newTarget instanceof Usage usage) {
+            var features = this.getFeatures(self);
+            if (features.size() == 2) {
+                var reference = features.get(1).getOwnedReferenceSubsetting();
+                if (reference != null) {
+                    reference.setReferencedFeature(usage);
+                }
+            }
+        }
+        return self;
+    }
 }

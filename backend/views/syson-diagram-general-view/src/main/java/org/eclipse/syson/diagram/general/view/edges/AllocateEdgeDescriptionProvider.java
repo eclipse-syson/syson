@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.edges.AbstractAllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -58,7 +57,6 @@ public class AllocateEdgeDescriptionProvider extends AbstractAllocateEdgeDescrip
         GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
             cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(sourcesAndTargets::add);
         });
-        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(sourcesAndTargets::add);
         return sourcesAndTargets;
     }
 
