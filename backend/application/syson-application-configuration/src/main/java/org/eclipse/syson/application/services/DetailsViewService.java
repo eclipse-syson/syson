@@ -154,8 +154,7 @@ public class DetailsViewService {
                 EcorePackage.Literals.ELONG,
                 EcorePackage.Literals.ELONG_OBJECT,
                 EcorePackage.Literals.ESHORT,
-                EcorePackage.Literals.ESHORT_OBJECT
-                );
+                EcorePackage.Literals.ESHORT_OBJECT);
         return eStructuralFeature instanceof EAttribute eAttribute && numericDataTypes.contains(eAttribute.getEType());
     }
 
@@ -209,11 +208,11 @@ public class DetailsViewService {
                 this.importService.handleImport(parent, elementToImport);
             } else if (newValue instanceof Collection<?> newValues) {
                 newValues.stream()
-                    .filter(Element.class::isInstance)
-                    .map(Element.class::cast)
-                    .forEach(elementToImport -> {
-                        this.importService.handleImport(parent, elementToImport);
-                    });
+                        .filter(Element.class::isInstance)
+                        .map(Element.class::cast)
+                        .forEach(elementToImport -> {
+                            this.importService.handleImport(parent, elementToImport);
+                        });
             }
         }
         return element;

@@ -39,9 +39,9 @@ import org.springframework.context.annotation.FilterType;
 @SpringBootApplication
 @ComponentScan(basePackages = { "org.eclipse.syson", "org.eclipse.sirius.web", "org.eclipse.sirius.components" },
         excludeFilters = {
-            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = UploadDocumentEventHandler.class),
-            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = EMFValidationService.class),
-            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DocumentController.class)})
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = UploadDocumentEventHandler.class),
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = EMFValidationService.class),
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DocumentController.class) })
 public class SysONApplication {
 
     /**

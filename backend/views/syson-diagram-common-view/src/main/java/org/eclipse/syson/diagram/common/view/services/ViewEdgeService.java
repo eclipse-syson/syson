@@ -103,9 +103,9 @@ public class ViewEdgeService {
 
     private Element getFeatureElement(Feature feature) {
         var optReference = feature.getOwnedRelationship().stream()
-            .filter(ReferenceSubsetting.class::isInstance)
-            .map(ReferenceSubsetting.class::cast)
-            .findFirst();
+                .filter(ReferenceSubsetting.class::isInstance)
+                .map(ReferenceSubsetting.class::cast)
+                .findFirst();
         if (optReference.isPresent()) {
             return this.resolveFeatureElement(optReference.get().getReferencedFeature());
         }

@@ -393,8 +393,8 @@ public abstract class AbstractCodingRulesTests {
      * classes, we do not have a single static method with a real behavior. Thus, nothing of value will be lost.
      *
      * In this test, we will ensure that static methods are either used to return a builder or they act as a builder
-     * directly and are thus used to return a new instance. We will prevent the introduction of any static method in
-     * the code apart from the following use cases:
+     * directly and are thus used to return a new instance. We will prevent the introduction of any static method in the
+     * code apart from the following use cases:
      *
      * <ul>
      * <li>Enum since Java enum are considered as extending java.lang.Enum which comes with static methods</li>

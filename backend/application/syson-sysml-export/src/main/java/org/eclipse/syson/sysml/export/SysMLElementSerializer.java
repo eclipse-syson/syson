@@ -114,7 +114,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendDefinition(Appender builder, Definition definition) {
 
         appendDefinitionDeclaration(builder, definition);
-        
+
         // definition body
         appendOwnedRelationshiptContent(builder, definition);
     }
@@ -157,11 +157,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         for (var rel : def.getOwnedRelationship()) {
             if (rel instanceof OwningMembership owningMember) {
                 owningMember.getOwnedRelatedElement().stream()
-                .filter(MetadataUsage.class::isInstance)
-                .map(MetadataUsage.class::cast)
-                .map(MetadataUsage::getMetadataDefinition)
-                .filter(NOT_NULL)
-                .forEach(mDef -> appendPrefixMetadataMember(builder, mDef));
+                        .filter(MetadataUsage.class::isInstance)
+                        .map(MetadataUsage.class::cast)
+                        .map(MetadataUsage::getMetadataDefinition)
+                        .filter(NOT_NULL)
+                        .forEach(mDef -> appendPrefixMetadataMember(builder, mDef));
             }
         }
     }

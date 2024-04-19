@@ -68,11 +68,9 @@ public class InterconnectionViewDiagramDescriptionProvider extends AbstractDiagr
                 new ChildrenPartUsageCompartmentNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new AllocateEdgeDescriptionProvider(colorProvider, this.nameGenerator)
-        );
+                new AllocateEdgeDescriptionProvider(colorProvider, this.nameGenerator));
 
-        diagramElementDescriptionProviders.stream().
-                map(IDiagramElementDescriptionProvider::create)
+        diagramElementDescriptionProviders.stream().map(IDiagramElementDescriptionProvider::create)
                 .forEach(cache::put);
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));
 

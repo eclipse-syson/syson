@@ -59,7 +59,8 @@ public class ViewToolService extends ToolService {
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
-    public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
+    public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
         super(objectService, representationDescriptionSearchService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
     }
@@ -112,12 +113,12 @@ public class ViewToolService extends ToolService {
     }
 
     /**
-     * Called by "Add existing nested elements" tool from General View Usage node. Add nodes that are not present
-     * in selectedNode (e.g. a PartUsage).
+     * Called by "Add existing nested elements" tool from General View Usage node. Add nodes that are not present in
+     * selectedNode (e.g. a PartUsage).
      *
      * @param usage
-     *            the {@link Usage} corresponding to the target object of the Diagram or the {@link Node} Usage
-     *            on which the tool has been called.
+     *            the {@link Usage} corresponding to the target object of the Diagram or the {@link Node} Usage on which
+     *            the tool has been called.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
@@ -154,8 +155,8 @@ public class ViewToolService extends ToolService {
     }
 
     /**
-     * Called by "Add existing nested elements" tool from General View Definition node. Add nodes that are not
-     * present in selectedNode (e.g. a PartUsage/ItemUsage).
+     * Called by "Add existing nested elements" tool from General View Definition node. Add nodes that are not present
+     * in selectedNode (e.g. a PartUsage/ItemUsage).
      *
      * @param definition
      *            the {@link Definition} corresponding to the target object of the Diagram or the {@link Node}
@@ -302,7 +303,8 @@ public class ViewToolService extends ToolService {
         return usage;
     }
 
-    private Definition addExistingSubElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
+    private Definition addExistingSubElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode,
+            DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var ownedUsages = definition.getOwnedUsage();
 
@@ -343,7 +345,8 @@ public class ViewToolService extends ToolService {
         return droppedElement;
     }
 
-    public Element dropElementFromDiagramInRequirementAssumeConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+    public Element dropElementFromDiagramInRequirementAssumeConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
+            IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
             this.moveContraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.ASSUMPTION);
@@ -353,7 +356,8 @@ public class ViewToolService extends ToolService {
         return droppedElement;
     }
 
-    public Element dropElementFromDiagramInRequirementRequireConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+    public Element dropElementFromDiagramInRequirementRequireConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
+            IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
             this.moveContraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.REQUIREMENT);
@@ -372,7 +376,8 @@ public class ViewToolService extends ToolService {
         EcoreUtil.delete(oldMembership);
     }
 
-    public Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+    public Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
+            IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (droppedElement instanceof ConstraintUsage droppedConstraint) {
             if (targetElement instanceof ConstraintUsage || targetElement instanceof ConstraintDefinition) {

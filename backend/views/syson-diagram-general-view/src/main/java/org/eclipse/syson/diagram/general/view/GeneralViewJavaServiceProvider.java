@@ -37,8 +37,8 @@ public class GeneralViewJavaServiceProvider implements IJavaServiceProvider {
     public List<Class<?>> getServiceClasses(View view) {
         var descriptions = view.getDescriptions();
         var optGVDescription = descriptions.stream()
-            .filter(desc -> GeneralViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
-            .findFirst();
+                .filter(desc -> GeneralViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
+                .findFirst();
         if (optGVDescription.isPresent()) {
             return List.of(GeneralViewCreateService.class,
                     DeleteService.class,

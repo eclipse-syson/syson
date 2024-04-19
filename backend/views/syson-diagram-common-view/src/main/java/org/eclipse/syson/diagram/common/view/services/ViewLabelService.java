@@ -45,11 +45,11 @@ public class ViewLabelService extends LabelService {
             label.append(declaredName);
         }
         label
-            .append(this.getMultiplicityLabel(usage))
-            .append(this.getTypingLabel(usage))
-            .append(this.getRedefinitionLabel(usage))
-            .append(this.getSubsettingLabel(usage))
-            .append(this.getValueLabel(usage));
+                .append(this.getMultiplicityLabel(usage))
+                .append(this.getTypingLabel(usage))
+                .append(this.getRedefinitionLabel(usage))
+                .append(this.getSubsettingLabel(usage))
+                .append(this.getValueLabel(usage));
         return label.toString();
     }
 
@@ -73,10 +73,10 @@ public class ViewLabelService extends LabelService {
                 valueAsString = this.getValue(literalExpression);
             }
             label
-                .append(LabelConstants.SPACE)
-                .append(LabelConstants.EQUAL)
-                .append(LabelConstants.SPACE)
-                .append(valueAsString);
+                    .append(LabelConstants.SPACE)
+                    .append(LabelConstants.EQUAL)
+                    .append(LabelConstants.SPACE)
+                    .append(valueAsString);
         }
         return label.toString();
     }

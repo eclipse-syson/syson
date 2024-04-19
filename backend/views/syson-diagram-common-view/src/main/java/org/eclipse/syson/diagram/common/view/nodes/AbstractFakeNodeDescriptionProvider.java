@@ -47,7 +47,9 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
 
     /**
      * Implementers should provide the list of {@link NodeDescription} which this node is the parent.
-     * @param cache the cache used to retrieve node descriptions.
+     * 
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of node descriptions this node contains.
      */
     protected abstract List<NodeDescription> getChildrenDescription(IViewDiagramElementFinder cache);

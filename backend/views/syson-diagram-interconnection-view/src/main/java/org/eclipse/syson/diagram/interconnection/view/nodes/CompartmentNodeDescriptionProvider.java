@@ -25,7 +25,8 @@ import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * Used to create the Attributes Compartment node description inside the Interconnection View {@link ChildPartUsageNodeDescriptionProvider}.
+ * Used to create the Attributes Compartment node description inside the Interconnection View
+ * {@link ChildPartUsageNodeDescriptionProvider}.
  *
  * @author arichard
  */

@@ -81,7 +81,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseActionUsage(ActionUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                    || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionDefinition())).collect(Collectors.toList());
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getActionUsage(), targetNodes));
@@ -115,7 +115,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseConstraintUsage(ConstraintUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                    || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getConstraintDefinition())).collect(Collectors.toList());
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getConstraintDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getConstraintUsage(), targetNodes));
@@ -199,13 +199,14 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     public List<EdgeTool> caseRequirementUsage(RequirementUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
-                    || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getRequirementDefinition())).collect(Collectors.toList());
+                || this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getRequirementDefinition())).collect(Collectors.toList());
         targetNodes.removeIf(nodeDesc -> this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPortUsage()));
         targetNodes.removeIf(nodeDesc -> this.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeUsage()));
         edgeTools.add(this.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getRequirementUsage(), targetNodes));
         var objectiveTargets = this.allNodeDescriptions.stream()
                 .filter(n -> this.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseUsage())
-                            || this.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseDefinition())).toList();
+                        || this.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseDefinition()))
+                .toList();
         edgeTools.add(this.createBecomeObjectiveRequirementEdgeTool(objectiveTargets));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
@@ -365,7 +366,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")
-                .children(callElementInitializerService.build(), setRedefiningFeature.build(), setRedefinedFeature.build(), setSubsettingFeature.build(), setSubsettedFeature.build(), setSpecific.build(),
+                .children(callElementInitializerService.build(), setRedefiningFeature.build(), setRedefinedFeature.build(), setSubsettingFeature.build(), setSubsettedFeature.build(),
+                        setSpecific.build(),
                         setGeneral.build());
 
         var createInstance = this.viewBuilderHelper.newCreateInstance()
@@ -525,7 +527,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
         var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createAllocateEdge(" +  String.join(",", params) + ")");
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createAllocateEdge(" + String.join(",", params) + ")");
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getAllocationUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getDependency().getName() + SVG)

@@ -50,7 +50,7 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
  * Switch retrieving the list of NodeToolSections for each SysMLv2 concept represented in the General View diagram.
-
+ * 
  * @author arichard
  */
 public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<NodeToolSection>> {
@@ -114,8 +114,8 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
     @Override
     public List<NodeToolSection> caseItemUsage(ItemUsage object) {
         var createSection = this.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
-                        this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
-                        this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
+                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }

@@ -132,7 +132,8 @@ public class RootPartUsageNodeDescriptionProvider extends AbstractNodeDescriptio
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
                 .nodeTools(this.createNodeTool(cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage(), NodeContainmentKind.CHILD_NODE),
-                           this.createNodeTool(cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get(), SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE))
+                        this.createNodeTool(cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get(), SysmlPackage.eINSTANCE.getPortUsage(),
+                                NodeContainmentKind.BORDER_NODE))
                 .build();
     }
 

@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *Implements mapping logic specific to Subclassification in SysML models from AST node.
+ * Implements mapping logic specific to Subclassification in SysML models from AST node.
  *
  * @author gescande
  */

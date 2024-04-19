@@ -89,7 +89,7 @@ public class DocumentController {
     @GetMapping(path = "/{documentId}")
     @ResponseBody
     public ResponseEntity<Resource> getDocument(@PathVariable String editingContextId, @PathVariable String documentId) {
-        
+
         Optional<Document> optionalDocument = new IDParser().parse(documentId).flatMap(documentUUID -> this.documentService.getDocument(editingContextId, documentUUID));
 
         if (optionalDocument.isPresent()) {

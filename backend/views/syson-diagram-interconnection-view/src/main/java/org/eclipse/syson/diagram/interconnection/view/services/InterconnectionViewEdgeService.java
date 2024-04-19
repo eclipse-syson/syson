@@ -54,16 +54,16 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
     public PortUsage getSourcePort(BindingConnectorAsUsage bind) {
         PortUsage sourcePort = null;
         Optional<EndFeatureMembership> endFeatureMembership = bind.getOwnedFeatureMembership().stream()
-            .filter(EndFeatureMembership.class::isInstance)
-            .map(EndFeatureMembership.class::cast)
-            .findFirst();
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .findFirst();
         if (endFeatureMembership.isPresent()) {
             Optional<Feature> referencedFeature = endFeatureMembership.get().getOwnedRelatedElement().stream()
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
-                .findFirst()
-                .map(Feature::getOwnedReferenceSubsetting)
-                .map(ReferenceSubsetting::getReferencedFeature);
+                    .filter(Feature.class::isInstance)
+                    .map(Feature.class::cast)
+                    .findFirst()
+                    .map(Feature::getOwnedReferenceSubsetting)
+                    .map(ReferenceSubsetting::getReferencedFeature);
             if (referencedFeature.isPresent()) {
                 Feature feature = referencedFeature.get();
                 if (feature instanceof PortUsage portUsage) {
@@ -91,16 +91,16 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
     public PortUsage getTargetPort(BindingConnectorAsUsage bind) {
         PortUsage targetPort = null;
         Optional<EndFeatureMembership> endFeatureMembership = bind.getOwnedFeatureMembership().stream()
-            .filter(EndFeatureMembership.class::isInstance)
-            .map(EndFeatureMembership.class::cast)
-            .reduce((first, second) -> second);
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .reduce((first, second) -> second);
         if (endFeatureMembership.isPresent()) {
             Optional<Feature> referencedFeature = endFeatureMembership.get().getOwnedRelatedElement().stream()
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
-                .findFirst()
-                .map(Feature::getOwnedReferenceSubsetting)
-                .map(ReferenceSubsetting::getReferencedFeature);
+                    .filter(Feature.class::isInstance)
+                    .map(Feature.class::cast)
+                    .findFirst()
+                    .map(Feature::getOwnedReferenceSubsetting)
+                    .map(ReferenceSubsetting::getReferencedFeature);
             if (referencedFeature.isPresent()) {
                 Feature feature = referencedFeature.get();
                 if (feature instanceof PortUsage portUsage) {
@@ -136,18 +136,18 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
                     .findFirst();
             if (endFeatureMembership.isPresent()) {
                 endFeatureMembership.get().getOwnedRelatedElement().stream()
-                    .filter(Feature.class::isInstance)
-                    .map(Feature.class::cast)
-                    .findFirst()
-                    .map(Feature::getOwnedReferenceSubsetting)
-                    .ifPresent(refSub -> {
-                        refSub.setReferencedFeature(newSourcePort);
-                        // move the given connector into the parent (i.e. should be a PartUsage) of the new source
-                        Usage owningUsage = newSourcePort.getOwningUsage();
-                        if (owningUsage instanceof PartUsage partUsage) {
-                            partUsage.getOwnedRelationship().add(bind.getOwningRelationship());
-                        }
-                    });
+                        .filter(Feature.class::isInstance)
+                        .map(Feature.class::cast)
+                        .findFirst()
+                        .map(Feature::getOwnedReferenceSubsetting)
+                        .ifPresent(refSub -> {
+                            refSub.setReferencedFeature(newSourcePort);
+                            // move the given connector into the parent (i.e. should be a PartUsage) of the new source
+                            Usage owningUsage = newSourcePort.getOwningUsage();
+                            if (owningUsage instanceof PartUsage partUsage) {
+                                partUsage.getOwnedRelationship().add(bind.getOwningRelationship());
+                            }
+                        });
 
             }
         } else {
@@ -173,11 +173,11 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
                     .reduce((first, second) -> second);
             if (endFeatureMembership.isPresent()) {
                 endFeatureMembership.get().getOwnedRelatedElement().stream()
-                .filter(Feature.class::isInstance)
-                .map(Feature.class::cast)
-                .findFirst()
-                .map(Feature::getOwnedReferenceSubsetting)
-                .ifPresent(refSub -> refSub.setReferencedFeature(newTargetPort));
+                        .filter(Feature.class::isInstance)
+                        .map(Feature.class::cast)
+                        .findFirst()
+                        .map(Feature::getOwnedReferenceSubsetting)
+                        .ifPresent(refSub -> refSub.setReferencedFeature(newTargetPort));
             }
         } else {
             this.feedbackMessageService.addFeedbackMessage(new Message("The target of the BindingConnectorAsUsage can only be connected to a PortUsage", MessageLevel.WARNING));

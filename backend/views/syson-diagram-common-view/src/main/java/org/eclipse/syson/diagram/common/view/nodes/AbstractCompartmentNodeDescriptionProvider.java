@@ -58,15 +58,18 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     /**
-     * Implementers should provide the list of {@link NodeDescription} that can be dropped inside this compartment {@link NodeDescription}.
+     * Implementers should provide the list of {@link NodeDescription} that can be dropped inside this compartment
+     * {@link NodeDescription}.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that can be dropped inside this compartment.
      */
     protected abstract List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache);
 
     /**
      * Returns the Compartment Node tool provider used to create a new item inside this compartment.
+     * 
      * @return the {@link INodeToolProvider} that handles the item creation inside this compartment.
      */
     protected INodeToolProvider getItemCreationToolProvider() {
@@ -75,6 +78,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     /**
      * Returns the AQL expression evaluated to drop an element from the diagram inside this compartment.
+     * 
      * @return
      */
     protected String getDropElementFromDiagramExpression() {
@@ -103,14 +107,16 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
         NodeDescription nodeDescription = optCompartmentNodeDescription.get();
 
         cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(this.eClass, this.eReference))
-            .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
+                .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
 
         nodeDescription.setPalette(this.createCompartmentPalette(cache));
     }
 
     /**
-     * Implementers might override to specify a custom label for the compartment that is used instead of the default label.<br>
+     * Implementers might override to specify a custom label for the compartment that is used instead of the default
+     * label.<br>
      * Default implementation returns {@code null}.
+     * 
      * @return a custom label for the compartment
      */
     protected String getCustomCompartmentLabel() {
@@ -167,7 +173,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
         INodeToolProvider compartmentNodeToolProvider = this.getItemCreationToolProvider();
-        
+
         return this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache))
                 .nodeTools(compartmentNodeToolProvider.create(cache))

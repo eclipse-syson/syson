@@ -315,7 +315,8 @@ public class ToolService {
                 .build();
     }
 
-    private org.eclipse.sirius.components.view.diagram.NodeDescription getChildrenNodeDescriptionsOfType(DiagramDescription diagramDescription, org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription, EClass eClass) {
+    private org.eclipse.sirius.components.view.diagram.NodeDescription getChildrenNodeDescriptionsOfType(DiagramDescription diagramDescription,
+            org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription, EClass eClass) {
         final List<org.eclipse.sirius.components.view.diagram.NodeDescription> descriptions = new ArrayList<>();
         final String parentName;
         if (nodeDescription == null) {
@@ -338,7 +339,8 @@ public class ToolService {
             this.logger.error("No candidate for children of type {} on {}", eClass.getName(), parentName);
             return null;
         } else {
-            Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> perfectCandidate = candidates.stream().filter(c -> SysMLMetamodelHelper.toEClass(c.getDomainType()) == eClass).findFirst();
+            Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> perfectCandidate = candidates.stream().filter(c -> SysMLMetamodelHelper.toEClass(c.getDomainType()) == eClass)
+                    .findFirst();
             org.eclipse.sirius.components.view.diagram.NodeDescription byDefault = null;
             if (perfectCandidate.isPresent()) {
                 byDefault = perfectCandidate.get();
@@ -375,7 +377,8 @@ public class ToolService {
         return toTest == expected || toTest.getEAllSuperTypes().contains(expected);
     }
 
-    private Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescription(String descriptionId, DiagramDescription diagramDescription, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+    private Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescription(String descriptionId, DiagramDescription diagramDescription,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         return this.eAllContentStreamWithSelf(diagramDescription)
                 .filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
                 .map(org.eclipse.sirius.components.view.diagram.NodeDescription.class::cast)

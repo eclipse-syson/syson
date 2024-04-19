@@ -104,8 +104,7 @@ public class ASTTransformer {
             new MapperLiteralString(this.objectFinder, this.mappingStates),
             new MapperReferenceSubsetting(this.objectFinder, this.mappingStates),
             new MapperConjugatedPortTyping(this.objectFinder, this.mappingStates),
-            new MapperComment(this.objectFinder, this.mappingStates)
-            );
+            new MapperComment(this.objectFinder, this.mappingStates));
 
     private final Logger logger = LoggerFactory.getLogger(ASTTransformer.class);
 
@@ -126,9 +125,9 @@ public class ASTTransformer {
 
             if (astJson.get(CHILDREN_CONST) != null) {
                 astJson.get(CHILDREN_CONST).forEach(t -> this.mappingStates.toMap().add(new MappingElement(t.get(TARGET_CONST), null)));
-    
+
                 List<MappingElement> rootElements = List.copyOf(this.mappingStates.toMap());
-    
+
                 // Static Mapping
                 while (!this.mappingStates.toMap().isEmpty()) {
                     this.logger.info("Start Mapping loop with " + this.mappingStates.toMap().size() + " elements");
@@ -163,7 +162,7 @@ public class ASTTransformer {
                         });
                     });
                 }
-    
+
                 this.logger.info("End complete mapping loop");
                 rootElements.forEach(t -> result.getContents().add(t.getSelf()));
             }
