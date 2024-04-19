@@ -14,24 +14,30 @@ package org.eclipse.syson.sysml.export;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.base.Strings.nullToEmpty;
+//import static org.eclipse.syson.sysml.export.utils.StringUtils.toPrintableName;
 import static java.util.stream.Collectors.joining;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.Metaclass;
+import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.utils.Appender;
 import org.eclipse.syson.sysml.export.utils.EMFUtils;
@@ -44,11 +50,11 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  */
 public class SysMLElementSerializer extends SysmlSwitch<String> {
 
-    private static final Supplier<Appender> DEFAULT_APPENDER_FACTORY = () -> new Appender(System.lineSeparator(), "\t");
-
     private static final Predicate<Object> NOT_NULL = s -> s != null;
 
-    private final Supplier<Appender> appenderFactory;
+    private String lineSeparator;
+
+    private String indentation;
 
     /**
      * Simple constructor.
@@ -58,13 +64,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * @param indentation
      *            the string used to indent the file
      */
-    public SysMLElementSerializer(Supplier<Appender> appenderFactory) {
+    public SysMLElementSerializer(String lineSeparator, String indentation) {
         super();
-        this.appenderFactory = appenderFactory;
+        this.lineSeparator = lineSeparator;
+        this.indentation = indentation;
     }
 
     public SysMLElementSerializer() {
-        this(DEFAULT_APPENDER_FACTORY);
+        this(System.lineSeparator(), "\t");
     }
 
     @Override
@@ -90,25 +97,125 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
+    @Override
+    public String casePartDefinition(PartDefinition partDefinition) {
+
+        Appender builder = newAppender();
+
+        appendOccurrenceDefinitionPrefix(builder, partDefinition);
+
+        builder.appendSpaceIfNeeded().append("part def");
+
+        appendDefinition(builder, partDefinition);
+
+        return builder.toString();
+    }
+
+    private void appendDefinition(Appender builder, Definition definition) {
+
+        appendDefinitionDeclaration(builder, definition);
+        
+        // definition body
+        appendOwnedRelationshiptContent(builder, definition);
+    }
+
+    private void appendDefinitionDeclaration(Appender builder, Definition definition) {
+        appendNameWithShortName(builder, definition);
+
+        EList<Subclassification> subClassification = definition.getOwnedSubclassification();
+        if (!subClassification.isEmpty()) {
+            builder.appendSpaceIfNeeded().append(":> ");
+
+            String superClasses = subClassification.stream()
+                    .map(sub -> sub.getSuperclassifier())
+                    .filter(NOT_NULL)
+                    .map(sup -> buildContextRelativeQualifiedName(sup, definition))
+                    .collect(joining(", "));
+
+            builder.append(superClasses);
+
+        }
+    }
+
+    private void appendOccurrenceDefinitionPrefix(Appender builder, OccurrenceDefinition occDef) {
+
+        builder.appendSpaceIfNeeded().append(getBasicDefinitionPrefix(occDef));
+
+        final String isIndividual;
+        if (occDef.isIsIndividual()) {
+            isIndividual = "individual";
+        } else {
+            isIndividual = "";
+        }
+
+        builder.appendSpaceIfNeeded().append(isIndividual);
+
+        appendDefinitionExtensionKeyword(builder, occDef);
+    }
+
+    private void appendDefinitionExtensionKeyword(Appender builder, Definition def) {
+        for (var rel : def.getOwnedRelationship()) {
+            if (rel instanceof OwningMembership owningMember) {
+                owningMember.getOwnedRelatedElement().stream()
+                .filter(MetadataUsage.class::isInstance)
+                .map(MetadataUsage.class::cast)
+                .map(MetadataUsage::getMetadataDefinition)
+                .filter(NOT_NULL)
+                .forEach(mDef -> appendPrefixMetadataMember(builder, mDef));
+            }
+        }
+    }
+
+    private void appendPrefixMetadataMember(Appender builder, Metaclass def) {
+        builder.appendSpaceIfNeeded().append("#");
+        appendSimpleName(builder, def);
+    }
+
+    private void appendSimpleName(Appender appender, Element e) {
+        String shortName = e.getName();
+        String declaredName = e.getDeclaredName();
+        if (shortName != null && !shortName.isBlank()) {
+            appender.appendPrintableName(shortName);
+        } else if (declaredName != null && !declaredName.isBlank()) {
+            appender.appendPrintableName(declaredName);
+
+        } else {
+            appender.appendPrintableName(e.effectiveName());
+        }
+    }
+
+    private String getBasicDefinitionPrefix(OccurrenceDefinition occDef) {
+        StringBuilder builder = new StringBuilder();
+        if (occDef.isIsAbstract()) {
+            builder.append("abstract");
+        }
+        if (occDef.isIsVariation()) {
+            if (!builder.isEmpty()) {
+                builder.append(" ");
+            }
+            builder.append("variation");
+        }
+        return builder.toString();
+    }
+
     private Appender newAppender() {
-        return this.appenderFactory.get();
+        return new Appender(lineSeparator, indentation);
     }
 
     private void appendOwnedRelationshiptContent(Appender builder, Element element) {
-        if (element.getOwnedRelationship().isEmpty()) {
-            builder.append(";");
-        } else {
+
+        String content = this.getContent(element.getOwnedRelationship());
+        if (content != null && !content.isBlank()) {
             builder.append(" {");
-            this.appendIndentedContent(builder, element.getOwnedRelationship());
+            builder.appendIndentedContent(content);
             builder.newLine().append("}");
+        } else {
+            builder.append(";");
         }
     }
 
-    private void appendIndentedContent(Appender builder, List<? extends Element> children) {
-        String content = children.stream().map(rel -> this.doSwitch(rel)).filter(NOT_NULL).collect(joining(builder.getNewLine(), builder.getNewLine(), ""));
-        if (!content.isBlank()) {
-            builder.appendIndentedContent(content);
-        }
+    private String getContent(List<? extends Element> children) {
+        return children.stream().map(rel -> this.doSwitch(rel)).filter(NOT_NULL).collect(joining(lineSeparator, lineSeparator, ""));
     }
 
     @Override
@@ -235,7 +342,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
 
         String content = owningMembership.getOwnedRelatedElement().stream().map(rel -> this.doSwitch(rel)).filter(NOT_NULL).collect(joining(builder.getNewLine()));
-        builder.append(content);
+        builder.appendSpaceIfNeeded().append(content);
 
         return builder.toString();
     }

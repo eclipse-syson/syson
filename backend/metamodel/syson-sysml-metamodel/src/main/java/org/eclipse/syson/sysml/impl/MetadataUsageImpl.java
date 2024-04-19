@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataFeature;
 import org.eclipse.syson.sysml.MetadataUsage;
@@ -141,13 +142,19 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Metaclass basicGetMetadataDefinition() {
-        // TODO: implement this method to return the 'Metadata Definition' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        
+        Metaclass metaClass = (Metaclass)getOwnedRelationship().stream()
+            .flatMap(rel -> rel.getOwnedRelatedElement().stream())
+            .filter(FeatureTyping.class::isInstance)
+            .map(FeatureTyping.class::cast)
+            .filter(ft -> ft.getType() instanceof Metaclass)
+            .map(FeatureTyping::getType)
+            .findFirst().orElse(null);
+            
+        return metaClass;
     }
 
     /**
