@@ -57,7 +57,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.util.LabelConstants;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 
 /**
  * The ANTLR Listener for the direct edit grammar for SysON diagrams.

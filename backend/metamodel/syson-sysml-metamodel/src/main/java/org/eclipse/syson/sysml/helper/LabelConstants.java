@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.util;
+package org.eclipse.syson.sysml.helper;
 
 /**
  * Label-related constants.

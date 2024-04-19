@@ -56,8 +56,8 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
-import org.eclipse.syson.util.LabelConstants;
 
 /**
  * Switch returning the label of some container nodes in the diagrams.

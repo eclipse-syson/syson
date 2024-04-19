@@ -18,7 +18,7 @@ import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.util.LabelConstants;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 
 /**
  * Label-related Java services used in diagrams.
