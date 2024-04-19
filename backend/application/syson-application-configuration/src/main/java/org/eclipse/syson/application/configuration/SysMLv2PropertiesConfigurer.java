@@ -51,8 +51,8 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescri
 import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
 import org.eclipse.syson.application.services.DetailsViewService;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.LabelConstants;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.springframework.context.annotation.Configuration;
 

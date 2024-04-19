@@ -36,7 +36,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
-import org.eclipse.syson.util.LabelConstants;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 
 /**
  * Label-related Java services used by SysON representations.
