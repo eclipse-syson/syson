@@ -29,7 +29,7 @@ import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.sysml.helper.PrettyPrinter;
+
 
 /**
  * <!-- begin-user-doc -->

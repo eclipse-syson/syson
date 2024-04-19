@@ -31,7 +31,7 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
-import org.eclipse.syson.sysml.helper.PrettyPrinter;
+
 
 /**
  * <!-- begin-user-doc -->
