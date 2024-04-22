@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
+import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -155,6 +156,15 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         features.add(SysmlPackage.eINSTANCE.getNamespaceImport_ImportedNamespace());
         features.add(SysmlPackage.eINSTANCE.getImport_IsImportAll());
         features.add(SysmlPackage.eINSTANCE.getImport_IsRecursive());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> casePortConjugation(PortConjugation object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getConjugation_ConjugatedType());
+        features.add(SysmlPackage.eINSTANCE.getPortConjugation_OriginalPortDefinition());
         return features;
     }
 

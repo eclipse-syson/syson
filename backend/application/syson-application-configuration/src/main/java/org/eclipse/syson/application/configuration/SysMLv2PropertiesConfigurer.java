@@ -344,13 +344,13 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         FormElementIf label = FormFactory.eINSTANCE.createFormElementIf();
         label.setName("Read-only String Attributes");
-        label.setPredicateExpression("aql:eStructuralFeature.isReadOnlyStringAttribute()");
+        label.setPredicateExpression("aql:self.isReadOnlyStringAttribute(eStructuralFeature)");
         label.getChildren().add(this.createLabelWidget());
         widgets.add(label);
 
         FormElementIf textfield = FormFactory.eINSTANCE.createFormElementIf();
         textfield.setName("String Attributes");
-        textfield.setPredicateExpression("aql:eStructuralFeature.isStringAttribute()");
+        textfield.setPredicateExpression("aql:self.isStringAttribute(eStructuralFeature)");
         textfield.getChildren().add(this.createTextfieldWidget());
         widgets.add(textfield);
 

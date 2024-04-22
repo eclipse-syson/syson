@@ -19,6 +19,7 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 
 /**
  * <!-- begin-user-doc -->
@@ -61,8 +62,8 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
      */
     @Override
     public PortDefinition getOriginalPortDefinition() {
-        PortDefinition originalPortDefinition = basicGetOriginalPortDefinition();
-        return originalPortDefinition != null && originalPortDefinition.eIsProxy() ? (PortDefinition)eResolveProxy((InternalEObject)originalPortDefinition) : originalPortDefinition;
+        PortDefinition originalPortDefinition = this.basicGetOriginalPortDefinition();
+        return originalPortDefinition != null && originalPortDefinition.eIsProxy() ? (PortDefinition)this.eResolveProxy((InternalEObject)originalPortDefinition) : originalPortDefinition;
     }
 
     /**
@@ -85,19 +86,47 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
      */
     @Override
     public PortConjugation getOwnedPortConjugator() {
-        PortConjugation ownedPortConjugator = basicGetOwnedPortConjugator();
-        return ownedPortConjugator != null && ownedPortConjugator.eIsProxy() ? (PortConjugation)eResolveProxy((InternalEObject)ownedPortConjugator) : ownedPortConjugator;
+        PortConjugation ownedPortConjugator = this.basicGetOwnedPortConjugator();
+        return ownedPortConjugator != null && ownedPortConjugator.eIsProxy() ? (PortConjugation)this.eResolveProxy((InternalEObject)ownedPortConjugator) : ownedPortConjugator;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public PortConjugation basicGetOwnedPortConjugator() {
-        // TODO: implement this method to return the 'Owned Port Conjugator' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        return this.getOwnedRelationship().stream()
+            .filter(PortConjugation.class::isInstance)
+            .map(PortConjugation.class::cast)
+            .findFirst()
+            .orElse(null);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public void setDeclaredName(String newDeclaredName) {
+        // Nothing to do here
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public String getDeclaredName() {
+        PortDefinition originalPortDefinition = this.getOriginalPortDefinition();
+        if (originalPortDefinition != null) {
+            StringBuilder declaredName = new StringBuilder();
+            declaredName.append(LabelConstants.CONJUGATED);
+            declaredName.append(originalPortDefinition.getDeclaredName());
+            return declaredName.toString();
+        }
         return null;
     }
 
@@ -110,11 +139,15 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__ORIGINAL_PORT_DEFINITION:
-                if (resolve) return getOriginalPortDefinition();
-                return basicGetOriginalPortDefinition();
+                if (resolve) {
+                    return this.getOriginalPortDefinition();
+                }
+                return this.basicGetOriginalPortDefinition();
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__OWNED_PORT_CONJUGATOR:
-                if (resolve) return getOwnedPortConjugator();
-                return basicGetOwnedPortConjugator();
+                if (resolve) {
+                    return this.getOwnedPortConjugator();
+                }
+                return this.basicGetOwnedPortConjugator();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -128,9 +161,9 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__ORIGINAL_PORT_DEFINITION:
-                return basicGetOriginalPortDefinition() != null;
+                return this.basicGetOriginalPortDefinition() != null;
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__OWNED_PORT_CONJUGATOR:
-                return basicGetOwnedPortConjugator() != null;
+                return this.basicGetOwnedPortConjugator() != null;
         }
         return super.eIsSet(featureID);
     }
