@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ImportService;
+import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -103,25 +104,36 @@ public class DetailsViewService {
     }
 
     public boolean isReadOnly(EStructuralFeature eStructuralFeature) {
-        return eStructuralFeature.isDerived() || !eStructuralFeature.isChangeable();
+        boolean isReadOnly = false;
+        if (SysmlPackage.eINSTANCE.getConjugation_ConjugatedType().equals(eStructuralFeature)) {
+            isReadOnly = true;
+        } else if (SysmlPackage.eINSTANCE.getPortConjugation_OriginalPortDefinition().equals(eStructuralFeature)) {
+            isReadOnly = true;
+        } else {
+            isReadOnly = eStructuralFeature.isDerived() || !eStructuralFeature.isChangeable();
+        }
+        return isReadOnly;
     }
 
     public boolean isReadOnly(Element element) {
+        boolean isReadOnly = false;
         Resource resource = element.eResource();
         if (resource != null) {
             String uri = resource.getURI().toString();
-            return uri.startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME) || uri.startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME);
+            isReadOnly = uri.startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME) || uri.startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME);
         }
-        return false;
+        return isReadOnly;
     }
 
-    public boolean isReadOnlyStringAttribute(EStructuralFeature eStructuralFeature) {
+    public boolean isReadOnlyStringAttribute(Element element, EStructuralFeature eStructuralFeature) {
         if (eStructuralFeature instanceof EAttribute) {
             EClassifier eType = eStructuralFeature.getEType();
             boolean readOnlyProperty = false;
             if (SysmlPackage.eINSTANCE.getElement_ElementId().equals(eStructuralFeature)) {
                 readOnlyProperty = true;
             } else if (eStructuralFeature.isDerived() || !eStructuralFeature.isChangeable()) {
+                readOnlyProperty = true;
+            } else if (element instanceof ConjugatedPortDefinition) {
                 readOnlyProperty = true;
             }
             return readOnlyProperty && (!eStructuralFeature.isMany() && (eType.equals(EcorePackage.Literals.ESTRING) || Objects.equals(eType.getInstanceClassName(), String.class.getName())));
@@ -129,13 +141,15 @@ public class DetailsViewService {
         return false;
     }
 
-    public boolean isStringAttribute(EStructuralFeature eStructuralFeature) {
+    public boolean isStringAttribute(Element element, EStructuralFeature eStructuralFeature) {
         if (eStructuralFeature instanceof EAttribute) {
             EClassifier eType = eStructuralFeature.getEType();
             boolean readOnlyProperty = false;
             if (SysmlPackage.eINSTANCE.getElement_ElementId().equals(eStructuralFeature)) {
                 readOnlyProperty = true;
             } else if (eStructuralFeature.isDerived() || !eStructuralFeature.isChangeable()) {
+                readOnlyProperty = true;
+            } else if (element instanceof ConjugatedPortDefinition) {
                 readOnlyProperty = true;
             }
             return !readOnlyProperty && (!eStructuralFeature.isMany() && (eType.equals(EcorePackage.Literals.ESTRING) || Objects.equals(eType.getInstanceClassName(), String.class.getName())));

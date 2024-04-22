@@ -45,6 +45,7 @@
 
 - https://github.com/eclipse-syson/syson/issues/147[#147] [general-view] Refactor compartments of `RequirementDefinition` and `RequirementUsage` to better fit the specification and examples.
 - https://github.com/eclipse-syson/syson/issues/196[#196] [export] SysML standard serialization format
+- https://github.com/eclipse-syson/syson/issues/219[#219] [diagrams] Handle ConjugatedPortDefinition in diagrams, Explorer and Details View.
 
 == v2024.3.0
 

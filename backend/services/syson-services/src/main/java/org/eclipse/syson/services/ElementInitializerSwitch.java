@@ -12,16 +12,22 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PortConjugation;
+import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
@@ -31,6 +37,14 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  * @author arichard
  */
 public class ElementInitializerSwitch extends SysmlSwitch<Element> {
+
+    @Override
+    public Element defaultCase(EObject object) {
+        if (object instanceof Element element) {
+            return element;
+        }
+        return null;
+    }
 
     @Override
     public Element caseElement(Element object) {
@@ -65,6 +79,21 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element casePackage(Package object) {
         object.setDeclaredName(object.eClass().getName());
+        return object;
+    }
+
+    @Override
+    public Element casePortDefinition(PortDefinition object) {
+        object.setDeclaredName(object.eClass().getName());
+        OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        object.getOwnedRelationship().add(owningMembership);
+        // No need to set the declaredName for the ConjugatedPortDefinition here, it is always the same than its originalPortDefinition and computed elsewhere
+        ConjugatedPortDefinition conjugatedPortDefinition = SysmlFactory.eINSTANCE.createConjugatedPortDefinition();
+        owningMembership.getOwnedRelatedElement().add(conjugatedPortDefinition);
+        PortConjugation portConjugation = SysmlFactory.eINSTANCE.createPortConjugation();
+        conjugatedPortDefinition.getOwnedRelationship().add(portConjugation);
+        portConjugation.setConjugatedType(conjugatedPortDefinition);
+        portConjugation.setOriginalPortDefinition(object);
         return object;
     }
 

@@ -23,6 +23,8 @@ public class LabelConstants {
 
     public static final String COLON = ":";
 
+    public static final String CONJUGATED = "\u007E";
+
     public static final String CLOSE_BRACKET = "]";
 
     public static final String CLOSE_PARENTHESIS = ")";

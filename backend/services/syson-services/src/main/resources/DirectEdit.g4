@@ -101,7 +101,7 @@ BasicName :
 ;
 
 BasicInitialCharacter :
-	Letter | '_'
+	Letter | '_' | '~'
 ;
 
 BasicNameCharacter :

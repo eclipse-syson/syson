@@ -38,6 +38,8 @@ import org.eclipse.syson.services.grammars.DirectEditParser.SubsettingExpression
 import org.eclipse.syson.services.grammars.DirectEditParser.TypingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ValueExpressionContext;
 import org.eclipse.syson.sysml.Classifier;
+import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
@@ -144,16 +146,16 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     @Override
     public void exitTypingExpression(TypingExpressionContext ctx) {
-        if (this.options.contains(LabelService.TYPING_OFF)) {
-            return;
-        }
-        if (this.element instanceof Usage usage) {
+        if (!this.options.contains(LabelService.TYPING_OFF) && this.element instanceof Usage usage) {
             var identifier = ctx.qualifiedName();
             if (identifier != null) {
                 var typeAsString = identifier.getText();
                 var type = this.utilService.findByNameAndType(this.element, typeAsString, Type.class);
                 if (type == null && this.utilService.isQualifiedName(typeAsString)) {
                     this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the typing does not exist", MessageLevel.ERROR));
+                    return;
+                } else if (type == null && typeAsString.startsWith(LabelConstants.CONJUGATED)) {
+                    this.feedbackMessageService.addFeedbackMessage(new Message("The conjugated port def used for the typing does not exist", MessageLevel.ERROR));
                     return;
                 } else if (type == null) {
                     var containerPackage = this.utilService.getContainerPackage(this.element);
@@ -162,34 +164,79 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(this.element.eClass().getName().replace("Usage", "Definition"));
                     if (eClassifier instanceof EClass eClass) {
                         type = (Definition) SysmlFactory.eINSTANCE.create(eClass);
+                        this.elementInitializer.doSwitch(type);
                         type.setDeclaredName(typeAsString);
                         newMembership.getOwnedRelatedElement().add(type);
                     }
                 } else {
                     this.importService.handleImport(this.element, type);
                 }
-                if (type != null) {
-                    var optFeatureTyping = this.element.getOwnedRelationship().stream()
-                            .filter(FeatureTyping.class::isInstance)
-                            .map(FeatureTyping.class::cast)
-                            .findFirst();
-                    if (optFeatureTyping.isPresent()) {
-                        FeatureTyping featureTyping = optFeatureTyping.get();
-                        featureTyping.setType(type);
-                        featureTyping.setGeneral(type);
-                        featureTyping.setSpecific(usage);
-                        featureTyping.setTypedFeature(usage);
-                    } else {
-                        var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
-                        this.element.getOwnedRelationship().add(newFeatureTyping);
-                        newFeatureTyping.setType(type);
-                        newFeatureTyping.setGeneral(type);
-                        newFeatureTyping.setSpecific(usage);
-                        newFeatureTyping.setTypedFeature(usage);
-                        this.elementInitializer.caseFeatureTyping(newFeatureTyping);
-                    }
+                if (type instanceof ConjugatedPortDefinition conjugatedPortDef) {
+                    this.handleConjugatedPortTyping(usage, conjugatedPortDef);
+                } else if (type != null) {
+                    this.handleFeatureTyping(usage, type);
                 }
             }
+        }
+    }
+
+    private void handleConjugatedPortTyping(Usage usage, ConjugatedPortDefinition type) {
+        var optConjugatedPortTyping = this.element.getOwnedRelationship().stream()
+                .filter(ConjugatedPortTyping.class::isInstance)
+                .map(ConjugatedPortTyping.class::cast)
+                .findFirst();
+        if (optConjugatedPortTyping.isPresent()) {
+            ConjugatedPortTyping conjugatedPortTyping = optConjugatedPortTyping.get();
+            conjugatedPortTyping.setType(type);
+            conjugatedPortTyping.setGeneral(type);
+            conjugatedPortTyping.setSpecific(usage);
+            conjugatedPortTyping.setTypedFeature(usage);
+            conjugatedPortTyping.setConjugatedPortDefinition(type);
+        } else {
+            var optFeatureTyping = this.element.getOwnedRelationship().stream()
+                    .filter(FeatureTyping.class::isInstance)
+                    .map(FeatureTyping.class::cast)
+                    .findFirst();
+            if (optFeatureTyping.isPresent()) {
+                EcoreUtil.remove(optFeatureTyping.get());
+            }
+            var newConjugatedPortTyping = SysmlFactory.eINSTANCE.createConjugatedPortTyping();
+            this.element.getOwnedRelationship().add(newConjugatedPortTyping);
+            newConjugatedPortTyping.setType(type);
+            newConjugatedPortTyping.setGeneral(type);
+            newConjugatedPortTyping.setSpecific(usage);
+            newConjugatedPortTyping.setTypedFeature(usage);
+            newConjugatedPortTyping.setConjugatedPortDefinition(type);
+            this.elementInitializer.doSwitch(newConjugatedPortTyping);
+        }
+    }
+
+    private void handleFeatureTyping(Usage usage, Type type) {
+        var optConjugatedPortTyping = this.element.getOwnedRelationship().stream()
+                .filter(ConjugatedPortTyping.class::isInstance)
+                .map(ConjugatedPortTyping.class::cast)
+                .findFirst();
+        if (optConjugatedPortTyping.isPresent()) {
+            EcoreUtil.remove(optConjugatedPortTyping.get());
+        }
+        var optFeatureTyping = this.element.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .findFirst();
+        if (optFeatureTyping.isPresent()) {
+            FeatureTyping featureTyping = optFeatureTyping.get();
+            featureTyping.setType(type);
+            featureTyping.setGeneral(type);
+            featureTyping.setSpecific(usage);
+            featureTyping.setTypedFeature(usage);
+        } else {
+            var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+            this.element.getOwnedRelationship().add(newFeatureTyping);
+            newFeatureTyping.setType(type);
+            newFeatureTyping.setGeneral(type);
+            newFeatureTyping.setSpecific(usage);
+            newFeatureTyping.setTypedFeature(usage);
+            this.elementInitializer.doSwitch(newFeatureTyping);
         }
     }
 
@@ -400,7 +447,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         MultiplicityExpressionContext multiplicityExpression = ctx.multiplicityExpression();
-        if (this.element instanceof Usage usage && multiplicityExpression != null && isDeleteMultiplicityExpression(multiplicityExpression)) {
+        if (this.element instanceof Usage usage && multiplicityExpression != null && this.isDeleteMultiplicityExpression(multiplicityExpression)) {
             var optMultiplicityRange = this.element.getOwnedRelationship().stream()
                     .filter(OwningMembership.class::isInstance)
                     .map(OwningMembership.class::cast)
@@ -427,7 +474,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Definition definition && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBCLASSIFICATION)) {
+        if (this.element instanceof Definition definition && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBCLASSIFICATION)) {
             var subclassification = this.element.getOwnedRelationship().stream()
                     .filter(Subclassification.class::isInstance)
                     .map(Subclassification.class::cast)
@@ -443,7 +490,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBSETTING)) {
+        if (this.element instanceof Usage usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBSETTING)) {
             var subsetting = this.element.getOwnedRelationship().stream()
                     .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
                     .map(Subsetting.class::cast)
@@ -459,7 +506,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.redefinitionExpression(), LabelConstants.REDEFINITION)) {
+        if (this.element instanceof Usage usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.redefinitionExpression(), LabelConstants.REDEFINITION)) {
             var redefinition = this.element.getOwnedRelationship().stream()
                     .filter(Redefinition.class::isInstance)
                     .map(Redefinition.class::cast)
@@ -475,7 +522,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.typingExpression(), LabelConstants.COLON)) {
+        if (this.element instanceof Usage usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.typingExpression(), LabelConstants.COLON)) {
             var featureTyping = this.element.getOwnedRelationship().stream()
                     .filter(FeatureTyping.class::isInstance)
                     .map(FeatureTyping.class::cast)
@@ -491,7 +538,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null && isDeleteFeatureExpression(featureExpressions, featureExpressions.valueExpression(), LabelConstants.EQUAL)) {
+        if (this.element instanceof Usage usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.valueExpression(), LabelConstants.EQUAL)) {
             var featureValue = this.element.getOwnedRelationship().stream()
                     .filter(FeatureValue.class::isInstance)
                     .map(FeatureValue.class::cast)
