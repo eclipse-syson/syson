@@ -64,10 +64,12 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().areChildNodesDraggableExpression("false").build())
-                .defaultHeightExpression("100")
+                .collapsible(true)
+                .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression("150")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
+                .isCollapsedByDefaultExpression("true")
                 .name(NAME)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPart().getName())
                 .style(this.createChildPartUsageNodeStyle())
