@@ -44,19 +44,26 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
     }
 
     /**
-     * Implementers should provide the operation which is executed when a reconnection of the source end of the edge is performed.
-     * @return the {@link ChangeContextBuilder} corresponding to the operation to perform when a reconnection of the source end of the edge occurs.
+     * Implementers should provide the operation which is executed when a reconnection of the source end of the edge is
+     * performed.
+     *
+     * @return the {@link ChangeContextBuilder} corresponding to the operation to perform when a reconnection of the
+     *         source end of the edge occurs.
      */
     protected abstract ChangeContextBuilder getSourceReconnectToolBody();
 
     /**
-     * Implementers should provide the operation which is executed when a reconnection of the target end of the edge is performed.
-     * @return the {@link ChangeContextBuilder} corresponding to the operation to perform when a reconnection of the target end of the edge occurs.
+     * Implementers should provide the operation which is executed when a reconnection of the target end of the edge is
+     * performed.
+     *
+     * @return the {@link ChangeContextBuilder} corresponding to the operation to perform when a reconnection of the
+     *         target end of the edge occurs.
      */
     protected abstract ChangeContextBuilder getTargetReconnectToolBody();
 
     /**
      * Implementers can override this method to disable the delete tool on specific edge description.
+     *
      * @return <code>true</code> if the edge can be deleted and <code>false</code> otherwise.
      */
     protected boolean isDeletable() {
@@ -66,6 +73,7 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
     /**
      * Implementers can override this method to provide a specific label edit tool to apply on the edge.<br>
      * By default no edit tool is provided.
+     *
      * @return a label edit tool or <code>null</code> if no edit tool needed.
      */
     protected LabelEditTool getEdgeEditTool() {

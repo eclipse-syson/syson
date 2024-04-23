@@ -18,7 +18,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 
 /**
  * Abstract class used to share common parts for diagrams, nodes and edges.
- * 
+ *
  * @author arichard
  */
 public class AbstractViewElementDescriptionProvider {

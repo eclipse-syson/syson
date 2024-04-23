@@ -89,15 +89,15 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     public List<EClass> caseDefinition(Definition object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         SysmlPackage.eINSTANCE.getEClassifiers().stream()
-            .filter(EClass.class::isInstance)
-            .map(EClass.class::cast)
-            .filter(eClass -> {
-                boolean authorizedClasses = SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass) || SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(eClass);
-                return !eClass.isAbstract() && !eClass.isInterface() && authorizedClasses;
-            })
-            .forEach(eClass -> {
-                childrenCandidates.add(eClass);
-            });
+                .filter(EClass.class::isInstance)
+                .map(EClass.class::cast)
+                .filter(eClass -> {
+                    boolean authorizedClasses = SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass) || SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(eClass);
+                    return !eClass.isAbstract() && !eClass.isInterface() && authorizedClasses;
+                })
+                .forEach(eClass -> {
+                    childrenCandidates.add(eClass);
+                });
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubclassification());
         return childrenCandidates;
     }
@@ -130,15 +130,15 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     public List<EClass> caseFeatureMembership(FeatureMembership object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         SysmlPackage.eINSTANCE.getEClassifiers().stream()
-            .filter(EClass.class::isInstance)
-            .map(EClass.class::cast)
-            .filter(eClass -> {
-                boolean authorizedClasses = SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(eClass);
-                return !eClass.isAbstract() && !eClass.isInterface() && authorizedClasses;
-            })
-            .forEach(eClass -> {
-                childrenCandidates.add(eClass);
-            });
+                .filter(EClass.class::isInstance)
+                .map(EClass.class::cast)
+                .filter(eClass -> {
+                    boolean authorizedClasses = SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(eClass);
+                    return !eClass.isAbstract() && !eClass.isInterface() && authorizedClasses;
+                })
+                .forEach(eClass -> {
+                    childrenCandidates.add(eClass);
+                });
         return childrenCandidates;
     }
 
@@ -146,15 +146,15 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     public List<EClass> caseOwningMembership(OwningMembership object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         SysmlPackage.eINSTANCE.getEClassifiers().stream()
-            .filter(EClass.class::isInstance)
-            .map(EClass.class::cast)
-            .filter(eClass -> {
-                boolean forbiddenClasses = SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(eClass);
-                return !eClass.isAbstract() && !eClass.isInterface() && !forbiddenClasses;
-            })
-            .forEach(eClass -> {
-                childrenCandidates.add(eClass);
-            });
+                .filter(EClass.class::isInstance)
+                .map(EClass.class::cast)
+                .filter(eClass -> {
+                    boolean forbiddenClasses = SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(eClass);
+                    return !eClass.isAbstract() && !eClass.isInterface() && !forbiddenClasses;
+                })
+                .forEach(eClass -> {
+                    childrenCandidates.add(eClass);
+                });
         return childrenCandidates;
     }
 
@@ -162,15 +162,16 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     public List<EClass> casePackage(Package object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         SysmlPackage.eINSTANCE.getEClassifiers().stream()
-            .filter(EClass.class::isInstance)
-            .map(EClass.class::cast)
-            .filter(eClass -> {
-                boolean authorizedClasses = SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(eClass) || SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass) || SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(eClass);
-                return !eClass.isAbstract() && !eClass.isInterface() && authorizedClasses;
-            })
-            .forEach(eClass -> {
-                childrenCandidates.add(eClass);
-            });
+                .filter(EClass.class::isInstance)
+                .map(EClass.class::cast)
+                .filter(eClass -> {
+                    boolean authorizedClasses = SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(eClass) || SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass)
+                            || SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(eClass);
+                    return !eClass.isAbstract() && !eClass.isInterface() && authorizedClasses;
+                })
+                .forEach(eClass -> {
+                    childrenCandidates.add(eClass);
+                });
         childrenCandidates.add(SysmlPackage.eINSTANCE.getOwningMembership());
         return childrenCandidates;
     }

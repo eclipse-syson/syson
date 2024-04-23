@@ -54,9 +54,11 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
     }
 
     /**
-     * Implementers should provide the list of {@link NodeDescription} that is reused as child in that Definition node description.
+     * Implementers should provide the list of {@link NodeDescription} that is reused as child in that Definition node
+     * description.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that are added as reused child.
      */
     protected abstract List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache);
@@ -65,7 +67,8 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
      * Implementers should provide the list of all {@link NodeDescription} defined in the diagram.<br>
      * This list is used to create edge tools associated to this Definition node description.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of all {@link NodeDescription} defined in the diagram.
      */
     protected abstract List<NodeDescription> getAllNodeDescriptions(IViewDiagramElementFinder cache);
@@ -73,8 +76,10 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
     /**
      * Implementers should provide the list of {@link ToolSection} defined on the given {@link NodeDescription}.
      *
-     * @param nodeDescription the actual Definition node description
-     * @param cache the cache used to retrieve node descriptions.
+     * @param nodeDescription
+     *            the actual Definition node description
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of {@link ToolSection} of this Definition node.
      */
     protected abstract List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache);

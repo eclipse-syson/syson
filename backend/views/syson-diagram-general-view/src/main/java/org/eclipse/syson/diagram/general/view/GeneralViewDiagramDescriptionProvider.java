@@ -239,8 +239,8 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             });
         });
 
-        diagramElementDescriptionProviders.stream().
-                map(IDiagramElementDescriptionProvider::create)
+        diagramElementDescriptionProviders.stream()
+                .map(IDiagramElementDescriptionProvider::create)
                 .forEach(cache::put);
         // link custom compartments
         this.linkRequirementSubjectCompartment(cache);

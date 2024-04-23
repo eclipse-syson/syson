@@ -54,10 +54,12 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
     }
 
     /**
-     * Implementers should provide the list of {@link EClass} that represent the set of known usages concepts for the diagram.
+     * Implementers should provide the list of {@link EClass} that represent the set of known usages concepts for the
+     * diagram.
+     *
      * @return the list of usage class
      */
-    protected abstract List<EClass>getUsages();
+    protected abstract List<EClass> getUsages();
 
     @Override
     public EdgeDescription create() {

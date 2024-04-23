@@ -33,7 +33,6 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDescriptionProvider {
 
-
     public DefinitionNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
         super(eClass, colorProvider, new AFVDescriptionNameGenerator());
     }

@@ -45,7 +45,8 @@ import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
- * Switch retrieving the list of NodeDescriptionProvider for each SysMLv2 concept represented in the General View diagram.
+ * Switch retrieving the list of NodeDescriptionProvider for each SysMLv2 concept represented in the General View
+ * diagram.
  *
  * @author Jerome Gout
  */

@@ -87,7 +87,8 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
         object.setDeclaredName(object.eClass().getName());
         OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
         object.getOwnedRelationship().add(owningMembership);
-        // No need to set the declaredName for the ConjugatedPortDefinition here, it is always the same than its originalPortDefinition and computed elsewhere
+        // No need to set the declaredName for the ConjugatedPortDefinition here, it is always the same than its
+        // originalPortDefinition and computed elsewhere
         ConjugatedPortDefinition conjugatedPortDefinition = SysmlFactory.eINSTANCE.createConjugatedPortDefinition();
         owningMembership.getOwnedRelatedElement().add(conjugatedPortDefinition);
         PortConjugation portConjugation = SysmlFactory.eINSTANCE.createPortConjugation();

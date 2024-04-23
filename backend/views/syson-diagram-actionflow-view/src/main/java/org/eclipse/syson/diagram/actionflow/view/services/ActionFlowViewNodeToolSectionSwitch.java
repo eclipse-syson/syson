@@ -29,7 +29,7 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
  * Switch retrieving the list of NodeToolSections for each SysMLv2 concept represented in the Action Flow View diagram.
-
+ *
  * @author Jerome Gout
  */
 public class ActionFlowViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {

@@ -36,8 +36,8 @@ public class InterconnectionViewJavaServiceProvider implements IJavaServiceProvi
     public List<Class<?>> getServiceClasses(View view) {
         var descriptions = view.getDescriptions();
         var optGVDescription = descriptions.stream()
-            .filter(desc -> InterconnectionViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
-            .findFirst();
+                .filter(desc -> InterconnectionViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
+                .findFirst();
         if (optGVDescription.isPresent()) {
             return List.of(DeleteService.class,
                     InterconnectionViewCreateService.class,

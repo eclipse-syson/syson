@@ -228,7 +228,8 @@ public class ViewCreateService {
      * Service to check whether the given element has a subject defined or not.
      *
      * @param self
-     *            a {@link RequirementUsage} or a {@link RequirementDefinition} or a {@link UseCaseUsage} or a {@link UseCaseDefinition}
+     *            a {@link RequirementUsage} or a {@link RequirementDefinition} or a {@link UseCaseUsage} or a
+     *            {@link UseCaseDefinition}
      * @return {@code true} if {@code self} contains a subject and {@code false} otherwise.
      */
     public boolean isEmptySubjectCompartment(Element self) {
@@ -241,7 +242,8 @@ public class ViewCreateService {
                     .map(SubjectMembership.class::cast)
                     .findFirst().isEmpty();
         }
-        // irrelevant case, this service should only be used upon a RequirementUsage/RequirementDefinition/UseCaseUsage or UseCaseDefinition
+        // irrelevant case, this service should only be used upon a RequirementUsage/RequirementDefinition/UseCaseUsage
+        // or UseCaseDefinition
         return true;
     }
 
@@ -257,8 +259,11 @@ public class ViewCreateService {
     }
 
     /**
-     * Check whether the given element(that should be a {@link UseCaseDefinition} or a {@link UseCaseUsage}) contains an objective requirement or not.
-     * @param self a {@link UseCaseDefinition} or a {@link UseCaseUsage} in which the objective is looked for
+     * Check whether the given element(that should be a {@link UseCaseDefinition} or a {@link UseCaseUsage}) contains an
+     * objective requirement or not.
+     *
+     * @param self
+     *            a {@link UseCaseDefinition} or a {@link UseCaseUsage} in which the objective is looked for
      * @return {@code true} if the given use case contains an objective and {@code false} otherwise.
      */
     public static boolean isEmptyObjectiveRequirement(Element self) {
@@ -271,8 +276,10 @@ public class ViewCreateService {
     /**
      * Create a new Part Usage which is used as the end given Allocation Definition.
      *
-     * @param self the Allocation Definition in which the new end is added.
-     * @param endParent the owner of the new part usage used as the end.
+     * @param self
+     *            the Allocation Definition in which the new end is added.
+     * @param endParent
+     *            the owner of the new part usage used as the end.
      * @return
      */
     public Element createPartUsageAsAllocationDefinitionEnd(AllocationDefinition self, Element endParent) {
@@ -320,9 +327,12 @@ public class ViewCreateService {
 
     /**
      * Retrieve the parent node semantic element of the given node
-     * @param sourceNode a {@link Node}
+     *
+     * @param sourceNode
+     *            a {@link Node}
      * @param editingContext
-     * @return the semantic element of the parent graphical node of the given one or <code>null</code> if unable to find it.
+     * @return the semantic element of the parent graphical node of the given one or <code>null</code> if unable to find
+     *         it.
      */
     private Element getSourceOwner(Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
         Diagram diagram = diagramService.getDiagramContext().getDiagram();
@@ -335,8 +345,8 @@ public class ViewCreateService {
             id = diagram.getTargetObjectId();
         }
         return this.objectService.getObject(editingContext, id)
-                    .filter(Element.class::isInstance)
-                    .map(Element.class::cast)
-                    .orElse(null);
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .orElse(null);
     }
 }

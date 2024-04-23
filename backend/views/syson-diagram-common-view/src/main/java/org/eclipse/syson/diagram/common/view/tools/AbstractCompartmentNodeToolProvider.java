@@ -34,7 +34,8 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
-    public AbstractCompartmentNodeToolProvider() { }
+    public AbstractCompartmentNodeToolProvider() {
+    }
 
     /**
      * Return the AQL service call expression that is interpreted to perform the node tool.
@@ -52,8 +53,9 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
 
     /**
      * Return the node tool precondition expression to control whether the tool is added to the palette or not.<br>
-     * By default no precondition expression is provided. 
-     * Implementers might override this method to explicitly provide this precondition expression.
+     * By default no precondition expression is provided. Implementers might override this method to explicitly provide
+     * this precondition expression.
+     *
      * @return the node tool precondition expression.
      */
     protected String getPreconditionExpression() {

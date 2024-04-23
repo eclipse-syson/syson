@@ -49,17 +49,21 @@ public abstract class AbstractFeatureTypingEdgeDescriptionProvider extends Abstr
     protected abstract String getName();
 
     /**
-     * Implementers should provide the list of {@link NodeDescription} that can be a source of this {@link EdgeDescription}.
+     * Implementers should provide the list of {@link NodeDescription} that can be a source of this
+     * {@link EdgeDescription}.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that can be a source of this {@link EdgeDescription}.
      */
     protected abstract List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache);
 
     /**
-     * implementers should provide the list of {@link NodeDescription} that can be a target of this {@link EdgeDescription}.
+     * implementers should provide the list of {@link NodeDescription} that can be a target of this
+     * {@link EdgeDescription}.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that can be a target of this {@link EdgeDescription}.
      */
     protected abstract List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache);

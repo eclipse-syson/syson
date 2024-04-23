@@ -38,10 +38,10 @@ public class InterconnectionViewLabelService extends ViewLabelService {
     public String getBorderNodePortUsageLabel(PortUsage portUsage) {
         StringBuilder label = new StringBuilder();
         label
-            .append(portUsage.getDeclaredName())
-            .append(this.getTypingLabel(portUsage))
-            .append(this.getRedefinitionLabel(portUsage))
-            .append(this.getSubsettingLabel(portUsage));
+                .append(portUsage.getDeclaredName())
+                .append(this.getTypingLabel(portUsage))
+                .append(this.getRedefinitionLabel(portUsage))
+                .append(this.getSubsettingLabel(portUsage));
         return label.toString();
     }
 }

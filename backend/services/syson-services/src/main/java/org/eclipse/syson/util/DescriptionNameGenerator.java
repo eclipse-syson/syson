@@ -138,7 +138,8 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     }
 
     /**
-     * Returns the name of a border {@link NodeDescription} starting with the diagram prefix and followed by the given string.
+     * Returns the name of a border {@link NodeDescription} starting with the diagram prefix and followed by the given
+     * string.
      *
      * @param type
      *            a string to form the name of the border node description.
@@ -150,8 +151,8 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     }
 
     /**
-     * Returns the name of a border {@link NodeDescription} starting with the diagram prefix and followed by the name of the
-     * given {@link EClass}.
+     * Returns the name of a border {@link NodeDescription} starting with the diagram prefix and followed by the name of
+     * the given {@link EClass}.
      *
      * @param eClass
      *            the {@link EClass} used to compute the name of the border {@link NodeDescription}.

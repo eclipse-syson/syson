@@ -56,25 +56,23 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
 
     public static final String DESCRIPTION_NAME = "Action Flow View";
 
-    public static  final List<EClass> DEFINITIONS = List.of(
+    public static final List<EClass> DEFINITIONS = List.of(
             SysmlPackage.eINSTANCE.getActionDefinition()
             );
 
-    public static  final List<EClass> USAGES = List.of(
+    public static final List<EClass> USAGES = List.of(
             SysmlPackage.eINSTANCE.getActionUsage()
             );
 
-    public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
-            Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
-            Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAction(), SysmlPackage.eINSTANCE.getUsage_NestedItem()))
-            );
+    public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
+            Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(), List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
+            Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),      List.of(SysmlPackage.eINSTANCE.getUsage_NestedAction(), SysmlPackage.eINSTANCE.getUsage_NestedItem())));
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
             new ToolSectionDescription("Action Flow", List.of(
                     SysmlPackage.eINSTANCE.getActionDefinition(),
                     SysmlPackage.eINSTANCE.getActionUsage(),
-                    SysmlPackage.eINSTANCE.getPackage()
-                    ))
+                    SysmlPackage.eINSTANCE.getPackage()))
             );
 
     private final IDescriptionNameGenerator nameGenerator = new AFVDescriptionNameGenerator();
@@ -93,13 +91,14 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         var diagramDescription = diagramDescriptionBuilder.build();
 
         var cache = new ViewDiagramElementFinder();
-        var diagramElementDescriptionProviders =  new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
+        var diagramElementDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
         diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders
+        .add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.nameGenerator));
 
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new ActionFlowViewEmptyDiagramNodeDescriptionProvider(colorProvider));
@@ -120,9 +119,8 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
             });
         });
 
-        diagramElementDescriptionProviders.stream().
-                map(IDiagramElementDescriptionProvider::create)
-                .forEach(cache::put);
+        diagramElementDescriptionProviders.stream().map(IDiagramElementDescriptionProvider::create)
+        .forEach(cache::put);
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));
 
         diagramDescription.setPalette(this.createDiagramPalette(cache));
