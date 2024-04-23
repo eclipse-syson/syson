@@ -8,8 +8,8 @@
 
 === Dependency update
 
-- Switch to Sirius Web 2024.3.2
-- Switch to @ObeoNetwork/gantt-task-react 0.4.8
+- Switch to Sirius Web 2024.3.3
+- Switch to @ObeoNetwork/gantt-task-react 0.4.9
 
 === Bug fixes
 

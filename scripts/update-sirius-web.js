@@ -29,6 +29,7 @@ projects.set("syson-application", "application");
 projects.set("syson-application-configuration", "application");
 projects.set("syson-frontend", "application");
 projects.set("syson-sysml-import", "application");
+projects.set("syson-sysml-export", "application");
 projects.set("syson-sysml-metamodel", "metamodel");
 projects.set("syson-sysml-metamodel-edit", "metamodel");
 projects.set("syson-siriusweb-customnodes-metamodel", "metamodel");
