@@ -36,17 +36,17 @@ import org.eclipse.syson.services.ColorProvider;
 
 /**
  * Abstract class used to register View diagram in the application.
- * 
+ *
  * @author Jerome Gout
  */
 public abstract class AbstractViewDescriptionProvider implements IEditingContextRepresentationDescriptionProvider {
-    
+
     private final IViewConverter viewConverter;
-    
+
     private final EPackage.Registry ePackagesRegistry;
-    
+
     private final IInMemoryViewRegistry inMemoryViewRegistry;
-    
+
     public AbstractViewDescriptionProvider(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
         this.viewConverter = viewConverter;
         this.ePackagesRegistry = ePackagesRegistry;
@@ -55,14 +55,15 @@ public abstract class AbstractViewDescriptionProvider implements IEditingContext
 
     /**
      * Implementers should provide the ID of the view diagram this description provider is for.
-     * 
-     * @return the Id of the view diagram 
+     *
+     * @return the Id of the view diagram
      */
     protected abstract String getViewDiagramId();
-    
+
     /**
-     * Implementers should provide the {@link IRepresentationDescriptionProvider} of the view diagram this description provider is for.
-     * 
+     * Implementers should provide the {@link IRepresentationDescriptionProvider} of the view diagram this description
+     * provider is for.
+     *
      * @return the representation description provider of the view diagram
      */
     protected abstract IRepresentationDescriptionProvider getRepresentationDescriptionProvider();
@@ -91,7 +92,8 @@ public abstract class AbstractViewDescriptionProvider implements IEditingContext
         resource.getContents().add(view);
         this.inMemoryViewRegistry.register(view);
 
-        // Convert org.eclipse.sirius.components.view.RepresentationDescription to org.eclipse.sirius.components.representations.IRepresentationDescription
+        // Convert org.eclipse.sirius.components.view.RepresentationDescription to
+        // org.eclipse.sirius.components.representations.IRepresentationDescription
         List<EPackage> staticEPackages = this.ePackagesRegistry.values().stream().filter(EPackage.class::isInstance).map(EPackage.class::cast).toList();
 
         return this.viewConverter.convert(List.of(view), staticEPackages);

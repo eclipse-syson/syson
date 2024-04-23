@@ -75,7 +75,7 @@ public class InterconnectionViewToolService extends ToolService {
 
     /**
      * Called by "New Part" tool from Interconnection View Child PartUsage node.
-     * 
+     *
      * @param partUsage
      *            the {@link PartUsage} corresponding to the target object on which the tool has been called.
      * @param editingContext
@@ -101,7 +101,8 @@ public class InterconnectionViewToolService extends ToolService {
         this.elementInitializerSwitch.doSwitch(childPart);
         // get the children part usage compartment
         Node parentNode = selectedNode;
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream().filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
+                .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
         if (nodeChildPartUsage.isPresent()) {
             NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
             if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
@@ -144,7 +145,8 @@ public class InterconnectionViewToolService extends ToolService {
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
 
         var childrenPartUsageCompartmentNode = selectedNode;
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream().filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
+                .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
         if (nodeChildPartUsage.isPresent()) {
             NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
             if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
@@ -167,11 +169,14 @@ public class InterconnectionViewToolService extends ToolService {
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         Node fakeNode = super.createFakeNode(semanticElement, parentNode, diagramContext, diagramDescription, convertedNodes);
         // create the compartments (attributes and children part usage)
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> attributesCompartment = convertedNodes.keySet().stream().filter(n -> this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()).equals(n.getName())).findFirst();
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> attributesCompartment = convertedNodes.keySet().stream()
+                .filter(n -> this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()).equals(n.getName()))
+                .findFirst();
         NodeDescription attributesCompartmentNodeDescription = convertedNodes.get(attributesCompartment.get());
         Node fakeAttributesCompartmentNode = this.createFakeCompartmentNode(semanticElement, fakeNode, attributesCompartmentNodeDescription);
         fakeNode.getChildNodes().add(fakeAttributesCompartmentNode);
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> childrenPartUsagesCompartment = convertedNodes.keySet().stream().filter(n -> ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> childrenPartUsagesCompartment = convertedNodes.keySet().stream()
+                .filter(n -> ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
         NodeDescription childrenPartUsagesCompartmentNodeDescription = convertedNodes.get(childrenPartUsagesCompartment.get());
         Node fakeChildrenPartUsageCompartmentNode = this.createFakeCompartmentNode(semanticElement, fakeNode, childrenPartUsagesCompartmentNodeDescription);
         fakeNode.getChildNodes().add(fakeChildrenPartUsageCompartmentNode);
@@ -182,7 +187,8 @@ public class InterconnectionViewToolService extends ToolService {
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var nestedParts = partUsage.getNestedPart();
         var childrenPartUsageCompartmentNode = selectedNode;
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream().filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
+                .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
         if (nodeChildPartUsage.isPresent()) {
             NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
             if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
@@ -202,7 +208,6 @@ public class InterconnectionViewToolService extends ToolService {
         String targetObjectId = this.objectService.getId(semanticElement);
         String parentElementId = parentNode.getId();
 
-        
         var targetObjectKind = this.objectService.getKind(semanticElement);
         var targetObjectLabel = this.objectService.getLabel(semanticElement);
         String nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), NodeContainmentKind.CHILD_NODE, targetObjectId);

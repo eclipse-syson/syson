@@ -54,9 +54,11 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     }
 
     /**
-     * Implementers should provide the list of {@link NodeDescription} that is reused as child in that Usage node description.
+     * Implementers should provide the list of {@link NodeDescription} that is reused as child in that Usage node
+     * description.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that are added as reused child.
      */
     protected abstract List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache);
@@ -65,7 +67,8 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
      * Implementers should provide the list of all {@link NodeDescription} defined in the diagram.<br>
      * This list is used to create edge tools associated to this Usage node description.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of all {@link NodeDescription} defined in the diagram.
      */
     protected abstract List<NodeDescription> getAllNodeDescriptions(IViewDiagramElementFinder cache);
@@ -73,8 +76,10 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     /**
      * Implementers should provide the list of {@link ToolSection} defined on the given {@link NodeDescription}.
      *
-     * @param nodeDescription the actual Usage node description
-     * @param cache the cache used to retrieve node descriptions.
+     * @param nodeDescription
+     *            the actual Usage node description
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of {@link ToolSection} of this Usage node.
      */
     protected abstract List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache);
@@ -83,7 +88,8 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
      * Implementers might provide the expression used to retrieve all semantic candidates.<br>
      * By default, the expression retrieves all reachable element of the given semantic type.
      *
-     * @param domainType the semantic type of the element.
+     * @param domainType
+     *            the semantic type of the element.
      * @return the AQL expression to retrieve all semantic candidates for this node.
      */
     protected String getSemanticCandidatesExpression(String domainType) {

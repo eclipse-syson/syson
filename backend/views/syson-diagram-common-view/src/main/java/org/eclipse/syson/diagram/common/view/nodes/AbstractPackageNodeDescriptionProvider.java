@@ -59,17 +59,21 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
     }
 
     /**
-     * Implementers should provide the list of {@link NodeDescription} that is reused as child in that Package node description.
+     * Implementers should provide the list of {@link NodeDescription} that is reused as child in that Package node
+     * description.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that are added as reused child.
      */
     protected abstract List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache);
 
     /**
-     * Implementers should provide the list of {@link NodeDescription} that can be dropped inside this Package {@link NodeDescription}.
+     * Implementers should provide the list of {@link NodeDescription} that can be dropped inside this Package
+     * {@link NodeDescription}.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that can be dropped inside this package.
      */
     protected abstract List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache);
@@ -78,7 +82,8 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
      * Implementers should provide the list of all {@link NodeDescription} defined in the diagram.<br>
      * This list is used to create edge tools associated to this package.
      *
-     * @param cache the cache used to retrieve node descriptions.
+     * @param cache
+     *            the cache used to retrieve node descriptions.
      * @return the list of all {@link NodeDescription} defined in the diagram.
      */
     protected abstract List<NodeDescription> getAllNodeDescriptions(IViewDiagramElementFinder cache);

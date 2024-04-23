@@ -17,8 +17,9 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 
 /**
- * This record is used to describe tool sections. 
- * 
+ * This record is used to describe tool sections.
+ *
  * @author Jerome Gout
  */
-public record ToolSectionDescription(String name, List<EClass> elements) { }
+public record ToolSectionDescription(String name, List<EClass> elements) {
+}

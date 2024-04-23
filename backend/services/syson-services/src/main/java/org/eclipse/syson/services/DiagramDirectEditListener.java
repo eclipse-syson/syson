@@ -463,9 +463,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     private boolean isDeleteMultiplicityExpression(MultiplicityExpressionContext multiplicityExpression) {
-        return multiplicityExpression.exception instanceof InputMismatchException 
-                && multiplicityExpression.getChildCount() == 2 
-                && LabelConstants.OPEN_BRACKET.equals(multiplicityExpression.getChild(0).getText()) 
+        return multiplicityExpression.exception instanceof InputMismatchException
+                && multiplicityExpression.getChildCount() == 2
+                && LabelConstants.OPEN_BRACKET.equals(multiplicityExpression.getChild(0).getText())
                 && LabelConstants.CLOSE_BRACKET.equals(multiplicityExpression.getChild(1).getText());
     }
 
@@ -474,7 +474,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Definition definition && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBCLASSIFICATION)) {
+        if (this.element instanceof Definition definition && featureExpressions != null
+                && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBCLASSIFICATION)) {
             var subclassification = this.element.getOwnedRelationship().stream()
                     .filter(Subclassification.class::isInstance)
                     .map(Subclassification.class::cast)
@@ -490,7 +491,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBSETTING)) {
+        if (this.element instanceof Usage usage && featureExpressions != null
+                && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBSETTING)) {
             var subsetting = this.element.getOwnedRelationship().stream()
                     .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
                     .map(Subsetting.class::cast)
@@ -506,7 +508,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.redefinitionExpression(), LabelConstants.REDEFINITION)) {
+        if (this.element instanceof Usage usage && featureExpressions != null
+                && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.redefinitionExpression(), LabelConstants.REDEFINITION)) {
             var redefinition = this.element.getOwnedRelationship().stream()
                     .filter(Redefinition.class::isInstance)
                     .map(Redefinition.class::cast)
@@ -555,9 +558,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private LiteralBoolean getOrCreateLiteralBoolean(FeatureValue featureValue) {
         Optional<LiteralBoolean> optLiteral = featureValue.getOwnedRelatedElement().stream()
-            .filter(LiteralBoolean.class::isInstance)
-            .map(LiteralBoolean.class::cast)
-            .findFirst();
+                .filter(LiteralBoolean.class::isInstance)
+                .map(LiteralBoolean.class::cast)
+                .findFirst();
         if (optLiteral.isPresent()) {
             return optLiteral.get();
         }
@@ -569,9 +572,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private LiteralInteger getOrCreateLiteralInteger(FeatureValue featureValue) {
         Optional<LiteralInteger> optLiteral = featureValue.getOwnedRelatedElement().stream()
-            .filter(LiteralInteger.class::isInstance)
-            .map(LiteralInteger.class::cast)
-            .findFirst();
+                .filter(LiteralInteger.class::isInstance)
+                .map(LiteralInteger.class::cast)
+                .findFirst();
         if (optLiteral.isPresent()) {
             return optLiteral.get();
         }
@@ -583,9 +586,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private LiteralRational getOrCreateLiteralRational(FeatureValue featureValue) {
         Optional<LiteralRational> optLiteral = featureValue.getOwnedRelatedElement().stream()
-            .filter(LiteralRational.class::isInstance)
-            .map(LiteralRational.class::cast)
-            .findFirst();
+                .filter(LiteralRational.class::isInstance)
+                .map(LiteralRational.class::cast)
+                .findFirst();
         if (optLiteral.isPresent()) {
             return optLiteral.get();
         }
@@ -597,9 +600,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private LiteralString getOrCreateLiteralString(FeatureValue featureValue) {
         Optional<LiteralString> optLiteral = featureValue.getOwnedRelatedElement().stream()
-            .filter(LiteralString.class::isInstance)
-            .map(LiteralString.class::cast)
-            .findFirst();
+                .filter(LiteralString.class::isInstance)
+                .map(LiteralString.class::cast)
+                .findFirst();
         if (optLiteral.isPresent()) {
             return optLiteral.get();
         }

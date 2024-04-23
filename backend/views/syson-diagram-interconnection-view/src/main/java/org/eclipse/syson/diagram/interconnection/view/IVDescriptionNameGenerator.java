@@ -16,7 +16,7 @@ import org.eclipse.syson.util.DescriptionNameGenerator;
 
 /**
  * Name generator for all Interconnection View description providers.
- * 
+ *
  * @author arichard
  */
 public class IVDescriptionNameGenerator extends DescriptionNameGenerator {

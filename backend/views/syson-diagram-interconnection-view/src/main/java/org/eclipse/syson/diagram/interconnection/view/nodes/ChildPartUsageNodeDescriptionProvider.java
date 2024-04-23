@@ -82,7 +82,8 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
-        var optAttributesCompartmentNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()));
+        var optAttributesCompartmentNodeDescription = cache
+                .getNodeDescription(this.nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()));
         var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME);
 
         NodeDescription nodeDescription = optChildPartUsageNodeDescription.get();
@@ -147,7 +148,8 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
         nodeTools.add(attributeTool.create(null));
         ChildrenPartUsageCompartmentNodeToolProvider childPartTool = new ChildrenPartUsageCompartmentNodeToolProvider();
         nodeTools.add(childPartTool.create(null));
-        NodeTool portBorderNodeTool = this.createNodeTool(cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get(), SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE);
+        NodeTool portBorderNodeTool = this.createNodeTool(cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get(),
+                SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE);
         nodeTools.add(portBorderNodeTool);
 
         return this.diagramBuilderHelper.newNodeToolSection()

@@ -36,8 +36,8 @@ public class ActionFlowViewJavaServiceProvider implements IJavaServiceProvider {
     public List<Class<?>> getServiceClasses(View view) {
         var descriptions = view.getDescriptions();
         var optDescription = descriptions.stream()
-            .filter(desc -> ActionFlowViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
-            .findFirst();
+                .filter(desc -> ActionFlowViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
+                .findFirst();
         if (optDescription.isPresent()) {
             return List.of(ActionFlowViewCreateService.class,
                     DeleteService.class,

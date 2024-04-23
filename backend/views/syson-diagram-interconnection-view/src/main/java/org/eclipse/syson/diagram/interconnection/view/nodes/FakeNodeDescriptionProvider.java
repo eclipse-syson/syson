@@ -44,7 +44,8 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         var nameGenerator = new IVDescriptionNameGenerator();
         var childrenNodes = new ArrayList<NodeDescription>();
 
-        var optAttributesCompartmentNodeDescription = cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()));
+        var optAttributesCompartmentNodeDescription = cache
+                .getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()));
         var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME);
         childrenNodes.add(optAttributesCompartmentNodeDescription.get());
         childrenNodes.add(optCompartmentFreeFormNodeDescription.get());

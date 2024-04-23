@@ -79,13 +79,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseActionDefinition(ActionDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("action def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("action def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -93,16 +93,16 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseActionUsage(ActionUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("action")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("action")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -110,13 +110,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseAllocationDefinition(AllocationDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("allocation def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("allocation def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -124,16 +124,16 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseAllocationUsage(AllocationUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("allocation")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("allocation")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -141,13 +141,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseAttributeDefinition(AttributeDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("attribute def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("attribute def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -155,16 +155,16 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseAttributeUsage(AttributeUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("attribute")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("attribute")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -172,13 +172,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseConstraintDefinition(ConstraintDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("constraint def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("constraint def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -186,16 +186,16 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseConstraintUsage(ConstraintUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("constraint")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("constraint")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -203,13 +203,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseEnumerationDefinition(EnumerationDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("enumeration def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("enumeration def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -217,13 +217,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseInterfaceDefinition(InterfaceDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("interface def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("interface def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -231,16 +231,16 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseInterfaceUsage(InterfaceUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("interface")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("interface")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -248,13 +248,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseItemDefinition(ItemDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("item def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("item def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -262,16 +262,16 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseItemUsage(ItemUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("item")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("item")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -279,13 +279,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseMetadataDefinition(MetadataDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("metadata def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("metadata def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -293,14 +293,14 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseOccurrenceDefinition(OccurrenceDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(this.individual(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("occurrence def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(this.individual(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("occurrence def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -308,17 +308,17 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseOccurrenceUsage(OccurrenceUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(this.individual(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("occurrence")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(this.individual(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("occurrence")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -326,11 +326,11 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String casePackage(Package object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("package")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object));
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("package")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object));
         return label.toString();
     }
 
@@ -338,13 +338,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String casePartDefinition(PartDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("part def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("part def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -352,16 +352,16 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String casePartUsage(PartUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("part")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("part")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -369,13 +369,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String casePortDefinition(PortDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("port def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("port def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -383,17 +383,17 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String casePortUsage(PortUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("port")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("port")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -401,13 +401,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseRequirementDefinition(RequirementDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("requirement def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("requirement def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -415,16 +415,16 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseRequirementUsage(RequirementUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("requirement")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("requirement")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -432,13 +432,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseUseCaseDefinition(UseCaseDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("use case def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("use case def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
         return label.toString();
     }
 
@@ -446,16 +446,16 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseUseCaseUsage(UseCaseUsage object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("use case")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("use case")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
@@ -463,10 +463,10 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         StringBuilder label = new StringBuilder();
         if (type.isIsAbstract()) {
             label
-                .append(LabelConstants.OPEN_QUOTE)
-                .append("abstract")
-                .append(LabelConstants.CLOSE_QUOTE)
-                .append(LabelConstants.CR);
+                    .append(LabelConstants.OPEN_QUOTE)
+                    .append("abstract")
+                    .append(LabelConstants.CLOSE_QUOTE)
+                    .append(LabelConstants.CR);
         }
         return label.toString();
     }
@@ -517,10 +517,10 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         if (!definitions.isEmpty()) {
             Classifier definition = definitions.get(0);
             label
-                .append(LabelConstants.SPACE)
-                .append(LabelConstants.COLON)
-                .append(LabelConstants.SPACE)
-                .append(definition.getDeclaredName());
+                    .append(LabelConstants.SPACE)
+                    .append(LabelConstants.COLON)
+                    .append(LabelConstants.SPACE)
+                    .append(definition.getDeclaredName());
         }
         return label.toString();
     }
@@ -538,9 +538,9 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 subsettedFeatureName = subsettedFeature.getDeclaredName();
             }
             label.append(LabelConstants.SPACE)
-                .append(LabelConstants.SUBSETTING)
-                .append(LabelConstants.SPACE)
-                .append(subsettedFeatureName);
+                    .append(LabelConstants.SUBSETTING)
+                    .append(LabelConstants.SPACE)
+                    .append(subsettedFeatureName);
         }
         return label.toString();
     }
@@ -556,10 +556,10 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 redefinedFeatureName = redefinedFeature.getDeclaredName();
             }
             label
-                .append(LabelConstants.SPACE)
-                .append(LabelConstants.REDEFINITION)
-                .append(LabelConstants.SPACE)
-                .append(redefinedFeatureName);
+                    .append(LabelConstants.SPACE)
+                    .append(LabelConstants.REDEFINITION)
+                    .append(LabelConstants.SPACE)
+                    .append(redefinedFeatureName);
         }
         return label.toString();
     }
@@ -575,10 +575,10 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 superclassifierName = superclassifier.getDeclaredName();
             }
             label
-                .append(LabelConstants.SPACE)
-                .append(LabelConstants.SUBCLASSIFICATION)
-                .append(LabelConstants.SPACE)
-                .append(superclassifierName);
+                    .append(LabelConstants.SPACE)
+                    .append(LabelConstants.SUBCLASSIFICATION)
+                    .append(LabelConstants.SPACE)
+                    .append(superclassifierName);
         }
         return label.toString();
     }
@@ -611,10 +611,10 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         StringBuilder label = new StringBuilder();
         if (isIndividual) {
             label
-                .append(LabelConstants.OPEN_QUOTE)
-                .append("individual")
-                .append(LabelConstants.CLOSE_QUOTE)
-                .append(LabelConstants.CR);
+                    .append(LabelConstants.OPEN_QUOTE)
+                    .append("individual")
+                    .append(LabelConstants.CLOSE_QUOTE)
+                    .append(LabelConstants.CR);
         }
         return label.toString();
     }
