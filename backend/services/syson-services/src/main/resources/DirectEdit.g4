@@ -43,6 +43,7 @@ multiplicityExpressionMember :
 featureExpressions :
 	(subsettingExpression|redefinitionExpression)? (typingExpression)? (valueExpression)?
 	| (typingExpression)? (subsettingExpression|redefinitionExpression)? (valueExpression)?
+	| (transitionExpression)?
 ;
 
 subsettingExpression :
@@ -59,6 +60,22 @@ typingExpression :
 
 valueExpression :
 	'=' (Real | Boolean | Integer | DoubleQuotedString)
+;
+
+transitionExpression :
+	(triggerExpression)? (effectExpression)?
+;
+
+triggerExpression :
+	qualifiedName ('|' qualifiedName)*
+;
+
+guardExpression :
+	'[' valueExpression ']'
+;
+
+effectExpression :
+	'/' qualifiedName (',' qualifiedName)*
 ;
 
 WS :

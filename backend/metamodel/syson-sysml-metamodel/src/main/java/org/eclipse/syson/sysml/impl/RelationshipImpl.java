@@ -206,8 +206,10 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
      */
     @Override
     public EList<Element> getRelatedElement() {
-        List<Element> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_RelatedElement(), data.size(), data.toArray());
+        List<Element> relatedElements = new ArrayList<>();
+        relatedElements.addAll(this.getSource());
+        relatedElements.addAll(this.getTarget());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_RelatedElement(), relatedElements.size(), relatedElements.toArray());
     }
 
     /**

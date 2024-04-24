@@ -50,12 +50,12 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
-    
+
     private STVDescriptionNameGenerator descriptionNameGenerator;
 
     public TransitionEdgeDescriptionProvider(IColorProvider colorProvider) {
         super(colorProvider);
-        descriptionNameGenerator = new STVDescriptionNameGenerator();
+        this.descriptionNameGenerator = new STVDescriptionNameGenerator();
     }
 
     @Override
@@ -79,10 +79,10 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
         var optEdgeDescription = cache.getEdgeDescription(NAME);
         List<NodeDescription> optNodeDescriptions = new ArrayList<>();
         StateTransitionViewDiagramDescriptionProvider.DEFINITIONS.forEach(eClass -> {
-            cache.getNodeDescription(descriptionNameGenerator.getNodeName(eClass)).ifPresent(optNodeDescriptions::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(eClass)).ifPresent(optNodeDescriptions::add);
         });
         StateTransitionViewDiagramDescriptionProvider.USAGES.forEach(eClass -> {
-            cache.getNodeDescription(descriptionNameGenerator.getNodeName(eClass)).ifPresent(optNodeDescriptions::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(eClass)).ifPresent(optNodeDescriptions::add);
         });
 
         if (optEdgeDescription.isPresent() && !optNodeDescriptions.isEmpty()) {
@@ -94,25 +94,10 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
         }
     }
 
-    private EdgeStyle createEdgeStyle() {
-        return this.diagramBuilderHelper.newEdgeStyle()
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
-                .edgeWidth(1)
-                .lineStyle(LineStyle.SOLID)
-                .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
-                .build();
-    }
-
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".setTransitionSource(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
-    }
-    
-    @Override
-    protected String getSourceReconnectToolPreconditionExpression() {
-        return AQLConstants.AQL + AQLConstants.SEMANTIC_OTHER_END + ".checkTransitionEdgeTarget(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")";
     }
 
     @Override
@@ -120,10 +105,15 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
         return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".setTransitionTarget(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")");
     }
-    
+
+    @Override
+    protected String getSourceReconnectToolPreconditionExpression() {
+        return AQLConstants.AQL + AQLConstants.SEMANTIC_OTHER_END + ".checkTransitionEdgeTarget(" + AQLConstants.SEMANTIC_RECONNECTION_TARGET + ")";
+    }
+
     @Override
     protected String getTargetReconnectToolPreconditionExpression() {
-        return getSourceReconnectToolPreconditionExpression();
+        return this.getSourceReconnectToolPreconditionExpression();
     }
 
     /**
@@ -137,11 +127,22 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
     @Override
     protected LabelEditTool getEdgeEditTool() {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.performLabelEdit(newLabel)");
+                .expression("aql:self.editTransitionEdgeLabel(newLabel)")
+                .build();
 
         return this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit TransitionUsage Label")
-                .body(changeContext.build())
+                .body(changeContext)
+                .build();
+    }
+
+    private EdgeStyle createEdgeStyle() {
+        return this.diagramBuilderHelper.newEdgeStyle()
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
+                .edgeWidth(1)
+                .lineStyle(LineStyle.SOLID)
+                .sourceArrowStyle(ArrowStyle.NONE)
+                .targetArrowStyle(ArrowStyle.INPUT_ARROW)
                 .build();
     }
 }

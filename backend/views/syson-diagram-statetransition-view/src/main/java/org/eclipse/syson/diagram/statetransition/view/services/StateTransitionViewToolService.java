@@ -52,7 +52,7 @@ public class StateTransitionViewToolService extends ViewToolService {
 
     /**
      * Called by "New State" tool from StateTransition View StateDefinition node.
-     * 
+     *
      * @param stateDefinition
      *            the {@link StateDefinition} corresponding to the target object on which the tool has been called.
      * @param editingContext
@@ -73,14 +73,14 @@ public class StateTransitionViewToolService extends ViewToolService {
      */
     public StateDefinition createChildState(StateDefinition stateDefinition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean isParallel) {
-        StateUsage childState = createChildState(stateDefinition, isParallel);
+        StateUsage childState = this.createChildState(stateDefinition, isParallel);
         this.createView(childState, editingContext, diagramContext, selectedNode, convertedNodes);
         return stateDefinition;
     }
 
     /**
      * Create a child State onto {@code stateDefinition}.
-     * 
+     *
      * @param stateDefinition
      *            The parent {@link StateDefinition}
      * @param isParallel
@@ -93,15 +93,14 @@ public class StateTransitionViewToolService extends ViewToolService {
         childState.setIsParallel(isParallel);
         owningMembership.getOwnedRelatedElement().add(childState);
         stateDefinition.getOwnedRelationship().add(owningMembership);
-                
         this.elementInitializerSwitch.doSwitch(childState);
         return childState;
     }
 
     /**
-     * Precondition for the "New State" tool from StateTransition View StateDefinition node.
-     * Ensures that child states of a StateDefinition are either all Parallel or none are.
-     * 
+     * Precondition for the "New State" tool from StateTransition View StateDefinition node. Ensures that child states
+     * of a StateDefinition are either all Parallel or none are.
+     *
      * @param stateDefinition
      *            the {@link StateDefinition} corresponding to the target object on which the tool has been called.
      * @param isParallel
@@ -111,15 +110,15 @@ public class StateTransitionViewToolService extends ViewToolService {
     public boolean canCreateChildState(StateDefinition stateDefinition, boolean isParallel) {
         boolean isEmpty = stateDefinition.getOwnedState().isEmpty();
         boolean allMatch = stateDefinition.getOwnedState().stream().allMatch(st -> {
-            return st.isIsParallel() == isParallel; 
+            return st.isIsParallel() == isParallel;
         });
         return isEmpty || allMatch;
     }
 
     /**
-     * Create a new TransitionUsage and set it as the child of the parent of the sourceAction element.
-     * Sets its source and target.
-     * 
+     * Create a new TransitionUsage and set it as the child of the parent of the sourceAction element. Sets its source
+     * and target.
+     *
      * @param sourceAction
      *            the ActionUsage used as a source for the transition
      * @param targetAction
@@ -136,56 +135,55 @@ public class StateTransitionViewToolService extends ViewToolService {
         }
         // Create transition usage and add it to the parent element
         TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
+        this.elementInitializerSwitch.doSwitch(newTransitionUsage);
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         featureMembership.getOwnedRelatedElement().add(newTransitionUsage);
         sourceParentElement.getOwnedRelationship().add(featureMembership);
-        
+
         // Create EndFeature
         var sourceMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         newTransitionUsage.getOwnedRelationship().add(sourceMembership);
         sourceMembership.setMemberElement(sourceAction);
-        
+
         // Create Succession
         Succession succession = SysmlFactory.eINSTANCE.createSuccession();
+        this.elementInitializerSwitch.doSwitch(succession);
         var successionFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         successionFeatureMembership.getOwnedRelatedElement().add(succession);
         newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
-        
+
         // Set Succession
         succession.getSource().add(sourceAction);
         succession.getTarget().add(targetAction);
-        
+
         return sourceAction;
     }
-    
+
     @Override
     public Usage addExistingSubElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var nestedUsages = usage.getNestedUsage();
 
-        nestedUsages.stream()
-            .forEach(subUsage -> {
-                this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
-                Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
-            });
+        nestedUsages.stream().forEach(subUsage -> {
+            this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+            Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+            this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+        });
         return usage;
     }
 
     @Override
     public Definition addExistingSubElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode,
-            DiagramDescription diagramDescription,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+            DiagramDescription diagramDescription, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var ownedUsages = definition.getOwnedUsage();
 
-        ownedUsages.stream()
-            .forEach(subUsage -> {
-                if (subUsage instanceof StateUsage) {
-                    this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
-                    Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
-                }
-            });
+        ownedUsages.stream().forEach(subUsage -> {
+            if (subUsage instanceof StateUsage) {
+                this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+                Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+            }
+        });
         return definition;
     }
 }

@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -84,6 +85,19 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
      */
     protected abstract List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache);
 
+    /**
+     * Shall retrieve a list of {@link NodeDescription} containing the {@link NodeDescription} of nodes that can be
+     * dropped form the Diagram to this {@link NodeDescription}. DEfault implementation returns an empty list, to be
+     * overridden by implementors.
+     *
+     * @param cache
+     *            The cache
+     * @return The list of droppable nodes.
+     */
+    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
+        return new ArrayList<>();
+    }
+
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
@@ -139,7 +153,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .build();
     }
 
-    private NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
+    protected NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF + ".deleteFromModel()");
 
@@ -166,6 +180,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
+                .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }
@@ -173,5 +188,24 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
     private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.nameGenerator);
         return edgeToolSwitch.doSwitch(this.eClass);
+    }
+
+    /**
+     * Builds a {@link DropNodeTool} which will be added to the {@link NodeDescription} palette. May be implemented to
+     * extend default behavior which is to return null.
+     *
+     * @param cache
+     *            The cache
+     * @return The created {@link DropNodeTool}
+     */
+    private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
+        var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
+
+        return this.diagramBuilderHelper.newDropNodeTool()
+                .name("Drop from Diagram")
+                .acceptedNodeTypes(this.getDroppableNodes(cache).toArray(NodeDescription[]::new))
+                .body(dropElementFromDiagram.build())
+                .build();
     }
 }

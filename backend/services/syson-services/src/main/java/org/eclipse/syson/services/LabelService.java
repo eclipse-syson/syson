@@ -57,6 +57,8 @@ public class LabelService {
 
     public static final String VALUE_OFF = "VALUE_OFF";
 
+    public static final String TRANSITION_EXPRESSION_OFF = "TRANSITION_EXPRESSION_OFF";
+
     private final IFeedbackMessageService feedbackMessageService;
 
     public LabelService(IFeedbackMessageService feedbackMessageService) {
@@ -206,10 +208,10 @@ public class LabelService {
                 typeName = type.getDeclaredName();
             }
             label
-                    .append(LabelConstants.SPACE)
-                    .append(LabelConstants.COLON)
-                    .append(LabelConstants.SPACE)
-                    .append(typeName);
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.COLON)
+                .append(LabelConstants.SPACE)
+                .append(typeName);
         }
         return label.toString();
     }
@@ -235,10 +237,10 @@ public class LabelService {
                 superclassifierName = superclassifier.getDeclaredName();
             }
             label
-                    .append(LabelConstants.SPACE)
-                    .append(LabelConstants.SUBCLASSIFICATION)
-                    .append(LabelConstants.SPACE)
-                    .append(superclassifierName);
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.SUBCLASSIFICATION)
+                .append(LabelConstants.SPACE)
+                .append(superclassifierName);
         }
         return label.toString();
     }
@@ -263,10 +265,10 @@ public class LabelService {
                 subsettedFeatureName = subsettedFeature.getDeclaredName();
             }
             label
-                    .append(LabelConstants.SPACE)
-                    .append(LabelConstants.SUBSETTING)
-                    .append(LabelConstants.SPACE)
-                    .append(subsettedFeatureName);
+                .append(LabelConstants.SPACE)
+                .append(LabelConstants.SUBSETTING)
+                .append(LabelConstants.SPACE)
+                .append(subsettedFeatureName);
         }
         return label.toString();
     }
@@ -288,10 +290,10 @@ public class LabelService {
             var redefinedFeature = redefinition.get().getRedefinedFeature();
             if (redefinedFeature != null) {
                 label
-                        .append(LabelConstants.SPACE)
-                        .append(LabelConstants.REDEFINITION)
-                        .append(LabelConstants.SPACE)
-                        .append(redefinedFeature.getDeclaredName());
+                    .append(LabelConstants.SPACE)
+                    .append(LabelConstants.REDEFINITION)
+                    .append(LabelConstants.SPACE)
+                    .append(redefinedFeature.getDeclaredName());
             }
         }
         return label.toString();
