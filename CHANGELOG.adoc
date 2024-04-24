@@ -20,6 +20,7 @@
 - https://github.com/eclipse-syson/syson/issues/188[#188] [import] Fix an issue where some Memberships were contained in their parent through `ownedRelatedElement` instead of `ownedRelationship` reference.
 - https://github.com/eclipse-syson/syson/issues/199[#199] [explorer] Fix an issue where the rename action was not renaming tree items anymore
 - https://github.com/eclipse-syson/syson/issues/209[#209] [diagrams] EnumerationDefinition was created without any name
+- https://github.com/eclipse-syson/syson/issues/237[#237] [diagrams] Fix an issue where `Add existing element (recursive)` creates child nodes for nested and owned usages at the root of the diagram instead of in their parent node
 
 === Improvements
 

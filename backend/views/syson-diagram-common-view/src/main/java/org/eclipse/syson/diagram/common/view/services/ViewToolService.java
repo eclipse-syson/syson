@@ -295,9 +295,9 @@ public class ViewToolService extends ToolService {
 
         nestedUsages.stream()
                 .forEach(subUsage -> {
-                    this.createView(subUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                    Node fakeNode = this.createFakeNode(subUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+                    this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+                    Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
                 });
         return usage;
     }
@@ -308,9 +308,9 @@ public class ViewToolService extends ToolService {
 
         ownedUsages.stream()
                 .forEach(subUsage -> {
-                    this.createView(subUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                    Node fakeNode = this.createFakeNode(subUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+                    this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+                    Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
                 });
         return definition;
     }
