@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Succession;
@@ -97,9 +98,9 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
             .map(TransitionFeatureMembership.class::cast)
             .filter(tfm -> tfm.getKind().equals(TransitionFeatureKind.EFFECT))
             .map(TransitionFeatureMembership::getTransitionFeature)
-            .filter(AcceptActionUsage.class::isInstance)
-            .map(AcceptActionUsage.class::cast)
-            .map(data::add);
+            .filter(ActionUsage.class::isInstance)
+            .map(ActionUsage.class::cast)
+            .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getTransitionUsage_EffectAction(), data.size(), data.toArray());
     }
 
@@ -130,8 +131,19 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
             .map(TransitionFeatureMembership::getTransitionFeature)
             .filter(Expression.class::isInstance)
             .map(Expression.class::cast)
-            .map(data::add);
+            .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getTransitionUsage_GuardExpression(), data.size(), data.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public ActionUsage getSource() {
+        ActionUsage source = basicGetSource();
+        return source != null && source.eIsProxy() ? (ActionUsage)eResolveProxy((InternalEObject)source) : source;
     }
 
     /**
@@ -145,17 +157,6 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
      *      endif
      *  endif}
      * </pre>
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public ActionUsage getSource() {
-        ActionUsage source = basicGetSource();
-        return source != null && source.eIsProxy() ? (ActionUsage)eResolveProxy((InternalEObject)source) : source;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT
      */
@@ -173,9 +174,6 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
 
     /**
      * <!-- begin-user-doc -->
-     * <pre>
-     * {@code succession = ownedMember->selectByKind(Succession)->at(1)}
-     * </pre>
      * <!-- end-user-doc -->
      * @generated
      */
@@ -187,11 +185,25 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
 
     /**
      * <!-- begin-user-doc -->
+     * <pre>
+     * {@code succession = ownedMember->selectByKind(Succession)->at(1)}
+     * </pre>
      * <!-- end-user-doc -->
      * @generated NOT
      */
     public Succession basicGetSuccession() {
         return this.getOwnedMember().stream().filter(Succession.class::isInstance).map(Succession.class::cast).findFirst().orElse(null);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    @Override
+    public ActionUsage getTarget() {
+        ActionUsage target = basicGetTarget();
+        return target != null && target.eIsProxy() ? (ActionUsage)eResolveProxy((InternalEObject)target) : target;
     }
 
     /**
@@ -204,17 +216,6 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
      *      endif
      *  endif}
      * </pre>
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    @Override
-    public ActionUsage getTarget() {
-        ActionUsage target = basicGetTarget();
-        return target != null && target.eIsProxy() ? (ActionUsage)eResolveProxy((InternalEObject)target) : target;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated NOT
      */
@@ -256,7 +257,7 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
             .map(TransitionFeatureMembership::getTransitionFeature)
             .filter(AcceptActionUsage.class::isInstance)
             .map(AcceptActionUsage.class::cast)
-            .map(data::add);
+            .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getTransitionUsage_TriggerAction(), data.size(), data.toArray());
     }
 

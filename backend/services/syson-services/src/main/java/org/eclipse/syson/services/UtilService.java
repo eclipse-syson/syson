@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.antlr.v4.runtime.atn.Transition;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
@@ -30,6 +31,9 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.TransitionFeatureKind;
+import org.eclipse.syson.sysml.TransitionFeatureMembership;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysONEContentAdapter;
@@ -289,5 +293,22 @@ public class UtilService {
             isQualifiedName = splitElementName.length > 1;
         }
         return isQualifiedName;
+    }
+
+    /**
+     * Remove {@link TransitionFeatureMembership} elements of specific kind from the provided {@link Transition}.
+     *
+     * @param transition
+     *            The transition to modify
+     * @param kind
+     *            The {@link TransitionFeatureKind} used to identify {@link TransitionFeatureMembership} to remove
+     */
+    public void removeTransitionFeaturesOfSpecificKind(TransitionUsage transition, TransitionFeatureKind kind) {
+        List<TransitionFeatureMembership> elementsToDelete = transition.getOwnedFeatureMembership().stream()
+                .filter(TransitionFeatureMembership.class::isInstance)
+                .map(TransitionFeatureMembership.class::cast)
+                .filter(tfm -> tfm.getKind().equals(kind))
+                .toList();
+        EcoreUtil.removeAll(elementsToDelete);
     }
 }

@@ -36,6 +36,8 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -121,22 +123,6 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     }
 
     @Override
-    public List<EStructuralFeature> caseOccurrenceDefinition(OccurrenceDefinition object) {
-        var features = new ArrayList<EStructuralFeature>();
-        features.addAll(this.caseElement(object));
-        features.add(SysmlPackage.eINSTANCE.getOccurrenceDefinition_IsIndividual());
-        return features;
-    }
-
-    @Override
-    public List<EStructuralFeature> caseOccurrenceUsage(OccurrenceUsage object) {
-        var features = new ArrayList<EStructuralFeature>();
-        features.addAll(this.caseElement(object));
-        features.add(SysmlPackage.eINSTANCE.getOccurrenceUsage_IsIndividual());
-        return features;
-    }
-
-    @Override
     public List<EStructuralFeature> caseMembership(Membership object) {
         var features = new ArrayList<EStructuralFeature>();
         features.add(SysmlPackage.eINSTANCE.getMembership_Visibility());
@@ -158,6 +144,22 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         features.add(SysmlPackage.eINSTANCE.getNamespaceImport_ImportedNamespace());
         features.add(SysmlPackage.eINSTANCE.getImport_IsImportAll());
         features.add(SysmlPackage.eINSTANCE.getImport_IsRecursive());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseOccurrenceDefinition(OccurrenceDefinition object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getOccurrenceDefinition_IsIndividual());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseOccurrenceUsage(OccurrenceUsage object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getOccurrenceUsage_IsIndividual());
         return features;
     }
 
@@ -214,6 +216,22 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     }
 
     @Override
+    public List<EStructuralFeature> caseStateDefinition(StateDefinition object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseOccurrenceDefinition(object));
+        features.add(SysmlPackage.eINSTANCE.getStateDefinition_IsParallel());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseStateUsage(StateUsage object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getStateUsage_IsParallel());
+        return features;
+    }
+
+    @Override
     public List<EStructuralFeature> caseSubclassification(Subclassification object) {
         var features = new ArrayList<EStructuralFeature>();
         features.addAll(this.caseSpecialization(object));
@@ -238,5 +256,4 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         features.add(SysmlPackage.eINSTANCE.getType_IsAbstract());
         return features;
     }
-
 }

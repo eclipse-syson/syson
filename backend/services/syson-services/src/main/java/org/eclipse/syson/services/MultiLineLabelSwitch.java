@@ -465,20 +465,38 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     public String caseStateDefinition(StateDefinition object) {
         StringBuilder label = new StringBuilder();
         label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("state def")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.getIsParallel(object.isIsParallel()))
-            .append(this.subclassification(object));
+                .append(this.abstractType(object))
+                .append(this.getIsParallel(object.isIsParallel()))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("state def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.subclassification(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseStateUsage(StateUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.abstractType(object))
+                .append(this.getIsParallel(object.isIsParallel()))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("state")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 
     /**
      * Builds the string value for Parallel StateUsage or StateDefinition.
-     * 
+     *
      * @param isParallel
      *            Whether the State is parallel or not.
      */
@@ -486,31 +504,12 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         StringBuilder parallel = new StringBuilder();
         if (isParallel) {
             parallel
-                .append(LabelConstants.CR)
-                .append(LabelConstants.OPEN_QUOTE)
-                .append("parallel")
-                .append(LabelConstants.CLOSE_QUOTE)
-                .append(LabelConstants.CR);
+                    .append(LabelConstants.OPEN_QUOTE)
+                    .append("parallel")
+                    .append(LabelConstants.CLOSE_QUOTE)
+                    .append(LabelConstants.CR);
         }
         return parallel;
-    }
-
-    @Override
-    public String caseStateUsage(StateUsage object) {
-        StringBuilder label = new StringBuilder();
-        label
-            .append(this.abstractType(object))
-            .append(LabelConstants.OPEN_QUOTE)
-            .append("state")
-            .append(LabelConstants.CLOSE_QUOTE)
-            .append(LabelConstants.CR)
-            .append(this.caseElement(object))
-            .append(this.getIsParallel(object.isIsParallel()))
-            .append(this.multiplicityRange(object))
-            .append(this.featureTyping(object))
-            .append(this.redefinition(object))
-            .append(this.subsetting(object));
-        return label.toString();
     }
 
     private String abstractType(Type type) {

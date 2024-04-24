@@ -40,7 +40,7 @@ public class CompositeStateDefinitionNodeDescriptionProvider extends AbstractDef
     public CompositeStateDefinitionNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
         super(eClass, colorProvider, new STVDescriptionNameGenerator());
     }
-    
+
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
@@ -93,5 +93,12 @@ public class CompositeStateDefinitionNodeDescriptionProvider extends AbstractDef
         StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch();
         toolSectionSwitch.doSwitch(this.eClass);
         return toolSectionSwitch.getNodeToolSections();
+    }
+
+    @Override
+    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
+        var acceptedNodeTypes = new ArrayList<NodeDescription>();
+        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(acceptedNodeTypes::add);
+        return acceptedNodeTypes;
     }
 }

@@ -30,8 +30,9 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
- * Switch retrieving the list of NodeToolSections for each SysMLv2 concept represented in the State Transition View diagram.
-
+ * Switch retrieving the list of NodeToolSections for each SysMLv2 concept represented in the State Transition View
+ * diagram.
+ *
  * @author adieumegard
  */
 public class StateTransitionViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
@@ -53,16 +54,16 @@ public class StateTransitionViewNodeToolSectionSwitch extends SysmlEClassSwitch<
 
     @Override
     public Void caseDefinition(Definition object) {
-        this.createToolsForCompartmentItems(object);        
+        this.createToolsForCompartmentItems(object);
         return super.caseDefinition(object);
     }
-    
+
     @Override
     public Void caseStateDefinition(StateDefinition object) {
         List<NodeTool> nodeTools = new ArrayList<>();
         nodeTools.add(new StateUsageCompartmentNodeToolProvider(true).create(null));
         nodeTools.add(new StateUsageCompartmentNodeToolProvider(false).create(null));
-        addToolsToSection(nodeTools, "Create");
+        this.addToolsToSection(nodeTools, "Create");
         return super.caseStateDefinition(object);
     }
 
@@ -74,7 +75,7 @@ public class StateTransitionViewNodeToolSectionSwitch extends SysmlEClassSwitch<
 
     /**
      * Add {@code nodeTools} tools to the tools section named {@code sectionName}. Creates the tool section if needed.
-     * 
+     *
      * @param nodeTools
      *            The tools to add
      * @param sectionName
@@ -105,6 +106,6 @@ public class StateTransitionViewNodeToolSectionSwitch extends SysmlEClassSwitch<
                 });
             }
         });
-        addToolsToSection(compartmentNodeTools, "Create");
+        this.addToolsToSection(compartmentNodeTools, "Create");
     }
 }

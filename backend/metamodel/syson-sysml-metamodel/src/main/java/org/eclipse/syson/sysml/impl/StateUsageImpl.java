@@ -195,7 +195,7 @@ public class StateUsageImpl extends ActionUsageImpl implements StateUsage {
             .map(FeatureTyping::getRelatedElement)
             .filter(Behavior.class::isInstance)
             .map(Behavior.class::cast)
-            .map(data::add);
+            .forEach(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStateUsage_StateDefinition(), data.size(), data.toArray());
     }
 

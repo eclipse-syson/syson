@@ -19,8 +19,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc -->
@@ -82,6 +86,7 @@ public class AcceptActionUsageImpl extends ActionUsageImpl implements AcceptActi
 
     /**
      * <!-- begin-user-doc -->
+     * The nestedReference of this AcceptActionUsage that redefines the payload output parameter of the base AcceptActionUsage AcceptAction from the Systems Model Library.
      * <!-- end-user-doc -->
      * @generated
      */
@@ -94,13 +99,15 @@ public class AcceptActionUsageImpl extends ActionUsageImpl implements AcceptActi
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public ReferenceUsage basicGetPayloadParameter() {
-        // TODO: implement this method to return the 'Payload Parameter' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedFeatureMembership().stream()
+                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -125,14 +132,39 @@ public class AcceptActionUsageImpl extends ActionUsageImpl implements AcceptActi
         // Ensure that you remove @generated or mark it @generated NOT
         return null;
     }
+    
+    /**
+     * Used to display the name of the trigger references in the {@code Related Elements} view.
+     *
+     * @generated NOT
+     */
+    @Override
+    public String getDeclaredName() {
+        ReferenceUsage payloadParameter = this.getPayloadParameter();
+        if (payloadParameter != null) {
+            return payloadParameter.getDeclaredName();
+        }
+        return super.getDeclaredName();
+    }
 
     /**
      * <!-- begin-user-doc -->
+     * Check if this AcceptActionUsage is the triggerAction of a TransitionUsage.
+     * 
+     * <pre>
+     * owningType <> null 
+     * and owningType.oclIsKindOf(TransitionUsage) 
+     * and owningType.oclAsType(TransitionUsage).triggerAction->includes(self)
+     * </pre>
      * <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public boolean isTriggerAction() {
+        Type owningType = getOwningType();
+        if (owningType != null && owningType instanceof TransitionUsage tu) {
+            return tu.getTriggerAction().contains(this);
+        }
         return false;
     }
 

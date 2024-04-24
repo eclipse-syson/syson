@@ -18,6 +18,9 @@ import java.util.List;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
@@ -68,6 +71,24 @@ public class ReferenceUsageImpl extends UsageImpl implements ReferenceUsage {
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public String getDeclaredName() {
+        Element foundActionUsage = this.getOwnedFeatureMembership().stream()
+                .flatMap(fm -> fm.getTarget().stream())
+                .filter(ActionUsage.class::isInstance)
+                .findFirst()
+                .orElse(null);
+        if (foundActionUsage != null) {
+            return foundActionUsage.getDeclaredName();
+        }
+        return super.getDeclaredName();
     }
 
 } //ReferenceUsageImpl

@@ -13,7 +13,9 @@
 package org.eclipse.syson.services;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -29,20 +31,25 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.grammars.DirectEditBaseListener;
+import org.eclipse.syson.services.grammars.DirectEditParser.EffectExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionMemberContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.SubsettingExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.TriggerExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TypingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ValueExpressionContext;
+import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralBoolean;
@@ -53,10 +60,15 @@ import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionFeatureKind;
+import org.eclipse.syson.sysml.TransitionFeatureMembership;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
@@ -80,6 +92,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private List<String> options;
 
+    private final Map<TransitionFeatureKind, Boolean> visitedTransitionFeatures;
+
     public DiagramDirectEditListener(Element element, IFeedbackMessageService feedbackMessageService, String... options) {
         this.element = Objects.requireNonNull(element);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -90,6 +104,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.utilService = new UtilService();
         this.importService = new ImportService();
         this.elementInitializer = new ElementInitializerSwitch();
+        this.visitedTransitionFeatures = new HashMap<>();
+        this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, false);
+        this.getVisitedTransitionFeatures().put(TransitionFeatureKind.GUARD, false);
+        this.getVisitedTransitionFeatures().put(TransitionFeatureKind.EFFECT, false);
     }
 
     @Override
@@ -438,6 +456,71 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     @Override
+    public void exitTriggerExpression(TriggerExpressionContext ctx) {
+        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
+            return;
+        }
+        if (this.element instanceof TransitionUsage transition) {
+            this.utilService.removeTransitionFeaturesOfSpecificKind(transition, TransitionFeatureKind.TRIGGER);
+            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
+            this.handleTriggerExpression(transition, ctx);
+        }
+        super.exitTriggerExpression(ctx);
+    }
+
+    private void handleTriggerExpression(TransitionUsage transition, TriggerExpressionContext triggerExpression) {
+        triggerExpression.qualifiedName().stream().forEach(identifier -> {
+            var name = identifier.getText();
+            var actionUsage = this.utilService.findByNameAndType(this.element, name, ActionUsage.class);
+            this.addTransitionFeature(transition, TransitionFeatureKind.TRIGGER, actionUsage);
+        });
+    }
+
+    @Override
+    public void exitEffectExpression(EffectExpressionContext ctx) {
+        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
+            return;
+        }
+        if (this.element instanceof TransitionUsage transition) {
+            this.utilService.removeTransitionFeaturesOfSpecificKind(transition, TransitionFeatureKind.EFFECT);
+            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.EFFECT, true);
+            this.handleEffectExpression(transition, ctx);
+        }
+        super.exitEffectExpression(ctx);
+    }
+
+    private void handleEffectExpression(TransitionUsage transition, EffectExpressionContext effectExpression) {
+        effectExpression.qualifiedName().stream().forEach(identifier -> {
+            var name = identifier.getText();
+            var actionUsage = this.utilService.findByNameAndType(this.element, name, ActionUsage.class);
+            this.addTransitionFeature(transition, TransitionFeatureKind.EFFECT, actionUsage);
+        });
+    }
+
+    private void addTransitionFeature(TransitionUsage transition, TransitionFeatureKind kind, Step au) {
+        TransitionFeatureMembership tfMembership = SysmlFactory.eINSTANCE.createTransitionFeatureMembership();
+        tfMembership.setKind(kind);
+        transition.getOwnedRelationship().add(tfMembership);
+        if (kind.equals(TransitionFeatureKind.TRIGGER)) {
+            AcceptActionUsage acceptActionUsage = SysmlFactory.eINSTANCE.createAcceptActionUsage();
+            tfMembership.getOwnedRelatedElement().add(acceptActionUsage);
+            tfMembership.setFeature(acceptActionUsage);
+
+            ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+            FeatureMembership refFeatureFromAcceptActionUsage = SysmlFactory.eINSTANCE.createFeatureMembership();
+            refFeatureFromAcceptActionUsage.getOwnedRelatedElement().add(refUsage);
+            acceptActionUsage.getOwnedRelationship().add(refFeatureFromAcceptActionUsage);
+
+            FeatureMembership refFeatureFromRefUsage = SysmlFactory.eINSTANCE.createFeatureMembership();
+            refFeatureFromRefUsage.getTarget().add(au);
+            refUsage.getOwnedRelationship().add(refFeatureFromRefUsage);
+        } else {
+            tfMembership.setFeature(au);
+        }
+        this.importService.handleImport(this.element, au);
+    }
+
+    @Override
     public void visitErrorNode(ErrorNode node) {
         super.visitErrorNode(node);
     }
@@ -682,5 +765,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             membership.getOwnedRelatedElement().add(literalInfinity);
         }
         return literalInfinity;
+    }
+
+    public Map<TransitionFeatureKind, Boolean> getVisitedTransitionFeatures() {
+        return this.visitedTransitionFeatures;
     }
 }

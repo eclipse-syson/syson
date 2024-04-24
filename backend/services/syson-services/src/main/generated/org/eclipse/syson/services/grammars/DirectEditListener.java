@@ -102,6 +102,46 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitValueExpression(DirectEditParser.ValueExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#transitionExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterTransitionExpression(DirectEditParser.TransitionExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#transitionExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitTransitionExpression(DirectEditParser.TransitionExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#triggerExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterTriggerExpression(DirectEditParser.TriggerExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#triggerExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitTriggerExpression(DirectEditParser.TriggerExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#guardExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterGuardExpression(DirectEditParser.GuardExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#guardExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitGuardExpression(DirectEditParser.GuardExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#effectExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterEffectExpression(DirectEditParser.EffectExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#effectExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitEffectExpression(DirectEditParser.EffectExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#qualifiedName}.
 	 * @param ctx the parse tree
 	 */

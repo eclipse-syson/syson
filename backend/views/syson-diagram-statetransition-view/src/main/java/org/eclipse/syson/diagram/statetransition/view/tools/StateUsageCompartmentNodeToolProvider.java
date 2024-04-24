@@ -30,7 +30,7 @@ public class StateUsageCompartmentNodeToolProvider extends AbstractCompartmentNo
 
     @Override
     protected String getServiceCallExpression() {
-        if (isParallel) {
+        if (this.isParallel) {
             return "aql:self.createChildState(editingContext, diagramContext, selectedNode, convertedNodes, true)";
         } else {
             return "aql:self.createChildState(editingContext, diagramContext, selectedNode, convertedNodes, false)";
@@ -39,16 +39,16 @@ public class StateUsageCompartmentNodeToolProvider extends AbstractCompartmentNo
 
     @Override
     protected String getNodeToolName() {
-        if (isParallel) {
+        if (this.isParallel) {
             return "Parallel";
         } else {
             return "State";
         }
     }
-    
+
     @Override
     protected String getPreconditionExpression() {
-        if (isParallel) {
+        if (this.isParallel) {
             return "aql:self.canCreateChildState(true)";
         } else {
             return "aql:self.canCreateChildState(false)";
