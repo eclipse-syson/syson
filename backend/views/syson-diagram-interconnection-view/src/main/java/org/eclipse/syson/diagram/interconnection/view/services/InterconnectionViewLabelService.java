@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.interconnection.view.services;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.PortUsage;
 
 /**
@@ -42,6 +43,21 @@ public class InterconnectionViewLabelService extends ViewLabelService {
                 .append(this.getTypingLabel(portUsage))
                 .append(this.getRedefinitionLabel(portUsage))
                 .append(this.getSubsettingLabel(portUsage));
+        return label.toString();
+    }
+
+    /**
+     * Get the label for the given {@link ConnectorAsUsage}. The label is used a edge label only.
+     *
+     * @param connector
+     *            the given {@link ConnectorAsUsage}.
+     * @return the label for the given {@link PortUsage}.
+     */
+    public String getEdgeLabel(ConnectorAsUsage connector) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(connector.getDeclaredName())
+                .append(this.getTypingLabel(connector));
         return label.toString();
     }
 }

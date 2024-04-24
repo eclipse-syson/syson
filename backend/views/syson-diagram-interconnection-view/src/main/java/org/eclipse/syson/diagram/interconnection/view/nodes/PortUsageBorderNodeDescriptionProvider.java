@@ -30,7 +30,6 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -124,7 +123,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
-                .edgeTools(this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription)))
+                .edgeTools(this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription)), this.createInterfaceUsageEdgeTool(List.of(nodeDescription)))
                 .build();
     }
 
@@ -135,8 +134,22 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createBindingConnectorAsUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
 
         return builder
-                .name(new DescriptionNameGenerator("").getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
+                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName() + ".svg")
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    private EdgeTool createInterfaceUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createInterfaceUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+
+        return builder
+                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()))
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getInterfaceUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
