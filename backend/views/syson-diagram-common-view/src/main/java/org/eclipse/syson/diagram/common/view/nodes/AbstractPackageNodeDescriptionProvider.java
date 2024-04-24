@@ -246,7 +246,9 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            nodeTools.add(this.createNodeTool(cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).get(), definition));
+            cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(nodeDescription -> {
+                nodeTools.add(this.createNodeTool(nodeDescription, definition));
+            });
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

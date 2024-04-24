@@ -605,6 +605,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
 
     /**
      * <!-- begin-user-doc -->
+     * The FeatureMembership that owns this Feature as an ownedMemberFeature, determining its owningType.
      * <!-- end-user-doc -->
      * @generated
      */
@@ -616,6 +617,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
 
     /**
      * <!-- begin-user-doc -->
+     * The FeatureMembership that owns this Feature as an ownedMemberFeature, determining its owningType.
      * <!-- end-user-doc -->
      * @generated NOT
      */
@@ -629,6 +631,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
 
     /**
      * <!-- begin-user-doc -->
+     * The Type that is the owningType of the owningFeatureMembership of this Feature.
      * <!-- end-user-doc -->
      * @generated
      */

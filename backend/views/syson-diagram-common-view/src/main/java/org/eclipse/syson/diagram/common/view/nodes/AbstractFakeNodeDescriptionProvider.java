@@ -72,11 +72,11 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optFakeNodeDescription = cache.getNodeDescription(this.getName());
-        NodeDescription nodeDescription = optFakeNodeDescription.get();
-        diagramDescription.getNodeDescriptions().add(nodeDescription);
+        cache.getNodeDescription(this.getName()).ifPresent(nodeDescription -> {
+            diagramDescription.getNodeDescriptions().add(nodeDescription);
 
-        nodeDescription.getChildrenDescriptions().addAll(this.getChildrenDescription(cache));
+            nodeDescription.getChildrenDescriptions().addAll(this.getChildrenDescription(cache));
+        });
     }
 
     protected InsideLabelDescription createInsideLabelDescription() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,9 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -35,7 +37,7 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  */
 public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
 
-    private EStructuralFeature eStructuralFeature;
+    private final EStructuralFeature eStructuralFeature;
 
     public RelatedElementsSwitch(EStructuralFeature eStructuralFeature) {
         this.eStructuralFeature = Objects.requireNonNull(eStructuralFeature);
@@ -86,6 +88,25 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
         Set<EObject> relatedElements = new HashSet<>();
         if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier())) {
             relatedElements.add(object);
+        }
+        return relatedElements;
+    }
+
+    @Override
+    public Set<EObject> caseSuccession(Succession object) {
+        Set<EObject> relatedElements = new HashSet<>();
+        if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_Target())
+                || this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_Source())) {
+            relatedElements.add(object);
+            if (object.eContainer() instanceof Membership membership) {
+                relatedElements.add(membership);
+                if (membership.eContainer() instanceof TransitionUsage transitionUsage) {
+                    relatedElements.add(transitionUsage);
+                    if (transitionUsage.eContainer() instanceof Membership transitionUsageContainer) {
+                        relatedElements.add(transitionUsageContainer);
+                    }
+                }
+            }
         }
         return relatedElements;
     }

@@ -30,7 +30,10 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.syson.sysml.Association;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -277,14 +280,21 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
     }
 
     /**
-     * <!-- begin-user-doc -->
+     * <!-- begin-user-doc --> Value
+     * The endFeatures of a Connector, which redefine the endFeatures of the associations of the Connector. The connectorEnds 
+     * determine via ReferenceSubsetting Relationships which Features are related by the Connector.
      * <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
     public EList<Feature> getConnectorEnd() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_ConnectorEnd(), data.size(), data.toArray());
+        List<Element> endFeatures = this.getOwnedRelationship().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_ConnectorEnd(), endFeatures.size(), endFeatures.toArray());
     }
 
     /**
@@ -312,17 +322,35 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
 
     /**
      * <!-- begin-user-doc -->
+     * The Features that are related by this Connector considered as a Relationship and that restrict the links it identifies, 
+     * given by the referenced Features of the connectorEnds of the Connector.
+     * 
+     * <pre>
+     * {@code relatedFeature = connectorEnd.ownedReferenceSubsetting
+     *  ->select(s | s <> null).subsettedFeature}
+     * </pre>
      * <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
     public EList<Feature> getRelatedFeature() {
-        List<Usage> data = new ArrayList<>();
+        List<Feature> data = this.getConnectorEnd().stream()
+                .map(Feature::getOwnedReferenceSubsetting)
+                .filter(rs -> rs != null)
+                .map(ReferenceSubsetting::getSubsettedFeature)
+                .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_RelatedFeature(), data.size(), data.toArray());
     }
 
     /**
      * <!-- begin-user-doc -->
+     * The source relatedFeature for this Connector. It is the first relatedFeature.
+     * 
+     * <pre>
+     * {@code sourceFeature = if relatedFeature->isEmpty() then null 
+     *  else relatedFeature->first() endif}
+     * </pre>
      * <!-- end-user-doc -->
      * @generated
      */
@@ -335,12 +363,13 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetSourceFeature() {
-        // TODO: implement this method to return the 'Source Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        EList<Feature> feature = this.getRelatedFeature();
+        if (!feature.isEmpty()) {
+            return feature.get(0);
+        }
         return null;
     }
 
@@ -351,7 +380,11 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
      */
     @Override
     public EList<Feature> getTargetFeature() {
-        List<Usage> data = new ArrayList<>();
+        List<Feature> feature = this.getRelatedFeature();
+        List<Feature> data = new ArrayList<>();
+        if (feature.size() > 1) {
+            data = feature.subList(1, feature.size());
+        }
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_TargetFeature(), data.size(), data.toArray());
     }
 

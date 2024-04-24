@@ -83,11 +83,10 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optEmptyDiagramNodeDescription = cache.getNodeDescription(this.getName());
-
-        NodeDescription nodeDescription = optEmptyDiagramNodeDescription.get();
-        diagramDescription.getNodeDescriptions().add(nodeDescription);
-        nodeDescription.setPalette(this.createNodePalette(cache));
+        cache.getNodeDescription(this.getName()).ifPresent(nodeDescription -> {
+            diagramDescription.getNodeDescriptions().add(nodeDescription);
+            nodeDescription.setPalette(this.createNodePalette(cache));    
+        });
     }
 
     protected InsideLabelDescription createInsideLabelDescription() {
@@ -176,7 +175,9 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(element -> {
-            nodeTools.add(this.createNodeToolFromPackage(cache.getNodeDescription(this.nameGenerator.getNodeName(element)).get(), element));
+            cache.getNodeDescription(this.nameGenerator.getNodeName(element)).ifPresent(nodeDescription -> {
+                nodeTools.add(this.createNodeToolFromPackage(nodeDescription, element));
+            });
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
