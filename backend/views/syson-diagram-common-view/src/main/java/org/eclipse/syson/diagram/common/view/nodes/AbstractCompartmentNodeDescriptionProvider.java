@@ -104,6 +104,8 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.nameGenerator.getCompartmentName(this.eClass, this.eReference)).ifPresent(nodeDescription -> {
+            cache.getNodeDescription(this.nameGenerator.getInheritedCompartmentItemName(this.eClass, this.eReference))
+                    .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
             cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(this.eClass, this.eReference))
                     .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
             nodeDescription.setPalette(this.createCompartmentPalette(cache));

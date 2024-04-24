@@ -31,6 +31,8 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class DescriptionNameGenerator implements IDescriptionNameGenerator {
 
+    private static final String SPACE = " ";
+
     private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))");
 
     private final String diagramPrefix;
@@ -41,7 +43,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
 
     protected String getName(String prefix, String descType, String type) {
         StringBuilder name = new StringBuilder();
-        name.append(prefix).append(" ").append(descType).append(" ").append(type);
+        name.append(prefix).append(SPACE).append(descType).append(SPACE).append(type);
         return name.toString();
     }
 
@@ -53,12 +55,16 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
         return this.getName(prefix, "BorderNode", type);
     }
 
-    protected String getCompartmentName(String prefix, String type) {
-        return this.getName(prefix, "Compartment", type);
+    protected String getCompartmentName(String prefix, String suffix) {
+        return this.getName(prefix, "Compartment", suffix);
     }
 
-    protected String getCompartmentItemName(String prefix, String type) {
-        return this.getName(prefix, "CompartmentItem", type);
+    protected String getCompartmentItemName(String prefix, String suffix) {
+        return this.getName(prefix, "CompartmentItem", suffix);
+    }
+
+    protected String getInheritedCompartmentItemName(String prefix, String suffix) {
+        return this.getName(prefix, "InheritedCompartmentItem", suffix);
     }
 
     protected String getEdgeName(String prefix, String type) {
@@ -88,7 +94,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
                 }
             }
         }
-        return prefix + this.findWordsInMixedCase(nameToParse).stream().collect(Collectors.joining(" "));
+        return prefix + this.findWordsInMixedCase(nameToParse).stream().collect(Collectors.joining(SPACE));
     }
 
     private List<String> findWordsInMixedCase(String text) {
@@ -176,7 +182,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getCompartmentName(EClass eClass, EReference eReference) {
-        return this.getCompartmentName(this.diagramPrefix, eClass.getName() + " " + eReference.getName());
+        return this.getCompartmentName(this.diagramPrefix, eClass.getName() + SPACE + eReference.getName());
     }
 
     /**
@@ -192,7 +198,23 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getCompartmentItemName(EClass eClass, EReference eReference) {
-        return this.getCompartmentItemName(this.diagramPrefix, eClass.getName() + " " + eReference.getName());
+        return this.getCompartmentItemName(this.diagramPrefix, eClass.getName() + SPACE + eReference.getName());
+    }
+
+    /**
+     * Returns the name of the inherited compartment item {@link NodeDescription} starting with the diagram prefix,
+     * followed by the name of the given {@link EClass} and the name of the given {@link EReference}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
+     * @param eReference
+     *            the {@link EReference} that the compartment is containing.
+     * @return a string starting with the diagram prefix, followed by the name of the given {@link EClass} and the name
+     *         of the given {@link EReference}
+     */
+    @Override
+    public String getInheritedCompartmentItemName(EClass eClass, EReference eReference) {
+        return this.getInheritedCompartmentItemName(this.diagramPrefix, eClass.getName() + SPACE + eReference.getName());
     }
 
     /**

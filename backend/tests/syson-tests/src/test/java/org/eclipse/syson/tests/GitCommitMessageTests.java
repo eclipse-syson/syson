@@ -55,7 +55,6 @@ public class GitCommitMessageTests {
         try {
             Process process = Runtime.getRuntime().exec(GIT_COMMAND);
 
-            // @formatter:off
             try (
                 BufferedReader lineReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -63,7 +62,6 @@ public class GitCommitMessageTests {
                 lines = lineReader.lines().collect(Collectors.toList());
                 assertThat(errorReader.lines()).isEmpty();
             }
-            // @formatter:on
         } catch (IOException exception) {
             fail(exception.getMessage());
         }
@@ -126,13 +124,10 @@ public class GitCommitMessageTests {
         if (!KEYWORDS.contains(tag)) {
             try {
                 Integer.valueOf(tag);
-
-                // @formatter:off
                 assertThat(lines)
                     .withFailMessage(MISSING_ISSUE_URL_FOOTER)
                     .filteredOn(line -> line.trim().startsWith(ISSUE_URL_PREFIX) && line.endsWith(tag))
                     .hasSize(1);
-                // @formatter:on
             } catch (NumberFormatException exception) {
                 fail(INVALID_GIT_MESSAGE_TITLE);
             }

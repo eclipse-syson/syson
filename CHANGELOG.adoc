@@ -49,6 +49,7 @@
 - https://github.com/eclipse-syson/syson/issues/219[#219] [diagrams] Handle ConjugatedPortDefinition in diagrams, Explorer and Details View.
 - https://github.com/eclipse-syson/syson/issues/234[#234] [interconnection-view] Handle InterfaceUsages edges between PortUsages in InterconnectionView.
 - https://github.com/eclipse-syson/syson/issues/175[#175] [diagrams] Add the State Transition view diagram
+- https://github.com/eclipse-syson/syson/issues/242[#242] [diagrams] Handle Inherited features in features compartments.
 
 == v2024.3.0
 

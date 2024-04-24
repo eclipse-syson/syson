@@ -112,9 +112,21 @@ public interface IDescriptionNameGenerator {
      *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
      * @param eReference
      *            the {@link EReference} that the compartment is containing.
-     * @return a string used to name a compartment items {@link NodeDescription}.
+     * @return a string used to name a compartment item {@link NodeDescription}.
      */
     String getCompartmentItemName(EClass eClass, EReference eReference);
+
+    /**
+     * Returns the name of an inherited compartment item {@link NodeDescription} using the given {@link EClass} and
+     * {@link EReference}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
+     * @param eReference
+     *            the {@link EReference} that the compartment is containing.
+     * @return a string used to name an inherited compartment item {@link NodeDescription}.
+     */
+    String getInheritedCompartmentItemName(EClass eClass, EReference eReference);
 
     /**
      * Returns the name of a domain based {@link EdgeDescription} using given the given {@link EClass}.

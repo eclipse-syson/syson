@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
@@ -29,6 +31,7 @@ import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ObjectiveMembership;
@@ -39,9 +42,11 @@ import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
@@ -348,5 +353,48 @@ public class ViewCreateService {
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast)
                 .orElse(null);
+    }
+
+    public List<Feature> getInheritedCompartmentItems(Type type, String eReferenceName) {
+        List<Feature> inheritedElements = new ArrayList<>();
+        EStructuralFeature eStructuralFeature = type.eClass().getEStructuralFeature(eReferenceName);
+        if (eStructuralFeature instanceof EReference eReference) {
+            type.getInheritedFeature().stream()
+                    .filter(feature -> new InheritedCompartmentItemFilterSwitch(eReference).doSwitch(feature))
+                    .forEach(inheritedElements::add);
+        }
+        // Removes all features that have been redefined, subsetted, subclassed...
+        List<Element> alreadySpecializedFeatures = new ArrayList<>();
+        type.getOwnedFeature().stream()
+                .flatMap(f -> this.getSpecializationTypeHierarchy(f).stream())
+                .filter(general -> inheritedElements.contains(general))
+                .forEach(alreadySpecializedFeatures::add);
+        inheritedElements.stream()
+                .flatMap(f -> this.getSpecializationTypeHierarchy(f).stream())
+                .filter(general -> inheritedElements.contains(general))
+                .forEach(alreadySpecializedFeatures::add);
+        inheritedElements.removeAll(alreadySpecializedFeatures);
+        return inheritedElements;
+    }
+
+    private List<Type> getSpecializationTypeHierarchy(Type type) {
+        List<Type> specializationTypeHierarchy = new ArrayList<>();
+        this.getSpecializationTypeHierarchy(type, specializationTypeHierarchy);
+        return specializationTypeHierarchy;
+    }
+
+    private void getSpecializationTypeHierarchy(Type type, List<Type> specializationTypeHierarchy) {
+        List<Type> specializationTypes = new ArrayList<>();
+        type.getOwnedSpecialization().stream()
+                .map(Specialization::getGeneral)
+                .forEach(general -> {
+                    if (!specializationTypeHierarchy.contains(general) && !specializationTypes.contains(general)) {
+                        specializationTypes.add(general);
+                        specializationTypeHierarchy.add(general);
+                    }
+                });
+        specializationTypes.forEach(speType -> {
+            this.getSpecializationTypeHierarchy(speType, specializationTypeHierarchy);
+        });
     }
 }

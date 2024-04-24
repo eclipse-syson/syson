@@ -16,7 +16,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.Feature;
@@ -181,15 +183,11 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
      * @generated NOT
      */
     public Feature basicGetOwnedMemberFeature() {
-        Optional<FeatureMembership> optionalFM = this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .filter(fm -> fm.getOwnedMemberFeature() != null)
-                .findFirst();
-        if (optionalFM.isPresent()) {
-            return optionalFM.get().getOwnedMemberFeature();
-        }
-        return null;
+        return this.getOwnedRelatedElement().stream()
+            .filter(Feature.class::isInstance)
+            .map(Feature.class::cast)
+            .findFirst()
+            .orElse(null);
     }
 
     /**
