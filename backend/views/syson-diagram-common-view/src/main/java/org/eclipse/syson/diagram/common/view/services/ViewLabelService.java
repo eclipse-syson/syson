@@ -110,4 +110,8 @@ public class ViewLabelService extends LabelService {
     public Element editMultiplicityRangeCenterLabel(Element element, String newLabel) {
         return this.directEdit(element, newLabel, LabelService.NAME_OFF, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.TYPING_OFF, LabelService.VALUE_OFF);
     }
+
+    public Element editEdgeCenterLabel(Element element, String newLabel) {
+        return this.directEdit(element, newLabel, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.VALUE_OFF);
+    }
 }

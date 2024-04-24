@@ -189,6 +189,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
     public List<EClass> casePortDefinition(PortDefinition object) {
         List<EClass> childrenCandidates = new ArrayList<>();
         childrenCandidates.add(SysmlPackage.eINSTANCE.getAttributeUsage());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getItemUsage());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getPortUsage());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubclassification());

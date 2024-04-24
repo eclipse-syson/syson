@@ -24,6 +24,7 @@ import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionP
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.edges.InterfaceUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenPartUsageCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.CompartmentNodeDescriptionProvider;
@@ -68,7 +69,8 @@ public class InterconnectionViewDiagramDescriptionProvider extends AbstractDiagr
                 new ChildrenPartUsageCompartmentNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new AllocateEdgeDescriptionProvider(colorProvider, this.nameGenerator)
+                new AllocateEdgeDescriptionProvider(colorProvider, this.getNameGenerator()),
+                new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getNameGenerator())
         );
 
         diagramElementDescriptionProviders.stream()
