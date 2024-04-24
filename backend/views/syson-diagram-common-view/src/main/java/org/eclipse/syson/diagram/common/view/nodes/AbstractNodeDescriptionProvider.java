@@ -12,10 +12,14 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.nodes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.AbstractViewElementDescriptionProvider;
 
@@ -37,5 +41,16 @@ public abstract class AbstractNodeDescriptionProvider extends AbstractViewElemen
                 .name("Add")
                 .nodeTools(this.addExistingElementsTool(false), this.addExistingElementsTool(true))
                 .build();
+    }
+
+    protected void orderToolSectionsTools(List<NodeToolSection> toolSections) {
+        toolSections.forEach(toolSection -> {
+            // EList cannot be sorted
+            EList<NodeTool> nodeTools = toolSection.getNodeTools();
+            List<NodeTool> sortedNodeTools = new ArrayList<>(nodeTools);
+            sortedNodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
+            toolSection.getNodeTools().clear();
+            toolSection.getNodeTools().addAll(sortedNodeTools);
+        });
     }
 }
