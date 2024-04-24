@@ -36,5 +36,6 @@
 		<module>syson-diagram-actionflow-view</module>
 		<module>syson-diagram-general-view</module>
 		<module>syson-diagram-interconnection-view</module>
+		<module>syson-diagram-statetransition-view</module>
 	</modules>
 </project>

@@ -47,6 +47,7 @@
 - https://github.com/eclipse-syson/syson/issues/196[#196] [export] SysML standard serialization format
 - https://github.com/eclipse-syson/syson/issues/219[#219] [diagrams] Handle ConjugatedPortDefinition in diagrams, Explorer and Details View.
 - https://github.com/eclipse-syson/syson/issues/234[#234] [interconnection-view] Handle InterfaceUsages edges between PortUsages in InterconnectionView.
+- https://github.com/eclipse-syson/syson/issues/175[#175] [diagrams] Add the State Transition view diagram
 
 == v2024.3.0
 

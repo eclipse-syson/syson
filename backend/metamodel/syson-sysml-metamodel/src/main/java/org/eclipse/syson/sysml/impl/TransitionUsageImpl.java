@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -22,10 +23,14 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionFeatureKind;
+import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 
@@ -69,28 +74,77 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
 
     /**
      * <!-- begin-user-doc -->
+     * The effectActions of a TransitionUsage are the transitionFeatures of the 
+     * ownedFeatureMemberships of the TransitionUsage with kind = effect, which 
+     * must all be ActionUsages.
+     * 
+     * <pre>
+     * {@code effectAction = ownedFeatureMembership
+     *  ->selectByKind(TransitionFeatureMembership)
+     *  ->select(kind = TransitionFeatureKind::effect)
+     *  .transitionFeatures
+     *  ->selectByKind(AcceptActionUsage)
+     * }
+     * </pre>
      * <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public EList<ActionUsage> getEffectAction() {
-        List<Usage> data = new ArrayList<>();
+        List<ActionUsage> data = new ArrayList<>();
+        this.getOwnedFeatureMembership().stream()
+            .filter(TransitionFeatureMembership.class::isInstance)
+            .map(TransitionFeatureMembership.class::cast)
+            .filter(tfm -> tfm.getKind().equals(TransitionFeatureKind.EFFECT))
+            .map(TransitionFeatureMembership::getTransitionFeature)
+            .filter(AcceptActionUsage.class::isInstance)
+            .map(AcceptActionUsage.class::cast)
+            .map(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getTransitionUsage_EffectAction(), data.size(), data.toArray());
     }
 
     /**
      * <!-- begin-user-doc -->
+     * The guardExpression of a TransitionUsage are the transitionFeatures of the 
+     * ownedFeatureMemberships of the TransitionUsage with kind = guard, which 
+     * must all be Expressions.
+     * 
+     * <pre>
+     * {@code guardExpression = ownedFeatureMembership
+     *  ->selectByKind(TransitionFeatureMembership)
+     *  ->select(kind = TransitionFeatureKind::guard)
+     *  .transitionFeatures
+     *  ->selectByKind(Expression)
+     * }
+     * </pre>
      * <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public EList<Expression> getGuardExpression() {
-        List<Usage> data = new ArrayList<>();
+        List<Expression> data = new ArrayList<>();
+        this.getOwnedFeatureMembership().stream()
+            .filter(TransitionFeatureMembership.class::isInstance)
+            .map(TransitionFeatureMembership.class::cast)
+            .filter(tfm -> tfm.getKind().equals(TransitionFeatureKind.GUARD))
+            .map(TransitionFeatureMembership::getTransitionFeature)
+            .filter(Expression.class::isInstance)
+            .map(Expression.class::cast)
+            .map(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getTransitionUsage_GuardExpression(), data.size(), data.toArray());
     }
 
     /**
      * <!-- begin-user-doc -->
+     * <pre>
+     * {@code source = 
+     *  if ownedMembership->isEmpty() then null else
+     *      let member : Element = ownedMembership->at(1).memberElement in
+     *      if not member.oclIsKindOf(ActionUsage) then null
+     *      else member.oclAsKindOf(ActionUsage)
+     *      endif
+     *  endif}
+     * </pre>
      * <!-- end-user-doc -->
      * @generated
      */
@@ -103,17 +157,25 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public ActionUsage basicGetSource() {
-        // TODO: implement this method to return the 'Source' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        ActionUsage result = null;
+        Optional<Membership> membership = this.getOwnedMembership().stream().findFirst();
+        if (membership.isPresent()) {
+            Element memberElement = membership.get().getMemberElement();
+            if (memberElement instanceof ActionUsage actionUsage) {
+                result = actionUsage;
+            }
+        }
+        return result;
     }
 
     /**
      * <!-- begin-user-doc -->
+     * <pre>
+     * {@code succession = ownedMember->selectByKind(Succession)->at(1)}
+     * </pre>
      * <!-- end-user-doc -->
      * @generated
      */
@@ -126,17 +188,22 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Succession basicGetSuccession() {
-        // TODO: implement this method to return the 'Succession' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedMember().stream().filter(Succession.class::isInstance).map(Succession.class::cast).findFirst().orElse(null);
     }
 
     /**
      * <!-- begin-user-doc -->
+     * <pre>
+     * {@code target = if succession.targetFeature->isEmpty() then null else
+     *      let targetFeature : Feature = succession.targetFeature->at(1) in
+     *      if not targetFeature.oclIsKindOf(ActionUsage) then null
+     *      else targetFeature.oclAsType(ActionUsage)
+     *      endif
+     *  endif}
+     * </pre>
      * <!-- end-user-doc -->
      * @generated
      */
@@ -149,23 +216,47 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public ActionUsage basicGetTarget() {
-        // TODO: implement this method to return the 'Target' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Succession succession = getSuccession();
+        if (succession != null && !succession.getTarget().isEmpty()) {
+            EList<Element> targets = succession.getTarget();
+            if (!targets.isEmpty() && targets.get(0) instanceof ActionUsage actionUsage) {
+                return actionUsage;
+            }
+        }
         return null;
     }
 
     /**
      * <!-- begin-user-doc -->
+     * The triggerActions of a TransitionUsage are the transitionFeatures of the 
+     * ownedFeatureMemberships of the TransitionUsage with kind = trigger, which 
+     * must all be ActionUsages.
+     * 
+     * <pre>
+     * {@code triggerAction = ownedFeatureMembership
+     *  ->selectByKind(TransitionFeatureMembership)
+     *  ->select(kind = TransitionFeatureKind::trigger)
+     *  .transitionFeatures
+     *  ->selectByKind(AcceptActionUsage)
+     * }
+     * </pre>
      * <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public EList<AcceptActionUsage> getTriggerAction() {
         List<Usage> data = new ArrayList<>();
+        this.getOwnedFeatureMembership().stream()
+            .filter(TransitionFeatureMembership.class::isInstance)
+            .map(TransitionFeatureMembership.class::cast)
+            .filter(tfm -> tfm.getKind().equals(TransitionFeatureKind.TRIGGER))
+            .map(TransitionFeatureMembership::getTransitionFeature)
+            .filter(AcceptActionUsage.class::isInstance)
+            .map(AcceptActionUsage.class::cast)
+            .map(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getTransitionUsage_TriggerAction(), data.size(), data.toArray());
     }
 

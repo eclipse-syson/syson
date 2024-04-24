@@ -62,6 +62,22 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
     protected abstract ChangeContextBuilder getTargetReconnectToolBody();
 
     /**
+     * Implementers may provide the precondition expression which is verified when a reconnection of the source end of the edge is performed.
+     * @return the {@link String} corresponding to the precondition expression to check when a reconnection of the source end of the edge occurs.
+     */
+    protected String getSourceReconnectToolPreconditionExpression() {
+        return null;
+    };
+
+    /**
+     * Implementers may provide the precondition expression which is verified when a reconnection of the target end of the edge is performed.
+     * @return the {@link String} corresponding to the precondition expression to check when a reconnection of the target end of the edge occurs.
+     */
+    protected String getTargetReconnectToolPreconditionExpression() {
+        return null;
+    };
+
+    /**
      * Implementers can override this method to disable the delete tool on specific edge description.
      *
      * @return <code>true</code> if the edge can be deleted and <code>false</code> otherwise.
@@ -107,10 +123,11 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
 
     private SourceEdgeEndReconnectionTool createSourceReconnectTool() {
         var builder = this.diagramBuilderHelper.newSourceEdgeEndReconnectionTool();
-
+        
         return builder
                 .name("Reconnect Source")
                 .body(this.getSourceReconnectToolBody().build())
+                .preconditionExpression(this.getSourceReconnectToolPreconditionExpression())
                 .build();
     }
 
@@ -120,6 +137,7 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
         return builder
                 .name("Reconnect Target")
                 .body(this.getTargetReconnectToolBody().build())
+                .preconditionExpression(this.getTargetReconnectToolPreconditionExpression())
                 .build();
     }
 }

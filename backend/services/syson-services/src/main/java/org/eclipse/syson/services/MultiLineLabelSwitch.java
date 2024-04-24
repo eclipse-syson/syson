@@ -50,6 +50,8 @@ import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Type;
@@ -456,6 +458,58 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.featureTyping(object))
                 .append(this.redefinition(object))
                 .append(this.subsetting(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseStateDefinition(StateDefinition object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("state def")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.getIsParallel(object.isIsParallel()))
+            .append(this.subclassification(object));
+        return label.toString();
+    }
+
+    /**
+     * Builds the string value for Parallel StateUsage or StateDefinition.
+     * 
+     * @param isParallel
+     *            Whether the State is parallel or not.
+     */
+    private StringBuilder getIsParallel(boolean isParallel) {
+        StringBuilder parallel = new StringBuilder();
+        if (isParallel) {
+            parallel
+                .append(LabelConstants.CR)
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("parallel")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR);
+        }
+        return parallel;
+    }
+
+    @Override
+    public String caseStateUsage(StateUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+            .append(this.abstractType(object))
+            .append(LabelConstants.OPEN_QUOTE)
+            .append("state")
+            .append(LabelConstants.CLOSE_QUOTE)
+            .append(LabelConstants.CR)
+            .append(this.caseElement(object))
+            .append(this.getIsParallel(object.isIsParallel()))
+            .append(this.multiplicityRange(object))
+            .append(this.featureTyping(object))
+            .append(this.redefinition(object))
+            .append(this.subsetting(object));
         return label.toString();
     }
 

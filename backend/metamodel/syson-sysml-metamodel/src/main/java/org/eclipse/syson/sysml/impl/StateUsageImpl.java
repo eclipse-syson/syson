@@ -24,8 +24,12 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Behavior;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 
 /**
@@ -179,22 +183,50 @@ public class StateUsageImpl extends ActionUsageImpl implements StateUsage {
 
     /**
      * <!-- begin-user-doc -->
+     * The Behaviors that are the types of this StateUsage. Nominally, these would be StateDefinitions, 
+     * but kernel Behaviors are also allowed, to permit use of Behaviors from the Kernel Model Libraries.
      * <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public EList<Behavior> getStateDefinition() {
-        List<Usage> data = new ArrayList<>();
+        List<Behavior> data = new ArrayList<>();
+        this.getOwnedTyping().stream()
+            .map(FeatureTyping::getRelatedElement)
+            .filter(Behavior.class::isInstance)
+            .map(Behavior.class::cast)
+            .map(data::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStateUsage_StateDefinition(), data.size(), data.toArray());
     }
 
     /**
      * <!-- begin-user-doc -->
+     * Check if this StateUsage is composite and has an owningType that is an StateDefinition or StateUsage 
+     * with the given value of isParallel, but is not an entryAction or exitAction. If so, then it represents 
+     * a StateAction that is a substate or exclusiveState (for isParallel = false) of another StateAction.
+     * <pre>
+     * {@code body: 
+     *  owningType <> null and ( 
+     *      owningType.oclIsKindOf(StateDefinition) and owningType.oclAsType(StateDefinition).isParallel = isParallel 
+     *      or 
+     *      owningType.oclIsKindOf(StateUsage) and owningType.oclAsType(StateUsage).isParallel = isParallel
+     *  )
+     *  and not owningFeatureMembership.oclIsKindOf(StateSubactionMembership)}
+     * </pre>
      * <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public boolean isSubstateUsage(boolean isParallel) {
+        Type owningType = getOwningType();
+        if (owningType != null) {
+            boolean inStateSubactionMembership = this.getOwningFeatureMembership() instanceof StateSubactionMembership;
+            if (!inStateSubactionMembership) {
+                boolean isSubstateUsageOfSD = owningType instanceof StateDefinition sd && sd.isIsParallel() == isParallel;
+                boolean isSubstateUsageOfSU = owningType instanceof StateUsage sd && sd.isIsParallel() == isParallel;
+                return isSubstateUsageOfSD || isSubstateUsageOfSU;
+            }
+        }
         return false;
     }
 

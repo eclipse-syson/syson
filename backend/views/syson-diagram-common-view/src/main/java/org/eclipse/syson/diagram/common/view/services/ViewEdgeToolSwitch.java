@@ -39,6 +39,8 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.AQLConstants;
@@ -208,6 +210,24 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
                         || this.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseDefinition()))
                 .toList();
         edgeTools.add(this.createBecomeObjectiveRequirementEdgeTool(objectiveTargets));
+        edgeTools.addAll(this.caseUsage(object));
+        return edgeTools;
+    }
+
+    @Override
+    public List<EdgeTool> caseStateDefinition(StateDefinition object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
+        edgeTools.add(this.createTransitionUsageEdgeTool(SysmlPackage.eINSTANCE.getTransitionUsage(), targetNodes));
+        edgeTools.addAll(this.caseDefinition(object));
+        return edgeTools;
+    }
+
+    @Override
+    public List<EdgeTool> caseStateUsage(StateUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage()).equals(nodeDesc.getName())).collect(Collectors.toList());
+        edgeTools.add(this.createTransitionUsageEdgeTool(SysmlPackage.eINSTANCE.getTransitionUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -514,6 +534,19 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         return builder
                 .name(this.nameGenerator.getCreationToolName("Become objective", SysmlPackage.eINSTANCE.getRequirementUsage()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + "Objective.svg")
+                .body(callService.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    private EdgeTool createTransitionUsageEdgeTool(EClass eClass, List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var callService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createTransitionUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+
+        return builder
+                .name(this.nameGenerator.getCreationToolName(eClass))
                 .body(callService.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();

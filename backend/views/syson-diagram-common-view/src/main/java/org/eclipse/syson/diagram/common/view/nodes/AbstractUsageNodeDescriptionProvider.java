@@ -117,12 +117,13 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        NodeDescription nodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass)).get();
-        diagramDescription.getNodeDescriptions().add(nodeDescription);
+        cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass)).ifPresent(nodeDescription -> {
+            diagramDescription.getNodeDescriptions().add(nodeDescription);
 
-        nodeDescription.getReusedChildNodeDescriptions().addAll(this.getReusedChildren(cache));
+            nodeDescription.getReusedChildNodeDescriptions().addAll(this.getReusedChildren(cache));
 
-        nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
+            nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
+        });
     }
 
     protected InsideLabelDescription createInsideLabelDescription() {

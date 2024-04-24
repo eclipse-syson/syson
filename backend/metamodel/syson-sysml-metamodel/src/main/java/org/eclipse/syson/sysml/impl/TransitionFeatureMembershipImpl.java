@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
@@ -23,7 +24,9 @@ import org.eclipse.syson.sysml.TransitionFeatureMembership;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Transition Feature Membership</b></em>'.
+ * A TransitionFeatureMembership is a FeatureMembership for a trigger, guard or effect of 
+ * a TransitionUsage, whose transitionFeature is a AcceptActionUsage, Boolean-valued 
+ * Expression or ActionUsage, depending on its kind.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -100,6 +103,7 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
 
     /**
      * <!-- begin-user-doc -->
+     * The Step that is the ownedMemberFeature of this TransitionFeatureMembership.
      * <!-- end-user-doc -->
      * @generated
      */
@@ -112,12 +116,13 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Step basicGetTransitionFeature() {
-        // TODO: implement this method to return the 'Transition Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Feature memberFeature = this.getOwnedMemberFeature();
+        if (memberFeature instanceof Step step) {
+            return step;
+        }
         return null;
     }
 

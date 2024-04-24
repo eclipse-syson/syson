@@ -18,12 +18,14 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -159,5 +161,25 @@ public class ViewEdgeService {
             }
         }
         return self;
+    }
+
+    /**
+     * TransitionUsage edge target type checking. Used as a precondition expression for the
+     * TransitionEdgeDescriptionProvider but does not seems to be used to filter the {@link TransitionUsage}
+     * creation.
+     * 
+     * @param source
+     *            The source of the transition
+     * @param target
+     *            The target of the transition
+     * @return
+     */
+    public boolean checkTransitionEdgeTarget(Element source, Element target) {
+        if (source instanceof ActionUsage sourceAction && target instanceof ActionUsage targetAction) {
+            Element sourceParentElement = sourceAction.getOwner();
+            Element targetParentElement = targetAction.getOwner();
+            return sourceParentElement == targetParentElement;
+        }
+        return false;
     }
 }

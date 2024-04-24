@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -19,6 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Featuring;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
@@ -160,6 +164,7 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
 
     /**
      * <!-- begin-user-doc -->
+     * The Feature that this FeatureMembership relates to its owningType, making it an ownedFeature of the owningType.
      * <!-- end-user-doc -->
      * @generated
      */
@@ -171,18 +176,25 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
 
     /**
      * <!-- begin-user-doc -->
+     * The Feature that this FeatureMembership relates to its owningType, making it an ownedFeature of the owningType.
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetOwnedMemberFeature() {
-        // TODO: implement this method to return the 'Owned Member Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Optional<FeatureMembership> optionalFM = this.getOwnedRelationship().stream()
+                .filter(FeatureMembership.class::isInstance)
+                .map(FeatureMembership.class::cast)
+                .filter(fm -> fm.getOwnedMemberFeature() != null)
+                .findFirst();
+        if (optionalFM.isPresent()) {
+            return optionalFM.get().getOwnedMemberFeature();
+        }
         return null;
     }
 
     /**
      * <!-- begin-user-doc -->
+     * The Type that owns this FeatureMembership.
      * <!-- end-user-doc -->
      * @generated
      */
@@ -194,13 +206,15 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
 
     /**
      * <!-- begin-user-doc -->
+     * The Type that owns this FeatureMembership.
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Type basicGetOwningType() {
-        // TODO: implement this method to return the 'Owning Type' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        InternalEObject container = this.eContainer;
+        if (container instanceof Type ty) {
+            return ty;
+        }
         return null;
     }
 
