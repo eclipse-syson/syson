@@ -78,7 +78,7 @@ public class ViewCreateService {
     }
 
     /**
-     * Create the appropriate {@link Membership} according to the given {@link Element}.
+     * Create the appropriate {@link Membership} child according to the given {@link Element}.
      *
      * @param element
      *            the given {@link Element}.
@@ -87,7 +87,7 @@ public class ViewCreateService {
     public Membership createMembership(Element element) {
         Membership membership = null;
         if (element instanceof Package) {
-            membership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+            membership = SysmlFactory.eINSTANCE.createOwningMembership();
         } else {
             membership = SysmlFactory.eINSTANCE.createFeatureMembership();
         }
