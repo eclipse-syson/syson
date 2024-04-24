@@ -34,6 +34,7 @@ import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
@@ -192,6 +193,14 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         features.addAll(this.caseElement(object));
         features.add(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature());
         features.add(SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencingFeature());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseRequirementConstraintMembership(RequirementConstraintMembership object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.add(SysmlPackage.eINSTANCE.getMembership_Visibility());
+        features.add(SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind());
         return features;
     }
 

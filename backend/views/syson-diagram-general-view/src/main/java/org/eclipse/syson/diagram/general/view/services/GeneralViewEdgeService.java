@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -35,11 +36,12 @@ import org.eclipse.syson.sysml.PortUsage;
  *
  * @author arichard
  */
-public class GeneralViewEdgeService {
+public class GeneralViewEdgeService extends ViewEdgeService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
     public GeneralViewEdgeService(IFeedbackMessageService feedbackMessageService) {
+        super();
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 

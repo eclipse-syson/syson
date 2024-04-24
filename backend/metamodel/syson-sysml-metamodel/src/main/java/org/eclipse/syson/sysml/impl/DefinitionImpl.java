@@ -35,6 +35,7 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PartUsage;
@@ -45,6 +46,7 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.VariantMembership;
@@ -687,6 +689,24 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
     public EList<VariantMembership> getVariantMembership() {
         List<VariantMembership> data = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getDefinition_VariantMembership(), data.size(), data.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
+    public EList<Membership> getInheritedMembership() {
+        List<Membership> inheritedMemberships = new ArrayList<>();
+        this.getOwnedSpecialization().forEach(spe -> {
+            Type general = spe.getGeneral();
+            if (general != null) {
+                inheritedMemberships.addAll(general.getInheritedMembership());
+                inheritedMemberships.addAll(general.getOwnedMembership());
+            }
+        });
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMemberships.size(), inheritedMemberships.toArray());
     }
 
     /**

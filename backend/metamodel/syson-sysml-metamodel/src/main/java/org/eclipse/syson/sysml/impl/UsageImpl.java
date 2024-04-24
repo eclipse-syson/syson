@@ -175,6 +175,27 @@ public class UsageImpl extends FeatureImpl implements Usage {
      * @generated NOT
      */
     @Override
+    public EList<Membership> getInheritedMembership() {
+        List<Membership> inheritedMemberships = new ArrayList<>();
+        this.getDefinition().forEach(def -> {
+            inheritedMemberships.addAll(def.getInheritedMembership());
+            inheritedMemberships.addAll(def.getOwnedMembership());
+        });
+        Usage owningUsage = this.getOwningUsage();
+        if (owningUsage != null) {
+            inheritedMemberships.addAll(owningUsage.getInheritedMembership());
+            inheritedMemberships.addAll(owningUsage.getOwnedMembership());
+        }
+        List<Membership> distinctInheritedMemberships = inheritedMemberships.stream().distinct().toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), distinctInheritedMemberships.size(), distinctInheritedMemberships.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated NOT
+     */
+    @Override
     public EList<Usage> getDirectedUsage() {
         List<Usage> data = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_DirectedUsage(), data.size(), data.toArray());

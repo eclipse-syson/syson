@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Conjugation;
 import org.eclipse.syson.sysml.Differencing;
 import org.eclipse.syson.sysml.Disjoining;
@@ -205,19 +205,27 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getInheritedFeature() {
-        List<Feature> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedFeature(), data.size(), data.toArray());
+        List<Feature> inheritedFeatures = new ArrayList<>();
+        this.getInheritedMembership().stream()
+                .filter(FeatureMembership.class::isInstance)
+                .map(FeatureMembership.class::cast)
+                .map(FeatureMembership::getOwnedMemberFeature)
+                .forEach(inheritedFeatures::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedFeature(), inheritedFeatures.size(), inheritedFeatures.toArray());
     }
 
     /**
      * <!-- begin-user-doc -->
+     * Partial implementation (see sub types, e.g. UsageImpl or DefinitionImpl). Should be:
+     * All Memberships inherited by this Type via Specialization or Conjugation.
+     * These are included in the derived union for the memberships of the Type.
      * <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        List<Membership> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), data.size(), data.toArray());
+        List<Membership> inheritedMemberships = new ArrayList<>();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMemberships.size(), inheritedMemberships.toArray());
     }
 
     /**
@@ -395,8 +403,11 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getOwnedFeature() {
-        List<Feature> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedFeature(), data.size(), data.toArray());
+        List<Feature> ownedFeatures = new ArrayList<>();
+        this.getOwnedFeatureMembership().stream()
+            .map(FeatureMembership::getOwnedMemberFeature)
+            .forEach(ownedFeatures::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedFeature(), ownedFeatures.size(), ownedFeatures.toArray());
     }
 
     /**
@@ -433,7 +444,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
     @Override
     public EList<Specialization> getOwnedSpecialization() {
         List<Specialization> ownedSpecializations = new ArrayList<>();
-        // The ownedRelationships of this Type that are Specializations, for which the Type is the specific Type.
+        // The ownedRelationships of this Type that are Specializations, and for which the Specialization's specific Type is this Type.
         this.getOwnedRelationship().stream()
             .filter(Specialization.class::isInstance)
             .map(Specialization.class::cast)
