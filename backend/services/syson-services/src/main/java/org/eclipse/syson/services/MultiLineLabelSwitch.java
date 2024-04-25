@@ -13,6 +13,7 @@
 package org.eclipse.syson.services;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
@@ -27,6 +28,9 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
@@ -54,6 +58,7 @@ import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.TriggerInvocationExpression;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
@@ -75,6 +80,110 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             return "";
         }
         return declaredName;
+    }
+
+    @Override
+    public String caseAcceptActionUsage(AcceptActionUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("accept action")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object))
+                .append(LabelConstants.CR)
+                .append(this.acceptActionUsagePayloadDetails(object))
+                .append(this.acceptActionUsageReceiverDetails(object));
+        return label.toString();
+    }
+
+    private String acceptActionUsagePayloadDetails(AcceptActionUsage aau) {
+        StringBuilder label = new StringBuilder();
+        this.addAcceptActionUsagePayloadParameter(label, aau);
+        this.addAcceptActionUsagePayloadArgument(label, aau);
+        return label.toString();
+    }
+
+    private void addAcceptActionUsagePayloadParameter(StringBuilder label, AcceptActionUsage aau) {
+        var payloadParameter = aau.getPayloadParameter();
+        if (payloadParameter != null) {
+            var payloadName = payloadParameter.getDeclaredName();
+            var payloadTypeName = payloadParameter.getOwnedRelationship().stream()
+                    .filter(FeatureTyping.class::isInstance)
+                    .map(FeatureTyping.class::cast)
+                    .map(ft -> ft.getType())
+                    .filter(type -> type != null)
+                    .map(t -> t.getDeclaredName())
+                    .findFirst()
+                    .orElse(null);
+
+            if (payloadTypeName != null) {
+                label
+                        .append(LabelConstants.OPEN_QUOTE)
+                        .append("accept")
+                        .append(LabelConstants.CLOSE_QUOTE);
+                if (payloadName != null) {
+                    label
+                            .append(LabelConstants.SPACE)
+                            .append(payloadName);
+                }
+                if (payloadName != null) {
+                    label.append(LabelConstants.COLON);
+                }
+                label
+                        .append(LabelConstants.SPACE)
+                        .append(payloadTypeName);
+                label.append(LabelConstants.CR);
+            }
+        }
+    }
+
+    private void addAcceptActionUsagePayloadArgument(StringBuilder label, AcceptActionUsage aau) {
+        var payloadArgument = aau.getPayloadArgument();
+        if (payloadArgument instanceof TriggerInvocationExpression tie) {
+            Expression expression = tie.getOwnedRelationship().stream()
+                    .filter(FeatureMembership.class::isInstance)
+                    .map(FeatureMembership.class::cast)
+                    .flatMap(pm -> pm.getOwnedRelatedElement().stream())
+                    .filter(Expression.class::isInstance)
+                    .map(Expression.class::cast)
+                    .findFirst()
+                    .orElse(null);
+            if (expression != null && expression.getDeclaredName() != null) {
+                label
+                        .append(tie.getKind().toString())
+                        .append(LabelConstants.SPACE)
+                        // At the moment, we do not have the service to retrieve the textual representation of an
+                        // expression.
+                        .append(expression.getDeclaredName());
+            }
+        }
+    }
+
+    private String acceptActionUsageReceiverDetails(AcceptActionUsage aau) {
+        StringBuilder label = new StringBuilder();
+        Expression receiverArgument = aau.getReceiverArgument();
+        if (receiverArgument instanceof FeatureReferenceExpression fre) {
+            var referent = fre.getReferent();
+            if (referent != null) {
+                var referentName = referent.getName();
+                if (referentName != null) {
+                    label
+                            .append(LabelConstants.OPEN_QUOTE)
+                            .append("via")
+                            .append(LabelConstants.CLOSE_QUOTE)
+                            .append(LabelConstants.SPACE)
+                            .append(referentName)
+                            .append(LabelConstants.CR);
+                }
+            }
+        }
+        return label.toString();
     }
 
     @Override
@@ -646,7 +755,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             value = String.valueOf(literal.isValue());
         } else if (literalExpression instanceof LiteralString literal) {
             value = String.valueOf(literal.getValue());
-        } else if (literalExpression instanceof LiteralInfinity literal) {
+        } else if (literalExpression instanceof LiteralInfinity) {
             value = "*";
         }
         return value;

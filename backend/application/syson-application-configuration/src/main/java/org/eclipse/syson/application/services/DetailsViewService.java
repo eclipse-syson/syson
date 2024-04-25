@@ -34,9 +34,21 @@ import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ImportService;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.ReturnParameterMembership;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * Java services needed to execute the AQL expressions used in the {@link SysMLv2PropertiesConfigurer}.
@@ -230,5 +242,186 @@ public class DetailsViewService {
             }
         }
         return element;
+    }
+
+    public AcceptActionUsage getAcceptActionUsage(Element self) {
+        if (self instanceof AcceptActionUsage accept) {
+            return accept;
+        }
+        return null;
+    }
+
+    /**
+     * Verify that the given accept action usage contains the correct underneath structure of elements.<br>
+     * An @link {@link AcceptActionUsage} should have two @link {@link ParameterMembership} relationships with a
+     * {@link ReferenceUsage} in each one. The first is the payload parameter (and may hold the payload argument as
+     * well), the second one holds the receiver argument.<br>
+     * In case of the structure of the given accept action usage is not correct, this method creates missing part to
+     * guarantee that it is well formed after its call.
+     *
+     * @param aau
+     *            an {@link AcceptActionUsage}
+     */
+    private void checkAndRepairAcceptActionUsageStructure(AcceptActionUsage aau) {
+        this.checkAndRepairAcceptActionUsagePayload(aau);
+        this.checkAndRepairAcceptActionUsageReceiver(aau);
+    }
+
+    private void checkAndRepairAcceptActionUsagePayload(AcceptActionUsage aau) {
+        var payloadParam = aau.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (payloadParam == null) {
+            payloadParam = SysmlFactory.eINSTANCE.createParameterMembership();
+            aau.getOwnedRelationship().add(payloadParam);
+        }
+        var payloadRef = payloadParam.getOwnedRelatedElement().stream()
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (payloadRef == null) {
+            payloadRef = SysmlFactory.eINSTANCE.createReferenceUsage();
+            payloadRef.setDirection(FeatureDirectionKind.INOUT);
+            payloadParam.getOwnedRelatedElement().add(payloadRef);
+        }
+        var ft = payloadRef.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (ft == null) {
+            ft = SysmlFactory.eINSTANCE.createFeatureTyping();
+            payloadRef.getOwnedRelationship().add(ft);
+        }
+    }
+
+    private void checkAndRepairAcceptActionUsageReceiver(AcceptActionUsage aau) {
+        // find or create the second parameter membership
+        var paramList = aau.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .toList();
+        final ParameterMembership receiverParam;
+        if (paramList.size() < 2) {
+            receiverParam = SysmlFactory.eINSTANCE.createParameterMembership();
+            aau.getOwnedRelationship().add(receiverParam);
+        } else {
+            receiverParam = paramList.get(1);
+        }
+        // find or create the reference usage contained in the parameter membership
+        var receiverRef = receiverParam.getOwnedRelatedElement().stream()
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (receiverRef == null) {
+            receiverRef = SysmlFactory.eINSTANCE.createReferenceUsage();
+            receiverRef.setDirection(FeatureDirectionKind.IN);
+            receiverParam.getOwnedRelatedElement().add(receiverRef);
+        }
+        // find or create the feature value relationship contained inside the reference usage
+        var receiverFeatureVal = receiverRef.getOwnedRelationship().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (receiverFeatureVal == null) {
+            receiverFeatureVal = SysmlFactory.eINSTANCE.createFeatureValue();
+            receiverRef.getOwnedRelationship().add(receiverFeatureVal);
+        }
+        // find or create the feature reference expression contained inside the feature value relationship
+        var receiverFeatureRefExpr = receiverFeatureVal.getOwnedRelatedElement().stream()
+                .filter(FeatureReferenceExpression.class::isInstance)
+                .map(FeatureReferenceExpression.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (receiverFeatureRefExpr == null) {
+            receiverFeatureRefExpr = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
+            receiverFeatureVal.getOwnedRelatedElement().add(receiverFeatureRefExpr);
+        }
+        // find or create the membership relationship contained inside the feature reference expression
+        var receiverMembership = receiverFeatureRefExpr.getOwnedRelationship().stream()
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (receiverMembership == null) {
+            receiverMembership = SysmlFactory.eINSTANCE.createMembership();
+            receiverFeatureRefExpr.getOwnedRelationship().add(receiverMembership);
+        }
+        // find or create the return parameter membership relationship contained inside the feature reference expression
+        var receiverReturn = receiverFeatureRefExpr.getOwnedRelationship().stream()
+                .filter(ReturnParameterMembership.class::isInstance)
+                .map(ReturnParameterMembership.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (receiverReturn == null) {
+            receiverReturn = SysmlFactory.eINSTANCE.createReturnParameterMembership();
+            receiverFeatureRefExpr.getOwnedRelationship().add(receiverReturn);
+        }
+        // find or create the feature contained inside the parameter membership relationship
+        var receiverFeature = receiverReturn.getOwnedRelatedElement().stream()
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (receiverFeature == null) {
+            receiverFeature = SysmlFactory.eINSTANCE.createFeature();
+            receiverFeature.setDirection(FeatureDirectionKind.OUT);
+            receiverReturn.getOwnedRelatedElement().add(receiverFeature);
+        }
+    }
+
+    public Element getAcceptActionUsagePayloadFeatureTyping(AcceptActionUsage acceptActionUsage) {
+        this.checkAndRepairAcceptActionUsageStructure(acceptActionUsage);
+        return acceptActionUsage.getPayloadParameter().getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean setAcceptActionUsagePayloadParameter(AcceptActionUsage acceptActionUsage, Element newPayloadParameter) {
+        if (newPayloadParameter instanceof Type newType) {
+            var payloadParam = acceptActionUsage.getPayloadParameter();
+            if (payloadParam != null) {
+                var ft = payloadParam.getOwnedRelationship().stream()
+                        .filter(FeatureTyping.class::isInstance)
+                        .map(FeatureTyping.class::cast)
+                        .findFirst()
+                        .orElse(null);
+                ft.setType(newType);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Element getAcceptActionUsageReceiverMembership(AcceptActionUsage acceptActionUsage) {
+        this.checkAndRepairAcceptActionUsageStructure(acceptActionUsage);
+        return acceptActionUsage.getReceiverArgument().getOwnedRelationship().stream()
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean setAcceptActionUsageReceiverArgument(AcceptActionUsage acceptActionUsage, Element newReceiverArgument) {
+        var receiverArgument = acceptActionUsage.getReceiverArgument();
+        if (receiverArgument != null) {
+            var m = receiverArgument.getOwnedRelationship().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .findFirst()
+                    .orElse(null);
+            if (m != null) {
+                m.setMemberElement(newReceiverArgument);
+                return true;
+            }
+        }
+        return false;
     }
 }

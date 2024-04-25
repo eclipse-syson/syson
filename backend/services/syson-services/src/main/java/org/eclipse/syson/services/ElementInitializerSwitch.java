@@ -13,6 +13,7 @@
 package org.eclipse.syson.services;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Dependency;
@@ -21,6 +22,7 @@ import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
@@ -44,6 +46,23 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
             return element;
         }
         return null;
+    }
+
+    @Override
+    public Element caseAcceptActionUsage(AcceptActionUsage object) {
+        this.caseUsage(object);
+        // create two ParameterMembership
+        object.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage("payload"));
+        object.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage("receiver"));
+        return object;
+    }
+
+    private ParameterMembership createParameterMembershipWithReferenceUsage(String refName) {
+        var reference = SysmlFactory.eINSTANCE.createReferenceUsage();
+        reference.setDeclaredName(refName);
+        var pm = SysmlFactory.eINSTANCE.createParameterMembership();
+        pm.getOwnedRelatedElement().add(reference);
+        return pm;
     }
 
     @Override

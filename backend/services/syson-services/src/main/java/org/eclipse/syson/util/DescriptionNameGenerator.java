@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.util;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -74,15 +75,16 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
     /**
      * Returns the name of the creation tool of the given {@link EClassifier} with a specified prefix.
      *
-     * @param prefix
-     *            the string that should be prepended to the name of the given {@link EClassifier}
+     * @param pattern
+     *            the pattern string use to form the name of the tool, see {@link MessageFormat}.<br>
+     *            If the pattern does not contain {0}, it is just prepend to the name of the given {@link EClassifier}.
      * @param eClassifier
      *            the {@link EClassifier} the creation tool is in charge of.
      * @return a string starting with the given prefix and followed by the name of the given {@link EClassifier}.<br>
      *         If the given classifier is a usage, the word "Usage" is removed from the name of the classifier.
      */
     @Override
-    public String getCreationToolName(String prefix, EClassifier eClassifier) {
+    public String getCreationToolName(String pattern, EClassifier eClassifier) {
         String nameToParse = eClassifier.getName();
         if (eClassifier instanceof EClass eClass) {
             if (SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass)
@@ -94,7 +96,11 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
                 }
             }
         }
-        return prefix + this.findWordsInMixedCase(nameToParse).stream().collect(Collectors.joining(SPACE));
+        if (!pattern.contains("{0}")) {
+            return pattern + this.findWordsInMixedCase(nameToParse).stream().collect(Collectors.joining(SPACE));
+        } else {
+            return MessageFormat.format(pattern, this.findWordsInMixedCase(nameToParse).stream().collect(Collectors.joining(SPACE)));
+        }
     }
 
     private List<String> findWordsInMixedCase(String text) {

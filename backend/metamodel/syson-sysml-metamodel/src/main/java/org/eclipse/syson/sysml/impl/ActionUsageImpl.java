@@ -14,7 +14,10 @@ package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -23,8 +26,15 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChaining;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.ReturnParameterMembership;
+import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 
 /**
@@ -80,10 +90,16 @@ public class ActionUsageImpl extends OccurrenceUsageImpl implements ActionUsage 
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), data.size(), data.toArray());
+        List<Feature> features = this.getOwnedRelationship().stream()
+            .filter(ParameterMembership.class::isInstance)
+            .map(ParameterMembership.class::cast)
+            .flatMap(or -> or.getOwnedRelatedElement().stream())
+            .filter(Feature.class::isInstance)
+            .map(Feature.class::cast)
+            .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), features.size(), features.toArray());
     }
-
+    
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -98,37 +114,47 @@ public class ActionUsageImpl extends OccurrenceUsageImpl implements ActionUsage 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Expression argument(int i) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
+        var features = inputParameters();
+        if (features.size() > i) {
+            return features.get(i).getOwnedRelationship().stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .map(FeatureValue::getValue)
+                    .findFirst()
+                    .orElse(null);
+        }
         return null;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public Feature inputParameter(int i) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
+        var parameters = inputParameters();
+        if (parameters.size() > i) {
+            return parameters.get(i);
+        }
         return null;
     }
 
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Feature> inputParameters() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        var parameters = getParameter().stream()
+                .filter(f -> (f.getDirection() == FeatureDirectionKind.IN || f.getDirection() == FeatureDirectionKind.INOUT))
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), parameters.size(), parameters.toArray());
     }
 
     /**

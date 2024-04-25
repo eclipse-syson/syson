@@ -12,76 +12,84 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.actionflow.view.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.services.AbstractViewNodeToolSectionSwitch;
+import org.eclipse.syson.diagram.common.view.tools.AcceptActionPayloadNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.AcceptActionPortUsageReceiverToolNodeProvider;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
  * Switch retrieving the list of NodeToolSections for each SysMLv2 concept represented in the Action Flow View diagram.
  *
  * @author Jerome Gout
  */
-public class ActionFlowViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
+public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch {
 
-    private final DiagramBuilders diagramBuilderHelper;
+    private final List<NodeDescription> allNodeDescriptions;
 
-    private final List<NodeToolSection> nodeToolSections;
-
-    private final AFVDescriptionNameGenerator nameGenerator = new AFVDescriptionNameGenerator();
-
-    public ActionFlowViewNodeToolSectionSwitch() {
-        this.diagramBuilderHelper = new DiagramBuilders();
-        this.nodeToolSections = new ArrayList<>();
-    }
-
-    public List<NodeToolSection> getNodeToolSections() {
-        return this.nodeToolSections;
+    public ActionFlowViewNodeToolSectionSwitch(List<NodeDescription> allNodeDescriptions) {
+        super(new AFVDescriptionNameGenerator());
+        this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
     }
 
     @Override
-    public Void caseDefinition(Definition object) {
-        this.createToolsForCompartmentItems(object);
-        return super.caseDefinition(object);
-    }
-
-    @Override
-    public Void caseUsage(Usage object) {
-        this.createToolsForCompartmentItems(object);
-        return super.caseUsage(object);
-    }
-
-    private void createToolsForCompartmentItems(Element object) {
-        List<NodeTool> compartmentNodeTools = new ArrayList<>();
-        ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
-            if (compartmentEClass.equals(object.eClass())) {
-                listItems.forEach(eReference -> {
-                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.nameGenerator);
-                    compartmentNodeTools.add(provider.create(null));
-                });
-            }
-        });
-        Optional<NodeToolSection> createToolSection = this.nodeToolSections.stream()
-                .filter(toolSection -> toolSection.getName().equals("Create"))
-                .findFirst();
-        if (createToolSection.isPresent()) {
-            createToolSection.get().getNodeTools().addAll(compartmentNodeTools);
+    protected List<EReference> getElementCompartmentReferences(Element element) {
+        List<EReference> refs = ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.get(element.eClass());
+        if (refs != null) {
+            return refs;
         } else {
-            NodeToolSection toolSection = this.diagramBuilderHelper.newNodeToolSection()
-                    .name("Create")
-                    .nodeTools(compartmentNodeTools.toArray(NodeTool[]::new))
-                    .build();
-            this.nodeToolSections.add(toolSection);
+            return List.of();
         }
+    }
+
+    @Override
+    protected List<NodeDescription> getAllNodeDescriptions() {
+        return this.allNodeDescriptions;
+    }
+
+    @Override
+    public List<NodeToolSection> caseAcceptActionUsage(AcceptActionUsage object) {
+        var createSection = this.buildCreateSection(
+                this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getItemDefinition()),
+                this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getPartDefinition()),
+                this.createPortUsageAsReceiverNodeTool());
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseDefinition(Definition object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection);
+    }
+
+    @Override
+    public List<NodeToolSection> caseUsage(Usage object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    private NodeTool createPayloadNodeTool(EClass payloadType) {
+        var payloadNodeToolProvider = new AcceptActionPayloadNodeToolProvider(payloadType, new AFVDescriptionNameGenerator());
+        return payloadNodeToolProvider.create(null);
+    }
+
+    private NodeTool createPortUsageAsReceiverNodeTool() {
+        var newPortAsReceiverToolProvider = new AcceptActionPortUsageReceiverToolNodeProvider();
+        return newPortAsReceiverToolProvider.create(null);
     }
 }

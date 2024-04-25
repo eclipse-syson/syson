@@ -65,13 +65,14 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetOwnedMemberParameter() {
-        // TODO: implement this method to return the 'Owned Member Parameter' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelatedElement().stream()
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

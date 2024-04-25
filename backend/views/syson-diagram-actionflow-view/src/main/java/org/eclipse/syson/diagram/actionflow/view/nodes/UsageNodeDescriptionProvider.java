@@ -63,8 +63,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
 
     @Override
     protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        ActionFlowViewNodeToolSectionSwitch toolSectionSwitch = new ActionFlowViewNodeToolSectionSwitch();
-        toolSectionSwitch.doSwitch(this.eClass);
-        return toolSectionSwitch.getNodeToolSections();
+        ActionFlowViewNodeToolSectionSwitch toolSectionSwitch = new ActionFlowViewNodeToolSectionSwitch(this.getAllNodeDescriptions(cache));
+        return toolSectionSwitch.doSwitch(this.eClass);
     }
 }
