@@ -12,22 +12,22 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
-import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.services.AbstractViewNodeToolSectionSwitch;
+import org.eclipse.syson.diagram.common.view.tools.AcceptActionPayloadNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.AcceptActionPortUsageReceiverToolNodeProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -45,28 +45,44 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
-import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
  * Switch retrieving the list of NodeToolSections for each SysMLv2 concept represented in the General View diagram.
  *
  * @author arichard
  */
-public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<NodeToolSection>> {
-
-    private final ViewBuilders viewBuilderHelper;
-
-    private final DiagramBuilders diagramBuilderHelper;
+public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch {
 
     private final List<NodeDescription> allNodeDescriptions;
 
-    private final GVDescriptionNameGenerator nameGenerator = new GVDescriptionNameGenerator();
-
     public GeneralViewNodeToolSectionSwitch(List<NodeDescription> allNodeDescriptions) {
-        this.viewBuilderHelper = new ViewBuilders();
-        this.diagramBuilderHelper = new DiagramBuilders();
+        super(new GVDescriptionNameGenerator());
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
+    }
+
+    @Override
+    protected List<EReference> getElementCompartmentReferences(Element element) {
+        List<EReference> refs = GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.get(element.eClass());
+        if (refs != null) {
+            return refs;
+        } else {
+            return List.of();
+        }
+    }
+
+    @Override
+    protected List<NodeDescription> getAllNodeDescriptions() {
+        return this.allNodeDescriptions;
+    }
+
+    @Override
+    public List<NodeToolSection> caseAcceptActionUsage(AcceptActionUsage object) {
+        var createSection = this.buildCreateSection(
+                this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getItemDefinition()),
+                this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getPartDefinition()),
+                this.createPortUsageAsReceiverNodeTool()
+                );
+        return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override
@@ -192,13 +208,6 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
         return List.of(createSection, this.addElementsToolSection());
     }
 
-    private NodeToolSection buildCreateSection(NodeTool... nodeTools) {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Create")
-                .nodeTools(nodeTools)
-                .build();
-    }
-
     private NodeTool createPartUsageAsSubjectNodeTool() {
         var subjectCompartmentNodeToolProvider = new SubjectCompartmentNodeToolProvider();
         return subjectCompartmentNodeToolProvider.create(null);
@@ -221,78 +230,13 @@ public class GeneralViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<Nod
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()));
     }
 
-    private NodeTool createNestedUsageNodeTool(EClass eClass) {
-        NodeDescription nodeDesc = this.allNodeDescriptions.stream().filter(nd -> this.nameGenerator.getNodeName(eClass).equals(nd.getName())).findFirst().get();
-        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance.elementInitializer()");
-
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDesc)
-                .parentViewExpression("aql:self.getParentNode(selectedNode, diagramContext)")
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
-
-        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newFeatureMembership")
-                .children(createEClassInstance.build(), createView.build());
-
-        var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureMembership()))
-                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newFeatureMembership")
-                .children(changeContexMembership.build());
-
-        return this.diagramBuilderHelper.newNodeTool()
-                .name(this.nameGenerator.getCreationToolName("New ", eClass))
-                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
-                .body(createMembership.build())
-                .build();
+    private NodeTool createPayloadNodeTool(EClass payloadType) {
+        var payloadNodeToolProvider = new AcceptActionPayloadNodeToolProvider(payloadType, new GVDescriptionNameGenerator());
+        return payloadNodeToolProvider.create(null);
     }
 
-    private NodeToolSection addElementsToolSection() {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Add")
-                .nodeTools(this.addExistingNestedPartsTool(false), this.addExistingNestedPartsTool(true))
-                .build();
-    }
-
-    private NodeTool addExistingNestedPartsTool(boolean recursive) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingNestedElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
-
-        String title = "Add existing nested elements";
-        String iconURL = "/icons/AddExistingElements.svg";
-        if (recursive) {
-            title += " (recursive)";
-            iconURL = "/icons/AddExistingElementsRecursive.svg";
-        }
-
-        return builder
-                .name(title)
-                .iconURLsExpression(iconURL)
-                .body(addExistingelements.build())
-                .build();
-    }
-
-    private List<NodeTool> createToolsForCompartmentItems(Element object) {
-        List<NodeTool> compartmentNodeTools = new ArrayList<>();
-        GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
-            if (compartmentEClass.equals(object.eClass())) {
-                listItems.forEach(eReference -> {
-                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.nameGenerator);
-                    compartmentNodeTools.add(provider.create(null));
-                });
-            }
-        });
-        return compartmentNodeTools;
+    private NodeTool createPortUsageAsReceiverNodeTool() {
+        var newPortAsReceiverToolProvider = new AcceptActionPortUsageReceiverToolNodeProvider();
+        return newPortAsReceiverToolProvider.create(null);
     }
 }

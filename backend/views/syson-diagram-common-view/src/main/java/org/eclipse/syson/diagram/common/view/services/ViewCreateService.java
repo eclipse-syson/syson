@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -28,15 +29,19 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -401,5 +406,153 @@ public class ViewCreateService {
         specializationTypes.forEach(speType -> {
             this.getSpecializationTypeHierarchy(speType, specializationTypeHierarchy);
         });
+    }
+
+    private Package getClosestContainingPackageFrom(Element element) {
+        var owner = element.eContainer();
+        while (!(owner instanceof Package) && owner != null) {
+            owner = owner.eContainer();
+        }
+        return (Package) owner;
+    }
+
+    public Element createAcceptActionPayload(AcceptActionUsage self, String payloadEClassName) {
+        var classifier = SysmlPackage.eINSTANCE.getEClassifier(payloadEClassName);
+        if (classifier instanceof EClass eClass) {
+            var payload = SysmlFactory.eINSTANCE.create(eClass);
+            if (payload instanceof Type payloadType) {
+                // create the payload definition which is the type of the payload
+                payloadType.setDeclaredName(self.getDeclaredName() + "PayloadType");
+                var membership = SysmlFactory.eINSTANCE.createOwningMembership();
+                membership.getOwnedRelatedElement().add(payloadType);
+                var payloadParent = this.getClosestContainingPackageFrom(self);
+                payloadParent.getOwnedRelationship().add(membership);
+                // reference this payload in the accept action
+                var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+                featureTyping.setType(payloadType);
+                var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+                referenceUsage.setDeclaredName("payload");
+                referenceUsage.setDirection(FeatureDirectionKind.INOUT);
+                referenceUsage.getOwnedRelationship().add(featureTyping);
+                var parameterMembership = this.getPayloadParameterMembership(self);
+                var oldParameterContent = parameterMembership.getOwnedMemberParameter();
+                if (oldParameterContent != null) {
+                    // there is already a playload parameter, we need to delete it.
+                    EcoreUtil.delete(oldParameterContent);
+                }
+                parameterMembership.getOwnedRelatedElement().add(referenceUsage);
+                self.getOwnedRelationship().add(parameterMembership);
+            }
+        }
+        return self;
+    }
+
+    private ParameterMembership getPayloadParameterMembership(AcceptActionUsage acceptActionUsage) {
+        var membership = acceptActionUsage.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (membership == null) {
+            membership = SysmlFactory.eINSTANCE.createParameterMembership();
+        } else {
+            membership.getOwnedRelatedElement().clear();
+        }
+        return membership;
+    }
+
+    private ParameterMembership getReceiverParameterMembership(AcceptActionUsage acceptActionUsage) {
+        final ParameterMembership result;
+        var memberships = acceptActionUsage.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .toList();
+        if (memberships.size() == 0) {
+            // add an empty payload
+            acceptActionUsage.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage());
+            result = SysmlFactory.eINSTANCE.createParameterMembership();
+        } else if (memberships.size() == 1) {
+            result = SysmlFactory.eINSTANCE.createParameterMembership();
+        } else {
+            result = memberships.get(1);
+        }
+        return result;
+    }
+
+    private ParameterMembership createParameterMembershipWithReferenceUsage() {
+        var reference = SysmlFactory.eINSTANCE.createReferenceUsage();
+        var pm = SysmlFactory.eINSTANCE.createParameterMembership();
+        pm.getOwnedRelatedElement().add(reference);
+        return pm;
+    }
+
+    public Element createAcceptActionReceiver(AcceptActionUsage self) {
+        // create the port usage
+        var newPort = SysmlFactory.eINSTANCE.createPortUsage();
+        newPort.setDeclaredName(self.getDeclaredName() + "'s receiver");
+        var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        owningMembership.getOwnedRelatedElement().add(newPort);
+        var receiverParent = this.getClosestContainingPackageFrom(self);
+        receiverParent.getOwnedRelationship().add(owningMembership);
+        // reference this port usage as the receiver of the accept action
+        var feature = SysmlFactory.eINSTANCE.createFeature();
+        feature.setDirection(FeatureDirectionKind.OUT);
+        var returnParameterMembership = SysmlFactory.eINSTANCE.createReturnParameterMembership();
+        returnParameterMembership.getOwnedRelatedElement().add(feature);
+        var membership = SysmlFactory.eINSTANCE.createMembership();
+        membership.setMemberElement(newPort);
+        var featureReferenceExpression = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
+        featureReferenceExpression.getOwnedRelationship().add(membership);
+        featureReferenceExpression.getOwnedRelationship().add(returnParameterMembership);
+        var featureValue = SysmlFactory.eINSTANCE.createFeatureValue();
+        featureValue.getOwnedRelatedElement().add(featureReferenceExpression);
+        var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        referenceUsage.setDeclaredName("receiver");
+        referenceUsage.setDirection(FeatureDirectionKind.IN);
+        referenceUsage.getOwnedRelationship().add(featureValue);
+        var parameterMembership = this.getReceiverParameterMembership(self);
+        Feature oldParameterContent = parameterMembership.getOwnedMemberParameter();
+        if (oldParameterContent != null) {
+            // there is already an element, we need to delete this element
+            EcoreUtil.delete(oldParameterContent);
+        }
+        parameterMembership.getOwnedRelatedElement().add(referenceUsage);
+        self.getOwnedRelationship().add(parameterMembership);
+        return self;
+    }
+
+    public boolean isEmptyAcceptActionUsageReceiver(Element element) {
+        if (element instanceof AcceptActionUsage aau) {
+            var receiverExp = aau.getReceiverArgument();
+            if (receiverExp != null) {
+                var receiverMembership = receiverExp.getOwnedRelationship().stream()
+                        .filter(Membership.class::isInstance)
+                        .map(Membership.class::cast)
+                        .findFirst()
+                        .orElse(null);
+                if (receiverMembership != null) {
+                    return receiverMembership.getMemberElement() == null;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isEmptyAcceptActionUsagePayload(Element element) {
+        boolean result = true;
+        if (element instanceof AcceptActionUsage aau) {
+            var payloadParameter = aau.getPayloadParameter();
+            if (payloadParameter != null && payloadParameter.getOwnedRelationship().size() > 0) {
+                var type = payloadParameter.getOwnedRelationship().stream()
+                        .filter(FeatureTyping.class::isInstance)
+                        .map(FeatureTyping.class::cast)
+                        .map(FeatureTyping::getType)
+                        .filter(t -> t != null)
+                        .findFirst()
+                        .orElse(null);
+                return type == null;
+            }
+        }
+        return result;
     }
 }

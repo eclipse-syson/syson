@@ -188,11 +188,11 @@ public class FeatureValueImpl extends OwningMembershipImpl implements FeatureVal
      * @generated NOT
      */
     public Expression basicGetValue() {
-        Optional<LiteralExpression> optLiteralExpression = this.getOwnedRelatedElement().stream()
-            .filter(LiteralExpression.class::isInstance)
-            .map(LiteralExpression.class::cast)
-            .findFirst();
-        return optLiteralExpression.orElse(null);
+        return this.getOwnedRelatedElement().stream()
+            .filter(Expression.class::isInstance)
+            .map(Expression.class::cast)
+            .findFirst()
+            .orElse(null);
     }
 
     /**

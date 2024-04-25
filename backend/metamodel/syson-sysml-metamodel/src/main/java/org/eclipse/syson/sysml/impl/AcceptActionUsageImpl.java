@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -20,6 +21,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -75,13 +78,10 @@ public class AcceptActionUsageImpl extends ActionUsageImpl implements AcceptActi
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Expression basicGetPayloadArgument() {
-        // TODO: implement this method to return the 'Payload Argument' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return argument(0);
     }
 
     /**
@@ -102,12 +102,11 @@ public class AcceptActionUsageImpl extends ActionUsageImpl implements AcceptActi
      * @generated NOT
      */
     public ReferenceUsage basicGetPayloadParameter() {
-        return this.getOwnedFeatureMembership().stream()
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
-                .filter(ReferenceUsage.class::isInstance)
-                .map(ReferenceUsage.class::cast)
-                .findFirst()
-                .orElse(null);
+        var payloadParam = inputParameter(0);
+        if (payloadParam instanceof ReferenceUsage ru) {
+            return ru;
+        }
+        return null;
     }
 
     /**
@@ -124,27 +123,10 @@ public class AcceptActionUsageImpl extends ActionUsageImpl implements AcceptActi
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
-     */
-    public Expression basicGetReceiverArgument() {
-        // TODO: implement this method to return the 'Receiver Argument' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
-    }
-    
-    /**
-     * Used to display the name of the trigger references in the {@code Related Elements} view.
-     *
      * @generated NOT
      */
-    @Override
-    public String getDeclaredName() {
-        ReferenceUsage payloadParameter = this.getPayloadParameter();
-        if (payloadParameter != null) {
-            return payloadParameter.getDeclaredName();
-        }
-        return super.getDeclaredName();
+    public Expression basicGetReceiverArgument() {
+        return argument(1);
     }
 
     /**

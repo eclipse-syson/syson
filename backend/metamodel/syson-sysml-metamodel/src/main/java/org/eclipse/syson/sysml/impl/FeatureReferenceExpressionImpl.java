@@ -14,8 +14,11 @@ package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -65,13 +68,17 @@ public class FeatureReferenceExpressionImpl extends ExpressionImpl implements Fe
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetReferent() {
-        // TODO: implement this method to return the 'Referent' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedMembership().stream()
+                .filter(mem -> !(mem instanceof ParameterMembership))
+                .map(Membership::getMemberElement)
+                .filter(el -> el != null)
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

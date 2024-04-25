@@ -80,6 +80,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private static final String REQUIREMENT_CONSTRAINT_KIND_PROPERTIES = "Kind Properties";
 
+    private static final String ACCEPT_ACTION_USAGE_PROPERTIES = "Accept Action Usage Properties";
+
     private static final String AQL_NOT_SELF_IS_READ_ONLY = "aql:not(self.isReadOnly())";
 
     private final ComposedAdapterFactory composedAdapterFactory;
@@ -146,6 +148,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createExtraSubsettingPropertiesGroup());
         pageCore.getGroups().add(this.createExtraFeatureTypingPropertiesGroup());
         pageCore.getGroups().add(this.createExtraRequirementConstraintMembershipPropertiesGroup());
+        pageCore.getGroups().add(this.createExtraAcceptActionUsagePropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
         pageAdvanced.setDomainType(domainType);
@@ -317,6 +320,39 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         radio.getBody().add(setNewValueOperation);
 
         group.getChildren().add(radio);
+
+        return group;
+    }
+
+    private GroupDescription createExtraAcceptActionUsagePropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName(ACCEPT_ACTION_USAGE_PROPERTIES);
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression(AQLConstants.AQL_SELF + ".getAcceptActionUsage()");
+
+        ReferenceWidgetDescription payloadRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
+        payloadRefWidget.setName("ExtraPayloadWidget");
+        payloadRefWidget.setLabelExpression("Payload");
+        payloadRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName());
+        payloadRefWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF + ".getAcceptActionUsagePayloadFeatureTyping()");
+        payloadRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        ChangeContext setPayloadRefWidget = ViewFactory.eINSTANCE.createChangeContext();
+        setPayloadRefWidget.setExpression(AQLConstants.AQL_SELF + ".setAcceptActionUsagePayloadParameter(" + ViewFormDescriptionConverter.NEW_VALUE + ")");
+        payloadRefWidget.getBody().add(setPayloadRefWidget);
+
+        ReferenceWidgetDescription receiverRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
+        receiverRefWidget.setName("ExtraReceiverWidget");
+        receiverRefWidget.setLabelExpression("Receiver");
+        receiverRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getMembership_MemberElement().getName());
+        receiverRefWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF + ".getAcceptActionUsageReceiverMembership()");
+        receiverRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        ChangeContext setReceiverRefWidget = ViewFactory.eINSTANCE.createChangeContext();
+        setReceiverRefWidget.setExpression(AQLConstants.AQL_SELF + ".setAcceptActionUsageReceiverArgument(" + ViewFormDescriptionConverter.NEW_VALUE + ")");
+        receiverRefWidget.getBody().add(setReceiverRefWidget);
+
+        group.getChildren().add(payloadRefWidget);
+        group.getChildren().add(receiverRefWidget);
 
         return group;
     }

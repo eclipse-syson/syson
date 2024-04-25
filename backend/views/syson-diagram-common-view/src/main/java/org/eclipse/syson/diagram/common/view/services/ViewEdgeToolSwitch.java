@@ -15,12 +15,14 @@ package org.eclipse.syson.diagram.common.view.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -68,6 +70,23 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         this.viewBuilderHelper = new ViewBuilders();
         this.diagramBuilderHelper = new DiagramBuilders();
         this.edgeToolService = new ViewEdgeToolService(this.viewBuilderHelper, this.diagramBuilderHelper, allNodeDescriptions, nameGenerator);
+    }
+
+    @Override
+    public List<EdgeTool> caseAcceptActionUsage(AcceptActionUsage object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage())
+                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionDefinition())).collect(Collectors.toList());
+        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAcceptActionUsage(), targetNodes));
+        edgeTools.addAll(this.caseUsage(object));
+        // since AcceptActionDefintion does not exist, this.caseUsage did not manage the FeatureTyping edge, we need to add it manually.
+        this.addFeatureTypingEdgeToolForActionUsageSubType(edgeTools);
+        return edgeTools;
+    }
+
+    private void addFeatureTypingEdgeToolForActionUsageSubType(List<EdgeTool> edgeTools) {
+        Optional<NodeDescription> optActionDefinitionNodeDescription = this.edgeToolService.getNodeDescription(SysmlPackage.eINSTANCE.getActionDefinition());
+        optActionDefinitionNodeDescription.ifPresent(nd -> edgeTools.add(this.edgeToolService.createFeatureTypingEdgeTool(List.of(nd))));
     }
 
     @Override

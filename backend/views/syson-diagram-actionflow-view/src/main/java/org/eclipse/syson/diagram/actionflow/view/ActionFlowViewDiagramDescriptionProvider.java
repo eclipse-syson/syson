@@ -62,6 +62,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
             );
 
     public static final List<EClass> USAGES = List.of(
+            SysmlPackage.eINSTANCE.getAcceptActionUsage(),
             SysmlPackage.eINSTANCE.getActionUsage()
             );
 
@@ -71,8 +72,9 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
             new ToolSectionDescription("Action Flow", List.of(
-                    SysmlPackage.eINSTANCE.getActionDefinition(),
+                    SysmlPackage.eINSTANCE.getAcceptActionUsage(),
                     SysmlPackage.eINSTANCE.getActionUsage(),
+                    SysmlPackage.eINSTANCE.getActionDefinition(),
                     SysmlPackage.eINSTANCE.getPackage()))
             );
 
@@ -99,8 +101,8 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders
-        .add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.nameGenerator));
 
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new ActionFlowViewEmptyDiagramNodeDescriptionProvider(colorProvider));
