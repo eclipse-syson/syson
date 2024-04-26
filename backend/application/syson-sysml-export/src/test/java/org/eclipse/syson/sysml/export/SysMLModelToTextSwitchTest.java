@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeDefinition;
-import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -28,9 +27,10 @@ import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
-import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.export.utils.NameDeresolver;
+import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -44,6 +44,8 @@ public class SysMLModelToTextSwitchTest {
 
     private static final String PACKAGE1 = "Package1";
 
+    private ModelBuilder builder = new ModelBuilder();
+
     private final SysmlFactory fact = SysmlFactory.eINSTANCE;
 
     @Test
@@ -54,9 +56,7 @@ public class SysMLModelToTextSwitchTest {
 
     @Test
     public void emptyPackageWithName() {
-        Package pack = fact.createPackage();
-        pack.setDeclaredName(PACKAGE1);
-        assertTextualFormEquals("package Package1;", pack);
+        assertTextualFormEquals("package Package1;", builder.createWithName(Package.class, PACKAGE1));
     }
 
     /**
@@ -65,10 +65,7 @@ public class SysMLModelToTextSwitchTest {
      */
     @Test
     public void emptyPackageWithSpaces() {
-        Package pack = fact.createPackage();
-        pack.setDeclaredName("Package 1");
-        pack.setDeclaredShortName("T T");
-        assertTextualFormEquals("package <'T T'> 'Package 1';", pack);
+        assertTextualFormEquals("package <'T T'> 'Package 1';", builder.createInWithFullName(Package.class, null, "Package 1", "T T"));
     }
 
     /**
@@ -76,35 +73,24 @@ public class SysMLModelToTextSwitchTest {
      */
     @Test
     public void packageWithUnrestrictedName() {
-        Package pack = fact.createPackage();
-        // Need to escape since it start with a digit
-        pack.setDeclaredName("4Package");
-        // No need to escape _ is a valid first character
-        pack.setDeclaredShortName("_T");
-        assertTextualFormEquals("package <_T> '4Package';", pack);
+        // Need to escape name since it starts with a digit
+        // No need to escape short name _ since it is a valid first character
+        assertTextualFormEquals("package <_T> '4Package';", builder.createInWithFullName(Package.class, null, "4Package", "_T"));
+
     }
 
     @Test
     public void emptyPackageWithShortName() {
-        Package pack = fact.createPackage();
-        pack.setDeclaredName("Package1");
-        pack.setDeclaredShortName("T");
-        assertTextualFormEquals("package <T> Package1;", pack);
+        assertTextualFormEquals("package <T> Package1;", builder.createInWithFullName(Package.class, null, "Package1", "T"));
     }
 
     @Test
     public void packageWithContent() {
-        Package pack1 = fact.createPackage();
-        pack1.setDeclaredName(PACKAGE1);
+        Package pack1 = builder.createWithName(Package.class, PACKAGE1);
 
-        Package pack2 = fact.createPackage();
-        pack2.setDeclaredName(PACKAGE_2);
+        Package pack2 = builder.createInWithName(Package.class, pack1, PACKAGE_2);
 
-        Package pack3 = fact.createPackage();
-        pack3.setDeclaredName("Package 3");
-
-        addOwnedMembership(pack1, pack2);
-        addOwnedMembership(pack2, pack3);
+        builder.createInWithName(Package.class, pack2, "Package 3");
 
         assertTextualFormEquals("""
                 package Package1 {
@@ -324,29 +310,26 @@ public class SysMLModelToTextSwitchTest {
     public void fullComment() {
         Package pack1 = fact.createPackage();
         pack1.setDeclaredName("Pack1");
-        
+
         AttributeDefinition attr = fact.createAttributeDefinition();
         attr.setDeclaredName("Attr1");
         addOwnedMembership(pack1, attr);
-        
-       
-        
+
         Comment comment = fact.createComment();
         comment.setBody("A body");
         comment.setDeclaredName("XXX");
         comment.setDeclaredShortName("X");
         comment.setLocale("fr_FR");
         addOwnedMembership(pack1, comment);
-        
+
         Annotation annotation = fact.createAnnotation();
         annotation.setAnnotatedElement(attr);
         comment.getOwnedRelationship().add(annotation);
         // Workaround while the subset are not implemented
         comment.getAnnotation().add(annotation);
-        
+
         assertEquals(attr, comment.getAnnotatedElement().get(0));
-        
-        
+
         assertTextualFormEquals("""
                 comment <X> XXX about Attr1 locale \"fr_FR\"
                     /* A body */""", comment);
@@ -356,27 +339,26 @@ public class SysMLModelToTextSwitchTest {
     public void commentWithMultilineBodyInPackage() {
         Package pack1 = fact.createPackage();
         pack1.setDeclaredName("Pack1");
-        
+
         AttributeDefinition attr = fact.createAttributeDefinition();
         attr.setDeclaredName("Attr1");
         addOwnedMembership(pack1, attr);
-        
+
         Comment comment = fact.createComment();
         comment.setBody("A body\ntest");
         comment.setDeclaredName("XXX");
         comment.setDeclaredShortName("X");
         comment.setLocale("fr_FR");
         addOwnedMembership(pack1, comment);
-        
+
         Annotation annotation = fact.createAnnotation();
         annotation.setAnnotatedElement(attr);
         comment.getOwnedRelationship().add(annotation);
         // Workaround while the subset are not implemented
         comment.getAnnotation().add(annotation);
-        
+
         assertEquals(attr, comment.getAnnotatedElement().get(0));
-        
-        
+
         assertTextualFormEquals("""
                 package Pack1 {
                     comment <X> XXX about Attr1 locale \"fr_FR\"
@@ -390,20 +372,40 @@ public class SysMLModelToTextSwitchTest {
      */
     @Test
     public void partDefinitionWithSuperType() {
-        PartDefinition partDef = fact.createPartDefinition();
-        partDef.setDeclaredName("Part Def 1");
+        PartDefinition partDef = builder.createWithName(PartDefinition.class, "Part Def 1");
+        PartDefinition partDef2 = builder.createWithName(PartDefinition.class, "PartDef2");
+        PartDefinition partDef3 = builder.createWithName(PartDefinition.class, "PartDef 3");
 
-        PartDefinition partDef2 = fact.createPartDefinition();
-        partDef2.setDeclaredName("PartDef2");
-        PartDefinition partDef3 = fact.createPartDefinition();
-        partDef3.setDeclaredName("PartDef 3");
-
-        addSuperType(partDef, partDef2);
-        addSuperType(partDef, partDef3);
-        addSuperType(partDef2, partDef3);
+        builder.addSuperType(partDef, partDef2);
+        builder.addSuperType(partDef, partDef3);
+        builder.addSuperType(partDef2, partDef3);
 
         assertTextualFormEquals("part def 'Part Def 1' :> PartDef2, 'PartDef 3';", partDef);
         assertTextualFormEquals("part def PartDef2 :> 'PartDef 3';", partDef2);
+        assertTextualFormEquals("part def 'PartDef 3';", partDef3);
+
+    }
+
+    /**
+     * Check PartDefinition which inherit from other definitions with name deresolution.
+     */
+    @Test
+    public void partDefinitionWithSuperTypeAndNameDeresolution() {
+        Package p1 = builder.createWithName(Package.class, PACKAGE1);
+        PartDefinition partDef = builder.createInWithName(PartDefinition.class, p1, "Part Def 1");
+        Package p2 = builder.createWithName(Package.class, "p2");
+        PartDefinition partDef2 = builder.createInWithName(PartDefinition.class, p2, "PartDef2");
+        Package p3 = builder.createWithName(Package.class, "p3");
+        PartDefinition partDef3 = builder.createInWithName(PartDefinition.class, p3, "PartDef 3");
+
+        builder.createIn(NamespaceImport.class, p1).setImportedNamespace(p2);
+
+        builder.addSuperType(partDef, partDef2);
+        builder.addSuperType(partDef, partDef3);
+        builder.addSuperType(partDef2, partDef3);
+
+        assertTextualFormEquals("part def 'Part Def 1' :> PartDef2, p3::'PartDef 3';", partDef);
+        assertTextualFormEquals("part def PartDef2 :> p3::'PartDef 3';", partDef2);
         assertTextualFormEquals("part def 'PartDef 3';", partDef3);
 
     }
@@ -453,18 +455,15 @@ public class SysMLModelToTextSwitchTest {
     @Test
     public void partDefinitionFull() {
 
-        Package pack1 = fact.createPackage();
-        pack1.setDeclaredName("Pack1");
+        Package pack1 = builder.createWithName(Package.class, "Pack1");
 
-        PartDefinition partDef = fact.createPartDefinition();
-        partDef.setDeclaredName("PartDef1");
+        PartDefinition partDef = builder.createInWithName(PartDefinition.class, pack1, "PartDef1");
         partDef.setIsIndividual(true);
         partDef.setIsAbstract(true);
 
-        PartDefinition partDef2 = fact.createPartDefinition();
-        partDef2.setDeclaredName("PartDef2");
+        PartDefinition partDef2 = builder.createWithName(PartDefinition.class, "PartDef2");
 
-        addSuperType(partDef, partDef2);
+        builder.addSuperType(partDef, partDef2);
 
         addOwnedMembership(pack1, partDef, VisibilityKind.PRIVATE);
 
@@ -508,15 +507,6 @@ public class SysMLModelToTextSwitchTest {
         return metaDataUsage;
     }
 
-    private void addSuperType(Classifier child, Classifier parent) {
-        Subclassification subClassification = fact.createSubclassification();
-        subClassification.setSuperclassifier(parent);
-        subClassification.setSpecific(child);
-
-        child.getOwnedRelationship().add(subClassification);
-
-    }
-
     private void addOwnedMembership(Element parent, Element ownedElement) {
         addOwnedMembership(parent, ownedElement, null);
     }
@@ -534,7 +524,7 @@ public class SysMLModelToTextSwitchTest {
     }
 
     private String convertToText(Element source, Element context, int indent) {
-        return new SysMLElementSerializer("\n", "    ").doSwitch(source);
+        return new SysMLElementSerializer("\n", "    ", new NameDeresolver()).doSwitch(source);
     }
 
     private String convertToText(Element source) {

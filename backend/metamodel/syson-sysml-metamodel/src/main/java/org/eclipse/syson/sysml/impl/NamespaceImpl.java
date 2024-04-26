@@ -12,11 +12,14 @@
  */
 package org.eclipse.syson.sysml.impl;
 
+import static java.util.stream.Collectors.toList;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -26,7 +29,9 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VisibilityKind;
 
@@ -75,7 +80,17 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public EList<Membership> getImportedMembership() {
-        List<Membership> importedMemberships = new ArrayList<>();
+        return getImportedMembership(new BasicEList<Namespace>());
+    }
+    /**
+     * @generated NOT
+     */
+    private EList<Membership> getImportedMembership(EList<Namespace> excluded) {
+        List<Membership> importedMemberships = getOwnedImport().stream()
+                .flatMap(imp -> imp.importedMemberships(excluded).stream())
+                .distinct()
+                .toList();
+
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_ImportedMembership(), importedMemberships.size(), importedMemberships.toArray());
     }
 
@@ -101,9 +116,13 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public EList<Membership> getMembership() {
+        return getMembership(new BasicEList<>());
+    }
+
+    private EList<Membership> getMembership(EList<Namespace> excluded) {
         List<Element> memberships = new ArrayList<>();
         memberships.addAll(this.getOwnedMembership());
-        memberships.addAll(this.getImportedMembership());
+        memberships.addAll(this.getImportedMembership(excluded));
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), memberships.size(), memberships.toArray());
     }
 
@@ -283,15 +302,41 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @generated NOT
      */
     @Override
     public EList<Membership> visibleMemberships(EList<Namespace> excluded, boolean isRecursive, boolean includeAll) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        final EList<Membership> visibleMemberships;
+        if (includeAll) {
+            visibleMemberships = new BasicEList<Membership>(getMembership(excluded));
+        } else {
+            Stream<Membership> publicOnwedMembership = getOwnedMembership().stream()
+                    .filter(m -> m.getVisibility() == VisibilityKind.PUBLIC);
+            Stream<Membership> publicImport = getOwnedImport().stream()
+                    .filter(m -> m.getVisibility() == VisibilityKind.PUBLIC)
+                    .flatMap(imp -> imp.importedMemberships(excluded).stream());
+            visibleMemberships = new BasicEList<Membership>(Stream.concat(publicOnwedMembership, publicImport).toList());
+        }
+
+        if (isRecursive) {
+            List<Membership> recursiveMembers = visibleMemberships.stream()
+                    .filter(m -> m.getMemberElement() instanceof Namespace)
+                    .map(m -> (Namespace) m.getMemberElement())
+                    .flatMap(ns -> getSubVisbileMemberships(excluded, isRecursive, includeAll, ns))
+                    .toList();
+            visibleMemberships.addAll(recursiveMembers);
+        }
+        return visibleMemberships;
+    }
+    /**
+     * @generated NOT
+     */
+    private Stream<Membership> getSubVisbileMemberships(EList<Namespace> excluded, boolean isRecursive, boolean includeAll, Namespace ns) {
+        EList<Namespace> newExcludedMember = new BasicEList<>(excluded);
+        newExcludedMember.add(ns);
+        return ns.visibleMemberships(newExcludedMember, isRecursive, includeAll).stream();
     }
 
     /**
