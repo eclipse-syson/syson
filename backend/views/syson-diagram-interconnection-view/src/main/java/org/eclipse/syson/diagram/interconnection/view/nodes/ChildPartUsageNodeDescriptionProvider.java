@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.interconnection.view.tools.ChildrenPartUsageCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -160,9 +159,7 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
     }
 
     private List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
-        NodeDescription nodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME).get();
-        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, cache.getNodeDescriptions(), this.nameGenerator);
-        return edgeToolSwitch.doSwitch(SysmlPackage.eINSTANCE.getPartUsage());
+        return List.of();
     }
 
     private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind) {
