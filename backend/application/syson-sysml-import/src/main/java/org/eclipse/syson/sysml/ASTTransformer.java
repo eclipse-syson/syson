@@ -143,6 +143,10 @@ public class ASTTransformer {
                             }
                         });
                     });
+                    if (toOperate.size() == this.mappingStates.toMap().size() && toOperate.containsAll(this.mappingStates.toMap()) && this.mappingStates.toMap().containsAll(toOperate)) {
+                        this.logger.error("Infinite Loop when mapping with elements " + toOperate);
+                        break;
+                    }
                 }
                 // Reference Mapping
                 while (!this.mappingStates.toResolve().isEmpty()) {
@@ -160,6 +164,10 @@ public class ASTTransformer {
                             }
                         });
                     });
+                    if (toOperate.size() == this.mappingStates.toResolve().size() && toOperate.containsAll(this.mappingStates.toResolve()) && this.mappingStates.toResolve().containsAll(toOperate)) {
+                        this.logger.error("Infinite Loop when resolving with elements " + toOperate);
+                        break;
+                    }
                 }
     
                 this.logger.info("End complete mapping loop");
