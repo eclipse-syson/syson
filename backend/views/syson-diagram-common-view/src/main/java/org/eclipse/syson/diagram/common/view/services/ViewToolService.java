@@ -57,7 +57,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public class ViewToolService extends ToolService {
 
-    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
+    protected final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {

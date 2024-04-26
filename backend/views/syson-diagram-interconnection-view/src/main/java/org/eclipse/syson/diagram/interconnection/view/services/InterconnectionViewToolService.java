@@ -15,7 +15,6 @@ package org.eclipse.syson.diagram.interconnection.view.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -40,12 +39,12 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenPartUsageCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.services.ElementInitializerSwitch;
-import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -57,9 +56,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  *
  * @author arichard
  */
-public class InterconnectionViewToolService extends ToolService {
-
-    private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
+public class InterconnectionViewToolService extends ViewToolService {
 
     private final ElementInitializerSwitch elementInitializerSwitch;
 
@@ -67,8 +64,7 @@ public class InterconnectionViewToolService extends ToolService {
 
     public InterconnectionViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
-        super(objectService, representationDescriptionSearchService);
-        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
+        super(objectService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.descriptionNameGenerator = new IVDescriptionNameGenerator();
     }
