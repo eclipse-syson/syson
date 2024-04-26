@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.InterfaceUsageEdgeDescriptionProvider;
@@ -65,6 +66,7 @@ public class InterconnectionViewDiagramDescriptionProvider extends AbstractDiagr
                 new RootPartUsageNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new ChildPartUsageNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider),
+                new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
                 new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
                 new ChildrenPartUsageCompartmentNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
