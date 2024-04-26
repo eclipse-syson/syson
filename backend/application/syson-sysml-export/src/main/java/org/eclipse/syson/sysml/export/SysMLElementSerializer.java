@@ -40,7 +40,8 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.utils.Appender;
-import org.eclipse.syson.sysml.export.utils.EMFUtils;
+import org.eclipse.syson.sysml.export.utils.NameDeresolver;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -56,6 +57,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private String indentation;
 
+    private NameDeresolver nameDeresolver;
+
     /**
      * Simple constructor.
      * 
@@ -64,14 +67,15 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * @param indentation
      *            the string used to indent the file
      */
-    public SysMLElementSerializer(String lineSeparator, String indentation) {
+    public SysMLElementSerializer(String lineSeparator, String indentation, NameDeresolver nameDeresolver) {
         super();
         this.lineSeparator = lineSeparator;
         this.indentation = indentation;
+        this.nameDeresolver = nameDeresolver;
     }
 
     public SysMLElementSerializer() {
-        this(System.lineSeparator(), "\t");
+        this(System.lineSeparator(), "\t", new NameDeresolver());
     }
 
     @Override
@@ -114,7 +118,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendDefinition(Appender builder, Definition definition) {
 
         appendDefinitionDeclaration(builder, definition);
-        
+
         // definition body
         appendOwnedRelationshiptContent(builder, definition);
     }
@@ -129,12 +133,25 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             String superClasses = subClassification.stream()
                     .map(sub -> sub.getSuperclassifier())
                     .filter(NOT_NULL)
-                    .map(sup -> buildContextRelativeQualifiedName(sup, definition))
+                    .map(sup -> getDeresolvableName(sup, definition))
                     .collect(joining(", "));
 
             builder.append(superClasses);
 
         }
+    }
+
+    /**
+     * Get a deresolvable name for a given element in a given context
+     * 
+     * @param toDeresolve
+     *            the object to deresolve
+     * @param context
+     *            a context
+     * @return a name
+     */
+    private String getDeresolvableName(Element toDeresolve, Element context) {
+        return nameDeresolver.getDeresolvedName(toDeresolve, context);
     }
 
     private void appendOccurrenceDefinitionPrefix(Appender builder, OccurrenceDefinition occDef) {
@@ -157,11 +174,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         for (var rel : def.getOwnedRelationship()) {
             if (rel instanceof OwningMembership owningMember) {
                 owningMember.getOwnedRelatedElement().stream()
-                .filter(MetadataUsage.class::isInstance)
-                .map(MetadataUsage.class::cast)
-                .map(MetadataUsage::getMetadataDefinition)
-                .filter(NOT_NULL)
-                .forEach(mDef -> appendPrefixMetadataMember(builder, mDef));
+                        .filter(MetadataUsage.class::isInstance)
+                        .map(MetadataUsage.class::cast)
+                        .map(MetadataUsage::getMetadataDefinition)
+                        .filter(NOT_NULL)
+                        .forEach(mDef -> appendPrefixMetadataMember(builder, mDef));
             }
         }
     }
@@ -295,7 +312,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendAnnotatedElements(Appender builder, Comment comment, EList<Element> annotatedElements) {
         if (!annotatedElements.isEmpty()) {
             builder.appendSpaceIfNeeded().append("about ");
-            builder.append(annotatedElements.stream().map(e -> this.buildContextRelativeQualifiedName(e, comment)).collect(joining(",")));
+            builder.append(annotatedElements.stream().map(e -> getDeresolvableName(e, comment)).collect(joining(",")));
         }
     }
 
@@ -350,7 +367,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendNamespaceImport(Appender builder, NamespaceImport namespaceImport) {
         Namespace importedNamespace = namespaceImport.getImportedNamespace();
         if (importedNamespace != null) {
-            builder.appendSpaceIfNeeded().append(this.buildContextRelativeQualifiedName(importedNamespace, namespaceImport)).append("::");
+            builder.appendSpaceIfNeeded().append(this.buildImportContextRelativeQualifiedName(importedNamespace, namespaceImport)).append("::");
         }
         builder.append("*");
     }
@@ -360,13 +377,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         Membership importedMembership = membershipImport.getImportedMembership();
         if (importedMembership != null) {
             String qnName = Stream.concat(Stream.ofNullable(importedMembership.getMemberElement()), importedMembership.getOwnedRelatedElement().stream()).filter(e -> e != null).findFirst()
-                    .map(e -> this.buildContextRelativeQualifiedName(e, membershipImport)).orElse("");
+                    .map(e -> this.buildImportContextRelativeQualifiedName(e, membershipImport)).orElse("");
 
             builder.appendSpaceIfNeeded().append(qnName);
         }
     }
 
-    private String buildContextRelativeQualifiedName(Element element, Element from) {
+    private String buildImportContextRelativeQualifiedName(Element element, Element from) {
         String qualifiedName = nullToEmpty(element.getQualifiedName());
         Element commonAncestor = EMFUtils.getLeastCommonContainer(Element.class, element, from);
         if (commonAncestor != null) {

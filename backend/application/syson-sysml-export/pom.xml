@@ -72,6 +72,14 @@
 			<artifactId>syson-sysml-metamodel</artifactId>
 			<version>2024.3.0</version>
 		</dependency>
+		<!-- Import test jar to access org.eclipse.syson.sysml.util -->
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-sysml-metamodel</artifactId>
+			<version>2024.3.0</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>

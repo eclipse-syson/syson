@@ -12,11 +12,19 @@
  */
 package org.eclipse.syson.sysml.impl;
 
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -32,10 +40,12 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Intersecting;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Multiplicity;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Unioning;
+import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
  * <!-- begin-user-doc -->
@@ -183,8 +193,11 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getFeature() {
-        List<Feature> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_Feature(), data.size(), data.toArray());
+        Feature[] features = getFeatureMembership().stream()
+                .filter(fm -> fm.getFeature() != null)
+                .map(FeatureMembership::getFeature)
+                .toArray(Feature[]::new);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_Feature(), features.length, features);
     }
 
     /**
@@ -194,8 +207,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<FeatureMembership> getFeatureMembership() {
-        List<FeatureMembership> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_FeatureMembership(), data.size(), data.toArray());
+        FeatureMembership[] featureMemberships = Stream.concat(getOwnedFeatureMembership().stream(), inheritedMemberships(new BasicEList<Type>()).stream()).filter(FeatureMembership.class::isInstance).toArray(FeatureMembership[]::new);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_FeatureMembership(), featureMemberships.length, featureMemberships);
     }
 
     /**
@@ -210,6 +223,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 .filter(FeatureMembership.class::isInstance)
                 .map(FeatureMembership.class::cast)
                 .map(FeatureMembership::getOwnedMemberFeature)
+                .filter(Objects::nonNull)
                 .forEach(inheritedFeatures::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedFeature(), inheritedFeatures.size(), inheritedFeatures.toArray());
     }
@@ -224,8 +238,11 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        List<Membership> inheritedMemberships = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMemberships.size(), inheritedMemberships.toArray());
+        FeatureMembership[] data = inheritedMemberships(new BasicEList<Type>()).stream()
+                .filter(FeatureMembership.class::isInstance)
+                .map(FeatureMembership.class::cast)
+                .toArray(FeatureMembership[]::new);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), data.length, data);
     }
 
     /**
@@ -348,7 +365,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
     @Override
     public Conjugation getOwnedConjugator() {
         Conjugation ownedConjugator = basicGetOwnedConjugator();
-        return ownedConjugator != null && ownedConjugator.eIsProxy() ? (Conjugation)eResolveProxy((InternalEObject)ownedConjugator) : ownedConjugator;
+        return ownedConjugator != null && ownedConjugator.eIsProxy() ? (Conjugation) eResolveProxy((InternalEObject) ownedConjugator) : ownedConjugator;
     }
 
     /**
@@ -502,13 +519,39 @@ public class TypeImpl extends NamespaceImpl implements Type {
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Membership> inheritedMemberships(EList<Type> excluded) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        excluded.add(this);
+        Conjugation conjugator = getOwnedConjugator();
+        List<Membership> conjugatedMemberships = List.of();
+        if (conjugator != null) {
+            Type type = conjugator.getOriginalType();
+            if (type != null) {
+                conjugatedMemberships = type.getMembership().stream().toList();
+            }
+        }
+
+        List<Membership> generalMemberships = getOwnedSpecialization().stream()
+                .map(spe -> spe.getGeneral())
+                .filter(g -> g != null && !excluded.contains(g))
+                .flatMap(gen -> gen.visibleMemberships(toNamespaceExclude(excluded), false, true).stream()).toList();
+
+        Membership[] data = Stream.concat(conjugatedMemberships.stream(), generalMemberships.stream())
+                // Also inherit protected memberships
+                .filter(rel -> rel.getVisibility() != VisibilityKind.PRIVATE)
+                .toArray(Membership[]::new);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), data.length, data);
+    }
+    
+    /**
+     * @generated NOT
+     */
+    private EList<Namespace> toNamespaceExclude(EList<Type> excluded){
+        return excluded.stream().filter(Namespace.class::isInstance)
+                .map(Namespace.class::cast)
+                .collect(toCollection(BasicEList<Namespace>::new));
     }
 
     /**
@@ -688,6 +731,33 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 return !getUnioningType().isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * @generated NOT
+     */
+    @Override
+    public EList<Membership> visibleMemberships(EList<Namespace> excluded, boolean isRecursive, boolean includeAll) {
+        // Inherited members are visible members of a type
+        BasicEList<Type> excludedTypes = excluded.stream()
+                .filter(Type.class::isInstance)
+                .map(Type.class::cast)
+                .collect(toCollection(BasicEList<Type>::new));
+
+        EList<Membership> superVisibleMemberships = super.visibleMemberships(excluded, isRecursive, includeAll);
+        EList<Membership> inheritedMemberships = inheritedMemberships(excludedTypes);
+        List<Membership> visibleMemberships = Stream.concat(superVisibleMemberships.stream(),
+                inheritedMemberships.stream())
+                .filter(rel -> includeAll || rel.getVisibility() == VisibilityKind.PUBLIC)
+                .toList();
+        return new BasicEList<>(visibleMemberships);
+    }
+
+    @Override
+    public EList<Membership> getMembership() {
+        Membership[] visibleMemberships = visibleMemberships(new BasicEList<Namespace>(), false, true).toArray(Membership[]::new);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), visibleMemberships.length, visibleMemberships);
+
     }
 
     /**
