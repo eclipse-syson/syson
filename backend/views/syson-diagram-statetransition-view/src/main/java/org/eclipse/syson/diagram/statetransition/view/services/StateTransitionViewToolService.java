@@ -20,17 +20,20 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Usage;
 
 /**
  * Tool-related Java services used by the {@link StateTransitionViewDiagramDescriptionProvider}.
@@ -153,5 +156,36 @@ public class StateTransitionViewToolService extends ViewToolService {
         succession.getTarget().add(targetAction);
         
         return sourceAction;
+    }
+    
+    @Override
+    public Usage addExistingSubElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var nestedUsages = usage.getNestedUsage();
+
+        nestedUsages.stream()
+            .forEach(subUsage -> {
+                this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+                Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+            });
+        return usage;
+    }
+
+    @Override
+    public Definition addExistingSubElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode,
+            DiagramDescription diagramDescription,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var ownedUsages = definition.getOwnedUsage();
+
+        ownedUsages.stream()
+            .forEach(subUsage -> {
+                if (subUsage instanceof StateUsage) {
+                    this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+                    Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                }
+            });
+        return definition;
     }
 }
