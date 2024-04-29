@@ -13,7 +13,6 @@
 package org.eclipse.syson.sysml;
 
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -359,10 +358,5 @@ public interface Element extends EObject {
      * @generated
      */
     Namespace libraryNamespace();
-
-    /**
-     * @generated NOT
-     */
-    TextualRepresentation getOrCreateTextualRepresentation();
 
 } // Element
