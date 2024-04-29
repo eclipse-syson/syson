@@ -18,8 +18,10 @@ import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.MetadataDefinition;
@@ -201,18 +203,7 @@ public class SysMLModelToTextSwitchTest {
 
     @Test
     public void portDefinition() {
-
-        Package p1 = builder.createWithName(Package.class, PACKAGE1);
-
-        PortDefinition superPortDef = builder.createInWithName(PortDefinition.class, p1, "SuperPortDef");
-        PortDefinition subPortDef = builder.createInWithName(PortDefinition.class, p1, "SubPortDef");
-        builder.createIn(Comment.class, subPortDef).setBody("A comment");
-        builder.addSuperType(subPortDef, superPortDef);
-
-        assertTextualFormEquals("""
-                port def SubPortDef :> SuperPortDef {
-                    /* A comment */
-                }""", subPortDef);
+        checkBasicDefinitionDeclaration(PortDefinition.class, "port def");
 
     }
 
@@ -232,18 +223,26 @@ public class SysMLModelToTextSwitchTest {
 
     @Test
     public void attributeDefinition() {
+        checkBasicDefinitionDeclaration(AttributeDefinition.class, "attribute def");
+    }
 
+    @Test
+    public void itemDefinition() {
+        checkBasicDefinitionDeclaration(ItemDefinition.class, "item def");
+    }
+
+    private <T extends Definition> void checkBasicDefinitionDeclaration(Class<T> type, String keyword) {
         Package p1 = builder.createWithName(Package.class, PACKAGE1);
 
-        AttributeDefinition superDef = builder.createInWithName(AttributeDefinition.class, p1, "SuperPortDef");
-        AttributeDefinition subDef = builder.createInWithName(AttributeDefinition.class, p1, "SubPortDef");
+        var superDef = builder.createInWithName(type, p1, "SuperDef");
+        var subDef = builder.createInWithName(type, p1, "SubDef");
         builder.createIn(Comment.class, subDef).setBody("A comment");
         builder.addSuperType(subDef, superDef);
 
         assertTextualFormEquals("""
-                attribute def SubPortDef :> SuperPortDef {
+                $keyword SubDef :> SuperDef {
                     /* A comment */
-                }""", subDef);
+                }""".replaceFirst("\\$keyword", keyword), subDef);
     }
 
     /**
