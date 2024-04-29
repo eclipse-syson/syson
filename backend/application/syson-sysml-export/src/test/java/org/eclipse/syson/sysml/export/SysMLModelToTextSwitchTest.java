@@ -201,18 +201,33 @@ public class SysMLModelToTextSwitchTest {
     public void portDefinition() {
 
         Package p1 = builder.createWithName(Package.class, PACKAGE1);
-        
+
         PortDefinition superPortDef = builder.createInWithName(PortDefinition.class, p1, "SuperPortDef");
         PortDefinition subPortDef = builder.createInWithName(PortDefinition.class, p1, "SubPortDef");
         builder.createIn(Comment.class, subPortDef).setBody("A comment");
         builder.addSuperType(subPortDef, superPortDef);
-        
+
         assertTextualFormEquals("""
                 port def SubPortDef :> SuperPortDef {
                     /* A comment */
                 }""", subPortDef);
-        
 
+    }
+
+    @Test
+    public void attributeDefinition() {
+
+        Package p1 = builder.createWithName(Package.class, PACKAGE1);
+
+        AttributeDefinition superDef = builder.createInWithName(AttributeDefinition.class, p1, "SuperPortDef");
+        AttributeDefinition subDef = builder.createInWithName(AttributeDefinition.class, p1, "SubPortDef");
+        builder.createIn(Comment.class, subDef).setBody("A comment");
+        builder.addSuperType(subDef, superDef);
+
+        assertTextualFormEquals("""
+                attribute def SubPortDef :> SuperPortDef {
+                    /* A comment */
+                }""", subDef);
     }
 
     /**
@@ -380,6 +395,7 @@ public class SysMLModelToTextSwitchTest {
 
         assertTextualFormEquals("""
                 package Pack1 {
+                    attribute def Attr1;
                     comment <X> XXX about Attr1 locale \"fr_FR\"
                         /* A body
                         test */
