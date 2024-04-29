@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
@@ -102,31 +103,39 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
+    /**
+     * This method handle most of the {@link Definition} elements. Some elements may required some custom handling. In
+     * this case look for a more specific method.
+     */
     @Override
-    public String casePartDefinition(PartDefinition partDefinition) {
-
+    public String caseDefinition(Definition def) {
         Appender builder = newAppender();
 
-        appendOccurrenceDefinitionPrefix(builder, partDefinition);
+        if (def instanceof OccurrenceDefinition occDef) {
+            appendDefinitionPrefix(builder, occDef);
+        }
 
-        builder.appendSpaceIfNeeded().append("part def");
+        builder.appendSpaceIfNeeded().append(getKeyword(def));
 
-        appendDefinition(builder, partDefinition);
+        appendDefinition(builder, def);
 
         return builder.toString();
     }
-    
-    @Override
-    public String casePortDefinition(PortDefinition portDefinition) {
-        Appender builder = newAppender();
 
-        appendOccurrenceDefinitionPrefix(builder, portDefinition);
-        
-        builder.appendSpaceIfNeeded().append("port def");
-        
-        appendDefinition(builder, portDefinition);
-        
-        return builder.toString();
+    private String getKeyword(Definition def) {
+        final String keyword;
+
+        if (def instanceof PartDefinition) {
+            keyword = "part def";
+        } else if (def instanceof PortDefinition) {
+            keyword = "port def";
+        } else if (def instanceof AttributeDefinition) {
+            keyword = "attribute def";
+        } else {
+            keyword = null;
+        }
+
+        return keyword;
     }
 
     private void appendDefinition(Appender builder, Definition definition) {
@@ -168,20 +177,22 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return nameDeresolver.getDeresolvedName(toDeresolve, context);
     }
 
-    private void appendOccurrenceDefinitionPrefix(Appender builder, OccurrenceDefinition occDef) {
+    private void appendDefinitionPrefix(Appender builder, Definition def) {
 
-        builder.appendSpaceIfNeeded().append(getBasicDefinitionPrefix(occDef));
+        builder.appendSpaceIfNeeded().append(getBasicDefinitionPrefix(def));
 
-        final String isIndividual;
-        if (occDef.isIsIndividual()) {
-            isIndividual = "individual";
-        } else {
-            isIndividual = "";
+        if (def instanceof OccurrenceDefinition occDef) {
+
+            final String isIndividual;
+            if (occDef.isIsIndividual()) {
+                isIndividual = "individual";
+            } else {
+                isIndividual = "";
+            }
+            builder.appendSpaceIfNeeded().append(isIndividual);
         }
 
-        builder.appendSpaceIfNeeded().append(isIndividual);
-
-        appendDefinitionExtensionKeyword(builder, occDef);
+        appendDefinitionExtensionKeyword(builder, def);
     }
 
     private void appendDefinitionExtensionKeyword(Appender builder, Definition def) {
@@ -215,7 +226,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
-    private String getBasicDefinitionPrefix(OccurrenceDefinition occDef) {
+    private String getBasicDefinitionPrefix(Definition occDef) {
         StringBuilder builder = new StringBuilder();
         if (occDef.isIsAbstract()) {
             builder.append("abstract");
