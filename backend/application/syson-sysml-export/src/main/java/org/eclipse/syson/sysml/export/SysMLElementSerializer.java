@@ -37,6 +37,7 @@ import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.utils.Appender;
@@ -112,6 +113,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         appendDefinition(builder, partDefinition);
 
+        return builder.toString();
+    }
+    
+    @Override
+    public String casePortDefinition(PortDefinition portDefinition) {
+        Appender builder = newAppender();
+
+        appendOccurrenceDefinitionPrefix(builder, portDefinition);
+        
+        builder.appendSpaceIfNeeded().append("port def");
+        
+        appendDefinition(builder, portDefinition);
+        
         return builder.toString();
     }
 
