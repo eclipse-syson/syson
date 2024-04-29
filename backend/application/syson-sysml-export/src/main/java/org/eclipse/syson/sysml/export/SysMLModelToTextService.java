@@ -25,7 +25,11 @@ public class SysMLModelToTextService implements ISysMLModelToTextService {
 
     @Override
     public String toText(Element element) {
-        return new SysMLElementSerializer().doSwitch(element);
+        String textualForm = new SysMLElementSerializer().doSwitch(element);
+        if (textualForm == null) {
+            textualForm = "";
+        }
+        return textualForm;
     }
 
 }

@@ -21,5 +21,12 @@ import org.eclipse.syson.sysml.Element;
  */
 public interface ISysMLModelToTextService {
 
+    /**
+     * Gets the textual form of the given element.
+     * 
+     * @param element
+     *            a {@link Element}
+     * @return the textual form of the element or an empty string (never returns <code>null</code>)
+     */
     String toText(Element element);
 }

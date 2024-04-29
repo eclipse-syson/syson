@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
@@ -31,6 +32,7 @@ import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.Test;
 
@@ -211,6 +213,20 @@ public class SysMLModelToTextSwitchTest {
                 port def SubPortDef :> SuperPortDef {
                     /* A comment */
                 }""", subPortDef);
+
+    }
+
+    @Test
+    public void conjugatedPortDefinition() {
+
+        Package p1 = builder.createWithName(Package.class, PACKAGE1);
+
+        PortDefinition portDef = builder.createInWithName(PortDefinition.class, p1, "portDef");
+        PortDefinition conjPortDef = builder.createInWithName(ConjugatedPortDefinition.class, portDef, LabelConstants.CONJUGATED + "portDef");
+
+        assertTextualFormEquals("port def portDef;", portDef);
+        // Conjugated port are explicit so they are not present in the textual form
+        assertTextualFormEquals(null, conjPortDef);
 
     }
 

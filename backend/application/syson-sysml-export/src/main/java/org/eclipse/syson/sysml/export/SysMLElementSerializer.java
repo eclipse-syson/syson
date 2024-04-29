@@ -25,6 +25,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.Comment;
+import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
@@ -120,6 +121,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         appendDefinition(builder, def);
 
         return builder.toString();
+    }
+    
+    @Override
+    public String caseConjugatedPortDefinition(ConjugatedPortDefinition object) {
+        // Conjugated port definition are implicit
+        return "";
     }
 
     private String getKeyword(Definition def) {
