@@ -29,6 +29,7 @@ import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
+import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Metaclass;
@@ -138,6 +139,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             keyword = "port def";
         } else if (def instanceof AttributeDefinition) {
             keyword = "attribute def";
+        } else if (def instanceof ItemDefinition) {
+            keyword = "item def";
         } else {
             keyword = null;
         }
