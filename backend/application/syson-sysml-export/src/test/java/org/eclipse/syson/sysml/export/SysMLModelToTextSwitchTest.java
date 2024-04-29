@@ -27,6 +27,7 @@ import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
@@ -194,6 +195,24 @@ public class SysMLModelToTextSwitchTest {
         pack1.getOwnedRelationship().add(nmImport);
 
         assertTextualFormEquals("import 'Package 2'::'Package 3'::*;", nmImport);
+    }
+
+    @Test
+    public void portDefinition() {
+
+        Package p1 = builder.createWithName(Package.class, PACKAGE1);
+        
+        PortDefinition superPortDef = builder.createInWithName(PortDefinition.class, p1, "SuperPortDef");
+        PortDefinition subPortDef = builder.createInWithName(PortDefinition.class, p1, "SubPortDef");
+        builder.createIn(Comment.class, subPortDef).setBody("A comment");
+        builder.addSuperType(subPortDef, superPortDef);
+        
+        assertTextualFormEquals("""
+                port def SubPortDef :> SuperPortDef {
+                    /* A comment */
+                }""", subPortDef);
+        
+
     }
 
     /**
