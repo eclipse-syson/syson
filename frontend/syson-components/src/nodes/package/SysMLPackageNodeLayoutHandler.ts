@@ -28,7 +28,7 @@ import {
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
-  getHeaderFootprint,
+  getHeaderHeightFootprint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -86,7 +86,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
 
     const nodeIndex: number = findNodeIndex(visibleNodes, node.id);
     const labelElement: HTMLElement | null = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const headerHeightFootprint: number = labelElement ? getHeaderFootprint(labelElement, true, false) : 33;
+    const headerHeightFootprint: number = labelElement ? getHeaderHeightFootprint(labelElement, true, false) : 33;
 
     const borderNodes: Node<NodeData, string>[] = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren: Node<NodeData, string>[] = directChildren.filter((child) => !child.data.isBorderNode);
@@ -112,7 +112,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
           child.position = { ...child.position, x: rectangularNodePadding };
         }
       } else {
-        child.position = getChildNodePosition(visibleNodes, child, labelElement, false, false, borderWidth);
+        child.position = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
         if (child.position.y < headerHeightFootprint + rectangularNodePadding) {
           child.position = { ...child.position, y: child.position.y + headerHeightFootprint };
         }
@@ -121,9 +121,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
           child.position = getChildNodePosition(
             visibleNodes,
             child,
-            labelElement,
-            false,
-            false,
+            headerHeightFootprint,
             borderWidth,
             previousSibling
           );
