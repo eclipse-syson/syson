@@ -24,7 +24,7 @@ import {
   Label,
   NodeContext,
   NodeContextValue,
-  useConnector,
+  useConnectorNodeStyle,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
@@ -130,7 +130,7 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
 export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPackageNodeData>) => {
   const theme: Theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
-  const { newConnectionStyleProvider } = useConnector();
+  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
   const { style: dropFeedbackStyle } = useDropNodeStyle(id);
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -181,7 +181,7 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
         <div
           style={{
             ...packageHeaderStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
-            ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+            ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}>
           {data.insideLabel ? <Label diagramElementId={id} label={label} faded={data.faded} transform="" /> : null}
@@ -189,7 +189,7 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
         <div
           style={{
             ...packageContainerStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
-            ...newConnectionStyleProvider.getNodeStyle(id, data.descriptionId),
+            ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}
         />
