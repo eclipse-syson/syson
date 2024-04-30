@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.syson.sysml.Classifier;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -92,7 +93,7 @@ public class ModelBuilder {
             newInstance.setDeclaredShortName(shortName);
         }
         if (parent != null) {
-            if (newInstance instanceof Relationship newInstanceRelationship) {
+            if (newInstance instanceof Relationship newInstanceRelationship && !(newInstance instanceof Definition)) {
                 parent.getOwnedRelationship().add(newInstanceRelationship);
             } else if (newInstance instanceof Feature feature) {
                 addFeatureMembership(parent, feature);

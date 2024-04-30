@@ -21,6 +21,7 @@ import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
@@ -229,6 +230,11 @@ public class SysMLModelToTextSwitchTest {
     @Test
     public void itemDefinition() {
         checkBasicDefinitionDeclaration(ItemDefinition.class, "item def");
+    }
+    
+    @Test
+    public void interfaceDefinition() {
+        checkBasicDefinitionDeclaration(InterfaceDefinition.class, "interface def");
     }
 
     private <T extends Definition> void checkBasicDefinitionDeclaration(Class<T> type, String keyword) {
