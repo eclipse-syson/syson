@@ -571,8 +571,11 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<Subsetting> getOwnedSubsetting() {
-        List<Subsetting> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedSubsetting(), data.size(), data.toArray());
+        Subsetting[] subSettings = this.getOwnedRelationship().stream()
+            .filter(Subsetting.class::isInstance)
+            .map(Subsetting.class::cast)
+            .toArray(Subsetting[]::new);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedSubsetting(), subSettings.length, subSettings);
     }
 
     /**
