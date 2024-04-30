@@ -8,7 +8,7 @@
 
 === Dependency update
 
-- Switch to Sirius Web 2024.3.3
+- Switch to Sirius Web 2024.3.4
 - Switch to @ObeoNetwork/gantt-task-react 0.4.9
 
 === Bug fixes
@@ -23,23 +23,18 @@
 - https://github.com/eclipse-syson/syson/issues/199[#199] [explorer] Fix an issue where the rename action was not renaming tree items anymore
 - https://github.com/eclipse-syson/syson/issues/209[#209] [diagrams] EnumerationDefinition was created without any name
 - https://github.com/eclipse-syson/syson/issues/237[#237] [diagrams] Fix an issue where `Add existing element (recursive)` creates child nodes for nested and owned usages at the root of the diagram instead of in their parent node
+- https://github.com/eclipse-syson/syson/issues/262[#262] [import] Fix an issue where an exception was raised while importing standard examples
 
 === Improvements
 
-- https://github.com/eclipse-syson/syson/issues/151[#151] [diagrams] Add missing "Become nested" edge tools for AttributeUsage, ItemUsage, PartUsage and PortUsage.
 - https://github.com/eclipse-syson/syson/issues/153[#153] [syson] Forbid composite usages inside PortDefinition/PortUsage.
 - https://github.com/eclipse-syson/syson/issues/155[#155] [syson] Forbid composite usages inside AttributeDefinition/AttributeUsage.
-- https://github.com/eclipse-syson/syson/issues/154[#154] [diagrams] Add missing node tools inside existing usage elements.
-- https://github.com/eclipse-syson/syson/issues/163[#163] [diagrams] Add missing composite edges between usage and compartment content
-- https://github.com/eclipse-syson/syson/issues/165[#165] [general-view] Handle OccurrenceDefinition and OccurrenceUsage in General View diagram 
 - https://github.com/eclipse-syson/syson/issues/160[#160] [syson] Add explicit usage of node to call syside javascript file.
 - https://github.com/eclipse-syson/syson/issues/172[#172] [details] Add Membership#visibility attribute to Core properties in the Details view.
 - https://github.com/eclipse-syson/syson/issues/171[#171] [details] Add PortUsage#direction attribute to Core properties in the Details view.
 - https://github.com/eclipse-syson/syson/issues/169[#169] [general-view] Handle UseCaseDefinition and UseCaseUsage in General View diagram
-- https://github.com/eclipse-syson/syson/issues/177[#177] [diagrams] Add reconnect tools for composition edges
 - https://github.com/eclipse-syson/syson/issues/182[#182] [diagrams] Make Definition/Usage node collapsed by default in general-view & actionflow-view diagrams
 - https://github.com/eclipse-syson/syson/issues/183[#183] [diagrams] Expand Definition/Usage nodes in all diagrams when a compartment item is created
-- https://github.com/eclipse-syson/syson/issues/180[#180] [diagrams] Handle Allocation definition and Allocation usage
 - [syson] Add icons for all elements
 - https://github.com/eclipse-syson/syson/issues/204[#204] [interconnection-view] Change label position (from inside to outside) for ports (Border Nodes)
 - https://github.com/eclipse-syson/syson/issues/202[#202] [general-view] Allow to create general-view diagrams on any Namespace element
@@ -47,6 +42,12 @@
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/147[#147] [general-view] Refactor compartments of `RequirementDefinition` and `RequirementUsage` to better fit the specification and examples.
+- https://github.com/eclipse-syson/syson/issues/151[#151] [diagrams] Add "Become nested" edge tools for AttributeUsage, ItemUsage, PartUsage and PortUsage.
+- https://github.com/eclipse-syson/syson/issues/154[#154] [diagrams] Add creation node tools inside existing usage elements.
+- https://github.com/eclipse-syson/syson/issues/163[#163] [diagrams] Add composite edges between usage and compartment content
+- https://github.com/eclipse-syson/syson/issues/165[#165] [general-view] Handle OccurrenceDefinition and OccurrenceUsage in General View diagram 
+- https://github.com/eclipse-syson/syson/issues/177[#177] [diagrams] Add reconnect tools for composition edges
+- https://github.com/eclipse-syson/syson/issues/180[#180] [diagrams] Handle Allocation definition and Allocation usage
 - https://github.com/eclipse-syson/syson/issues/196[#196] [export] SysML standard serialization format
 - https://github.com/eclipse-syson/syson/issues/219[#219] [diagrams] Handle ConjugatedPortDefinition in diagrams, Explorer and Details View.
 - https://github.com/eclipse-syson/syson/issues/234[#234] [interconnection-view] Handle InterfaceUsages edges between PortUsages in InterconnectionView.

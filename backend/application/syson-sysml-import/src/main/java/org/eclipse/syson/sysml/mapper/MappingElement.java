@@ -14,6 +14,8 @@ package org.eclipse.syson.sysml.mapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.Objects;
+
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -30,6 +32,7 @@ public class MappingElement {
     private EObject self;
 
     public MappingElement(final JsonNode mainNode, final EObject parent) {
+        Objects.requireNonNull(mainNode);
         this.mainNode = mainNode;
         this.parent = parent;
     }
