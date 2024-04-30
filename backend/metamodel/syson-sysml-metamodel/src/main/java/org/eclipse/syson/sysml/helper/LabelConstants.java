@@ -46,4 +46,8 @@ public class LabelConstants {
     public static final String SUBCLASSIFICATION = ":>";
 
     public static final String SUBSETTING = ":>";
+
+    public static final String REFERENCES = "::>";
+
+    public static final String COMMA = ",";
 }

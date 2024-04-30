@@ -15,12 +15,16 @@ package org.eclipse.syson.sysml.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.LiteralInfinity;
+import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -67,9 +71,18 @@ public class MultiplicityRangeImpl extends MultiplicityImpl implements Multiplic
      */
     @Override
     public EList<Expression> getBound() {
-        List<Usage> data = new ArrayList<>();
+        List<Expression> data = new ArrayList<>();
+        Expression lowerBound = this.getLowerBound();
+        Expression upperBound = this.getUpperBound();
+        if (lowerBound != null) {
+            data.add(lowerBound);
+        }
+        if (upperBound != null && lowerBound != upperBound) {
+            data.add(upperBound);
+        }
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getMultiplicityRange_Bound(), data.size(), data.toArray());
     }
+
 
     /**
      * <!-- begin-user-doc -->
@@ -85,13 +98,25 @@ public class MultiplicityRangeImpl extends MultiplicityImpl implements Multiplic
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Expression basicGetLowerBound() {
-        // TODO: implement this method to return the 'Lower Bound' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        List<Expression> expressions = this.getOwnedElement().stream()
+                .filter(Expression.class::isInstance)
+                .map(Expression.class::cast)
+                .toList();
+        
+        final Expression lowerBound;
+        if (expressions.isEmpty()) {
+            lowerBound = null;
+        } else if (expressions.size() == 1  && expressions.get(0) instanceof LiteralInfinity) {
+            LiteralInteger literal = SysmlFactoryImpl.eINSTANCE.createLiteralInteger();
+            literal.setValue(0);
+            lowerBound = literal;
+        } else {
+            lowerBound = expressions.get(0);
+        }
+        return lowerBound;
     }
 
     /**
@@ -108,12 +133,17 @@ public class MultiplicityRangeImpl extends MultiplicityImpl implements Multiplic
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     public Expression basicGetUpperBound() {
-        // TODO: implement this method to return the 'Upper Bound' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        List<Expression> expressions = this.getOwnedElement().stream()
+                .filter(Expression.class::isInstance)
+                .map(Expression.class::cast)
+                .toList();
+        
+        if (!expressions.isEmpty()) {
+            return expressions.get(expressions.size() - 1);
+        }
         return null;
     }
 
