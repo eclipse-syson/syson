@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.Feature;
@@ -21,8 +23,6 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Implements mapping logic specific to NamespaceImport in SysML models from AST node.
@@ -79,7 +79,12 @@ public class MapperNamespaceImport extends MapperVisitorInterface {
         NamespaceImport eObject = (NamespaceImport) mapping.getSelf();
 
         this.logger.debug("Reference NamespaceImport " + eObject + " to " + referencedObject);
-        eObject.setImportedNamespace(referencedObject);
-        eObject.getTarget().add(referencedObject);
+        if (referencedObject != null) {
+            eObject.setImportedNamespace(referencedObject);
+            eObject.getTarget().add(referencedObject);
+        } else {
+
+            this.logger.warn("Unable to deresolve " + subElement);
+        }
     }
 }

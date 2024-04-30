@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -55,9 +58,6 @@ import org.eclipse.syson.sysml.mapper.MappingElement;
 import org.eclipse.syson.sysml.mapper.MappingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Transforms AST data using defined mappings and updates resources accordingly.
@@ -123,16 +123,20 @@ public class ASTTransformer {
             JsonNode astJson = objectMapper.readTree(input);
 
             if (astJson.get(CHILDREN_CONST) != null) {
-                astJson.get(CHILDREN_CONST).forEach(t -> this.mappingStates.toMap().add(new MappingElement(t.get(TARGET_CONST), null)));
-    
+                astJson.get(CHILDREN_CONST).forEach(t -> {
+                    if (t.get(TARGET_CONST) != null) {
+                        this.mappingStates.toMap().add(new MappingElement(t.get(TARGET_CONST), null));
+                    }
+                });
+
                 List<MappingElement> rootElements = List.copyOf(this.mappingStates.toMap());
-    
+
                 // Static Mapping
                 while (!this.mappingStates.toMap().isEmpty()) {
                     this.logger.info("Start Mapping loop with " + this.mappingStates.toMap().size() + " elements");
                     LinkedHashSet<MappingElement> toOperate = new LinkedHashSet<>(this.mappingStates.toMap());
                     this.mappingStates.toMap().clear();
-                    toOperate.parallelStream().forEach(mappingState -> {
+                    toOperate.stream().forEach(mappingState -> {
                         this.mappers.forEach(t -> {
                             if (t.canVisit(mappingState)) {
                                 try {
@@ -153,7 +157,7 @@ public class ASTTransformer {
                     this.logger.info("Start Resolving loop with " + this.mappingStates.toResolve().size() + " elements");
                     LinkedHashSet<MappingElement> toOperate = new LinkedHashSet<>(this.mappingStates.toResolve());
                     this.mappingStates.toResolve().clear();
-                    toOperate.parallelStream().forEach(mappingState -> {
+                    toOperate.stream().forEach(mappingState -> {
                         this.mappers.forEach(t -> {
                             if (t.canVisit(mappingState)) {
                                 try {
@@ -169,10 +173,15 @@ public class ASTTransformer {
                         break;
                     }
                 }
-    
+
                 this.logger.info("End complete mapping loop");
                 this.objectFinder.logStat();
-                rootElements.forEach(t -> result.getContents().add(t.getSelf()));
+                rootElements.forEach(t -> {
+                    var self = t.getSelf();
+                    if (self != null) {
+                        result.getContents().add(self);
+                    }
+                });
             }
 
         } catch (IOException e) {
