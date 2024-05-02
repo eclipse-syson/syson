@@ -123,6 +123,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
+                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .edgeTools(this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription)), this.createInterfaceUsageEdgeTool(List.of(nodeDescription)))
                 .build();
     }

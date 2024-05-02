@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Common pieces of edge descriptions shared by {@link IEdgeDescriptionProvider} in all view.
@@ -36,6 +37,8 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
     protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+
+    protected final DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
     protected IColorProvider colorProvider;
 
@@ -118,12 +121,14 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
             edgeBuilder.centerLabelEditTool(centerLabelEditTool);
         }
 
+        edgeBuilder.toolSections(this.defaultToolsFactory.createDefaultHideRevealEdgeToolSection());
+
         return edgeBuilder.build();
     }
 
     private SourceEdgeEndReconnectionTool createSourceReconnectTool() {
         var builder = this.diagramBuilderHelper.newSourceEdgeEndReconnectionTool();
-        
+
         return builder
                 .name("Reconnect Source")
                 .body(this.getSourceReconnectToolBody().build())

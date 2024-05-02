@@ -24,6 +24,7 @@
 - https://github.com/eclipse-syson/syson/issues/209[#209] [diagrams] EnumerationDefinition was created without any name
 - https://github.com/eclipse-syson/syson/issues/237[#237] [diagrams] Fix an issue where `Add existing element (recursive)` creates child nodes for nested and owned usages at the root of the diagram instead of in their parent node
 - https://github.com/eclipse-syson/syson/issues/262[#262] [import] Fix an issue where an exception was raised while importing standard examples
+- https://github.com/eclipse-syson/syson/issues/264[#264] [diagrams] Restore hide capabilities that were missing after the latest Sirius Web update
 
 === Improvements
 

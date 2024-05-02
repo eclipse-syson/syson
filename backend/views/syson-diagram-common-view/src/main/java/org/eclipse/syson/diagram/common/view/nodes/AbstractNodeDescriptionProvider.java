@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.syson.diagram.common.view.AbstractViewElementDescriptionProvider;
 
 /**
@@ -31,6 +32,8 @@ import org.eclipse.syson.diagram.common.view.AbstractViewElementDescriptionProvi
 public abstract class AbstractNodeDescriptionProvider extends AbstractViewElementDescriptionProvider implements INodeDescriptionProvider {
 
     protected final IColorProvider colorProvider;
+
+    protected final DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
     public AbstractNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
