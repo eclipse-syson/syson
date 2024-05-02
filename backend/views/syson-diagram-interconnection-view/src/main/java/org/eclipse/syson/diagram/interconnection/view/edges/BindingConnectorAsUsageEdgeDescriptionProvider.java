@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
+import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -47,6 +48,8 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+
+    private final DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
     private final IColorProvider colorProvider;
 
@@ -113,6 +116,7 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
                 .newEdgePalette()
                 .deleteTool(deleteTool.build())
                 .edgeReconnectionTools(edgeReconnectionTools.toArray(EdgeReconnectionTool[]::new))
+                .toolSections(this.defaultToolsFactory.createDefaultHideRevealEdgeToolSection())
                 .build();
     }
 

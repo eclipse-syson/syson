@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.util.AQLConstants;
@@ -59,6 +60,7 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + ".getInheritedCompartmentItems('" + this.eReference.getName() + "')")
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(false)
+                .palette(this.createInheritedCompartmentItemNodePalette())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
@@ -86,6 +88,12 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
                 .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .build();
+    }
+
+    private NodePalette createInheritedCompartmentItemNodePalette() {
+        return this.diagramBuilderHelper.newNodePalette()
+                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }
 }

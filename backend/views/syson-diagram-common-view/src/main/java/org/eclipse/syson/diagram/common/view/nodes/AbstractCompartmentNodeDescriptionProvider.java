@@ -177,6 +177,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
         return this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache))
                 .nodeTools(compartmentNodeToolProvider.create(cache))
+                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }
 

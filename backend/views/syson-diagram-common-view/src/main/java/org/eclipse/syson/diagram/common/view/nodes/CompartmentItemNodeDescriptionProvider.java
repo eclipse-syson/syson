@@ -109,6 +109,7 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
+                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }
 }

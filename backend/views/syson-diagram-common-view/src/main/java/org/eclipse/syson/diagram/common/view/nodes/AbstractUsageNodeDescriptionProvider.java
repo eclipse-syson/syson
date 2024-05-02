@@ -173,6 +173,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
         var toolSections = new ArrayList<NodeToolSection>();
         toolSections.addAll(this.getToolSections(nodeDescription, cache));
         this.orderToolSectionsTools(toolSections);
+        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
