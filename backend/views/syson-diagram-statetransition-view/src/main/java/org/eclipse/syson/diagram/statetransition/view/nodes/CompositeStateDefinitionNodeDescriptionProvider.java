@@ -51,7 +51,6 @@ public class CompositeStateDefinitionNodeDescriptionProvider extends AbstractDef
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
-                .isCollapsedByDefaultExpression("aql:true")
                 .name(this.nameGenerator.getNodeName(this.eClass))
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .style(this.createCompositeStateUsageNodeStyle())

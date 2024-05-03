@@ -61,7 +61,7 @@ public class StateUsageCompartmentNodeToolProvider extends AbstractCompartmentNo
     }
 
     @Override
-    protected boolean expandOnCreate() {
+    protected boolean revealOnCreate() {
         return false;
     }
 }

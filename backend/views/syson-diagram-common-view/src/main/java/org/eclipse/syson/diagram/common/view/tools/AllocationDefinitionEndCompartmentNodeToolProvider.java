@@ -39,7 +39,7 @@ public class AllocationDefinitionEndCompartmentNodeToolProvider extends Abstract
     }
 
     @Override
-    protected boolean expandOnCreate() {
+    protected boolean revealOnCreate() {
         return false;
     }
 }

@@ -44,7 +44,7 @@ public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCom
     }
 
     @Override
-    protected boolean expandOnCreate() {
+    protected boolean revealOnCreate() {
         return true;
     }
 }

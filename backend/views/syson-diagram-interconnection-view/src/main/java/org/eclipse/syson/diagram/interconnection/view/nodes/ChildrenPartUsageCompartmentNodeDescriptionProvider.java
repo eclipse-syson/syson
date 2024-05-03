@@ -51,6 +51,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
+                .isHiddenByDefaultExpression("aql:true")
                 .name(NAME)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
