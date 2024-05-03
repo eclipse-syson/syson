@@ -151,14 +151,15 @@ public class ViewCreateService {
 
     public Element createCompartmentItem(Element element, String eReferenceName) {
         EStructuralFeature feature = element.eClass().getEStructuralFeature(eReferenceName);
-
+        Element result = element;
         if (feature.getEType() instanceof EClass itemEClass) {
             var item = SysmlFactory.eINSTANCE.create(itemEClass);
+            result = (Element) item;
             var membership = this.getOwningMembership(feature);
             membership.getOwnedRelatedElement().add(this.elementInitializer((Element) item));
             element.getOwnedRelationship().add(membership);
         }
-        return element;
+        return result;
     }
 
     private OwningMembership getOwningMembership(EStructuralFeature feature) {
@@ -184,9 +185,10 @@ public class ViewCreateService {
      *            the element usage to set the subject for
      * @param subjectParent
      *            the parent of the new part usage used as the subject.
-     * @return
+     * @return the ReferenceUsage created in {@code self}
      */
     public Element createPartUsageAsSubject(Element self, Element subjectParent) {
+        Element result = self;
         if (self instanceof RequirementUsage
                 || self instanceof RequirementDefinition
                 || self instanceof UseCaseUsage
@@ -201,13 +203,14 @@ public class ViewCreateService {
             var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
             featureTyping.setType(newPartUsage);
             var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+            result = referenceUsage;
             referenceUsage.setDeclaredName("subject");
             referenceUsage.getOwnedRelationship().add(featureTyping);
             var subjectMembership = SysmlFactory.eINSTANCE.createSubjectMembership();
             subjectMembership.getOwnedRelatedElement().add(referenceUsage);
             self.getOwnedRelationship().add(subjectMembership);
         }
-        return self;
+        return result;
     }
 
     /**
@@ -215,18 +218,20 @@ public class ViewCreateService {
      *
      * @param self
      *            the element usage to set the objective for
-     * @return
+     * @return the created RequirementUsage
      */
     public Element createRequirementUsageAsObjectiveRequirement(Element self) {
+        Element result = self;
         if (self instanceof UseCaseUsage
                 || self instanceof UseCaseDefinition) {
             RequirementUsage newRequirementUsage = SysmlFactory.eINSTANCE.createRequirementUsage();
+            result = newRequirementUsage;
             newRequirementUsage.setDeclaredName(self.getDeclaredName() + "'s objective");
             var objectiveMembership = SysmlFactory.eINSTANCE.createObjectiveMembership();
             objectiveMembership.getOwnedRelatedElement().add(newRequirementUsage);
             self.getOwnedRelationship().add(objectiveMembership);
         }
-        return self;
+        return result;
     }
 
     /**
@@ -342,7 +347,7 @@ public class ViewCreateService {
     private Element getSourceOwner(Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
         Diagram diagram = diagramService.getDiagramContext().getDiagram();
         String id;
-        var parentNode = new ParentNodeFinder(diagram).getParent(sourceNode);
+        var parentNode = new NodeFinder(diagram).getParent(sourceNode);
         if (parentNode instanceof Node node) {
             id = node.getTargetObjectId();
         } else {

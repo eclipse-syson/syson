@@ -44,7 +44,7 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
     }
 
     @Override
-    protected boolean expandOnCreate() {
+    protected boolean revealOnCreate() {
         return true;
     }
 }

@@ -86,7 +86,7 @@ public class InterconnectionViewToolService extends ViewToolService {
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
-     * @return
+     * @return the created PartUsage
      */
     public PartUsage createChildPart(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
@@ -108,7 +108,7 @@ public class InterconnectionViewToolService extends ViewToolService {
         if (parentNode != null) {
             this.createView(childPart, editingContext, diagramContext, parentNode, convertedNodes);
         }
-        return partUsage;
+        return childPart;
     }
 
     /**

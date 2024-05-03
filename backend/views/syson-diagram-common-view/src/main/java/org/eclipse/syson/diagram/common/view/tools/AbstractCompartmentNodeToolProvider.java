@@ -63,11 +63,11 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
     }
 
     /**
-     * Whether the tool will expand the selected node after its execution or not.
+     * Whether the tool will reveal its associated node compartment after its execution or not.
      *
-     * @return if <code>true</code>, the tool will expand the selected node after the execution of the tool.
+     * @return if <code>true</code>, the tool will reveal its associated node node after the execution of the tool.
      */
-    protected abstract boolean expandOnCreate();
+    protected abstract boolean revealOnCreate();
 
     /**
      * Return the node tool icon URL expression to retrieve the icon of the tool visible in the compartment palette.
@@ -87,11 +87,11 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
                 .build();
         allOperations.add(creationCompartmentItemServiceCall);
 
-        if (this.expandOnCreate()) {
-            var expandOperation = this.viewBuilderHelper.newChangeContext()
-                    .expression("aql:diagramServices.expand(Sequence{selectedNode})")
+        if (this.revealOnCreate()) {
+            var revealOperation = this.viewBuilderHelper.newChangeContext()
+                    .expression("aql:selectedNode.revealCompartment(self, diagramContext, editingContext, convertedNodes)")
                     .build();
-            allOperations.add(expandOperation);
+            allOperations.add(revealOperation);
         }
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()

@@ -77,6 +77,16 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     /**
+     * Provide the default state of the compartment (hidden/revealed).
+     *
+     * @return An AQL expression returning <code>true</code> if the compartment should be hidden by default,
+     *         <code>false</code> otherwise.
+     */
+    protected String isHiddenByDefaultExpression() {
+        return "aql:self.isHiddenByDefault('" + this.eReference.getName() + "')";
+    }
+
+    /**
      * Returns the AQL expression evaluated to drop an element from the diagram inside this compartment.
      *
      * @return
@@ -93,6 +103,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
+                .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
                 .name(this.nameGenerator.getCompartmentName(this.eClass, this.eReference))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())

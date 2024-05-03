@@ -48,7 +48,7 @@ public class CompartmentNodeToolProvider extends AbstractCompartmentNodeToolProv
     }
 
     @Override
-    protected boolean expandOnCreate() {
+    protected boolean revealOnCreate() {
         return true;
     }
 }

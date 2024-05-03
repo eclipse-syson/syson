@@ -68,7 +68,6 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
                 .defaultWidthExpression("150")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
-                .isCollapsedByDefaultExpression("true")
                 .name(NAME)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPart().getName())
                 .style(this.createChildPartUsageNodeStyle())

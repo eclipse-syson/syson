@@ -41,7 +41,7 @@ public class ChildrenPartUsageCompartmentNodeToolProvider extends AbstractCompar
     }
 
     @Override
-    protected boolean expandOnCreate() {
+    protected boolean revealOnCreate() {
         return true;
     }
 }
