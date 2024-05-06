@@ -10,6 +10,7 @@
 
 - Switch to Sirius Web 2024.3.4
 - Switch to @ObeoNetwork/gantt-task-react 0.4.9
+- Add dependency to org.apache.commons.commons-text 1.10.0
 
 === Bug fixes
 

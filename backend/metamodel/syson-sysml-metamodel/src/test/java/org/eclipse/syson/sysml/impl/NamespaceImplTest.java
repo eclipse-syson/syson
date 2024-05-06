@@ -13,6 +13,8 @@
 package org.eclipse.syson.sysml.impl;
 
 import static org.eclipse.syson.sysml.util.TestUtils.assertContentEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.NamespaceImport;
@@ -41,6 +43,7 @@ public class NamespaceImplTest {
      *          package p1x1x1 {
      *              part def def1x1x1;
      *          }
+     *          private part def privatedef1x1;
      *      }
      *      
      *      package p1x2 {
@@ -61,6 +64,7 @@ public class NamespaceImplTest {
      *      package p3x1 {
      *          private part def def3x1;
      *      }
+     *      private part def privateDef3
      *  }
      * </pre>
      * 
@@ -392,4 +396,131 @@ public class NamespaceImplTest {
                 testModel.def1x2.getOwningMembership());
     }
 
+    @DisplayName("Test resolve Visible self qualified Name")
+    @Test
+    public void resolveVisibleSelf() {
+        var testModel = new TestModel();
+
+        assertEquals(testModel.def1x1, testModel.p1x1.resolveVisible(testModel.def1x1.getName()).getMemberElement());
+
+        assertEquals(testModel.p1x1, testModel.p1.resolveVisible(testModel.p1x1.getName()).getMemberElement());
+
+        assertNull(testModel.p1.resolveVisible(testModel.def1x1.getName()));
+    }
+
+    @DisplayName("Test resolveLocal")
+    @Test
+    public void resolveLocalSimpleTest() {
+        var testModel = new TestModel();
+
+
+        /*      package p1x1 {
+         *          part def def1x1;
+         *          package p1x1x1 {
+         *              part def def1x1x1;
+         *          }
+         *          private part def privatedef1x1;
+         *      }
+         */
+        // Direct resolve (level n-1)
+        assertEquals(testModel.def1x1, testModel.p1x1.resolveLocal(testModel.def1x1.getName()).getMemberElement());
+        assertEquals(testModel.p1x1x1, testModel.p1x1.resolveLocal(testModel.p1x1x1.getName()).getMemberElement());
+        assertEquals(testModel.def1x1x1, testModel.p1x1x1.resolveLocal(testModel.def1x1x1.getName()).getMemberElement());
+        // Direct resolve (level n-1) private
+        assertEquals(testModel.privatedef1x1, testModel.p1x1.resolveLocal(testModel.privatedef1x1.getName()).getMemberElement());
+
+        // Parent resolve (level n+1)
+        assertEquals(testModel.def1x1, testModel.def1x1x1.resolveLocal(testModel.def1x1.getName()).getMemberElement());
+        assertEquals(testModel.p1x1x1, testModel.def1x1x1.resolveLocal(testModel.p1x1x1.getName()).getMemberElement());
+        // Direct resolve (level n-2) - KO
+        assertNull(testModel.p1x1.resolveLocal(testModel.def1x1x1.getName()));
+        
+        // Parent resolve (level n+2)
+        assertEquals(testModel.p1x1, testModel.def1x1x1.resolveLocal(testModel.p1x1.getName()).getMemberElement());
+
+
+    }
+
+    @DisplayName("Test resolveGlobal")
+    @Test
+    public void resolveGlobalSimpleTest() {
+        var testModel = new TestModel();
+
+
+        /*      package p1x1 {
+         *          part def def1x1;
+         *          package p1x1x1 {
+         *              part def def1x1x1;
+         *          }
+         *          private part def privatedef1x1;
+         *      }
+         */
+        // Direct resolve (level n-1)
+        assertEquals(testModel.def1x1, testModel.p1x1.resolveGlobal(testModel.def1x1.getQualifiedName()).getMemberElement());
+        assertEquals(testModel.p1x1x1, testModel.p1x1.resolveGlobal(testModel.p1x1x1.getQualifiedName()).getMemberElement());
+        assertEquals(testModel.def1x1x1, testModel.p1x1x1.resolveGlobal(testModel.def1x1x1.getQualifiedName()).getMemberElement());
+        // Direct resolve (level n-1) private
+        assertEquals(testModel.privatedef1x1, testModel.p1x1.resolveGlobal(testModel.privatedef1x1.getQualifiedName()).getMemberElement());
+
+        // Parent resolve (level n+1)
+        assertEquals(testModel.def1x1, testModel.def1x1x1.resolveGlobal(testModel.def1x1.getQualifiedName()).getMemberElement());
+
+        // Parent resolve (level n+2)
+        assertEquals(testModel.p1x1, testModel.def1x1x1.resolveGlobal(testModel.p1x1.getQualifiedName()).getMemberElement());
+
+        // Direct resolve (level n-2)
+        assertEquals(testModel.def1x1x1, testModel.p1x1.resolveGlobal(testModel.def1x1x1.getQualifiedName()).getMemberElement());
+
+    }
+
+    @DisplayName("Test resolveVisible")
+    @Test
+    public void resolveVisibleTest() {
+        var testModel = new TestModel();
+
+
+        /*      package p1x1 {
+         *          part def def1x1;
+         *          package p1x1x1 {
+         *              part def def1x1x1;
+         *          }
+         *          private part def privatedef1x1;
+         *      }
+         */
+
+        // Direct resolve (level n-1)
+        assertEquals(testModel.def1x1, testModel.p1x1.resolveVisible(testModel.def1x1.getName()).getMemberElement());
+
+        // Direct resolve (level n-1) private - null
+        assertNull(testModel.p1x1.resolveVisible(testModel.privatedef1x1.getName()));
+
+    }
+
+    @DisplayName("Test unqualifiedNameOf")
+    @Test
+    public void unqualifiedNameOfTest() {
+        var testModel = new TestModel();
+
+        assertEquals("test1", testModel.p1.unqualifiedNameOf("test1"));
+        assertEquals("test2", testModel.p1.unqualifiedNameOf("test1::test2"));
+        assertEquals("test3", testModel.p1.unqualifiedNameOf("test1::test2::test3"));
+
+
+        assertEquals("test 1", testModel.p1.unqualifiedNameOf("test 1"));
+        assertEquals("test 2", testModel.p1.unqualifiedNameOf("test 1::test 2"));
+        assertEquals("test 3", testModel.p1.unqualifiedNameOf("test 1::test 2::test 3"));
+
+    }
+    
+    @DisplayName("Test qualificationOf")
+    @Test
+    public void qualificationOfTest() {
+        var testModel = new TestModel();
+
+        assertNull(testModel.p1.qualificationOf("test1"));
+        assertNull(testModel.p1.qualificationOf("test1::"));
+        assertEquals("test1", testModel.p1.qualificationOf("test1::test2"));
+        assertEquals("test1::test2", testModel.p1.qualificationOf("test1::test2::test3"));
+    }
+    
 }

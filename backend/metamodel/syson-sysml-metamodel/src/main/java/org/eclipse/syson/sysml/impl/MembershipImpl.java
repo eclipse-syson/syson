@@ -13,7 +13,6 @@
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
@@ -120,6 +119,7 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
      * The cached value of the '{@link #getMemberElement() <em>Member Element</em>}' reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @see #getMemberElement()
      * @generated
      * @ordered
@@ -153,8 +153,8 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     @Override
     public Element getMemberElement() {
         if (memberElement != null && memberElement.eIsProxy()) {
-            InternalEObject oldMemberElement = (InternalEObject)memberElement;
-            memberElement = (Element)eResolveProxy(oldMemberElement);
+            InternalEObject oldMemberElement = (InternalEObject) memberElement;
+            memberElement = (Element) eResolveProxy(oldMemberElement);
             if (memberElement != oldMemberElement) {
                 if (eNotificationRequired())
                     eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT, oldMemberElement, memberElement));
@@ -230,7 +230,7 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     @Override
     public Namespace getMembershipOwningNamespace() {
         Namespace membershipOwningNamespace = basicGetMembershipOwningNamespace();
-        return membershipOwningNamespace != null && membershipOwningNamespace.eIsProxy() ? (Namespace)eResolveProxy((InternalEObject)membershipOwningNamespace) : membershipOwningNamespace;
+        return membershipOwningNamespace != null && membershipOwningNamespace.eIsProxy() ? (Namespace) eResolveProxy((InternalEObject) membershipOwningNamespace) : membershipOwningNamespace;
     }
 
     /**
@@ -434,4 +434,4 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
         return result.toString();
     }
 
-} //MembershipImpl
+} // MembershipImpl

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.BasicEList;
@@ -31,29 +32,28 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
+import org.eclipse.syson.sysml.helper.NameHelper;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Namespace</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Namespace</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getImportedMembership <em>Imported Membership</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getMember <em>Member</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getMembership <em>Membership</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getOwnedImport <em>Owned Import</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getOwnedMember <em>Owned Member</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getOwnedMembership <em>Owned Membership</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getImportedMembership <em>Imported Membership</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getMember <em>Member</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getMembership <em>Membership</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getOwnedImport <em>Owned Import</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getOwnedMember <em>Owned Member</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.NamespaceImpl#getOwnedMembership <em>Owned Membership</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class NamespaceImpl extends ElementImpl implements Namespace {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected NamespaceImpl() {
@@ -61,8 +61,8 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -71,14 +71,15 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
     public EList<Membership> getImportedMembership() {
         return getImportedMembership(new BasicEList<Namespace>());
     }
+
     /**
      * @generated NOT
      */
@@ -95,23 +96,23 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
     public EList<Element> getMember() {
         List<Element> members = new ArrayList<>();
         this.getMembership().stream()
-            .map(membership -> membership.getMemberElement())
-            .filter(Objects::nonNull)
-            .forEach(members::add);
+                .map(membership -> membership.getMemberElement())
+                .filter(Objects::nonNull)
+                .forEach(members::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Member(), members.size(), members.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
@@ -127,74 +128,74 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
     public EList<Import> getOwnedImport() {
         List<Element> ownedImports = new ArrayList<>();
         this.getOwnedRelationship().stream()
-            .filter(Import.class::isInstance)
-            .map(Import.class::cast)
-            .filter(imprt -> this.equals(imprt.getImportOwningNamespace()))
-            .forEach(ownedImports::add);
+                .filter(Import.class::isInstance)
+                .map(Import.class::cast)
+                .filter(imprt -> this.equals(imprt.getImportOwningNamespace()))
+                .forEach(ownedImports::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_OwnedImport(), ownedImports.size(), ownedImports.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
     public EList<Element> getOwnedMember() {
         List<Element> ownedMembers = new ArrayList<>();
         this.getOwnedMembership().stream()
-            .flatMap(m -> m.getOwnedRelatedElement().stream())
-            .forEach(ownedMembers::add);
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .forEach(ownedMembers::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_OwnedMember(), ownedMembers.size(), ownedMembers.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
     public EList<Membership> getOwnedMembership() {
         List<Membership> ownedMemberships = new ArrayList<>();
         this.getOwnedRelationship().stream()
-            .filter(Membership.class::isInstance)
-            .map(Membership.class::cast)
-            .filter(m -> this.equals(m.getMembershipOwningNamespace()))
-            .forEach(ownedMemberships::add);
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .filter(m -> this.equals(m.getMembershipOwningNamespace()))
+                .forEach(ownedMemberships::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_OwnedMembership(), ownedMemberships.size(), ownedMemberships.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
     public EList<Membership> importedMemberships(EList<Namespace> excluded) {
         List<Membership> importedMemberships = new ArrayList<>();
-        EList<Namespace> excludedAndSelf = new BasicEList();
+        EList<Namespace> excludedAndSelf = new BasicEList<>();
         excludedAndSelf.addAll(excluded);
         excludedAndSelf.add(this);
         this.getOwnedImport().stream()
-            .map(imprt -> imprt.importedMemberships(excludedAndSelf))
-            .flatMap(Collection::stream)
-            .filter(Membership.class::isInstance)
-            .map(Membership.class::cast)
-            .forEach(importedMemberships::add);
+                .map(imprt -> imprt.importedMemberships(excludedAndSelf))
+                .flatMap(Collection::stream)
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .forEach(importedMemberships::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_ImportedMembership(), importedMemberships.size(), importedMemberships.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated NOT
      */
     @Override
@@ -202,8 +203,8 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
         EDataTypeUniqueEList<String> namesOfs = new EDataTypeUniqueEList<>(String.class, this, SysmlPackage.eINSTANCE.getNamespace__NamesOf__Element().getOperationID());
         List<Membership> elementMemberships = new ArrayList<>();
         this.getMembership().stream()
-            .filter(membership -> element != null && element.equals(membership.getMemberElement()))
-            .forEach(elementMemberships::add);
+                .filter(membership -> element != null && element.equals(membership.getMemberElement()))
+                .forEach(elementMemberships::add);
         elementMemberships.forEach(elt -> {
             String shortName = elt.getMemberShortName();
             String name = elt.getMemberName();
@@ -218,80 +219,145 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
+     * <!-- begin-user-doc --> Return a string with valid KerML syntax representing the qualification part of a given
+     * qualifiedName, that is, a qualified name with all the segment names of the given name except the last. If the
+     * given qualifiedName has only one segment, then return null. <!-- end-user-doc -->
+     * 
+     * @generated NOT
      */
     @Override
     public String qualificationOf(String qualifiedName) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        List<String> segments = NameHelper.parseQualifiedName(qualifiedName);
+
+        // If only 1 or member is present.
+        if (segments.size() < 2) {
+            return null;
+        } else {
+            String qualification = String.join("::", segments.subList(0, segments.size() - 1));
+            return NameHelper.escapeString(qualification);
+        }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
+     * <!-- begin-user-doc --> Resolve the given qualified name to the named Membership (if any), starting with this
+     * Namespace as the local scope. The qualified name string must conform to the concrete syntax of the KerML textual
+     * notation. According to the KerML name resolution rules every qualified name will resolve to either a single
+     * Membership, or to none. <!-- end-user-doc -->
+     * 
+     * @generated NOT
      */
     @Override
     public Membership resolve(String qualifiedName) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+
+        String qualification = qualificationOf(qualifiedName);
+        String name = unqualifiedNameOf(qualifiedName);
+
+        Membership result = null;
+
+        if (qualification == null) {
+            result = resolveLocal(name);
+        } else {
+            Membership namespaceMembership = resolve(qualification);
+            if (namespaceMembership != null && (namespaceMembership instanceof Namespace)) {
+                result = ((Namespace) namespaceMembership).resolveVisible(name);
+            }
+        }
+        return result;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
+     * <!-- begin-user-doc --> Resolve the given qualified name to the named Membership (if any) in the effective global
+     * Namespace that is the outermost naming scope. The qualified name string must conform to the concrete syntax of
+     * the KerML textual notation. <!-- end-user-doc -->
+     * 
+     * @generated NOT
      */
     @Override
     public Membership resolveGlobal(String qualifiedName) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+
+        Namespace owningNamespace = this.getOwningNamespace();
+
+        // Find the outermost naming scope
+        // If a namespace exist, test on the parent namespace
+        if (owningNamespace != null) {
+            return owningNamespace.resolveGlobal(qualifiedName);
+        } else {
+            // On the root namespace
+            // Extract all contained and Imported Membership
+            EList<Membership> allMembership = this.visibleMemberships(new BasicEList<>(), true, true);
+            // Find the responding qualified name
+            Optional<Membership> membership = allMembership.stream().filter(m -> (m.getMemberElement().getQualifiedName().equals(qualifiedName))).findFirst();
+            return membership.orElse(null);
+        }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
+     * <!-- begin-user-doc --> Resolve a simple name starting with this Namespace as the local scope, and continuing
+     * with containing outer scopes as necessary. However, if this Namespace is a root Namespace, then the resolution is
+     * done directly in global scope. <!-- end-user-doc -->
+     * 
+     * @generated NOT
      */
     @Override
     public Membership resolveLocal(String name) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+
+        // Try to resolve the Simple name in the current namespace
+        Optional<Membership> membership = this.getMembership().stream()
+                .filter(m -> (m.getMemberShortName() != null && m.getMemberShortName().equals(name)) || (m.getMemberName() != null && m.getMemberName().equals(name))).findFirst();
+
+        if (membership.isEmpty()) {
+            // if not resolved, try on the parent namespace
+            Namespace owningNamespace = this.getOwningNamespace();
+
+            if (owningNamespace != null) {
+                return owningNamespace.resolveLocal(name);
+            } else {
+                // If no parent nemaspace, global resolve
+                return this.resolveGlobal(name);
+            }
+        } else {
+            return membership.get();
+        }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
+     * <!-- begin-user-doc --> Resolve a simple name from the visible Memberships of this Namespace. <!-- end-user-doc
+     * -->
+     * 
+     * @generated NOT
      */
     @Override
     public Membership resolveVisible(String name) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        EList<Membership> memberships = this.visibleMemberships(new BasicEList<>(), false, false);
+
+        Optional<Membership> membership = memberships.stream().filter(m -> {
+            return (m.getMemberShortName() != null && m.getMemberShortName().equals(name)) || (m.getMemberName() != null && m.getMemberName().equals(name));
+        }).findFirst();
+
+        return membership.orElseGet(() -> null);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
+     * <!-- begin-user-doc --> Return the simple name that is the last segment name of the given qualifiedName. If this
+     * segment name has the form of a KerML unrestricted name, then "unescape" it by removing the surrounding single
+     * quotes and replacing all escape sequences with the specified character. <!-- end-user-doc -->
+     * 
+     * @generated NOT
      */
     @Override
     public String unqualifiedNameOf(String qualifiedName) {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        List<String> segments = NameHelper.parseQualifiedName(qualifiedName);
+
+        if (segments.isEmpty()) {
+            return null;
+        } else {
+            return NameHelper.unescapeString(segments.get(segments.size() - 1));
+        }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -330,6 +396,7 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
         }
         return visibleMemberships;
     }
+
     /**
      * @generated NOT
      */
@@ -340,8 +407,8 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -364,8 +431,8 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -388,8 +455,8 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -397,27 +464,27 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
             case SysmlPackage.NAMESPACE___IMPORTED_MEMBERSHIPS__ELIST:
-                return importedMemberships((EList<Namespace>)arguments.get(0));
+                return importedMemberships((EList<Namespace>) arguments.get(0));
             case SysmlPackage.NAMESPACE___NAMES_OF__ELEMENT:
-                return namesOf((Element)arguments.get(0));
+                return namesOf((Element) arguments.get(0));
             case SysmlPackage.NAMESPACE___QUALIFICATION_OF__STRING:
-                return qualificationOf((String)arguments.get(0));
+                return qualificationOf((String) arguments.get(0));
             case SysmlPackage.NAMESPACE___RESOLVE__STRING:
-                return resolve((String)arguments.get(0));
+                return resolve((String) arguments.get(0));
             case SysmlPackage.NAMESPACE___RESOLVE_GLOBAL__STRING:
-                return resolveGlobal((String)arguments.get(0));
+                return resolveGlobal((String) arguments.get(0));
             case SysmlPackage.NAMESPACE___RESOLVE_LOCAL__STRING:
-                return resolveLocal((String)arguments.get(0));
+                return resolveLocal((String) arguments.get(0));
             case SysmlPackage.NAMESPACE___RESOLVE_VISIBLE__STRING:
-                return resolveVisible((String)arguments.get(0));
+                return resolveVisible((String) arguments.get(0));
             case SysmlPackage.NAMESPACE___UNQUALIFIED_NAME_OF__STRING:
-                return unqualifiedNameOf((String)arguments.get(0));
+                return unqualifiedNameOf((String) arguments.get(0));
             case SysmlPackage.NAMESPACE___VISIBILITY_OF__MEMBERSHIP:
-                return visibilityOf((Membership)arguments.get(0));
+                return visibilityOf((Membership) arguments.get(0));
             case SysmlPackage.NAMESPACE___VISIBLE_MEMBERSHIPS__ELIST_BOOLEAN_BOOLEAN:
-                return visibleMemberships((EList<Namespace>)arguments.get(0), (Boolean)arguments.get(1), (Boolean)arguments.get(2));
+                return visibleMemberships((EList<Namespace>) arguments.get(0), (Boolean) arguments.get(1), (Boolean) arguments.get(2));
         }
         return super.eInvoke(operationID, arguments);
     }
 
-} //NamespaceImpl
+} // NamespaceImpl
