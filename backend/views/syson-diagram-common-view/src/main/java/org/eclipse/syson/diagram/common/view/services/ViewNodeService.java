@@ -140,7 +140,7 @@ public class ViewNodeService {
             if (referenceValue instanceof List<?> referenceListValue) {
                 isHiddenByDefault = referenceListValue.isEmpty();
             } else {
-                isHiddenByDefault = referenceValue != null;
+                isHiddenByDefault = referenceValue == null;
             }
         }
         return isHiddenByDefault;
