@@ -12,8 +12,6 @@
  */
 package org.eclipse.syson.sysml.impl;
 
-import static java.util.stream.Collectors.toList;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,11 +27,10 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.Membership;
-import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.helper.NameConflictingFilter;
 
 /**
  * <!-- begin-user-doc -->
@@ -86,8 +83,11 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      * @generated NOT
      */
     private EList<Membership> getImportedMembership(EList<Namespace> excluded) {
+        NameConflictingFilter nameConflictingFilter = new NameConflictingFilter();
+        nameConflictingFilter.fillUsedNames(getOwnedMembership());
         List<Membership> importedMemberships = getOwnedImport().stream()
                 .flatMap(imp -> imp.importedMemberships(excluded).stream())
+                .filter(nameConflictingFilter)
                 .distinct()
                 .toList();
 

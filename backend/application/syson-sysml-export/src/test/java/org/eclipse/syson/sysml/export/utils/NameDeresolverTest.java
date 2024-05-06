@@ -85,6 +85,44 @@ public class NameDeresolverTest {
 
         assertEquals("'Attr 1'", getDerolvedName(attr1, attr2));
     }
+    
+    @Test
+    public void transitiveMemberNameResolution() {
+        Package p1 = builder.createWithName(Package.class, P1);
+        PartDefinition partDef1 = builder.createInWithName(PartDefinition.class, p1, "def1");
+        
+        Package p2 = builder.createWithName(Package.class, "p2");
+        
+        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, p2);
+        nmImport0.setImportedNamespace(p1);
+        
+        Package p3 = builder.createWithName(Package.class, "p3");
+        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, p3);
+        nmImport.setImportedNamespace(p2);
+        
+        PartDefinition partDef3 = builder.createInWithName(PartDefinition.class, p3, "def3");
+        
+        builder.addSuperType(partDef3, partDef1);
+        /**
+         * <pre>
+         * package p1 {
+                part def def1;
+               
+            }
+    
+            package p2 {
+                import p1::*;
+            }
+    
+            package p3 {
+                import p2::*;
+                part def def3 :> def1; 
+                
+            }
+         * </pre>
+         */
+        assertEquals("def1", getDerolvedName(partDef1, partDef3));
+    }
 
     @Test
     public void directImportedMember() {
