@@ -55,10 +55,11 @@ public class NamespaceImplTest {
      *      }
      *  }
      *  
-     *  package pack3 {
+     *  package p3 {
      *      part def def3;
+     *      private part def privateDef3;
      *      package p3x1 {
-     *          part def def3x1;
+     *          private part def def3x1;
      *      }
      *  }
      * </pre>
@@ -139,7 +140,7 @@ public class NamespaceImplTest {
 
             p3x1 = builder.createInWithName(Package.class, p3, "p3x1");
             def3x1 = builder.createInWithName(PartDefinition.class, p3x1, "def3x1");
-            privateDef3x1 = builder.createInWithName(PartDefinition.class, p3x1, "def3x1");
+            privateDef3x1 = builder.createInWithName(PartDefinition.class, p3x1, "privateDef3x1");
             privateDef3x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
         }
     }
@@ -216,6 +217,104 @@ public class NamespaceImplTest {
                 testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership());
     }
 
+    @DisplayName("Check imported memberships with transitive import")
+    @Test
+    public void importedMembershipTransitiveNamespaceImport() {
+        var testModel = new TestModel();
+
+        // Import p3 in P2
+        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, testModel.p3);
+        nmImport0.setImportedNamespace(testModel.p2);
+
+        // Import p2 in p1 with recursion
+        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p2);
+        nmImport.setImportedNamespace(testModel.p1);
+
+        assertContentEquals(testModel.p3.getImportedMembership(),
+                // All P2 content
+                testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(),
+                // All P1 content by transition
+                testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership());
+    }
+
+    @DisplayName("Check memberships with transitive import")
+    @Test
+    public void membershipTransitiveNamespaceImport() {
+        var testModel = new TestModel();
+
+        // Import p3 in P2
+        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, testModel.p3);
+        nmImport0.setImportedNamespace(testModel.p2);
+
+        // Import p2 in p1 with recursion
+        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p2);
+        nmImport.setImportedNamespace(testModel.p1);
+
+        assertContentEquals(testModel.p3.getMembership(),
+                // All P2 content
+                testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(),
+                // All P1 content by transition
+                testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership(),
+                // P3 direct content
+                testModel.def3.getOwningMembership(), testModel.privateDef3.getOwningMembership(), testModel.p3x1.getOwningMembership());
+    }
+
+    @DisplayName("Check imported memberships when name collision exists")
+    @Test
+    public void membershipNameCollision() {
+        var testModel = new TestModel();
+
+        // Set the name of def1 to def3 to create a name collision
+        testModel.def1.setDeclaredName(testModel.def3.getDeclaredName());
+
+        // Define the same short name for def3 and def2 to create name collision
+        testModel.def2.setDeclaredShortName("d");
+        testModel.def3.setDeclaredShortName("d");
+
+        // Import p3 in P2
+        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, testModel.p3);
+        nmImport0.setImportedNamespace(testModel.p2);
+
+        // Import p2 in p1 with recursion
+        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p2);
+        nmImport.setImportedNamespace(testModel.p1);
+
+        assertContentEquals(testModel.p3.getImportedMembership(),
+                // All P2 content except def2
+                testModel.p2x1.getOwningMembership(),
+                // All P1 content by transition except def1
+                testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership());
+        assertContentEquals(testModel.p3.getMembership(),
+                // All P2 content except def2
+                testModel.p2x1.getOwningMembership(),
+                // All P1 content by transition except def1
+                testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership(),
+                // P3 direct content
+                testModel.def3.getOwningMembership(), testModel.privateDef3.getOwningMembership(), testModel.p3x1.getOwningMembership());
+
+    }
+
+    @DisplayName("Check imported memberships when using prive import")
+    @Test
+    public void membershipPrivateNamespaceImport() {
+        var testModel = new TestModel();
+
+        // Import p3 in P2
+        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, testModel.p3);
+        nmImport0.setImportedNamespace(testModel.p2);
+
+        // Import p2 in p1 with recursion
+        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p2);
+        nmImport.setImportedNamespace(testModel.p1);
+        nmImport.setVisibility(VisibilityKind.PRIVATE);
+
+        assertContentEquals(testModel.p3.getMembership(),
+                // All P2 content
+                testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(),
+                // P3 direct content
+                testModel.def3.getOwningMembership(), testModel.privateDef3.getOwningMembership(), testModel.p3x1.getOwningMembership());
+    }
+
     @DisplayName("Check imported memberships with a simple recursive NamespaceImport and import all = true")
     @Test
     public void importedMembershipRecursiveNamespaceImportAndImportAll() {
@@ -235,7 +334,7 @@ public class NamespaceImplTest {
 
     @DisplayName("Check imported membershits with a simple recursive NamespaceImport with a loop")
     @Test
-    public void importedMembershipRecursiveNamespaceImportWithLopp() {
+    public void importedMembershipRecursiveNamespaceImportWithLoop() {
         var testModel = new TestModel();
 
         // Import p1 in p3
@@ -255,8 +354,8 @@ public class NamespaceImplTest {
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content
                 testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership(),
-                // ALL P1 but not infinite loop
-                testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership(),
+                // All P1 except direct content because it would create name conflict
+                // And no infinite loop
                 testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(), testModel.def1x1x1.getOwningMembership(),
                 testModel.def1x2.getOwningMembership());
     }
@@ -272,8 +371,7 @@ public class NamespaceImplTest {
         nmImport.setIsRecursive(true);
 
         assertContentEquals(testModel.p1.getImportedMembership(),
-                // All P1 but not infinite loop
-                testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership(),
+                // All P1 (except direct content because it would cause name conflict) but not infinite loop
                 testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(), testModel.def1x1x1.getOwningMembership(),
                 testModel.def1x2.getOwningMembership());
     }
@@ -289,9 +387,8 @@ public class NamespaceImplTest {
         nmImport.setIsRecursive(true);
 
         assertContentEquals(testModel.p1x1x1.getImportedMembership(),
-                // All P1 but not infinite loop
                 testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership(),
-                testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(), testModel.def1x1x1.getOwningMembership(),
+                testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(),
                 testModel.def1x2.getOwningMembership());
     }
 
