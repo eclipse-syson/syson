@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
@@ -287,6 +288,7 @@ public class ToolService {
         var insideLabel = InsideLabel.newLabel("")
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .isHeader(false)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .style(labelStyle)
                 .text("")
                 .build();

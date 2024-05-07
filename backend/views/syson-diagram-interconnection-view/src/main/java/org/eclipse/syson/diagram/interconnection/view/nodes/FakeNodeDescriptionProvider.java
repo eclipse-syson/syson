@@ -14,13 +14,14 @@ package org.eclipse.syson.diagram.interconnection.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Fake Node Description allowing to store other Node Descriptions that will be reused by other Node Descriptions.
@@ -30,8 +31,11 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProvider {
 
-    public FakeNodeDescriptionProvider(IColorProvider colorProvider) {
+    private final IDescriptionNameGenerator descriptionNameGenerator;
+
+    public FakeNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
@@ -41,14 +45,13 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
 
     @Override
     protected List<NodeDescription> getChildrenDescription(IViewDiagramElementFinder cache) {
-        var nameGenerator = new IVDescriptionNameGenerator();
         var childrenNodes = new ArrayList<NodeDescription>();
-
-        var optAttributesCompartmentNodeDescription = cache
-                .getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()));
-        var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME);
-        childrenNodes.add(optAttributesCompartmentNodeDescription.get());
-        childrenNodes.add(optCompartmentFreeFormNodeDescription.get());
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME)
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
+                .ifPresent(childrenNodes::add);
         return childrenNodes;
     }
 }

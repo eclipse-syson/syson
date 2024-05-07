@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.interconnection.view.nodes;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -35,17 +36,22 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the port usage border node description.
+ * Used to create the root port usage border node description.
  *
  * @author arichard
  */
-public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    private final IDescriptionNameGenerator nameGenerator;
+    public static final String NAME = "IV BorderNode RootPortUsage";
 
-    public PortUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    private final IDescriptionNameGenerator descriptionNameGenerator;
+
+    private final EReference reference;
+
+    public RootPortUsageBorderNodeDescriptionProvider(EReference reference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.reference = Objects.requireNonNull(reference);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
@@ -56,8 +62,8 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .defaultWidthExpression("10")
                 .domainType(domainType)
                 .outsideLabels(this.createOutsideLabelDescription())
-                .name(this.getName())
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName())
+                .name(NAME)
+                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + this.reference.getName())
                 .style(this.createPortUsageNodeStyle())
                 .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -66,14 +72,10 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.getName());
+        var optPortUsageBorderNodeDescription = cache.getNodeDescription(NAME);
 
         NodeDescription nodeDescription = optPortUsageBorderNodeDescription.get();
         nodeDescription.setPalette(this.createNodePalette(cache, nodeDescription));
-    }
-
-    public String getName() {
-        return this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage());
     }
 
     private OutsideLabelDescription createOutsideLabelDescription() {
@@ -120,15 +122,15 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
                 .body(callEditService.build());
 
-        NodeDescription rootPortBorderNode = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).get();
+        NodeDescription portBorderNode = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .edgeTools(
-                        this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription, rootPortBorderNode)),
-                        this.createInterfaceUsageEdgeTool(List.of(nodeDescription, rootPortBorderNode)))
+                        this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription, portBorderNode)),
+                        this.createInterfaceUsageEdgeTool(List.of(nodeDescription, portBorderNode)))
                 .build();
     }
 
@@ -139,7 +141,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createBindingConnectorAsUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
+                .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -153,7 +155,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createInterfaceUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()))
+                .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getInterfaceUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))

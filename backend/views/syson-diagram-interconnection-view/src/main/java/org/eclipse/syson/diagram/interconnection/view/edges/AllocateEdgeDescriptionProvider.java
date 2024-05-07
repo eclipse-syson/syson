@@ -20,6 +20,8 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.edges.AbstractAllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.FirstLevelChildPartUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.RootPortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -30,16 +32,16 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class AllocateEdgeDescriptionProvider extends AbstractAllocateEdgeDescriptionProvider {
 
-    private final IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public AllocateEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public AllocateEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
     protected String getName() {
-        return this.nameGenerator.getEdgeName("Allocate");
+        return this.descriptionNameGenerator.getEdgeName("Allocate");
     }
 
     @Override
@@ -53,9 +55,11 @@ public class AllocateEdgeDescriptionProvider extends AbstractAllocateEdgeDescrip
     }
 
     private List<NodeDescription> getSourceAndTarget(IViewDiagramElementFinder cache) {
-        var portUsage = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
+        var rootPortUsage = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).get();
+        var portUsage = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
+        var firstLevelChildPartUsage = cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME).get();
         var childPartUsage = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME).get();
 
-        return List.of(childPartUsage, portUsage);
+        return List.of(firstLevelChildPartUsage, childPartUsage, rootPortUsage, portUsage);
     }
 }

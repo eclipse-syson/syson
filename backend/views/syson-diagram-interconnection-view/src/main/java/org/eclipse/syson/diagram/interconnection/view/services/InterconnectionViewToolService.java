@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.FreeFormLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
+import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -41,18 +42,21 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenPartUsageCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.FirstLevelChildPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.services.ElementInitializerSwitch;
-import org.eclipse.syson.sysml.ObjectiveMembership;
+import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Tool-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
+ * Tool-related Java services used by the {@link InterconnectionViewForUsageDiagramDescriptionProvider}.
  *
  * @author arichard
  */
@@ -90,20 +94,33 @@ public class InterconnectionViewToolService extends ViewToolService {
      */
     public PartUsage createChildPart(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        ObjectiveMembership membership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+        FeatureMembership membership = SysmlFactory.eINSTANCE.createFeatureMembership();
         partUsage.getOwnedRelationship().add(membership);
         PartUsage childPart = SysmlFactory.eINSTANCE.createPartUsage();
         membership.getOwnedRelatedElement().add(childPart);
         this.elementInitializerSwitch.doSwitch(childPart);
         // get the children part usage compartment
-        Node parentNode = selectedNode;
+        Node parentNode = null;
         Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
-                .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+                .filter(n -> FirstLevelChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
         if (nodeChildPartUsage.isPresent()) {
             NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
             if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
                 parentNode = selectedNode.getChildNodes().get(1);
             }
+        }
+        if (parentNode == null) {
+            nodeChildPartUsage = convertedNodes.keySet().stream()
+                    .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+            if (nodeChildPartUsage.isPresent()) {
+                NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
+                if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
+                    parentNode = selectedNode.getChildNodes().get(1);
+                }
+            }
+        }
+        if (parentNode == null) {
+            parentNode = selectedNode;
         }
         if (parentNode != null) {
             this.createView(childPart, editingContext, diagramContext, parentNode, convertedNodes);
@@ -112,11 +129,11 @@ public class InterconnectionViewToolService extends ViewToolService {
     }
 
     /**
-     * Called by "Add existing elements" tool from Interconnection View PartUsage node. Add nodes that are not present
-     * in selectedNode (i.e. a PartUsage).
+     * Called by "Add existing elements" tool from Interconnection View Usage node. Add nodes that are not present in
+     * selectedNode (i.e. a PartUsage).
      *
-     * @param partUsage
-     *            the {@link PartUsage} corresponding to the target object of the Diagram or the {@link Node} Package on
+     * @param usage
+     *            the {@link Usage} corresponding to the target object of the Diagram or the {@link Node} Package on
      *            which the tool has been called.
      * @param editingContext
      *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
@@ -132,22 +149,35 @@ public class InterconnectionViewToolService extends ViewToolService {
      *            a variable accessible from the variable manager.
      * @param recursive
      *            whether the tool should add existing elements recursively or not.
-     * @return the input {@link PartUsage}.
+     * @return the input {@link Usage}.
      */
-    public PartUsage addExistingElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Usage addExistingElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
-        var nestedParts = partUsage.getNestedPart();
+        var nestedParts = usage.getNestedPart();
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
 
-        var childrenPartUsageCompartmentNode = selectedNode;
+        Node childrenPartUsageCompartmentNode = null;
         Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
-                .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+                .filter(n -> FirstLevelChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
         if (nodeChildPartUsage.isPresent()) {
             NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
             if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
                 childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
             }
+        }
+        if (childrenPartUsageCompartmentNode == null) {
+            nodeChildPartUsage = convertedNodes.keySet().stream()
+                    .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+            if (nodeChildPartUsage.isPresent()) {
+                NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
+                if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
+                    childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
+                }
+            }
+        }
+        if (childrenPartUsageCompartmentNode == null) {
+            childrenPartUsageCompartmentNode = selectedNode;
         }
         var parentNode = childrenPartUsageCompartmentNode;
         nestedParts.stream().filter(subPartUsage -> !this.isPresent(subPartUsage, this.getChildNodes(diagramContext, parentNode))).forEach(subPartUsage -> {
@@ -157,7 +187,46 @@ public class InterconnectionViewToolService extends ViewToolService {
                 this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
             }
         });
-        return partUsage;
+        return usage;
+    }
+
+    /**
+     * Called by "Add existing elements" tool from Interconnection View Definition node. Add nodes that are not present
+     * in selectedNode (i.e. a PartDefinition).
+     *
+     * @param definition
+     *            the {@link Definition} corresponding to the target object of the Diagram or the {@link Node} Package
+     *            on which the tool has been called.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param selectedNode
+     *            the selected node on which the tool has been called (may be null if the tool has been called from the
+     *            diagram). It corresponds to a variable accessible from the variable manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @param recursive
+     *            whether the tool should add existing elements recursively or not.
+     * @return the input {@link Definition}.
+     */
+    public Definition addExistingElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
+        var ownedParts = definition.getOwnedPart();
+        var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
+        DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
+        var parentNode = selectedNode;
+        ownedParts.stream().filter(subPartUsage -> !this.isPresent(subPartUsage, this.getChildNodes(diagramContext, parentNode))).forEach(subPartUsage -> {
+            this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
+            if (recursive) {
+                Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
+                this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+            }
+        });
+        return definition;
     }
 
     @Override
@@ -182,14 +251,27 @@ public class InterconnectionViewToolService extends ViewToolService {
     private PartUsage addExistingSubElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var nestedParts = partUsage.getNestedPart();
-        var childrenPartUsageCompartmentNode = selectedNode;
+        Node childrenPartUsageCompartmentNode = null;
         Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
-                .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+                .filter(n -> FirstLevelChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
         if (nodeChildPartUsage.isPresent()) {
             NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
             if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
                 childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
             }
+        }
+        if (childrenPartUsageCompartmentNode == null) {
+            nodeChildPartUsage = convertedNodes.keySet().stream()
+                    .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+            if (nodeChildPartUsage.isPresent()) {
+                NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
+                if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
+                    childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
+                }
+            }
+        }
+        if (childrenPartUsageCompartmentNode == null) {
+            childrenPartUsageCompartmentNode = selectedNode;
         }
         var parentNode = childrenPartUsageCompartmentNode;
         nestedParts.stream().forEach(subPartUsage -> {
@@ -217,6 +299,7 @@ public class InterconnectionViewToolService extends ViewToolService {
         var insideLabel = InsideLabel.newLabel("")
                 .insideLabelLocation(InsideLabelLocation.TOP_CENTER)
                 .isHeader(false)
+                .overflowStrategy(LabelOverflowStrategy.NONE)
                 .style(labelStyle)
                 .text("")
                 .build();

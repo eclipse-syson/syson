@@ -21,19 +21,19 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Used to create the Attributes Compartment node description inside the Interconnection View
- * {@link ChildPartUsageNodeDescriptionProvider}.
+ * {@link FirstLevelChildPartUsageNodeDescriptionProvider}.
  *
  * @author arichard
  */
 public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public CompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider) {
-        super(eClass, eReference, colorProvider, new IVDescriptionNameGenerator());
+    public CompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, eReference, colorProvider, descriptionNameGenerator);
     }
 
     @Override
