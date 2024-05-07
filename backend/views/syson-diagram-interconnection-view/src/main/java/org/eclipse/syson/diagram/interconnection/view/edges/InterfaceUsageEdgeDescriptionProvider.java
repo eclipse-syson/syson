@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
+import org.eclipse.syson.diagram.interconnection.view.nodes.RootPortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -54,11 +55,11 @@ public class InterfaceUsageEdgeDescriptionProvider implements IEdgeDescriptionPr
 
     private final IColorProvider colorProvider;
 
-    private final IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public InterfaceUsageEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public InterfaceUsageEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
@@ -80,19 +81,22 @@ public class InterfaceUsageEdgeDescriptionProvider implements IEdgeDescriptionPr
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(this.getName());
-        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
+        var optRootPortUsageBorderNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME);
+        var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
 
-        if (optEdgeDescription.isPresent() && optPortUsageBorderNodeDescription.isPresent()) {
+        if (optEdgeDescription.isPresent() && optRootPortUsageBorderNodeDescription.isPresent() && optPortUsageBorderNodeDescription.isPresent()) {
             EdgeDescription edgeDescription = optEdgeDescription.get();
             diagramDescription.getEdgeDescriptions().add(edgeDescription);
+            edgeDescription.getSourceNodeDescriptions().add(optRootPortUsageBorderNodeDescription.get());
             edgeDescription.getSourceNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
+            edgeDescription.getTargetNodeDescriptions().add(optRootPortUsageBorderNodeDescription.get());
             edgeDescription.getTargetNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
             edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
         }
     }
 
     public String getName() {
-        return this.nameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getInterfaceUsage());
+        return this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getInterfaceUsage());
     }
 
     private EdgeStyle createEdgeStyle() {

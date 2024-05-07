@@ -20,14 +20,14 @@ import org.eclipse.syson.diagram.common.view.AbstractViewDescriptionProvider;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Allows to register the Interconnection View diagram in the application.
+ * Allows to register the Interconnection View for Usage diagram in the application.
  *
  * @author arichard
  */
 @Configuration
-public class InterconnectionViewDescriptionProvider extends AbstractViewDescriptionProvider {
+public class InterconnectionViewForUsageDescriptionProvider extends AbstractViewDescriptionProvider {
 
-    public InterconnectionViewDescriptionProvider(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
+    public InterconnectionViewForUsageDescriptionProvider(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
         super(viewConverter, ePackagesRegistry, inMemoryViewRegistry);
     }
 
@@ -38,6 +38,6 @@ public class InterconnectionViewDescriptionProvider extends AbstractViewDescript
 
     @Override
     protected IRepresentationDescriptionProvider getRepresentationDescriptionProvider() {
-        return new InterconnectionViewDiagramDescriptionProvider();
+        return new InterconnectionViewForUsageDiagramDescriptionProvider();
     }
 }

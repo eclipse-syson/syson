@@ -15,39 +15,35 @@ package org.eclipse.syson.diagram.interconnection.view.services;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
-import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.InterfaceUsage;
-import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 
 /**
- * Creation-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
+ * Creation-related Java services used by the {@link InterconnectionViewForUsageDiagramDescriptionProvider}.
  *
  * @author arichard
  */
 public class InterconnectionViewCreateService extends ViewCreateService {
 
-    private final UtilService utilService;
-
     public InterconnectionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
         super(viewDiagramDescriptionSearchService, objectService);
-        this.utilService = new UtilService();
     }
 
     public BindingConnectorAsUsage createBindingConnectorAsUsage(PortUsage sourcePort, PortUsage targetPort) {
-        PartUsage containerPart = this.utilService.getContainerPart(sourcePort);
-        if (containerPart == null) {
+        Namespace owningNamespace = sourcePort.getOwningNamespace();
+        if (owningNamespace == null) {
             return null;
         }
         FeatureMembership featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        containerPart.getOwnedRelationship().add(featureMembership);
+        owningNamespace.getOwnedRelationship().add(featureMembership);
 
         BindingConnectorAsUsage bindingConnectorAsUsage = SysmlFactory.eINSTANCE.createBindingConnectorAsUsage();
         bindingConnectorAsUsage.setDeclaredName("bind");
@@ -75,12 +71,12 @@ public class InterconnectionViewCreateService extends ViewCreateService {
     }
 
     public InterfaceUsage createInterfaceUsage(PortUsage sourcePort, PortUsage targetPort) {
-        PartUsage containerPart = this.utilService.getContainerPart(sourcePort);
-        if (containerPart == null) {
+        Namespace owningNamespace = sourcePort.getOwningNamespace();
+        if (owningNamespace == null) {
             return null;
         }
         FeatureMembership featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        containerPart.getOwnedRelationship().add(featureMembership);
+        owningNamespace.getOwnedRelationship().add(featureMembership);
 
         InterfaceUsage interfaceUsage = SysmlFactory.eINSTANCE.createInterfaceUsage();
         interfaceUsage.setDeclaredName("connect");

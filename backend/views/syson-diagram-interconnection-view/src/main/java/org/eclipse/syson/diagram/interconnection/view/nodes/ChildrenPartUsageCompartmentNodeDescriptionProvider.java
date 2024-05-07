@@ -31,7 +31,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the free form compartment used by the {@link ChildPartUsageNodeDescriptionProvider}.
+ * Used to create the free form compartment used by the {@link FirstLevelChildPartUsageNodeDescriptionProvider}.
  *
  * @author arichard
  */
@@ -68,7 +68,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
         NodeDescription compartmentFreeFormNodeDescription = optCompartmentFreeFormNodeDescription.get();
         NodeDescription childPartUsageNodeDescription = optChildPartUsageNodeDescription.get();
 
-        compartmentFreeFormNodeDescription.getReusedChildNodeDescriptions().add(childPartUsageNodeDescription);
+        compartmentFreeFormNodeDescription.getChildrenDescriptions().add(childPartUsageNodeDescription);
 
         compartmentFreeFormNodeDescription.setPalette(this.createCompartmentPalette(cache));
     }
@@ -76,7 +76,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 

@@ -26,7 +26,7 @@ import org.eclipse.syson.services.UtilService;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * List of all Java services classes used by the {@link InterconnectionViewDiagramDescriptionProvider}.
+ * List of all Java services classes used by the {@link InterconnectionViewForUsageDiagramDescriptionProvider}.
  *
  * @author arichard
  */
@@ -37,7 +37,7 @@ public class InterconnectionViewJavaServiceProvider implements IJavaServiceProvi
     public List<Class<?>> getServiceClasses(View view) {
         var descriptions = view.getDescriptions();
         var optGVDescription = descriptions.stream()
-                .filter(desc -> InterconnectionViewDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
+                .filter(desc -> InterconnectionViewForUsageDiagramDescriptionProvider.DESCRIPTION_NAME.equals(desc.getName()))
                 .findFirst();
         if (optGVDescription.isPresent()) {
             return List.of(DeleteService.class,

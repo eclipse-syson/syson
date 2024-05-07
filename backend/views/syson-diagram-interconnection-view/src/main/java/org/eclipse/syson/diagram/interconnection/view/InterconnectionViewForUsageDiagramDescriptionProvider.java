@@ -30,18 +30,20 @@ import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDe
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenPartUsageCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.FakeNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.FirstLevelChildPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.PortUsageBorderNodeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.nodes.RootPartUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.RootPortUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.RootUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
- * Description of the Interconnection View diagram using the ViewBuilder API from Sirius Web.
+ * Description of the Interconnection View for Usage diagram using the ViewBuilder API from Sirius Web.
  *
  * @author arichard
  */
-public class InterconnectionViewDiagramDescriptionProvider extends AbstractDiagramDescriptionProvider {
+public class InterconnectionViewForUsageDiagramDescriptionProvider extends AbstractDiagramDescriptionProvider {
 
     public static final String DESCRIPTION_NAME = "Interconnection View";
 
@@ -49,7 +51,7 @@ public class InterconnectionViewDiagramDescriptionProvider extends AbstractDiagr
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getUsage());
 
         var diagramDescriptionBuilder = this.diagramBuilderHelper.newDiagramDescription();
         diagramDescriptionBuilder
@@ -62,13 +64,15 @@ public class InterconnectionViewDiagramDescriptionProvider extends AbstractDiagr
 
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
-                new FakeNodeDescriptionProvider(colorProvider),
-                new RootPartUsageNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
+                new FakeNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
+                new RootUsageNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
+                new FirstLevelChildPartUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedPart(), colorProvider, this.getNameGenerator()),
                 new ChildPartUsageNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider),
+                new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
                 new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
                 new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
                 new ChildrenPartUsageCompartmentNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
+                new RootPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.getNameGenerator()),
                 new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getNameGenerator()),
                 new AllocateEdgeDescriptionProvider(colorProvider, this.getNameGenerator()),

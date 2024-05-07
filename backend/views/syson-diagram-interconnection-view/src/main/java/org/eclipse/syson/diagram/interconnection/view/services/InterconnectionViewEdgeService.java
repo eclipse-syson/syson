@@ -20,21 +20,22 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.InterfaceUsage;
-import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * Edge-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
+ * Edge-related Java services used by the {@link InterconnectionViewForUsageDiagramDescriptionProvider}.
  *
  * @author arichard
  */
@@ -146,10 +147,10 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
                         .map(Feature::getOwnedReferenceSubsetting)
                         .ifPresent(refSub -> {
                             refSub.setReferencedFeature(newSourcePort);
-                            // move the given connector into the parent (i.e. should be a PartUsage) of the new source
-                            Usage owningUsage = newSourcePort.getOwningUsage();
-                            if (owningUsage instanceof PartUsage partUsage) {
-                                partUsage.getOwnedRelationship().add(bind.getOwningRelationship());
+                            // move the given connector into the parent of the new source
+                            Namespace owningNamespace = newSourcePort.getOwningNamespace();
+                            if (owningNamespace instanceof Usage || owningNamespace instanceof Definition) {
+                                owningNamespace.getOwnedRelationship().add(bind.getOwningRelationship());
                             }
                         });
             }
