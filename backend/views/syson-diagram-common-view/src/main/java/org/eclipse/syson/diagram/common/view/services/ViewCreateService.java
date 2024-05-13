@@ -394,18 +394,20 @@ public class ViewCreateService {
     }
 
     private void getSpecializationTypeHierarchy(Type type, List<Type> specializationTypeHierarchy) {
-        List<Type> specializationTypes = new ArrayList<>();
-        type.getOwnedSpecialization().stream()
-                .map(Specialization::getGeneral)
-                .forEach(general -> {
-                    if (!specializationTypeHierarchy.contains(general) && !specializationTypes.contains(general)) {
-                        specializationTypes.add(general);
-                        specializationTypeHierarchy.add(general);
-                    }
-                });
-        specializationTypes.forEach(speType -> {
-            this.getSpecializationTypeHierarchy(speType, specializationTypeHierarchy);
-        });
+        if (type != null) {
+            List<Type> specializationTypes = new ArrayList<>();
+            type.getOwnedSpecialization().stream()
+                    .map(Specialization::getGeneral)
+                    .forEach(general -> {
+                        if (general != null && !specializationTypeHierarchy.contains(general) && !specializationTypes.contains(general)) {
+                            specializationTypes.add(general);
+                            specializationTypeHierarchy.add(general);
+                        }
+                    });
+            specializationTypes.forEach(speType -> {
+                this.getSpecializationTypeHierarchy(speType, specializationTypeHierarchy);
+            });
+        }
     }
 
     private Package getClosestContainingPackageFrom(Element element) {
