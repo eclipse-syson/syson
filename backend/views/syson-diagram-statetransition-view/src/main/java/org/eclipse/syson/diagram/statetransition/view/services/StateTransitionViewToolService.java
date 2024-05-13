@@ -29,6 +29,8 @@ import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Succession;
@@ -130,11 +132,14 @@ public class StateTransitionViewToolService extends ViewToolService {
         // Check source and target have the same parent
         Element sourceParentElement = sourceAction.getOwner();
         Element targetParentElement = targetAction.getOwner();
-        if (sourceParentElement != targetParentElement) {
+        if (sourceParentElement != targetParentElement
+                // Handle the case where source state or target state is a Parallel state
+                || isParallelState(sourceAction) || isParallelState(targetAction)) {
             // Should probably not be here as the transition creation should not be allowed.
             return sourceAction;
         }
         // Create transition usage and add it to the parent element
+        // sourceParentElement <>-> FeatureMembership -> RelatedElement = TransitionUsage 
         TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
         this.elementInitializerSwitch.doSwitch(newTransitionUsage);
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
@@ -142,34 +147,60 @@ public class StateTransitionViewToolService extends ViewToolService {
         sourceParentElement.getOwnedRelationship().add(featureMembership);
 
         // Create EndFeature
-        var sourceMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        // TransitionUsage <>-> Membership -> MemberElement = sourceAction
+        var sourceMembership = SysmlFactory.eINSTANCE.createMembership();
         newTransitionUsage.getOwnedRelationship().add(sourceMembership);
         sourceMembership.setMemberElement(sourceAction);
 
         // Create Succession
+        // TransitionUsage <>-> FeatureMembership -> RelatedElement = succession
         Succession succession = SysmlFactory.eINSTANCE.createSuccession();
         this.elementInitializerSwitch.doSwitch(succession);
         var successionFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         successionFeatureMembership.getOwnedRelatedElement().add(succession);
         newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
 
-        // Set Succession
-        succession.getSource().add(sourceAction);
-        succession.getTarget().add(targetAction);
+        // Set Succession Source and Target Features
+        succession.getOwnedRelationship().add(createConnectorEndFeatureMembership(sourceAction));
+        succession.getOwnedRelationship().add(createConnectorEndFeatureMembership(targetAction));
 
         return sourceAction;
+    }
+
+    /**
+     * <>-> EndFeatureMembership -> RelatedElement = Feature <>-> ReferenceSubsetting -> ReferencedFeature = feature
+     * 
+     * @param feature The feature to reference subset
+     * @return
+     */
+    private EndFeatureMembership createConnectorEndFeatureMembership(Feature feature) {
+        var successionSourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        var successionSourceEndFeatureFeature = SysmlFactory.eINSTANCE.createFeature();
+        successionSourceEndFeatureMembership.getOwnedRelatedElement().add(successionSourceEndFeatureFeature);
+                
+        var successionSourceRefSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        successionSourceRefSubsetting.setReferencedFeature(feature);
+        successionSourceEndFeatureFeature.getOwnedRelationship().add(successionSourceRefSubsetting);
+        return successionSourceEndFeatureMembership;
+    }
+    
+    private boolean isParallelState(ActionUsage action) {
+        return action instanceof StateUsage su && su.isIsParallel();
     }
 
     @Override
     public Usage addExistingSubElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var nestedUsages = usage.getNestedUsage();
-
-        nestedUsages.stream().forEach(subUsage -> {
-            this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
-            Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-            this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
-        });
+        if (!(usage instanceof StateUsage)) {
+            var nestedUsages = usage.getNestedUsage();
+    
+            nestedUsages.stream()
+                .forEach(subUsage -> {
+                    this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+                    Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                });
+        }
         return usage;
     }
 

@@ -39,6 +39,7 @@ import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressi
 import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.SubsettingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TriggerExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.TriggerExpressionNameContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TypingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ValueExpressionContext;
 import org.eclipse.syson.sysml.AcceptActionUsage;
@@ -49,7 +50,7 @@ import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralBoolean;
@@ -60,8 +61,6 @@ import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
-import org.eclipse.syson.sysml.ReferenceUsage;
-import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -456,24 +455,55 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     @Override
-    public void exitTriggerExpression(TriggerExpressionContext ctx) {
+    public void enterTriggerExpression(TriggerExpressionContext ctx) {
         if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
             return;
         }
         if (this.element instanceof TransitionUsage transition) {
             this.utilService.removeTransitionFeaturesOfSpecificKind(transition, TransitionFeatureKind.TRIGGER);
             this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
-            this.handleTriggerExpression(transition, ctx);
+        }
+        super.enterTriggerExpression(ctx);
+    }
+
+    @Override
+    public void exitTriggerExpression(TriggerExpressionContext ctx) {
+        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
+            return;
+        }
+        if (this.element instanceof TransitionUsage transition) {
+            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
         }
         super.exitTriggerExpression(ctx);
     }
 
-    private void handleTriggerExpression(TransitionUsage transition, TriggerExpressionContext triggerExpression) {
-        triggerExpression.qualifiedName().stream().forEach(identifier -> {
-            var name = identifier.getText();
-            var actionUsage = this.utilService.findByNameAndType(this.element, name, ActionUsage.class);
-            this.addTransitionFeature(transition, TransitionFeatureKind.TRIGGER, actionUsage);
-        });
+    @Override
+    public void exitTriggerExpressionName(TriggerExpressionNameContext ctx) {
+        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
+            return;
+        }
+        if (this.element instanceof TransitionUsage transition) {
+            this.handleTriggerExpressionName(transition, ctx);
+        }
+        super.exitTriggerExpressionName(ctx);
+    }
+
+    private void handleTriggerExpressionName(TransitionUsage transition, TriggerExpressionNameContext triggerExpressionName) {
+        String name = triggerExpressionName.name().getText();
+        TypingExpressionContext typingExpression = triggerExpressionName.typingExpression();
+        String type;
+        if (typingExpression != null) {
+            // Here the user have provided both a name and a type
+            type = typingExpression.qualifiedName().getText();
+        } else {
+            // Here only a type is provided, name is considered null
+            type = name;
+            name = null;
+        }
+        var typeValue = this.utilService.findByNameAndType(this.element, type, Type.class);
+        if (typeValue != null) {
+            this.addTransitionFeature(transition, TransitionFeatureKind.TRIGGER, name, typeValue);
+        }
     }
 
     @Override
@@ -493,31 +523,80 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         effectExpression.qualifiedName().stream().forEach(identifier -> {
             var name = identifier.getText();
             var actionUsage = this.utilService.findByNameAndType(this.element, name, ActionUsage.class);
-            this.addTransitionFeature(transition, TransitionFeatureKind.EFFECT, actionUsage);
+            if (actionUsage != null) {
+                this.addTransitionFeature(transition, TransitionFeatureKind.EFFECT, null, actionUsage);
+            }
         });
     }
 
-    private void addTransitionFeature(TransitionUsage transition, TransitionFeatureKind kind, Step au) {
+    private void addTransitionFeature(TransitionUsage transition, TransitionFeatureKind kind, String name, Type typeValue) {
         TransitionFeatureMembership tfMembership = SysmlFactory.eINSTANCE.createTransitionFeatureMembership();
         tfMembership.setKind(kind);
-        transition.getOwnedRelationship().add(tfMembership);
         if (kind.equals(TransitionFeatureKind.TRIGGER)) {
+            // Add the root membership
+            transition.getOwnedRelationship().add(tfMembership);
+
             AcceptActionUsage acceptActionUsage = SysmlFactory.eINSTANCE.createAcceptActionUsage();
             tfMembership.getOwnedRelatedElement().add(acceptActionUsage);
             tfMembership.setFeature(acceptActionUsage);
 
-            ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
-            FeatureMembership refFeatureFromAcceptActionUsage = SysmlFactory.eINSTANCE.createFeatureMembership();
-            refFeatureFromAcceptActionUsage.getOwnedRelatedElement().add(refUsage);
-            acceptActionUsage.getOwnedRelationship().add(refFeatureFromAcceptActionUsage);
+            // Set AcceptActionUsage payload as first Parameter. See paragraph 7.16.8
+            var payloadParam = SysmlFactory.eINSTANCE.createParameterMembership();
+            acceptActionUsage.getOwnedRelationship().add(payloadParam);
 
-            FeatureMembership refFeatureFromRefUsage = SysmlFactory.eINSTANCE.createFeatureMembership();
-            refFeatureFromRefUsage.getTarget().add(au);
-            refUsage.getOwnedRelationship().add(refFeatureFromRefUsage);
+            // create the reference usage to be contained in the parameter membership
+            var payloadRef = SysmlFactory.eINSTANCE.createReferenceUsage();
+            payloadRef.setDirection(FeatureDirectionKind.INOUT);
+            payloadParam.getOwnedRelatedElement().add(payloadRef);
+            if (name != null) {
+                payloadRef.setDeclaredName(name);
+            } else {
+                payloadRef.setDeclaredName("payload");
+            }
+
+            var ft = SysmlFactory.eINSTANCE.createFeatureTyping();
+            payloadRef.getOwnedRelationship().add(ft);
+            ft.setType(typeValue);
+
+            // Set AcceptActionUsage receiver as second Parameter
+            var receiverParam = SysmlFactory.eINSTANCE.createParameterMembership();
+            acceptActionUsage.getOwnedRelationship().add(receiverParam);
+
+            // create the reference usage to be contained in the parameter membership
+            var receiverRef = SysmlFactory.eINSTANCE.createReferenceUsage();
+            receiverRef.setDirection(FeatureDirectionKind.IN);
+            receiverParam.getOwnedRelatedElement().add(receiverRef);
+
+            // create the feature value relationship to be contained inside the reference usage
+            var receiverFeatureVal = SysmlFactory.eINSTANCE.createFeatureValue();
+            receiverRef.getOwnedRelationship().add(receiverFeatureVal);
+
+            // create the feature reference expression to be contained inside the feature value relationship
+            var receiverFeatureRefExpr = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
+            receiverFeatureVal.getOwnedRelatedElement().add(receiverFeatureRefExpr);
+
+            // find or create the membership relationship contained inside the feature reference expression
+            var receiverMembership = SysmlFactory.eINSTANCE.createMembership();
+            receiverFeatureRefExpr.getOwnedRelationship().add(receiverMembership);
+            Type containerPart = this.utilService.getReceiverContainerDefinitionOrUsage(acceptActionUsage);
+            receiverMembership.setMemberElement(containerPart);
+
+            // find or create the return parameter membership relationship contained inside the feature reference
+            // expression
+            var receiverReturn = SysmlFactory.eINSTANCE.createReturnParameterMembership();
+            receiverFeatureRefExpr.getOwnedRelationship().add(receiverReturn);
+
+            // find or create the feature contained inside the parameter membership relationship
+            var receiverFeature = SysmlFactory.eINSTANCE.createFeature();
+            receiverFeature.setDirection(FeatureDirectionKind.OUT);
+            receiverReturn.getOwnedRelatedElement().add(receiverFeature);
         } else {
-            tfMembership.setFeature(au);
+            if (typeValue instanceof ActionUsage au) {
+                tfMembership.setFeature(au);
+                transition.getOwnedRelationship().add(tfMembership);
+            }
         }
-        this.importService.handleImport(this.element, au);
+        this.importService.handleImport(this.element, typeValue);
     }
 
     @Override

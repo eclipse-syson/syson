@@ -81,6 +81,33 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
         }
         return referencedFeature;
     }
+    
+    /**
+     * referencedFeature : Feature {redefines subsettedFeature}.
+     * 
+     * The Feature that is referenced by the referencingFeature of this ReferenceSubsetting.
+     * 
+     * @generated NOT
+     */
+    @Override
+    public Feature getSubsettedFeature() {
+        return this.getReferencedFeature();
+    }
+
+    
+    /**
+     * referencedFeature : Feature {redefines subsettedFeature}.
+     * 
+     * The Feature that is referenced by the referencingFeature of this ReferenceSubsetting.
+     * Setter.
+     * 
+     * @generated NOT
+     */
+    @Override
+    public void setSubsettedFeature(Feature newSubsettedFeature) {
+        super.setSubsettedFeature(newSubsettedFeature);
+        this.setReferencedFeature(newSubsettedFeature);
+    }
 
     /**
      * <!-- begin-user-doc -->

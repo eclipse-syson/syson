@@ -150,6 +150,18 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTriggerExpressionName(DirectEditParser.TriggerExpressionNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTriggerExpressionName(DirectEditParser.TriggerExpressionNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterGuardExpression(DirectEditParser.GuardExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

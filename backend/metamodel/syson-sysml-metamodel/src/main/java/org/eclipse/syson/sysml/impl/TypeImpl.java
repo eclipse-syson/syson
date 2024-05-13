@@ -430,14 +430,16 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
+     * <!-- begin-user-doc --> 
+     * The ownedMemberships of this Type that are FeatureMemberships, for which the Type is the
+     * owningType. Each such FeatureMembership identifies an ownedFeature of the Type. 
      * <!-- end-user-doc -->
      * @generated NOT
      */
     @Override
     public EList<FeatureMembership> getOwnedFeatureMembership() {
         List<FeatureMembership> ownedFeatureMemberships = new ArrayList<>();
-        this.getOwnedRelationship().stream()
+        this.getOwnedMembership().stream()
             .filter(FeatureMembership.class::isInstance)
             .map(FeatureMembership.class::cast)
             .forEach(ownedFeatureMemberships::add);

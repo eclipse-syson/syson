@@ -40,9 +40,9 @@ public class StateUsageCompartmentNodeToolProvider extends AbstractCompartmentNo
     @Override
     protected String getNodeToolName() {
         if (this.isParallel) {
-            return "Parallel";
+            return "New Parallel State";
         } else {
-            return "State";
+            return "New State";
         }
     }
 

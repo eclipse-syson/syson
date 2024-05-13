@@ -74,6 +74,15 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
                 .findFirst()
                 .orElse(null);
     }
+    
+    /**
+     * ownedMemberParameter : Feature {redefines ownedMemberFeature}
+     * @generated NOT
+     */
+    @Override
+    public Feature getOwnedMemberFeature() {
+        return this.getOwnedMemberParameter();
+    }
 
     /**
      * <!-- begin-user-doc -->
