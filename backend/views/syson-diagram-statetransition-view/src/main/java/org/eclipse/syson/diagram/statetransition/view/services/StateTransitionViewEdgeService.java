@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.statetransition.view.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
 
@@ -31,8 +32,10 @@ import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expression;
-import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -152,21 +155,27 @@ public class StateTransitionViewEdgeService {
      * @return the given {@link TransitionUsage}.
      */
     public TransitionUsage setTransitionSource(TransitionUsage transition, ActionUsage newSource) {
-        ActionUsage currentSource = transition.getSource();
         // Update transition source
-        transition.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
+        transition.getOwnedMembership().stream()
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
                 .findFirst()
                 .ifPresent(mem -> mem.setMemberElement(newSource));
         // Update succession source
         Succession succession = transition.getSuccession();
-        succession.getSource().replaceAll(e -> {
-            if (e.equals(currentSource)) {
-                return newSource;
-            }
-            return e;
-        });
+        succession.getFeatureMembership().stream()
+            .filter(EndFeatureMembership.class::isInstance)
+            .map(EndFeatureMembership.class::cast)
+            .findFirst()
+            .ifPresent(endFeat -> {
+                endFeat.getOwnedRelatedElement().stream()
+                    .findFirst()
+                    .ifPresent(feat -> feat.getOwnedRelationship().stream()
+                            .filter(ReferenceSubsetting.class::isInstance)
+                            .map(ReferenceSubsetting.class::cast)
+                            .findFirst()
+                            .ifPresent(refSub -> refSub.setReferencedFeature(newSource)));
+            });
         return transition;
     }
 
@@ -181,15 +190,21 @@ public class StateTransitionViewEdgeService {
      * @return the given {@link TransitionUsage}.
      */
     public TransitionUsage setTransitionTarget(TransitionUsage transition, ActionUsage newTarget) {
-        ActionUsage currentTarget = transition.getTarget();
         // Update succession target
         Succession succession = transition.getSuccession();
-        succession.getTarget().replaceAll(e -> {
-            if (e.equals(currentTarget)) {
-                return newTarget;
-            }
-            return e;
-        });
+        List<EndFeatureMembership> succFeatMemberships = succession.getFeatureMembership().stream()
+            .filter(EndFeatureMembership.class::isInstance)
+            .map(EndFeatureMembership.class::cast)
+            .toList();
+        if (succFeatMemberships.size() > 1) {
+            succFeatMemberships.get(1).getOwnedRelatedElement().stream()
+                .findFirst()
+                .ifPresent(feat -> feat.getOwnedRelationship().stream()
+                    .filter(ReferenceSubsetting.class::isInstance)
+                    .map(ReferenceSubsetting.class::cast)
+                    .findFirst()
+                    .ifPresent(refSub -> refSub.setReferencedFeature(newTarget)));
+        }
         return transition;
     }
 

@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -220,9 +221,9 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
      * @generated NOT
      */
     public ActionUsage basicGetTarget() {
-        Succession succession = getSuccession();
-        if (succession != null && !succession.getTarget().isEmpty()) {
-            EList<Element> targets = succession.getTarget();
+        Succession succession = this.getSuccession();
+        if (succession != null && !succession.getTargetFeature().isEmpty()) {
+            EList<Feature> targets = succession.getTargetFeature();
             if (!targets.isEmpty() && targets.get(0) instanceof ActionUsage actionUsage) {
                 return actionUsage;
             }
@@ -263,13 +264,18 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
 
     /**
      * <!-- begin-user-doc -->
+     * Return the payloadParameter of the triggerAction of this TransitionUsage, if it has one.
+     * 
+     * body: if triggerAction->isEmpty() then null else triggerAction->first().payloadParameter endif
      * <!-- end-user-doc -->
-     * @generated
+     * @generated NOT
      */
     @Override
     public ReferenceUsage triggerPayloadParameter() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
+        AcceptActionUsage triggerAction = this.getTriggerAction().stream().findFirst().orElse(null);
+        if (triggerAction != null) {
+            return triggerAction.getPayloadParameter();
+        }
         return null;
     }
 

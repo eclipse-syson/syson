@@ -27,6 +27,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
@@ -34,6 +36,7 @@ import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysONEContentAdapter;
@@ -76,6 +79,30 @@ public class UtilService {
             containerPart = partUsage;
         }
         return containerPart;
+    }
+
+    /**
+     * When an accept action usage is directly or indirectly a composite feature of a part definition or usage, then the
+     * default for the receiver (via) of the accept action usage is the containing part, not the accept action itself.
+     * This is known as the default accepting context.
+     *
+     * @param aau
+     *            the acceptActionUsage {@link AcceptActionUsage}.
+     * @return the first container that is a {@link Definition} or a {@link Usage} for the given
+     *         {@link AcceptActionUsage} if found, <code>null</code> otherwise.
+     */
+    public Type getReceiverContainerDefinitionOrUsage(AcceptActionUsage aau) {
+        EObject container = aau.eContainer();
+        while (container != null) {
+            if (container instanceof Definition || container instanceof Usage) {
+                break;
+            }
+            container = container.eContainer();
+        }
+        if (container instanceof Definition || container instanceof Usage) {
+            return (Type) container;
+        }
+        return null;
     }
 
     /**

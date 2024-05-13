@@ -63,11 +63,15 @@ valueExpression :
 ;
 
 transitionExpression :
-	(triggerExpression)? (effectExpression)?
+	(triggerExpression)? (guardExpression)? (effectExpression)?
 ;
 
 triggerExpression :
-	qualifiedName ('|' qualifiedName)*
+	triggerExpressionName ('|' triggerExpressionName)*
+;
+
+triggerExpressionName :
+	name (typingExpression)?
 ;
 
 guardExpression :

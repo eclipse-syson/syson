@@ -18,11 +18,16 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -84,6 +89,19 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
     }
 
     @Override
+    public Set<EObject> caseReferenceSubsetting(ReferenceSubsetting object) {
+        Set<EObject> relatedElements = new HashSet<>();
+        if (object.getReferencedFeature() instanceof ActionUsage && object.eContainer() instanceof Feature feat) {
+            if (feat.eContainer() instanceof EndFeatureMembership efm && efm.eContainer() instanceof Succession succ) {
+                if (succ.eContainer() instanceof FeatureMembership fm && fm.eContainer() instanceof TransitionUsage tu) {
+                    relatedElements.add(tu);
+                }
+            }
+        }
+        return relatedElements;
+    }
+
+    @Override
     public Set<EObject> caseSubclassification(Subclassification object) {
         Set<EObject> relatedElements = new HashSet<>();
         if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier())) {
@@ -97,6 +115,11 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
         Set<EObject> relatedElements = new HashSet<>();
         if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_Target())
                 || this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_Source())) {
+            // Handle the case where the succession source or target has already been deleted
+            if ((!object.getSource().isEmpty() && object.getSource().get(0).getOwner() == null)
+                    || (!object.getTarget().isEmpty() && object.getTarget().get(0).getOwner() == null)) {
+                return relatedElements;
+            }
             relatedElements.add(object);
             if (object.eContainer() instanceof Membership membership) {
                 relatedElements.add(membership);

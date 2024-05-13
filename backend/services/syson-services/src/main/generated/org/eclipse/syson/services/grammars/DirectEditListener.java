@@ -122,6 +122,16 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitTriggerExpression(DirectEditParser.TriggerExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#triggerExpressionName}.
+	 * @param ctx the parse tree
+	 */
+	void enterTriggerExpressionName(DirectEditParser.TriggerExpressionNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#triggerExpressionName}.
+	 * @param ctx the parse tree
+	 */
+	void exitTriggerExpressionName(DirectEditParser.TriggerExpressionNameContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#guardExpression}.
 	 * @param ctx the parse tree
 	 */
