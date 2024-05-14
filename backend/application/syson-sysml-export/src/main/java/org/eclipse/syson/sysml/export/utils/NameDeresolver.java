@@ -12,11 +12,19 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.export.utils;
 
-import java.util.Comparator;
-import java.util.List;
+import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toSet;
 
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Stream;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.UniqueEList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.Conjugation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
@@ -28,13 +36,20 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 
 /**
- * Object in charge of converting an Element to a resolvable qualified name depending of its context.
- * 
+ * Object in charge of converting an Element to a resolvable qualified name depending of its context. This class tries
+ * its best to find the shortest resolvable name. Be aware that this element keeps a cache of the computation of
+ * {@link Namespace#visibleMemberships(EList, boolean, boolean)}. It should be used on a static model, discard this
+ * object if the model changes.
+ *
  * @author Arthur Daussy
  */
 public class NameDeresolver {
+
+    private Map<Namespace, EList<Membership>> cachedMemberships = new HashMap<>();
 
     public String getDeresolvedName(Element element, Element context) {
 
@@ -42,13 +57,14 @@ public class NameDeresolver {
             return null;
         }
 
-        Namespace deresolvingNamespace = getDeresolvingNamespace(context);
+        Namespace deresolvingNamespace = this.getDeresolvingNamespace(context);
 
         final String qualifiedName;
         if (deresolvingNamespace == null) {
             qualifiedName = element.getQualifiedName();
         } else {
-            qualifiedName = deresolve(element, deresolvingNamespace);
+            Set<Membership> elementAncestors = EMFUtils.getAncestors(Membership.class, element, null).stream().collect(toSet());
+            qualifiedName = this.deresolve(element, deresolvingNamespace, deresolvingNamespace, elementAncestors);
         }
 
         return qualifiedName;
@@ -56,29 +72,42 @@ public class NameDeresolver {
     }
 
     /**
+     * Deresolve the name of the given element
+     *
      * @param element
+     *            the element to deresolve.
+     * @param sourceNamespace
+     *            the original owning namespace of the element
      * @param deresolvingNamespace
-     * @return
+     *            the current namespace used to deresolved the name of the element
+     * @param ancestors
+     *            the ancestor memberships of the element from which it can be reached
+     * @return a name
      */
-    private String deresolve(Element element, Namespace deresolvingNamespace) {
+    private String deresolve(Element element, Namespace sourceNamespace, Namespace deresolvingNamespace, Set<Membership> ancestors) {
 
         final String qualifiedName;
         if (deresolvingNamespace == null) {
             qualifiedName = element.getQualifiedName();
-        } // Shortcut in most case use the simple name
-        else if (element.getOwningNamespace() == deresolvingNamespace) {
-            qualifiedName = Appender.toPrintableName(element.getName());
         } else {
-            List<Membership> importedContainer = deresolvingNamespace.visibleMemberships(new BasicEList<>(), false, false).stream()
-                    .filter(m -> m.getMemberElement() != null)
-                    .filter(m -> EcoreUtil.isAncestor(m.getMemberElement(), element))
-                    .toList();
+            EList<Membership> visibleMemberships = this.getVisibleMemberships(deresolvingNamespace, deresolvingNamespace == sourceNamespace);
+            final Stream<Membership> stream;
+            // Some element have a lots of elements to checks. In that case use parallel stream
+            if (visibleMemberships.size() > 100) {
+                stream = visibleMemberships.parallelStream();
+            } else {
+                stream = visibleMemberships.stream();
+            }
+            Optional<Membership> importedContainer = stream.filter(ancestors::contains)
+                    // Get the membership the closest to the element to deresolve
+                    .sorted(Comparator.comparing(m -> this.getPathLenght(element, m))).findFirst();
 
             if (!importedContainer.isEmpty()) {
-                // found a match compute qualified name
-                qualifiedName = getShortestQualifiedName(importedContainer, element, deresolvingNamespace);
+                // We found a visible membership that can reach the element
+                // Try to compute its qualified name
+                qualifiedName = this.buildRelativeQualifiedName(element, deresolvingNamespace, importedContainer.get(), sourceNamespace);
             } else {
-                qualifiedName = deresolve(element, deresolvingNamespace.getOwningNamespace());
+                qualifiedName = this.deresolve(element, sourceNamespace, deresolvingNamespace.getOwningNamespace(), ancestors);
             }
 
         }
@@ -86,19 +115,62 @@ public class NameDeresolver {
         return qualifiedName;
     }
 
-    private String getShortestQualifiedName(List<Membership> importedContainer, Element element, Namespace owningNamespace) {
-        String elementQn = element.getQualifiedName();
-
-        String shortQn = importedContainer.stream().map(m -> buildRelativeQualifiedName(elementQn, element, owningNamespace, m)).sorted(Comparator.comparing(String::length)).findFirst().get();
-        return shortQn;
+    private int getPathLenght(Element element, Membership ancestor) {
+        int lenght = 0;
+        EObject current = element;
+        while (current != null && ancestor != current) {
+            lenght++;
+            current = current.eContainer();
+        }
+        return lenght;
     }
 
-    private String buildRelativeQualifiedName(String elementQn, Element element, Namespace owningNamespace, Membership m) {
-        Element memberElement = m.getMemberElement();
-        if (element == memberElement) {
-            return Appender.toPrintableName(element.getDeclaredName());
+    private EList<Membership> getVisibleMemberships(Namespace deresolvingNamespace, boolean includePrivate) {
+        EList<Membership> memberships = this.cachedMemberships.get(deresolvingNamespace);
+        if (memberships == null) {
+            memberships = deresolvingNamespace.visibleMemberships(new UniqueEList<>(), false, includePrivate).stream()
+                    .filter(m -> m.getMemberElement() != null)
+                    .filter(m -> includePrivate || m.getVisibility() != VisibilityKind.PRIVATE)
+                    .collect(toCollection(UniqueEList<Membership>::new));
+            this.cachedMemberships.put(deresolvingNamespace, memberships);
         }
-        return elementQn.substring(owningNamespace.getQualifiedName().length() + 2, elementQn.length());
+        return memberships;
+    }
+
+    private String buildRelativeQualifiedName(Element element, Namespace owningNamespace, Membership visibleMembership, Namespace sourceNamespace) {
+        String elementQn = element.getQualifiedName();
+
+        // Qualified name between visible membership and the element
+        String relativeQualifiedName = this.getRelativeQualifiedName(elementQn, element, visibleMembership);
+
+        Membership resolvedElement = sourceNamespace.resolve(relativeQualifiedName);
+        // If the name resolve against an element which is not the expected element it means that there is a name
+        // conflict.
+        // In that case keep we need a more detailed qualified name
+        if (resolvedElement != null && resolvedElement != element.getOwningMembership()) {
+            // Last try if the element is in the containment tree find the shortest qualified name
+            String qualifiedName = owningNamespace.getQualifiedName();
+            if (elementQn.startsWith(qualifiedName)) {
+                relativeQualifiedName = elementQn.substring(qualifiedName.length() + 2, elementQn.length());
+            } else {
+                relativeQualifiedName = elementQn;
+            }
+        }
+
+        return relativeQualifiedName;
+
+    }
+
+    private String getRelativeQualifiedName(String elementQn, Element element, Membership m) {
+        final String qn;
+        Element importedElement = m.getMemberElement();
+        String importedElementQualifiedName = importedElement.getQualifiedName();
+        if (importedElement != element) {
+            qn = Appender.toPrintableName(importedElement.getDeclaredName()) + "::" + elementQn.substring(importedElementQualifiedName.length() + 2, elementQn.length());
+        } else {
+            qn = Appender.toPrintableName(element.getDeclaredName());
+        }
+        return qn;
     }
 
     private Namespace getDeresolvingNamespace(Element element) {
@@ -107,13 +179,13 @@ public class NameDeresolver {
         if (element instanceof Import aImport) {
             result = aImport.getImportOwningNamespace();
         } else if (element instanceof Membership membership) {
-            result = getDeresolvingNamespaceForMembership(membership);
+            result = this.getDeresolvingNamespaceForMembership(membership);
         } else if (element instanceof Specialization specialization) {
-            result = getDeresolvingNamespaceForSpecialization(specialization);
+            result = this.getDeresolvingNamespaceForSpecialization(specialization);
         } else if (element instanceof Conjugation conjugation) {
-            result = getDeresolvingNamespaceForConjugation(element, conjugation);
+            result = this.getDeresolvingNamespaceForConjugation(element, conjugation);
         } else if (element instanceof FeatureChaining featureChaining) {
-            result = getDeresolvingNamespaceFeatureChaining(element, featureChaining);
+            result = this.getDeresolvingNamespaceFeatureChaining(element, featureChaining);
         } else {
             result = element.getOwningNamespace();
         }
@@ -181,9 +253,9 @@ public class NameDeresolver {
         if (indexOf != -1) {
 
             if (indexOf == 0) {
-                result = getDeresolvingNamespace(featureChained.getOwningRelationship());
+                result = this.getDeresolvingNamespace(featureChained.getOwningRelationship());
             } else {
-                result = getDeresolvingNamespace(featureChained.getOwnedFeatureChaining().get(indexOf - 1));
+                result = this.getDeresolvingNamespace(featureChained.getOwnedFeatureChaining().get(indexOf - 1));
             }
         } else {
             result = element.getOwningNamespace();

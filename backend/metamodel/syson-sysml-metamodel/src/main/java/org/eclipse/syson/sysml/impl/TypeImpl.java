@@ -23,6 +23,7 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -30,6 +31,7 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Conjugation;
 import org.eclipse.syson.sysml.Differencing;
 import org.eclipse.syson.sysml.Disjoining;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -42,6 +44,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Unioning;
 import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.helper.NameConflictingFilter;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Type</b></em>'. <!-- end-user-doc -->
@@ -524,19 +527,28 @@ public class TypeImpl extends NamespaceImpl implements Type {
     @Override
     public EList<Membership> inheritedMemberships(EList<Type> excluded) {
         excluded.add(this);
+        NameConflictingFilter namefilter = new NameConflictingFilter();
+        namefilter.fillUsedNames(getOwnedMembership());
         Conjugation conjugator = this.getOwnedConjugator();
         List<Membership> conjugatedMemberships = List.of();
         if (conjugator != null) {
             Type type = conjugator.getOriginalType();
             if (type != null) {
-                conjugatedMemberships = type.getMembership().stream().toList();
+                conjugatedMemberships = type.getMembership().stream().filter(namefilter).toList();
             }
         }
 
-        List<Membership> generalMemberships = this.getOwnedSpecialization().stream()
-                .map(spe -> spe.getGeneral())
-                .filter(g -> g != null && !excluded.contains(g))
-                .flatMap(gen -> gen.visibleMemberships(this.toNamespaceExclude(excluded), false, true).stream()).toList();
+        List<Membership> generalMemberships = new BasicEList<Membership>();
+        EList<Namespace> namespaceToExclude = toNamespaceExclusion(excluded);
+        for (Specialization specialization : getOwnedSpecialization()) {
+            Type general = specialization.getGeneral();
+            if (general != null && !excluded.contains(general)) {
+                general.visibleMemberships(namespaceToExclude, false, true).stream()
+                        .filter(namefilter)
+                        .forEach(generalMemberships::add);
+            }
+        }
+        namespaceToExclude.stream().filter(Type.class::isInstance).map(Type.class::cast).forEach(excluded::add);
 
         Membership[] data = Stream.concat(conjugatedMemberships.stream(), generalMemberships.stream())
                 // Also inherit protected memberships
@@ -548,7 +560,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
     /**
      * @generated NOT
      */
-    private EList<Namespace> toNamespaceExclude(EList<Type> excluded) {
+    private EList<Namespace> toNamespaceExclusion(EList<Type> excluded){
         return excluded.stream().filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .collect(toCollection(BasicEList<Namespace>::new));
@@ -738,28 +750,13 @@ public class TypeImpl extends NamespaceImpl implements Type {
     /**
      * @generated NOT
      */
-    @Override
-    public EList<Membership> visibleMemberships(EList<Namespace> excluded, boolean isRecursive, boolean includeAll) {
-        // Inherited members are visible members of a type
-        BasicEList<Type> excludedTypes = excluded.stream()
-                .filter(Type.class::isInstance)
-                .map(Type.class::cast)
-                .collect(toCollection(BasicEList<Type>::new));
-
-        EList<Membership> superVisibleMemberships = super.visibleMemberships(excluded, isRecursive, includeAll);
-        EList<Membership> inheritedMemberships = this.inheritedMemberships(excludedTypes);
-        List<Membership> visibleMemberships = Stream.concat(superVisibleMemberships.stream(),
-                inheritedMemberships.stream())
-                .filter(rel -> includeAll || rel.getVisibility() == VisibilityKind.PUBLIC)
-                .toList();
-        return new BasicEList<>(visibleMemberships);
-    }
-
-    @Override
-    public EList<Membership> getMembership() {
-        Membership[] visibleMemberships = this.visibleMemberships(new BasicEList<>(), false, true).toArray(Membership[]::new);
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), visibleMemberships.length, visibleMemberships);
-
+    private EList<Membership> getMembership(EList<Namespace> excluded) {
+        List<Element> memberships = new ArrayList<>();
+        NameConflictingFilter filter = new NameConflictingFilter();
+        this.getOwnedMembership().stream().filter(filter).forEach(memberships::add);
+        this.importedMemberships(excluded).stream().filter(filter).forEach(memberships::add);
+        this.inheritedMemberships(excluded.stream().filter(e -> e instanceof Type).map(Type.class::cast).collect(toCollection(UniqueEList::new))).stream().filter(filter).forEach(memberships::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), memberships.size(), memberships.toArray());
     }
 
     /**

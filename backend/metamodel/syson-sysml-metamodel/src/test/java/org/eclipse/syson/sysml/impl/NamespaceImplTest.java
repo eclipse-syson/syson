@@ -397,11 +397,15 @@ public class NamespaceImplTest {
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content
+                testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership());
+
+        assertContentEquals(testModel.p1.getMembership(), //
+                // All P2 content
+                testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
+                // All P3 content
                 testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership(),
-                // All P1 except direct content because it would create name conflict
                 // And no infinite loop
-                testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(), testModel.def1x1x1.getOwningMembership(),
-                testModel.def1x2.getOwningMembership());
+                testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership());
     }
 
     @DisplayName("Check imported membershits with a simple recursive NamespaceImport with a loop to itself")
@@ -414,10 +418,8 @@ public class NamespaceImplTest {
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setIsRecursive(true);
 
-        assertContentEquals(testModel.p1.getImportedMembership(),
-                // All P1 (except direct content because it would cause name conflict) but not infinite loop
-                testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(), testModel.def1x1x1.getOwningMembership(),
-                testModel.def1x2.getOwningMembership());
+        // Can import its own member since it could cause name conflict
+        assertContentEquals(testModel.p1.getImportedMembership());
     }
 
     @DisplayName("Check imported membershits with a simple recursive NamespaceImport with a loop one of its parent")

@@ -24,6 +24,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -60,6 +61,20 @@ public class ModelBuilder {
 
     }
 
+    public void addRedefinition(Feature child, Feature parent) {
+        Redefinition redefinition = fact.createRedefinition();
+        redefinition.setGeneral(parent);
+        redefinition.setSpecific(child);
+        // Workaround waiting for the subset/refine implementation
+        redefinition.setRedefinedFeature(child);
+        redefinition.setRedefiningFeature(parent);
+        redefinition.setSubsettedFeature(child);
+        redefinition.setSubsettingFeature(parent);
+
+        child.getOwnedRelationship().add(redefinition);
+
+    }
+
     public <T extends Element> T create(Class<T> type) {
         return createIn(type, null);
     }
@@ -78,8 +93,11 @@ public class ModelBuilder {
 
     public void setType(Feature feature, Type type) {
         FeatureTyping featureTyping = fact.createFeatureTyping();
-        featureTyping.setType(type);
+        featureTyping.setSpecific(feature);
         featureTyping.setTypedFeature(feature);
+        // Waiting for subset/refine implementation
+        featureTyping.setType(type);
+        featureTyping.setGeneral(type);
         feature.getOwnedRelationship().add(featureTyping);
     }
 
@@ -121,7 +139,7 @@ public class ModelBuilder {
 
             ownedRelation.setVisibility(visibility);
         }
-        
+
         return ownedRelation;
 
     }

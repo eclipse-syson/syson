@@ -12,10 +12,13 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import static java.util.stream.Collectors.toCollection;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -49,12 +52,14 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.ViewpointUsage;
+import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Usage</b></em>'. <!-- end-user-doc -->
@@ -174,18 +179,24 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        List<Membership> inheritedMemberships = new ArrayList<>();
-        this.getDefinition().forEach(def -> {
-            inheritedMemberships.addAll(def.getInheritedMembership());
-            inheritedMemberships.addAll(def.getOwnedMembership());
-        });
+        EList<Membership> inheritedMembers = inheritedMemberships(new BasicEList<Type>());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMembers.size(), inheritedMembers.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    @Override
+    public EList<Membership> inheritedMemberships(EList<Type> excluded) {
+        List<Membership> superInheritedMembership = new ArrayList<>(super.inheritedMemberships(excluded));
         Usage owningUsage = this.getOwningUsage();
         if (owningUsage != null) {
-            inheritedMemberships.addAll(owningUsage.getInheritedMembership());
-            inheritedMemberships.addAll(owningUsage.getOwnedMembership());
+            superInheritedMembership.addAll(owningUsage.getInheritedMembership());
+            owningUsage.getOwnedFeatureMembership().stream()
+                    .filter(m -> m.getVisibility() != VisibilityKind.PRIVATE)
+                    .forEach(superInheritedMembership::add);
         }
-        List<Membership> distinctInheritedMemberships = inheritedMemberships.stream().distinct().toList();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), distinctInheritedMemberships.size(), distinctInheritedMemberships.toArray());
+        return superInheritedMembership.stream().distinct().collect(toCollection(BasicEList::new));
     }
 
     /**
