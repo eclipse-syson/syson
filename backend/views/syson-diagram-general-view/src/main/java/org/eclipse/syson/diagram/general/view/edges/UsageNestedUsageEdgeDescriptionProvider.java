@@ -33,7 +33,7 @@ public class UsageNestedUsageEdgeDescriptionProvider extends AbstractUsageNested
     }
 
     @Override
-    protected List<EClass> getUsages() {
+    protected List<EClass> getEdgeSources() {
         return GeneralViewDiagramDescriptionProvider.USAGES;
     }
 }

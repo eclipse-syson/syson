@@ -15,26 +15,27 @@ package org.eclipse.syson.diagram.general.view.edges;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.syson.diagram.common.view.edges.AbstractDefinitionOwnedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to create the edge description between definitions and their owned usages in the General View diagram.
+ * Used to create the edge description between definitions and their owned action usages in the General View diagram.
  *
  * @author Jerome Gout
  */
-public class DefinitionOwnedUsageEdgeDescriptionProvider extends AbstractDefinitionOwnedUsageEdgeDescriptionProvider {
+public class DefinitionOwnedActionUsageEdgeDescriptionProvider extends AbstractDefinitionOwnedUsageEdgeDescriptionProvider {
 
-    public DefinitionOwnedUsageEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(eClass, eReference, colorProvider, nameGenerator);
+    public DefinitionOwnedActionUsageEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+        super(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), colorProvider, nameGenerator);
     }
 
     @Override
     protected List<EClass> getEdgeSources() {
-        return GeneralViewDiagramDescriptionProvider.DEFINITIONS;
+        // edge can be created from all definitions but ActionDefinition to ActionUsage
+        return GeneralViewDiagramDescriptionProvider.DEFINITIONS.stream().filter(eClass -> eClass != SysmlPackage.eINSTANCE.getActionDefinition()).toList();
     }
 
 }

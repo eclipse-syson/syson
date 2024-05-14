@@ -44,11 +44,11 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
         ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
+                    // list compartment
                     cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
+                    // free form compartment
+                    cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(this.eClass, eReference)).ifPresent(reusedChildren::add);
                 });
-                if (this.eClass == SysmlPackage.eINSTANCE.getActionUsage()) {
-                    cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedAction())).ifPresent(reusedChildren::add);
-                }
             }
         });
         return reusedChildren;

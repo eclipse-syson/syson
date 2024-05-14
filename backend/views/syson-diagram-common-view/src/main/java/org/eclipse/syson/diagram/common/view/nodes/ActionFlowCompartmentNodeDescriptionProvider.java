@@ -19,12 +19,14 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -32,15 +34,15 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the free form compartment that contains action usages.
+ * Used to create the 'action flow' free form compartment that contains action usages.
  *
  * @author Jerome Gout
  */
-public class ActionUsageCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
     private final String name;
 
-    public ActionUsageCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public ActionFlowCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(eClass, eReference, colorProvider, nameGenerator);
         this.name = nameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference);
     }
@@ -80,7 +82,7 @@ public class ActionUsageCompartmentNodeDescriptionProvider extends AbstractCompa
     @Override
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression("actions free-form")
+                .labelExpression("action flow")
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .build();
@@ -96,5 +98,10 @@ public class ActionUsageCompartmentNodeDescriptionProvider extends AbstractCompa
                 .showIcon(false)
                 .withHeader(false)
                 .build();
+    }
+
+    @Override
+    protected INodeToolProvider getItemCreationToolProvider() {
+        return new ActionFlowCompartmentNodeToolProvider(this.eClass, this.nameGenerator);
     }
 }

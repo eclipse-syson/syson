@@ -12,21 +12,21 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Node tool provider for creating owned ActionUsage inside free-form compartment of ActionDefinition.
+ * Node tool provider for creating both nested and owned ActionUsage inside free-form compartment.
  *
  * @author Jerome Gout
  */
-public class OwnedActionUsageCompartmentNodeToolProvider implements INodeToolProvider {
+public class ActionFlowCompartmentNodeToolProvider implements INodeToolProvider {
 
     private final IDescriptionNameGenerator nameGenerator;
 
@@ -34,18 +34,21 @@ public class OwnedActionUsageCompartmentNodeToolProvider implements INodeToolPro
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
-    public OwnedActionUsageCompartmentNodeToolProvider(IDescriptionNameGenerator nameGenerator) {
+    private final EClass eClass;
+
+    public ActionFlowCompartmentNodeToolProvider(EClass eClass, IDescriptionNameGenerator nameGenerator) {
         super();
+        this.eClass = eClass;
         this.nameGenerator = nameGenerator;
     }
 
     @Override
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
-        var nodeName = this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition());
+        var nodeName = this.nameGenerator.getNodeName(this.eClass);
 
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".createOwnedActionUsageAndView('" + nodeName + "', editingContext, diagramContext, selectedNode, convertedNodes)")
+                .expression(AQLConstants.AQL_SELF + ".createSubActionUsageAndView('" + nodeName + "', 'action flow', editingContext, diagramContext, selectedNode, convertedNodes)")
                 .build();
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()

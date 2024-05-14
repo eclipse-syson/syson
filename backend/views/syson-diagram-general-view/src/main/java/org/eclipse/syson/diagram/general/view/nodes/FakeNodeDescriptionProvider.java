@@ -63,6 +63,10 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
                 .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()))
+                .ifPresent(childrenNodes::add);
         return childrenNodes;
     }
 }
