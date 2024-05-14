@@ -46,6 +46,10 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
                 listItems.forEach(eReference -> {
                     cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
                 });
+                if (type == SysmlPackage.eINSTANCE.getActionDefinition()) {
+                    // Action Definition has an additional custom compartment
+                    cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(type, SysmlPackage.eINSTANCE.getDefinition_OwnedAction())).ifPresent(reusedChildren::add);
+                }
             }
         });
         return reusedChildren;

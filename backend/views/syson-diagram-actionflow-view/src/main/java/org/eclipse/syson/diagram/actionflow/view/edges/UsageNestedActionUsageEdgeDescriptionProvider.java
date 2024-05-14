@@ -15,25 +15,25 @@ package org.eclipse.syson.diagram.actionflow.view.edges;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.edges.AbstractUsageNestedUsageEdgeDescriptionProvider;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to create the edge description between usages and their nested usages in Action Flow View.
+ * Used to create the edge description between usages and their nested action usages in Action Flow View.
  *
  * @author Jerome Gout
  */
-public class UsageNestedUsageEdgeDescriptionProvider extends AbstractUsageNestedUsageEdgeDescriptionProvider {
+public class UsageNestedActionUsageEdgeDescriptionProvider extends AbstractUsageNestedUsageEdgeDescriptionProvider {
 
-    public UsageNestedUsageEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(eClass, eReference, colorProvider, nameGenerator);
+    public UsageNestedActionUsageEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+        super(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, nameGenerator);
     }
 
     @Override
     protected List<EClass> getEdgeSources() {
-        return ActionFlowViewDiagramDescriptionProvider.USAGES;
+        return ActionFlowViewDiagramDescriptionProvider.USAGES.stream().filter(eClass -> eClass != SysmlPackage.eINSTANCE.getActionUsage()).toList();
     }
 }

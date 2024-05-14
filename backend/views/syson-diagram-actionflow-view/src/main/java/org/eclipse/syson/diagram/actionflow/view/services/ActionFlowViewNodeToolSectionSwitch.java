@@ -25,7 +25,12 @@ import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptio
 import org.eclipse.syson.diagram.common.view.services.AbstractViewNodeToolSectionSwitch;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPayloadNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPortUsageReceiverToolNodeProvider;
+import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.NestedActionUsageCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.OwnedActionUsageCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionDefinition;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -66,6 +71,21 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getItemDefinition()),
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getPartDefinition()),
                 this.createPortUsageAsReceiverNodeTool());
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseActionUsage(ActionUsage object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.nameGenerator).create(null));
+        createSection.getNodeTools().add(new NestedActionUsageCompartmentNodeToolProvider(this.nameGenerator).create(null));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseActionDefinition(ActionDefinition object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().add(new OwnedActionUsageCompartmentNodeToolProvider(this.nameGenerator).create(null));
         return List.of(createSection, this.addElementsToolSection());
     }
 

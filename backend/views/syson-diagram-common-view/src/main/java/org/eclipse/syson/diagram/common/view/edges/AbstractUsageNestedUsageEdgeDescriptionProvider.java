@@ -46,20 +46,23 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
 
     private final EReference eReference;
 
+    private final String edgeName;
+
     public AbstractUsageNestedUsageEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.nameGenerator = Objects.requireNonNull(nameGenerator);
         this.eClass = Objects.requireNonNull(eClass);
         this.eReference = Objects.requireNonNull(eReference);
+        this.edgeName = this.nameGenerator.getEdgeName("Usage Nested " + this.eClass.getName());
     }
 
     /**
-     * Implementers should provide the list of {@link EClass} that represent the set of known usages concepts for the
-     * diagram.
+     * Implementers should provide the list of {@link EClass} that represent the set of possible source usages this
+     * edge.
      *
      * @return the list of usage class
      */
-    protected abstract List<EClass> getUsages();
+    protected abstract List<EClass> getEdgeSources();
 
     @Override
     public EdgeDescription create() {
@@ -68,7 +71,7 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
                 .domainType(domainType)
                 .isDomainBasedEdge(false)
                 .centerLabelExpression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityLabel()")
-                .name(this.nameGenerator.getEdgeName("Usage Nested " + this.eClass.getName()))
+                .name(this.edgeName)
                 .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -78,11 +81,11 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optEdgeDescription = cache.getEdgeDescription(this.nameGenerator.getEdgeName("Usage Nested " + this.eClass.getName()));
+        var optEdgeDescription = cache.getEdgeDescription(this.edgeName);
         var optUsageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass));
         var sourceNodes = new ArrayList<NodeDescription>();
 
-        this.getUsages().forEach(usage -> {
+        this.getEdgeSources().forEach(usage -> {
             cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(sourceNodes::add);
         });
 
@@ -122,6 +125,5 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
         var params = List.of(AQLConstants.SEMANTIC_RECONNECTION_SOURCE, AQLConstants.SEMANTIC_RECONNECTION_TARGET);
         return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnnectTargetCompositionEdge(" + String.join(",", params) + ")");
-
     }
 }
