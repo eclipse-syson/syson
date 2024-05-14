@@ -43,9 +43,8 @@ import org.eclipse.syson.diagram.actionflow.view.nodes.PackageNodeDescriptionPro
 import org.eclipse.syson.diagram.actionflow.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.nodes.NestedActionUsageCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.nodes.OwnedActionUsageCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -108,8 +107,8 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new UsageNestedActionUsageEdgeDescriptionProvider(colorProvider, this.nameGenerator));
 
-        diagramElementDescriptionProviders.add(new NestedActionUsageCompartmentNodeDescriptionProvider(colorProvider, this.nameGenerator));
-        diagramElementDescriptionProviders.add(new OwnedActionUsageCompartmentNodeDescriptionProvider(colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), colorProvider, this.nameGenerator));
 
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new ActionFlowViewEmptyDiagramNodeDescriptionProvider(colorProvider));

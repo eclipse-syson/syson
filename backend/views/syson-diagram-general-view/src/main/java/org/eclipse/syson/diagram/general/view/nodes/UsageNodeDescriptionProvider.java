@@ -44,7 +44,10 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
+                    // list compartment
                     cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
+                    // free form compartment
+                    cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(this.eClass, eReference)).ifPresent(reusedChildren::add);
                 });
             }
         });

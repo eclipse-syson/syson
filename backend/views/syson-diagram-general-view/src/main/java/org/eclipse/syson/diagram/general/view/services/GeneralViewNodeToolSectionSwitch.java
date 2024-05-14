@@ -23,11 +23,14 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.services.AbstractViewNodeToolSectionSwitch;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPayloadNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPortUsageReceiverToolNodeProvider;
+import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -91,7 +94,15 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getAttributeUsage()),
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
-        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.nameGenerator).create(null));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.nameGenerator).create(null));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseActionDefinition(ActionDefinition object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.nameGenerator).create(null));
         return List.of(createSection, this.addElementsToolSection());
     }
 

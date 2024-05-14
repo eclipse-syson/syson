@@ -10,27 +10,30 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.common.view.nodes;
+package org.eclipse.syson.diagram.general.view.edges;
 
+import java.util.List;
+
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
-import org.eclipse.syson.diagram.common.view.tools.NestedActionUsageCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.edges.AbstractUsageNestedUsageEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to create the compartment owning ActionUsage inside an ActionUsage.
+ * Used to create the edge description between usages and their nested action usages in General View.
  *
  * @author Jerome Gout
  */
-public class NestedActionUsageCompartmentNodeDescriptionProvider extends ActionUsageCompartmentNodeDescriptionProvider {
+public class UsageNestedActionUsageEdgeDescriptionProvider extends AbstractUsageNestedUsageEdgeDescriptionProvider {
 
-    public NestedActionUsageCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public UsageNestedActionUsageEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, nameGenerator);
     }
 
     @Override
-    protected INodeToolProvider getItemCreationToolProvider() {
-        return new NestedActionUsageCompartmentNodeToolProvider(this.nameGenerator);
+    protected List<EClass> getEdgeSources() {
+        return GeneralViewDiagramDescriptionProvider.USAGES.stream().filter(eClass -> eClass != SysmlPackage.eINSTANCE.getActionUsage()).toList();
     }
 }
