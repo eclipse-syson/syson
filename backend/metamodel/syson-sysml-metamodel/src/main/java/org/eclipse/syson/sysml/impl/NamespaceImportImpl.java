@@ -178,9 +178,7 @@ public class NamespaceImportImpl extends ImportImpl implements NamespaceImport {
         Namespace aImportedNamespace = this.getImportedNamespace();
         BasicEList<Membership> result = new BasicEList<>();
         if (aImportedNamespace != null && !excluded.contains(aImportedNamespace)) {
-            excluded.add(aImportedNamespace);
             result.addAll(aImportedNamespace.visibleMemberships(excluded, this.isIsRecursive(), this.isIsImportAll()));
-            excluded.remove(aImportedNamespace);
         }
         return result;
     }

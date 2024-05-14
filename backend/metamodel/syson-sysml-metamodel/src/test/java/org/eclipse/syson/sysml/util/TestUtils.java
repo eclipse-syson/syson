@@ -19,8 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * Utils class for tests.
@@ -32,6 +35,12 @@ public class TestUtils {
     public static void assertContentEquals(List<? extends Element> actual, Element... expected) {
         assertEquals(Stream.of(expected).collect(toSet()), actual.stream().collect(toSet()), "Expecting :\n" + getLabel(Stream.of(expected)) + "\n but was \n" + getLabel(actual.stream()) + "\n");
         assertEquals(Stream.of(expected).count(), actual.size(), "Elements expecting :\n" + getLabel(Stream.of(expected)) + "\n but was \n" + getLabel(actual.stream()) + "\n");
+    }
+
+    public static void testInheritedFeature(Type toTest, Feature... expected) {
+        assertContentEquals(toTest.getInheritedMembership(), Stream.of(expected).map(Feature::getOwningMembership).toArray(Element[]::new));
+        assertContentEquals(toTest.inheritedMemberships(new BasicEList<>()), Stream.of(expected).map(Feature::getOwningMembership).toArray(Element[]::new));
+        assertContentEquals(toTest.getInheritedFeature(), expected);
     }
 
     private static String getLabel(Stream<? extends Element> m) {

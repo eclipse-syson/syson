@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.function.Consumer;
 
 import org.eclipse.syson.sysml.AttributeDefinition;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
@@ -50,7 +51,6 @@ public class NameDeresolverTest {
 
     private ModelBuilder builder = new ModelBuilder();
 
-    private NameDeresolver deresolver = new NameDeresolver();
 
     @Test
     public void directOnwendMember() {
@@ -62,7 +62,71 @@ public class NameDeresolverTest {
     }
 
     private String getDerolvedName(Element toDeresolve, Element context) {
-        return deresolver.getDeresolvedName(toDeresolve, context);
+        return new NameDeresolver().getDeresolvedName(toDeresolve, context);
+    }
+
+    @Test
+    public void checkNameCollission() {
+        /**
+         * <pre>
+         * package Root {
+         *   import Lib1::*;
+         *   package p1 {
+         *       ref attribute mass :> Lib2::mass; // Needs qualified name since the attribute hides the imported element
+         *   }
+         *   package p2 {
+         *      ref attribute mass2 :> mass; // No need for qualified name since mass is directly visible
+         *   }
+         *   package p3 {
+         *       ref attribute mass; // Needs qualified name since the attribute p3::mass hides the imported element
+         *       package p3x1 {
+         *           ref attribute mass2 :> Lib2::mass; // Needs qualified name since the attribute p3::mass hides the imported element
+         *   }
+         *       }
+         * }
+         *
+         * package Lib1 {
+         *    import Lib2::*;
+         * }
+         *
+         * package Lib2 {
+         *    attribute mass;
+         * }
+         * </pre>
+         */
+
+        Package lib2 = builder.createWithName(Package.class, "Lib2");
+        PartDefinition massAttr = builder.createInWithName(PartDefinition.class, lib2, "mass");
+
+        Package lib1 = builder.createWithName(Package.class, "Lib1");
+        builder.createIn(NamespaceImport.class, lib1).setImportedNamespace(lib2);
+
+        Package root = builder.createWithName(Package.class, "Root");
+        builder.createIn(NamespaceImport.class, root).setImportedNamespace(lib1);
+
+        Package p1 = builder.createInWithName(Package.class, root, "p1");
+        PartDefinition p1Mass = builder.createInWithName(PartDefinition.class, p1, "mass");
+        builder.addSuperType(p1Mass, massAttr);
+
+        Package p2 = builder.createInWithName(Package.class, root, "p2");
+        PartDefinition p2Mass = builder.createInWithName(PartDefinition.class, p2, "mass2");
+        builder.addSuperType(p2Mass, massAttr);
+
+        Package p3 = builder.createInWithName(Package.class, root, "p3");
+        AttributeUsage p3Mass = builder.createInWithName(AttributeUsage.class, p3, "mass");
+
+        Package p3x1 = builder.createInWithName(Package.class, p3, "p3x1");
+        PartDefinition p3x1Mass = builder.createInWithName(PartDefinition.class, p3x1, "mass2");
+        builder.addSuperType(p3x1Mass, massAttr);
+
+        // Needs qualified name since the attribute p1::mass hides the imported element
+        assertEquals("Lib2::mass", getDerolvedName(massAttr, p1Mass));
+        // // No need for qualified name since mass is directly visible
+        assertEquals("mass", getDerolvedName(massAttr, p2Mass));
+        // // Needs qualified name since the attribute p3::mass hides the imported element
+        assertEquals("Lib2::mass", getDerolvedName(massAttr, p3Mass));
+        // Needs qualified name since the attribute p3::mass hides the imported element
+        assertEquals("Lib2::mass", getDerolvedName(massAttr, p3x1Mass));
     }
 
     @Test
@@ -85,23 +149,23 @@ public class NameDeresolverTest {
 
         assertEquals("'Attr 1'", getDerolvedName(attr1, attr2));
     }
-    
+
     @Test
     public void transitiveMemberNameResolution() {
         Package p1 = builder.createWithName(Package.class, P1);
         PartDefinition partDef1 = builder.createInWithName(PartDefinition.class, p1, "def1");
-        
+
         Package p2 = builder.createWithName(Package.class, "p2");
-        
+
         NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, p2);
         nmImport0.setImportedNamespace(p1);
-        
+
         Package p3 = builder.createWithName(Package.class, "p3");
         NamespaceImport nmImport = builder.createIn(NamespaceImport.class, p3);
         nmImport.setImportedNamespace(p2);
-        
+
         PartDefinition partDef3 = builder.createInWithName(PartDefinition.class, p3, "def3");
-        
+
         builder.addSuperType(partDef3, partDef1);
         /**
          * <pre>
@@ -109,11 +173,11 @@ public class NameDeresolverTest {
                 part def def1;
                
             }
-    
+        
             package p2 {
                 import p1::*;
             }
-    
+        
             package p3 {
                 import p2::*;
                 part def def3 :> def1; 
@@ -465,7 +529,7 @@ public class NameDeresolverTest {
         }
         
         package p2 {
-            package def def2;
+            part def def2;
             package p2x1 {
                 part def def2x1;
                 package p2x1x1 {

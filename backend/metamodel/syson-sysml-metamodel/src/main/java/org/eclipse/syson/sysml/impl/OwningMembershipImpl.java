@@ -115,6 +115,15 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
         }
         return null;
     }
+    
+    /**
+     * @generated NOT
+     */
+    @Override
+    public Element getMemberElement() {
+        return getOwnedMemberElement();
+    }
+    
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

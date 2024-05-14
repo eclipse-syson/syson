@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -46,7 +47,6 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
-import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.VariantMembership;
@@ -697,14 +697,7 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        List<Membership> inheritedMemberships = new ArrayList<>();
-        this.getOwnedSpecialization().forEach(spe -> {
-            Type general = spe.getGeneral();
-            if (general != null) {
-                inheritedMemberships.addAll(general.getInheritedMembership());
-                inheritedMemberships.addAll(general.getOwnedMembership());
-            }
-        });
+        EList<Membership> inheritedMemberships = inheritedMemberships(new BasicEList<>());
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMemberships.size(), inheritedMemberships.toArray());
     }
 

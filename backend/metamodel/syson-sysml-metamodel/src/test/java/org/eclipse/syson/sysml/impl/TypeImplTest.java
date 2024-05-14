@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author Arthur Daussy
  */
-public class TypeImplTest  {
+public class TypeImplTest {
 
     /**
      * Test model
@@ -120,9 +120,30 @@ public class TypeImplTest  {
 
         }
     }
-    
+
     private ModelBuilder builder = new ModelBuilder();
 
+    @DisplayName("Check name collision with super type memberships")
+    @Test
+    public void nameCollisionWithInheritedMemberships() {
+        var testModel = new TestModel();
+
+        assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false), testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership());
+
+        // Then create an attribute named attr0 in subDef to hide the super SuperSuperDef::attr0 attribute
+        AttributeUsage subDefAttr0 = builder.createInWithName(AttributeUsage.class, testModel.subDef, "attr0");
+
+        // SuperSuperDef::attr0 should not be visible anymore
+        assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false),
+                testModel.attr1.getOwningMembership(), subDefAttr0.getOwningMembership());
+        assertContentEquals(testModel.subDef.getInheritedMembership(), testModel.attr1.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
+
+        AttributeUsage subDefAttr1 = builder.createInWithName(AttributeUsage.class, testModel.subDef, "attr1");
+        // SuperDef::attr1 should not be visible anymore
+        assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false),
+                subDefAttr1.getOwningMembership(), subDefAttr0.getOwningMembership());
+
+    }
 
     @DisplayName("Check that visible members of type get acces to inherited feature")
     @Test
@@ -174,7 +195,7 @@ public class TypeImplTest  {
 
     }
 
-    @DisplayName("Check that visible members of type get acces to inherited features")
+    @DisplayName("Check that visible members of type get access to inherited features")
     @Test
     public void inheritedMembers() {
         var testModel = new TestModel();
@@ -182,6 +203,7 @@ public class TypeImplTest  {
         assertContentEquals(testModel.subDef.inheritedMemberships(new BasicEList<>()),
                 testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
         assertContentEquals(testModel.superDef.inheritedMemberships(new BasicEList<>()), testModel.attr0.getOwningMembership());
+        assertContentEquals(testModel.superDef.getInheritedMembership(), testModel.attr0.getOwningMembership());
         assertContentEquals(testModel.superSuperDef.inheritedMemberships(new BasicEList<>()));
         assertContentEquals(testModel.megaDef.inheritedMemberships(new BasicEList<>()));
 
