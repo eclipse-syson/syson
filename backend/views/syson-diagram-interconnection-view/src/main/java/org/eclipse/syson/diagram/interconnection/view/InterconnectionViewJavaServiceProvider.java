@@ -16,10 +16,10 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
-import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewCreateService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewEdgeService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewLabelService;
+import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewNodeService;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewToolService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
@@ -43,7 +43,7 @@ public class InterconnectionViewJavaServiceProvider implements IJavaServiceProvi
             return List.of(DeleteService.class,
                     InterconnectionViewCreateService.class,
                     InterconnectionViewEdgeService.class,
-                    ViewNodeService.class,
+                    InterconnectionViewNodeService.class,
                     InterconnectionViewLabelService.class,
                     InterconnectionViewToolService.class,
                     UtilService.class);
