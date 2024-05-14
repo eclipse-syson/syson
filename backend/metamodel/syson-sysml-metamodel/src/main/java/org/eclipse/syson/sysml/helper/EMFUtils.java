@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.helper;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -213,4 +214,29 @@ public class EMFUtils {
         }
     }
 
+    /**
+     * Resolve all non derived references in the given {@link ResourceSet}.
+     * 
+     * @param rs
+     *            the given {@link ResourceSet}.
+     */
+    public static void resolveAllNonDerived(ResourceSet rs) {
+        rs.getResources().forEach(r -> resolveAllNonDerived(r));
+    }
+
+    private static void resolveAllNonDerived(Resource resource) {
+        resource.getContents().forEach(eObject -> resolveAllNonDerived(eObject));
+    }
+
+    private static void resolveAllNonDerived(EObject eObject) {
+        resolveNonDerivedCrossReferences(eObject);
+        for (Iterator<EObject> i = eObject.eAllContents(); i.hasNext();) {
+            EObject childEObject = i.next();
+            resolveNonDerivedCrossReferences(childEObject);
+        }
+    }
+
+    private static void resolveNonDerivedCrossReferences(EObject eObject) {
+        eObject.eClass().getEAllReferences().stream().filter(e -> !e.isDerived() && !e.isContainment()).forEach(ref -> eObject.eGet(ref, true));
+    }
 }
