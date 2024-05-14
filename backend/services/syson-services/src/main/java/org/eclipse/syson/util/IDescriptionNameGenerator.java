@@ -105,6 +105,19 @@ public interface IDescriptionNameGenerator {
     String getCompartmentName(EClass eClass, EReference eReference);
 
     /**
+     * Returns the name of a free form compartment {@link NodeDescription} using the given {@link EClass} and
+     * {@link EReference}.
+     *
+     * @param eClass
+     *            the {@link EClass} used to compute the name of the {@link NodeDescription}.
+     * @param eReference
+     *            the {@link EReference} that the compartment is containing.
+     *
+     * @return a string used to name a compartment {@link NodeDescription}.
+     */
+    String getFreeFormCompartmentName(EClass eClass, EReference eReference);
+
+    /**
      * Returns the name of a compartment item {@link NodeDescription} using the given {@link EClass} and
      * {@link EReference}.
      *
@@ -145,5 +158,6 @@ public interface IDescriptionNameGenerator {
      * @return a string used to name an {@link EdgeDescription}.
      */
     String getEdgeName(String type);
+
 
 }

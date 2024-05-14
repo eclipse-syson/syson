@@ -185,10 +185,14 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
         INodeToolProvider compartmentNodeToolProvider = this.getItemCreationToolProvider();
 
-        return this.diagramBuilderHelper.newNodePalette()
-                .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache))
-                .nodeTools(compartmentNodeToolProvider.create(cache))
-                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+        var palette = this.diagramBuilderHelper.newNodePalette()
+                .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
+
+        if (compartmentNodeToolProvider != null) {
+            palette.nodeTools(compartmentNodeToolProvider.create(cache));
+        }
+
+        return palette.toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }
 

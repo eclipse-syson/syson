@@ -191,6 +191,11 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
         return this.getCompartmentName(this.diagramPrefix, eClass.getName() + SPACE + eReference.getName());
     }
 
+    @Override
+    public String getFreeFormCompartmentName(EClass eClass, EReference eReference) {
+        return this.getCompartmentName(this.diagramPrefix, eClass.getName() + SPACE + eReference.getName() + " FreeForm");
+    }
+
     /**
      * Returns the name of a compartment items {@link NodeDescription} starting with the diagram prefix, followed by the
      * name of the given {@link EClass} and the name of the given {@link EReference}.

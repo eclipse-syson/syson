@@ -46,6 +46,9 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
                 listItems.forEach(eReference -> {
                     cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
                 });
+                if (this.eClass == SysmlPackage.eINSTANCE.getActionUsage()) {
+                    cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedAction())).ifPresent(reusedChildren::add);
+                }
             }
         });
         return reusedChildren;

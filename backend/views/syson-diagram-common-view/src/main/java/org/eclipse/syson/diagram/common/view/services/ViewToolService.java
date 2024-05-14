@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.common.view.services;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -27,7 +28,10 @@ import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ToolService;
+import org.eclipse.syson.sysml.ActionDefinition;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -59,10 +63,13 @@ public class ViewToolService extends ToolService {
 
     protected final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
+    private final ElementInitializerSwitch elementInitializerSwitch;
+
     public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
         super(objectService, representationDescriptionSearchService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
+        this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
 
     /**
@@ -421,5 +428,93 @@ public class ViewToolService extends ToolService {
             owner = owner.eContainer();
         }
         return (Package) owner;
+    }
+
+    /**
+     * Called by "New Action" tool from free-form for nested ActionUsage .
+     *
+     * @param actionUsage
+     *            the {@link ActionUsage} corresponding to the target object on which the tool has been called.
+     * @param nodeName
+     *            the name of the node description corresponding to the ActionUsage in the context of the tool.
+     *
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param selectedNode
+     *            the selected node on which the tool has been called. It corresponds to a variable accessible from the
+     *            variable manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @return the created PartUsage
+     */
+    public ActionUsage createNestedActionUsageAndView(ActionUsage actionUsage, String nodeName, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        ObjectiveMembership membership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+        actionUsage.getOwnedRelationship().add(membership);
+        ActionUsage childAction = SysmlFactory.eINSTANCE.createActionUsage();
+        membership.getOwnedRelatedElement().add(childAction);
+        this.elementInitializerSwitch.doSwitch(childAction);
+        // get the children action usage compartment
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildActionUsage = convertedNodes.keySet().stream()
+                .filter(n -> nodeName.equals(n.getName()))
+                .findFirst();
+        if (nodeChildActionUsage.isPresent()) {
+            NodeDescription nodeDescription = convertedNodes.get(nodeChildActionUsage.get());
+            if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
+                this.createView(childAction, editingContext, diagramContext, selectedNode.getChildNodes().get(2), convertedNodes);
+            } else {
+                this.createView(childAction, editingContext, diagramContext, selectedNode, convertedNodes);
+            }
+        }
+        return childAction;
+    }
+
+    /**
+     * Called by "New Action" tool from free-form for owned ActionUsage .
+     *
+     * @param actionDefinition
+     *            the {@link ActionDefinition} corresponding to the target object on which the tool has been called.
+     * @param nodeName
+     *            the name of the node description corresponding to the ActionDefintion in the context of the tool.
+     *
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param selectedNode
+     *            the selected node on which the tool has been called. It corresponds to a variable accessible from the
+     *            variable manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @return the created PartUsage
+     */
+    public ActionUsage createOwnedActionUsageAndView(ActionDefinition actionDefinition, String nodeName, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        ObjectiveMembership membership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+        actionDefinition.getOwnedRelationship().add(membership);
+        ActionUsage childAction = SysmlFactory.eINSTANCE.createActionUsage();
+        membership.getOwnedRelatedElement().add(childAction);
+        this.elementInitializerSwitch.doSwitch(childAction);
+        // get the children action usage compartment
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildActionUsage = convertedNodes.keySet().stream()
+                .filter(n -> nodeName.equals(n.getName()))
+                .findFirst();
+        if (nodeChildActionUsage.isPresent()) {
+            NodeDescription nodeDescription = convertedNodes.get(nodeChildActionUsage.get());
+            if (nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
+                this.createView(childAction, editingContext, diagramContext, selectedNode.getChildNodes().get(1), convertedNodes);
+            } else {
+                this.createView(childAction, editingContext, diagramContext, selectedNode, convertedNodes);
+            }
+        }
+        return childAction;
     }
 }
