@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -58,7 +59,9 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(this.getName())
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedPort().getName())
-                .style(this.createPortUsageNodeStyle())
+                // Default style if no conditional style can be applied
+                .style(this.createImageNodeStyleDescription("images/PortUsage_In.svg"))
+                .conditionalStyles(this.createPortUsageConditionalNodeStyles().toArray(ConditionalNodeStyle[]::new))
                 .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
@@ -96,11 +99,30 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .build();
     }
 
-    private NodeStyleDescription createPortUsageNodeStyle() {
-        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
+    private List<ConditionalNodeStyle> createPortUsageConditionalNodeStyles() {
+        return List.of(
+                this.diagramBuilderHelper.newConditionalNodeStyle()
+                        .condition("aql:self.isInPort()")
+                        .style(this.createImageNodeStyleDescription("/images/PortUsage_In.svg"))
+                .build(),
+                this.diagramBuilderHelper.newConditionalNodeStyle()
+                        .condition("aql:self.isOutPort()")
+                        .style(this.createImageNodeStyleDescription("/images/PortUsage_Out.svg"))
+                        .build(),
+                this.diagramBuilderHelper.newConditionalNodeStyle()
+                        .condition("aql:self.isInOutPort()")
+                        .style(this.createImageNodeStyleDescription("/images/PortUsage_InOut.svg"))
+                        .build()
+        );
+    }
+
+    private NodeStyleDescription createImageNodeStyleDescription(String imagePath) {
+        return this.diagramBuilderHelper.newImageNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
-                .borderRadius(5)
+                .borderRadius(0)
                 .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .positionDependentRotation(true)
+                .shape(imagePath)
                 .build();
     }
 
