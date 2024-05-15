@@ -17,7 +17,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 
@@ -78,8 +77,6 @@ public class SysMLCustomnodesSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseNodeStyleDescription(sysMLPackageNodeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(sysMLPackageNodeStyleDescription);
-                if (result == null)
                     result = this.caseBorderStyle(sysMLPackageNodeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
@@ -102,20 +99,6 @@ public class SysMLCustomnodesSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseSysMLPackageNodeStyleDescription(SysMLPackageNodeStyleDescription object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Style</em>'. <!-- begin-user-doc --> This
-     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Style</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T caseStyle(Style object) {
         return null;
     }
 

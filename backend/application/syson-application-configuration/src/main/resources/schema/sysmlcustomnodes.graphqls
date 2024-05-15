@@ -4,5 +4,5 @@ type SysMLPackageNodeStyle {
   borderColor: String!
   borderSize: Int!
   borderStyle: LineStyle!
-  color: String!
+  background: String!
 }

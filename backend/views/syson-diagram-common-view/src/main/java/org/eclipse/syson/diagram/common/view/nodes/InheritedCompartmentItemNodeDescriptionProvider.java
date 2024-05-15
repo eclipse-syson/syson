@@ -87,7 +87,7 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
         return this.diagramBuilderHelper.newIconLabelNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .background(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
                 .build();
     }
 

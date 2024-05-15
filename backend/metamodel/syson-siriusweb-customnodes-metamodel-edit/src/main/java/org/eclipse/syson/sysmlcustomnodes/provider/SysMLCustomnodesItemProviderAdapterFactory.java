@@ -261,7 +261,8 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
              */
             @Override
             public Object caseNodeDescription(NodeDescription object) {
-                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE, SysMLCustomnodesFactory.eINSTANCE.createSysMLPackageNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+                        SysMLCustomnodesFactory.eINSTANCE.createSysMLPackageNodeStyleDescription()));
 
                 return null;
             }
@@ -273,8 +274,8 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
              */
             @Override
             public Object caseConditionalNodeStyle(ConditionalNodeStyle object) {
-                this.newChildDescriptors
-                        .add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE, SysMLCustomnodesFactory.eINSTANCE.createSysMLPackageNodeStyleDescription()));
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        SysMLCustomnodesFactory.eINSTANCE.createSysMLPackageNodeStyleDescription()));
 
                 return null;
             }

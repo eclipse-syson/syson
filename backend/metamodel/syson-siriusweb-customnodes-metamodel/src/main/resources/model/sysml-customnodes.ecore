@@ -2,5 +2,7 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="sysmlcustomnodes" nsURI="http://www.eclipse.org/syson/customnodes"
     nsPrefix="sysmlcustomnodes">
-  <eClassifiers xsi:type="ecore:EClass" name="SysMLPackageNodeStyleDescription" eSuperTypes="../../../../../sirius-components-view-diagram/src/main/resources/model/diagram.ecore#//NodeStyleDescription"/>
+  <eClassifiers xsi:type="ecore:EClass" name="SysMLPackageNodeStyleDescription" eSuperTypes="../../../../../sirius-components-view-diagram/src/main/resources/model/diagram.ecore#//NodeStyleDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="background" eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//UserColor"/>
+  </eClassifiers>
 </ecore:EPackage>

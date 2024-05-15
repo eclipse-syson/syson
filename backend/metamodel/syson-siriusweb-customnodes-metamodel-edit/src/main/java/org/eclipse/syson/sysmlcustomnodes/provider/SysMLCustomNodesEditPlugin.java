@@ -47,7 +47,10 @@ public final class SysMLCustomNodesEditPlugin extends EMFPlugin {
      * @generated
      */
     public SysMLCustomNodesEditPlugin() {
-        super(new ResourceLocator[] { DiagramEditPlugin.INSTANCE, ViewEditPlugin.INSTANCE, });
+        super(new ResourceLocator[] {
+                DiagramEditPlugin.INSTANCE,
+                ViewEditPlugin.INSTANCE,
+        });
     }
 
     /**

@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.diagrams.LineStyle;
 @Immutable
 public final class SysMLPackageNodeStyle implements INodeStyle {
 
-    private String color;
+    private String background;
 
     private String borderColor;
 
@@ -44,8 +44,8 @@ public final class SysMLPackageNodeStyle implements INodeStyle {
         return new Builder();
     }
 
-    public String getColor() {
-        return this.color;
+    public String getBackground() {
+        return this.background;
     }
 
     public String getBorderColor() {
@@ -62,8 +62,8 @@ public final class SysMLPackageNodeStyle implements INodeStyle {
 
     @Override
     public String toString() {
-        String pattern = "{0} '{'color: {1}, border: '{' color: {2}, size: {3}, style: {4} '}''}'";
-        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.color, this.borderColor, this.borderSize, this.borderStyle);
+        String pattern = "{0} '{'color: {1}, border: '{' background: {2}, size: {3}, style: {4} '}''}'";
+        return MessageFormat.format(pattern, this.getClass().getSimpleName(), this.background, this.borderColor, this.borderSize, this.borderStyle);
     }
 
     /**
@@ -74,7 +74,7 @@ public final class SysMLPackageNodeStyle implements INodeStyle {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String color;
+        private String background;
 
         private String borderColor;
 
@@ -86,8 +86,8 @@ public final class SysMLPackageNodeStyle implements INodeStyle {
             // Prevent instantiation
         }
 
-        public Builder color(String color) {
-            this.color = Objects.requireNonNull(color);
+        public Builder background(String background) {
+            this.background = Objects.requireNonNull(background);
             return this;
         }
 
@@ -108,7 +108,7 @@ public final class SysMLPackageNodeStyle implements INodeStyle {
 
         public SysMLPackageNodeStyle build() {
             SysMLPackageNodeStyle nodeStyleDescription = new SysMLPackageNodeStyle();
-            nodeStyleDescription.color = Objects.requireNonNull(this.color);
+            nodeStyleDescription.background = Objects.requireNonNull(this.background);
             nodeStyleDescription.borderColor = Objects.requireNonNull(this.borderColor);
             nodeStyleDescription.borderSize = this.borderSize;
             nodeStyleDescription.borderStyle = Objects.requireNonNull(this.borderStyle);

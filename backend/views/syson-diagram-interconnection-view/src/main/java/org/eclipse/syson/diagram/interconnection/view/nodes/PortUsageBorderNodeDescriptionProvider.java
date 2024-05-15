@@ -120,7 +120,6 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
         return this.diagramBuilderHelper.newImageNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
                 .positionDependentRotation(true)
                 .shape(imagePath)
                 .build();
