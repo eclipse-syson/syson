@@ -21,6 +21,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
@@ -67,8 +68,8 @@ public class InterconnectionViewToolService extends ViewToolService {
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public InterconnectionViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
-        super(objectService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService);
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
+        super(objectService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService, feedbackMessageService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.descriptionNameGenerator = new IVDescriptionNameGenerator();
     }

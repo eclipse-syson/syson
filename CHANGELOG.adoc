@@ -28,6 +28,7 @@
 - https://github.com/eclipse-syson/syson/issues/264[#264] [diagrams] Restore hide capabilities that were missing after the latest Sirius Web update
 - https://github.com/eclipse-syson/syson/issues/274[#274] [import] Namespace.getImportedMemberships method now prevents name collisions
 - https://github.com/eclipse-syson/syson/issues/271[#271] [diagrams] Remove non end Usages from AllocationDefinition ends compartment
+- https://github.com/eclipse-syson/syson/issues/229[#229] [diagrams] Prevent circular containment of nested parts
 
 === Improvements
 
