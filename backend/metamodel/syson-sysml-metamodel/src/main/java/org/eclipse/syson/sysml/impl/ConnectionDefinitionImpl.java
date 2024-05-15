@@ -255,8 +255,7 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
      */
     @Override
     public EList<Feature> getAssociationEnd() {
-        List<ActionUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_AssociationEnd(), data.size(), data.toArray());
+        return this.getEndFeature();
     }
 
     /**
@@ -312,12 +311,11 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
      */
     @Override
     public EList<Usage> getConnectionEnd() {
-        List<Usage> ends = this.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+        List<Usage> ends = this.getAssociationEnd().stream()
                 .filter(Usage.class::isInstance)
-                .map(Usage.class::cast).toList();
+                .map(Usage.class::cast)
+                .toList();
+
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd(), ends.size(), ends.toArray());
     }
 

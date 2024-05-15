@@ -27,6 +27,7 @@
 - https://github.com/eclipse-syson/syson/issues/262[#262] [import] Fix an issue where an exception was raised while importing standard examples
 - https://github.com/eclipse-syson/syson/issues/264[#264] [diagrams] Restore hide capabilities that were missing after the latest Sirius Web update
 - https://github.com/eclipse-syson/syson/issues/274[#274] [import] Namespace.getImportedMemberships method now prevents name collisions
+- https://github.com/eclipse-syson/syson/issues/271[#271] [diagrams] Remove non end Usages from AllocationDefinition ends compartment
 
 === Improvements
 

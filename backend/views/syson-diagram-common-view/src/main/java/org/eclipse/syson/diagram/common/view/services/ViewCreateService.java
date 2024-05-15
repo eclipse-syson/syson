@@ -308,6 +308,7 @@ public class ViewCreateService {
         featureTyping.setType(newPartUsage);
         var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
         referenceUsage.setDeclaredName("end");
+        referenceUsage.setIsEnd(true);
         referenceUsage.getOwnedRelationship().add(featureTyping);
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         featureMembership.getOwnedRelatedElement().add(referenceUsage);
