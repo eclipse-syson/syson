@@ -236,7 +236,7 @@ public class ViewToolService extends ToolService {
     }
 
     public Usage becomeNestedUsage(Usage usage, Element newContainer) {
-        if (this.getOwnerHierarchy(newContainer).contains(usage)) {
+        if (this.getOwnerHierarchy(newContainer).contains(usage) || Objects.equals(newContainer, usage)) {
             String message = MessageFormat.format("Cannot change the owner of {0}, this would create a containment cycle", String.valueOf(usage.getName()));
             this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
             this.logger.warn(message);
@@ -429,7 +429,7 @@ public class ViewToolService extends ToolService {
 
     public Element reconnnectSourceCompositionEdge(Element self, Element newSource, Element otherEnd) {
         Element result = otherEnd;
-        if (this.getOwnerHierarchy(newSource).contains(otherEnd)) {
+        if (this.getOwnerHierarchy(newSource).contains(otherEnd) || Objects.equals(newSource, otherEnd)) {
             String message = MessageFormat.format("Cannot change the owner of {0}, this would create a containment cycle", String.valueOf(otherEnd.getName()));
             this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
             this.logger.warn(message);
@@ -440,7 +440,7 @@ public class ViewToolService extends ToolService {
     }
 
     public Element reconnnectTargetCompositionEdge(Element self, Element oldTarget, Element newTarget, Element otherEnd) {
-        if (this.getOwnerHierarchy(otherEnd).contains(newTarget)) {
+        if (this.getOwnerHierarchy(otherEnd).contains(newTarget) || Objects.equals(otherEnd, newTarget)) {
             String message = MessageFormat.format("Cannot change the owner of {0}, this would create a containment cycle", String.valueOf(otherEnd.getName()));
             this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
             this.logger.warn(message);
