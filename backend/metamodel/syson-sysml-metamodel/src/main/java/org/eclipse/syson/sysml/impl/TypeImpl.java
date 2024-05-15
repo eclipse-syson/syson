@@ -182,8 +182,10 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Feature> getEndFeature() {
-        List<Feature> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_EndFeature(), data.size(), data.toArray());
+        List<Feature> ends = this.getOwnedFeature().stream()
+                .filter(Feature::isIsEnd)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_EndFeature(), ends.size(), ends.toArray());
     }
 
     /**
