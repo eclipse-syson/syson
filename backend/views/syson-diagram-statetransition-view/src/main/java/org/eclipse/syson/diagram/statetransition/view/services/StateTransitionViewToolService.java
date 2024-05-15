@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -45,8 +46,8 @@ public class StateTransitionViewToolService extends ViewToolService {
     private final ElementInitializerSwitch elementInitializerSwitch;
 
     public StateTransitionViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
-        super(objectService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService);
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
+        super(objectService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService, feedbackMessageService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
 

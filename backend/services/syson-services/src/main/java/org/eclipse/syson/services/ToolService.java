@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
@@ -69,11 +70,14 @@ public class ToolService {
 
     protected final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    protected final IFeedbackMessageService feedbackMessageService;
+
     private final Logger logger = LoggerFactory.getLogger(ToolService.class);
 
-    public ToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService) {
+    public ToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     /**

@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.services;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,12 +23,15 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
@@ -52,6 +58,8 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tool-related Java services used by all diagrams.
@@ -64,9 +72,11 @@ public class ViewToolService extends ToolService {
 
     private final ElementInitializerSwitch elementInitializerSwitch;
 
+    private final Logger logger = LoggerFactory.getLogger(ViewToolService.class);
+
     public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
-        super(objectService, representationDescriptionSearchService);
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
+        super(objectService, representationDescriptionSearchService, feedbackMessageService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
@@ -226,8 +236,14 @@ public class ViewToolService extends ToolService {
     }
 
     public Usage becomeNestedUsage(Usage usage, Element newContainer) {
-        this.changeOwner(usage, newContainer);
-        usage.setIsComposite(true);
+        if (this.getOwnerHierarchy(newContainer).contains(usage)) {
+            String message = MessageFormat.format("Cannot change the owner of {0}, this would create a containment cycle", String.valueOf(usage.getName()));
+            this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
+            this.logger.warn(message);
+        } else {
+            this.changeOwner(usage, newContainer);
+            usage.setIsComposite(true);
+        }
         return usage;
     }
 
@@ -237,11 +253,23 @@ public class ViewToolService extends ToolService {
             newContainer.getOwnedRelationship().add(featureMembership);
         } else if (eContainer instanceof OwningMembership owningMembership) {
             var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            newFeatureMembership.getOwnedRelatedElement().add(element);
+            // Set the container of newFeatureMembership first to make sure features owned by
+            // element aren't lost when changing its container.
             newContainer.getOwnedRelationship().add(newFeatureMembership);
+            newFeatureMembership.getOwnedRelatedElement().add(element);
             EcoreUtil.delete(owningMembership);
         }
         return element;
+    }
+
+    private List<Element> getOwnerHierarchy(Element element) {
+        List<Element> ownerHierarchy = new ArrayList<>();
+        Element currentElement = element;
+        while (currentElement.getOwner() != null) {
+            ownerHierarchy.add(currentElement.getOwner());
+            currentElement = currentElement.getOwner();
+        }
+        return ownerHierarchy;
     }
 
     public RequirementUsage becomeObjectiveRequirement(RequirementUsage requirement, Element newContainer) {
@@ -400,22 +428,36 @@ public class ViewToolService extends ToolService {
     }
 
     public Element reconnnectSourceCompositionEdge(Element self, Element newSource, Element otherEnd) {
-        return this.changeOwner(otherEnd, newSource);
+        Element result = otherEnd;
+        if (this.getOwnerHierarchy(newSource).contains(otherEnd)) {
+            String message = MessageFormat.format("Cannot change the owner of {0}, this would create a containment cycle", String.valueOf(otherEnd.getName()));
+            this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
+            this.logger.warn(message);
+        } else {
+            result = this.changeOwner(otherEnd, newSource);
+        }
+        return result;
     }
 
-    public Element reconnnectTargetCompositionEdge(Element self, Element oldTarget, Element newTarget) {
-        var oldContainer = oldTarget.eContainer();
-        if (newTarget instanceof Usage && oldContainer instanceof FeatureMembership featureMembership) {
-            // move the old target to the innermost package
-            var pack = this.getClosestContainingPackageFrom(self);
-            if (pack != null) {
-                var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
-                pack.getOwnedRelationship().add(owningMembership);
-                owningMembership.getOwnedRelatedElement().add(oldTarget);
-                // reuse feature membership of the previous nested
-                var oldMembership = newTarget.eContainer();
-                featureMembership.getOwnedRelatedElement().add(newTarget);
-                EcoreUtil.delete(oldMembership);
+    public Element reconnnectTargetCompositionEdge(Element self, Element oldTarget, Element newTarget, Element otherEnd) {
+        if (this.getOwnerHierarchy(otherEnd).contains(newTarget)) {
+            String message = MessageFormat.format("Cannot change the owner of {0}, this would create a containment cycle", String.valueOf(otherEnd.getName()));
+            this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
+            this.logger.warn(message);
+        } else {
+            var oldContainer = oldTarget.eContainer();
+            if (newTarget instanceof Usage && oldContainer instanceof FeatureMembership featureMembership) {
+                // move the old target to the innermost package
+                var pack = this.getClosestContainingPackageFrom(self);
+                if (pack != null) {
+                    var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                    pack.getOwnedRelationship().add(owningMembership);
+                    owningMembership.getOwnedRelatedElement().add(oldTarget);
+                    // reuse feature membership of the previous nested
+                    var oldMembership = newTarget.eContainer();
+                    featureMembership.getOwnedRelatedElement().add(newTarget);
+                    EcoreUtil.delete(oldMembership);
+                }
             }
         }
         return self;
