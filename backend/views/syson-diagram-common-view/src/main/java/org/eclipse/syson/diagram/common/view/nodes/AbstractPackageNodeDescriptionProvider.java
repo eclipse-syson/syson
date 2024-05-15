@@ -145,7 +145,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         SysMLPackageNodeStyleDescription nodeStyleDescription = SysMLCustomnodesFactory.eINSTANCE.createSysMLPackageNodeStyleDescription();
         nodeStyleDescription.setBorderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR));
         nodeStyleDescription.setBorderRadius(0);
-        nodeStyleDescription.setColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR));
+        nodeStyleDescription.setBackground(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR));
         return nodeStyleDescription;
     }
 

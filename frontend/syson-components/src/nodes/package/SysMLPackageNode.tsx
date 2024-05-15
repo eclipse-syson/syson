@@ -22,8 +22,6 @@ import {
   DiagramContextValue,
   DiagramElementPalette,
   Label,
-  NodeContext,
-  NodeContextValue,
   useConnectorNodeStyle,
   useDrop,
   useDropNodeStyle,
@@ -75,7 +73,7 @@ const packageHeaderStyle = (
     maxWidth: '70%',
     opacity: faded ? '0.4' : '',
     ...style,
-    backgroundColor: getCSSColor(String(style.backgroundColor), theme),
+    background: getCSSColor(String(style.background), theme),
     borderBottomStyle: 'none',
     borderRightColor: getCSSColor(String(style.borderColor), theme),
     borderLeftColor: getCSSColor(String(style.borderColor), theme),
@@ -104,7 +102,7 @@ const packageContainerStyle = (
     height: '100%',
     opacity: faded ? '0.4' : '',
     ...style,
-    backgroundColor: getCSSColor(String(style.backgroundColor), theme),
+    background: getCSSColor(String(style.background), theme),
     borderColor: getCSSColor(String(style.borderColor), theme),
   };
 
@@ -127,13 +125,12 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   };
 };
 
-export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPackageNodeData>) => {
+export const SysMLPackageNode = memo(({ data, id, selected, dragging }: NodeProps<SysMLPackageNodeData>) => {
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const theme: Theme = useTheme();
   const { onDrop, onDragOver } = useDrop();
   const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(id);
-  const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
 
   const handleOnDrop = (event: React.DragEvent) => {
     onDrop(event, id);
@@ -167,7 +164,7 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
       ) : null}
       <div
         style={{
-          ...sysMLPackageNodeStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
+          ...sysMLPackageNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
         }}
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
@@ -176,11 +173,11 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
           <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
         ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} />
+        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
         <ConnectionHandles connectionHandles={data.connectionHandles} />
         <div
           style={{
-            ...packageHeaderStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
+            ...packageHeaderStyle(theme, data.style, selected, data.isHovered, data.faded),
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}>
@@ -188,7 +185,7 @@ export const SysMLPackageNode = memo(({ data, id, selected }: NodeProps<SysMLPac
         </div>
         <div
           style={{
-            ...packageContainerStyle(theme, data.style, selected, hoveredNode?.id === id, data.faded),
+            ...packageContainerStyle(theme, data.style, selected, data.isHovered, data.faded),
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}

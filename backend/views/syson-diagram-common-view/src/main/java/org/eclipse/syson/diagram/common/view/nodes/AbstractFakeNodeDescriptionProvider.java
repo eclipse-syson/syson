@@ -100,7 +100,7 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor("transparent"))
                 .borderRadius(0)
-                .color(this.colorProvider.getColor("transparent"))
+                .background(this.colorProvider.getColor("transparent"))
                 .build();
     }
 }

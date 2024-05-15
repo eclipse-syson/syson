@@ -47,9 +47,18 @@ public class SysMLPackageNodeStyleProvider implements INodeStyleProvider {
         Optional<String> nodeType = this.getNodeType(nodeStyle);
         if (nodeType.isPresent()) {
             return Optional.of(SysMLPackageNodeStyle.newSysMLPackageNodeStyle()
-                    .color(Optional.ofNullable(nodeStyle.getColor()).filter(FixedColor.class::isInstance).map(FixedColor.class::cast).map(FixedColor::getValue).orElse("transparent"))
-                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor()).filter(FixedColor.class::isInstance).map(FixedColor.class::cast).map(FixedColor::getValue).orElse("black"))
-                    .borderSize(nodeStyle.getBorderSize()).borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral())).build());
+                    .background(Optional.ofNullable(((SysMLPackageNodeStyleDescription) nodeStyle).getBackground())
+                            .filter(FixedColor.class::isInstance)
+                            .map(FixedColor.class::cast)
+                            .map(FixedColor::getValue)
+                            .orElse("transparent"))
+                    .borderColor(Optional.ofNullable(nodeStyle.getBorderColor())
+                            .filter(FixedColor.class::isInstance)
+                            .map(FixedColor.class::cast)
+                            .map(FixedColor::getValue)
+                            .orElse("black"))
+                    .borderSize(nodeStyle.getBorderSize())
+                    .borderStyle(LineStyle.valueOf(nodeStyle.getBorderLineStyle().getLiteral())).build());
         }
 
         return iNodeStyle;

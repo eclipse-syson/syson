@@ -18,7 +18,6 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 
@@ -79,11 +78,6 @@ public class SysMLCustomnodesAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseStyle(Style object) {
-            return SysMLCustomnodesAdapterFactory.this.createStyleAdapter();
-        }
-
-        @Override
         public Adapter caseBorderStyle(BorderStyle object) {
             return SysMLCustomnodesAdapterFactory.this.createBorderStyleAdapter();
         }
@@ -123,19 +117,6 @@ public class SysMLCustomnodesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSysMLPackageNodeStyleDescriptionAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.Style
-     * <em>Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.diagram.Style
-     * @generated
-     */
-    public Adapter createStyleAdapter() {
         return null;
     }
 

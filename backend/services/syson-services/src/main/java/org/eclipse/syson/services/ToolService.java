@@ -297,7 +297,7 @@ public class ToolService {
                 .text("")
                 .build();
 
-        var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle().color("").borderColor("").borderStyle(LineStyle.Solid).build();
+        var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle().background("").borderColor("").borderStyle(LineStyle.Solid).build();
 
         return Node.newNode(nodeId)
                 .type("")

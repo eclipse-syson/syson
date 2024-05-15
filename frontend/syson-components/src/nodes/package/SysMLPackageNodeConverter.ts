@@ -73,7 +73,7 @@ const toPackageNode = (
     descriptionId,
     style: {
       display: 'flex',
-      backgroundColor: style.color,
+      background: style.background,
       borderColor: style.borderColor,
       borderWidth: style.borderSize,
       borderStyle: convertLineStyle(style.borderStyle),
@@ -92,6 +92,9 @@ const toPackageNode = (
     isNew,
     resizedByUser,
     isListChild: isListLayoutStrategy(gqlParentNode?.childrenLayoutStrategy),
+    isDropNodeTarget: false,
+    isDropNodeCandidate: false,
+    isHovered: false,
   };
 
   data.insideLabel = convertInsideLabel(

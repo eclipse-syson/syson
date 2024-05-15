@@ -14,6 +14,7 @@ package org.eclipse.syson.sysmlcustomnodes.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
@@ -117,6 +118,16 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
      * @generated
      */
     @Override
+    public EReference getSysMLPackageNodeStyleDescription_Background() {
+        return (EReference) this.sysMLPackageNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public SysMLCustomnodesFactory getSysMLCustomnodesFactory() {
         return (SysMLCustomnodesFactory) this.getEFactoryInstance();
     }
@@ -141,6 +152,7 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
 
         // Create classes and their features
         this.sysMLPackageNodeStyleDescriptionEClass = this.createEClass(SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.sysMLPackageNodeStyleDescriptionEClass, SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND);
     }
 
     /**
@@ -168,6 +180,7 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
 
         // Obtain other dependent packages
         DiagramPackage theDiagramPackage = (DiagramPackage) EPackage.Registry.INSTANCE.getEPackage(DiagramPackage.eNS_URI);
+        ViewPackage theViewPackage = (ViewPackage) EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI);
 
         // Create type parameters
 
@@ -179,6 +192,8 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.sysMLPackageNodeStyleDescriptionEClass, SysMLPackageNodeStyleDescription.class, "SysMLPackageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getSysMLPackageNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, SysMLPackageNodeStyleDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

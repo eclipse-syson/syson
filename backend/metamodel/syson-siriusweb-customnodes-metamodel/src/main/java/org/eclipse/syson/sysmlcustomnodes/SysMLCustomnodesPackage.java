@@ -14,6 +14,7 @@ package org.eclipse.syson.sysmlcustomnodes;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 
 /**
@@ -71,14 +72,6 @@ public interface SysMLCustomnodesPackage extends EPackage {
     int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION = 0;
 
     /**
-     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__COLOR = DiagramPackage.NODE_STYLE_DESCRIPTION__COLOR;
-
-    /**
      * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -112,13 +105,21 @@ public interface SysMLCustomnodesPackage extends EPackage {
     int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = DiagramPackage.NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
 
     /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
      * The number of structural features of the '<em>Sys ML Package Node Style Description</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 0;
+    int SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION_FEATURE_COUNT = DiagramPackage.NODE_STYLE_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The number of operations of the '<em>Sys ML Package Node Style Description</em>' class. <!-- begin-user-doc -->
@@ -138,6 +139,18 @@ public interface SysMLCustomnodesPackage extends EPackage {
      * @generated
      */
     EClass getSysMLPackageNodeStyleDescription();
+
+    /**
+     * Returns the meta object for the reference
+     * '{@link org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription#getBackground <em>Background</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Background</em>'.
+     * @see org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription#getBackground()
+     * @see #getSysMLPackageNodeStyleDescription()
+     * @generated
+     */
+    EReference getSysMLPackageNodeStyleDescription_Background();
 
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -171,6 +184,14 @@ public interface SysMLCustomnodesPackage extends EPackage {
          * @generated
          */
         EClass SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION = eINSTANCE.getSysMLPackageNodeStyleDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getSysMLPackageNodeStyleDescription_Background();
 
     }
 

@@ -16,11 +16,9 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.sirius.components.view.UserColor;
-import org.eclipse.sirius.components.view.diagram.BorderStyle;
-import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
-import org.eclipse.sirius.components.view.diagram.impl.StyleImpl;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 
@@ -39,11 +37,13 @@ import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
  * Size</em>}</li>
  * <li>{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLPackageNodeStyleDescriptionImpl#getBorderLineStyle <em>Border
  * Line Style</em>}</li>
+ * <li>{@link org.eclipse.syson.sysmlcustomnodes.impl.SysMLPackageNodeStyleDescriptionImpl#getBackground
+ * <em>Background</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class SysMLPackageNodeStyleDescriptionImpl extends StyleImpl implements SysMLPackageNodeStyleDescription {
+public class SysMLPackageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container implements SysMLPackageNodeStyleDescription {
     /**
      * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -113,6 +113,16 @@ public class SysMLPackageNodeStyleDescriptionImpl extends StyleImpl implements S
      * @ordered
      */
     protected LineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getBackground()
+     * @generated
+     * @ordered
+     */
+    protected UserColor background;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -248,6 +258,46 @@ public class SysMLPackageNodeStyleDescriptionImpl extends StyleImpl implements S
      * @generated
      */
     @Override
+    public UserColor getBackground() {
+        if (this.background != null && this.background.eIsProxy()) {
+            InternalEObject oldBackground = (InternalEObject) this.background;
+            this.background = (UserColor) this.eResolveProxy(oldBackground);
+            if (this.background != oldBackground) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND, oldBackground, this.background));
+            }
+        }
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBackground() {
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setBackground(UserColor newBackground) {
+        UserColor oldBackground = this.background;
+        this.background = newBackground;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND, oldBackground, this.background));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
@@ -260,6 +310,10 @@ public class SysMLPackageNodeStyleDescriptionImpl extends StyleImpl implements S
                 return this.getBorderSize();
             case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.getBorderLineStyle();
+            case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND:
+                if (resolve)
+                    return this.getBackground();
+                return this.basicGetBackground();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -283,6 +337,9 @@ public class SysMLPackageNodeStyleDescriptionImpl extends StyleImpl implements S
                 return;
             case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle((LineStyle) newValue);
+                return;
+            case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND:
+                this.setBackground((UserColor) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -308,6 +365,9 @@ public class SysMLPackageNodeStyleDescriptionImpl extends StyleImpl implements S
             case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
                 return;
+            case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND:
+                this.setBackground((UserColor) null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -328,56 +388,10 @@ public class SysMLPackageNodeStyleDescriptionImpl extends StyleImpl implements S
                 return this.borderSize != BORDER_SIZE_EDEFAULT;
             case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
+            case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND:
+                return this.background != null;
         }
         return super.eIsSet(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == BorderStyle.class) {
-            switch (derivedFeatureID) {
-                case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR:
-                    return DiagramPackage.BORDER_STYLE__BORDER_COLOR;
-                case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_RADIUS:
-                    return DiagramPackage.BORDER_STYLE__BORDER_RADIUS;
-                case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_SIZE:
-                    return DiagramPackage.BORDER_STYLE__BORDER_SIZE;
-                case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
-                    return DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE;
-                default:
-                    return -1;
-            }
-        }
-        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == BorderStyle.class) {
-            switch (baseFeatureID) {
-                case DiagramPackage.BORDER_STYLE__BORDER_COLOR:
-                    return SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_COLOR;
-                case DiagramPackage.BORDER_STYLE__BORDER_RADIUS:
-                    return SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_RADIUS;
-                case DiagramPackage.BORDER_STYLE__BORDER_SIZE:
-                    return SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_SIZE;
-                case DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE:
-                    return SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
-                default:
-                    return -1;
-            }
-        }
-        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
     /**
