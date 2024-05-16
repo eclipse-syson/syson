@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { CreatedProjectData } from './Batmobile.types';
 import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
+import { CreatedProjectData } from './Batmobile.types';
 
 export class Batmobile {
   public createBatmobileProject(): Cypress.Chainable<CreatedProjectData> {
@@ -30,6 +30,10 @@ export class Batmobile {
 
   public getProjectLabel(): string {
     return 'Batmobile';
+  }
+
+  public getRootNamespaceLabel(): string {
+    return 'Namespace';
   }
 
   public getRootElementLabel(): string {

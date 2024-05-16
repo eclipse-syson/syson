@@ -4,6 +4,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/298[#298] [syson] Add standard libraries and new models now have a root Namespace to conform with KerML/SysML specifications.
+
 
 === Dependency update
 
@@ -12,9 +14,11 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/298[#298] [metamodel] Fix metamodel to manage root namespaces.
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/298[#298] [syson] Add root Namespace to SysON models and libraries
 
 === New features
 
@@ -35,7 +39,6 @@
 
 === Bug fixes
 
-- https://github.com/eclipse-syson/syson/issues/298[#298] [metamodel] Fix metamodel to manage root namespace.
 - https://github.com/eclipse-syson/syson/issues/144[#144] [diagrams] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.
 - https://github.com/eclipse-syson/syson/issues/167[#167] [interconnection-view] Add attributes compartment in children PartUsage nodes.
 - https://github.com/eclipse-syson/syson/issues/174[#174] [details] Fix an issue where an error raised when setting a valid new value (with primitive type) in the Details view.
