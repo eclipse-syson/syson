@@ -321,6 +321,41 @@ public class ToolService {
                 .build();
     }
 
+    /**
+     * Checks if the given {@link Node} can have a child built upon the given element.
+     *
+     * @param element
+     *            an {@link Element} to add as a child of the given node.
+     * @param parentNode
+     *            a {@link Node} in which the given {@link Element} is about to be added.
+     * @param diagramDescription
+     *            the diagram description
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @return <code>true</code> if the given element can be added as a child inside the given node and
+     *         <code>false</code> otherwise.
+     */
+    protected boolean isCompliantAsChild(Element element, Node parentNode, DiagramDescription diagramDescription,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var optNodeDescription = this.getViewNodeDescription(parentNode.getDescriptionId(), diagramDescription, convertedNodes);
+        if (optNodeDescription.isPresent()) {
+            var nodeDescription = optNodeDescription.get();
+            List<org.eclipse.sirius.components.view.diagram.NodeDescription> descriptions = new ArrayList<>();
+
+            descriptions.addAll(nodeDescription.getChildrenDescriptions());
+            descriptions.addAll(nodeDescription.getBorderNodesDescriptions());
+            descriptions.addAll(nodeDescription.getReusedBorderNodeDescriptions());
+            descriptions.addAll(nodeDescription.getReusedChildNodeDescriptions());
+
+            return descriptions.stream()
+                    .distinct()
+                    .filter(nd -> this.isCompliant(SysMLMetamodelHelper.toEClass(nd.getDomainType()), element.eClass()))
+                    .count() > 0;
+        }
+        return false;
+    }
+
     private org.eclipse.sirius.components.view.diagram.NodeDescription getChildrenNodeDescriptionsOfType(DiagramDescription diagramDescription,
             org.eclipse.sirius.components.view.diagram.NodeDescription nodeDescription, EClass eClass) {
         final List<org.eclipse.sirius.components.view.diagram.NodeDescription> descriptions = new ArrayList<>();
