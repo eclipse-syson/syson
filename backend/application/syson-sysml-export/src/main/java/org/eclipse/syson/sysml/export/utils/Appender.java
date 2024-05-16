@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.export.utils;
 
+import org.eclipse.syson.sysml.helper.NameHelper;
+
 /**
  * Object that concatenate string using some custom convention.
  * 
@@ -32,27 +34,7 @@ public class Appender {
     }
     
     public static String toPrintableName(String initialName) {
-        String name;
-        if (initialName == null || initialName.isEmpty()) {
-            name = "";
-        } else if (initialName.contains(" ") || !isLetterOrUnderscore(initialName.charAt(0))) {
-            name = '\'' + initialName + '\'';
-        } else {
-            name = initialName;
-        }
-        return name;
-    }
-
-    private static boolean isLetterOrUnderscore(char c) {
-        return c == '_' || isLowerCaseLetter(c) || isUpperCaseLetter(c);
-    }
-
-    private static boolean isUpperCaseLetter(char c) {
-        return c >= 'a' && c <= 'z';
-    }
-
-    private static boolean isLowerCaseLetter(char c) {
-        return c >= 'A' && c <= 'Z';
+        return NameHelper.toPrintableName(initialName);
     }
 
     public Appender appendPrintableName(String name) {

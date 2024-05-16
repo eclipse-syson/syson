@@ -35,6 +35,7 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/298[#298] [metamodel] Fix metamodel to manage root namespace.
 - https://github.com/eclipse-syson/syson/issues/144[#144] [diagrams] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.
 - https://github.com/eclipse-syson/syson/issues/167[#167] [interconnection-view] Add attributes compartment in children PartUsage nodes.
 - https://github.com/eclipse-syson/syson/issues/174[#174] [details] Fix an issue where an error raised when setting a valid new value (with primitive type) in the Details view.

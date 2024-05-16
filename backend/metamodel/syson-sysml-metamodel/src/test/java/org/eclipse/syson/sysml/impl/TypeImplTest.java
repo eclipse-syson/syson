@@ -17,6 +17,7 @@ import static org.eclipse.syson.sysml.util.TestUtils.assertContentEquals;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
@@ -35,6 +36,7 @@ public class TypeImplTest  {
      * Test model
      *
      * <pre>
+     * namespace {
      * package p1 {
      *
      *       part def MegaDef {
@@ -54,6 +56,7 @@ public class TypeImplTest  {
      *
      *
      *   }
+     * }
      * </pre>
      *
      * @author Arthur Daussy
@@ -61,6 +64,8 @@ public class TypeImplTest  {
     private static class TestModel {
 
         private ModelBuilder builder = new ModelBuilder();
+
+        private Namespace root;
 
         private Package p1;
 
@@ -87,8 +92,9 @@ public class TypeImplTest  {
         }
 
         private void build() {
+            this.root = builder.createWithName(Namespace.class, null);
 
-            this.p1 = this.builder.createWithName(Package.class, "p1");
+            this.p1 = builder.createInWithName(Package.class, root, "p1");
 
             this.attrDef1 = this.builder.createInWithName(AttributeDefinition.class, this.p1, "attrDef1");
 
