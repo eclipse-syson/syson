@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { CreatedProjectData } from './SysMLv2.types';
 import { isCreateProjectFromTemplateSuccessPayload } from '../support/server/createProjectFromTemplateCommand';
+import { CreatedProjectData } from './SysMLv2.types';
 
 export class SysMLv2 {
   public createSysMLv2Project(): Cypress.Chainable<CreatedProjectData> {
@@ -30,6 +30,10 @@ export class SysMLv2 {
 
   public getProjectLabel(): string {
     return 'SysMLv2';
+  }
+
+  public getRootNamespaceLabel(): string {
+    return 'Namespace';
   }
 
   public getRootElementLabel(): string {

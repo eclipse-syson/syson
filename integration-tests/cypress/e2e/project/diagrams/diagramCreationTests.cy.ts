@@ -29,6 +29,8 @@ describe('Diagram Creation Tests', () => {
         new Project().visit(projectId);
         explorer.getExplorerView().contains(sysmlv2.getProjectLabel());
         explorer.expand(sysmlv2.getProjectLabel());
+        explorer.getExplorerView().contains(sysmlv2.getRootNamespaceLabel());
+        explorer.expand(sysmlv2.getRootNamespaceLabel());
       })
     );
 

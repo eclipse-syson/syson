@@ -64,9 +64,13 @@ public class StereotypeRegistryConfigurer implements IStereotypeRegistryConfigur
     }
 
     public static List<EObject> getEmptySysMLv2Content() {
+        var rootNamespace = SysmlFactory.eINSTANCE.createNamespace();
+        var rootMembership = SysmlFactory.eINSTANCE.createOwningMembership();
         var package1 = SysmlFactory.eINSTANCE.createPackage();
+        rootNamespace.getOwnedRelationship().add(rootMembership);
+        rootMembership.getOwnedRelatedElement().add(package1);
         package1.setDeclaredName("Package 1");
         package1.setElementId(ElementUtil.generateUUID(package1).toString());
-        return List.of(package1);
+        return List.of(rootNamespace);
     }
 }

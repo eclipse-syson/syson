@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
@@ -36,6 +37,9 @@ import org.eclipse.sirius.web.persistence.repositories.IDocumentRepository;
 import org.eclipse.sirius.web.persistence.repositories.IProjectRepository;
 import org.eclipse.sirius.web.services.api.id.IDParser;
 import org.eclipse.sirius.web.services.api.projects.IProjectTemplateInitializer;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.Package;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -127,12 +131,12 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        Object semanticTarget = resource.getContents().get(0);
-
-                        Diagram diagram = this.diagramCreationService.create("General View", semanticTarget, generalViewDiagram, editingContext);
-                        this.representationPersistenceService.save(editingContext, diagram);
-
-                        result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+                        var semanticTarget = this.getRootPackage(resource);
+                        if (semanticTarget.isPresent()) {
+                            Diagram diagram = this.diagramCreationService.create("General View", semanticTarget.get(), generalViewDiagram, editingContext);
+                            this.representationPersistenceService.save(editingContext, diagram);
+                            result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+                        }
                     }
                 } catch (IOException exception) {
                     this.logger.warn(exception.getMessage(), exception);
@@ -177,13 +181,12 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
-                        Object semanticTarget = resource.getContents().get(0);
-
-                        Diagram diagram = this.diagramCreationService.create("General View", semanticTarget, generalViewDiagram, editingContext);
-
-                        this.representationPersistenceService.save(editingContext, diagram);
-
-                        result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+                        var semanticTarget = this.getRootPackage(resource);
+                        if (semanticTarget.isPresent()) {
+                            Diagram diagram = this.diagramCreationService.create("General View", semanticTarget.get(), generalViewDiagram, editingContext);
+                            this.representationPersistenceService.save(editingContext, diagram);
+                            result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+                        }
                     }
                 } catch (IOException exception) {
                     this.logger.warn(exception.getMessage(), exception);
@@ -211,5 +214,16 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
 
     private String getBatmobileContent() {
         return this.stereotypeBuilder.getStereotypeBodyFromJSONResource(new ClassPathResource("templates/Batmobile.json"));
+    }
+
+    private Optional<Package> getRootPackage(Resource resource) {
+        Object rootElement = resource.getContents().get(0);
+        if (rootElement instanceof Namespace rootNamespace) {
+            Element rootMember = rootNamespace.getOwnedMember().get(0);
+            if (rootMember instanceof Package rootPackage) {
+                return Optional.of(rootPackage);
+            }
+        }
+        return Optional.empty();
     }
 }

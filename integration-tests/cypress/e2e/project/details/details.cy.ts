@@ -29,6 +29,8 @@ describe('Details View Tests', () => {
         new Project().visit(projectId);
         explorer.getExplorerView().contains(batmobile.getProjectLabel());
         explorer.expand(batmobile.getProjectLabel());
+        explorer.getExplorerView().contains(batmobile.getRootNamespaceLabel());
+        explorer.expand(batmobile.getRootNamespaceLabel());
         explorer.getExplorerView().contains(batmobile.getRootElementLabel());
         explorer.expand(batmobile.getRootElementLabel());
       })
@@ -39,7 +41,7 @@ describe('Details View Tests', () => {
     context('When we select the Vehicle PartDefinition', () => {
       beforeEach(() => explorer.select('Vehicle'));
 
-      it('Then the details view contains the informations of the Vehicle', () => {
+      it('Then the details view contains the properties of the Vehicle', () => {
         details.getGroup('Part Definition Properties').should('be.visible');
         details.getTextField('Declared Name').should('have.value', 'Vehicle');
       });
