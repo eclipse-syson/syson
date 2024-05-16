@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
@@ -154,20 +155,42 @@ public class ViewToolService extends ToolService {
     public Usage addExistingNestedElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
         var nestedUsages = usage.getNestedUsage();
-        var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
-        DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
+        DiagramDescription diagramDescription = (DiagramDescription) this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId()).get();
 
         Object parentNode = this.getParentNode(usage, selectedNode, diagramContext);
-        nestedUsages.stream()
-            .filter(nestedUsage -> !this.isPresent(nestedUsage, this.getChildNodes(diagramContext, selectedNode)) && !this.isPresent(nestedUsage, this.getChildNodes(diagramContext, parentNode)))
-            .forEach(nestedUsage -> {
-                this.createView(nestedUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                if (recursive) {
-                    Node fakeNode = this.createFakeNode(nestedUsage, parentNode, diagramContext, representationDescription, convertedNodes);
-                    this.addExistingSubElements(nestedUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
+        for (Usage nestedUsage : nestedUsages) {
+            boolean viewCreated = false;
+            if (selectedNode.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
+                // the selected node contains compartments, we need to handle them separately
+                for (Node compartmentNode : selectedNode.getChildNodes()) {
+                    if (this.isCompliantAsChild(nestedUsage, compartmentNode, diagramDescription, convertedNodes)) {
+                        // don't need to check the existence of such element as child of this node, because createView
+                        // won't create a new one if it is already there.
+                        this.createView(nestedUsage, editingContext, diagramContext, compartmentNode, convertedNodes);
+                        viewCreated = true;
+                        this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, compartmentNode, convertedNodes);
+                    }
                 }
-            });
+            } else if (this.isCompliantAsChild(nestedUsage, selectedNode, diagramDescription, convertedNodes)) {
+                this.createView(nestedUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+                viewCreated = true;
+                this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, selectedNode, convertedNodes);
+            }
+            // only create view at parent level when the view has not yet been created
+            if (!viewCreated) {
+                this.createView(nestedUsage, editingContext, diagramContext, parentNode, convertedNodes);
+                this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, parentNode, convertedNodes);
+            }
+        }
         return usage;
+    }
+
+    private void addChildrenRecursivelyIfNeeded(boolean recursive, Usage nestedUsage, IEditingContext editingContext, IDiagramContext diagramContext, DiagramDescription diagramDescription,
+            Object parentNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (recursive) {
+            Node fakeNode = this.createFakeNode(nestedUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
+            this.addExistingSubElements(nestedUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+        }
     }
 
     /**
@@ -196,19 +219,33 @@ public class ViewToolService extends ToolService {
     public Definition addExistingNestedElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
         var nestedUsages = definition.getOwnedUsage();
-        var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
-        DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
+        var diagramDescription = (DiagramDescription) this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId()).get();
 
         Object parentNode = this.getParentNode(definition, selectedNode, diagramContext);
-        nestedUsages.stream()
-            .filter(nestedUsage -> !this.isPresent(nestedUsage, this.getChildNodes(diagramContext, selectedNode)) && !this.isPresent(nestedUsage, this.getChildNodes(diagramContext, parentNode)))
-            .forEach(nestedUsage -> {
-                this.createView(nestedUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                if (recursive) {
-                    Node fakeNode = this.createFakeNode(nestedUsage, parentNode, diagramContext, representationDescription, convertedNodes);
-                    this.addExistingSubElements(nestedUsage, editingContext, diagramContext, fakeNode, parentNode, representationDescription, convertedNodes);
+        for (Usage nestedUsage : nestedUsages) {
+            boolean viewCreated = false;
+            if (selectedNode.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
+                // the selected node contains compartments, we need to handle them separately
+                for (Node compartmentNode : selectedNode.getChildNodes()) {
+                    if (this.isCompliantAsChild(nestedUsage, compartmentNode, diagramDescription, convertedNodes)) {
+                        // don't need to check the existence of such element as child of this node, because createView
+                        // won't create a new one if it is already there.
+                        this.createView(nestedUsage, editingContext, diagramContext, compartmentNode, convertedNodes);
+                        viewCreated = true;
+                        this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, compartmentNode, convertedNodes);
+                    }
                 }
-            });
+            } else if (this.isCompliantAsChild(nestedUsage, selectedNode, diagramDescription, convertedNodes)) {
+                this.createView(nestedUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+                viewCreated = true;
+                this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, selectedNode, convertedNodes);
+            }
+            // only create view at parent level when the view has not yet been created
+            if (!viewCreated) {
+                this.createView(nestedUsage, editingContext, diagramContext, parentNode, convertedNodes);
+                this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, parentNode, convertedNodes);
+            }
+        }
         return definition;
     }
 
