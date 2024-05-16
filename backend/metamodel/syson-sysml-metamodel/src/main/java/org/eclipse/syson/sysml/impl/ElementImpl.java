@@ -39,6 +39,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.helper.NameHelper;
 import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
@@ -530,46 +531,42 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
 
     /**
      * <!-- begin-user-doc -->
+     * The full ownership-qualified name of this Element, represented in a form that is valid according to the KerML
+     * textual concrete syntax for qualified names (including use of unrestricted name notation and escaped characters, as
+     * necessary). The qualifiedName is null if this Element has no owningNamespace or if there is not a complete
+     * ownership chain of named Namespaces from a root Namespace to this Element.
      * <!-- end-user-doc -->
      * @generated NOT
      */
-    @Override
-    public String getQualifiedName() {
-        boolean qualifiedNameContainsNull = false;
-        StringBuilder qualifiedNameBuilder = new StringBuilder();
-        EObject container = this.eContainer();
-        if (container instanceof Membership membership) {
-            EObject membershipContainer = membership.eContainer();
-            if (membershipContainer instanceof Element element) {
-                String elementQN = element.getQualifiedName();
-                if (elementQN == null) {
-                    qualifiedNameContainsNull = true;
-                } else {
-                    qualifiedNameBuilder.append(elementQN);
-                    qualifiedNameBuilder.append("::");
-                }
-            }
-        } else if (container instanceof Element element) {
-            String elementQN = element.getQualifiedName();
-            if (elementQN == null) {
-                qualifiedNameContainsNull = true;
-            } else {
-                qualifiedNameBuilder.append(elementQN);
-                qualifiedNameBuilder.append("::");
-            }
-        }
-        String name = this.getName();
-        if (name == null || name.isBlank()) {
-            qualifiedNameContainsNull = true;
-        } else if (name.contains("\s")) {
-            name = "'" + name + "'";
-        }
-        qualifiedNameBuilder.append(name);
-        if (qualifiedNameContainsNull) {
-            return null;
-        }
-        return qualifiedNameBuilder.toString();
-    }
+     @Override
+     public String getQualifiedName() {
+         String selfName = NameHelper.toPrintableName(this.getName());
+         if (selfName.isBlank()) {
+             return null;
+         }
+ 
+         StringBuilder qualifiedNameBuilder = new StringBuilder();
+         Element container = this.getOwner();
+         if (container != null && container instanceof Membership membership) {
+             Element membershipContainer = membership.getOwner();
+             if (membershipContainer!= null) {
+                 String elementQN = membershipContainer.getQualifiedName();
+                 if (elementQN != null && ! elementQN.isBlank()) {
+                     qualifiedNameBuilder.append(elementQN);
+                     qualifiedNameBuilder.append("::");
+                 }
+             }
+         } else if (container != null) {
+             String elementQN = container.getQualifiedName();
+             if (elementQN != null && ! elementQN.isBlank()) {
+                 qualifiedNameBuilder.append(elementQN);
+                 qualifiedNameBuilder.append("::");
+             }
+         }
+         
+         qualifiedNameBuilder.append(selfName);
+         return qualifiedNameBuilder.toString();
+     }
 
     /**
      * <!-- begin-user-doc -->

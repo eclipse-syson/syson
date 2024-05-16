@@ -20,9 +20,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.Streams;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
@@ -219,9 +223,11 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc --> Return a string with valid KerML syntax representing the qualification part of a given
+     * <!-- begin-user-doc -->
+     * Return a string with valid KerML syntax representing the qualification part of a given
      * qualifiedName, that is, a qualified name with all the segment names of the given name except the last. If the
-     * given qualifiedName has only one segment, then return null. <!-- end-user-doc -->
+     * given qualifiedName has only one segment, then return null.
+     * <!-- end-user-doc -->
      * 
      * @generated NOT
      */
@@ -239,10 +245,12 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc --> Resolve the given qualified name to the named Membership (if any), starting with this
+     * <!-- begin-user-doc -->
+     * Resolve the given qualified name to the named Membership (if any), starting with this
      * Namespace as the local scope. The qualified name string must conform to the concrete syntax of the KerML textual
      * notation. According to the KerML name resolution rules every qualified name will resolve to either a single
-     * Membership, or to none. <!-- end-user-doc -->
+     * Membership, or to none.
+     * <!-- end-user-doc -->
      * 
      * @generated NOT
      */
@@ -257,50 +265,62 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
         if (qualification == null) {
             result = resolveLocal(name);
         } else {
-            Membership namespaceMembership = resolve(qualification);
-            if (namespaceMembership != null && (namespaceMembership instanceof Namespace)) {
-                result = ((Namespace) namespaceMembership).resolveVisible(name);
+            Membership membership = resolve(qualification);
+            if (membership != null) {
+                Element memberElement = resolve(qualification).getMemberElement();
+                if (memberElement instanceof Namespace namespace) {
+                    result = namespace.resolveVisible(name);
+                }
             }
         }
         return result;
     }
 
     /**
-     * <!-- begin-user-doc --> Resolve the given qualified name to the named Membership (if any) in the effective global
+     * <!-- begin-user-doc -->
+     * Resolve the given qualified name to the named Membership (if any) in the effective global
      * Namespace that is the outermost naming scope. The qualified name string must conform to the concrete syntax of
-     * the KerML textual notation. <!-- end-user-doc -->
+     * the KerML textual notation.
+     * <!-- end-user-doc -->
      * 
      * @generated NOT
      */
     @Override
     public Membership resolveGlobal(String qualifiedName) {
+        Membership result = null;
 
-        Namespace owningNamespace = this.getOwningNamespace();
+        Resource owningEcoreResource = this.eResource();
+        if (owningEcoreResource != null) {
+            ResourceSet owningResourceSet = owningEcoreResource.getResourceSet();
+            if (owningResourceSet != null) {
+                for (var resource : owningResourceSet.getResources()) {
+                    if (! resource.getContents().isEmpty()) {
+                        EObject root = resource.getContents().get(0);
+                        if (root instanceof Namespace rootNamespace) {
+                            result = rootNamespace.resolveVisible(qualifiedName);
+                        }
+                        if (result != null) {
+                            break;
+                        }
+                    }
+                }
 
-        // Find the outermost naming scope
-        // If a namespace exist, test on the parent namespace
-        if (owningNamespace != null) {
-            return owningNamespace.resolveGlobal(qualifiedName);
-        } else {
-            // On the root namespace
-            // Extract all contained and Imported Membership
-            EList<Membership> allMembership = this.visibleMemberships(new BasicEList<>(), true, true);
-            // Find the responding qualified name
-            Optional<Membership> membership = allMembership.stream().filter(m -> (m.getMemberElement().getQualifiedName().equals(qualifiedName))).findFirst();
-            return membership.orElse(null);
+            }
         }
+        return result;
     }
 
     /**
-     * <!-- begin-user-doc --> Resolve a simple name starting with this Namespace as the local scope, and continuing
+     * <!-- begin-user-doc -->
+     * Resolve a simple name starting with this Namespace as the local scope, and continuing
      * with containing outer scopes as necessary. However, if this Namespace is a root Namespace, then the resolution is
-     * done directly in global scope. <!-- end-user-doc -->
+     * done directly in global scope.
+     * <!-- end-user-doc -->
      * 
      * @generated NOT
      */
     @Override
     public Membership resolveLocal(String name) {
-
         // Try to resolve the Simple name in the current namespace
         Optional<Membership> membership = this.getMembership().stream()
                 .filter(m -> (m.getMemberShortName() != null && m.getMemberShortName().equals(name)) || (m.getMemberName() != null && m.getMemberName().equals(name))).findFirst();
@@ -312,7 +332,7 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
             if (owningNamespace != null) {
                 return owningNamespace.resolveLocal(name);
             } else {
-                // If no parent nemaspace, global resolve
+                // If no parent namespace, global resolve
                 return this.resolveGlobal(name);
             }
         } else {
@@ -321,8 +341,9 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc --> Resolve a simple name from the visible Memberships of this Namespace. <!-- end-user-doc
-     * -->
+     * <!-- begin-user-doc -->
+     * Resolve a simple name from the visible Memberships of this Namespace.
+     * <!-- end-user-doc -->
      * 
      * @generated NOT
      */
@@ -338,9 +359,11 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     }
 
     /**
-     * <!-- begin-user-doc --> Return the simple name that is the last segment name of the given qualifiedName. If this
+     * <!-- begin-user-doc -->
+     * Return the simple name that is the last segment name of the given qualifiedName. If this
      * segment name has the form of a KerML unrestricted name, then "unescape" it by removing the surrounding single
-     * quotes and replacing all escape sequences with the specified character. <!-- end-user-doc -->
+     * quotes and replacing all escape sequences with the specified character.
+     * <!-- end-user-doc -->
      * 
      * @generated NOT
      */
@@ -388,8 +411,9 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
 
         if (isRecursive) {
             List<Membership> recursiveMembers = visibleMemberships.stream()
-                    .filter(m -> m.getMemberElement() instanceof Namespace)
-                    .map(m -> (Namespace) m.getMemberElement())
+                    .map(Membership::getMemberElement)
+                    .filter(Namespace.class::isInstance)
+                    .map(Namespace.class::cast)
                     .flatMap(ns -> getSubVisbileMemberships(excluded, isRecursive, includeAll, ns))
                     .toList();
             visibleMemberships.addAll(recursiveMembers);

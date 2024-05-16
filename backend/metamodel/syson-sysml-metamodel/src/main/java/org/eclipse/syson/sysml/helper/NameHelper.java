@@ -62,4 +62,34 @@ public class NameHelper {
     public static String unescapeString(String str) {
         return StringEscapeUtils.unescapeJava(str);
     }
+
+    /**
+     * Set a String printable for Sysml name
+     * @param initialName string to set printable
+     * @return
+     */
+    public static String toPrintableName(String initialName) {
+        String name;
+        if (initialName == null || initialName.isEmpty()) {
+            name = "";
+        } else if (initialName.contains(" ") || !isLetterOrUnderscore(initialName.charAt(0))) {
+            name = '\'' + initialName + '\'';
+        } else {
+            name = initialName;
+        }
+        return name;
+    }
+
+    private static boolean isLetterOrUnderscore(char c) {
+        return c == '_' || isLowerCaseLetter(c) || isUpperCaseLetter(c);
+    }
+
+    private static boolean isUpperCaseLetter(char c) {
+        return c >= 'a' && c <= 'z';
+    }
+
+    private static boolean isLowerCaseLetter(char c) {
+        return c >= 'A' && c <= 'Z';
+    }
+
 }

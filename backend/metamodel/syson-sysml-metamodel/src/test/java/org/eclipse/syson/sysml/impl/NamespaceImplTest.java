@@ -16,7 +16,12 @@ import static org.eclipse.syson.sysml.util.TestUtils.assertContentEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceFactoryImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
@@ -36,14 +41,15 @@ public class NamespaceImplTest {
      * Test model
      * 
      * <pre>
+     * namespace {
      * package p1 {
      *      part def def1;
      *      package p1x1 {
      *          part def def1x1;
      *          package p1x1x1 {
-     *              part def def1x1x1;
+     *              part def def1x1x1 :> def4;
      *          }
-     *          private part def privatedef1x1;
+     *          private part def privatedef1x1 :> p4::def4;
      *      }
      *      
      *      package p1x2 {
@@ -66,6 +72,11 @@ public class NamespaceImplTest {
      *      }
      *      private part def privateDef3
      *  }
+     *  
+     *  package p4 {
+     *      part def def4;
+     *  }
+     * }
      * </pre>
      * 
      * @author Arthur Daussy
@@ -73,6 +84,10 @@ public class NamespaceImplTest {
     private static class TestModel {
 
         private ModelBuilder builder = new ModelBuilder();
+
+        private ResourceSet context;
+
+        private Namespace root;
 
         private Package p2;
 
@@ -112,13 +127,21 @@ public class NamespaceImplTest {
 
         private PartDefinition privateDef3x1;
 
+        private Namespace root2;
+
+        private Package p4;
+
+        private PartDefinition def4;
+
         TestModel() {
             build();
         }
 
         private void build() {
 
-            p1 = builder.createWithName(Package.class, "p1");
+            root = builder.createWithName(Namespace.class, null);
+
+            p1 = builder.createInWithName(Package.class, root, "p1");
             def1 = builder.createInWithName(PartDefinition.class, p1, "Def1");
 
             p1x1 = builder.createInWithName(Package.class, p1, "p1x1");
@@ -132,12 +155,12 @@ public class NamespaceImplTest {
             p1x2 = builder.createInWithName(Package.class, p1, "p1x2");
             def1x2 = builder.createInWithName(PartDefinition.class, p1x2, "def1x2");
 
-            p2 = builder.createWithName(Package.class, "p2");
+            p2 = builder.createInWithName(Package.class, root, "p2");
             def2 = builder.createInWithName(PartDefinition.class, p2, "Def2");
             p2x1 = builder.createInWithName(Package.class, p2, "p2x1");
             def2x1 = builder.createInWithName(PartDefinition.class, p2x1, "def2x1");
 
-            p3 = builder.createWithName(Package.class, "p3");
+            p3 = builder.createInWithName(Package.class, root, "p3");
             def3 = builder.createInWithName(PartDefinition.class, p3, "Def3");
             privateDef3 = builder.createInWithName(PartDefinition.class, p3, "privateDef3");
             privateDef3.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
@@ -146,6 +169,23 @@ public class NamespaceImplTest {
             def3x1 = builder.createInWithName(PartDefinition.class, p3x1, "def3x1");
             privateDef3x1 = builder.createInWithName(PartDefinition.class, p3x1, "privateDef3x1");
             privateDef3x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+
+
+            root2 = builder.createWithName(Namespace.class, null);
+            p4 = builder.createInWithName(Package.class, root2, "p9");
+            def4 = builder.createInWithName(PartDefinition.class, p4, "def9");
+
+            builder.addSuperType(def1x1x1, def4);
+            builder.createIn(NamespaceImport.class, p1x1x1).setImportedNamespace(def4);
+            builder.addSuperType(privatedef1x1, def4);
+
+            context = new ResourceSetImpl();
+            Resource doc1 = new ResourceFactoryImpl().createResource(null);
+            doc1.getContents().add(root);
+            Resource doc2 = new ResourceFactoryImpl().createResource(null);
+            doc2.getContents().add(root2);
+            context.getResources().add(doc1);
+            context.getResources().add(doc2);
         }
     }
 
@@ -413,7 +453,6 @@ public class NamespaceImplTest {
     public void resolveLocalSimpleTest() {
         var testModel = new TestModel();
 
-
         /*      package p1x1 {
          *          part def def1x1;
          *          package p1x1x1 {
@@ -438,46 +477,17 @@ public class NamespaceImplTest {
         // Parent resolve (level n+2)
         assertEquals(testModel.p1x1, testModel.def1x1x1.resolveLocal(testModel.p1x1.getName()).getMemberElement());
 
+        // Self resolve (level n)
+        assertEquals(testModel.def1x1, testModel.def1x1.resolveLocal(testModel.def1x1.getName()).getMemberElement());
 
-    }
-
-    @DisplayName("Test resolveGlobal")
-    @Test
-    public void resolveGlobalSimpleTest() {
-        var testModel = new TestModel();
-
-
-        /*      package p1x1 {
-         *          part def def1x1;
-         *          package p1x1x1 {
-         *              part def def1x1x1;
-         *          }
-         *          private part def privatedef1x1;
-         *      }
-         */
-        // Direct resolve (level n-1)
-        assertEquals(testModel.def1x1, testModel.p1x1.resolveGlobal(testModel.def1x1.getQualifiedName()).getMemberElement());
-        assertEquals(testModel.p1x1x1, testModel.p1x1.resolveGlobal(testModel.p1x1x1.getQualifiedName()).getMemberElement());
-        assertEquals(testModel.def1x1x1, testModel.p1x1x1.resolveGlobal(testModel.def1x1x1.getQualifiedName()).getMemberElement());
-        // Direct resolve (level n-1) private
-        assertEquals(testModel.privatedef1x1, testModel.p1x1.resolveGlobal(testModel.privatedef1x1.getQualifiedName()).getMemberElement());
-
-        // Parent resolve (level n+1)
-        assertEquals(testModel.def1x1, testModel.def1x1x1.resolveGlobal(testModel.def1x1.getQualifiedName()).getMemberElement());
-
-        // Parent resolve (level n+2)
-        assertEquals(testModel.p1x1, testModel.def1x1x1.resolveGlobal(testModel.p1x1.getQualifiedName()).getMemberElement());
-
-        // Direct resolve (level n-2)
-        assertEquals(testModel.def1x1x1, testModel.p1x1.resolveGlobal(testModel.def1x1x1.getQualifiedName()).getMemberElement());
-
+        // Root resolve (level 0)
+        assertEquals(testModel.p1, testModel.p1.resolveLocal(testModel.p1.getName()).getMemberElement());
     }
 
     @DisplayName("Test resolveVisible")
     @Test
     public void resolveVisibleTest() {
         var testModel = new TestModel();
-
 
         /*      package p1x1 {
          *          part def def1x1;
@@ -496,6 +506,74 @@ public class NamespaceImplTest {
 
     }
 
+    @DisplayName("Test resolve")
+    @Test
+    public void resolveTest() {
+        var testModel = new TestModel();
+
+        /*
+        * package p1 {
+        *      part def def1;
+        *      package p1x1 {
+        *          part def def1x1;
+        *          package p1x1x1 {
+        *              part def def1x1x1;
+        *          }
+        *          private part def privatedef1x1;
+        *      }
+        *      
+        *      package p1x2 {
+        *         part def def1x2;
+        *      }
+        *  }
+        *  
+        *  package p2 {
+        *      part def def2;
+        *      package p2x1 {
+        *          part def def2x1;
+        *      }
+        *  }
+        */
+
+        // Direct resolve (level n-3) not with name because weak resolution
+        assertNull(testModel.p1.resolve(testModel.def1x1x1.getName()));
+        // Direct resolve (level n-3) same ok with qualified name
+        assertEquals(testModel.def1x1x1, testModel.p1.resolve(testModel.def1x1x1.getQualifiedName()).getMemberElement());
+
+        // Direct resolve (level n+1) ok with name and qualified name because upper
+        assertEquals(testModel.def1, testModel.def1x1.resolve(testModel.def1.getName()).getMemberElement());
+        assertEquals(testModel.def1, testModel.def1x1.resolve(testModel.def1.getQualifiedName()).getMemberElement());
+    }
+
+    @DisplayName("Test resolveGlobal")
+    @Test
+    public void resolveGlobalTest() {
+        var testModel = new TestModel();
+
+        /*
+         *  package p1x1 {
+         *    part def def1x1;
+         *    package p1x1x1 {
+         *      import p4::*;
+         *      part def def1x1x1 :> def4;
+         *    }
+         *    private part def privatedef1x1 :> p4::def4;
+         *  }
+         * 
+         *  package p4 {
+         *    part def def4;
+         *  }
+         */
+
+        // Direct resolve (level n-2)
+        assertEquals(testModel.def1x1x1, testModel.p1x1.resolve(testModel.def1x1x1.getQualifiedName()).getMemberElement());
+
+
+        // Other document resolution
+        assertEquals(testModel.def4, testModel.def1x1x1.resolve(testModel.def4.getQualifiedName()).getMemberElement());
+        assertEquals(testModel.def4, testModel.privatedef1x1.resolve(testModel.def4.getQualifiedName()).getMemberElement());
+    }
+
     @DisplayName("Test unqualifiedNameOf")
     @Test
     public void unqualifiedNameOfTest() {
@@ -504,7 +582,6 @@ public class NamespaceImplTest {
         assertEquals("test1", testModel.p1.unqualifiedNameOf("test1"));
         assertEquals("test2", testModel.p1.unqualifiedNameOf("test1::test2"));
         assertEquals("test3", testModel.p1.unqualifiedNameOf("test1::test2::test3"));
-
 
         assertEquals("test 1", testModel.p1.unqualifiedNameOf("test 1"));
         assertEquals("test 2", testModel.p1.unqualifiedNameOf("test 1::test 2"));
