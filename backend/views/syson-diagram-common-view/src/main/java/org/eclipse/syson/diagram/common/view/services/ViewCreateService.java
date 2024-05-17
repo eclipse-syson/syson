@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptio
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Element;
@@ -49,6 +50,7 @@ import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SubjectMembership;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -560,5 +562,19 @@ public class ViewCreateService {
             }
         }
         return result;
+    }
+
+    public Element createSuccessionEdge(ActionUsage sourceAction, ActionUsage targetAction) {
+        Element sourceParentElement = sourceAction.getOwner();
+
+        Succession succession = SysmlFactory.eINSTANCE.createSuccession();
+        this.elementInitializerSwitch.doSwitch(succession);
+        var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        featureMembership.getOwnedRelatedElement().add(succession);
+        succession.getSource().add(sourceAction);
+        succession.getTarget().add(targetAction);
+        sourceParentElement.getOwnedRelationship().add(featureMembership);
+
+        return sourceAction;
     }
 }

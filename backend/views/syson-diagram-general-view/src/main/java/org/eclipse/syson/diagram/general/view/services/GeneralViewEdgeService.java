@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.services;
 
-import java.util.Objects;
-
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
@@ -38,11 +36,8 @@ import org.eclipse.syson.sysml.PortUsage;
  */
 public class GeneralViewEdgeService extends ViewEdgeService {
 
-    private final IFeedbackMessageService feedbackMessageService;
-
     public GeneralViewEdgeService(IFeedbackMessageService feedbackMessageService) {
-        super();
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        super(feedbackMessageService);
     }
 
     public boolean checkFeatureTypingEdgeReconnectionTarget(Element usage, Element newTarget) {
