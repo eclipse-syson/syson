@@ -22,10 +22,11 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.tools.StateUsageCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.statetransition.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
@@ -37,15 +38,15 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
  */
 public class StateTransitionViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
 
-    private final DiagramBuilders diagramBuilderHelper;
+    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
     private final List<NodeToolSection> nodeToolSections;
 
-    private final STVDescriptionNameGenerator nameGenerator = new STVDescriptionNameGenerator();
+    private final STVDescriptionNameGenerator descriptionNameGenerator;
 
     public StateTransitionViewNodeToolSectionSwitch() {
-        this.diagramBuilderHelper = new DiagramBuilders();
         this.nodeToolSections = new ArrayList<>();
+        this.descriptionNameGenerator = new STVDescriptionNameGenerator();
     }
 
     public List<NodeToolSection> getNodeToolSections() {
@@ -61,10 +62,19 @@ public class StateTransitionViewNodeToolSectionSwitch extends SysmlEClassSwitch<
     @Override
     public Void caseStateDefinition(StateDefinition object) {
         List<NodeTool> nodeTools = new ArrayList<>();
-        nodeTools.add(new StateUsageCompartmentNodeToolProvider(true).create(null));
-        nodeTools.add(new StateUsageCompartmentNodeToolProvider(false).create(null));
+        nodeTools.add(new StateTransitionCompartmentNodeToolProvider(true).create(null));
+        nodeTools.add(new StateTransitionCompartmentNodeToolProvider(false).create(null));
         this.addToolsToSection(nodeTools, "Create");
         return super.caseStateDefinition(object);
+    }
+
+    @Override
+    public Void caseStateUsage(StateUsage object) {
+        List<NodeTool> nodeTools = new ArrayList<>();
+        nodeTools.add(new StateTransitionCompartmentNodeToolProvider(true).create(null));
+        nodeTools.add(new StateTransitionCompartmentNodeToolProvider(false).create(null));
+        this.addToolsToSection(nodeTools, "Create");
+        return super.caseStateUsage(object);
     }
 
     @Override
@@ -101,7 +111,7 @@ public class StateTransitionViewNodeToolSectionSwitch extends SysmlEClassSwitch<
         StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
             if (compartmentEClass.equals(object.eClass())) {
                 listItems.forEach(eReference -> {
-                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.nameGenerator);
+                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
                     compartmentNodeTools.add(provider.create(null));
                 });
             }

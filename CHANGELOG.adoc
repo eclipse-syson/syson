@@ -30,6 +30,7 @@
 - https://github.com/eclipse-syson/syson/issues/271[#271] [diagrams] Remove non end Usages from AllocationDefinition ends compartment
 - https://github.com/eclipse-syson/syson/issues/229[#229] [diagrams] Prevent circular containment of nested parts including self containment
 - https://github.com/eclipse-syson/syson/issues/305[#305] [diagrams] Fix performance issue when using EcoreUtil.delete
+- https://github.com/eclipse-syson/syson/issues/272[#272] [statetransition-view] Add "state transition" compartment and fix the graphical creation of actions in StateDefinition and StateUsage
 
 === Improvements
 
