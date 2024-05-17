@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -35,6 +34,7 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -75,11 +75,14 @@ public class ViewToolService extends ToolService {
 
     private final Logger logger = LoggerFactory.getLogger(ViewToolService.class);
 
+    private final DeleteService deleteService;
+
     public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
         super(objectService, representationDescriptionSearchService, feedbackMessageService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
+        this.deleteService = new DeleteService();
     }
 
     /**
@@ -294,7 +297,7 @@ public class ViewToolService extends ToolService {
             // element aren't lost when changing its container.
             newContainer.getOwnedRelationship().add(newFeatureMembership);
             newFeatureMembership.getOwnedRelatedElement().add(element);
-            EcoreUtil.delete(owningMembership);
+            this.deleteService.deleteFromModel(owningMembership);
         }
         return element;
     }
@@ -320,7 +323,7 @@ public class ViewToolService extends ToolService {
                     var newObjectiveMembership = SysmlFactory.eINSTANCE.createObjectiveMembership();
                     newObjectiveMembership.getOwnedRelatedElement().add(requirement);
                     newContainer.getOwnedRelationship().add(newObjectiveMembership);
-                    EcoreUtil.delete(owningMembership);
+                    this.deleteService.deleteFromModel(owningMembership);
                 }
             }
         }
@@ -335,7 +338,7 @@ public class ViewToolService extends ToolService {
             var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
             newFeatureMembership.getOwnedRelatedElement().add(partUsage);
             partDefinition.getOwnedRelationship().add(newFeatureMembership);
-            EcoreUtil.delete(owningMembership);
+            this.deleteService.deleteFromModel(owningMembership);
         }
         return partUsage;
     }
@@ -444,7 +447,9 @@ public class ViewToolService extends ToolService {
         membership.getOwnedRelatedElement().add(droppedConstraint);
         membership.setKind(kind);
         requirement.getOwnedRelationship().add(membership);
-        EcoreUtil.delete(oldMembership);
+        if (oldMembership instanceof OwningMembership owningMembership) {
+            this.deleteService.deleteFromModel(owningMembership);
+        }
     }
 
     public Element dropElementFromDiagramInConstraintCompartment(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext,
@@ -456,7 +461,9 @@ public class ViewToolService extends ToolService {
                 var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
                 membership.getOwnedRelatedElement().add(droppedConstraint);
                 targetElement.getOwnedRelationship().add(membership);
-                EcoreUtil.delete(oldMembership);
+                if (oldMembership instanceof OwningMembership owningMembership) {
+                    this.deleteService.deleteFromModel(owningMembership);
+                }
                 this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
                 diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
             }
@@ -493,7 +500,9 @@ public class ViewToolService extends ToolService {
                     // reuse feature membership of the previous nested
                     var oldMembership = newTarget.eContainer();
                     featureMembership.getOwnedRelatedElement().add(newTarget);
-                    EcoreUtil.delete(oldMembership);
+                    if (oldMembership instanceof OwningMembership oldOwningMembership) {
+                        this.deleteService.deleteFromModel(oldOwningMembership);
+                    }
                 }
             }
         }
