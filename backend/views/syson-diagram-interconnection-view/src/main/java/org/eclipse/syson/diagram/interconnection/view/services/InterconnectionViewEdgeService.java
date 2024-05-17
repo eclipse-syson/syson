@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.services;
 
-import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
@@ -41,10 +40,8 @@ import org.eclipse.syson.sysml.Usage;
  */
 public class InterconnectionViewEdgeService extends ViewEdgeService {
 
-    private final IFeedbackMessageService feedbackMessageService;
-
     public InterconnectionViewEdgeService(IFeedbackMessageService feedbackMessageService) {
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        super(feedbackMessageService);
     }
 
     /**

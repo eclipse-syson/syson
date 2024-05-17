@@ -12,11 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.actionflow.view.services;
 
-import java.util.Objects;
-
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
@@ -34,12 +33,10 @@ import org.eclipse.syson.sysml.PortUsage;
  *
  * @author arichard
  */
-public class ActionFlowViewEdgeService {
-
-    private final IFeedbackMessageService feedbackMessageService;
+public class ActionFlowViewEdgeService extends ViewEdgeService {
 
     public ActionFlowViewEdgeService(IFeedbackMessageService feedbackMessageService) {
-        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        super(feedbackMessageService);
     }
 
     public boolean checkFeatureTypingEdgeReconnectionTarget(Element usage, Element newTarget) {

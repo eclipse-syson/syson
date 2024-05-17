@@ -12,11 +12,17 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.services;
 
+import java.util.function.BinaryOperator;
+
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.services.LabelService;
+import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 
@@ -26,6 +32,11 @@ import org.eclipse.syson.sysml.helper.LabelConstants;
  * @author arichard
  */
 public class ViewLabelService extends LabelService {
+
+    /**
+     * The default separator used when printing a set of Guard Expressions for a TransitionUsage label
+     */
+    private static final String GUARD_EXPRESSION_SEPARATOR = "& ";
 
     public ViewLabelService(IFeedbackMessageService feedbackMessageService) {
         super(feedbackMessageService);
@@ -113,5 +124,45 @@ public class ViewLabelService extends LabelService {
 
     public Element editEdgeCenterLabel(Element element, String newLabel) {
         return this.directEdit(element, newLabel, LabelService.REDEFINITION_OFF, LabelService.SUBSETTING_OFF, LabelService.VALUE_OFF);
+    }
+
+    /**
+     * Succession edge label getter service.
+     *
+     * @param succession
+     *            The succession edge
+     * @return the label of the given {@link Succession}
+     */
+    public String getSuccessionLabel(Succession succession) {
+        StringBuilder resultLabel = new StringBuilder();
+        var guardExpressions = succession.getGuardExpression();
+        if (!guardExpressions.isEmpty()) {
+            String guardLabel = this.getGuardExpressionsDefaultDirectEditLabel(guardExpressions);
+            if (!guardLabel.isBlank()) {
+                resultLabel.append(LabelConstants.OPEN_BRACKET)
+                        .append(guardLabel)
+                        .append(LabelConstants.CLOSE_BRACKET);
+            }
+        }
+        return resultLabel.toString();
+    }
+
+    private String getElementsDefaultInitialDirectEditLabel(EList<? extends Element> elements, BinaryOperator<String> reduceOperator) {
+        return elements.stream()
+                .map(action -> {
+                    if (action instanceof AcceptActionUsage aau) {
+                        return this.getDefaultInitialDirectEditLabel(aau.getPayloadParameter());
+                    }
+                    return this.getDefaultInitialDirectEditLabel(action);
+                })
+                .reduce(reduceOperator)
+                .orElse("");
+    }
+
+    private String getGuardExpressionsDefaultDirectEditLabel(EList<Expression> guardExpressions) {
+        var guardLabel = this.getElementsDefaultInitialDirectEditLabel(guardExpressions, (a, b) -> {
+            return a + GUARD_EXPRESSION_SEPARATOR + b;
+        });
+        return guardLabel;
     }
 }

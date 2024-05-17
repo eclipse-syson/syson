@@ -13,10 +13,12 @@
 package org.eclipse.syson.diagram.common.view.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
@@ -24,6 +26,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
@@ -36,10 +39,14 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public class ViewEdgeService {
 
+
+    protected final IFeedbackMessageService feedbackMessageService;
+
     private final UtilService utilService;
 
-    public ViewEdgeService() {
+    public ViewEdgeService(IFeedbackMessageService feedbackMessageService) {
         this.utilService = new UtilService();
+        this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     /**
@@ -167,7 +174,7 @@ public class ViewEdgeService {
      * TransitionUsage edge target type checking. Used as a precondition expression for the
      * TransitionEdgeDescriptionProvider but does not seems to be used to filter the {@link TransitionUsage}
      * creation.
-     * 
+     *
      * @param source
      *            The source of the transition
      * @param target
@@ -181,5 +188,25 @@ public class ViewEdgeService {
             return sourceParentElement == targetParentElement;
         }
         return false;
+    }
+
+    public Element reconnectSourceSuccessionEdge(Succession succession, ActionUsage oldSource, ActionUsage newSource) {
+        succession.getSource().replaceAll(e -> {
+            if (Objects.equals(e, oldSource)) {
+                return newSource;
+            }
+            return e;
+        });
+        return succession;
+    }
+
+    public Element reconnectTargetSuccessionEdge(Succession succession, ActionUsage oldTarget, ActionUsage newTarget) {
+        succession.getTarget().replaceAll(e -> {
+            if (Objects.equals(e, oldTarget)) {
+                return newTarget;
+            }
+            return e;
+        });
+        return succession;
     }
 }
