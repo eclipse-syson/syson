@@ -19,7 +19,6 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -28,6 +27,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
@@ -69,10 +69,13 @@ public class ViewCreateService {
 
     private final ElementInitializerSwitch elementInitializerSwitch;
 
+    private final DeleteService deleteService;
+
     public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
+        this.deleteService = new DeleteService();
     }
 
     /**
@@ -441,7 +444,7 @@ public class ViewCreateService {
                 var oldParameterContent = parameterMembership.getOwnedMemberParameter();
                 if (oldParameterContent != null) {
                     // there is already a playload parameter, we need to delete it.
-                    EcoreUtil.delete(oldParameterContent);
+                    this.deleteService.deleteFromModel(oldParameterContent);
                 }
                 parameterMembership.getOwnedRelatedElement().add(referenceUsage);
                 self.getOwnedRelationship().add(parameterMembership);
@@ -517,7 +520,7 @@ public class ViewCreateService {
         Feature oldParameterContent = parameterMembership.getOwnedMemberParameter();
         if (oldParameterContent != null) {
             // there is already an element, we need to delete this element
-            EcoreUtil.delete(oldParameterContent);
+            this.deleteService.deleteFromModel(oldParameterContent);
         }
         parameterMembership.getOwnedRelatedElement().add(referenceUsage);
         self.getOwnedRelationship().add(parameterMembership);

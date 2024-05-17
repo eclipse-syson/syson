@@ -164,6 +164,18 @@ public abstract class AbstractCodingRulesTests {
         rule.check(this.getClasses());
     }
 
+    public void noClassesShouldUseEcoreUtilDelete() {
+        ArchRule rule = ArchRuleDefinition.noClasses()
+                .that()
+                .resideInAPackage(this.getProjectRootPackage())
+                .should()
+                .callMethod("org.eclipse.emf.ecore.util.EcoreUtil", "delete", "org.eclipse.emf.ecore.EObject")
+                .orShould()
+                .callMethod("org.eclipse.emf.ecore.util.EcoreUtil", "delete", "org.eclipse.emf.ecore.EObject", "boolean")
+                .because("EcoreUtil.delete doesn't work well with Sysml Standard Libraries in the ResourceSet, use DeleteService instead");
+        rule.check(this.getClasses());
+    }
+
     public void noClassesShouldUseApacheCommons() {
         // @formatter:off
         ArchRule rule = ArchRuleDefinition.noClasses()
