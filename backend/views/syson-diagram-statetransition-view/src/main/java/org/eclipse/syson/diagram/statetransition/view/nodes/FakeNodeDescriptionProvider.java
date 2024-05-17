@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
  * Fake Node Description allowing to store other Node Descriptions that will be reused by other Node Descriptions.
@@ -47,6 +48,11 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(eReference -> cache.getNodeDescription(nameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
         });
+
+        // don't forget to add custom compartments
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState())).ifPresent(childrenNodes::add);
         return childrenNodes;
     }
 }

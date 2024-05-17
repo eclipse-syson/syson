@@ -42,6 +42,8 @@ import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.ObjectiveMembership;
@@ -52,9 +54,12 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
@@ -71,7 +76,7 @@ public class ViewToolService extends ToolService {
 
     protected final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
-    private final ElementInitializerSwitch elementInitializerSwitch;
+    protected final ElementInitializerSwitch elementInitializerSwitch;
 
     private final Logger logger = LoggerFactory.getLogger(ViewToolService.class);
 
@@ -565,5 +570,76 @@ public class ViewToolService extends ToolService {
             }
         }
         return childAction;
+    }
+
+    /**
+     * Create a new TransitionUsage and set it as the child of the parent of the sourceAction element. Sets its source
+     * and target.
+     *
+     * @param sourceAction
+     *            the ActionUsage used as a source for the transition
+     * @param targetAction
+     *            the ActionUsage used as a target for the transition
+     * @return the given source {@link ActionUsage}.
+     */
+    public ActionUsage createTransitionUsage(ActionUsage sourceAction, ActionUsage targetAction) {
+        // Check source and target have the same parent
+        Element sourceParentElement = sourceAction.getOwner();
+        Element targetParentElement = targetAction.getOwner();
+        if (sourceParentElement != targetParentElement
+                // Handle the case where source state or target state is a Parallel state
+                || this.isParallelState(sourceAction) || this.isParallelState(targetAction)) {
+            // Should probably not be here as the transition creation should not be allowed.
+            return sourceAction;
+        }
+        // Create transition usage and add it to the parent element
+        // sourceParentElement <>-> FeatureMembership -> RelatedElement = TransitionUsage
+        TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
+        this.elementInitializerSwitch.doSwitch(newTransitionUsage);
+        var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        featureMembership.getOwnedRelatedElement().add(newTransitionUsage);
+        sourceParentElement.getOwnedRelationship().add(featureMembership);
+
+        // Create EndFeature
+        // TransitionUsage <>-> Membership -> MemberElement = sourceAction
+        var sourceMembership = SysmlFactory.eINSTANCE.createMembership();
+        newTransitionUsage.getOwnedRelationship().add(sourceMembership);
+        sourceMembership.setMemberElement(sourceAction);
+
+        // Create Succession
+        // TransitionUsage <>-> FeatureMembership -> RelatedElement = succession
+        Succession succession = SysmlFactory.eINSTANCE.createSuccession();
+        this.elementInitializerSwitch.doSwitch(succession);
+        var successionFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        successionFeatureMembership.getOwnedRelatedElement().add(succession);
+        newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
+
+        // Set Succession Source and Target Features
+        succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceAction));
+        succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetAction));
+
+        return sourceAction;
+    }
+
+    private boolean isParallelState(ActionUsage action) {
+        return action instanceof StateUsage su && su.isIsParallel();
+    }
+
+    /**
+     * <>-> EndFeatureMembership -> RelatedElement = Feature <>-> ReferenceSubsetting -> ReferencedFeature = feature
+     *
+     * @param feature
+     *            The feature to reference subset
+     * @return
+     */
+    private EndFeatureMembership createConnectorEndFeatureMembership(Feature feature) {
+        var successionSourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        var successionSourceEndFeatureFeature = SysmlFactory.eINSTANCE.createFeature();
+        successionSourceEndFeatureMembership.getOwnedRelatedElement().add(successionSourceEndFeatureFeature);
+
+        var successionSourceRefSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        successionSourceRefSubsetting.setReferencedFeature(feature);
+        successionSourceEndFeatureFeature.getOwnedRelationship().add(successionSourceRefSubsetting);
+        return successionSourceEndFeatureMembership;
     }
 }

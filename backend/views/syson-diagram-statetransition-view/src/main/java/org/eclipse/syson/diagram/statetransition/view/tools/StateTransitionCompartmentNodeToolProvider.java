@@ -15,15 +15,15 @@ package org.eclipse.syson.diagram.statetransition.view.tools;
 import org.eclipse.syson.diagram.common.view.tools.AbstractCompartmentNodeToolProvider;
 
 /**
- * Node tool provider for Children State compartment.
+ * Node tool provider for creating nested/owned states in the "state transition" State compartment.
  *
  * @author adieumegard
  */
-public class StateUsageCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
+public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
 
     private boolean isParallel;
 
-    public StateUsageCompartmentNodeToolProvider(boolean isParallel) {
+    public StateTransitionCompartmentNodeToolProvider(boolean isParallel) {
         super();
         this.isParallel = isParallel;
     }
@@ -62,6 +62,6 @@ public class StateUsageCompartmentNodeToolProvider extends AbstractCompartmentNo
 
     @Override
     protected boolean revealOnCreate() {
-        return false;
+        return true;
     }
 }

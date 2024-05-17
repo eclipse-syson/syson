@@ -34,9 +34,10 @@ import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptio
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.statetransition.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.CompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.nodes.CompositeStateDefinitionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.statetransition.view.nodes.DefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.PackageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -95,9 +96,13 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
         diagramElementDescriptionProviders.add(new StateTransitionViewEmptyDiagramNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders
+                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders
+                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.nameGenerator));
 
         DEFINITIONS.forEach(definition -> {
-            diagramElementDescriptionProviders.add(new CompositeStateDefinitionNodeDescriptionProvider(definition, colorProvider));
+            diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider));
         });
 
         USAGES.forEach(usage -> {

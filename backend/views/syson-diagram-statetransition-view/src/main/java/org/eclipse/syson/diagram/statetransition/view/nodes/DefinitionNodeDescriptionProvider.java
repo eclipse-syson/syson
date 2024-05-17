@@ -20,20 +20,20 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.syson.diagram.common.view.nodes.AbstractUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractDefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.services.StateTransitionViewNodeToolSectionSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * Node description provider for all SysMLv2 Usage elements in the StateTransition View diagram.
+ * Node description provider for all SysMLv2 Definitions elements in the State Transition View diagram.
  *
- * @author adieumegard
+ * @author gdaniel
  */
-public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionProvider {
+public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDescriptionProvider {
 
-    public UsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
+    public DefinitionNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
         super(eClass, colorProvider, new STVDescriptionNameGenerator());
     }
 
@@ -48,8 +48,8 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
                 });
             }
         });
-        if (this.eClass.equals(SysmlPackage.eINSTANCE.getStateUsage())) {
-            cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedState())).ifPresent(reusedChildren::add);
+        if (this.eClass.equals(SysmlPackage.eINSTANCE.getStateDefinition())) {
+            cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(this.eClass, SysmlPackage.eINSTANCE.getDefinition_OwnedState())).ifPresent(reusedChildren::add);
         }
         return reusedChildren;
     }
