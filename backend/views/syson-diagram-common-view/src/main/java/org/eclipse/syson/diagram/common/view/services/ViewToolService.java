@@ -547,7 +547,7 @@ public class ViewToolService extends ToolService {
      */
     public ActionUsage createSubActionUsageAndView(Element actionUsage, String nodeName, String compartmentName, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        ObjectiveMembership membership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+        var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
         actionUsage.getOwnedRelationship().add(membership);
         ActionUsage childAction = SysmlFactory.eINSTANCE.createActionUsage();
         membership.getOwnedRelatedElement().add(childAction);
@@ -570,6 +570,28 @@ public class ViewToolService extends ToolService {
             }
         }
         return childAction;
+    }
+
+    public Element dropActionUsageFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var eContainer = droppedElement.eContainer();
+        if (eContainer instanceof FeatureMembership featureMembership) {
+            targetElement.getOwnedRelationship().add(featureMembership);
+        } else if (eContainer instanceof OwningMembership owningMembership) {
+            var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            // Set the container of newFeatureMembership first to make sure features owned by
+            // element aren't lost when changing its container.
+            targetElement.getOwnedRelationship().add(newFeatureMembership);
+            newFeatureMembership.getOwnedRelatedElement().add(droppedElement);
+            // need to remove the old membership which is empty now
+            var oldParentEObject = owningMembership.eContainer();
+            if (oldParentEObject instanceof Element oldParent) {
+                oldParent.getOwnedRelationship().remove(owningMembership);
+            }
+        }
+        this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+        diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+        return droppedElement;
     }
 
     /**

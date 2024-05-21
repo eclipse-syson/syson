@@ -76,6 +76,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
         cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
@@ -103,5 +104,10 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     protected INodeToolProvider getItemCreationToolProvider() {
         return new ActionFlowCompartmentNodeToolProvider(this.eClass, this.nameGenerator);
+    }
+
+    @Override
+    protected String getDropElementFromDiagramExpression() {
+        return "aql:droppedElement.dropActionUsageFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
     }
 }
