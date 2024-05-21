@@ -496,7 +496,9 @@ public class ViewToolService extends ToolService {
         } else {
             var oldContainer = oldTarget.eContainer();
             if (newTarget instanceof Usage && oldContainer instanceof FeatureMembership featureMembership) {
-                // move the old target to the innermost package
+                // Move the old target to the innermost package
+                // We don't use moveToClosestContainingPackage here because we are moving oldTarget in the closest
+                // containing package and updating newTarget at the same time.
                 var pack = this.getClosestContainingPackageFrom(self);
                 if (pack != null) {
                     var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
@@ -512,6 +514,27 @@ public class ViewToolService extends ToolService {
             }
         }
         return self;
+    }
+
+    /**
+     * Moves the provided {@code usage} in the closest containing package.
+     *
+     * @param usage
+     *            the usage to move
+     * @return the moved element
+     */
+    public Element moveToClosestContainingPackage(Usage usage) {
+        var pack = this.getClosestContainingPackageFrom(usage);
+        if (pack != null) {
+            var oldMembership = usage.eContainer();
+            var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+            pack.getOwnedRelationship().add(owningMembership);
+            owningMembership.getOwnedRelatedElement().add(usage);
+            if (oldMembership instanceof OwningMembership oldOwningMembership) {
+                this.deleteService.deleteFromModel(oldOwningMembership);
+            }
+        }
+        return usage;
     }
 
     private Package getClosestContainingPackageFrom(Element element) {
