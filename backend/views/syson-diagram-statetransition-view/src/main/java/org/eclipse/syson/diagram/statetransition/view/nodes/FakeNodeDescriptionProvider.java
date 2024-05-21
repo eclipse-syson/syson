@@ -14,14 +14,15 @@ package org.eclipse.syson.diagram.statetransition.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Fake Node Description allowing to store other Node Descriptions that will be reused by other Node Descriptions.
@@ -31,8 +32,11 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProvider {
 
-    public FakeNodeDescriptionProvider(IColorProvider colorProvider) {
+    private final IDescriptionNameGenerator descriptionNameGenerator;
+
+    public FakeNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
@@ -42,17 +46,16 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
 
     @Override
     protected List<NodeDescription> getChildrenDescription(IViewDiagramElementFinder cache) {
-        var nameGenerator = new STVDescriptionNameGenerator();
         var childrenNodes = new ArrayList<NodeDescription>();
 
         StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
-            listItems.forEach(eReference -> cache.getNodeDescription(nameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
+            listItems.forEach(eReference -> cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
         });
 
         // don't forget to add custom compartments
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+        cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState())).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState())).ifPresent(childrenNodes::add);
         return childrenNodes;
     }
 }

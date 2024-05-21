@@ -17,8 +17,8 @@ import java.util.List;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
-import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * This is the welcome node description that is presented if and only if the State Transitino View diagram is empty.
@@ -29,8 +29,8 @@ public class StateTransitionViewEmptyDiagramNodeDescriptionProvider extends Abst
 
     public static final String NAME = "STV Node EmptyDiagram";
 
-    public StateTransitionViewEmptyDiagramNodeDescriptionProvider(IColorProvider colorProvider) {
-        super(colorProvider, new STVDescriptionNameGenerator());
+    public StateTransitionViewEmptyDiagramNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(colorProvider, descriptionNameGenerator);
     }
 
     @Override

@@ -76,15 +76,15 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
     @Override
     public List<NodeToolSection> caseActionUsage(ActionUsage object) {
         var createSection = this.buildCreateSection();
-        createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.nameGenerator).create(null));
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.nameGenerator).create(null));
+        createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.descriptionNameGenerator).create(null));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(null));
         return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override
     public List<NodeToolSection> caseActionDefinition(ActionDefinition object) {
         var createSection = this.buildCreateSection();
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.nameGenerator).create(null));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(null));
         return List.of(createSection, this.addElementsToolSection());
     }
 

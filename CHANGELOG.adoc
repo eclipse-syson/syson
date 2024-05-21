@@ -49,6 +49,7 @@
 - https://github.com/eclipse-syson/syson/issues/278[#278] [interconnection-view] Allow to create interconnection-view diagrams on any Usage/Definition element
 - https://github.com/eclipse-syson/syson/issues/277[#277] [diagrams] Add a free-form compartment in Action elements for owned actions
 - https://github.com/eclipse-syson/syson/issues/297[#297] [diagrams] Handle Succession as edge between Actions inside action flow compartment
+- https://github.com/eclipse-syson/syson/issues/308[#308] [statetransition-view] Add "Add existing elements" tools on State & StateDefinition graphical elements.
 
 === New features
 

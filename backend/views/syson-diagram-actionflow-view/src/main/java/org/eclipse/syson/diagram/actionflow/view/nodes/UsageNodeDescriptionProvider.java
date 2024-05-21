@@ -20,11 +20,11 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewNodeToolSectionSwitch;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Node description provider for all SysMLv2 Usage elements in the Action Flow View diagram.
@@ -33,8 +33,8 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionProvider {
 
-    public UsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
-        super(eClass, colorProvider, new AFVDescriptionNameGenerator());
+    public UsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, colorProvider, descriptionNameGenerator);
     }
 
     @Override

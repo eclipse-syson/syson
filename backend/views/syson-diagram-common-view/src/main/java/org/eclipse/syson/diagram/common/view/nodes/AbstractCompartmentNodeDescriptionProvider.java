@@ -48,13 +48,13 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     protected final EReference eReference;
 
-    protected final IDescriptionNameGenerator nameGenerator;
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public AbstractCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public AbstractCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
         this.eReference = Objects.requireNonNull(eReference);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      * @return the {@link INodeToolProvider} that handles the item creation inside this compartment.
      */
     protected INodeToolProvider getItemCreationToolProvider() {
-        return new CompartmentNodeToolProvider(this.eReference, this.nameGenerator);
+        return new CompartmentNodeToolProvider(this.eReference, this.descriptionNameGenerator);
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
                 .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
-                .name(this.nameGenerator.getCompartmentName(this.eClass, this.eReference))
+                .name(this.descriptionNameGenerator.getCompartmentName(this.eClass, this.eReference))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(false)
@@ -114,10 +114,10 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.nameGenerator.getCompartmentName(this.eClass, this.eReference)).ifPresent(nodeDescription -> {
-            cache.getNodeDescription(this.nameGenerator.getInheritedCompartmentItemName(this.eClass, this.eReference))
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(this.eClass, this.eReference)).ifPresent(nodeDescription -> {
+            cache.getNodeDescription(this.descriptionNameGenerator.getInheritedCompartmentItemName(this.eClass, this.eReference))
                     .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
-            cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(this.eClass, this.eReference))
+            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(this.eClass, this.eReference))
                     .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });

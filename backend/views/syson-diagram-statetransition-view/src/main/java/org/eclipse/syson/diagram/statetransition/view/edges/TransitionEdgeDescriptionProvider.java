@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.statetransition.view.edges;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -30,11 +31,11 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.edges.AbstractEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -51,11 +52,11 @@ public class TransitionEdgeDescriptionProvider extends AbstractEdgeDescriptionPr
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private STVDescriptionNameGenerator descriptionNameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public TransitionEdgeDescriptionProvider(IColorProvider colorProvider) {
+    public TransitionEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
-        this.descriptionNameGenerator = new STVDescriptionNameGenerator();
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override

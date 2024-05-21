@@ -39,22 +39,39 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
  */
 public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitch<List<NodeToolSection>> {
 
-    protected final IDescriptionNameGenerator nameGenerator;
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
 
     protected final ViewBuilders viewBuilderHelper;
 
     protected final DiagramBuilders diagramBuilderHelper;
 
-    public AbstractViewNodeToolSectionSwitch(IDescriptionNameGenerator nameGenerator) {
+    public AbstractViewNodeToolSectionSwitch(IDescriptionNameGenerator descriptionNameGenerator) {
         this.viewBuilderHelper = new ViewBuilders();
         this.diagramBuilderHelper = new DiagramBuilders();
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
+
+    /**
+     * Implementers should provide the list of references used for compartments of the given element.
+     *
+     * @param element
+     *            an element
+     * @return the compartment reference list of the given element.
+     */
+    protected abstract List<EReference> getElementCompartmentReferences(Element element);
+
+    /**
+     * Implementers should provide the list of all node descriptions defined for its diagram.
+     *
+     * @return a list of {@link NodeDescription}
+     */
+    protected abstract List<NodeDescription> getAllNodeDescriptions();
 
     /**
      * Return a tool section used to new children creation.
      *
-     * @param nodeTools optional list of {@link NodeTool}
+     * @param nodeTools
+     *            optional list of {@link NodeTool}
      *
      * @return the {@link ToolSection} grouping all creations of children.
      */
@@ -68,56 +85,21 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
     protected NodeToolSection addElementsToolSection() {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Add")
-                .nodeTools(this.addExistingNestedPartsTool(false), this.addExistingNestedPartsTool(true))
+                .nodeTools(this.addExistingNestedElementsTool(false), this.addExistingNestedElementsTool(true))
                 .build();
     }
-
-    private NodeTool addExistingNestedPartsTool(boolean recursive) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingNestedElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
-
-        String title = "Add existing nested elements";
-        String iconURL = "/icons/AddExistingElements.svg";
-        if (recursive) {
-            title += " (recursive)";
-            iconURL = "/icons/AddExistingElementsRecursive.svg";
-        }
-
-        return builder
-                .name(title)
-                .iconURLsExpression(iconURL)
-                .body(addExistingelements.build())
-                .build();
-    }
-
-    /**
-     * Implementers should provide the list of references used for compartments of the given element.
-     *
-     * @param element an element
-     * @return the compartment reference list of the given element.
-     */
-    protected abstract List<EReference> getElementCompartmentReferences(Element element);
-
-    /**
-     * Implementers should provide the list of all node descriptions defined for its diagram.
-     *
-     * @return a list of {@link NodeDescription}
-     */
-    protected abstract List<NodeDescription> getAllNodeDescriptions();
 
     protected List<NodeTool> createToolsForCompartmentItems(Element object) {
         List<NodeTool> compartmentNodeTools = new ArrayList<>();
         this.getElementCompartmentReferences(object).forEach(eReference -> {
-            CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.nameGenerator);
+            CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
             compartmentNodeTools.add(provider.create(null));
         });
         return compartmentNodeTools;
     }
 
     protected NodeTool createNestedUsageNodeTool(EClass eClass) {
-        NodeDescription nodeDesc = this.getAllNodeDescriptions().stream().filter(nd -> this.nameGenerator.getNodeName(eClass).equals(nd.getName())).findFirst().get();
+        NodeDescription nodeDesc = this.getAllNodeDescriptions().stream().filter(nd -> this.descriptionNameGenerator.getNodeName(eClass).equals(nd.getName())).findFirst().get();
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance.elementInitializer()");
 
@@ -145,9 +127,29 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name(this.nameGenerator.getCreationToolName("New ", eClass))
+                .name(this.descriptionNameGenerator.getCreationToolName("New ", eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
+                .build();
+    }
+
+    private NodeTool addExistingNestedElementsTool(boolean recursive) {
+        var builder = this.diagramBuilderHelper.newNodeTool();
+
+        var addExistingelements = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:self.addExistingNestedElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
+
+        String title = "Add existing nested elements";
+        String iconURL = "/icons/AddExistingElements.svg";
+        if (recursive) {
+            title += " (recursive)";
+            iconURL = "/icons/AddExistingElementsRecursive.svg";
+        }
+
+        return builder
+                .name(title)
+                .iconURLsExpression(iconURL)
+                .body(addExistingelements.build())
                 .build();
     }
 }

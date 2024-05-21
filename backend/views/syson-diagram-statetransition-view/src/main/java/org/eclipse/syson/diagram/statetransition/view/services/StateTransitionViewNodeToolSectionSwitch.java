@@ -12,15 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.statetransition.view.services;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
-import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
-import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
+import org.eclipse.syson.diagram.common.view.services.AbstractViewNodeToolSectionSwitch;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.Definition;
@@ -28,7 +26,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.util.SysmlEClassSwitch;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Switch retrieving the list of NodeToolSections for each SysMLv2 concept represented in the State Transition View
@@ -36,86 +34,57 @@ import org.eclipse.syson.util.SysmlEClassSwitch;
  *
  * @author adieumegard
  */
-public class StateTransitionViewNodeToolSectionSwitch extends SysmlEClassSwitch<Void> {
+public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch {
 
-    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+    private final List<NodeDescription> allNodeDescriptions;
 
-    private final List<NodeToolSection> nodeToolSections;
-
-    private final STVDescriptionNameGenerator descriptionNameGenerator;
-
-    public StateTransitionViewNodeToolSectionSwitch() {
-        this.nodeToolSections = new ArrayList<>();
-        this.descriptionNameGenerator = new STVDescriptionNameGenerator();
-    }
-
-    public List<NodeToolSection> getNodeToolSections() {
-        return this.nodeToolSections;
+    public StateTransitionViewNodeToolSectionSwitch(List<NodeDescription> allNodeDescriptions, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(descriptionNameGenerator);
+        this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
     }
 
     @Override
-    public Void caseDefinition(Definition object) {
-        this.createToolsForCompartmentItems(object);
-        return super.caseDefinition(object);
-    }
-
-    @Override
-    public Void caseStateDefinition(StateDefinition object) {
-        List<NodeTool> nodeTools = new ArrayList<>();
-        nodeTools.add(new StateTransitionCompartmentNodeToolProvider(true).create(null));
-        nodeTools.add(new StateTransitionCompartmentNodeToolProvider(false).create(null));
-        this.addToolsToSection(nodeTools, "Create");
-        return super.caseStateDefinition(object);
-    }
-
-    @Override
-    public Void caseStateUsage(StateUsage object) {
-        List<NodeTool> nodeTools = new ArrayList<>();
-        nodeTools.add(new StateTransitionCompartmentNodeToolProvider(true).create(null));
-        nodeTools.add(new StateTransitionCompartmentNodeToolProvider(false).create(null));
-        this.addToolsToSection(nodeTools, "Create");
-        return super.caseStateUsage(object);
-    }
-
-    @Override
-    public Void caseUsage(Usage object) {
-        this.createToolsForCompartmentItems(object);
-        return super.caseUsage(object);
-    }
-
-    /**
-     * Add {@code nodeTools} tools to the tools section named {@code sectionName}. Creates the tool section if needed.
-     *
-     * @param nodeTools
-     *            The tools to add
-     * @param sectionName
-     *            The name of the section
-     */
-    private void addToolsToSection(List<NodeTool> nodeTools, String sectionName) {
-        Optional<NodeToolSection> createToolSection = this.nodeToolSections.stream()
-                .filter(toolSection -> toolSection.getName().equals(sectionName))
-                .findFirst();
-        if (createToolSection.isPresent()) {
-            createToolSection.get().getNodeTools().addAll(nodeTools);
+    protected List<EReference> getElementCompartmentReferences(Element element) {
+        List<EReference> refs = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.get(element.eClass());
+        if (refs != null) {
+            return refs;
         } else {
-            NodeToolSection toolSection = this.diagramBuilderHelper.newNodeToolSection()
-                    .name(sectionName)
-                    .nodeTools(nodeTools.toArray(NodeTool[]::new))
-                    .build();
-            this.nodeToolSections.add(toolSection);
+            return List.of();
         }
     }
 
-    private void createToolsForCompartmentItems(Element object) {
-        List<NodeTool> compartmentNodeTools = new ArrayList<>();
-        StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((compartmentEClass, listItems) -> {
-            if (compartmentEClass.equals(object.eClass())) {
-                listItems.forEach(eReference -> {
-                    CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
-                    compartmentNodeTools.add(provider.create(null));
-                });
-            }
-        });
-        this.addToolsToSection(compartmentNodeTools, "Create");
+    @Override
+    protected List<NodeDescription> getAllNodeDescriptions() {
+        return this.allNodeDescriptions;
+    }
+
+    @Override
+    public List<NodeToolSection> caseDefinition(Definition object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection);
+    }
+
+    @Override
+    public List<NodeToolSection> caseStateDefinition(StateDefinition object) {
+        var createSection = this.buildCreateSection(
+                new StateTransitionCompartmentNodeToolProvider(true).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false).create(null));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseStateUsage(StateUsage object) {
+        var createSection = this.buildCreateSection(
+                new StateTransitionCompartmentNodeToolProvider(true).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false).create(null));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseUsage(Usage object) {
+        var createSection = this.buildCreateSection();
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
     }
 }
