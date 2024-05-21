@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
@@ -126,8 +127,18 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
 
     @Override
     protected boolean isDeletable() {
-        // composition edges are not deletable
-        return false;
+        return true;
+    }
+
+    @Override
+    protected DeleteTool getEdgeDeleteTool() {
+        var changeContext = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:semanticEdgeTarget.moveToClosestContainingPackage()");
+
+        return this.diagramBuilderHelper.newDeleteTool()
+                .name("Delete from Model")
+                .body(changeContext.build())
+                .build();
     }
 
     @Override

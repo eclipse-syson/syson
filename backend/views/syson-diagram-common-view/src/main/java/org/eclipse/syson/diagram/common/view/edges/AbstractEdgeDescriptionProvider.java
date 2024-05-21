@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IEdgeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
@@ -99,21 +100,32 @@ public abstract class AbstractEdgeDescriptionProvider implements IEdgeDescriptio
         return null;
     }
 
-    protected EdgePalette createEdgePalette() {
+    /**
+     * Implementers can override this method to provide a specific delete tool to apply on the edge.
+     * <p>
+     * This method provides a default implementation that deletes the selected edge.
+     * </p>
+     *
+     * @return the delete tool to use for the edge
+     */
+    protected DeleteTool getEdgeDeleteTool() {
         var changeContext = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:self.deleteFromModel()");
 
-        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
+        return this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
-                .body(changeContext.build());
+                .body(changeContext.build())
+                .build();
+    }
 
+    protected EdgePalette createEdgePalette() {
         List<EdgeReconnectionTool> reconnectTools = List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool());
         var edgeBuilder = this.diagramBuilderHelper
                 .newEdgePalette()
                 .edgeReconnectionTools(reconnectTools.toArray(EdgeReconnectionTool[]::new));
 
         if (this.isDeletable()) {
-            edgeBuilder.deleteTool(deleteTool.build());
+            edgeBuilder.deleteTool(this.getEdgeDeleteTool());
         }
 
         var centerLabelEditTool = this.getEdgeEditTool();
