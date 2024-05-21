@@ -425,6 +425,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
         List<Feature> ownedFeatures = new ArrayList<>();
         this.getOwnedFeatureMembership().stream()
             .map(FeatureMembership::getOwnedMemberFeature)
+            .filter(Objects::nonNull)
             .forEach(ownedFeatures::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedFeature(), ownedFeatures.size(), ownedFeatures.toArray());
     }

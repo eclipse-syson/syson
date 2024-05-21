@@ -92,27 +92,27 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
 
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders =  new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
-        diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new StateTransitionViewEmptyDiagramNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new StateTransitionViewEmptyDiagramNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider, this.getNameGenerator()));
         diagramElementDescriptionProviders
-                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.nameGenerator));
+                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.getNameGenerator()));
         diagramElementDescriptionProviders
-                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.nameGenerator));
+                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.getNameGenerator()));
 
         DEFINITIONS.forEach(definition -> {
-            diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider));
+            diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider, this.getNameGenerator()));
         });
 
         USAGES.forEach(usage -> {
-            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider));
+            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getNameGenerator()));
         });
 
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
-                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
-                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.nameGenerator));
+                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getNameGenerator()));
+                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getNameGenerator()));
             });
         });
 

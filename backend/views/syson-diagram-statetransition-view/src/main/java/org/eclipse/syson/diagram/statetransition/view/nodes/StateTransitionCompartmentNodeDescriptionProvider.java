@@ -45,9 +45,9 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
 
     private final String name;
 
-    public StateTransitionCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(eClass, eReference, colorProvider, nameGenerator);
-        this.name = nameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference);
+    public StateTransitionCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, eReference, colorProvider, descriptionNameGenerator);
+        this.name = descriptionNameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
-                .isHiddenByDefaultExpression("aql:true")
+                .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
                 .name(this.name)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
@@ -70,7 +70,8 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
-            cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateDefinition())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
@@ -78,10 +79,11 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
-    
+
     @Override
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
@@ -90,7 +92,7 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
                 .style(this.createInsideLabelStyle())
                 .build();
     }
-    
+
     @Override
     protected InsideLabelStyle createInsideLabelStyle() {
         return this.diagramBuilderHelper.newInsideLabelStyle()

@@ -83,8 +83,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         var createSection = this.buildCreateSection(
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getItemDefinition()),
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getPartDefinition()),
-                this.createPortUsageAsReceiverNodeTool()
-                );
+                this.createPortUsageAsReceiverNodeTool());
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -94,15 +93,15 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getAttributeUsage()),
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
-        createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.nameGenerator).create(null));
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.nameGenerator).create(null));
+        createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.descriptionNameGenerator).create(null));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(null));
         return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override
     public List<NodeToolSection> caseActionDefinition(ActionDefinition object) {
         var createSection = this.buildCreateSection();
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.nameGenerator).create(null));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(null));
         return List.of(createSection, this.addElementsToolSection());
     }
 

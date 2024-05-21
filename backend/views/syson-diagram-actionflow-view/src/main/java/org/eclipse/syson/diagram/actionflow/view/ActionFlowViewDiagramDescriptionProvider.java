@@ -82,7 +82,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
                     SysmlPackage.eINSTANCE.getPackage()))
             );
 
-    private final IDescriptionNameGenerator nameGenerator = new AFVDescriptionNameGenerator();
+    private final IDescriptionNameGenerator descriptionNameGenerator = new AFVDescriptionNameGenerator();
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
@@ -105,12 +105,13 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.nameGenerator));
-        diagramElementDescriptionProviders.add(new UsageNestedActionUsageEdgeDescriptionProvider(colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new UsageNestedActionUsageEdgeDescriptionProvider(colorProvider, this.getNameGenerator()));
         diagramElementDescriptionProviders.add(new SuccessionEdgeDescriptionProvider(colorProvider));
 
-        diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.nameGenerator));
-        diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), colorProvider, this.nameGenerator));
+        diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
+                colorProvider, this.getNameGenerator()));
 
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new ActionFlowViewEmptyDiagramNodeDescriptionProvider(colorProvider));
@@ -121,13 +122,13 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         });
 
         USAGES.forEach(usage -> {
-            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider));
+            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getNameGenerator()));
         });
 
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
-                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
-                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.nameGenerator));
+                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getNameGenerator()));
+                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getNameGenerator()));
             });
         });
 
@@ -142,7 +143,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
 
     @Override
     protected IDescriptionNameGenerator getNameGenerator() {
-        return this.nameGenerator;
+        return this.descriptionNameGenerator;
     }
 
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {
@@ -172,7 +173,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            nodeTools.add(this.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).get(), definition));
+            nodeTools.add(this.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).get(), definition));
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

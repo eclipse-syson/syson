@@ -42,9 +42,9 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
 
     private final String name;
 
-    public ActionFlowCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(eClass, eReference, colorProvider, nameGenerator);
-        this.name = nameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference);
+    public ActionFlowCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, eReference, colorProvider, descriptionNameGenerator);
+        this.name = descriptionNameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
-            cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
@@ -75,8 +75,8 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
@@ -103,7 +103,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
 
     @Override
     protected INodeToolProvider getItemCreationToolProvider() {
-        return new ActionFlowCompartmentNodeToolProvider(this.eClass, this.nameGenerator);
+        return new ActionFlowCompartmentNodeToolProvider(this.eClass, this.descriptionNameGenerator);
     }
 
     @Override

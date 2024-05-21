@@ -21,10 +21,10 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.services.StateTransitionViewNodeToolSectionSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Node description provider for all SysMLv2 Usage elements in the StateTransition View diagram.
@@ -33,8 +33,8 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionProvider {
 
-    public UsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider) {
-        super(eClass, colorProvider, new STVDescriptionNameGenerator());
+    public UsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, colorProvider, descriptionNameGenerator);
     }
 
     @Override
@@ -44,6 +44,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
         StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
+                    // list compartment
                     cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
                 });
             }
@@ -66,8 +67,7 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
 
     @Override
     protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch();
-        toolSectionSwitch.doSwitch(this.eClass);
-        return toolSectionSwitch.getNodeToolSections();
+        StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch(this.getAllNodeDescriptions(cache), this.nameGenerator);
+        return toolSectionSwitch.doSwitch(this.eClass);
     }
 }

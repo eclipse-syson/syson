@@ -20,9 +20,9 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractPackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
-import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Used to create the package node description in State Transition View diagram.
@@ -31,8 +31,8 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescriptionProvider {
 
-    public PackageNodeDescriptionProvider(IColorProvider colorProvider) {
-        super(colorProvider, new STVDescriptionNameGenerator());
+    public PackageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(colorProvider, descriptionNameGenerator);
     }
 
     @Override

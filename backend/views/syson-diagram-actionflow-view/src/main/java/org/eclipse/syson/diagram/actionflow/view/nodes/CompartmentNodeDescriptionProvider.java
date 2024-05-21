@@ -20,9 +20,9 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Used to create the Compartment node description inside the Action Flow View diagram.
@@ -31,8 +31,8 @@ import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescri
  */
 public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public CompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider) {
-        super(eClass, eReference, colorProvider, new AFVDescriptionNameGenerator());
+    public CompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, eReference, colorProvider, descriptionNameGenerator);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
         ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(ref -> {
                 if (this.eReference.getEType().equals(ref.getEType())) {
-                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(type, ref));
+                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(type, ref));
                     acceptedNodeTypes.add(optCompartmentItemNodeDescription.get());
                 }
             });

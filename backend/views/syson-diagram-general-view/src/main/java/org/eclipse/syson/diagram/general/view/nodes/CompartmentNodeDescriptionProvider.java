@@ -56,7 +56,7 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(ref -> {
                 if (this.eReference.getEType().equals(ref.getEType())) {
-                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.nameGenerator.getCompartmentItemName(type, ref));
+                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(type, ref));
                     acceptedNodeTypes.add(optCompartmentItemNodeDescription.get());
                 }
             });
