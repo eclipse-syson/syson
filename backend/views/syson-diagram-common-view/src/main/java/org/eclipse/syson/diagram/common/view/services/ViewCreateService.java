@@ -390,6 +390,7 @@ public class ViewCreateService {
                 .filter(general -> inheritedElements.contains(general))
                 .forEach(alreadySpecializedFeatures::add);
         inheritedElements.removeAll(alreadySpecializedFeatures);
+        inheritedElements.remove(type);
         return inheritedElements;
     }
 

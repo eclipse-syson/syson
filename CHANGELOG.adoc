@@ -31,6 +31,7 @@
 - https://github.com/eclipse-syson/syson/issues/229[#229] [diagrams] Prevent circular containment of nested parts including self containment
 - https://github.com/eclipse-syson/syson/issues/305[#305] [diagrams] Fix performance issue when using EcoreUtil.delete
 - https://github.com/eclipse-syson/syson/issues/272[#272] [statetransition-view] Add "state transition" compartment and fix the graphical creation of actions in StateDefinition and StateUsage
+- https://github.com/eclipse-syson/syson/issues/294[#294] [diagrams] Fix an issue where inherited features in compartments of a graphical element could display themselves
 
 === Improvements
 
@@ -48,7 +49,6 @@
 - https://github.com/eclipse-syson/syson/issues/268[#268] [diagrams] Reveal only the appropriate compartment when creating child element
 - https://github.com/eclipse-syson/syson/issues/278[#278] [interconnection-view] Allow to create interconnection-view diagrams on any Usage/Definition element
 - https://github.com/eclipse-syson/syson/issues/277[#277] [diagrams] Add a free-form compartment in Action elements for owned actions
-- https://github.com/eclipse-syson/syson/issues/297[#297] [diagrams] Handle Succession as edge between Actions inside action flow compartment
 - https://github.com/eclipse-syson/syson/issues/308[#308] [statetransition-view] Add "Add existing elements" tools on State & StateDefinition graphical elements.
 - https://github.com/eclipse-syson/syson/issues/254[#254] [diagrams] Add delete from model tool on containment edges
 
@@ -68,6 +68,7 @@
 - https://github.com/eclipse-syson/syson/issues/242[#242] [diagrams] Handle Inherited features in features compartments.
 - https://github.com/eclipse-syson/syson/issues/217[#217] [diagrams] Handle Accept Action Usage
 - https://github.com/eclipse-syson/syson/issues/285[#285] [interconnection-view] Add rotative images for PortUsage in Interconnection View
+- https://github.com/eclipse-syson/syson/issues/297[#297] [diagrams] Handle Succession as edge between Actions inside action flow compartment
 
 == v2024.3.0
 
