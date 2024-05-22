@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -40,13 +41,13 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
 
     private final EReference eReference;
 
-    private final IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public InheritedCompartmentItemNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public InheritedCompartmentItemNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
         this.eReference = Objects.requireNonNull(eReference);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
@@ -56,8 +57,8 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(this.eReference.getEType()))
                 .insideLabel(this.createInsideLabelDescription())
-                .name(this.nameGenerator.getInheritedCompartmentItemName(this.eClass, this.eReference))
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + ".getInheritedCompartmentItems('" + this.eReference.getName() + "')")
+                .name(this.descriptionNameGenerator.getInheritedCompartmentItemName(this.eClass, this.eReference))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getInheritedCompartmentItems", "'" + this.eReference.getName() + "'"))
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(false)
                 .palette(this.createInheritedCompartmentItemNodePalette())
