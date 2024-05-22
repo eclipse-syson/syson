@@ -279,6 +279,9 @@ public class ToolService {
         }
 
         NodeDescription nodeDescription = convertedNodes.get(childrenType);
+        if (nodeDescription == null) {
+            return null;
+        }
         var targetObjectKind = this.objectService.getKind(semanticElement);
         var targetObjectLabel = this.objectService.getLabel(semanticElement);
         String nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), NodeContainmentKind.CHILD_NODE, targetObjectId);

@@ -32,6 +32,7 @@
 - https://github.com/eclipse-syson/syson/issues/305[#305] [diagrams] Fix performance issue when using EcoreUtil.delete
 - https://github.com/eclipse-syson/syson/issues/272[#272] [statetransition-view] Add "state transition" compartment and fix the graphical creation of actions in StateDefinition and StateUsage
 - https://github.com/eclipse-syson/syson/issues/294[#294] [diagrams] Fix an issue where inherited features in compartments of a graphical element could display themselves
+- https://github.com/eclipse-syson/syson/issues/236[#236] [diagrams] Fix an issue where `Add existing element (recursive)` could fail.
 
 === Improvements
 
