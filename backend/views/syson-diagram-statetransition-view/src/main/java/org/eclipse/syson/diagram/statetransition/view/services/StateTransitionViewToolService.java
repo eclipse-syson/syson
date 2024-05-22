@@ -54,7 +54,9 @@ public class StateTransitionViewToolService extends ViewToolService {
                 .forEach(subUsage -> {
                     this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
                     Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                    if (fakeNode != null) {
+                        this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                    }
                 });
         }
         return usage;
@@ -69,7 +71,9 @@ public class StateTransitionViewToolService extends ViewToolService {
             if (subUsage instanceof StateUsage) {
                 this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
                 Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                if (fakeNode != null) {
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                }
             }
         });
         return definition;

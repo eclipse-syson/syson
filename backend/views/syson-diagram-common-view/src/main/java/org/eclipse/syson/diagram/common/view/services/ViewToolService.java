@@ -125,13 +125,19 @@ public class ViewToolService extends ToolService {
                 this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes);
                 if (recursive && member instanceof Definition definition) {
                     Node fakeNode = this.createFakeNode(definition, selectedNode, diagramContext, representationDescription, convertedNodes);
-                    this.addExistingSubElements(definition, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
+                    if (fakeNode != null) {
+                        this.addExistingSubElements(definition, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
+                    }
                 } else if (recursive && member instanceof Usage usage) {
                     Node fakeNode = this.createFakeNode(usage, selectedNode, diagramContext, representationDescription, convertedNodes);
-                    this.addExistingSubElements(usage, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
+                    if (fakeNode != null) {
+                        this.addExistingSubElements(usage, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
+                    }
                 } else if (recursive && member instanceof Namespace subNs) {
                     Node fakeNode = this.createFakeNode(subNs, selectedNode, diagramContext, representationDescription, convertedNodes);
-                    this.addExistingSubElements(subNs, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                    if (fakeNode != null) {
+                        this.addExistingSubElements(subNs, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                    }
                 }
             });
         return namespace;
@@ -197,7 +203,9 @@ public class ViewToolService extends ToolService {
             Object parentNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (recursive) {
             Node fakeNode = this.createFakeNode(nestedUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-            this.addExistingSubElements(nestedUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+            if (fakeNode != null) {
+                this.addExistingSubElements(nestedUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+            }
         }
     }
 
@@ -357,13 +365,19 @@ public class ViewToolService extends ToolService {
                 this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes);
                 if (member instanceof Definition definition) {
                     Node fakeNode = this.createFakeNode(definition, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                    this.addExistingSubElements(definition, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                    if (fakeNode != null) {
+                        this.addExistingSubElements(definition, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                    }
                 } else if (member instanceof Usage usage) {
                     Node fakeNode = this.createFakeNode(usage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                    this.addExistingSubElements(usage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                    if (fakeNode != null) {
+                        this.addExistingSubElements(usage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                    }
                 } else if (member instanceof Namespace subNs) {
                     Node fakeNode = this.createFakeNode(subNs, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                    this.addExistingSubElements(subNs, editingContext, diagramContext, fakeNode, diagramDescription, convertedNodes);
+                    if (fakeNode != null) {
+                        this.addExistingSubElements(subNs, editingContext, diagramContext, fakeNode, diagramDescription, convertedNodes);
+                    }
                 }
             });
         return namespace;
@@ -377,21 +391,24 @@ public class ViewToolService extends ToolService {
             .forEach(subUsage -> {
                 this.createView(subUsage, editingContext, diagramContext, parentNode, convertedNodes);
                 Node fakeNode = this.createFakeNode(subUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+                if (fakeNode != null) {
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+                }
             });
         return usage;
     }
 
     public Definition addExistingSubElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode,
-            DiagramDescription diagramDescription,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+            DiagramDescription diagramDescription, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var ownedUsages = definition.getOwnedUsage();
 
         ownedUsages.stream()
             .forEach(subUsage -> {
                 this.createView(subUsage, editingContext, diagramContext, parentNode, convertedNodes);
                 Node fakeNode = this.createFakeNode(subUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+                if (fakeNode != null) {
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
+                }
             });
         return definition;
     }
@@ -581,7 +598,7 @@ public class ViewToolService extends ToolService {
                 .findFirst();
         if (nodeChildActionUsage.isPresent()) {
             NodeDescription nodeDescription = convertedNodes.get(nodeChildActionUsage.get());
-            if (nodeDescription.getId().equals(selectedNode.getDescriptionId()) && compartmentName != null) {
+            if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId()) && compartmentName != null) {
                 selectedNode.getChildNodes().stream()
                         .filter(child -> compartmentName.equals(child.getInsideLabel().getText()))
                         .findFirst()
