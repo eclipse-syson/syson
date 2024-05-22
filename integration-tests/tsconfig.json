@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2019",
+    "lib": ["ES2022", "dom"],
+    "types": ["cypress", "node"],
+    "allowUnreachableCode": false,
+    "alwaysStrict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": ["**/*.ts", "./cypress/cypress.d.ts"],
+  "exclude": ["node_modules"]
+}

@@ -121,6 +121,36 @@ jobs:
         run: |
           docker build -t syson backend/application/syson-application
 
+      - name: Check the integration test code
+        run: |
+          npm ci
+          npm run eslint
+        working-directory: integration-tests
+
+      - name: Run end to end tests against the application
+        if: startsWith(github.ref, 'refs/tags/v') == false && github.ref != 'refs/heads/master'
+        uses: cypress-io/github-action@v5
+        with:
+          build: docker compose -f ../backend/application/syson-application/docker-compose.yml up -d
+          start: docker compose -f ../backend/application/syson-application/docker-compose.yml ps
+          wait-on: "http://localhost:8080/login"
+          wait-on-timeout: 180
+          working-directory: integration-tests
+          record: false
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: syson
+          IMAGE_TAG: ${{ env.git_describe }}
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Store Cypress screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-screenshots
+          path: integration-tests/target/screenshots/**/*.png
+          retention-days: 5
+
       - name: Tag the Docker image
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: docker tag syson $REGISTRY/$REPOSITORY:$IMAGE_TAG
