@@ -1,0 +1,168 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "AttributeUsage",
+                    "value": {
+                      "$type": "FeatureValue",
+                      "isInitial": true,
+                      "target": {
+                        "$type": "LiteralNumber",
+                        "literal": 0
+                      }
+                    },
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "text": "ScalarValues::Integer",
+                          "reference": null,
+                          "parts": [
+                            null,
+                            null
+                          ]
+                        }
+                      }
+                    ],
+                    "declaredName": "count"
+                  }
+                }
+              ],
+              "declaredName": "Counter"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "ActionUsage",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "PartUsage",
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "text": "Counter",
+                          "reference": "Assignment3::Counter",
+                          "parts": [
+                            "Assignment3::Counter"
+                          ]
+                        }
+                      }
+                    ],
+                    "declaredName": "counter"
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "AssignmentActionUsage",
+                    "targetMember": {
+                      "$type": "OwningMembership",
+                      "target": {
+                        "$type": "Feature",
+                        "typeRelationships": [
+                          {
+                            "$type": "FeatureChaining",
+                            "targetRef": {
+                              "$type": "FeatureReference",
+                              "text": "counter",
+                              "reference": "Assignment3::a::counter",
+                              "parts": [
+                                "Assignment3::a::counter"
+                              ]
+                            }
+                          },
+                          {
+                            "$type": "FeatureChaining",
+                            "targetRef": {
+                              "$type": "FeatureReference",
+                              "text": "count",
+                              "reference": "Assignment3::Counter::count",
+                              "parts": [
+                                "Assignment3::Counter::count"
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "assignedValue": {
+                      "$type": "ParameterMembership",
+                      "target": {
+                        "$type": "ReferenceUsage",
+                        "value": {
+                          "$type": "FeatureValue",
+                          "target": {
+                            "$type": "OperatorExpression",
+                            "operands": [
+                              {
+                                "$type": "FeatureChainExpression",
+                                "operands": [
+                                  {
+                                    "$type": "FeatureReferenceExpression",
+                                    "expression": {
+                                      "$type": "Membership",
+                                      "targetRef": {
+                                        "$type": "FeatureReference",
+                                        "text": "counter",
+                                        "reference": "Assignment3::a::counter",
+                                        "parts": [
+                                          "Assignment3::a::counter"
+                                        ]
+                                      }
+                                    }
+                                  }
+                                ],
+                                "children": [
+                                  {
+                                    "$type": "Membership",
+                                    "targetRef": {
+                                      "$type": "FeatureReference",
+                                      "text": "count",
+                                      "reference": "Assignment3::Counter::count",
+                                      "parts": [
+                                        "Assignment3::Counter::count"
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "$type": "LiteralNumber",
+                                "literal": 1
+                              }
+                            ],
+                            "operator": "+"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "declaredName": "a"
+            }
+          }
+        ],
+        "declaredName": "Assignment3"
+      }
+    }
+  ]
+}
