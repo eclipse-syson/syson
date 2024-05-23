@@ -180,10 +180,12 @@ public class RootDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME);
-        var optChildPartUsageNodeDescription = cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME);
+        var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
+        var optFirstLevelChildPartUsageNodeDescription = cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME);
 
         acceptedNodeTypes.add(optPortUsageBorderNodeDescription.get());
         acceptedNodeTypes.add(optChildPartUsageNodeDescription.get());
+        acceptedNodeTypes.add(optFirstLevelChildPartUsageNodeDescription.get());
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
