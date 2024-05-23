@@ -49,6 +49,7 @@ import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenPartUsageCom
 import org.eclipse.syson.diagram.interconnection.view.nodes.FirstLevelChildPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -100,29 +101,7 @@ public class InterconnectionViewToolService extends ViewToolService {
         PartUsage childPart = SysmlFactory.eINSTANCE.createPartUsage();
         membership.getOwnedRelatedElement().add(childPart);
         this.elementInitializerSwitch.doSwitch(childPart);
-        // get the children part usage compartment
-        Node parentNode = null;
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
-                .filter(n -> FirstLevelChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
-        if (nodeChildPartUsage.isPresent()) {
-            NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
-            if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
-                parentNode = selectedNode.getChildNodes().get(1);
-            }
-        }
-        if (parentNode == null) {
-            nodeChildPartUsage = convertedNodes.keySet().stream()
-                    .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
-            if (nodeChildPartUsage.isPresent()) {
-                NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
-                if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
-                    parentNode = selectedNode.getChildNodes().get(1);
-                }
-            }
-        }
-        if (parentNode == null) {
-            parentNode = selectedNode;
-        }
+        Node parentNode = this.getRealParentNode(selectedNode, convertedNodes);
         if (parentNode != null) {
             this.createView(childPart, editingContext, diagramContext, parentNode, convertedNodes);
         }
@@ -158,34 +137,14 @@ public class InterconnectionViewToolService extends ViewToolService {
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
 
-        Node childrenPartUsageCompartmentNode = null;
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
-                .filter(n -> FirstLevelChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
-        if (nodeChildPartUsage.isPresent()) {
-            NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
-            if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
-                childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
-            }
-        }
-        if (childrenPartUsageCompartmentNode == null) {
-            nodeChildPartUsage = convertedNodes.keySet().stream()
-                    .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
-            if (nodeChildPartUsage.isPresent()) {
-                NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
-                if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
-                    childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
-                }
-            }
-        }
-        if (childrenPartUsageCompartmentNode == null) {
-            childrenPartUsageCompartmentNode = selectedNode;
-        }
-        var parentNode = childrenPartUsageCompartmentNode;
+        var parentNode = this.getRealParentNode(selectedNode, convertedNodes);
         nestedParts.stream().filter(subPartUsage -> !this.isPresent(subPartUsage, this.getChildNodes(diagramContext, parentNode))).forEach(subPartUsage -> {
             this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
             if (recursive) {
                 Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
-                this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                if (fakeNode != null) {
+                    this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                }
             }
         });
         return usage;
@@ -224,7 +183,9 @@ public class InterconnectionViewToolService extends ViewToolService {
             this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
             if (recursive) {
                 Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, representationDescription, convertedNodes);
-                this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                if (fakeNode != null) {
+                    this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
+                }
             }
         });
         return definition;
@@ -251,41 +212,17 @@ public class InterconnectionViewToolService extends ViewToolService {
         return fakeNode;
     }
 
-    private PartUsage addExistingSubElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, DiagramDescription diagramDescription,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var nestedParts = partUsage.getNestedPart();
-        Node childrenPartUsageCompartmentNode = null;
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
-                .filter(n -> FirstLevelChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
-        if (nodeChildPartUsage.isPresent()) {
-            NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
-            if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
-                childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
-            }
+    @Override
+    protected void createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, NodeContainmentKind nodeKind) {
+        Object realParentNode = selectedNode;
+        if (element instanceof PartUsage && selectedNode instanceof Node node) {
+            realParentNode = this.getRealParentNode(node, convertedNodes);
         }
-        if (childrenPartUsageCompartmentNode == null) {
-            nodeChildPartUsage = convertedNodes.keySet().stream()
-                    .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
-            if (nodeChildPartUsage.isPresent()) {
-                NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
-                if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
-                    childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
-                }
-            }
-        }
-        if (childrenPartUsageCompartmentNode == null) {
-            childrenPartUsageCompartmentNode = selectedNode;
-        }
-        var parentNode = childrenPartUsageCompartmentNode;
-        nestedParts.stream().forEach(subPartUsage -> {
-            this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
-            Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-            this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, diagramDescription, convertedNodes);
-        });
-        return partUsage;
+        super.createView(element, editingContext, diagramContext, realParentNode, convertedNodes, nodeKind);
     }
 
-    protected Node createFakeCompartmentNode(EObject semanticElement, Node parentNode, NodeDescription nodeDescription) {
+    private Node createFakeCompartmentNode(EObject semanticElement, Node parentNode, NodeDescription nodeDescription) {
         String targetObjectId = this.objectService.getId(semanticElement);
         String parentElementId = parentNode.getId();
 
@@ -329,5 +266,67 @@ public class InterconnectionViewToolService extends ViewToolService {
                 .childNodes(new ArrayList<>())
                 .customizedProperties(Set.of())
                 .build();
+    }
+
+    private PartUsage addExistingSubElements(PartUsage partUsage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, DiagramDescription diagramDescription,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var nestedParts = partUsage.getNestedPart();
+        Node childrenPartUsageCompartmentNode = null;
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
+                .filter(n -> FirstLevelChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+        if (nodeChildPartUsage.isPresent()) {
+            NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
+            if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
+                childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
+            }
+        }
+        if (childrenPartUsageCompartmentNode == null) {
+            nodeChildPartUsage = convertedNodes.keySet().stream()
+                    .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+            if (nodeChildPartUsage.isPresent()) {
+                NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
+                if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
+                    childrenPartUsageCompartmentNode = selectedNode.getChildNodes().get(1);
+                }
+            }
+        }
+        if (childrenPartUsageCompartmentNode == null) {
+            childrenPartUsageCompartmentNode = selectedNode;
+        }
+        var parentNode = childrenPartUsageCompartmentNode;
+        nestedParts.stream().forEach(subPartUsage -> {
+            this.createView(subPartUsage, editingContext, diagramContext, parentNode, convertedNodes);
+            Node fakeNode = this.createFakeNode(subPartUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
+            if (fakeNode != null) {
+                this.addExistingSubElements(subPartUsage, editingContext, diagramContext, fakeNode, diagramDescription, convertedNodes);
+            }
+        });
+        return partUsage;
+    }
+
+    private Node getRealParentNode(Node selectedNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        Node parentNode = null;
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
+                .filter(n -> FirstLevelChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+        if (nodeChildPartUsage.isPresent()) {
+            NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
+            if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
+                parentNode = selectedNode.getChildNodes().get(1);
+            }
+        }
+        if (parentNode == null) {
+            nodeChildPartUsage = convertedNodes.keySet().stream()
+                    .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+            if (nodeChildPartUsage.isPresent()) {
+                NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
+                if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
+                    parentNode = selectedNode.getChildNodes().get(1);
+                }
+            }
+        }
+        if (parentNode == null) {
+            parentNode = selectedNode;
+        }
+        return parentNode;
     }
 }

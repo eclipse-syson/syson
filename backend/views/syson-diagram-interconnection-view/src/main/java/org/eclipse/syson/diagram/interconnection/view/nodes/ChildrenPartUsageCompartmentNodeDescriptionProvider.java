@@ -77,6 +77,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
         cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 

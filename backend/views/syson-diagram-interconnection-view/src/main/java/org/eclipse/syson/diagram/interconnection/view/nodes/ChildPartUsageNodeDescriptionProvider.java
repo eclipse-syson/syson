@@ -202,9 +202,11 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
 
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
+        var optFirstLevelChildPartUsageNodeDescription = cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME);
 
         acceptedNodeTypes.add(optPortUsageBorderNodeDescription.get());
         acceptedNodeTypes.add(optChildPartUsageNodeDescription.get());
+        acceptedNodeTypes.add(optFirstLevelChildPartUsageNodeDescription.get());
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");

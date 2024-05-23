@@ -204,7 +204,7 @@ public class ToolService {
 
     protected void createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, NodeContainmentKind nodeKind) {
-        var parentElementId = this.getParentElementId(diagramContext, selectedNode);
+        var parentElementId = this.getParentElementId(element, diagramContext, selectedNode, convertedNodes);
         var descriptionId = this.getDescriptionId(element, editingContext, diagramContext, selectedNode, convertedNodes);
 
         if (descriptionId.isPresent()) {
@@ -218,7 +218,8 @@ public class ToolService {
         }
     }
 
-    protected String getParentElementId(IDiagramContext diagramContext, Object selectedNode) {
+    protected String getParentElementId(Element element, IDiagramContext diagramContext, Object selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (selectedNode instanceof Node node) {
             return node.getId();
         }
