@@ -66,10 +66,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ASTTransformer {
 
-    private static final String CHILDREN_CONST = "children";
-
-    private static final String TARGET_CONST = "target";
-
     private final ObjectFinder objectFinder = new CachedObjectFinder();
 
     private final MappingState mappingStates = new MappingState(Collections.synchronizedCollection(new LinkedHashSet<MappingElement>()),
@@ -122,67 +118,61 @@ public class ASTTransformer {
         try {
             JsonNode astJson = objectMapper.readTree(input);
 
-            if (astJson.get(CHILDREN_CONST) != null) {
-                astJson.get(CHILDREN_CONST).forEach(t -> {
-                    if (t.get(TARGET_CONST) != null) {
-                        this.mappingStates.toMap().add(new MappingElement(t.get(TARGET_CONST), null));
-                    }
-                });
+            this.mappingStates.toMap().add(new MappingElement(astJson, null));
 
-                List<MappingElement> rootElements = List.copyOf(this.mappingStates.toMap());
+            List<MappingElement> rootElements = List.copyOf(this.mappingStates.toMap());
 
-                // Static Mapping
-                while (!this.mappingStates.toMap().isEmpty()) {
-                    this.logger.info("Start Mapping loop with " + this.mappingStates.toMap().size() + " elements");
-                    LinkedHashSet<MappingElement> toOperate = new LinkedHashSet<>(this.mappingStates.toMap());
-                    this.mappingStates.toMap().clear();
-                    toOperate.stream().forEach(mappingState -> {
-                        this.mappers.forEach(t -> {
-                            if (t.canVisit(mappingState)) {
-                                try {
-                                    t.mappingVisit(mappingState);
-                                } catch (ClassCastException | IndexOutOfBoundsException e) {
-                                    this.logger.error("Error during mapping of element " + mappingState + " : " + e.getMessage());
-                                }
+            // Static Mapping
+            while (!this.mappingStates.toMap().isEmpty()) {
+                this.logger.info("Start Mapping loop with " + this.mappingStates.toMap().size() + " elements");
+                LinkedHashSet<MappingElement> toOperate = new LinkedHashSet<>(this.mappingStates.toMap());
+                this.mappingStates.toMap().clear();
+                toOperate.stream().forEach(mappingState -> {
+                    this.mappers.forEach(t -> {
+                        if (t.canVisit(mappingState)) {
+                            try {
+                                t.mappingVisit(mappingState);
+                            } catch (ClassCastException | IndexOutOfBoundsException e) {
+                                this.logger.error("Error during mapping of element " + mappingState + " : " + e.getMessage());
                             }
-                        });
+                        }
                     });
-                    if (toOperate.size() == this.mappingStates.toMap().size() && toOperate.containsAll(this.mappingStates.toMap()) && this.mappingStates.toMap().containsAll(toOperate)) {
-                        this.logger.error("Infinite Loop when mapping with elements " + toOperate);
-                        break;
-                    }
-                }
-                // Reference Mapping
-                while (!this.mappingStates.toResolve().isEmpty()) {
-                    this.logger.info("Start Resolving loop with " + this.mappingStates.toResolve().size() + " elements");
-                    LinkedHashSet<MappingElement> toOperate = new LinkedHashSet<>(this.mappingStates.toResolve());
-                    this.mappingStates.toResolve().clear();
-                    toOperate.stream().forEach(mappingState -> {
-                        this.mappers.forEach(t -> {
-                            if (t.canVisit(mappingState)) {
-                                try {
-                                    t.referenceVisit(mappingState);
-                                } catch (ClassCastException | IndexOutOfBoundsException e) {
-                                    this.logger.error("Error during referenceVisit of element " + mappingState + " : " + e.getMessage());
-                                }
-                            }
-                        });
-                    });
-                    if (toOperate.size() == this.mappingStates.toResolve().size() && toOperate.containsAll(this.mappingStates.toResolve()) && this.mappingStates.toResolve().containsAll(toOperate)) {
-                        this.logger.error("Infinite Loop when resolving with elements " + toOperate);
-                        break;
-                    }
-                }
-
-                this.logger.info("End complete mapping loop");
-                this.objectFinder.logStat();
-                rootElements.forEach(t -> {
-                    var self = t.getSelf();
-                    if (self != null) {
-                        result.getContents().add(self);
-                    }
                 });
+                if (toOperate.size() == this.mappingStates.toMap().size() && toOperate.containsAll(this.mappingStates.toMap()) && this.mappingStates.toMap().containsAll(toOperate)) {
+                    this.logger.error("Infinite Loop when mapping with elements " + toOperate);
+                    break;
+                }
             }
+            // Reference Mapping
+            while (!this.mappingStates.toResolve().isEmpty()) {
+                this.logger.info("Start Resolving loop with " + this.mappingStates.toResolve().size() + " elements");
+                LinkedHashSet<MappingElement> toOperate = new LinkedHashSet<>(this.mappingStates.toResolve());
+                this.mappingStates.toResolve().clear();
+                toOperate.stream().forEach(mappingState -> {
+                    this.mappers.forEach(t -> {
+                        if (t.canVisit(mappingState)) {
+                            try {
+                                t.referenceVisit(mappingState);
+                            } catch (ClassCastException | IndexOutOfBoundsException e) {
+                                this.logger.error("Error during referenceVisit of element " + mappingState + " : " + e.getMessage());
+                            }
+                        }
+                    });
+                });
+                if (toOperate.size() == this.mappingStates.toResolve().size() && toOperate.containsAll(this.mappingStates.toResolve()) && this.mappingStates.toResolve().containsAll(toOperate)) {
+                    this.logger.error("Infinite Loop when resolving with elements " + toOperate);
+                    break;
+                }
+            }
+
+            this.logger.info("End complete mapping loop");
+            this.objectFinder.logStat();
+            rootElements.forEach(t -> {
+                var self = t.getSelf();
+                if (self != null) {
+                    result.getContents().add(self);
+                }
+            });
 
         } catch (IOException e) {
             this.logger.error(e.getMessage());

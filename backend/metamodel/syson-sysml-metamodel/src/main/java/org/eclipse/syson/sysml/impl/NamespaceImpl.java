@@ -267,7 +267,7 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
         } else {
             Membership membership = resolve(qualification);
             if (membership != null) {
-                Element memberElement = resolve(qualification).getMemberElement();
+                Element memberElement = membership.getMemberElement();
                 if (memberElement instanceof Namespace namespace) {
                     result = namespace.resolveVisible(name);
                 }
