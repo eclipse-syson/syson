@@ -39,31 +39,37 @@ public class NameConflictingFilter implements Predicate<Membership> {
     @Override
     public boolean test(Membership member) {
         if (member != null) {
-            Element memberElement = member.getMemberElement();
-            if (memberElement != null) {
-                return checkConflictingNames(memberElement);
+            if (member.getMemberName() != null
+                && member.getMemberElement() != null
+                && member.getMemberName() != member.getMemberElement().getName()) {
+                boolean result = checkConflictingNames(member.getMemberName());
+                return result;
+            } else {
+                Element memberElement = member.getMemberElement();
+                if (memberElement != null) {
+                    return checkConflictingElement(memberElement);
+                }
             }
         }
 
         return true;
     }
 
-    public boolean checkConflictingNames(Element memberElement) {
-        String name = memberElement.effectiveName();
-        String shortName = memberElement.effectiveShortName();
+    public boolean checkConflictingElement(Element memberElement) {
+        return checkConflictingNames(memberElement.effectiveName()) && checkConflictingNames(memberElement.effectiveShortName());
+    }
+    
+    public boolean checkConflictingNames(String name) {
 
         boolean hasName = name != null;
-        boolean hasShortName = shortName != null;
-        if (hasName || hasShortName) {
+        if (hasName) {
             boolean hasConflictingName = hasName && usedNames.contains(name);
-            boolean hasConflictingShortName = hasShortName && usedNames.contains(shortName);
 
-            boolean noConflict = !hasConflictingName && !hasConflictingShortName;
+            boolean noConflict = !hasConflictingName;
             if (noConflict) {
                 // Only add to forbidden names if the element is not conflicting on both the shortname and the
                 // name
                 usedNames.add(name);
-                usedNames.add(shortName);
             }
             return noConflict;
         } // Else if the element has neither a name or a short name it can not create name conflict
