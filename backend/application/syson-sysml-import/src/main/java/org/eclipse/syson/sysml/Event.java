@@ -32,9 +32,9 @@ public class Event {
 
     private final EObject eObject;
 
-    private Object[] params;
+    private final Object[] params;
 
-    public Event(String messageId, EObject eObject, Object... params) {
+    public Event(final String messageId, final EObject eObject, final Object... params) {
         this.messageId = messageId;
         this.eObject = eObject;
         this.params = params;
@@ -53,13 +53,13 @@ public class Event {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         boolean isEqual = false;
 
         if (this == o) {
             isEqual = true;
         } else if (o != null && this.getClass() == o.getClass()) {
-            Event event = (Event) o;
+            final Event event = (Event) o;
             isEqual = Objects.equals(this.messageId, event.messageId) && Objects.equals(this.eObject, event.eObject) && Arrays.equals(this.params, event.params);
         }
 
@@ -73,10 +73,10 @@ public class Event {
         return result;
     }
 
-    public String toLogMessage(ResourceBundle messages) {
-        List<Object> finalParams = new ArrayList<>(Arrays.asList(this.params));
-        String messageTemplate = messages.getString(this.messageId);
-        if (this.eObject instanceof Element elt && elt.getQualifiedName() != null) {
+    public String toLogMessage(final ResourceBundle messages) {
+        final List<Object> finalParams = new ArrayList<>(Arrays.asList(this.params));
+        final String messageTemplate = messages.getString(this.messageId);
+        if (this.eObject instanceof final Element elt && elt.getQualifiedName() != null) {
             String qualifiedName = elt.getQualifiedName();
             while (qualifiedName.contains("::null")) {
                 qualifiedName = qualifiedName.replace("::null", "");

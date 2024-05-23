@@ -1,0 +1,22 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "declaredName": "package1",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartDefinition",
+              "children": [],
+              "declaredName": "part1"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

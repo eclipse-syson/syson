@@ -1,0 +1,40 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "NamespaceImport",
+            "targetRef": {
+              "$type": "NamespaceReference",
+              "text": "package1",
+              "reference": null
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartDefinition",
+              "children": [],
+              "heritage": [
+                {
+                  "$type": "Subclassification",
+                  "targetRef": {
+                    "$type": "ClassifierReference",
+                    "text": "Part1",
+                    "reference": "package1::part1"
+                  }
+                }
+              ],
+              "declaredName": "Part2"
+            }
+          }
+        ],
+        "declaredName": "package2"
+      }
+    }
+  ]
+}

@@ -44,15 +44,15 @@ public final class AstConstant {
 
     public static final String QUALIFIED_CONST = "qualifiedName";
 
-    public static final String ELEMENT_ID = "elementId";
+    public static final String ELEMENT_ID_CONST = "elementId";
 
     public static final String TYPE_CONST = "$type";
 
-    public static final String VALUE = "value";
+    public static final String VALUE_CONST = "value";
 
-    public static final String LITERAL = "literal";
+    public static final String LITERAL_CONST = "literal";
 
-    public static final String OPERANDS = "operands";
+    public static final String OPERANDS_CONST = "operands";
 
     public static final String CLIENT_CONST = "client";
 
@@ -92,13 +92,16 @@ public final class AstConstant {
 
     public static final String EXPRESSION_CONST = "expression";
 
-    public static final List<String> NODES = Arrays.asList(AstConstant.TARGET_CONST, AstConstant.TARGET_CHAIN_CONST, AstConstant.TARGET_REF_CONST, AstConstant.VALUE, AstConstant.RESULT_CONST,
+    public static final String TARGET_MEMBER_CONST = "targetMember";
+
+    public static final String ASSIGNED_VALUE_CONST = "assignedValue";
+
+    public static final List<String> NODES = Arrays.asList(AstConstant.TARGET_CONST, AstConstant.TARGET_CHAIN_CONST, AstConstant.TARGET_REF_CONST, AstConstant.VALUE_CONST, AstConstant.RESULT_CONST,
             AstConstant.SOURCE_CONST, AstConstant.THEN_CONST, AstConstant.ACCEPTER_CONST, AstConstant.GUARD_CONST, AstConstant.EFFECT_CONST, AstConstant.RECEIVER_CONST, AstConstant.PAYLOAD_CONST,
             AstConstant.MULTIPLICITY_CONST, AstConstant.RANGE_CONST, AstConstant.ABOUT_CONST, AstConstant.SENDER_CONST, AstConstant.TRANSITION_LINK_SOURCE_CONST
-
     );
 
-    public static String asCleanedText(JsonNode node) {
+    public static String asCleanedText(final JsonNode node) {
         String result = null;
 
         if (node.isTextual()) {
@@ -111,12 +114,12 @@ public final class AstConstant {
         return result;
     }
 
-    public static String getIdentifier(JsonNode node) {
+    public static String getIdentifier(final JsonNode node) {
         String identifier = null;
 
         if (node.has(AstConstant.META_CONST)) {
-            if (node.get(AstConstant.META_CONST).has(AstConstant.ELEMENT_ID)) {
-                identifier = asCleanedText(node.get(META_CONST).get(ELEMENT_ID));
+            if (node.get(AstConstant.META_CONST).has(AstConstant.ELEMENT_ID_CONST)) {
+                identifier = asCleanedText(node.get(META_CONST).get(ELEMENT_ID_CONST));
             } else {
                 identifier = getQualifiedName(node);
             }
@@ -125,11 +128,11 @@ public final class AstConstant {
         return identifier;
     }
 
-    public static String getQualifiedName(JsonNode node) {
+    public static String getQualifiedName(final JsonNode node) {
         String identifier = null;
 
         if (node.has(AstConstant.META_CONST) && node.get(AstConstant.META_CONST).has(AstConstant.QUALIFIED_CONST)) {
-            String qualifiedName = asCleanedText(node.get(META_CONST).get(QUALIFIED_CONST));
+            final String qualifiedName = asCleanedText(node.get(META_CONST).get(QUALIFIED_CONST));
             if (!qualifiedName.isEmpty() && !qualifiedName.isBlank() && !qualifiedName.equals("null")) {
                 identifier = qualifiedName;
             }

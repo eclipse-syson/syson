@@ -13,19 +13,17 @@
 package org.eclipse.syson.sysml.upload;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.SysmlToAst;
 import org.springframework.stereotype.Service;
+
+import org.eclipse.emf.common.util.URI;
 
 /**
  * Specific {@link IExternalResourceLoaderService} allowing to load SysML textual resources.
@@ -51,22 +49,11 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
         Resource resource = null;
         InputStream astStream = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension());
         ASTTransformer tranformer = new ASTTransformer();
-        resource = tranformer.convertResource(astStream, this.previousObjectList(resourceSet));
+        resource = tranformer.convertResource(astStream, resourceSet);
         if (resource != null) {
             resourceSet.getResources().add(resource);
         }
         return Optional.ofNullable(resource);
     }
 
-    private List<EObject> previousObjectList(ResourceSet resourceSet) {
-        List<EObject> objectList = new ArrayList<EObject>();
-        resourceSet.getResources().stream().forEach(resource -> {
-            resource.getAllContents().forEachRemaining(t -> {
-                if (t != null) {
-                    objectList.add(t);
-                }
-            });
-        });
-        return objectList;
-    }
 }

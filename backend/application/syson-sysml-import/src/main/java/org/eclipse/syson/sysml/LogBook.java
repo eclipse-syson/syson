@@ -43,36 +43,36 @@ public class LogBook {
 
     private static final StringBuilder REPORT = new StringBuilder();
 
-    public static void addEvent(String messageId, EObject eObject, Object... params) {
+    public static void addEvent(final String messageId, final EObject eObject, final Object... params) {
         EVENTS.add(new Event(messageId, eObject, params));
     }
 
     public static void emitLogMessages() {
-        for (Event event : EVENTS) {
+        for (final Event event : EVENTS) {
             REPORT.append(event.toLogMessage(MESSAGES));
         }
         EVENTS.clear();
     }
 
-    public static String getReport(String fileName) {
+    public static String getReport(final String fileName) {
         emitLogMessages();
         return REPORT.toString();
     }
 
-    public static void saveReportToDownloads(String reportContent, String fileName) {
+    public static void saveReportToDownloads(final String reportContent, final String fileName) {
         try {
-            String header = generateReportHeader(fileName);
-            String finalReportContent = header + reportContent;
+            final String header = generateReportHeader(fileName);
+            final String finalReportContent = header + reportContent;
 
-            String dateTimePattern = "yyyyMMdd_HHmm";
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
-            String formattedDateTime = now.format(formatter);
+            final String dateTimePattern = "yyyyMMdd_HHmm";
+            final LocalDateTime now = LocalDateTime.now();
+            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimePattern);
+            final String formattedDateTime = now.format(formatter);
 
-            String reportName = "report_" + fileName + "_" + formattedDateTime + ".txt";
+            final String reportName = "report_" + fileName + "_" + formattedDateTime + ".txt";
 
-            String userHome = System.getProperty("user.home");
-            Path downloadsPath = Paths.get(userHome, "Downloads", reportName);
+            final String userHome = System.getProperty("user.home");
+            final Path downloadsPath = Paths.get(userHome, "Downloads", reportName);
 
             Files.createDirectories(downloadsPath.getParent());
 
@@ -81,14 +81,14 @@ public class LogBook {
             }
 
             REPORT.setLength(0);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error(e.getMessage());
         }
     }
 
-    private static String generateReportHeader(String fileName) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String generationDateTime = LocalDateTime.now().format(formatter);
+    private static String generateReportHeader(final String fileName) {
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        final String generationDateTime = LocalDateTime.now().format(formatter);
         return "================================================================================\n" + "SYSON IMPORT REPORT " + fileName + "\n"
                 + "================================================================================\n" + "Report Generated: " + generationDateTime + "\n\n";
     }

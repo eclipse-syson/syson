@@ -1,0 +1,22 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "NamespaceImport",
+            "targetRef": {
+              "$type": "NamespaceReference",
+              "text": "ScalarValues",
+              "reference": null
+            }
+          }
+        ],
+        "declaredName": "Packets"
+      }
+    }
+  ]
+}

@@ -41,7 +41,7 @@ public class DeresolvingNamespaceProvider {
 
     public Namespace getDeresolvingNamespace(Element element) {
         // See 8.2.3.5.2 Local and Global Namespaces
-        final Namespace result;
+        Namespace result;
         if (element instanceof Import aImport) {
             result = aImport.getImportOwningNamespace();
         } else if (element instanceof Membership membership) {
@@ -55,6 +55,13 @@ public class DeresolvingNamespaceProvider {
         } else {
             result = element.getOwningNamespace();
         }
+        if (result == null && element.getOwner() instanceof Namespace ownerNamespace) {
+            result = ownerNamespace;
+        }
+        if (result == null && element.eContainer() instanceof Namespace containerNamespace) {
+            result = containerNamespace;
+        }
+
         return result;
     }
 

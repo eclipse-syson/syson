@@ -1,0 +1,56 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "AttributeUsage",
+                    "declaredName": "attribute1"
+                  }
+                }
+              ],
+              "declaredName": "Part1"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "AttributeUsage",
+                    "declaredName": "attribute2"
+                  }
+                }
+              ],
+              "heritage": [
+                {
+                  "$type": "Subclassification",
+                  "targetRef": {
+                    "$type": "ClassifierReference",
+                    "text": "Part1",
+                    "reference": "Package::Part1"
+                  }
+                }
+              ],
+              "declaredName": "Part2"
+            }
+          }
+        ],
+        "declaredName": "Package"
+      }
+    }
+  ]
+}

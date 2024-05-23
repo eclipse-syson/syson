@@ -86,6 +86,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/475[#475] [explorer] Sort New Object menu entries
 - https://github.com/eclipse-syson/syson/issues/477[#477] [diagrams] Add Direct Edit tool in control nodes palette
 - https://github.com/eclipse-syson/syson/issues/479[#479] [diagrams] Allow multiple occurrences of Start and Done actions in action body
+- https://github.com/eclipse-syson/syson/issues/320[#320] [import] Implement new import strategy based on ecore
 
 === New features
 

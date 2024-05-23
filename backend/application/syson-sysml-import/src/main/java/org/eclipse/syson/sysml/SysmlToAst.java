@@ -44,35 +44,35 @@ public class SysmlToAst {
 
     private final String cliPath;
 
-    public SysmlToAst(@Value("${org.eclipse.syson.syside.path:#{null}}") String cliPath) {
+    public SysmlToAst(@Value("${org.eclipse.syson.syside.path:#{null}}") final String cliPath) {
         this.cliPath = cliPath;
     }
 
-    public InputStream convert(InputStream input, String fileExtension) {
+    public InputStream convert(final InputStream input, final String fileExtension) {
         InputStream output = null;
 
         try {
-            Path sysmlInputPath = this.createTempFile(input, "syson", fileExtension);
+            final Path sysmlInputPath = this.createTempFile(input, "syson", fileExtension);
 
             Path sysIdeInputPath = null;
             if (this.cliPath != null) {
                 sysIdeInputPath = Path.of(this.cliPath);
             } else {
-                PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-                Resource resource = resolver.getResource(ResourcePatternResolver.CLASSPATH_URL_PREFIX + "syside-cli.js");
-                InputStream sysIdeInputStream = resource.getInputStream();
+                final PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+                final Resource resource = resolver.getResource(ResourcePatternResolver.CLASSPATH_URL_PREFIX + "syside-cli.js");
+                final InputStream sysIdeInputStream = resource.getInputStream();
                 sysIdeInputPath = this.createTempFile(sysIdeInputStream, "syside-cli", "js");
             }
 
             this.logger.info("Call syside application : node " + sysIdeInputPath.toString() + " dump " + sysmlInputPath.toString());
-            String[] args = { "node", sysIdeInputPath.toString(), "dump", sysmlInputPath.toString() };
+            final String[] args = { "node", sysIdeInputPath.toString(), "dump", sysmlInputPath.toString() };
             ProcessBuilder pb = new ProcessBuilder(args);
             pb = pb.redirectErrorStream(false);
-            Process sysIdeProcess = pb.start();
-            InputStream is = sysIdeProcess.getInputStream();
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder builder = new StringBuilder();
+            final Process sysIdeProcess = pb.start();
+            final InputStream is = sysIdeProcess.getInputStream();
+            final InputStreamReader isr = new InputStreamReader(is);
+            final BufferedReader br = new BufferedReader(isr);
+            final StringBuilder builder = new StringBuilder();
 
             String line = br.readLine();
             if (line != null) {
@@ -84,9 +84,9 @@ public class SysmlToAst {
                     builder.append(line);
                 }
             } else {
-                InputStream er = sysIdeProcess.getErrorStream();
-                InputStreamReader err = new InputStreamReader(er);
-                BufferedReader erbr = new BufferedReader(err);
+                final InputStream er = sysIdeProcess.getErrorStream();
+                final InputStreamReader err = new InputStreamReader(er);
+                final BufferedReader erbr = new BufferedReader(err);
                 this.logger.error("Fail to call syside application : \n " + erbr.lines().collect(Collectors.joining("\n")));
             }
 
@@ -97,17 +97,17 @@ public class SysmlToAst {
                 sysIdeInputPath.toFile().delete();
             }
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             this.logger.error(e.getMessage());
         }
 
         return output;
     }
 
-    private Path createTempFile(InputStream input, String fileName, String fileExtension) throws IOException, FileNotFoundException {
-        Path inputPath = Files.createTempFile(fileName, "." + fileExtension);
-        OutputStream outStream = new FileOutputStream(inputPath.toString());
-        byte[] buffer = new byte[8 * 1024];
+    private Path createTempFile(final InputStream input, final String fileName, final String fileExtension) throws IOException, FileNotFoundException {
+        final Path inputPath = Files.createTempFile(fileName, "." + fileExtension);
+        final OutputStream outStream = new FileOutputStream(inputPath.toString());
+        final byte[] buffer = new byte[8 * 1024];
         int bytesRead;
         while ((bytesRead = input.read(buffer)) != -1) {
             outStream.write(buffer, 0, bytesRead);
