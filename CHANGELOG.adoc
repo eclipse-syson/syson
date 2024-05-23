@@ -1,5 +1,22 @@
 = Changelog
 
+== v2024.7.0 (work in progress)
+
+=== Breaking changes
+
+
+=== Dependency update
+
+
+=== Bug fixes
+
+
+=== Improvements
+
+
+=== New features
+
+
 == v2024.5.0
 
 === Breaking changes
