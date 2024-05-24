@@ -66,7 +66,7 @@ public class NameDeresolverTest {
     }
 
     @Test
-    public void checkNameCollission() {
+    public void checkNameCollision() {
         /**
          * <pre>
          * package Root {

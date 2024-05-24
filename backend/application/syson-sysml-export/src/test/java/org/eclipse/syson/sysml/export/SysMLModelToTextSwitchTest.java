@@ -22,6 +22,8 @@ import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.DataType;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.InterfaceDefinition;
@@ -339,10 +341,10 @@ public class SysMLModelToTextSwitchTest {
     @Test
     public void commentWithBody() {
         Comment comment = this.fact.createComment();
-        comment.setBody("A body");
+        comment.setBody("Body");
         this.assertTextualFormEquals("""
                 comment
-                    /* A body */""", comment);
+                    /* Body */""", comment);
     }
 
     /**
@@ -548,6 +550,33 @@ public class SysMLModelToTextSwitchTest {
     }
 
     @Test
+    public void enumerationDefinitionAndEnumerationUsage() {
+        EnumerationDefinition enumDef = builder.createWithName(EnumerationDefinition.class, "Colors");
+
+        builder.createInWithName(EnumerationUsage.class, enumDef, "black");
+
+        MetadataDefinition metaData1 = this.fact.createMetadataDefinition();
+        metaData1.setDeclaredName("m1");
+
+        MetadataUsage m1u = this.createMetadataUsage(metaData1);
+
+        EnumerationUsage greyLiteral = builder.createInWithName(EnumerationUsage.class, enumDef, "grey");
+        this.addOwnedMembership(greyLiteral, m1u);
+        EnumerationUsage redLiteral = builder.createInWithName(EnumerationUsage.class, enumDef, "red");
+
+        builder.createIn(Comment.class, redLiteral).setBody("A body");
+
+        assertTextualFormEquals("""
+                enum def Colors {
+                    black;
+                    #m1 grey;
+                    red {
+                        /* A body */
+                    }
+                }""", enumDef);
+    }
+
+    @Test
     public void partDefinitionWithMetadata() {
 
         Package pack1 = this.fact.createPackage();
@@ -613,7 +642,7 @@ public class SysMLModelToTextSwitchTest {
     public void attributeUsage() {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
 
-        this.assertTextualFormEquals("ref attribute attribute1;", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1;", attributeUsage);
     }
 
     @Test
@@ -621,7 +650,7 @@ public class SysMLModelToTextSwitchTest {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
         attributeUsage.setIsAbstract(true);
 
-        this.assertTextualFormEquals("abstract ref attribute attribute1;", attributeUsage);
+        this.assertTextualFormEquals("abstract attribute attribute1;", attributeUsage);
     }
 
     @Test
@@ -629,7 +658,7 @@ public class SysMLModelToTextSwitchTest {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
         attributeUsage.setIsVariation(true);
 
-        this.assertTextualFormEquals("variation ref attribute attribute1;", attributeUsage);
+        this.assertTextualFormEquals("variation attribute attribute1;", attributeUsage);
     }
 
     @Test
@@ -637,7 +666,7 @@ public class SysMLModelToTextSwitchTest {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
         attributeUsage.setIsReadOnly(true);
 
-        this.assertTextualFormEquals("readonly ref attribute attribute1;", attributeUsage);
+        this.assertTextualFormEquals("readonly attribute attribute1;", attributeUsage);
     }
 
     @Test
@@ -645,7 +674,7 @@ public class SysMLModelToTextSwitchTest {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
         attributeUsage.setIsDerived(true);
 
-        this.assertTextualFormEquals("derived ref attribute attribute1;", attributeUsage);
+        this.assertTextualFormEquals("derived attribute attribute1;", attributeUsage);
     }
 
     @Test
@@ -653,7 +682,7 @@ public class SysMLModelToTextSwitchTest {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
         attributeUsage.setIsEnd(true);
 
-        this.assertTextualFormEquals("end ref attribute attribute1;", attributeUsage);
+        this.assertTextualFormEquals("end attribute attribute1;", attributeUsage);
     }
 
     @Test
@@ -665,7 +694,7 @@ public class SysMLModelToTextSwitchTest {
         attributeUsage.setIsVariation(true);
         attributeUsage.setIsAbstract(true);
 
-        this.assertTextualFormEquals("abstract variation readonly derived end ref attribute attribute1;", attributeUsage);
+        this.assertTextualFormEquals("abstract variation readonly derived end attribute attribute1;", attributeUsage);
     }
 
     @Test
@@ -677,7 +706,7 @@ public class SysMLModelToTextSwitchTest {
         Feature feature = this.builder.createWithName(Feature.class, SUBSETTING1);
         subsetting.setSubsettedFeature(feature);
 
-        this.assertTextualFormEquals("ref attribute attribute1 :> sub1;", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1 :> sub1;", attributeUsage);
     }
 
     @Test
@@ -693,7 +722,7 @@ public class SysMLModelToTextSwitchTest {
         Feature feature1 = this.builder.createWithName(Feature.class, SUBSETTING2);
         subsetting1.setSubsettedFeature(feature1);
 
-        this.assertTextualFormEquals("ref attribute attribute1 :> sub1, sub2;", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1 :> sub1, sub2;", attributeUsage);
     }
 
     @Test
@@ -709,7 +738,7 @@ public class SysMLModelToTextSwitchTest {
         LiteralInteger literal = this.builder.createIn(LiteralInteger.class, multiplicity);
         literal.setValue(1);
 
-        this.assertTextualFormEquals("ref attribute attribute1 :> sub1 [1];", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1 :> sub1 [1];", attributeUsage);
     }
 
     @Test
@@ -727,7 +756,7 @@ public class SysMLModelToTextSwitchTest {
         LiteralInteger literal = this.builder.createIn(LiteralInteger.class, multiplicity);
         literal.setValue(1);
 
-        this.assertTextualFormEquals("ref attribute attribute1 :> sub1 [1] ordered nonunique;", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1 :> sub1 [1] ordered nonunique;", attributeUsage);
     }
 
     @Test
@@ -744,7 +773,7 @@ public class SysMLModelToTextSwitchTest {
         literal.setValue(1);
         this.builder.createIn(LiteralInfinity.class, multiplicity);
 
-        this.assertTextualFormEquals("ref attribute attribute1 :> sub1 [1..*];", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1 :> sub1 [1..*];", attributeUsage);
     }
 
     @Test
@@ -756,7 +785,7 @@ public class SysMLModelToTextSwitchTest {
         Feature feature = this.builder.createWithName(Feature.class, "redefinition1");
         redefinition.setRedefinedFeature(feature);
 
-        this.assertTextualFormEquals("ref attribute attribute1 :>> redefinition1;", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1 :>> redefinition1;", attributeUsage);
     }
 
     @Test
@@ -772,7 +801,7 @@ public class SysMLModelToTextSwitchTest {
         Feature feature1 = this.builder.createWithName(Feature.class, "redefinition2");
         redefinition1.setRedefinedFeature(feature1);
 
-        this.assertTextualFormEquals("ref attribute attribute1 :>> redefinition1, redefinition2;", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1 :>> redefinition1, redefinition2;", attributeUsage);
     }
 
     @Test
@@ -784,7 +813,7 @@ public class SysMLModelToTextSwitchTest {
         Feature feature = this.builder.createWithName(Feature.class, "refSubset1");
         ref.setReferencedFeature(feature);
 
-        this.assertTextualFormEquals("ref attribute attribute1 ::> refSubset1;", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1 ::> refSubset1;", attributeUsage);
     }
 
     @Test
@@ -799,7 +828,7 @@ public class SysMLModelToTextSwitchTest {
         typing.setSpecific(attributeUsage);
         typing.setGeneral(dataType);
 
-        this.assertTextualFormEquals("ref attribute attribute1 : type1;", attributeUsage);
+        this.assertTextualFormEquals("attribute attribute1 : type1;", attributeUsage);
     }
 
     @Test

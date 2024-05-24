@@ -15,6 +15,10 @@ package org.eclipse.syson.sysml.export;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.base.Strings.nullToEmpty;
 import static java.util.stream.Collectors.joining;
+import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_DEFINITION_BODY_ELEMENT;
+import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_IMPORT;
+import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_MEMBERSHIP;
+import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_METADATA_USAGE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +30,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
@@ -37,8 +40,6 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Import;
-import org.eclipse.syson.sysml.InterfaceDefinition;
-import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.LiteralInfinity;
@@ -55,16 +56,17 @@ import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
-import org.eclipse.syson.sysml.PartDefinition;
-import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.utils.Appender;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
+import org.eclipse.syson.sysml.export.utils.SysMLKeywordSwitch;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
@@ -85,6 +87,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private String indentation;
 
     private NameDeresolver nameDeresolver;
+
+    private final SysMLKeywordSwitch keywordProvider = new SysMLKeywordSwitch();
 
     /**
      * Simple constructor.
@@ -123,7 +127,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         builder.append("package ");
         this.appendNameWithShortName(builder, pack);
 
-        this.appendOwnedRelationshiptContent(builder, pack);
+        List<Relationship> children = pack.getOwnedRelationship().stream().filter(IS_MEMBERSHIP.and(IS_METADATA_USAGE.negate()).or(IS_IMPORT)).toList();
+        this.appendChildrenContent(builder, pack, children);
 
         return builder.toString();
     }
@@ -140,7 +145,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             this.appendDefinitionPrefix(builder, occDef);
         }
 
-        builder.appendSpaceIfNeeded().append(this.getKeyword(def));
+        builder.appendSpaceIfNeeded().append(this.getDefinitionKeyword(def));
 
         this.appendDefinition(builder, def);
 
@@ -212,19 +217,25 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseAttributeUsage(AttributeUsage attribute) {
+    public String caseUsage(Usage usage) {
 
         Appender builder = this.newAppender();
 
-        this.appendUsagePrefix(builder, attribute);
+        this.appendUsagePrefix(builder, usage);
 
-        builder.appendSpaceIfNeeded().append("attribute ");
+        builder.appendSpaceIfNeeded().append(getUsageKeyword(usage));
 
-        this.appendUsageDeclaration(builder, attribute);
+        this.appendUsageDeclaration(builder, usage);
+        
+        List<Relationship> children = usage.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ELEMENT).toList();
 
-        this.appendOwnedRelationshiptContent(builder, attribute);
+        this.appendChildrenContent(builder, usage, children);
 
         return builder.toString();
+    }
+
+    private String getUsageKeyword(Usage usage) {
+        return keywordProvider.doSwitch(usage);
     }
 
     private void appendFeatureSpecilizationPart(Appender builder, Feature feature) {
@@ -356,31 +367,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return "";
     }
 
-    private String getKeyword(Definition def) {
-        final String keyword;
-
-        if (def instanceof InterfaceDefinition) {
-            keyword = "interface def";
-        } else if (def instanceof PartDefinition) {
-            keyword = "part def";
-        } else if (def instanceof PortDefinition) {
-            keyword = "port def";
-        } else if (def instanceof AttributeDefinition) {
-            keyword = "attribute def";
-        } else if (def instanceof ItemDefinition) {
-            keyword = "item def";
-        } else {
-            keyword = null;
-        }
-        return keyword;
+    private String getDefinitionKeyword(Definition def) {
+        return keywordProvider.doSwitch(def) + " def";
     }
 
     private void appendDefinition(Appender builder, Definition definition) {
 
         this.appendDefinitionDeclaration(builder, definition);
 
-        // definition body
-        this.appendOwnedRelationshiptContent(builder, definition);
+        List<Relationship> children = definition.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ELEMENT).toList();
+        this.appendChildrenContent(builder, definition, children);
     }
 
     private void appendDefinitionDeclaration(Appender builder, Definition definition) {
@@ -434,7 +430,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendSpaceIfNeeded().append(isIndividual);
         }
 
-        this.appendDefinitionExtensionKeyword(builder, def);
+        this.appendExtensionKeyword(builder, def);
     }
 
     private void appendUsagePrefix(Appender builder, Usage usage) {
@@ -442,7 +438,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.getBasicUsagePrefix(builder, usage);
 
         final String isRef;
-        if (usage.isIsReference()) {
+        if (usage.isIsReference() && !isImplicitlyReferencial(usage)) {
             isRef = "ref";
         } else {
             isRef = "";
@@ -450,24 +446,15 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         builder.appendSpaceIfNeeded().append(isRef);
 
-        this.appendUsageExtensionKeyword(builder, usage);
+        this.appendExtensionKeyword(builder, usage);
     }
 
-    private void appendUsageExtensionKeyword(Appender builder, Usage usage) {
-        for (var rel : usage.getOwnedRelationship()) {
-            if (rel instanceof OwningMembership owningMember) {
-                owningMember.getOwnedRelatedElement().stream()
-                        .filter(MetadataUsage.class::isInstance)
-                        .map(MetadataUsage.class::cast)
-                        .map(MetadataUsage::getMetadataDefinition)
-                        .filter(NOT_NULL)
-                        .forEach(mDef -> this.appendPrefixMetadataMember(builder, mDef));
-            }
-        }
+    private boolean isImplicitlyReferencial(Usage usage) {
+        return usage instanceof AttributeUsage;
     }
 
-    private void appendDefinitionExtensionKeyword(Appender builder, Definition def) {
-        for (var rel : def.getOwnedRelationship()) {
+    private void appendExtensionKeyword(Appender builder, Type type) {
+        for (var rel : type.getOwnedRelationship()) {
             if (rel instanceof OwningMembership owningMember) {
                 owningMember.getOwnedRelatedElement().stream()
                         .filter(MetadataUsage.class::isInstance)
@@ -538,9 +525,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return new Appender(this.lineSeparator, this.indentation);
     }
 
-    private void appendOwnedRelationshiptContent(Appender builder, Element element) {
+    private void appendChildrenContent(Appender builder, Element element, List<Relationship> childrenRelationships) {
 
-        String content = this.getContent(element.getOwnedRelationship());
+        String content = this.getContent(childrenRelationships);
         if (content != null && !content.isBlank()) {
             builder.append(" {");
             builder.appendIndentedContent(content);
@@ -550,7 +537,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
-    private String getContent(List<? extends Element> children) {
+    private String getContent(List<? extends Relationship> children) {
         return children.stream().map(rel -> this.doSwitch(rel)).filter(NOT_NULL).collect(joining(this.lineSeparator, this.lineSeparator, ""));
     }
 
@@ -579,7 +566,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.append("::**");
         }
 
-        this.appendOwnedRelationshiptContent(builder, aImport);
+        this.appendChildrenContent(builder, aImport, aImport.getOwnedRelationship());
 
         return builder.toString();
     }

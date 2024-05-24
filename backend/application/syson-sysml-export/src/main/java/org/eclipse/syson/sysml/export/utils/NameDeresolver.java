@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EObject;
@@ -38,6 +39,9 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.helper.MembershipComputer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Object in charge of converting an Element to a resolvable qualified name depending of its context. This class tries
@@ -49,7 +53,23 @@ import org.eclipse.syson.sysml.helper.EMFUtils;
  */
 public class NameDeresolver {
 
-    private Map<Namespace, EList<Membership>> cachedMemberships = new HashMap<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(NameDeresolver.class);
+
+    /**
+     * Keep a cache of the visible memberships of a given Namespace identified by its elementId.
+     */
+    private Map<String, EList<Membership>> visibleMembershipsCache = new HashMap<>();
+
+    /**
+     * Keep a cache the deresolved name of an element from a given namespace. The key of the map is a pair of the
+     * elementId of the deresolving namespace and the element itself.
+     */
+    private Map<Pair<String, String>, String> deresolvedNamesCache = new HashMap<>();
+
+    /**
+     * Keeps a cache of the qualified name of an element identified by its elementId.
+     */
+    private Map<String, String> qualifiedNameCache = new HashMap<>();
 
     public String getDeresolvedName(Element element, Element context) {
 
@@ -61,7 +81,7 @@ public class NameDeresolver {
 
         final String qualifiedName;
         if (deresolvingNamespace == null) {
-            qualifiedName = element.getQualifiedName();
+            qualifiedName = getQualifiedName(element);
         } else {
             Set<Membership> elementAncestors = EMFUtils.getAncestors(Membership.class, element, null).stream().collect(toSet());
             qualifiedName = this.deresolve(element, deresolvingNamespace, deresolvingNamespace, elementAncestors);
@@ -71,8 +91,23 @@ public class NameDeresolver {
 
     }
 
+    private String getQualifiedName(Element e) {
+        if (e == null) {
+            return "";
+        }
+        String qn = qualifiedNameCache.get(e.getElementId());
+        if (qn == null) {
+            qn = e.getQualifiedName();
+            if (qn == null) {
+                qn = "";
+            }
+            qualifiedNameCache.put(e.getElementId(), qn);
+        }
+        return qn;
+    }
+
     /**
-     * Deresolve the name of the given element
+     * Deresolve the name of the given element.
      *
      * @param element
      *            the element to deresolve.
@@ -85,11 +120,15 @@ public class NameDeresolver {
      * @return a name
      */
     private String deresolve(Element element, Namespace sourceNamespace, Namespace deresolvingNamespace, Set<Membership> ancestors) {
-
         final String qualifiedName;
         if (deresolvingNamespace == null) {
-            qualifiedName = element.getQualifiedName();
+            qualifiedName = getQualifiedName(element);
         } else {
+            Pair<String, String> searchKey = Pair.of(deresolvingNamespace.getElementId(), element.getElementId());
+            String cacheValue = deresolvedNamesCache.get(searchKey);
+            if (cacheValue != null) {
+                return cacheValue;
+            }
             EList<Membership> visibleMemberships = this.getVisibleMemberships(deresolvingNamespace, deresolvingNamespace == sourceNamespace);
             final Stream<Membership> stream;
             // Some element have a lots of elements to checks. In that case use parallel stream
@@ -107,9 +146,13 @@ public class NameDeresolver {
                 // Try to compute its qualified name
                 qualifiedName = this.buildRelativeQualifiedName(element, deresolvingNamespace, importedContainer.get(), sourceNamespace);
             } else {
+                // Ask to the parent namespace
                 qualifiedName = this.deresolve(element, sourceNamespace, deresolvingNamespace.getOwningNamespace(), ancestors);
             }
 
+            if (qualifiedName != null) {
+                deresolvedNamesCache.put(searchKey, qualifiedName);
+            }
         }
 
         return qualifiedName;
@@ -126,19 +169,28 @@ public class NameDeresolver {
     }
 
     private EList<Membership> getVisibleMemberships(Namespace deresolvingNamespace, boolean includePrivate) {
-        EList<Membership> memberships = this.cachedMemberships.get(deresolvingNamespace);
+        EList<Membership> memberships = null;
+        String namespaceId = deresolvingNamespace.getElementId();
+        if (namespaceId != null) {
+            memberships = this.visibleMembershipsCache.get(namespaceId);
+        }
         if (memberships == null) {
-            memberships = deresolvingNamespace.visibleMemberships(new UniqueEList<>(), false, includePrivate).stream()
+            EList<Membership> visible = new MembershipComputer<Namespace>(deresolvingNamespace, new UniqueEList<>()).visibleMemberships(false, includePrivate, true);
+            memberships = visible.stream()
                     .filter(m -> m.getMemberElement() != null)
                     .filter(m -> includePrivate || m.getVisibility() != VisibilityKind.PRIVATE)
                     .collect(toCollection(UniqueEList<Membership>::new));
-            this.cachedMemberships.put(deresolvingNamespace, memberships);
+            this.visibleMembershipsCache.put(namespaceId, memberships);
         }
         return memberships;
     }
 
     private String buildRelativeQualifiedName(Element element, Namespace owningNamespace, Membership visibleMembership, Namespace sourceNamespace) {
-        String elementQn = element.getQualifiedName();
+        String elementQn = getQualifiedName(element);
+        if (elementQn == null || elementQn.isEmpty()) {
+            LOGGER.warn("No qualified name found for " + element.getElementId());
+            return "";
+        }
 
         // Qualified name between visible membership and the element
         String relativeQualifiedName = this.getRelativeQualifiedName(elementQn, element, visibleMembership);
@@ -149,8 +201,8 @@ public class NameDeresolver {
         // In that case keep we need a more detailed qualified name
         if (resolvedElement != null && resolvedElement != element.getOwningMembership()) {
             // Last try if the element is in the containment tree find the shortest qualified name
-            String qualifiedName = owningNamespace.getQualifiedName();
-            if (elementQn.startsWith(qualifiedName)) {
+            String qualifiedName = getQualifiedName(owningNamespace);
+            if (qualifiedName != null && elementQn.startsWith(qualifiedName)) {
                 relativeQualifiedName = elementQn.substring(qualifiedName.length() + 2, elementQn.length());
             } else {
                 relativeQualifiedName = elementQn;
@@ -164,9 +216,15 @@ public class NameDeresolver {
     private String getRelativeQualifiedName(String elementQn, Element element, Membership m) {
         final String qn;
         Element importedElement = m.getMemberElement();
-        String importedElementQualifiedName = importedElement.getQualifiedName();
+        String importedElementQualifiedName = getQualifiedName(importedElement);
+        int partToRemove;
+        if (importedElementQualifiedName == null) {
+            partToRemove = 0;
+        } else {
+            partToRemove = importedElementQualifiedName.length() + 2;
+        }
         if (importedElement != element) {
-            qn = Appender.toPrintableName(importedElement.getDeclaredName()) + "::" + elementQn.substring(importedElementQualifiedName.length() + 2, elementQn.length());
+            qn = Appender.toPrintableName(importedElement.getDeclaredName()) + "::" + elementQn.substring(partToRemove, elementQn.length());
         } else {
             qn = Appender.toPrintableName(element.getDeclaredName());
         }

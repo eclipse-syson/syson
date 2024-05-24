@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -27,6 +26,7 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.helper.MembershipComputer;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Namespace Import</b></em>'. <!-- end-user-doc
@@ -175,12 +175,7 @@ public class NamespaceImportImpl extends ImportImpl implements NamespaceImport {
      */
     @Override
     public EList<Membership> importedMemberships(EList<Namespace> excluded) {
-        Namespace aImportedNamespace = this.getImportedNamespace();
-        BasicEList<Membership> result = new BasicEList<>();
-        if (aImportedNamespace != null && !excluded.contains(aImportedNamespace)) {
-            result.addAll(aImportedNamespace.visibleMemberships(excluded, this.isIsRecursive(), this.isIsImportAll()));
-        }
-        return result;
+        return new MembershipComputer(this, excluded).importedMemberships();
     }
 
     /**
