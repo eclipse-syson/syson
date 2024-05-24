@@ -124,7 +124,7 @@ public class PartUsageImplTest {
         testInheritedFeature(testModel.typeDef);
         testInheritedFeature(testModel.superPart, testModel.publicTypeDefAttribute, testModel.protectedTypeDefAttribute);
         testInheritedFeature(testModel.containedPart,
-                // Visible from ypeDelf
+                // Visible from typeDelf
                 testModel.publicTypeDefAttribute, testModel.protectedTypeDefAttribute,
                 // Visible from owning part
                 testModel.publicSuperPartAttribute, testModel.protectedSuperPartAttribute,

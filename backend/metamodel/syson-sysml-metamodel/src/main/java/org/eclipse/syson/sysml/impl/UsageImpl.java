@@ -12,8 +12,6 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import static java.util.stream.Collectors.toCollection;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +57,7 @@ import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.ViewpointUsage;
-import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.helper.MembershipComputer;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Usage</b></em>'. <!-- end-user-doc -->
@@ -179,7 +177,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        EList<Membership> inheritedMembers = inheritedMemberships(new BasicEList<Type>());
+        EList<Membership> inheritedMembers = this.inheritedMemberships(new BasicEList<>());
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMembers.size(), inheritedMembers.toArray());
     }
 
@@ -188,15 +186,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public EList<Membership> inheritedMemberships(EList<Type> excluded) {
-        List<Membership> superInheritedMembership = new ArrayList<>(super.inheritedMemberships(excluded));
-        Usage owningUsage = this.getOwningUsage();
-        if (owningUsage != null) {
-            superInheritedMembership.addAll(owningUsage.getInheritedMembership());
-            owningUsage.getOwnedFeatureMembership().stream()
-                    .filter(m -> m.getVisibility() != VisibilityKind.PRIVATE)
-                    .forEach(superInheritedMembership::add);
-        }
-        return superInheritedMembership.stream().distinct().collect(toCollection(BasicEList::new));
+        return new MembershipComputer(this, excluded).inheritedMemberships();
     }
 
     /**
@@ -239,8 +229,9 @@ public class UsageImpl extends FeatureImpl implements Usage {
     public void setIsVariation(boolean newIsVariation) {
         boolean oldIsVariation = this.isVariation;
         this.isVariation = newIsVariation;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.USAGE__IS_VARIATION, oldIsVariation, this.isVariation));
+        }
     }
 
     /**
@@ -884,12 +875,14 @@ public class UsageImpl extends FeatureImpl implements Usage {
             case SysmlPackage.USAGE__NESTED_VIEWPOINT:
                 return this.getNestedViewpoint();
             case SysmlPackage.USAGE__OWNING_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningDefinition();
+                }
                 return this.basicGetOwningDefinition();
             case SysmlPackage.USAGE__OWNING_USAGE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningUsage();
+                }
                 return this.basicGetOwningUsage();
             case SysmlPackage.USAGE__USAGE:
                 return this.getUsage();
@@ -1023,8 +1016,9 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isVariation: ");

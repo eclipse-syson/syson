@@ -43,7 +43,7 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Unioning;
-import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.helper.MembershipComputer;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
 
 /**
@@ -286,8 +286,9 @@ public class TypeImpl extends NamespaceImpl implements Type {
     public void setIsAbstract(boolean newIsAbstract) {
         boolean oldIsAbstract = this.isAbstract;
         this.isAbstract = newIsAbstract;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE__IS_ABSTRACT, oldIsAbstract, this.isAbstract));
+        }
     }
 
     /**
@@ -319,8 +320,9 @@ public class TypeImpl extends NamespaceImpl implements Type {
     public void setIsSufficient(boolean newIsSufficient) {
         boolean oldIsSufficient = this.isSufficient;
         this.isSufficient = newIsSufficient;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE__IS_SUFFICIENT, oldIsSufficient, this.isSufficient));
+        }
     }
 
     /**
@@ -526,35 +528,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Membership> inheritedMemberships(EList<Type> excluded) {
-        excluded.add(this);
-        NameConflictingFilter namefilter = new NameConflictingFilter();
-        namefilter.fillUsedNames(getOwnedMembership());
-        Conjugation conjugator = this.getOwnedConjugator();
-        List<Membership> conjugatedMemberships = List.of();
-        if (conjugator != null) {
-            Type type = conjugator.getOriginalType();
-            if (type != null) {
-                conjugatedMemberships = type.getMembership().stream().filter(namefilter).toList();
-            }
-        }
-
-        List<Membership> generalMemberships = new BasicEList<Membership>();
-        EList<Namespace> namespaceToExclude = toNamespaceExclusion(excluded);
-        for (Specialization specialization : getOwnedSpecialization()) {
-            Type general = specialization.getGeneral();
-            if (general != null && !excluded.contains(general)) {
-                general.visibleMemberships(namespaceToExclude, false, true).stream()
-                        .filter(namefilter)
-                        .forEach(generalMemberships::add);
-            }
-        }
-        namespaceToExclude.stream().filter(Type.class::isInstance).map(Type.class::cast).forEach(excluded::add);
-
-        Membership[] data = Stream.concat(conjugatedMemberships.stream(), generalMemberships.stream())
-                // Also inherit protected memberships
-                .filter(rel -> rel.getVisibility() != VisibilityKind.PRIVATE)
-                .toArray(Membership[]::new);
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), data.length, data);
+        return new MembershipComputer(this, excluded).inheritedMemberships();
     }
 
     /**
@@ -564,6 +538,18 @@ public class TypeImpl extends NamespaceImpl implements Type {
         return excluded.stream().filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .collect(toCollection(BasicEList<Namespace>::new));
+    }
+
+    /**
+     * @generated NOT
+     */
+    private EList<Membership> getMembership(EList<Namespace> excluded) {
+        List<Element> memberships = new ArrayList<>();
+        NameConflictingFilter filter = new NameConflictingFilter();
+        this.getOwnedMembership().stream().filter(filter).forEach(memberships::add);
+        this.importedMemberships(excluded).stream().filter(filter).forEach(memberships::add);
+        this.inheritedMemberships(excluded.stream().filter(e -> e instanceof Type).map(Type.class::cast).collect(toCollection(UniqueEList::new))).stream().filter(filter).forEach(memberships::add);
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), memberships.size(), memberships.toArray());
     }
 
     /**
@@ -619,14 +605,16 @@ public class TypeImpl extends NamespaceImpl implements Type {
             case SysmlPackage.TYPE__INTERSECTING_TYPE:
                 return this.getIntersectingType();
             case SysmlPackage.TYPE__MULTIPLICITY:
-                if (resolve)
+                if (resolve) {
                     return this.getMultiplicity();
+                }
                 return this.basicGetMultiplicity();
             case SysmlPackage.TYPE__OUTPUT:
                 return this.getOutput();
             case SysmlPackage.TYPE__OWNED_CONJUGATOR:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedConjugator();
+                }
                 return this.basicGetOwnedConjugator();
             case SysmlPackage.TYPE__OWNED_DIFFERENCING:
                 return this.getOwnedDifferencing();
@@ -748,18 +736,6 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * @generated NOT
-     */
-    private EList<Membership> getMembership(EList<Namespace> excluded) {
-        List<Element> memberships = new ArrayList<>();
-        NameConflictingFilter filter = new NameConflictingFilter();
-        this.getOwnedMembership().stream().filter(filter).forEach(memberships::add);
-        this.importedMemberships(excluded).stream().filter(filter).forEach(memberships::add);
-        this.inheritedMemberships(excluded.stream().filter(e -> e instanceof Type).map(Type.class::cast).collect(toCollection(UniqueEList::new))).stream().filter(filter).forEach(memberships::add);
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), memberships.size(), memberships.toArray());
-    }
-
-    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -789,8 +765,9 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isAbstract: ");

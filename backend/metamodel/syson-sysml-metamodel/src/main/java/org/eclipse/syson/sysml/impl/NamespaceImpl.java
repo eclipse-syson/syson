@@ -12,9 +12,6 @@
  */
 package org.eclipse.syson.sysml.impl;
 
-import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toList;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,8 +33,8 @@ import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.helper.MembershipComputer;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
 import org.eclipse.syson.sysml.helper.NameHelper;
 
@@ -385,54 +382,7 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public EList<Membership> visibleMemberships(EList<Namespace> excluded, boolean isRecursive, boolean includeAll) {
-        if (excluded.contains(this)) {
-            return new BasicEList<>();
-        }
-        
-        List<Membership> directMemberships = this.getOwnedMembership().stream()
-                .filter(m -> includeAll || m.getVisibility() == VisibilityKind.PUBLIC).collect(toList());
-
-        NameConflictingFilter nameConflictingFilter = new NameConflictingFilter();
-        nameConflictingFilter.fillUsedNames(this.getOwnedMembership());
-
-        // Protected against infinite loop while iterating on imported/inherited elements
-        excluded.add(this);
-
-        this.getOwnedImport().stream()
-                .filter(m -> includeAll || m.getVisibility() == VisibilityKind.PUBLIC)
-                .flatMap(imp -> imp.importedMemberships(excluded).stream())
-                .filter(nameConflictingFilter)
-                .forEach(directMemberships::add);
-
-        if (this instanceof Type type) {
-            // Inherited members are visible members of a type
-            BasicEList<Type> excludedTypes = excluded.stream()
-                    .filter(Type.class::isInstance)
-                    .map(Type.class::cast)
-                    .collect(toCollection(BasicEList<Type>::new));
-
-            type.inheritedMemberships(excludedTypes).stream()
-                    .filter(rel -> includeAll || rel.getVisibility() == VisibilityKind.PUBLIC)
-                    .filter(nameConflictingFilter)
-                    .forEach(directMemberships::add);
-
-        }
-
-        BasicEList<Membership> visibleMemberships = new BasicEList<>(directMemberships);
-
-        if (isRecursive) {
-            List<Membership> recursiveMembers = new BasicEList<>();
-            for (Membership m : visibleMemberships) {
-                if (m.getMemberElement() instanceof Namespace subNamespace) {
-                    if (!excluded.contains(subNamespace)) {
-                        recursiveMembers.addAll(subNamespace.visibleMemberships(excluded, isRecursive, includeAll));
-                    }
-                }
-            }
-            visibleMemberships.addAll(recursiveMembers);
-        }
-
-        return visibleMemberships;
+        return new MembershipComputer(this, excluded).visibleMemberships( isRecursive, includeAll,false);
     }
 
     /**

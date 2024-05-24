@@ -16,18 +16,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.helper.MembershipComputer;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Membership Import</b></em>'. <!-- end-user-doc
@@ -190,24 +189,7 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
      */
     @Override
     public EList<Membership> importedMemberships(EList<Namespace> excluded) {
-        BasicEList<Membership> importedMemberships = new BasicEList<>();
-        Membership membership = this.getImportedMembership();
-
-        if (membership != null) {
-
-            Element member = membership.getMemberElement();
-
-            if (member != null) {
-                if (!this.isIsRecursive() || !(member instanceof Namespace) || excluded.contains(member)) {
-                    importedMemberships.add(membership);
-                } else if (member instanceof Namespace namespace) {
-                    importedMemberships.add(membership);
-                    importedMemberships.addAll(namespace.visibleMemberships(excluded, this.isIsRecursive(), this.isIsImportAll()));
-                }
-            }
-        }
-
-        return importedMemberships;
+        return new MembershipComputer(this, excluded).importedMemberships();
     }
 
 } // MembershipImportImpl

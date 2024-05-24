@@ -20,6 +20,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -30,6 +32,7 @@ import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 
@@ -113,6 +116,8 @@ public class ModelBuilder {
         if (parent != null) {
             if (newInstance instanceof Relationship newInstanceRelationship && !(newInstance instanceof Definition)) {
                 parent.getOwnedRelationship().add(newInstanceRelationship);
+            } else if (newInstance instanceof EnumerationUsage feature && parent instanceof EnumerationDefinition) {
+                addVariantMembership(parent, feature);
             } else if (newInstance instanceof Feature feature) {
                 addFeatureMembership(parent, feature);
             } else {
@@ -120,6 +125,10 @@ public class ModelBuilder {
             }
         }
         return newInstance;
+    }
+
+    private void addVariantMembership(Element parent, EnumerationUsage feature) {
+        addOwnedMembership(parent, feature, VariantMembership.class, null);
     }
 
     private void addOwnedMembership(Element parent, Element ownedElement) {
