@@ -38,6 +38,7 @@ import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
@@ -120,6 +121,31 @@ public class SysMLModelToTextSwitchTest {
 
         this.assertTextualFormEquals("""
                 package Package1 {
+                    package 'Package 2' {
+                        package 'Package 3';
+                    }
+                }""", pack1);
+    }
+
+    @Test
+    public void packageWithContentWithRootNamespace() {
+
+        Namespace rootnamespace = this.builder.create(Namespace.class);
+
+        Package pack1 = this.builder.createInWithName(Package.class, rootnamespace, PACKAGE1);
+        
+        NamespaceImport namespaceImport = this.builder.createIn(NamespaceImport.class, pack1);
+
+        Package pack2 = this.builder.createInWithName(Package.class, pack1, PACKAGE_2);
+
+        Package pack3 = this.builder.createInWithName(Package.class, pack2, "Package 3");
+        
+        namespaceImport.setImportedNamespace(pack3);
+
+        // The root namespace should not be serialized
+        this.assertTextualFormEquals("""
+                package Package1 {
+                    import 'Package 2'::'Package 3'::*;
                     package 'Package 2' {
                         package 'Package 3';
                     }
