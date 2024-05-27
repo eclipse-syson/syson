@@ -221,7 +221,10 @@ public class EMFUtils {
      *            the given {@link ResourceSet}.
      */
     public static void resolveAllNonDerived(ResourceSet rs) {
-        rs.getResources().forEach(r -> resolveAllNonDerived(r));
+        List<Resource> resources = rs.getResources();
+        for (int i = 0; i < resources.size(); i++) {
+            resolveAllNonDerived(resources.get(i));
+        }
     }
 
     private static void resolveAllNonDerived(Resource resource) {
