@@ -53,6 +53,8 @@ import org.eclipse.syson.sysml.export.utils.NameDeresolver;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.Test;
+import org.eclipse.syson.sysml.export.models.AttributeUsageWithBracketOperatorExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.AttributeUsageWithBinaryOperatorExpressionTestModel;
 
 /**
  * Test class for SysMLElementSerializer.
@@ -133,13 +135,13 @@ public class SysMLModelToTextSwitchTest {
         Namespace rootnamespace = this.builder.create(Namespace.class);
 
         Package pack1 = this.builder.createInWithName(Package.class, rootnamespace, PACKAGE1);
-        
+
         NamespaceImport namespaceImport = this.builder.createIn(NamespaceImport.class, pack1);
 
         Package pack2 = this.builder.createInWithName(Package.class, pack1, PACKAGE_2);
 
         Package pack3 = this.builder.createInWithName(Package.class, pack2, "Package 3");
-        
+
         namespaceImport.setImportedNamespace(pack3);
 
         // The root namespace should not be serialized
@@ -577,22 +579,22 @@ public class SysMLModelToTextSwitchTest {
 
     @Test
     public void enumerationDefinitionAndEnumerationUsage() {
-        EnumerationDefinition enumDef = builder.createWithName(EnumerationDefinition.class, "Colors");
+        EnumerationDefinition enumDef = this.builder.createWithName(EnumerationDefinition.class, "Colors");
 
-        builder.createInWithName(EnumerationUsage.class, enumDef, "black");
+        this.builder.createInWithName(EnumerationUsage.class, enumDef, "black");
 
         MetadataDefinition metaData1 = this.fact.createMetadataDefinition();
         metaData1.setDeclaredName("m1");
 
         MetadataUsage m1u = this.createMetadataUsage(metaData1);
 
-        EnumerationUsage greyLiteral = builder.createInWithName(EnumerationUsage.class, enumDef, "grey");
+        EnumerationUsage greyLiteral = this.builder.createInWithName(EnumerationUsage.class, enumDef, "grey");
         this.addOwnedMembership(greyLiteral, m1u);
-        EnumerationUsage redLiteral = builder.createInWithName(EnumerationUsage.class, enumDef, "red");
+        EnumerationUsage redLiteral = this.builder.createInWithName(EnumerationUsage.class, enumDef, "red");
 
-        builder.createIn(Comment.class, redLiteral).setBody("A body");
+        this.builder.createIn(Comment.class, redLiteral).setBody("A body");
 
-        assertTextualFormEquals("""
+        this.assertTextualFormEquals("""
                 enum def Colors {
                     black;
                     #m1 grey;
@@ -669,6 +671,18 @@ public class SysMLModelToTextSwitchTest {
         AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, ATTRIBUTE1);
 
         this.assertTextualFormEquals("attribute attribute1;", attributeUsage);
+    }
+
+    @Test
+    public void attributeUsageWithBinaryOperatorExpression() {
+        AttributeUsageWithBinaryOperatorExpressionTestModel model = new AttributeUsageWithBinaryOperatorExpressionTestModel();
+        this.assertTextualFormEquals("attribute attribute1 = bestFuel + idlingFuel * fuel;", model.getAttributeUsage());
+    }
+
+    @Test
+    public void attributeUsageWithBracketOperatorExpression() {
+        AttributeUsageWithBracketOperatorExpressionTestModel model = new AttributeUsageWithBracketOperatorExpressionTestModel();
+        this.assertTextualFormEquals("attribute attribute1 = 80 [millimetre];", model.getAttributeUsage());
     }
 
     @Test

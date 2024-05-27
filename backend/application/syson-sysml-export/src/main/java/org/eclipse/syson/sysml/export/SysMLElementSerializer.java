@@ -21,6 +21,7 @@ import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_MEMBERSH
 import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_METADATA_USAGE;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -31,15 +32,21 @@ import java.util.stream.Stream;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.CollectExpression;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChainExpression;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.Import;
+import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.LiteralInfinity;
@@ -49,16 +56,21 @@ import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Metaclass;
+import org.eclipse.syson.sysml.MetadataAccessExpression;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.NullExpression;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
+import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.SelectExpression;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Type;
@@ -70,6 +82,8 @@ import org.eclipse.syson.sysml.export.utils.SysMLKeywordSwitch;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import reactor.util.function.Tuples;
 
@@ -81,6 +95,8 @@ import reactor.util.function.Tuples;
 public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private static final Predicate<Object> NOT_NULL = s -> s != null;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SysMLElementSerializer.class);
 
     private String lineSeparator;
 
@@ -129,8 +145,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             if (content != null && !content.isBlank()) {
                 builder.appendIndentedContent(content);
             }
-        } 
-        else {
+        } else {
             builder.append("namespace ");
             this.appendChildrenContent(builder, namespace, namespace.getOwnedMembership());
         }
@@ -139,7 +154,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String casePackage(Package pack) {
-
         Appender builder = this.newAppender();
 
         builder.append("package ");
@@ -236,14 +250,15 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseUsage(Usage usage) {
-
         Appender builder = this.newAppender();
 
         this.appendUsagePrefix(builder, usage);
 
-        builder.appendSpaceIfNeeded().append(getUsageKeyword(usage));
+        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
 
         this.appendUsageDeclaration(builder, usage);
+
+        this.appendUsageCompletion(builder, usage);
 
         List<Relationship> children = usage.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ITEM_MEMBER).toList();
 
@@ -252,8 +267,109 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
+    @Override
+    public String caseFeatureReferenceExpression(FeatureReferenceExpression expression) {
+        Appender builder = this.newAppender();
+        
+        Membership membership = expression.getOwnedMembership().stream()
+                .findFirst()
+                .orElse(null);
+
+        if (membership instanceof FeatureMembership feature) {
+            LOGGER.warn("BodyExpression are not handled yet");
+        } else {
+            this.appendFeatureReferenceMember(builder, membership);
+        }
+
+        return builder.toString();
+    }
+    
+    @Override
+    public String caseOperatorExpression(OperatorExpression op) {
+        Appender builder = this.newAppender();
+        switch (op.getOperator()) {
+            case "if":
+                LOGGER.warn("ConditionalExpression are not handled yet");
+                break;
+            case "|":
+            case "&":
+            case "xor":
+            case "..":
+            case "==":
+            case "!=":
+            case "===":
+            case "!==":
+            case "<":
+            case ">":
+            case "<=":
+            case ">=":
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+            case "%":
+            case "^":
+            case "**":
+            case LabelConstants.CONJUGATED:
+            case "not":
+                this.appendBinaryOrUnaryOperatorExpression(builder, op);
+                break;
+            case "istype":
+            case "hastype":
+            case "@":
+            case "as":
+                LOGGER.warn("ClassificationExpression are not handled yet");
+                break;
+            case "all":
+                LOGGER.warn("ExtentExpression are not handled yet");
+                break;
+            case LabelConstants.OPEN_BRACKET:
+                this.appendBracketExpression(builder, op);
+                break;
+            case "#":
+                LOGGER.warn("IndexExpression are not handled yet");
+                break;
+            case ",":
+                LOGGER.warn("SequenceOperatorExpression are not handled yet");
+                break;
+            default:
+                break;
+        }
+        return builder.toString();
+    }
+    
+    @Override
+    public String caseInvocationExpression(InvocationExpression expression) {
+        LOGGER.warn("InvocationExpression are not handled yet");
+        return "";
+    }
+    
+    @Override
+    public String caseNullExpression(NullExpression expression) {
+        LOGGER.warn("NullExpression are not handled yet");
+        return "";
+    }
+    
+    @Override
+    public String caseCollectExpression(CollectExpression expression) {
+        LOGGER.warn("CollectExpression are not handled yet");
+        return "";
+    }
+    
+    @Override
+    public String caseSelectExpression(SelectExpression expression) {
+        LOGGER.warn("SelectExpression are not handled yet");
+        return "";
+    }
+    
+    @Override
+    public String caseMetadataAccessExpression(MetadataAccessExpression expression) {
+        LOGGER.warn("MetadataAccessExpression are not handled yet");
+        return "";
+    }
+    
     private String getUsageKeyword(Usage usage) {
-        return keywordProvider.doSwitch(usage);
+        return this.keywordProvider.doSwitch(usage);
     }
 
     private void appendFeatureSpecilizationPart(Appender builder, Feature feature) {
@@ -379,6 +495,164 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return exp;
     }
 
+    private void appendUsageCompletion(Appender builder, Usage usage) {
+        List<FeatureValue> ownedRelationship = usage.getOwnedRelationship().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .collect(Collectors.toList());
+
+        for (FeatureValue feature : ownedRelationship) {
+            builder.appendSpaceIfNeeded();
+            if (feature.isIsInitial()) {
+                builder.append(":=");
+            } else if (feature.isIsDefault()) {
+                builder.append("default");
+                if (feature.isIsInitial()) {
+                    builder.append(":");
+                }
+                builder.append("=");
+            } else {
+                builder.append("=");
+            }
+            this.appendOwnedExpression(builder, feature.getValue());
+        }
+
+    }
+
+    private void appendOwnedExpression(Appender builder, Expression expression) {
+        if (expression instanceof OperatorExpression op && op.getOperator() != null) {
+            builder.appendSpaceIfNeeded().append(caseOperatorExpression(op));
+        } else {
+            this.appendPrimaryExpression(builder, expression);
+        }
+    }
+
+    private void appendPrimaryExpression(Appender builder, Expression expression) {
+        if (expression instanceof FeatureChainExpression feature) {
+            LOGGER.warn("FeatureChainExpression are not handled yet");
+        } else {
+            this.appendNonFeatureChainExpression(builder, expression);
+        }
+    }
+
+    private void appendNonFeatureChainExpression(Appender builder, Expression expression) {
+        if (expression instanceof SelectExpression exp) {
+            builder.appendSpaceIfNeeded().append(this.caseSelectExpression(exp));
+        } else if (expression instanceof CollectExpression exp) {
+            builder.appendSpaceIfNeeded().append(this.caseCollectExpression(exp));
+        } else if (expression instanceof NullExpression exp) {
+            builder.appendSpaceIfNeeded().append(this.caseNullExpression(exp));
+        } else if (expression instanceof LiteralExpression exp) {
+            builder.appendSpaceIfNeeded().append(this.caseLiteralExpression(exp));
+        } else if (expression instanceof FeatureReferenceExpression exp) {
+            builder.appendSpaceIfNeeded().append(this.caseFeatureReferenceExpression(exp));
+        } else if (expression instanceof MetadataAccessExpression exp) {
+            builder.appendSpaceIfNeeded().append(this.caseMetadataAccessExpression(exp));
+        } else if (expression instanceof InvocationExpression exp) {
+            builder.appendSpaceIfNeeded().append(this.caseInvocationExpression(exp));
+        } else {
+            LOGGER.warn("SequenceExpression are not handled yet");
+        }
+    }
+
+    private void appendSequenceExpressionList(Appender builder, Expression expression) {
+        if (expression instanceof OperatorExpression op && LabelConstants.COMMA.equals(op.getOperator())) {
+            LOGGER.warn("SequenceOperatorExpression are not handled yet");
+        } else if (expression != null) {
+            this.appendOwnedExpression(builder, expression);
+        }
+    }
+
+    private void appendFeatureReferenceMember(Appender builder, Membership membership) {
+        if (membership.getMemberElement() instanceof Feature feature) {
+            builder.appendSpaceIfNeeded().append(this.getDeresolvableName(feature, membership));
+        }
+    }
+
+    private void appendBracketExpression(Appender builder, OperatorExpression expression) {
+        List<ParameterMembership> features = expression.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .toList();
+
+        if (!features.isEmpty()) {
+            this.appendPrimaryExpressionMember(builder, features.get(0));
+
+            builder.appendSpaceIfNeeded().append(expression.getOperator());
+
+            this.appendSequenceExpressionListMember(builder, features.subList(1, features.size()));
+
+            builder.append(LabelConstants.CLOSE_BRACKET);
+        }
+    }
+
+    private void appendSequenceExpressionListMember(Appender builder, List<ParameterMembership> parameters) {
+        List<FeatureValue> featureValueList = parameters.stream()
+                .map(ParameterMembership::getOwnedMemberParameter)
+                .filter(Objects::nonNull)
+                .flatMap(parameter -> parameter.getOwnedRelationship().stream())
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .toList();
+
+        for (int i = 0; i < featureValueList.size(); i++) {
+            Expression expression = featureValueList.get(i).getValue();
+            this.appendSequenceExpressionList(builder, expression);
+        }
+    }
+
+    private void appendPrimaryExpressionMember(Appender builder, ParameterMembership parameterMembership) {
+        Feature ownedMemberParameter = parameterMembership.getOwnedMemberParameter();
+        if (ownedMemberParameter != null) {
+            ownedMemberParameter.getOwnedRelationship()
+                    .stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .forEach(val -> this.appendPrimaryExpression(builder, val.getValue()));
+        }
+    }
+
+    private void appendBinaryOperatorExpression(Appender builder, OperatorExpression expression) {
+        Iterator<ParameterMembership> iterator = expression.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast).toList().iterator();
+
+        if (iterator.hasNext()) {
+            this.appendArgumentMember(builder, iterator.next());
+        }
+        builder.appendSpaceIfNeeded().append(expression.getOperator());
+        while (iterator.hasNext()) {
+            this.appendArgumentMember(builder, iterator.next());
+        }
+    }
+
+    private void appendBinaryOrUnaryOperatorExpression(Appender builder, OperatorExpression expression) {
+        List<ParameterMembership> ownedRelationships = expression.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .toList();
+
+        String operator = expression.getOperator();
+        List<String> unaryOperators = List.of("+", "-", LabelConstants.CONJUGATED, "not");
+
+        if (ownedRelationships.size() < 2 && (unaryOperators.contains(operator))) {
+            LOGGER.warn("UnaryOperatorExpression are not handled yet");
+        } else {
+            this.appendBinaryOperatorExpression(builder, expression);
+        }
+    }
+
+    private void appendArgumentMember(Appender builder, ParameterMembership parameterMembership) {
+        Feature ownedMemberParameter = parameterMembership.getOwnedMemberParameter();
+        if (ownedMemberParameter != null) {
+            ownedMemberParameter.getOwnedRelationship()
+                    .stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .forEach(val -> this.appendOwnedExpression(builder, val.getValue()));
+        }
+    }
+
     @Override
     public String caseConjugatedPortDefinition(ConjugatedPortDefinition object) {
         // Conjugated port definition are implicit
@@ -386,7 +660,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private String getDefinitionKeyword(Definition def) {
-        return keywordProvider.doSwitch(def) + " def";
+        return this.keywordProvider.doSwitch(def) + " def";
     }
 
     private void appendDefinition(Appender builder, Definition definition) {
@@ -456,7 +730,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.getBasicUsagePrefix(builder, usage);
 
         final String isRef;
-        if (usage.isIsReference() && !isImplicitlyReferencial(usage)) {
+        if (usage.isIsReference() && !this.isImplicitlyReferencial(usage)) {
             isRef = "ref";
         } else {
             isRef = "";

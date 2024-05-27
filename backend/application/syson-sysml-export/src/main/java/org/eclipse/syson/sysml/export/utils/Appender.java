@@ -43,7 +43,7 @@ public class Appender {
     }
 
     public Appender appendSpaceIfNeeded() {
-        if (!builder.isEmpty() && !endWithSpace()) {
+        if (!builder.isEmpty() && !endWithSpace() && !endWithBracket()) {
             append(" ");
         }
         return this;
@@ -73,6 +73,11 @@ public class Appender {
     private boolean endWithSpace() {
         char charAt = builder.charAt(builder.length() - 1);
         return charAt == ' ' || charAt == '\t';
+    }
+    
+    private boolean endWithBracket() {
+        char charAt = builder.charAt(builder.length() - 1);
+        return charAt == '[';
     }
 
     public Appender append(String str) {
