@@ -15,7 +15,7 @@ package org.eclipse.syson.sysml.export;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.base.Strings.nullToEmpty;
 import static java.util.stream.Collectors.joining;
-import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_DEFINITION_BODY_ELEMENT;
+import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_DEFINITION_BODY_ITEM_MEMBER;
 import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_IMPORT;
 import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_MEMBERSHIP;
 import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_METADATA_USAGE;
@@ -117,6 +117,24 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else {
             return value;
         }
+    }
+
+    @Override
+    public String caseNamespace(Namespace namespace) {
+        Appender builder = this.newAppender();
+
+        if (namespace.eContainer() == null && namespace.getName() == null) {
+            // Root namespace are not serialized
+            String content = this.getContent(namespace.getOwnedMembership());
+            if (content != null && !content.isBlank()) {
+                builder.appendIndentedContent(content);
+            }
+        } 
+        else {
+            builder.append("namespace ");
+            this.appendChildrenContent(builder, namespace, namespace.getOwnedMembership());
+        }
+        return builder.toString();
     }
 
     @Override
@@ -226,8 +244,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         builder.appendSpaceIfNeeded().append(getUsageKeyword(usage));
 
         this.appendUsageDeclaration(builder, usage);
-        
-        List<Relationship> children = usage.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ELEMENT).toList();
+
+        List<Relationship> children = usage.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ITEM_MEMBER).toList();
 
         this.appendChildrenContent(builder, usage, children);
 
@@ -375,7 +393,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         this.appendDefinitionDeclaration(builder, definition);
 
-        List<Relationship> children = definition.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ELEMENT).toList();
+        List<Relationship> children = definition.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ITEM_MEMBER).toList();
         this.appendChildrenContent(builder, definition, children);
     }
 
@@ -525,7 +543,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return new Appender(this.lineSeparator, this.indentation);
     }
 
-    private void appendChildrenContent(Appender builder, Element element, List<Relationship> childrenRelationships) {
+    private void appendChildrenContent(Appender builder, Element element, List<? extends Relationship> childrenRelationships) {
 
         String content = this.getContent(childrenRelationships);
         if (content != null && !content.isBlank()) {

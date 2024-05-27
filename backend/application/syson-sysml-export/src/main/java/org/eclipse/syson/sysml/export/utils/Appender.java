@@ -64,6 +64,9 @@ public class Appender {
     }
 
     private String indent(String content) {
+        if (content == null) {
+            return "";
+        }
         return content.replaceAll(newLine, newLine + indentation);
     }
 
