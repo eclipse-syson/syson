@@ -1,220 +1,42 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-
 import org.eclipse.emf.ecore.util.Switch;
-
-import org.eclipse.syson.sysml.AcceptActionUsage;
-import org.eclipse.syson.sysml.ActionDefinition;
-import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.ActorMembership;
-import org.eclipse.syson.sysml.AllocationDefinition;
-import org.eclipse.syson.sysml.AllocationUsage;
-import org.eclipse.syson.sysml.AnalysisCaseDefinition;
-import org.eclipse.syson.sysml.AnalysisCaseUsage;
-import org.eclipse.syson.sysml.AnnotatingElement;
-import org.eclipse.syson.sysml.Annotation;
-import org.eclipse.syson.sysml.AssertConstraintUsage;
-import org.eclipse.syson.sysml.AssignmentActionUsage;
-import org.eclipse.syson.sysml.Association;
-import org.eclipse.syson.sysml.AssociationStructure;
-import org.eclipse.syson.sysml.AttributeDefinition;
-import org.eclipse.syson.sysml.AttributeUsage;
-import org.eclipse.syson.sysml.Behavior;
-import org.eclipse.syson.sysml.BindingConnector;
-import org.eclipse.syson.sysml.BindingConnectorAsUsage;
-import org.eclipse.syson.sysml.BooleanExpression;
-import org.eclipse.syson.sysml.CalculationDefinition;
-import org.eclipse.syson.sysml.CalculationUsage;
-import org.eclipse.syson.sysml.CaseDefinition;
-import org.eclipse.syson.sysml.CaseUsage;
-import org.eclipse.syson.sysml.Classifier;
-import org.eclipse.syson.sysml.CollectExpression;
-import org.eclipse.syson.sysml.Comment;
-import org.eclipse.syson.sysml.ConcernDefinition;
-import org.eclipse.syson.sysml.ConcernUsage;
-import org.eclipse.syson.sysml.ConjugatedPortDefinition;
-import org.eclipse.syson.sysml.ConjugatedPortTyping;
-import org.eclipse.syson.sysml.Conjugation;
-import org.eclipse.syson.sysml.ConnectionDefinition;
-import org.eclipse.syson.sysml.ConnectionUsage;
-import org.eclipse.syson.sysml.Connector;
-import org.eclipse.syson.sysml.ConnectorAsUsage;
-import org.eclipse.syson.sysml.ConstraintDefinition;
-import org.eclipse.syson.sysml.ConstraintUsage;
-import org.eclipse.syson.sysml.ControlNode;
-import org.eclipse.syson.sysml.DataType;
-import org.eclipse.syson.sysml.DecisionNode;
-import org.eclipse.syson.sysml.Definition;
-import org.eclipse.syson.sysml.Dependency;
-import org.eclipse.syson.sysml.Differencing;
-import org.eclipse.syson.sysml.Disjoining;
-import org.eclipse.syson.sysml.Documentation;
-import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.ElementFilterMembership;
-import org.eclipse.syson.sysml.EndFeatureMembership;
-import org.eclipse.syson.sysml.EnumerationDefinition;
-import org.eclipse.syson.sysml.EnumerationUsage;
-import org.eclipse.syson.sysml.EventOccurrenceUsage;
-import org.eclipse.syson.sysml.ExhibitStateUsage;
-import org.eclipse.syson.sysml.Expose;
-import org.eclipse.syson.sysml.Expression;
-import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureChainExpression;
-import org.eclipse.syson.sysml.FeatureChaining;
-import org.eclipse.syson.sysml.FeatureInverting;
-import org.eclipse.syson.sysml.FeatureMembership;
-import org.eclipse.syson.sysml.FeatureReferenceExpression;
-import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.Featuring;
-import org.eclipse.syson.sysml.FlowConnectionDefinition;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
-import org.eclipse.syson.sysml.ForLoopActionUsage;
-import org.eclipse.syson.sysml.ForkNode;
-import org.eclipse.syson.sysml.FramedConcernMembership;
-import org.eclipse.syson.sysml.Function;
-import org.eclipse.syson.sysml.IfActionUsage;
-import org.eclipse.syson.sysml.Import;
-import org.eclipse.syson.sysml.IncludeUseCaseUsage;
-import org.eclipse.syson.sysml.Interaction;
-import org.eclipse.syson.sysml.InterfaceDefinition;
-import org.eclipse.syson.sysml.InterfaceUsage;
-import org.eclipse.syson.sysml.Intersecting;
-import org.eclipse.syson.sysml.Invariant;
-import org.eclipse.syson.sysml.InvocationExpression;
-import org.eclipse.syson.sysml.ItemDefinition;
-import org.eclipse.syson.sysml.ItemFeature;
-import org.eclipse.syson.sysml.ItemFlow;
-import org.eclipse.syson.sysml.ItemFlowEnd;
-import org.eclipse.syson.sysml.ItemUsage;
-import org.eclipse.syson.sysml.JoinNode;
-import org.eclipse.syson.sysml.LibraryPackage;
-import org.eclipse.syson.sysml.LifeClass;
-import org.eclipse.syson.sysml.LiteralBoolean;
-import org.eclipse.syson.sysml.LiteralExpression;
-import org.eclipse.syson.sysml.LiteralInfinity;
-import org.eclipse.syson.sysml.LiteralInteger;
-import org.eclipse.syson.sysml.LiteralRational;
-import org.eclipse.syson.sysml.LiteralString;
-import org.eclipse.syson.sysml.LoopActionUsage;
-import org.eclipse.syson.sysml.Membership;
-import org.eclipse.syson.sysml.MembershipExpose;
-import org.eclipse.syson.sysml.MembershipImport;
-import org.eclipse.syson.sysml.MergeNode;
-import org.eclipse.syson.sysml.Metaclass;
-import org.eclipse.syson.sysml.MetadataAccessExpression;
-import org.eclipse.syson.sysml.MetadataDefinition;
-import org.eclipse.syson.sysml.MetadataFeature;
-import org.eclipse.syson.sysml.MetadataUsage;
-import org.eclipse.syson.sysml.Multiplicity;
-import org.eclipse.syson.sysml.MultiplicityRange;
-import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.sysml.NamespaceExpose;
-import org.eclipse.syson.sysml.NamespaceImport;
-import org.eclipse.syson.sysml.NullExpression;
-import org.eclipse.syson.sysml.ObjectiveMembership;
-import org.eclipse.syson.sysml.OccurrenceDefinition;
-import org.eclipse.syson.sysml.OccurrenceUsage;
-import org.eclipse.syson.sysml.OperatorExpression;
-import org.eclipse.syson.sysml.OwningMembership;
-import org.eclipse.syson.sysml.ParameterMembership;
-import org.eclipse.syson.sysml.PartDefinition;
-import org.eclipse.syson.sysml.PartUsage;
-import org.eclipse.syson.sysml.PerformActionUsage;
-import org.eclipse.syson.sysml.PortConjugation;
-import org.eclipse.syson.sysml.PortDefinition;
-import org.eclipse.syson.sysml.PortUsage;
-import org.eclipse.syson.sysml.Predicate;
-import org.eclipse.syson.sysml.Redefinition;
-import org.eclipse.syson.sysml.ReferenceSubsetting;
-import org.eclipse.syson.sysml.ReferenceUsage;
-import org.eclipse.syson.sysml.Relationship;
-import org.eclipse.syson.sysml.RenderingDefinition;
-import org.eclipse.syson.sysml.RenderingUsage;
-import org.eclipse.syson.sysml.RequirementConstraintMembership;
-import org.eclipse.syson.sysml.RequirementDefinition;
-import org.eclipse.syson.sysml.RequirementUsage;
-import org.eclipse.syson.sysml.RequirementVerificationMembership;
-import org.eclipse.syson.sysml.ResultExpressionMembership;
-import org.eclipse.syson.sysml.ReturnParameterMembership;
-import org.eclipse.syson.sysml.SatisfyRequirementUsage;
-import org.eclipse.syson.sysml.SelectExpression;
-import org.eclipse.syson.sysml.SendActionUsage;
-import org.eclipse.syson.sysml.Specialization;
-import org.eclipse.syson.sysml.StakeholderMembership;
-import org.eclipse.syson.sysml.StateDefinition;
-import org.eclipse.syson.sysml.StateSubactionMembership;
-import org.eclipse.syson.sysml.StateUsage;
-import org.eclipse.syson.sysml.Step;
-import org.eclipse.syson.sysml.Structure;
-import org.eclipse.syson.sysml.Subclassification;
-import org.eclipse.syson.sysml.SubjectMembership;
-import org.eclipse.syson.sysml.Subsetting;
-import org.eclipse.syson.sysml.Succession;
-import org.eclipse.syson.sysml.SuccessionAsUsage;
-import org.eclipse.syson.sysml.SuccessionFlowConnectionUsage;
-import org.eclipse.syson.sysml.SuccessionItemFlow;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.TextualRepresentation;
-import org.eclipse.syson.sysml.TransitionFeatureMembership;
-import org.eclipse.syson.sysml.TransitionUsage;
-import org.eclipse.syson.sysml.TriggerInvocationExpression;
-import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.TypeFeaturing;
-import org.eclipse.syson.sysml.Unioning;
-import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.sysml.UseCaseDefinition;
-import org.eclipse.syson.sysml.UseCaseUsage;
-import org.eclipse.syson.sysml.VariantMembership;
-import org.eclipse.syson.sysml.VerificationCaseDefinition;
-import org.eclipse.syson.sysml.VerificationCaseUsage;
-import org.eclipse.syson.sysml.ViewDefinition;
-import org.eclipse.syson.sysml.ViewRenderingMembership;
-import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.ViewpointDefinition;
-import org.eclipse.syson.sysml.ViewpointUsage;
-import org.eclipse.syson.sysml.WhileLoopActionUsage;
+import org.eclipse.syson.sysml.*;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Switch</b> for the model's inheritance hierarchy.
- * It supports the call {@link #doSwitch(EObject) doSwitch(object)}
- * to invoke the <code>caseXXX</code> method for each class of the model,
- * starting with the actual class of the object
- * and proceeding up the inheritance hierarchy
- * until a non-null result is returned,
- * which is the result of the switch.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the call
+ * {@link #doSwitch(EObject) doSwitch(object)} to invoke the <code>caseXXX</code> method for each class of the model,
+ * starting with the actual class of the object and proceeding up the inheritance hierarchy until a non-null result is
+ * returned, which is the result of the switch. <!-- end-user-doc -->
+ *
  * @see org.eclipse.syson.sysml.SysmlPackage
  * @generated
  */
 public class SysmlSwitch<T> extends Switch<T> {
     /**
-     * The cached model package
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected static SysmlPackage modelPackage;
 
     /**
-     * Creates an instance of the switch.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public SysmlSwitch() {
@@ -224,10 +46,10 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Checks whether this is a switch for the given package.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param ePackage the package in question.
+     * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param ePackage
+     *            the package in question.
      * @return whether this is a switch for the given package.
      * @generated
      */
@@ -237,9 +59,9 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that
+     * result. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @return the first non-null result returned by a <code>caseXXX</code> call.
      * @generated
      */
@@ -247,2204 +69,3533 @@ public class SysmlSwitch<T> extends Switch<T> {
     protected T doSwitch(int classifierID, EObject theEObject) {
         switch (classifierID) {
             case SysmlPackage.ACCEPT_ACTION_USAGE: {
-                AcceptActionUsage acceptActionUsage = (AcceptActionUsage)theEObject;
-                T result = caseAcceptActionUsage(acceptActionUsage);
-                if (result == null) result = caseActionUsage(acceptActionUsage);
-                if (result == null) result = caseOccurrenceUsage(acceptActionUsage);
-                if (result == null) result = caseStep(acceptActionUsage);
-                if (result == null) result = caseUsage(acceptActionUsage);
-                if (result == null) result = caseFeature(acceptActionUsage);
-                if (result == null) result = caseType(acceptActionUsage);
-                if (result == null) result = caseNamespace(acceptActionUsage);
-                if (result == null) result = caseElement(acceptActionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                AcceptActionUsage acceptActionUsage = (AcceptActionUsage) theEObject;
+                T result = this.caseAcceptActionUsage(acceptActionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(acceptActionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(acceptActionUsage);
+                if (result == null)
+                    result = this.caseStep(acceptActionUsage);
+                if (result == null)
+                    result = this.caseUsage(acceptActionUsage);
+                if (result == null)
+                    result = this.caseFeature(acceptActionUsage);
+                if (result == null)
+                    result = this.caseType(acceptActionUsage);
+                if (result == null)
+                    result = this.caseNamespace(acceptActionUsage);
+                if (result == null)
+                    result = this.caseElement(acceptActionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ACTION_DEFINITION: {
-                ActionDefinition actionDefinition = (ActionDefinition)theEObject;
-                T result = caseActionDefinition(actionDefinition);
-                if (result == null) result = caseOccurrenceDefinition(actionDefinition);
-                if (result == null) result = caseBehavior(actionDefinition);
-                if (result == null) result = caseDefinition(actionDefinition);
-                if (result == null) result = caseClass(actionDefinition);
-                if (result == null) result = caseClassifier(actionDefinition);
-                if (result == null) result = caseType(actionDefinition);
-                if (result == null) result = caseNamespace(actionDefinition);
-                if (result == null) result = caseElement(actionDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                ActionDefinition actionDefinition = (ActionDefinition) theEObject;
+                T result = this.caseActionDefinition(actionDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(actionDefinition);
+                if (result == null)
+                    result = this.caseBehavior(actionDefinition);
+                if (result == null)
+                    result = this.caseDefinition(actionDefinition);
+                if (result == null)
+                    result = this.caseClass(actionDefinition);
+                if (result == null)
+                    result = this.caseClassifier(actionDefinition);
+                if (result == null)
+                    result = this.caseType(actionDefinition);
+                if (result == null)
+                    result = this.caseNamespace(actionDefinition);
+                if (result == null)
+                    result = this.caseElement(actionDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ACTION_USAGE: {
-                ActionUsage actionUsage = (ActionUsage)theEObject;
-                T result = caseActionUsage(actionUsage);
-                if (result == null) result = caseOccurrenceUsage(actionUsage);
-                if (result == null) result = caseStep(actionUsage);
-                if (result == null) result = caseUsage(actionUsage);
-                if (result == null) result = caseFeature(actionUsage);
-                if (result == null) result = caseType(actionUsage);
-                if (result == null) result = caseNamespace(actionUsage);
-                if (result == null) result = caseElement(actionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ActionUsage actionUsage = (ActionUsage) theEObject;
+                T result = this.caseActionUsage(actionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(actionUsage);
+                if (result == null)
+                    result = this.caseStep(actionUsage);
+                if (result == null)
+                    result = this.caseUsage(actionUsage);
+                if (result == null)
+                    result = this.caseFeature(actionUsage);
+                if (result == null)
+                    result = this.caseType(actionUsage);
+                if (result == null)
+                    result = this.caseNamespace(actionUsage);
+                if (result == null)
+                    result = this.caseElement(actionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ACTOR_MEMBERSHIP: {
-                ActorMembership actorMembership = (ActorMembership)theEObject;
-                T result = caseActorMembership(actorMembership);
-                if (result == null) result = caseParameterMembership(actorMembership);
-                if (result == null) result = caseFeatureMembership(actorMembership);
-                if (result == null) result = caseOwningMembership(actorMembership);
-                if (result == null) result = caseFeaturing(actorMembership);
-                if (result == null) result = caseMembership(actorMembership);
-                if (result == null) result = caseRelationship(actorMembership);
-                if (result == null) result = caseElement(actorMembership);
-                if (result == null) result = defaultCase(theEObject);
+                ActorMembership actorMembership = (ActorMembership) theEObject;
+                T result = this.caseActorMembership(actorMembership);
+                if (result == null)
+                    result = this.caseParameterMembership(actorMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(actorMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(actorMembership);
+                if (result == null)
+                    result = this.caseFeaturing(actorMembership);
+                if (result == null)
+                    result = this.caseMembership(actorMembership);
+                if (result == null)
+                    result = this.caseRelationship(actorMembership);
+                if (result == null)
+                    result = this.caseElement(actorMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ALLOCATION_DEFINITION: {
-                AllocationDefinition allocationDefinition = (AllocationDefinition)theEObject;
-                T result = caseAllocationDefinition(allocationDefinition);
-                if (result == null) result = caseConnectionDefinition(allocationDefinition);
-                if (result == null) result = casePartDefinition(allocationDefinition);
-                if (result == null) result = caseAssociationStructure(allocationDefinition);
-                if (result == null) result = caseItemDefinition(allocationDefinition);
-                if (result == null) result = caseAssociation(allocationDefinition);
-                if (result == null) result = caseOccurrenceDefinition(allocationDefinition);
-                if (result == null) result = caseStructure(allocationDefinition);
-                if (result == null) result = caseRelationship(allocationDefinition);
-                if (result == null) result = caseDefinition(allocationDefinition);
-                if (result == null) result = caseClass(allocationDefinition);
-                if (result == null) result = caseClassifier(allocationDefinition);
-                if (result == null) result = caseType(allocationDefinition);
-                if (result == null) result = caseNamespace(allocationDefinition);
-                if (result == null) result = caseElement(allocationDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                AllocationDefinition allocationDefinition = (AllocationDefinition) theEObject;
+                T result = this.caseAllocationDefinition(allocationDefinition);
+                if (result == null)
+                    result = this.caseConnectionDefinition(allocationDefinition);
+                if (result == null)
+                    result = this.casePartDefinition(allocationDefinition);
+                if (result == null)
+                    result = this.caseAssociationStructure(allocationDefinition);
+                if (result == null)
+                    result = this.caseItemDefinition(allocationDefinition);
+                if (result == null)
+                    result = this.caseAssociation(allocationDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(allocationDefinition);
+                if (result == null)
+                    result = this.caseStructure(allocationDefinition);
+                if (result == null)
+                    result = this.caseRelationship(allocationDefinition);
+                if (result == null)
+                    result = this.caseDefinition(allocationDefinition);
+                if (result == null)
+                    result = this.caseClass(allocationDefinition);
+                if (result == null)
+                    result = this.caseClassifier(allocationDefinition);
+                if (result == null)
+                    result = this.caseType(allocationDefinition);
+                if (result == null)
+                    result = this.caseNamespace(allocationDefinition);
+                if (result == null)
+                    result = this.caseElement(allocationDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ALLOCATION_USAGE: {
-                AllocationUsage allocationUsage = (AllocationUsage)theEObject;
-                T result = caseAllocationUsage(allocationUsage);
-                if (result == null) result = caseConnectionUsage(allocationUsage);
-                if (result == null) result = caseConnectorAsUsage(allocationUsage);
-                if (result == null) result = casePartUsage(allocationUsage);
-                if (result == null) result = caseConnector(allocationUsage);
-                if (result == null) result = caseItemUsage(allocationUsage);
-                if (result == null) result = caseFeature(allocationUsage);
-                if (result == null) result = caseRelationship(allocationUsage);
-                if (result == null) result = caseOccurrenceUsage(allocationUsage);
-                if (result == null) result = caseUsage(allocationUsage);
-                if (result == null) result = caseType(allocationUsage);
-                if (result == null) result = caseNamespace(allocationUsage);
-                if (result == null) result = caseElement(allocationUsage);
-                if (result == null) result = defaultCase(theEObject);
+                AllocationUsage allocationUsage = (AllocationUsage) theEObject;
+                T result = this.caseAllocationUsage(allocationUsage);
+                if (result == null)
+                    result = this.caseConnectionUsage(allocationUsage);
+                if (result == null)
+                    result = this.caseConnectorAsUsage(allocationUsage);
+                if (result == null)
+                    result = this.casePartUsage(allocationUsage);
+                if (result == null)
+                    result = this.caseConnector(allocationUsage);
+                if (result == null)
+                    result = this.caseItemUsage(allocationUsage);
+                if (result == null)
+                    result = this.caseFeature(allocationUsage);
+                if (result == null)
+                    result = this.caseRelationship(allocationUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(allocationUsage);
+                if (result == null)
+                    result = this.caseUsage(allocationUsage);
+                if (result == null)
+                    result = this.caseType(allocationUsage);
+                if (result == null)
+                    result = this.caseNamespace(allocationUsage);
+                if (result == null)
+                    result = this.caseElement(allocationUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ANALYSIS_CASE_DEFINITION: {
-                AnalysisCaseDefinition analysisCaseDefinition = (AnalysisCaseDefinition)theEObject;
-                T result = caseAnalysisCaseDefinition(analysisCaseDefinition);
-                if (result == null) result = caseCaseDefinition(analysisCaseDefinition);
-                if (result == null) result = caseCalculationDefinition(analysisCaseDefinition);
-                if (result == null) result = caseActionDefinition(analysisCaseDefinition);
-                if (result == null) result = caseFunction(analysisCaseDefinition);
-                if (result == null) result = caseOccurrenceDefinition(analysisCaseDefinition);
-                if (result == null) result = caseBehavior(analysisCaseDefinition);
-                if (result == null) result = caseDefinition(analysisCaseDefinition);
-                if (result == null) result = caseClass(analysisCaseDefinition);
-                if (result == null) result = caseClassifier(analysisCaseDefinition);
-                if (result == null) result = caseType(analysisCaseDefinition);
-                if (result == null) result = caseNamespace(analysisCaseDefinition);
-                if (result == null) result = caseElement(analysisCaseDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                AnalysisCaseDefinition analysisCaseDefinition = (AnalysisCaseDefinition) theEObject;
+                T result = this.caseAnalysisCaseDefinition(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseCaseDefinition(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseCalculationDefinition(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseActionDefinition(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseFunction(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseBehavior(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseDefinition(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseClass(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseClassifier(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseType(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseNamespace(analysisCaseDefinition);
+                if (result == null)
+                    result = this.caseElement(analysisCaseDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ANALYSIS_CASE_USAGE: {
-                AnalysisCaseUsage analysisCaseUsage = (AnalysisCaseUsage)theEObject;
-                T result = caseAnalysisCaseUsage(analysisCaseUsage);
-                if (result == null) result = caseCaseUsage(analysisCaseUsage);
-                if (result == null) result = caseCalculationUsage(analysisCaseUsage);
-                if (result == null) result = caseActionUsage(analysisCaseUsage);
-                if (result == null) result = caseExpression(analysisCaseUsage);
-                if (result == null) result = caseOccurrenceUsage(analysisCaseUsage);
-                if (result == null) result = caseStep(analysisCaseUsage);
-                if (result == null) result = caseUsage(analysisCaseUsage);
-                if (result == null) result = caseFeature(analysisCaseUsage);
-                if (result == null) result = caseType(analysisCaseUsage);
-                if (result == null) result = caseNamespace(analysisCaseUsage);
-                if (result == null) result = caseElement(analysisCaseUsage);
-                if (result == null) result = defaultCase(theEObject);
+                AnalysisCaseUsage analysisCaseUsage = (AnalysisCaseUsage) theEObject;
+                T result = this.caseAnalysisCaseUsage(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseCaseUsage(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseCalculationUsage(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseActionUsage(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseExpression(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseStep(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseUsage(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseFeature(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseType(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseNamespace(analysisCaseUsage);
+                if (result == null)
+                    result = this.caseElement(analysisCaseUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ANNOTATING_ELEMENT: {
-                AnnotatingElement annotatingElement = (AnnotatingElement)theEObject;
-                T result = caseAnnotatingElement(annotatingElement);
-                if (result == null) result = caseElement(annotatingElement);
-                if (result == null) result = defaultCase(theEObject);
+                AnnotatingElement annotatingElement = (AnnotatingElement) theEObject;
+                T result = this.caseAnnotatingElement(annotatingElement);
+                if (result == null)
+                    result = this.caseElement(annotatingElement);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ANNOTATION: {
-                Annotation annotation = (Annotation)theEObject;
-                T result = caseAnnotation(annotation);
-                if (result == null) result = caseRelationship(annotation);
-                if (result == null) result = caseElement(annotation);
-                if (result == null) result = defaultCase(theEObject);
+                Annotation annotation = (Annotation) theEObject;
+                T result = this.caseAnnotation(annotation);
+                if (result == null)
+                    result = this.caseRelationship(annotation);
+                if (result == null)
+                    result = this.caseElement(annotation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ASSERT_CONSTRAINT_USAGE: {
-                AssertConstraintUsage assertConstraintUsage = (AssertConstraintUsage)theEObject;
-                T result = caseAssertConstraintUsage(assertConstraintUsage);
-                if (result == null) result = caseConstraintUsage(assertConstraintUsage);
-                if (result == null) result = caseInvariant(assertConstraintUsage);
-                if (result == null) result = caseOccurrenceUsage(assertConstraintUsage);
-                if (result == null) result = caseBooleanExpression(assertConstraintUsage);
-                if (result == null) result = caseUsage(assertConstraintUsage);
-                if (result == null) result = caseExpression(assertConstraintUsage);
-                if (result == null) result = caseStep(assertConstraintUsage);
-                if (result == null) result = caseFeature(assertConstraintUsage);
-                if (result == null) result = caseType(assertConstraintUsage);
-                if (result == null) result = caseNamespace(assertConstraintUsage);
-                if (result == null) result = caseElement(assertConstraintUsage);
-                if (result == null) result = defaultCase(theEObject);
+                AssertConstraintUsage assertConstraintUsage = (AssertConstraintUsage) theEObject;
+                T result = this.caseAssertConstraintUsage(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseConstraintUsage(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseInvariant(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseBooleanExpression(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseUsage(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseExpression(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseStep(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseFeature(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseType(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseNamespace(assertConstraintUsage);
+                if (result == null)
+                    result = this.caseElement(assertConstraintUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ASSIGNMENT_ACTION_USAGE: {
-                AssignmentActionUsage assignmentActionUsage = (AssignmentActionUsage)theEObject;
-                T result = caseAssignmentActionUsage(assignmentActionUsage);
-                if (result == null) result = caseActionUsage(assignmentActionUsage);
-                if (result == null) result = caseOccurrenceUsage(assignmentActionUsage);
-                if (result == null) result = caseStep(assignmentActionUsage);
-                if (result == null) result = caseUsage(assignmentActionUsage);
-                if (result == null) result = caseFeature(assignmentActionUsage);
-                if (result == null) result = caseType(assignmentActionUsage);
-                if (result == null) result = caseNamespace(assignmentActionUsage);
-                if (result == null) result = caseElement(assignmentActionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                AssignmentActionUsage assignmentActionUsage = (AssignmentActionUsage) theEObject;
+                T result = this.caseAssignmentActionUsage(assignmentActionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(assignmentActionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(assignmentActionUsage);
+                if (result == null)
+                    result = this.caseStep(assignmentActionUsage);
+                if (result == null)
+                    result = this.caseUsage(assignmentActionUsage);
+                if (result == null)
+                    result = this.caseFeature(assignmentActionUsage);
+                if (result == null)
+                    result = this.caseType(assignmentActionUsage);
+                if (result == null)
+                    result = this.caseNamespace(assignmentActionUsage);
+                if (result == null)
+                    result = this.caseElement(assignmentActionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ASSOCIATION: {
-                Association association = (Association)theEObject;
-                T result = caseAssociation(association);
-                if (result == null) result = caseClassifier(association);
-                if (result == null) result = caseRelationship(association);
-                if (result == null) result = caseType(association);
-                if (result == null) result = caseNamespace(association);
-                if (result == null) result = caseElement(association);
-                if (result == null) result = defaultCase(theEObject);
+                Association association = (Association) theEObject;
+                T result = this.caseAssociation(association);
+                if (result == null)
+                    result = this.caseClassifier(association);
+                if (result == null)
+                    result = this.caseRelationship(association);
+                if (result == null)
+                    result = this.caseType(association);
+                if (result == null)
+                    result = this.caseNamespace(association);
+                if (result == null)
+                    result = this.caseElement(association);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ASSOCIATION_STRUCTURE: {
-                AssociationStructure associationStructure = (AssociationStructure)theEObject;
-                T result = caseAssociationStructure(associationStructure);
-                if (result == null) result = caseAssociation(associationStructure);
-                if (result == null) result = caseStructure(associationStructure);
-                if (result == null) result = caseRelationship(associationStructure);
-                if (result == null) result = caseClass(associationStructure);
-                if (result == null) result = caseClassifier(associationStructure);
-                if (result == null) result = caseType(associationStructure);
-                if (result == null) result = caseNamespace(associationStructure);
-                if (result == null) result = caseElement(associationStructure);
-                if (result == null) result = defaultCase(theEObject);
+                AssociationStructure associationStructure = (AssociationStructure) theEObject;
+                T result = this.caseAssociationStructure(associationStructure);
+                if (result == null)
+                    result = this.caseAssociation(associationStructure);
+                if (result == null)
+                    result = this.caseStructure(associationStructure);
+                if (result == null)
+                    result = this.caseRelationship(associationStructure);
+                if (result == null)
+                    result = this.caseClass(associationStructure);
+                if (result == null)
+                    result = this.caseClassifier(associationStructure);
+                if (result == null)
+                    result = this.caseType(associationStructure);
+                if (result == null)
+                    result = this.caseNamespace(associationStructure);
+                if (result == null)
+                    result = this.caseElement(associationStructure);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ATTRIBUTE_DEFINITION: {
-                AttributeDefinition attributeDefinition = (AttributeDefinition)theEObject;
-                T result = caseAttributeDefinition(attributeDefinition);
-                if (result == null) result = caseDefinition(attributeDefinition);
-                if (result == null) result = caseDataType(attributeDefinition);
-                if (result == null) result = caseClassifier(attributeDefinition);
-                if (result == null) result = caseType(attributeDefinition);
-                if (result == null) result = caseNamespace(attributeDefinition);
-                if (result == null) result = caseElement(attributeDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                AttributeDefinition attributeDefinition = (AttributeDefinition) theEObject;
+                T result = this.caseAttributeDefinition(attributeDefinition);
+                if (result == null)
+                    result = this.caseDefinition(attributeDefinition);
+                if (result == null)
+                    result = this.caseDataType(attributeDefinition);
+                if (result == null)
+                    result = this.caseClassifier(attributeDefinition);
+                if (result == null)
+                    result = this.caseType(attributeDefinition);
+                if (result == null)
+                    result = this.caseNamespace(attributeDefinition);
+                if (result == null)
+                    result = this.caseElement(attributeDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ATTRIBUTE_USAGE: {
-                AttributeUsage attributeUsage = (AttributeUsage)theEObject;
-                T result = caseAttributeUsage(attributeUsage);
-                if (result == null) result = caseUsage(attributeUsage);
-                if (result == null) result = caseFeature(attributeUsage);
-                if (result == null) result = caseType(attributeUsage);
-                if (result == null) result = caseNamespace(attributeUsage);
-                if (result == null) result = caseElement(attributeUsage);
-                if (result == null) result = defaultCase(theEObject);
+                AttributeUsage attributeUsage = (AttributeUsage) theEObject;
+                T result = this.caseAttributeUsage(attributeUsage);
+                if (result == null)
+                    result = this.caseUsage(attributeUsage);
+                if (result == null)
+                    result = this.caseFeature(attributeUsage);
+                if (result == null)
+                    result = this.caseType(attributeUsage);
+                if (result == null)
+                    result = this.caseNamespace(attributeUsage);
+                if (result == null)
+                    result = this.caseElement(attributeUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.BEHAVIOR: {
-                Behavior behavior = (Behavior)theEObject;
-                T result = caseBehavior(behavior);
-                if (result == null) result = caseClass(behavior);
-                if (result == null) result = caseClassifier(behavior);
-                if (result == null) result = caseType(behavior);
-                if (result == null) result = caseNamespace(behavior);
-                if (result == null) result = caseElement(behavior);
-                if (result == null) result = defaultCase(theEObject);
+                Behavior behavior = (Behavior) theEObject;
+                T result = this.caseBehavior(behavior);
+                if (result == null)
+                    result = this.caseClass(behavior);
+                if (result == null)
+                    result = this.caseClassifier(behavior);
+                if (result == null)
+                    result = this.caseType(behavior);
+                if (result == null)
+                    result = this.caseNamespace(behavior);
+                if (result == null)
+                    result = this.caseElement(behavior);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.BINDING_CONNECTOR: {
-                BindingConnector bindingConnector = (BindingConnector)theEObject;
-                T result = caseBindingConnector(bindingConnector);
-                if (result == null) result = caseConnector(bindingConnector);
-                if (result == null) result = caseFeature(bindingConnector);
-                if (result == null) result = caseRelationship(bindingConnector);
-                if (result == null) result = caseType(bindingConnector);
-                if (result == null) result = caseNamespace(bindingConnector);
-                if (result == null) result = caseElement(bindingConnector);
-                if (result == null) result = defaultCase(theEObject);
+                BindingConnector bindingConnector = (BindingConnector) theEObject;
+                T result = this.caseBindingConnector(bindingConnector);
+                if (result == null)
+                    result = this.caseConnector(bindingConnector);
+                if (result == null)
+                    result = this.caseFeature(bindingConnector);
+                if (result == null)
+                    result = this.caseRelationship(bindingConnector);
+                if (result == null)
+                    result = this.caseType(bindingConnector);
+                if (result == null)
+                    result = this.caseNamespace(bindingConnector);
+                if (result == null)
+                    result = this.caseElement(bindingConnector);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.BINDING_CONNECTOR_AS_USAGE: {
-                BindingConnectorAsUsage bindingConnectorAsUsage = (BindingConnectorAsUsage)theEObject;
-                T result = caseBindingConnectorAsUsage(bindingConnectorAsUsage);
-                if (result == null) result = caseConnectorAsUsage(bindingConnectorAsUsage);
-                if (result == null) result = caseBindingConnector(bindingConnectorAsUsage);
-                if (result == null) result = caseUsage(bindingConnectorAsUsage);
-                if (result == null) result = caseConnector(bindingConnectorAsUsage);
-                if (result == null) result = caseFeature(bindingConnectorAsUsage);
-                if (result == null) result = caseRelationship(bindingConnectorAsUsage);
-                if (result == null) result = caseType(bindingConnectorAsUsage);
-                if (result == null) result = caseNamespace(bindingConnectorAsUsage);
-                if (result == null) result = caseElement(bindingConnectorAsUsage);
-                if (result == null) result = defaultCase(theEObject);
+                BindingConnectorAsUsage bindingConnectorAsUsage = (BindingConnectorAsUsage) theEObject;
+                T result = this.caseBindingConnectorAsUsage(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.caseConnectorAsUsage(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.caseBindingConnector(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.caseUsage(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.caseConnector(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.caseFeature(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.caseRelationship(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.caseType(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.caseNamespace(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.caseElement(bindingConnectorAsUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.BOOLEAN_EXPRESSION: {
-                BooleanExpression booleanExpression = (BooleanExpression)theEObject;
-                T result = caseBooleanExpression(booleanExpression);
-                if (result == null) result = caseExpression(booleanExpression);
-                if (result == null) result = caseStep(booleanExpression);
-                if (result == null) result = caseFeature(booleanExpression);
-                if (result == null) result = caseType(booleanExpression);
-                if (result == null) result = caseNamespace(booleanExpression);
-                if (result == null) result = caseElement(booleanExpression);
-                if (result == null) result = defaultCase(theEObject);
+                BooleanExpression booleanExpression = (BooleanExpression) theEObject;
+                T result = this.caseBooleanExpression(booleanExpression);
+                if (result == null)
+                    result = this.caseExpression(booleanExpression);
+                if (result == null)
+                    result = this.caseStep(booleanExpression);
+                if (result == null)
+                    result = this.caseFeature(booleanExpression);
+                if (result == null)
+                    result = this.caseType(booleanExpression);
+                if (result == null)
+                    result = this.caseNamespace(booleanExpression);
+                if (result == null)
+                    result = this.caseElement(booleanExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CALCULATION_DEFINITION: {
-                CalculationDefinition calculationDefinition = (CalculationDefinition)theEObject;
-                T result = caseCalculationDefinition(calculationDefinition);
-                if (result == null) result = caseActionDefinition(calculationDefinition);
-                if (result == null) result = caseFunction(calculationDefinition);
-                if (result == null) result = caseOccurrenceDefinition(calculationDefinition);
-                if (result == null) result = caseBehavior(calculationDefinition);
-                if (result == null) result = caseDefinition(calculationDefinition);
-                if (result == null) result = caseClass(calculationDefinition);
-                if (result == null) result = caseClassifier(calculationDefinition);
-                if (result == null) result = caseType(calculationDefinition);
-                if (result == null) result = caseNamespace(calculationDefinition);
-                if (result == null) result = caseElement(calculationDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                CalculationDefinition calculationDefinition = (CalculationDefinition) theEObject;
+                T result = this.caseCalculationDefinition(calculationDefinition);
+                if (result == null)
+                    result = this.caseActionDefinition(calculationDefinition);
+                if (result == null)
+                    result = this.caseFunction(calculationDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(calculationDefinition);
+                if (result == null)
+                    result = this.caseBehavior(calculationDefinition);
+                if (result == null)
+                    result = this.caseDefinition(calculationDefinition);
+                if (result == null)
+                    result = this.caseClass(calculationDefinition);
+                if (result == null)
+                    result = this.caseClassifier(calculationDefinition);
+                if (result == null)
+                    result = this.caseType(calculationDefinition);
+                if (result == null)
+                    result = this.caseNamespace(calculationDefinition);
+                if (result == null)
+                    result = this.caseElement(calculationDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CALCULATION_USAGE: {
-                CalculationUsage calculationUsage = (CalculationUsage)theEObject;
-                T result = caseCalculationUsage(calculationUsage);
-                if (result == null) result = caseActionUsage(calculationUsage);
-                if (result == null) result = caseExpression(calculationUsage);
-                if (result == null) result = caseOccurrenceUsage(calculationUsage);
-                if (result == null) result = caseStep(calculationUsage);
-                if (result == null) result = caseUsage(calculationUsage);
-                if (result == null) result = caseFeature(calculationUsage);
-                if (result == null) result = caseType(calculationUsage);
-                if (result == null) result = caseNamespace(calculationUsage);
-                if (result == null) result = caseElement(calculationUsage);
-                if (result == null) result = defaultCase(theEObject);
+                CalculationUsage calculationUsage = (CalculationUsage) theEObject;
+                T result = this.caseCalculationUsage(calculationUsage);
+                if (result == null)
+                    result = this.caseActionUsage(calculationUsage);
+                if (result == null)
+                    result = this.caseExpression(calculationUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(calculationUsage);
+                if (result == null)
+                    result = this.caseStep(calculationUsage);
+                if (result == null)
+                    result = this.caseUsage(calculationUsage);
+                if (result == null)
+                    result = this.caseFeature(calculationUsage);
+                if (result == null)
+                    result = this.caseType(calculationUsage);
+                if (result == null)
+                    result = this.caseNamespace(calculationUsage);
+                if (result == null)
+                    result = this.caseElement(calculationUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CASE_DEFINITION: {
-                CaseDefinition caseDefinition = (CaseDefinition)theEObject;
-                T result = caseCaseDefinition(caseDefinition);
-                if (result == null) result = caseCalculationDefinition(caseDefinition);
-                if (result == null) result = caseActionDefinition(caseDefinition);
-                if (result == null) result = caseFunction(caseDefinition);
-                if (result == null) result = caseOccurrenceDefinition(caseDefinition);
-                if (result == null) result = caseBehavior(caseDefinition);
-                if (result == null) result = caseDefinition(caseDefinition);
-                if (result == null) result = caseClass(caseDefinition);
-                if (result == null) result = caseClassifier(caseDefinition);
-                if (result == null) result = caseType(caseDefinition);
-                if (result == null) result = caseNamespace(caseDefinition);
-                if (result == null) result = caseElement(caseDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                CaseDefinition caseDefinition = (CaseDefinition) theEObject;
+                T result = this.caseCaseDefinition(caseDefinition);
+                if (result == null)
+                    result = this.caseCalculationDefinition(caseDefinition);
+                if (result == null)
+                    result = this.caseActionDefinition(caseDefinition);
+                if (result == null)
+                    result = this.caseFunction(caseDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(caseDefinition);
+                if (result == null)
+                    result = this.caseBehavior(caseDefinition);
+                if (result == null)
+                    result = this.caseDefinition(caseDefinition);
+                if (result == null)
+                    result = this.caseClass(caseDefinition);
+                if (result == null)
+                    result = this.caseClassifier(caseDefinition);
+                if (result == null)
+                    result = this.caseType(caseDefinition);
+                if (result == null)
+                    result = this.caseNamespace(caseDefinition);
+                if (result == null)
+                    result = this.caseElement(caseDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CASE_USAGE: {
-                CaseUsage caseUsage = (CaseUsage)theEObject;
-                T result = caseCaseUsage(caseUsage);
-                if (result == null) result = caseCalculationUsage(caseUsage);
-                if (result == null) result = caseActionUsage(caseUsage);
-                if (result == null) result = caseExpression(caseUsage);
-                if (result == null) result = caseOccurrenceUsage(caseUsage);
-                if (result == null) result = caseStep(caseUsage);
-                if (result == null) result = caseUsage(caseUsage);
-                if (result == null) result = caseFeature(caseUsage);
-                if (result == null) result = caseType(caseUsage);
-                if (result == null) result = caseNamespace(caseUsage);
-                if (result == null) result = caseElement(caseUsage);
-                if (result == null) result = defaultCase(theEObject);
+                CaseUsage caseUsage = (CaseUsage) theEObject;
+                T result = this.caseCaseUsage(caseUsage);
+                if (result == null)
+                    result = this.caseCalculationUsage(caseUsage);
+                if (result == null)
+                    result = this.caseActionUsage(caseUsage);
+                if (result == null)
+                    result = this.caseExpression(caseUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(caseUsage);
+                if (result == null)
+                    result = this.caseStep(caseUsage);
+                if (result == null)
+                    result = this.caseUsage(caseUsage);
+                if (result == null)
+                    result = this.caseFeature(caseUsage);
+                if (result == null)
+                    result = this.caseType(caseUsage);
+                if (result == null)
+                    result = this.caseNamespace(caseUsage);
+                if (result == null)
+                    result = this.caseElement(caseUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CLASS: {
-                org.eclipse.syson.sysml.Class class_ = (org.eclipse.syson.sysml.Class)theEObject;
-                T result = caseClass(class_);
-                if (result == null) result = caseClassifier(class_);
-                if (result == null) result = caseType(class_);
-                if (result == null) result = caseNamespace(class_);
-                if (result == null) result = caseElement(class_);
-                if (result == null) result = defaultCase(theEObject);
+                org.eclipse.syson.sysml.Class class_ = (org.eclipse.syson.sysml.Class) theEObject;
+                T result = this.caseClass(class_);
+                if (result == null)
+                    result = this.caseClassifier(class_);
+                if (result == null)
+                    result = this.caseType(class_);
+                if (result == null)
+                    result = this.caseNamespace(class_);
+                if (result == null)
+                    result = this.caseElement(class_);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CLASSIFIER: {
-                Classifier classifier = (Classifier)theEObject;
-                T result = caseClassifier(classifier);
-                if (result == null) result = caseType(classifier);
-                if (result == null) result = caseNamespace(classifier);
-                if (result == null) result = caseElement(classifier);
-                if (result == null) result = defaultCase(theEObject);
+                Classifier classifier = (Classifier) theEObject;
+                T result = this.caseClassifier(classifier);
+                if (result == null)
+                    result = this.caseType(classifier);
+                if (result == null)
+                    result = this.caseNamespace(classifier);
+                if (result == null)
+                    result = this.caseElement(classifier);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.COLLECT_EXPRESSION: {
-                CollectExpression collectExpression = (CollectExpression)theEObject;
-                T result = caseCollectExpression(collectExpression);
-                if (result == null) result = caseOperatorExpression(collectExpression);
-                if (result == null) result = caseInvocationExpression(collectExpression);
-                if (result == null) result = caseExpression(collectExpression);
-                if (result == null) result = caseStep(collectExpression);
-                if (result == null) result = caseFeature(collectExpression);
-                if (result == null) result = caseType(collectExpression);
-                if (result == null) result = caseNamespace(collectExpression);
-                if (result == null) result = caseElement(collectExpression);
-                if (result == null) result = defaultCase(theEObject);
+                CollectExpression collectExpression = (CollectExpression) theEObject;
+                T result = this.caseCollectExpression(collectExpression);
+                if (result == null)
+                    result = this.caseOperatorExpression(collectExpression);
+                if (result == null)
+                    result = this.caseInvocationExpression(collectExpression);
+                if (result == null)
+                    result = this.caseExpression(collectExpression);
+                if (result == null)
+                    result = this.caseStep(collectExpression);
+                if (result == null)
+                    result = this.caseFeature(collectExpression);
+                if (result == null)
+                    result = this.caseType(collectExpression);
+                if (result == null)
+                    result = this.caseNamespace(collectExpression);
+                if (result == null)
+                    result = this.caseElement(collectExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.COMMENT: {
-                Comment comment = (Comment)theEObject;
-                T result = caseComment(comment);
-                if (result == null) result = caseAnnotatingElement(comment);
-                if (result == null) result = caseElement(comment);
-                if (result == null) result = defaultCase(theEObject);
+                Comment comment = (Comment) theEObject;
+                T result = this.caseComment(comment);
+                if (result == null)
+                    result = this.caseAnnotatingElement(comment);
+                if (result == null)
+                    result = this.caseElement(comment);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONCERN_DEFINITION: {
-                ConcernDefinition concernDefinition = (ConcernDefinition)theEObject;
-                T result = caseConcernDefinition(concernDefinition);
-                if (result == null) result = caseRequirementDefinition(concernDefinition);
-                if (result == null) result = caseConstraintDefinition(concernDefinition);
-                if (result == null) result = caseOccurrenceDefinition(concernDefinition);
-                if (result == null) result = casePredicate(concernDefinition);
-                if (result == null) result = caseDefinition(concernDefinition);
-                if (result == null) result = caseFunction(concernDefinition);
-                if (result == null) result = caseClassifier(concernDefinition);
-                if (result == null) result = caseBehavior(concernDefinition);
-                if (result == null) result = caseType(concernDefinition);
-                if (result == null) result = caseClass(concernDefinition);
-                if (result == null) result = caseNamespace(concernDefinition);
-                if (result == null) result = caseElement(concernDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                ConcernDefinition concernDefinition = (ConcernDefinition) theEObject;
+                T result = this.caseConcernDefinition(concernDefinition);
+                if (result == null)
+                    result = this.caseRequirementDefinition(concernDefinition);
+                if (result == null)
+                    result = this.caseConstraintDefinition(concernDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(concernDefinition);
+                if (result == null)
+                    result = this.casePredicate(concernDefinition);
+                if (result == null)
+                    result = this.caseDefinition(concernDefinition);
+                if (result == null)
+                    result = this.caseFunction(concernDefinition);
+                if (result == null)
+                    result = this.caseClassifier(concernDefinition);
+                if (result == null)
+                    result = this.caseBehavior(concernDefinition);
+                if (result == null)
+                    result = this.caseType(concernDefinition);
+                if (result == null)
+                    result = this.caseClass(concernDefinition);
+                if (result == null)
+                    result = this.caseNamespace(concernDefinition);
+                if (result == null)
+                    result = this.caseElement(concernDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONCERN_USAGE: {
-                ConcernUsage concernUsage = (ConcernUsage)theEObject;
-                T result = caseConcernUsage(concernUsage);
-                if (result == null) result = caseRequirementUsage(concernUsage);
-                if (result == null) result = caseConstraintUsage(concernUsage);
-                if (result == null) result = caseOccurrenceUsage(concernUsage);
-                if (result == null) result = caseBooleanExpression(concernUsage);
-                if (result == null) result = caseUsage(concernUsage);
-                if (result == null) result = caseExpression(concernUsage);
-                if (result == null) result = caseStep(concernUsage);
-                if (result == null) result = caseFeature(concernUsage);
-                if (result == null) result = caseType(concernUsage);
-                if (result == null) result = caseNamespace(concernUsage);
-                if (result == null) result = caseElement(concernUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ConcernUsage concernUsage = (ConcernUsage) theEObject;
+                T result = this.caseConcernUsage(concernUsage);
+                if (result == null)
+                    result = this.caseRequirementUsage(concernUsage);
+                if (result == null)
+                    result = this.caseConstraintUsage(concernUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(concernUsage);
+                if (result == null)
+                    result = this.caseBooleanExpression(concernUsage);
+                if (result == null)
+                    result = this.caseUsage(concernUsage);
+                if (result == null)
+                    result = this.caseExpression(concernUsage);
+                if (result == null)
+                    result = this.caseStep(concernUsage);
+                if (result == null)
+                    result = this.caseFeature(concernUsage);
+                if (result == null)
+                    result = this.caseType(concernUsage);
+                if (result == null)
+                    result = this.caseNamespace(concernUsage);
+                if (result == null)
+                    result = this.caseElement(concernUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONJUGATED_PORT_DEFINITION: {
-                ConjugatedPortDefinition conjugatedPortDefinition = (ConjugatedPortDefinition)theEObject;
-                T result = caseConjugatedPortDefinition(conjugatedPortDefinition);
-                if (result == null) result = casePortDefinition(conjugatedPortDefinition);
-                if (result == null) result = caseOccurrenceDefinition(conjugatedPortDefinition);
-                if (result == null) result = caseStructure(conjugatedPortDefinition);
-                if (result == null) result = caseDefinition(conjugatedPortDefinition);
-                if (result == null) result = caseClass(conjugatedPortDefinition);
-                if (result == null) result = caseClassifier(conjugatedPortDefinition);
-                if (result == null) result = caseType(conjugatedPortDefinition);
-                if (result == null) result = caseNamespace(conjugatedPortDefinition);
-                if (result == null) result = caseElement(conjugatedPortDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                ConjugatedPortDefinition conjugatedPortDefinition = (ConjugatedPortDefinition) theEObject;
+                T result = this.caseConjugatedPortDefinition(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.casePortDefinition(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.caseStructure(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.caseDefinition(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.caseClass(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.caseClassifier(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.caseType(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.caseNamespace(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.caseElement(conjugatedPortDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONJUGATED_PORT_TYPING: {
-                ConjugatedPortTyping conjugatedPortTyping = (ConjugatedPortTyping)theEObject;
-                T result = caseConjugatedPortTyping(conjugatedPortTyping);
-                if (result == null) result = caseFeatureTyping(conjugatedPortTyping);
-                if (result == null) result = caseSpecialization(conjugatedPortTyping);
-                if (result == null) result = caseRelationship(conjugatedPortTyping);
-                if (result == null) result = caseElement(conjugatedPortTyping);
-                if (result == null) result = defaultCase(theEObject);
+                ConjugatedPortTyping conjugatedPortTyping = (ConjugatedPortTyping) theEObject;
+                T result = this.caseConjugatedPortTyping(conjugatedPortTyping);
+                if (result == null)
+                    result = this.caseFeatureTyping(conjugatedPortTyping);
+                if (result == null)
+                    result = this.caseSpecialization(conjugatedPortTyping);
+                if (result == null)
+                    result = this.caseRelationship(conjugatedPortTyping);
+                if (result == null)
+                    result = this.caseElement(conjugatedPortTyping);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONJUGATION: {
-                Conjugation conjugation = (Conjugation)theEObject;
-                T result = caseConjugation(conjugation);
-                if (result == null) result = caseRelationship(conjugation);
-                if (result == null) result = caseElement(conjugation);
-                if (result == null) result = defaultCase(theEObject);
+                Conjugation conjugation = (Conjugation) theEObject;
+                T result = this.caseConjugation(conjugation);
+                if (result == null)
+                    result = this.caseRelationship(conjugation);
+                if (result == null)
+                    result = this.caseElement(conjugation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONNECTION_DEFINITION: {
-                ConnectionDefinition connectionDefinition = (ConnectionDefinition)theEObject;
-                T result = caseConnectionDefinition(connectionDefinition);
-                if (result == null) result = casePartDefinition(connectionDefinition);
-                if (result == null) result = caseAssociationStructure(connectionDefinition);
-                if (result == null) result = caseItemDefinition(connectionDefinition);
-                if (result == null) result = caseAssociation(connectionDefinition);
-                if (result == null) result = caseOccurrenceDefinition(connectionDefinition);
-                if (result == null) result = caseStructure(connectionDefinition);
-                if (result == null) result = caseRelationship(connectionDefinition);
-                if (result == null) result = caseDefinition(connectionDefinition);
-                if (result == null) result = caseClass(connectionDefinition);
-                if (result == null) result = caseClassifier(connectionDefinition);
-                if (result == null) result = caseType(connectionDefinition);
-                if (result == null) result = caseNamespace(connectionDefinition);
-                if (result == null) result = caseElement(connectionDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                ConnectionDefinition connectionDefinition = (ConnectionDefinition) theEObject;
+                T result = this.caseConnectionDefinition(connectionDefinition);
+                if (result == null)
+                    result = this.casePartDefinition(connectionDefinition);
+                if (result == null)
+                    result = this.caseAssociationStructure(connectionDefinition);
+                if (result == null)
+                    result = this.caseItemDefinition(connectionDefinition);
+                if (result == null)
+                    result = this.caseAssociation(connectionDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(connectionDefinition);
+                if (result == null)
+                    result = this.caseStructure(connectionDefinition);
+                if (result == null)
+                    result = this.caseRelationship(connectionDefinition);
+                if (result == null)
+                    result = this.caseDefinition(connectionDefinition);
+                if (result == null)
+                    result = this.caseClass(connectionDefinition);
+                if (result == null)
+                    result = this.caseClassifier(connectionDefinition);
+                if (result == null)
+                    result = this.caseType(connectionDefinition);
+                if (result == null)
+                    result = this.caseNamespace(connectionDefinition);
+                if (result == null)
+                    result = this.caseElement(connectionDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONNECTION_USAGE: {
-                ConnectionUsage connectionUsage = (ConnectionUsage)theEObject;
-                T result = caseConnectionUsage(connectionUsage);
-                if (result == null) result = caseConnectorAsUsage(connectionUsage);
-                if (result == null) result = casePartUsage(connectionUsage);
-                if (result == null) result = caseConnector(connectionUsage);
-                if (result == null) result = caseItemUsage(connectionUsage);
-                if (result == null) result = caseFeature(connectionUsage);
-                if (result == null) result = caseRelationship(connectionUsage);
-                if (result == null) result = caseOccurrenceUsage(connectionUsage);
-                if (result == null) result = caseUsage(connectionUsage);
-                if (result == null) result = caseType(connectionUsage);
-                if (result == null) result = caseNamespace(connectionUsage);
-                if (result == null) result = caseElement(connectionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ConnectionUsage connectionUsage = (ConnectionUsage) theEObject;
+                T result = this.caseConnectionUsage(connectionUsage);
+                if (result == null)
+                    result = this.caseConnectorAsUsage(connectionUsage);
+                if (result == null)
+                    result = this.casePartUsage(connectionUsage);
+                if (result == null)
+                    result = this.caseConnector(connectionUsage);
+                if (result == null)
+                    result = this.caseItemUsage(connectionUsage);
+                if (result == null)
+                    result = this.caseFeature(connectionUsage);
+                if (result == null)
+                    result = this.caseRelationship(connectionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(connectionUsage);
+                if (result == null)
+                    result = this.caseUsage(connectionUsage);
+                if (result == null)
+                    result = this.caseType(connectionUsage);
+                if (result == null)
+                    result = this.caseNamespace(connectionUsage);
+                if (result == null)
+                    result = this.caseElement(connectionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONNECTOR: {
-                Connector connector = (Connector)theEObject;
-                T result = caseConnector(connector);
-                if (result == null) result = caseFeature(connector);
-                if (result == null) result = caseRelationship(connector);
-                if (result == null) result = caseType(connector);
-                if (result == null) result = caseNamespace(connector);
-                if (result == null) result = caseElement(connector);
-                if (result == null) result = defaultCase(theEObject);
+                Connector connector = (Connector) theEObject;
+                T result = this.caseConnector(connector);
+                if (result == null)
+                    result = this.caseFeature(connector);
+                if (result == null)
+                    result = this.caseRelationship(connector);
+                if (result == null)
+                    result = this.caseType(connector);
+                if (result == null)
+                    result = this.caseNamespace(connector);
+                if (result == null)
+                    result = this.caseElement(connector);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONNECTOR_AS_USAGE: {
-                ConnectorAsUsage connectorAsUsage = (ConnectorAsUsage)theEObject;
-                T result = caseConnectorAsUsage(connectorAsUsage);
-                if (result == null) result = caseUsage(connectorAsUsage);
-                if (result == null) result = caseConnector(connectorAsUsage);
-                if (result == null) result = caseFeature(connectorAsUsage);
-                if (result == null) result = caseRelationship(connectorAsUsage);
-                if (result == null) result = caseType(connectorAsUsage);
-                if (result == null) result = caseNamespace(connectorAsUsage);
-                if (result == null) result = caseElement(connectorAsUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ConnectorAsUsage connectorAsUsage = (ConnectorAsUsage) theEObject;
+                T result = this.caseConnectorAsUsage(connectorAsUsage);
+                if (result == null)
+                    result = this.caseUsage(connectorAsUsage);
+                if (result == null)
+                    result = this.caseConnector(connectorAsUsage);
+                if (result == null)
+                    result = this.caseFeature(connectorAsUsage);
+                if (result == null)
+                    result = this.caseRelationship(connectorAsUsage);
+                if (result == null)
+                    result = this.caseType(connectorAsUsage);
+                if (result == null)
+                    result = this.caseNamespace(connectorAsUsage);
+                if (result == null)
+                    result = this.caseElement(connectorAsUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONSTRAINT_DEFINITION: {
-                ConstraintDefinition constraintDefinition = (ConstraintDefinition)theEObject;
-                T result = caseConstraintDefinition(constraintDefinition);
-                if (result == null) result = caseOccurrenceDefinition(constraintDefinition);
-                if (result == null) result = casePredicate(constraintDefinition);
-                if (result == null) result = caseDefinition(constraintDefinition);
-                if (result == null) result = caseFunction(constraintDefinition);
-                if (result == null) result = caseClassifier(constraintDefinition);
-                if (result == null) result = caseBehavior(constraintDefinition);
-                if (result == null) result = caseType(constraintDefinition);
-                if (result == null) result = caseClass(constraintDefinition);
-                if (result == null) result = caseNamespace(constraintDefinition);
-                if (result == null) result = caseElement(constraintDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                ConstraintDefinition constraintDefinition = (ConstraintDefinition) theEObject;
+                T result = this.caseConstraintDefinition(constraintDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(constraintDefinition);
+                if (result == null)
+                    result = this.casePredicate(constraintDefinition);
+                if (result == null)
+                    result = this.caseDefinition(constraintDefinition);
+                if (result == null)
+                    result = this.caseFunction(constraintDefinition);
+                if (result == null)
+                    result = this.caseClassifier(constraintDefinition);
+                if (result == null)
+                    result = this.caseBehavior(constraintDefinition);
+                if (result == null)
+                    result = this.caseType(constraintDefinition);
+                if (result == null)
+                    result = this.caseClass(constraintDefinition);
+                if (result == null)
+                    result = this.caseNamespace(constraintDefinition);
+                if (result == null)
+                    result = this.caseElement(constraintDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONSTRAINT_USAGE: {
-                ConstraintUsage constraintUsage = (ConstraintUsage)theEObject;
-                T result = caseConstraintUsage(constraintUsage);
-                if (result == null) result = caseOccurrenceUsage(constraintUsage);
-                if (result == null) result = caseBooleanExpression(constraintUsage);
-                if (result == null) result = caseUsage(constraintUsage);
-                if (result == null) result = caseExpression(constraintUsage);
-                if (result == null) result = caseStep(constraintUsage);
-                if (result == null) result = caseFeature(constraintUsage);
-                if (result == null) result = caseType(constraintUsage);
-                if (result == null) result = caseNamespace(constraintUsage);
-                if (result == null) result = caseElement(constraintUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ConstraintUsage constraintUsage = (ConstraintUsage) theEObject;
+                T result = this.caseConstraintUsage(constraintUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(constraintUsage);
+                if (result == null)
+                    result = this.caseBooleanExpression(constraintUsage);
+                if (result == null)
+                    result = this.caseUsage(constraintUsage);
+                if (result == null)
+                    result = this.caseExpression(constraintUsage);
+                if (result == null)
+                    result = this.caseStep(constraintUsage);
+                if (result == null)
+                    result = this.caseFeature(constraintUsage);
+                if (result == null)
+                    result = this.caseType(constraintUsage);
+                if (result == null)
+                    result = this.caseNamespace(constraintUsage);
+                if (result == null)
+                    result = this.caseElement(constraintUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.CONTROL_NODE: {
-                ControlNode controlNode = (ControlNode)theEObject;
-                T result = caseControlNode(controlNode);
-                if (result == null) result = caseActionUsage(controlNode);
-                if (result == null) result = caseOccurrenceUsage(controlNode);
-                if (result == null) result = caseStep(controlNode);
-                if (result == null) result = caseUsage(controlNode);
-                if (result == null) result = caseFeature(controlNode);
-                if (result == null) result = caseType(controlNode);
-                if (result == null) result = caseNamespace(controlNode);
-                if (result == null) result = caseElement(controlNode);
-                if (result == null) result = defaultCase(theEObject);
+                ControlNode controlNode = (ControlNode) theEObject;
+                T result = this.caseControlNode(controlNode);
+                if (result == null)
+                    result = this.caseActionUsage(controlNode);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(controlNode);
+                if (result == null)
+                    result = this.caseStep(controlNode);
+                if (result == null)
+                    result = this.caseUsage(controlNode);
+                if (result == null)
+                    result = this.caseFeature(controlNode);
+                if (result == null)
+                    result = this.caseType(controlNode);
+                if (result == null)
+                    result = this.caseNamespace(controlNode);
+                if (result == null)
+                    result = this.caseElement(controlNode);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.DATA_TYPE: {
-                DataType dataType = (DataType)theEObject;
-                T result = caseDataType(dataType);
-                if (result == null) result = caseClassifier(dataType);
-                if (result == null) result = caseType(dataType);
-                if (result == null) result = caseNamespace(dataType);
-                if (result == null) result = caseElement(dataType);
-                if (result == null) result = defaultCase(theEObject);
+                DataType dataType = (DataType) theEObject;
+                T result = this.caseDataType(dataType);
+                if (result == null)
+                    result = this.caseClassifier(dataType);
+                if (result == null)
+                    result = this.caseType(dataType);
+                if (result == null)
+                    result = this.caseNamespace(dataType);
+                if (result == null)
+                    result = this.caseElement(dataType);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.DECISION_NODE: {
-                DecisionNode decisionNode = (DecisionNode)theEObject;
-                T result = caseDecisionNode(decisionNode);
-                if (result == null) result = caseControlNode(decisionNode);
-                if (result == null) result = caseActionUsage(decisionNode);
-                if (result == null) result = caseOccurrenceUsage(decisionNode);
-                if (result == null) result = caseStep(decisionNode);
-                if (result == null) result = caseUsage(decisionNode);
-                if (result == null) result = caseFeature(decisionNode);
-                if (result == null) result = caseType(decisionNode);
-                if (result == null) result = caseNamespace(decisionNode);
-                if (result == null) result = caseElement(decisionNode);
-                if (result == null) result = defaultCase(theEObject);
+                DecisionNode decisionNode = (DecisionNode) theEObject;
+                T result = this.caseDecisionNode(decisionNode);
+                if (result == null)
+                    result = this.caseControlNode(decisionNode);
+                if (result == null)
+                    result = this.caseActionUsage(decisionNode);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(decisionNode);
+                if (result == null)
+                    result = this.caseStep(decisionNode);
+                if (result == null)
+                    result = this.caseUsage(decisionNode);
+                if (result == null)
+                    result = this.caseFeature(decisionNode);
+                if (result == null)
+                    result = this.caseType(decisionNode);
+                if (result == null)
+                    result = this.caseNamespace(decisionNode);
+                if (result == null)
+                    result = this.caseElement(decisionNode);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.DEFINITION: {
-                Definition definition = (Definition)theEObject;
-                T result = caseDefinition(definition);
-                if (result == null) result = caseClassifier(definition);
-                if (result == null) result = caseType(definition);
-                if (result == null) result = caseNamespace(definition);
-                if (result == null) result = caseElement(definition);
-                if (result == null) result = defaultCase(theEObject);
+                Definition definition = (Definition) theEObject;
+                T result = this.caseDefinition(definition);
+                if (result == null)
+                    result = this.caseClassifier(definition);
+                if (result == null)
+                    result = this.caseType(definition);
+                if (result == null)
+                    result = this.caseNamespace(definition);
+                if (result == null)
+                    result = this.caseElement(definition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.DEPENDENCY: {
-                Dependency dependency = (Dependency)theEObject;
-                T result = caseDependency(dependency);
-                if (result == null) result = caseRelationship(dependency);
-                if (result == null) result = caseElement(dependency);
-                if (result == null) result = defaultCase(theEObject);
+                Dependency dependency = (Dependency) theEObject;
+                T result = this.caseDependency(dependency);
+                if (result == null)
+                    result = this.caseRelationship(dependency);
+                if (result == null)
+                    result = this.caseElement(dependency);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.DIFFERENCING: {
-                Differencing differencing = (Differencing)theEObject;
-                T result = caseDifferencing(differencing);
-                if (result == null) result = caseRelationship(differencing);
-                if (result == null) result = caseElement(differencing);
-                if (result == null) result = defaultCase(theEObject);
+                Differencing differencing = (Differencing) theEObject;
+                T result = this.caseDifferencing(differencing);
+                if (result == null)
+                    result = this.caseRelationship(differencing);
+                if (result == null)
+                    result = this.caseElement(differencing);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.DISJOINING: {
-                Disjoining disjoining = (Disjoining)theEObject;
-                T result = caseDisjoining(disjoining);
-                if (result == null) result = caseRelationship(disjoining);
-                if (result == null) result = caseElement(disjoining);
-                if (result == null) result = defaultCase(theEObject);
+                Disjoining disjoining = (Disjoining) theEObject;
+                T result = this.caseDisjoining(disjoining);
+                if (result == null)
+                    result = this.caseRelationship(disjoining);
+                if (result == null)
+                    result = this.caseElement(disjoining);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.DOCUMENTATION: {
-                Documentation documentation = (Documentation)theEObject;
-                T result = caseDocumentation(documentation);
-                if (result == null) result = caseComment(documentation);
-                if (result == null) result = caseAnnotatingElement(documentation);
-                if (result == null) result = caseElement(documentation);
-                if (result == null) result = defaultCase(theEObject);
+                Documentation documentation = (Documentation) theEObject;
+                T result = this.caseDocumentation(documentation);
+                if (result == null)
+                    result = this.caseComment(documentation);
+                if (result == null)
+                    result = this.caseAnnotatingElement(documentation);
+                if (result == null)
+                    result = this.caseElement(documentation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ELEMENT: {
-                Element element = (Element)theEObject;
-                T result = caseElement(element);
-                if (result == null) result = defaultCase(theEObject);
+                Element element = (Element) theEObject;
+                T result = this.caseElement(element);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ELEMENT_FILTER_MEMBERSHIP: {
-                ElementFilterMembership elementFilterMembership = (ElementFilterMembership)theEObject;
-                T result = caseElementFilterMembership(elementFilterMembership);
-                if (result == null) result = caseOwningMembership(elementFilterMembership);
-                if (result == null) result = caseMembership(elementFilterMembership);
-                if (result == null) result = caseRelationship(elementFilterMembership);
-                if (result == null) result = caseElement(elementFilterMembership);
-                if (result == null) result = defaultCase(theEObject);
+                ElementFilterMembership elementFilterMembership = (ElementFilterMembership) theEObject;
+                T result = this.caseElementFilterMembership(elementFilterMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(elementFilterMembership);
+                if (result == null)
+                    result = this.caseMembership(elementFilterMembership);
+                if (result == null)
+                    result = this.caseRelationship(elementFilterMembership);
+                if (result == null)
+                    result = this.caseElement(elementFilterMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.END_FEATURE_MEMBERSHIP: {
-                EndFeatureMembership endFeatureMembership = (EndFeatureMembership)theEObject;
-                T result = caseEndFeatureMembership(endFeatureMembership);
-                if (result == null) result = caseFeatureMembership(endFeatureMembership);
-                if (result == null) result = caseOwningMembership(endFeatureMembership);
-                if (result == null) result = caseFeaturing(endFeatureMembership);
-                if (result == null) result = caseMembership(endFeatureMembership);
-                if (result == null) result = caseRelationship(endFeatureMembership);
-                if (result == null) result = caseElement(endFeatureMembership);
-                if (result == null) result = defaultCase(theEObject);
+                EndFeatureMembership endFeatureMembership = (EndFeatureMembership) theEObject;
+                T result = this.caseEndFeatureMembership(endFeatureMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(endFeatureMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(endFeatureMembership);
+                if (result == null)
+                    result = this.caseFeaturing(endFeatureMembership);
+                if (result == null)
+                    result = this.caseMembership(endFeatureMembership);
+                if (result == null)
+                    result = this.caseRelationship(endFeatureMembership);
+                if (result == null)
+                    result = this.caseElement(endFeatureMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ENUMERATION_DEFINITION: {
-                EnumerationDefinition enumerationDefinition = (EnumerationDefinition)theEObject;
-                T result = caseEnumerationDefinition(enumerationDefinition);
-                if (result == null) result = caseAttributeDefinition(enumerationDefinition);
-                if (result == null) result = caseDefinition(enumerationDefinition);
-                if (result == null) result = caseDataType(enumerationDefinition);
-                if (result == null) result = caseClassifier(enumerationDefinition);
-                if (result == null) result = caseType(enumerationDefinition);
-                if (result == null) result = caseNamespace(enumerationDefinition);
-                if (result == null) result = caseElement(enumerationDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                EnumerationDefinition enumerationDefinition = (EnumerationDefinition) theEObject;
+                T result = this.caseEnumerationDefinition(enumerationDefinition);
+                if (result == null)
+                    result = this.caseAttributeDefinition(enumerationDefinition);
+                if (result == null)
+                    result = this.caseDefinition(enumerationDefinition);
+                if (result == null)
+                    result = this.caseDataType(enumerationDefinition);
+                if (result == null)
+                    result = this.caseClassifier(enumerationDefinition);
+                if (result == null)
+                    result = this.caseType(enumerationDefinition);
+                if (result == null)
+                    result = this.caseNamespace(enumerationDefinition);
+                if (result == null)
+                    result = this.caseElement(enumerationDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ENUMERATION_USAGE: {
-                EnumerationUsage enumerationUsage = (EnumerationUsage)theEObject;
-                T result = caseEnumerationUsage(enumerationUsage);
-                if (result == null) result = caseAttributeUsage(enumerationUsage);
-                if (result == null) result = caseUsage(enumerationUsage);
-                if (result == null) result = caseFeature(enumerationUsage);
-                if (result == null) result = caseType(enumerationUsage);
-                if (result == null) result = caseNamespace(enumerationUsage);
-                if (result == null) result = caseElement(enumerationUsage);
-                if (result == null) result = defaultCase(theEObject);
+                EnumerationUsage enumerationUsage = (EnumerationUsage) theEObject;
+                T result = this.caseEnumerationUsage(enumerationUsage);
+                if (result == null)
+                    result = this.caseAttributeUsage(enumerationUsage);
+                if (result == null)
+                    result = this.caseUsage(enumerationUsage);
+                if (result == null)
+                    result = this.caseFeature(enumerationUsage);
+                if (result == null)
+                    result = this.caseType(enumerationUsage);
+                if (result == null)
+                    result = this.caseNamespace(enumerationUsage);
+                if (result == null)
+                    result = this.caseElement(enumerationUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.EVENT_OCCURRENCE_USAGE: {
-                EventOccurrenceUsage eventOccurrenceUsage = (EventOccurrenceUsage)theEObject;
-                T result = caseEventOccurrenceUsage(eventOccurrenceUsage);
-                if (result == null) result = caseOccurrenceUsage(eventOccurrenceUsage);
-                if (result == null) result = caseUsage(eventOccurrenceUsage);
-                if (result == null) result = caseFeature(eventOccurrenceUsage);
-                if (result == null) result = caseType(eventOccurrenceUsage);
-                if (result == null) result = caseNamespace(eventOccurrenceUsage);
-                if (result == null) result = caseElement(eventOccurrenceUsage);
-                if (result == null) result = defaultCase(theEObject);
+                EventOccurrenceUsage eventOccurrenceUsage = (EventOccurrenceUsage) theEObject;
+                T result = this.caseEventOccurrenceUsage(eventOccurrenceUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(eventOccurrenceUsage);
+                if (result == null)
+                    result = this.caseUsage(eventOccurrenceUsage);
+                if (result == null)
+                    result = this.caseFeature(eventOccurrenceUsage);
+                if (result == null)
+                    result = this.caseType(eventOccurrenceUsage);
+                if (result == null)
+                    result = this.caseNamespace(eventOccurrenceUsage);
+                if (result == null)
+                    result = this.caseElement(eventOccurrenceUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.EXHIBIT_STATE_USAGE: {
-                ExhibitStateUsage exhibitStateUsage = (ExhibitStateUsage)theEObject;
-                T result = caseExhibitStateUsage(exhibitStateUsage);
-                if (result == null) result = caseStateUsage(exhibitStateUsage);
-                if (result == null) result = casePerformActionUsage(exhibitStateUsage);
-                if (result == null) result = caseActionUsage(exhibitStateUsage);
-                if (result == null) result = caseEventOccurrenceUsage(exhibitStateUsage);
-                if (result == null) result = caseOccurrenceUsage(exhibitStateUsage);
-                if (result == null) result = caseStep(exhibitStateUsage);
-                if (result == null) result = caseUsage(exhibitStateUsage);
-                if (result == null) result = caseFeature(exhibitStateUsage);
-                if (result == null) result = caseType(exhibitStateUsage);
-                if (result == null) result = caseNamespace(exhibitStateUsage);
-                if (result == null) result = caseElement(exhibitStateUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ExhibitStateUsage exhibitStateUsage = (ExhibitStateUsage) theEObject;
+                T result = this.caseExhibitStateUsage(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseStateUsage(exhibitStateUsage);
+                if (result == null)
+                    result = this.casePerformActionUsage(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseActionUsage(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseEventOccurrenceUsage(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseStep(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseUsage(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseFeature(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseType(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseNamespace(exhibitStateUsage);
+                if (result == null)
+                    result = this.caseElement(exhibitStateUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.EXPOSE: {
-                Expose expose = (Expose)theEObject;
-                T result = caseExpose(expose);
-                if (result == null) result = caseImport(expose);
-                if (result == null) result = caseRelationship(expose);
-                if (result == null) result = caseElement(expose);
-                if (result == null) result = defaultCase(theEObject);
+                Expose expose = (Expose) theEObject;
+                T result = this.caseExpose(expose);
+                if (result == null)
+                    result = this.caseImport(expose);
+                if (result == null)
+                    result = this.caseRelationship(expose);
+                if (result == null)
+                    result = this.caseElement(expose);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.EXPRESSION: {
-                Expression expression = (Expression)theEObject;
-                T result = caseExpression(expression);
-                if (result == null) result = caseStep(expression);
-                if (result == null) result = caseFeature(expression);
-                if (result == null) result = caseType(expression);
-                if (result == null) result = caseNamespace(expression);
-                if (result == null) result = caseElement(expression);
-                if (result == null) result = defaultCase(theEObject);
+                Expression expression = (Expression) theEObject;
+                T result = this.caseExpression(expression);
+                if (result == null)
+                    result = this.caseStep(expression);
+                if (result == null)
+                    result = this.caseFeature(expression);
+                if (result == null)
+                    result = this.caseType(expression);
+                if (result == null)
+                    result = this.caseNamespace(expression);
+                if (result == null)
+                    result = this.caseElement(expression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FEATURE: {
-                Feature feature = (Feature)theEObject;
-                T result = caseFeature(feature);
-                if (result == null) result = caseType(feature);
-                if (result == null) result = caseNamespace(feature);
-                if (result == null) result = caseElement(feature);
-                if (result == null) result = defaultCase(theEObject);
+                Feature feature = (Feature) theEObject;
+                T result = this.caseFeature(feature);
+                if (result == null)
+                    result = this.caseType(feature);
+                if (result == null)
+                    result = this.caseNamespace(feature);
+                if (result == null)
+                    result = this.caseElement(feature);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FEATURE_CHAIN_EXPRESSION: {
-                FeatureChainExpression featureChainExpression = (FeatureChainExpression)theEObject;
-                T result = caseFeatureChainExpression(featureChainExpression);
-                if (result == null) result = caseOperatorExpression(featureChainExpression);
-                if (result == null) result = caseInvocationExpression(featureChainExpression);
-                if (result == null) result = caseExpression(featureChainExpression);
-                if (result == null) result = caseStep(featureChainExpression);
-                if (result == null) result = caseFeature(featureChainExpression);
-                if (result == null) result = caseType(featureChainExpression);
-                if (result == null) result = caseNamespace(featureChainExpression);
-                if (result == null) result = caseElement(featureChainExpression);
-                if (result == null) result = defaultCase(theEObject);
+                FeatureChainExpression featureChainExpression = (FeatureChainExpression) theEObject;
+                T result = this.caseFeatureChainExpression(featureChainExpression);
+                if (result == null)
+                    result = this.caseOperatorExpression(featureChainExpression);
+                if (result == null)
+                    result = this.caseInvocationExpression(featureChainExpression);
+                if (result == null)
+                    result = this.caseExpression(featureChainExpression);
+                if (result == null)
+                    result = this.caseStep(featureChainExpression);
+                if (result == null)
+                    result = this.caseFeature(featureChainExpression);
+                if (result == null)
+                    result = this.caseType(featureChainExpression);
+                if (result == null)
+                    result = this.caseNamespace(featureChainExpression);
+                if (result == null)
+                    result = this.caseElement(featureChainExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FEATURE_CHAINING: {
-                FeatureChaining featureChaining = (FeatureChaining)theEObject;
-                T result = caseFeatureChaining(featureChaining);
-                if (result == null) result = caseRelationship(featureChaining);
-                if (result == null) result = caseElement(featureChaining);
-                if (result == null) result = defaultCase(theEObject);
+                FeatureChaining featureChaining = (FeatureChaining) theEObject;
+                T result = this.caseFeatureChaining(featureChaining);
+                if (result == null)
+                    result = this.caseRelationship(featureChaining);
+                if (result == null)
+                    result = this.caseElement(featureChaining);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FEATURE_INVERTING: {
-                FeatureInverting featureInverting = (FeatureInverting)theEObject;
-                T result = caseFeatureInverting(featureInverting);
-                if (result == null) result = caseRelationship(featureInverting);
-                if (result == null) result = caseElement(featureInverting);
-                if (result == null) result = defaultCase(theEObject);
+                FeatureInverting featureInverting = (FeatureInverting) theEObject;
+                T result = this.caseFeatureInverting(featureInverting);
+                if (result == null)
+                    result = this.caseRelationship(featureInverting);
+                if (result == null)
+                    result = this.caseElement(featureInverting);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FEATURE_MEMBERSHIP: {
-                FeatureMembership featureMembership = (FeatureMembership)theEObject;
-                T result = caseFeatureMembership(featureMembership);
-                if (result == null) result = caseOwningMembership(featureMembership);
-                if (result == null) result = caseFeaturing(featureMembership);
-                if (result == null) result = caseMembership(featureMembership);
-                if (result == null) result = caseRelationship(featureMembership);
-                if (result == null) result = caseElement(featureMembership);
-                if (result == null) result = defaultCase(theEObject);
+                FeatureMembership featureMembership = (FeatureMembership) theEObject;
+                T result = this.caseFeatureMembership(featureMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(featureMembership);
+                if (result == null)
+                    result = this.caseFeaturing(featureMembership);
+                if (result == null)
+                    result = this.caseMembership(featureMembership);
+                if (result == null)
+                    result = this.caseRelationship(featureMembership);
+                if (result == null)
+                    result = this.caseElement(featureMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FEATURE_REFERENCE_EXPRESSION: {
-                FeatureReferenceExpression featureReferenceExpression = (FeatureReferenceExpression)theEObject;
-                T result = caseFeatureReferenceExpression(featureReferenceExpression);
-                if (result == null) result = caseExpression(featureReferenceExpression);
-                if (result == null) result = caseStep(featureReferenceExpression);
-                if (result == null) result = caseFeature(featureReferenceExpression);
-                if (result == null) result = caseType(featureReferenceExpression);
-                if (result == null) result = caseNamespace(featureReferenceExpression);
-                if (result == null) result = caseElement(featureReferenceExpression);
-                if (result == null) result = defaultCase(theEObject);
+                FeatureReferenceExpression featureReferenceExpression = (FeatureReferenceExpression) theEObject;
+                T result = this.caseFeatureReferenceExpression(featureReferenceExpression);
+                if (result == null)
+                    result = this.caseExpression(featureReferenceExpression);
+                if (result == null)
+                    result = this.caseStep(featureReferenceExpression);
+                if (result == null)
+                    result = this.caseFeature(featureReferenceExpression);
+                if (result == null)
+                    result = this.caseType(featureReferenceExpression);
+                if (result == null)
+                    result = this.caseNamespace(featureReferenceExpression);
+                if (result == null)
+                    result = this.caseElement(featureReferenceExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FEATURE_TYPING: {
-                FeatureTyping featureTyping = (FeatureTyping)theEObject;
-                T result = caseFeatureTyping(featureTyping);
-                if (result == null) result = caseSpecialization(featureTyping);
-                if (result == null) result = caseRelationship(featureTyping);
-                if (result == null) result = caseElement(featureTyping);
-                if (result == null) result = defaultCase(theEObject);
+                FeatureTyping featureTyping = (FeatureTyping) theEObject;
+                T result = this.caseFeatureTyping(featureTyping);
+                if (result == null)
+                    result = this.caseSpecialization(featureTyping);
+                if (result == null)
+                    result = this.caseRelationship(featureTyping);
+                if (result == null)
+                    result = this.caseElement(featureTyping);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FEATURE_VALUE: {
-                FeatureValue featureValue = (FeatureValue)theEObject;
-                T result = caseFeatureValue(featureValue);
-                if (result == null) result = caseOwningMembership(featureValue);
-                if (result == null) result = caseMembership(featureValue);
-                if (result == null) result = caseRelationship(featureValue);
-                if (result == null) result = caseElement(featureValue);
-                if (result == null) result = defaultCase(theEObject);
+                FeatureValue featureValue = (FeatureValue) theEObject;
+                T result = this.caseFeatureValue(featureValue);
+                if (result == null)
+                    result = this.caseOwningMembership(featureValue);
+                if (result == null)
+                    result = this.caseMembership(featureValue);
+                if (result == null)
+                    result = this.caseRelationship(featureValue);
+                if (result == null)
+                    result = this.caseElement(featureValue);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FEATURING: {
-                Featuring featuring = (Featuring)theEObject;
-                T result = caseFeaturing(featuring);
-                if (result == null) result = caseRelationship(featuring);
-                if (result == null) result = caseElement(featuring);
-                if (result == null) result = defaultCase(theEObject);
+                Featuring featuring = (Featuring) theEObject;
+                T result = this.caseFeaturing(featuring);
+                if (result == null)
+                    result = this.caseRelationship(featuring);
+                if (result == null)
+                    result = this.caseElement(featuring);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FLOW_CONNECTION_DEFINITION: {
-                FlowConnectionDefinition flowConnectionDefinition = (FlowConnectionDefinition)theEObject;
-                T result = caseFlowConnectionDefinition(flowConnectionDefinition);
-                if (result == null) result = caseConnectionDefinition(flowConnectionDefinition);
-                if (result == null) result = caseActionDefinition(flowConnectionDefinition);
-                if (result == null) result = caseInteraction(flowConnectionDefinition);
-                if (result == null) result = casePartDefinition(flowConnectionDefinition);
-                if (result == null) result = caseAssociationStructure(flowConnectionDefinition);
-                if (result == null) result = caseBehavior(flowConnectionDefinition);
-                if (result == null) result = caseItemDefinition(flowConnectionDefinition);
-                if (result == null) result = caseAssociation(flowConnectionDefinition);
-                if (result == null) result = caseOccurrenceDefinition(flowConnectionDefinition);
-                if (result == null) result = caseStructure(flowConnectionDefinition);
-                if (result == null) result = caseRelationship(flowConnectionDefinition);
-                if (result == null) result = caseDefinition(flowConnectionDefinition);
-                if (result == null) result = caseClass(flowConnectionDefinition);
-                if (result == null) result = caseClassifier(flowConnectionDefinition);
-                if (result == null) result = caseType(flowConnectionDefinition);
-                if (result == null) result = caseNamespace(flowConnectionDefinition);
-                if (result == null) result = caseElement(flowConnectionDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                FlowConnectionDefinition flowConnectionDefinition = (FlowConnectionDefinition) theEObject;
+                T result = this.caseFlowConnectionDefinition(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseConnectionDefinition(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseActionDefinition(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseInteraction(flowConnectionDefinition);
+                if (result == null)
+                    result = this.casePartDefinition(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseAssociationStructure(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseBehavior(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseItemDefinition(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseAssociation(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseStructure(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseRelationship(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseDefinition(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseClass(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseClassifier(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseType(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseNamespace(flowConnectionDefinition);
+                if (result == null)
+                    result = this.caseElement(flowConnectionDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FLOW_CONNECTION_USAGE: {
-                FlowConnectionUsage flowConnectionUsage = (FlowConnectionUsage)theEObject;
-                T result = caseFlowConnectionUsage(flowConnectionUsage);
-                if (result == null) result = caseConnectionUsage(flowConnectionUsage);
-                if (result == null) result = caseActionUsage(flowConnectionUsage);
-                if (result == null) result = caseItemFlow(flowConnectionUsage);
-                if (result == null) result = caseConnectorAsUsage(flowConnectionUsage);
-                if (result == null) result = casePartUsage(flowConnectionUsage);
-                if (result == null) result = caseStep(flowConnectionUsage);
-                if (result == null) result = caseConnector(flowConnectionUsage);
-                if (result == null) result = caseItemUsage(flowConnectionUsage);
-                if (result == null) result = caseFeature(flowConnectionUsage);
-                if (result == null) result = caseRelationship(flowConnectionUsage);
-                if (result == null) result = caseOccurrenceUsage(flowConnectionUsage);
-                if (result == null) result = caseUsage(flowConnectionUsage);
-                if (result == null) result = caseType(flowConnectionUsage);
-                if (result == null) result = caseNamespace(flowConnectionUsage);
-                if (result == null) result = caseElement(flowConnectionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                FlowConnectionUsage flowConnectionUsage = (FlowConnectionUsage) theEObject;
+                T result = this.caseFlowConnectionUsage(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseConnectionUsage(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseItemFlow(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseConnectorAsUsage(flowConnectionUsage);
+                if (result == null)
+                    result = this.casePartUsage(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseStep(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseConnector(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseItemUsage(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseFeature(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseRelationship(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseUsage(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseType(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseNamespace(flowConnectionUsage);
+                if (result == null)
+                    result = this.caseElement(flowConnectionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FORK_NODE: {
-                ForkNode forkNode = (ForkNode)theEObject;
-                T result = caseForkNode(forkNode);
-                if (result == null) result = caseControlNode(forkNode);
-                if (result == null) result = caseActionUsage(forkNode);
-                if (result == null) result = caseOccurrenceUsage(forkNode);
-                if (result == null) result = caseStep(forkNode);
-                if (result == null) result = caseUsage(forkNode);
-                if (result == null) result = caseFeature(forkNode);
-                if (result == null) result = caseType(forkNode);
-                if (result == null) result = caseNamespace(forkNode);
-                if (result == null) result = caseElement(forkNode);
-                if (result == null) result = defaultCase(theEObject);
+                ForkNode forkNode = (ForkNode) theEObject;
+                T result = this.caseForkNode(forkNode);
+                if (result == null)
+                    result = this.caseControlNode(forkNode);
+                if (result == null)
+                    result = this.caseActionUsage(forkNode);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(forkNode);
+                if (result == null)
+                    result = this.caseStep(forkNode);
+                if (result == null)
+                    result = this.caseUsage(forkNode);
+                if (result == null)
+                    result = this.caseFeature(forkNode);
+                if (result == null)
+                    result = this.caseType(forkNode);
+                if (result == null)
+                    result = this.caseNamespace(forkNode);
+                if (result == null)
+                    result = this.caseElement(forkNode);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FOR_LOOP_ACTION_USAGE: {
-                ForLoopActionUsage forLoopActionUsage = (ForLoopActionUsage)theEObject;
-                T result = caseForLoopActionUsage(forLoopActionUsage);
-                if (result == null) result = caseLoopActionUsage(forLoopActionUsage);
-                if (result == null) result = caseActionUsage(forLoopActionUsage);
-                if (result == null) result = caseOccurrenceUsage(forLoopActionUsage);
-                if (result == null) result = caseStep(forLoopActionUsage);
-                if (result == null) result = caseUsage(forLoopActionUsage);
-                if (result == null) result = caseFeature(forLoopActionUsage);
-                if (result == null) result = caseType(forLoopActionUsage);
-                if (result == null) result = caseNamespace(forLoopActionUsage);
-                if (result == null) result = caseElement(forLoopActionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ForLoopActionUsage forLoopActionUsage = (ForLoopActionUsage) theEObject;
+                T result = this.caseForLoopActionUsage(forLoopActionUsage);
+                if (result == null)
+                    result = this.caseLoopActionUsage(forLoopActionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(forLoopActionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(forLoopActionUsage);
+                if (result == null)
+                    result = this.caseStep(forLoopActionUsage);
+                if (result == null)
+                    result = this.caseUsage(forLoopActionUsage);
+                if (result == null)
+                    result = this.caseFeature(forLoopActionUsage);
+                if (result == null)
+                    result = this.caseType(forLoopActionUsage);
+                if (result == null)
+                    result = this.caseNamespace(forLoopActionUsage);
+                if (result == null)
+                    result = this.caseElement(forLoopActionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FRAMED_CONCERN_MEMBERSHIP: {
-                FramedConcernMembership framedConcernMembership = (FramedConcernMembership)theEObject;
-                T result = caseFramedConcernMembership(framedConcernMembership);
-                if (result == null) result = caseRequirementConstraintMembership(framedConcernMembership);
-                if (result == null) result = caseFeatureMembership(framedConcernMembership);
-                if (result == null) result = caseOwningMembership(framedConcernMembership);
-                if (result == null) result = caseFeaturing(framedConcernMembership);
-                if (result == null) result = caseMembership(framedConcernMembership);
-                if (result == null) result = caseRelationship(framedConcernMembership);
-                if (result == null) result = caseElement(framedConcernMembership);
-                if (result == null) result = defaultCase(theEObject);
+                FramedConcernMembership framedConcernMembership = (FramedConcernMembership) theEObject;
+                T result = this.caseFramedConcernMembership(framedConcernMembership);
+                if (result == null)
+                    result = this.caseRequirementConstraintMembership(framedConcernMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(framedConcernMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(framedConcernMembership);
+                if (result == null)
+                    result = this.caseFeaturing(framedConcernMembership);
+                if (result == null)
+                    result = this.caseMembership(framedConcernMembership);
+                if (result == null)
+                    result = this.caseRelationship(framedConcernMembership);
+                if (result == null)
+                    result = this.caseElement(framedConcernMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.FUNCTION: {
-                Function function = (Function)theEObject;
-                T result = caseFunction(function);
-                if (result == null) result = caseBehavior(function);
-                if (result == null) result = caseClass(function);
-                if (result == null) result = caseClassifier(function);
-                if (result == null) result = caseType(function);
-                if (result == null) result = caseNamespace(function);
-                if (result == null) result = caseElement(function);
-                if (result == null) result = defaultCase(theEObject);
+                Function function = (Function) theEObject;
+                T result = this.caseFunction(function);
+                if (result == null)
+                    result = this.caseBehavior(function);
+                if (result == null)
+                    result = this.caseClass(function);
+                if (result == null)
+                    result = this.caseClassifier(function);
+                if (result == null)
+                    result = this.caseType(function);
+                if (result == null)
+                    result = this.caseNamespace(function);
+                if (result == null)
+                    result = this.caseElement(function);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.IF_ACTION_USAGE: {
-                IfActionUsage ifActionUsage = (IfActionUsage)theEObject;
-                T result = caseIfActionUsage(ifActionUsage);
-                if (result == null) result = caseActionUsage(ifActionUsage);
-                if (result == null) result = caseOccurrenceUsage(ifActionUsage);
-                if (result == null) result = caseStep(ifActionUsage);
-                if (result == null) result = caseUsage(ifActionUsage);
-                if (result == null) result = caseFeature(ifActionUsage);
-                if (result == null) result = caseType(ifActionUsage);
-                if (result == null) result = caseNamespace(ifActionUsage);
-                if (result == null) result = caseElement(ifActionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                IfActionUsage ifActionUsage = (IfActionUsage) theEObject;
+                T result = this.caseIfActionUsage(ifActionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(ifActionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(ifActionUsage);
+                if (result == null)
+                    result = this.caseStep(ifActionUsage);
+                if (result == null)
+                    result = this.caseUsage(ifActionUsage);
+                if (result == null)
+                    result = this.caseFeature(ifActionUsage);
+                if (result == null)
+                    result = this.caseType(ifActionUsage);
+                if (result == null)
+                    result = this.caseNamespace(ifActionUsage);
+                if (result == null)
+                    result = this.caseElement(ifActionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.IMPORT: {
-                Import import_ = (Import)theEObject;
-                T result = caseImport(import_);
-                if (result == null) result = caseRelationship(import_);
-                if (result == null) result = caseElement(import_);
-                if (result == null) result = defaultCase(theEObject);
+                Import import_ = (Import) theEObject;
+                T result = this.caseImport(import_);
+                if (result == null)
+                    result = this.caseRelationship(import_);
+                if (result == null)
+                    result = this.caseElement(import_);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.INCLUDE_USE_CASE_USAGE: {
-                IncludeUseCaseUsage includeUseCaseUsage = (IncludeUseCaseUsage)theEObject;
-                T result = caseIncludeUseCaseUsage(includeUseCaseUsage);
-                if (result == null) result = caseUseCaseUsage(includeUseCaseUsage);
-                if (result == null) result = casePerformActionUsage(includeUseCaseUsage);
-                if (result == null) result = caseCaseUsage(includeUseCaseUsage);
-                if (result == null) result = caseEventOccurrenceUsage(includeUseCaseUsage);
-                if (result == null) result = caseCalculationUsage(includeUseCaseUsage);
-                if (result == null) result = caseActionUsage(includeUseCaseUsage);
-                if (result == null) result = caseExpression(includeUseCaseUsage);
-                if (result == null) result = caseOccurrenceUsage(includeUseCaseUsage);
-                if (result == null) result = caseStep(includeUseCaseUsage);
-                if (result == null) result = caseUsage(includeUseCaseUsage);
-                if (result == null) result = caseFeature(includeUseCaseUsage);
-                if (result == null) result = caseType(includeUseCaseUsage);
-                if (result == null) result = caseNamespace(includeUseCaseUsage);
-                if (result == null) result = caseElement(includeUseCaseUsage);
-                if (result == null) result = defaultCase(theEObject);
+                IncludeUseCaseUsage includeUseCaseUsage = (IncludeUseCaseUsage) theEObject;
+                T result = this.caseIncludeUseCaseUsage(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseUseCaseUsage(includeUseCaseUsage);
+                if (result == null)
+                    result = this.casePerformActionUsage(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseCaseUsage(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseEventOccurrenceUsage(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseCalculationUsage(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseActionUsage(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseExpression(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseStep(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseUsage(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseFeature(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseType(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseNamespace(includeUseCaseUsage);
+                if (result == null)
+                    result = this.caseElement(includeUseCaseUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.INTERACTION: {
-                Interaction interaction = (Interaction)theEObject;
-                T result = caseInteraction(interaction);
-                if (result == null) result = caseAssociation(interaction);
-                if (result == null) result = caseBehavior(interaction);
-                if (result == null) result = caseRelationship(interaction);
-                if (result == null) result = caseClass(interaction);
-                if (result == null) result = caseClassifier(interaction);
-                if (result == null) result = caseType(interaction);
-                if (result == null) result = caseNamespace(interaction);
-                if (result == null) result = caseElement(interaction);
-                if (result == null) result = defaultCase(theEObject);
+                Interaction interaction = (Interaction) theEObject;
+                T result = this.caseInteraction(interaction);
+                if (result == null)
+                    result = this.caseAssociation(interaction);
+                if (result == null)
+                    result = this.caseBehavior(interaction);
+                if (result == null)
+                    result = this.caseRelationship(interaction);
+                if (result == null)
+                    result = this.caseClass(interaction);
+                if (result == null)
+                    result = this.caseClassifier(interaction);
+                if (result == null)
+                    result = this.caseType(interaction);
+                if (result == null)
+                    result = this.caseNamespace(interaction);
+                if (result == null)
+                    result = this.caseElement(interaction);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.INTERFACE_DEFINITION: {
-                InterfaceDefinition interfaceDefinition = (InterfaceDefinition)theEObject;
-                T result = caseInterfaceDefinition(interfaceDefinition);
-                if (result == null) result = caseConnectionDefinition(interfaceDefinition);
-                if (result == null) result = casePartDefinition(interfaceDefinition);
-                if (result == null) result = caseAssociationStructure(interfaceDefinition);
-                if (result == null) result = caseItemDefinition(interfaceDefinition);
-                if (result == null) result = caseAssociation(interfaceDefinition);
-                if (result == null) result = caseOccurrenceDefinition(interfaceDefinition);
-                if (result == null) result = caseStructure(interfaceDefinition);
-                if (result == null) result = caseRelationship(interfaceDefinition);
-                if (result == null) result = caseDefinition(interfaceDefinition);
-                if (result == null) result = caseClass(interfaceDefinition);
-                if (result == null) result = caseClassifier(interfaceDefinition);
-                if (result == null) result = caseType(interfaceDefinition);
-                if (result == null) result = caseNamespace(interfaceDefinition);
-                if (result == null) result = caseElement(interfaceDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                InterfaceDefinition interfaceDefinition = (InterfaceDefinition) theEObject;
+                T result = this.caseInterfaceDefinition(interfaceDefinition);
+                if (result == null)
+                    result = this.caseConnectionDefinition(interfaceDefinition);
+                if (result == null)
+                    result = this.casePartDefinition(interfaceDefinition);
+                if (result == null)
+                    result = this.caseAssociationStructure(interfaceDefinition);
+                if (result == null)
+                    result = this.caseItemDefinition(interfaceDefinition);
+                if (result == null)
+                    result = this.caseAssociation(interfaceDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(interfaceDefinition);
+                if (result == null)
+                    result = this.caseStructure(interfaceDefinition);
+                if (result == null)
+                    result = this.caseRelationship(interfaceDefinition);
+                if (result == null)
+                    result = this.caseDefinition(interfaceDefinition);
+                if (result == null)
+                    result = this.caseClass(interfaceDefinition);
+                if (result == null)
+                    result = this.caseClassifier(interfaceDefinition);
+                if (result == null)
+                    result = this.caseType(interfaceDefinition);
+                if (result == null)
+                    result = this.caseNamespace(interfaceDefinition);
+                if (result == null)
+                    result = this.caseElement(interfaceDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.INTERFACE_USAGE: {
-                InterfaceUsage interfaceUsage = (InterfaceUsage)theEObject;
-                T result = caseInterfaceUsage(interfaceUsage);
-                if (result == null) result = caseConnectionUsage(interfaceUsage);
-                if (result == null) result = caseConnectorAsUsage(interfaceUsage);
-                if (result == null) result = casePartUsage(interfaceUsage);
-                if (result == null) result = caseConnector(interfaceUsage);
-                if (result == null) result = caseItemUsage(interfaceUsage);
-                if (result == null) result = caseFeature(interfaceUsage);
-                if (result == null) result = caseRelationship(interfaceUsage);
-                if (result == null) result = caseOccurrenceUsage(interfaceUsage);
-                if (result == null) result = caseUsage(interfaceUsage);
-                if (result == null) result = caseType(interfaceUsage);
-                if (result == null) result = caseNamespace(interfaceUsage);
-                if (result == null) result = caseElement(interfaceUsage);
-                if (result == null) result = defaultCase(theEObject);
+                InterfaceUsage interfaceUsage = (InterfaceUsage) theEObject;
+                T result = this.caseInterfaceUsage(interfaceUsage);
+                if (result == null)
+                    result = this.caseConnectionUsage(interfaceUsage);
+                if (result == null)
+                    result = this.caseConnectorAsUsage(interfaceUsage);
+                if (result == null)
+                    result = this.casePartUsage(interfaceUsage);
+                if (result == null)
+                    result = this.caseConnector(interfaceUsage);
+                if (result == null)
+                    result = this.caseItemUsage(interfaceUsage);
+                if (result == null)
+                    result = this.caseFeature(interfaceUsage);
+                if (result == null)
+                    result = this.caseRelationship(interfaceUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(interfaceUsage);
+                if (result == null)
+                    result = this.caseUsage(interfaceUsage);
+                if (result == null)
+                    result = this.caseType(interfaceUsage);
+                if (result == null)
+                    result = this.caseNamespace(interfaceUsage);
+                if (result == null)
+                    result = this.caseElement(interfaceUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.INTERSECTING: {
-                Intersecting intersecting = (Intersecting)theEObject;
-                T result = caseIntersecting(intersecting);
-                if (result == null) result = caseRelationship(intersecting);
-                if (result == null) result = caseElement(intersecting);
-                if (result == null) result = defaultCase(theEObject);
+                Intersecting intersecting = (Intersecting) theEObject;
+                T result = this.caseIntersecting(intersecting);
+                if (result == null)
+                    result = this.caseRelationship(intersecting);
+                if (result == null)
+                    result = this.caseElement(intersecting);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.INVARIANT: {
-                Invariant invariant = (Invariant)theEObject;
-                T result = caseInvariant(invariant);
-                if (result == null) result = caseBooleanExpression(invariant);
-                if (result == null) result = caseExpression(invariant);
-                if (result == null) result = caseStep(invariant);
-                if (result == null) result = caseFeature(invariant);
-                if (result == null) result = caseType(invariant);
-                if (result == null) result = caseNamespace(invariant);
-                if (result == null) result = caseElement(invariant);
-                if (result == null) result = defaultCase(theEObject);
+                Invariant invariant = (Invariant) theEObject;
+                T result = this.caseInvariant(invariant);
+                if (result == null)
+                    result = this.caseBooleanExpression(invariant);
+                if (result == null)
+                    result = this.caseExpression(invariant);
+                if (result == null)
+                    result = this.caseStep(invariant);
+                if (result == null)
+                    result = this.caseFeature(invariant);
+                if (result == null)
+                    result = this.caseType(invariant);
+                if (result == null)
+                    result = this.caseNamespace(invariant);
+                if (result == null)
+                    result = this.caseElement(invariant);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.INVOCATION_EXPRESSION: {
-                InvocationExpression invocationExpression = (InvocationExpression)theEObject;
-                T result = caseInvocationExpression(invocationExpression);
-                if (result == null) result = caseExpression(invocationExpression);
-                if (result == null) result = caseStep(invocationExpression);
-                if (result == null) result = caseFeature(invocationExpression);
-                if (result == null) result = caseType(invocationExpression);
-                if (result == null) result = caseNamespace(invocationExpression);
-                if (result == null) result = caseElement(invocationExpression);
-                if (result == null) result = defaultCase(theEObject);
+                InvocationExpression invocationExpression = (InvocationExpression) theEObject;
+                T result = this.caseInvocationExpression(invocationExpression);
+                if (result == null)
+                    result = this.caseExpression(invocationExpression);
+                if (result == null)
+                    result = this.caseStep(invocationExpression);
+                if (result == null)
+                    result = this.caseFeature(invocationExpression);
+                if (result == null)
+                    result = this.caseType(invocationExpression);
+                if (result == null)
+                    result = this.caseNamespace(invocationExpression);
+                if (result == null)
+                    result = this.caseElement(invocationExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ITEM_DEFINITION: {
-                ItemDefinition itemDefinition = (ItemDefinition)theEObject;
-                T result = caseItemDefinition(itemDefinition);
-                if (result == null) result = caseOccurrenceDefinition(itemDefinition);
-                if (result == null) result = caseStructure(itemDefinition);
-                if (result == null) result = caseDefinition(itemDefinition);
-                if (result == null) result = caseClass(itemDefinition);
-                if (result == null) result = caseClassifier(itemDefinition);
-                if (result == null) result = caseType(itemDefinition);
-                if (result == null) result = caseNamespace(itemDefinition);
-                if (result == null) result = caseElement(itemDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                ItemDefinition itemDefinition = (ItemDefinition) theEObject;
+                T result = this.caseItemDefinition(itemDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(itemDefinition);
+                if (result == null)
+                    result = this.caseStructure(itemDefinition);
+                if (result == null)
+                    result = this.caseDefinition(itemDefinition);
+                if (result == null)
+                    result = this.caseClass(itemDefinition);
+                if (result == null)
+                    result = this.caseClassifier(itemDefinition);
+                if (result == null)
+                    result = this.caseType(itemDefinition);
+                if (result == null)
+                    result = this.caseNamespace(itemDefinition);
+                if (result == null)
+                    result = this.caseElement(itemDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ITEM_FEATURE: {
-                ItemFeature itemFeature = (ItemFeature)theEObject;
-                T result = caseItemFeature(itemFeature);
-                if (result == null) result = caseFeature(itemFeature);
-                if (result == null) result = caseType(itemFeature);
-                if (result == null) result = caseNamespace(itemFeature);
-                if (result == null) result = caseElement(itemFeature);
-                if (result == null) result = defaultCase(theEObject);
+                ItemFeature itemFeature = (ItemFeature) theEObject;
+                T result = this.caseItemFeature(itemFeature);
+                if (result == null)
+                    result = this.caseFeature(itemFeature);
+                if (result == null)
+                    result = this.caseType(itemFeature);
+                if (result == null)
+                    result = this.caseNamespace(itemFeature);
+                if (result == null)
+                    result = this.caseElement(itemFeature);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ITEM_FLOW: {
-                ItemFlow itemFlow = (ItemFlow)theEObject;
-                T result = caseItemFlow(itemFlow);
-                if (result == null) result = caseConnector(itemFlow);
-                if (result == null) result = caseStep(itemFlow);
-                if (result == null) result = caseFeature(itemFlow);
-                if (result == null) result = caseRelationship(itemFlow);
-                if (result == null) result = caseType(itemFlow);
-                if (result == null) result = caseNamespace(itemFlow);
-                if (result == null) result = caseElement(itemFlow);
-                if (result == null) result = defaultCase(theEObject);
+                ItemFlow itemFlow = (ItemFlow) theEObject;
+                T result = this.caseItemFlow(itemFlow);
+                if (result == null)
+                    result = this.caseConnector(itemFlow);
+                if (result == null)
+                    result = this.caseStep(itemFlow);
+                if (result == null)
+                    result = this.caseFeature(itemFlow);
+                if (result == null)
+                    result = this.caseRelationship(itemFlow);
+                if (result == null)
+                    result = this.caseType(itemFlow);
+                if (result == null)
+                    result = this.caseNamespace(itemFlow);
+                if (result == null)
+                    result = this.caseElement(itemFlow);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ITEM_FLOW_END: {
-                ItemFlowEnd itemFlowEnd = (ItemFlowEnd)theEObject;
-                T result = caseItemFlowEnd(itemFlowEnd);
-                if (result == null) result = caseFeature(itemFlowEnd);
-                if (result == null) result = caseType(itemFlowEnd);
-                if (result == null) result = caseNamespace(itemFlowEnd);
-                if (result == null) result = caseElement(itemFlowEnd);
-                if (result == null) result = defaultCase(theEObject);
+                ItemFlowEnd itemFlowEnd = (ItemFlowEnd) theEObject;
+                T result = this.caseItemFlowEnd(itemFlowEnd);
+                if (result == null)
+                    result = this.caseFeature(itemFlowEnd);
+                if (result == null)
+                    result = this.caseType(itemFlowEnd);
+                if (result == null)
+                    result = this.caseNamespace(itemFlowEnd);
+                if (result == null)
+                    result = this.caseElement(itemFlowEnd);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ITEM_USAGE: {
-                ItemUsage itemUsage = (ItemUsage)theEObject;
-                T result = caseItemUsage(itemUsage);
-                if (result == null) result = caseOccurrenceUsage(itemUsage);
-                if (result == null) result = caseUsage(itemUsage);
-                if (result == null) result = caseFeature(itemUsage);
-                if (result == null) result = caseType(itemUsage);
-                if (result == null) result = caseNamespace(itemUsage);
-                if (result == null) result = caseElement(itemUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ItemUsage itemUsage = (ItemUsage) theEObject;
+                T result = this.caseItemUsage(itemUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(itemUsage);
+                if (result == null)
+                    result = this.caseUsage(itemUsage);
+                if (result == null)
+                    result = this.caseFeature(itemUsage);
+                if (result == null)
+                    result = this.caseType(itemUsage);
+                if (result == null)
+                    result = this.caseNamespace(itemUsage);
+                if (result == null)
+                    result = this.caseElement(itemUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.JOIN_NODE: {
-                JoinNode joinNode = (JoinNode)theEObject;
-                T result = caseJoinNode(joinNode);
-                if (result == null) result = caseControlNode(joinNode);
-                if (result == null) result = caseActionUsage(joinNode);
-                if (result == null) result = caseOccurrenceUsage(joinNode);
-                if (result == null) result = caseStep(joinNode);
-                if (result == null) result = caseUsage(joinNode);
-                if (result == null) result = caseFeature(joinNode);
-                if (result == null) result = caseType(joinNode);
-                if (result == null) result = caseNamespace(joinNode);
-                if (result == null) result = caseElement(joinNode);
-                if (result == null) result = defaultCase(theEObject);
+                JoinNode joinNode = (JoinNode) theEObject;
+                T result = this.caseJoinNode(joinNode);
+                if (result == null)
+                    result = this.caseControlNode(joinNode);
+                if (result == null)
+                    result = this.caseActionUsage(joinNode);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(joinNode);
+                if (result == null)
+                    result = this.caseStep(joinNode);
+                if (result == null)
+                    result = this.caseUsage(joinNode);
+                if (result == null)
+                    result = this.caseFeature(joinNode);
+                if (result == null)
+                    result = this.caseType(joinNode);
+                if (result == null)
+                    result = this.caseNamespace(joinNode);
+                if (result == null)
+                    result = this.caseElement(joinNode);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.LIBRARY_PACKAGE: {
-                LibraryPackage libraryPackage = (LibraryPackage)theEObject;
-                T result = caseLibraryPackage(libraryPackage);
-                if (result == null) result = casePackage(libraryPackage);
-                if (result == null) result = caseNamespace(libraryPackage);
-                if (result == null) result = caseElement(libraryPackage);
-                if (result == null) result = defaultCase(theEObject);
+                LibraryPackage libraryPackage = (LibraryPackage) theEObject;
+                T result = this.caseLibraryPackage(libraryPackage);
+                if (result == null)
+                    result = this.casePackage(libraryPackage);
+                if (result == null)
+                    result = this.caseNamespace(libraryPackage);
+                if (result == null)
+                    result = this.caseElement(libraryPackage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.LIFE_CLASS: {
-                LifeClass lifeClass = (LifeClass)theEObject;
-                T result = caseLifeClass(lifeClass);
-                if (result == null) result = caseClass(lifeClass);
-                if (result == null) result = caseClassifier(lifeClass);
-                if (result == null) result = caseType(lifeClass);
-                if (result == null) result = caseNamespace(lifeClass);
-                if (result == null) result = caseElement(lifeClass);
-                if (result == null) result = defaultCase(theEObject);
+                LifeClass lifeClass = (LifeClass) theEObject;
+                T result = this.caseLifeClass(lifeClass);
+                if (result == null)
+                    result = this.caseClass(lifeClass);
+                if (result == null)
+                    result = this.caseClassifier(lifeClass);
+                if (result == null)
+                    result = this.caseType(lifeClass);
+                if (result == null)
+                    result = this.caseNamespace(lifeClass);
+                if (result == null)
+                    result = this.caseElement(lifeClass);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.LITERAL_BOOLEAN: {
-                LiteralBoolean literalBoolean = (LiteralBoolean)theEObject;
-                T result = caseLiteralBoolean(literalBoolean);
-                if (result == null) result = caseLiteralExpression(literalBoolean);
-                if (result == null) result = caseExpression(literalBoolean);
-                if (result == null) result = caseStep(literalBoolean);
-                if (result == null) result = caseFeature(literalBoolean);
-                if (result == null) result = caseType(literalBoolean);
-                if (result == null) result = caseNamespace(literalBoolean);
-                if (result == null) result = caseElement(literalBoolean);
-                if (result == null) result = defaultCase(theEObject);
+                LiteralBoolean literalBoolean = (LiteralBoolean) theEObject;
+                T result = this.caseLiteralBoolean(literalBoolean);
+                if (result == null)
+                    result = this.caseLiteralExpression(literalBoolean);
+                if (result == null)
+                    result = this.caseExpression(literalBoolean);
+                if (result == null)
+                    result = this.caseStep(literalBoolean);
+                if (result == null)
+                    result = this.caseFeature(literalBoolean);
+                if (result == null)
+                    result = this.caseType(literalBoolean);
+                if (result == null)
+                    result = this.caseNamespace(literalBoolean);
+                if (result == null)
+                    result = this.caseElement(literalBoolean);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.LITERAL_EXPRESSION: {
-                LiteralExpression literalExpression = (LiteralExpression)theEObject;
-                T result = caseLiteralExpression(literalExpression);
-                if (result == null) result = caseExpression(literalExpression);
-                if (result == null) result = caseStep(literalExpression);
-                if (result == null) result = caseFeature(literalExpression);
-                if (result == null) result = caseType(literalExpression);
-                if (result == null) result = caseNamespace(literalExpression);
-                if (result == null) result = caseElement(literalExpression);
-                if (result == null) result = defaultCase(theEObject);
+                LiteralExpression literalExpression = (LiteralExpression) theEObject;
+                T result = this.caseLiteralExpression(literalExpression);
+                if (result == null)
+                    result = this.caseExpression(literalExpression);
+                if (result == null)
+                    result = this.caseStep(literalExpression);
+                if (result == null)
+                    result = this.caseFeature(literalExpression);
+                if (result == null)
+                    result = this.caseType(literalExpression);
+                if (result == null)
+                    result = this.caseNamespace(literalExpression);
+                if (result == null)
+                    result = this.caseElement(literalExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.LITERAL_INFINITY: {
-                LiteralInfinity literalInfinity = (LiteralInfinity)theEObject;
-                T result = caseLiteralInfinity(literalInfinity);
-                if (result == null) result = caseLiteralExpression(literalInfinity);
-                if (result == null) result = caseExpression(literalInfinity);
-                if (result == null) result = caseStep(literalInfinity);
-                if (result == null) result = caseFeature(literalInfinity);
-                if (result == null) result = caseType(literalInfinity);
-                if (result == null) result = caseNamespace(literalInfinity);
-                if (result == null) result = caseElement(literalInfinity);
-                if (result == null) result = defaultCase(theEObject);
+                LiteralInfinity literalInfinity = (LiteralInfinity) theEObject;
+                T result = this.caseLiteralInfinity(literalInfinity);
+                if (result == null)
+                    result = this.caseLiteralExpression(literalInfinity);
+                if (result == null)
+                    result = this.caseExpression(literalInfinity);
+                if (result == null)
+                    result = this.caseStep(literalInfinity);
+                if (result == null)
+                    result = this.caseFeature(literalInfinity);
+                if (result == null)
+                    result = this.caseType(literalInfinity);
+                if (result == null)
+                    result = this.caseNamespace(literalInfinity);
+                if (result == null)
+                    result = this.caseElement(literalInfinity);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.LITERAL_INTEGER: {
-                LiteralInteger literalInteger = (LiteralInteger)theEObject;
-                T result = caseLiteralInteger(literalInteger);
-                if (result == null) result = caseLiteralExpression(literalInteger);
-                if (result == null) result = caseExpression(literalInteger);
-                if (result == null) result = caseStep(literalInteger);
-                if (result == null) result = caseFeature(literalInteger);
-                if (result == null) result = caseType(literalInteger);
-                if (result == null) result = caseNamespace(literalInteger);
-                if (result == null) result = caseElement(literalInteger);
-                if (result == null) result = defaultCase(theEObject);
+                LiteralInteger literalInteger = (LiteralInteger) theEObject;
+                T result = this.caseLiteralInteger(literalInteger);
+                if (result == null)
+                    result = this.caseLiteralExpression(literalInteger);
+                if (result == null)
+                    result = this.caseExpression(literalInteger);
+                if (result == null)
+                    result = this.caseStep(literalInteger);
+                if (result == null)
+                    result = this.caseFeature(literalInteger);
+                if (result == null)
+                    result = this.caseType(literalInteger);
+                if (result == null)
+                    result = this.caseNamespace(literalInteger);
+                if (result == null)
+                    result = this.caseElement(literalInteger);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.LITERAL_RATIONAL: {
-                LiteralRational literalRational = (LiteralRational)theEObject;
-                T result = caseLiteralRational(literalRational);
-                if (result == null) result = caseLiteralExpression(literalRational);
-                if (result == null) result = caseExpression(literalRational);
-                if (result == null) result = caseStep(literalRational);
-                if (result == null) result = caseFeature(literalRational);
-                if (result == null) result = caseType(literalRational);
-                if (result == null) result = caseNamespace(literalRational);
-                if (result == null) result = caseElement(literalRational);
-                if (result == null) result = defaultCase(theEObject);
+                LiteralRational literalRational = (LiteralRational) theEObject;
+                T result = this.caseLiteralRational(literalRational);
+                if (result == null)
+                    result = this.caseLiteralExpression(literalRational);
+                if (result == null)
+                    result = this.caseExpression(literalRational);
+                if (result == null)
+                    result = this.caseStep(literalRational);
+                if (result == null)
+                    result = this.caseFeature(literalRational);
+                if (result == null)
+                    result = this.caseType(literalRational);
+                if (result == null)
+                    result = this.caseNamespace(literalRational);
+                if (result == null)
+                    result = this.caseElement(literalRational);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.LITERAL_STRING: {
-                LiteralString literalString = (LiteralString)theEObject;
-                T result = caseLiteralString(literalString);
-                if (result == null) result = caseLiteralExpression(literalString);
-                if (result == null) result = caseExpression(literalString);
-                if (result == null) result = caseStep(literalString);
-                if (result == null) result = caseFeature(literalString);
-                if (result == null) result = caseType(literalString);
-                if (result == null) result = caseNamespace(literalString);
-                if (result == null) result = caseElement(literalString);
-                if (result == null) result = defaultCase(theEObject);
+                LiteralString literalString = (LiteralString) theEObject;
+                T result = this.caseLiteralString(literalString);
+                if (result == null)
+                    result = this.caseLiteralExpression(literalString);
+                if (result == null)
+                    result = this.caseExpression(literalString);
+                if (result == null)
+                    result = this.caseStep(literalString);
+                if (result == null)
+                    result = this.caseFeature(literalString);
+                if (result == null)
+                    result = this.caseType(literalString);
+                if (result == null)
+                    result = this.caseNamespace(literalString);
+                if (result == null)
+                    result = this.caseElement(literalString);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.LOOP_ACTION_USAGE: {
-                LoopActionUsage loopActionUsage = (LoopActionUsage)theEObject;
-                T result = caseLoopActionUsage(loopActionUsage);
-                if (result == null) result = caseActionUsage(loopActionUsage);
-                if (result == null) result = caseOccurrenceUsage(loopActionUsage);
-                if (result == null) result = caseStep(loopActionUsage);
-                if (result == null) result = caseUsage(loopActionUsage);
-                if (result == null) result = caseFeature(loopActionUsage);
-                if (result == null) result = caseType(loopActionUsage);
-                if (result == null) result = caseNamespace(loopActionUsage);
-                if (result == null) result = caseElement(loopActionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                LoopActionUsage loopActionUsage = (LoopActionUsage) theEObject;
+                T result = this.caseLoopActionUsage(loopActionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(loopActionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(loopActionUsage);
+                if (result == null)
+                    result = this.caseStep(loopActionUsage);
+                if (result == null)
+                    result = this.caseUsage(loopActionUsage);
+                if (result == null)
+                    result = this.caseFeature(loopActionUsage);
+                if (result == null)
+                    result = this.caseType(loopActionUsage);
+                if (result == null)
+                    result = this.caseNamespace(loopActionUsage);
+                if (result == null)
+                    result = this.caseElement(loopActionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.MEMBERSHIP: {
-                Membership membership = (Membership)theEObject;
-                T result = caseMembership(membership);
-                if (result == null) result = caseRelationship(membership);
-                if (result == null) result = caseElement(membership);
-                if (result == null) result = defaultCase(theEObject);
+                Membership membership = (Membership) theEObject;
+                T result = this.caseMembership(membership);
+                if (result == null)
+                    result = this.caseRelationship(membership);
+                if (result == null)
+                    result = this.caseElement(membership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.MEMBERSHIP_EXPOSE: {
-                MembershipExpose membershipExpose = (MembershipExpose)theEObject;
-                T result = caseMembershipExpose(membershipExpose);
-                if (result == null) result = caseMembershipImport(membershipExpose);
-                if (result == null) result = caseExpose(membershipExpose);
-                if (result == null) result = caseImport(membershipExpose);
-                if (result == null) result = caseRelationship(membershipExpose);
-                if (result == null) result = caseElement(membershipExpose);
-                if (result == null) result = defaultCase(theEObject);
+                MembershipExpose membershipExpose = (MembershipExpose) theEObject;
+                T result = this.caseMembershipExpose(membershipExpose);
+                if (result == null)
+                    result = this.caseMembershipImport(membershipExpose);
+                if (result == null)
+                    result = this.caseExpose(membershipExpose);
+                if (result == null)
+                    result = this.caseImport(membershipExpose);
+                if (result == null)
+                    result = this.caseRelationship(membershipExpose);
+                if (result == null)
+                    result = this.caseElement(membershipExpose);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.MEMBERSHIP_IMPORT: {
-                MembershipImport membershipImport = (MembershipImport)theEObject;
-                T result = caseMembershipImport(membershipImport);
-                if (result == null) result = caseImport(membershipImport);
-                if (result == null) result = caseRelationship(membershipImport);
-                if (result == null) result = caseElement(membershipImport);
-                if (result == null) result = defaultCase(theEObject);
+                MembershipImport membershipImport = (MembershipImport) theEObject;
+                T result = this.caseMembershipImport(membershipImport);
+                if (result == null)
+                    result = this.caseImport(membershipImport);
+                if (result == null)
+                    result = this.caseRelationship(membershipImport);
+                if (result == null)
+                    result = this.caseElement(membershipImport);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.MERGE_NODE: {
-                MergeNode mergeNode = (MergeNode)theEObject;
-                T result = caseMergeNode(mergeNode);
-                if (result == null) result = caseControlNode(mergeNode);
-                if (result == null) result = caseActionUsage(mergeNode);
-                if (result == null) result = caseOccurrenceUsage(mergeNode);
-                if (result == null) result = caseStep(mergeNode);
-                if (result == null) result = caseUsage(mergeNode);
-                if (result == null) result = caseFeature(mergeNode);
-                if (result == null) result = caseType(mergeNode);
-                if (result == null) result = caseNamespace(mergeNode);
-                if (result == null) result = caseElement(mergeNode);
-                if (result == null) result = defaultCase(theEObject);
+                MergeNode mergeNode = (MergeNode) theEObject;
+                T result = this.caseMergeNode(mergeNode);
+                if (result == null)
+                    result = this.caseControlNode(mergeNode);
+                if (result == null)
+                    result = this.caseActionUsage(mergeNode);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(mergeNode);
+                if (result == null)
+                    result = this.caseStep(mergeNode);
+                if (result == null)
+                    result = this.caseUsage(mergeNode);
+                if (result == null)
+                    result = this.caseFeature(mergeNode);
+                if (result == null)
+                    result = this.caseType(mergeNode);
+                if (result == null)
+                    result = this.caseNamespace(mergeNode);
+                if (result == null)
+                    result = this.caseElement(mergeNode);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.METACLASS: {
-                Metaclass metaclass = (Metaclass)theEObject;
-                T result = caseMetaclass(metaclass);
-                if (result == null) result = caseStructure(metaclass);
-                if (result == null) result = caseClass(metaclass);
-                if (result == null) result = caseClassifier(metaclass);
-                if (result == null) result = caseType(metaclass);
-                if (result == null) result = caseNamespace(metaclass);
-                if (result == null) result = caseElement(metaclass);
-                if (result == null) result = defaultCase(theEObject);
+                Metaclass metaclass = (Metaclass) theEObject;
+                T result = this.caseMetaclass(metaclass);
+                if (result == null)
+                    result = this.caseStructure(metaclass);
+                if (result == null)
+                    result = this.caseClass(metaclass);
+                if (result == null)
+                    result = this.caseClassifier(metaclass);
+                if (result == null)
+                    result = this.caseType(metaclass);
+                if (result == null)
+                    result = this.caseNamespace(metaclass);
+                if (result == null)
+                    result = this.caseElement(metaclass);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.METADATA_ACCESS_EXPRESSION: {
-                MetadataAccessExpression metadataAccessExpression = (MetadataAccessExpression)theEObject;
-                T result = caseMetadataAccessExpression(metadataAccessExpression);
-                if (result == null) result = caseExpression(metadataAccessExpression);
-                if (result == null) result = caseStep(metadataAccessExpression);
-                if (result == null) result = caseFeature(metadataAccessExpression);
-                if (result == null) result = caseType(metadataAccessExpression);
-                if (result == null) result = caseNamespace(metadataAccessExpression);
-                if (result == null) result = caseElement(metadataAccessExpression);
-                if (result == null) result = defaultCase(theEObject);
+                MetadataAccessExpression metadataAccessExpression = (MetadataAccessExpression) theEObject;
+                T result = this.caseMetadataAccessExpression(metadataAccessExpression);
+                if (result == null)
+                    result = this.caseExpression(metadataAccessExpression);
+                if (result == null)
+                    result = this.caseStep(metadataAccessExpression);
+                if (result == null)
+                    result = this.caseFeature(metadataAccessExpression);
+                if (result == null)
+                    result = this.caseType(metadataAccessExpression);
+                if (result == null)
+                    result = this.caseNamespace(metadataAccessExpression);
+                if (result == null)
+                    result = this.caseElement(metadataAccessExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.METADATA_DEFINITION: {
-                MetadataDefinition metadataDefinition = (MetadataDefinition)theEObject;
-                T result = caseMetadataDefinition(metadataDefinition);
-                if (result == null) result = caseItemDefinition(metadataDefinition);
-                if (result == null) result = caseMetaclass(metadataDefinition);
-                if (result == null) result = caseOccurrenceDefinition(metadataDefinition);
-                if (result == null) result = caseStructure(metadataDefinition);
-                if (result == null) result = caseDefinition(metadataDefinition);
-                if (result == null) result = caseClass(metadataDefinition);
-                if (result == null) result = caseClassifier(metadataDefinition);
-                if (result == null) result = caseType(metadataDefinition);
-                if (result == null) result = caseNamespace(metadataDefinition);
-                if (result == null) result = caseElement(metadataDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                MetadataDefinition metadataDefinition = (MetadataDefinition) theEObject;
+                T result = this.caseMetadataDefinition(metadataDefinition);
+                if (result == null)
+                    result = this.caseItemDefinition(metadataDefinition);
+                if (result == null)
+                    result = this.caseMetaclass(metadataDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(metadataDefinition);
+                if (result == null)
+                    result = this.caseStructure(metadataDefinition);
+                if (result == null)
+                    result = this.caseDefinition(metadataDefinition);
+                if (result == null)
+                    result = this.caseClass(metadataDefinition);
+                if (result == null)
+                    result = this.caseClassifier(metadataDefinition);
+                if (result == null)
+                    result = this.caseType(metadataDefinition);
+                if (result == null)
+                    result = this.caseNamespace(metadataDefinition);
+                if (result == null)
+                    result = this.caseElement(metadataDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.METADATA_FEATURE: {
-                MetadataFeature metadataFeature = (MetadataFeature)theEObject;
-                T result = caseMetadataFeature(metadataFeature);
-                if (result == null) result = caseFeature(metadataFeature);
-                if (result == null) result = caseAnnotatingElement(metadataFeature);
-                if (result == null) result = caseType(metadataFeature);
-                if (result == null) result = caseNamespace(metadataFeature);
-                if (result == null) result = caseElement(metadataFeature);
-                if (result == null) result = defaultCase(theEObject);
+                MetadataFeature metadataFeature = (MetadataFeature) theEObject;
+                T result = this.caseMetadataFeature(metadataFeature);
+                if (result == null)
+                    result = this.caseFeature(metadataFeature);
+                if (result == null)
+                    result = this.caseAnnotatingElement(metadataFeature);
+                if (result == null)
+                    result = this.caseType(metadataFeature);
+                if (result == null)
+                    result = this.caseNamespace(metadataFeature);
+                if (result == null)
+                    result = this.caseElement(metadataFeature);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.METADATA_USAGE: {
-                MetadataUsage metadataUsage = (MetadataUsage)theEObject;
-                T result = caseMetadataUsage(metadataUsage);
-                if (result == null) result = caseItemUsage(metadataUsage);
-                if (result == null) result = caseMetadataFeature(metadataUsage);
-                if (result == null) result = caseOccurrenceUsage(metadataUsage);
-                if (result == null) result = caseAnnotatingElement(metadataUsage);
-                if (result == null) result = caseUsage(metadataUsage);
-                if (result == null) result = caseFeature(metadataUsage);
-                if (result == null) result = caseType(metadataUsage);
-                if (result == null) result = caseNamespace(metadataUsage);
-                if (result == null) result = caseElement(metadataUsage);
-                if (result == null) result = defaultCase(theEObject);
+                MetadataUsage metadataUsage = (MetadataUsage) theEObject;
+                T result = this.caseMetadataUsage(metadataUsage);
+                if (result == null)
+                    result = this.caseItemUsage(metadataUsage);
+                if (result == null)
+                    result = this.caseMetadataFeature(metadataUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(metadataUsage);
+                if (result == null)
+                    result = this.caseAnnotatingElement(metadataUsage);
+                if (result == null)
+                    result = this.caseUsage(metadataUsage);
+                if (result == null)
+                    result = this.caseFeature(metadataUsage);
+                if (result == null)
+                    result = this.caseType(metadataUsage);
+                if (result == null)
+                    result = this.caseNamespace(metadataUsage);
+                if (result == null)
+                    result = this.caseElement(metadataUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.MULTIPLICITY: {
-                Multiplicity multiplicity = (Multiplicity)theEObject;
-                T result = caseMultiplicity(multiplicity);
-                if (result == null) result = caseFeature(multiplicity);
-                if (result == null) result = caseType(multiplicity);
-                if (result == null) result = caseNamespace(multiplicity);
-                if (result == null) result = caseElement(multiplicity);
-                if (result == null) result = defaultCase(theEObject);
+                Multiplicity multiplicity = (Multiplicity) theEObject;
+                T result = this.caseMultiplicity(multiplicity);
+                if (result == null)
+                    result = this.caseFeature(multiplicity);
+                if (result == null)
+                    result = this.caseType(multiplicity);
+                if (result == null)
+                    result = this.caseNamespace(multiplicity);
+                if (result == null)
+                    result = this.caseElement(multiplicity);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.MULTIPLICITY_RANGE: {
-                MultiplicityRange multiplicityRange = (MultiplicityRange)theEObject;
-                T result = caseMultiplicityRange(multiplicityRange);
-                if (result == null) result = caseMultiplicity(multiplicityRange);
-                if (result == null) result = caseFeature(multiplicityRange);
-                if (result == null) result = caseType(multiplicityRange);
-                if (result == null) result = caseNamespace(multiplicityRange);
-                if (result == null) result = caseElement(multiplicityRange);
-                if (result == null) result = defaultCase(theEObject);
+                MultiplicityRange multiplicityRange = (MultiplicityRange) theEObject;
+                T result = this.caseMultiplicityRange(multiplicityRange);
+                if (result == null)
+                    result = this.caseMultiplicity(multiplicityRange);
+                if (result == null)
+                    result = this.caseFeature(multiplicityRange);
+                if (result == null)
+                    result = this.caseType(multiplicityRange);
+                if (result == null)
+                    result = this.caseNamespace(multiplicityRange);
+                if (result == null)
+                    result = this.caseElement(multiplicityRange);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.NAMESPACE: {
-                Namespace namespace = (Namespace)theEObject;
-                T result = caseNamespace(namespace);
-                if (result == null) result = caseElement(namespace);
-                if (result == null) result = defaultCase(theEObject);
+                Namespace namespace = (Namespace) theEObject;
+                T result = this.caseNamespace(namespace);
+                if (result == null)
+                    result = this.caseElement(namespace);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.NAMESPACE_EXPOSE: {
-                NamespaceExpose namespaceExpose = (NamespaceExpose)theEObject;
-                T result = caseNamespaceExpose(namespaceExpose);
-                if (result == null) result = caseNamespaceImport(namespaceExpose);
-                if (result == null) result = caseExpose(namespaceExpose);
-                if (result == null) result = caseImport(namespaceExpose);
-                if (result == null) result = caseRelationship(namespaceExpose);
-                if (result == null) result = caseElement(namespaceExpose);
-                if (result == null) result = defaultCase(theEObject);
+                NamespaceExpose namespaceExpose = (NamespaceExpose) theEObject;
+                T result = this.caseNamespaceExpose(namespaceExpose);
+                if (result == null)
+                    result = this.caseNamespaceImport(namespaceExpose);
+                if (result == null)
+                    result = this.caseExpose(namespaceExpose);
+                if (result == null)
+                    result = this.caseImport(namespaceExpose);
+                if (result == null)
+                    result = this.caseRelationship(namespaceExpose);
+                if (result == null)
+                    result = this.caseElement(namespaceExpose);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.NAMESPACE_IMPORT: {
-                NamespaceImport namespaceImport = (NamespaceImport)theEObject;
-                T result = caseNamespaceImport(namespaceImport);
-                if (result == null) result = caseImport(namespaceImport);
-                if (result == null) result = caseRelationship(namespaceImport);
-                if (result == null) result = caseElement(namespaceImport);
-                if (result == null) result = defaultCase(theEObject);
+                NamespaceImport namespaceImport = (NamespaceImport) theEObject;
+                T result = this.caseNamespaceImport(namespaceImport);
+                if (result == null)
+                    result = this.caseImport(namespaceImport);
+                if (result == null)
+                    result = this.caseRelationship(namespaceImport);
+                if (result == null)
+                    result = this.caseElement(namespaceImport);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.NULL_EXPRESSION: {
-                NullExpression nullExpression = (NullExpression)theEObject;
-                T result = caseNullExpression(nullExpression);
-                if (result == null) result = caseExpression(nullExpression);
-                if (result == null) result = caseStep(nullExpression);
-                if (result == null) result = caseFeature(nullExpression);
-                if (result == null) result = caseType(nullExpression);
-                if (result == null) result = caseNamespace(nullExpression);
-                if (result == null) result = caseElement(nullExpression);
-                if (result == null) result = defaultCase(theEObject);
+                NullExpression nullExpression = (NullExpression) theEObject;
+                T result = this.caseNullExpression(nullExpression);
+                if (result == null)
+                    result = this.caseExpression(nullExpression);
+                if (result == null)
+                    result = this.caseStep(nullExpression);
+                if (result == null)
+                    result = this.caseFeature(nullExpression);
+                if (result == null)
+                    result = this.caseType(nullExpression);
+                if (result == null)
+                    result = this.caseNamespace(nullExpression);
+                if (result == null)
+                    result = this.caseElement(nullExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.OBJECTIVE_MEMBERSHIP: {
-                ObjectiveMembership objectiveMembership = (ObjectiveMembership)theEObject;
-                T result = caseObjectiveMembership(objectiveMembership);
-                if (result == null) result = caseFeatureMembership(objectiveMembership);
-                if (result == null) result = caseOwningMembership(objectiveMembership);
-                if (result == null) result = caseFeaturing(objectiveMembership);
-                if (result == null) result = caseMembership(objectiveMembership);
-                if (result == null) result = caseRelationship(objectiveMembership);
-                if (result == null) result = caseElement(objectiveMembership);
-                if (result == null) result = defaultCase(theEObject);
+                ObjectiveMembership objectiveMembership = (ObjectiveMembership) theEObject;
+                T result = this.caseObjectiveMembership(objectiveMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(objectiveMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(objectiveMembership);
+                if (result == null)
+                    result = this.caseFeaturing(objectiveMembership);
+                if (result == null)
+                    result = this.caseMembership(objectiveMembership);
+                if (result == null)
+                    result = this.caseRelationship(objectiveMembership);
+                if (result == null)
+                    result = this.caseElement(objectiveMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.OCCURRENCE_DEFINITION: {
-                OccurrenceDefinition occurrenceDefinition = (OccurrenceDefinition)theEObject;
-                T result = caseOccurrenceDefinition(occurrenceDefinition);
-                if (result == null) result = caseDefinition(occurrenceDefinition);
-                if (result == null) result = caseClass(occurrenceDefinition);
-                if (result == null) result = caseClassifier(occurrenceDefinition);
-                if (result == null) result = caseType(occurrenceDefinition);
-                if (result == null) result = caseNamespace(occurrenceDefinition);
-                if (result == null) result = caseElement(occurrenceDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                OccurrenceDefinition occurrenceDefinition = (OccurrenceDefinition) theEObject;
+                T result = this.caseOccurrenceDefinition(occurrenceDefinition);
+                if (result == null)
+                    result = this.caseDefinition(occurrenceDefinition);
+                if (result == null)
+                    result = this.caseClass(occurrenceDefinition);
+                if (result == null)
+                    result = this.caseClassifier(occurrenceDefinition);
+                if (result == null)
+                    result = this.caseType(occurrenceDefinition);
+                if (result == null)
+                    result = this.caseNamespace(occurrenceDefinition);
+                if (result == null)
+                    result = this.caseElement(occurrenceDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.OCCURRENCE_USAGE: {
-                OccurrenceUsage occurrenceUsage = (OccurrenceUsage)theEObject;
-                T result = caseOccurrenceUsage(occurrenceUsage);
-                if (result == null) result = caseUsage(occurrenceUsage);
-                if (result == null) result = caseFeature(occurrenceUsage);
-                if (result == null) result = caseType(occurrenceUsage);
-                if (result == null) result = caseNamespace(occurrenceUsage);
-                if (result == null) result = caseElement(occurrenceUsage);
-                if (result == null) result = defaultCase(theEObject);
+                OccurrenceUsage occurrenceUsage = (OccurrenceUsage) theEObject;
+                T result = this.caseOccurrenceUsage(occurrenceUsage);
+                if (result == null)
+                    result = this.caseUsage(occurrenceUsage);
+                if (result == null)
+                    result = this.caseFeature(occurrenceUsage);
+                if (result == null)
+                    result = this.caseType(occurrenceUsage);
+                if (result == null)
+                    result = this.caseNamespace(occurrenceUsage);
+                if (result == null)
+                    result = this.caseElement(occurrenceUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.OPERATOR_EXPRESSION: {
-                OperatorExpression operatorExpression = (OperatorExpression)theEObject;
-                T result = caseOperatorExpression(operatorExpression);
-                if (result == null) result = caseInvocationExpression(operatorExpression);
-                if (result == null) result = caseExpression(operatorExpression);
-                if (result == null) result = caseStep(operatorExpression);
-                if (result == null) result = caseFeature(operatorExpression);
-                if (result == null) result = caseType(operatorExpression);
-                if (result == null) result = caseNamespace(operatorExpression);
-                if (result == null) result = caseElement(operatorExpression);
-                if (result == null) result = defaultCase(theEObject);
+                OperatorExpression operatorExpression = (OperatorExpression) theEObject;
+                T result = this.caseOperatorExpression(operatorExpression);
+                if (result == null)
+                    result = this.caseInvocationExpression(operatorExpression);
+                if (result == null)
+                    result = this.caseExpression(operatorExpression);
+                if (result == null)
+                    result = this.caseStep(operatorExpression);
+                if (result == null)
+                    result = this.caseFeature(operatorExpression);
+                if (result == null)
+                    result = this.caseType(operatorExpression);
+                if (result == null)
+                    result = this.caseNamespace(operatorExpression);
+                if (result == null)
+                    result = this.caseElement(operatorExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.OWNING_MEMBERSHIP: {
-                OwningMembership owningMembership = (OwningMembership)theEObject;
-                T result = caseOwningMembership(owningMembership);
-                if (result == null) result = caseMembership(owningMembership);
-                if (result == null) result = caseRelationship(owningMembership);
-                if (result == null) result = caseElement(owningMembership);
-                if (result == null) result = defaultCase(theEObject);
+                OwningMembership owningMembership = (OwningMembership) theEObject;
+                T result = this.caseOwningMembership(owningMembership);
+                if (result == null)
+                    result = this.caseMembership(owningMembership);
+                if (result == null)
+                    result = this.caseRelationship(owningMembership);
+                if (result == null)
+                    result = this.caseElement(owningMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.PACKAGE: {
-                org.eclipse.syson.sysml.Package package_ = (org.eclipse.syson.sysml.Package)theEObject;
-                T result = casePackage(package_);
-                if (result == null) result = caseNamespace(package_);
-                if (result == null) result = caseElement(package_);
-                if (result == null) result = defaultCase(theEObject);
+                org.eclipse.syson.sysml.Package package_ = (org.eclipse.syson.sysml.Package) theEObject;
+                T result = this.casePackage(package_);
+                if (result == null)
+                    result = this.caseNamespace(package_);
+                if (result == null)
+                    result = this.caseElement(package_);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.PARAMETER_MEMBERSHIP: {
-                ParameterMembership parameterMembership = (ParameterMembership)theEObject;
-                T result = caseParameterMembership(parameterMembership);
-                if (result == null) result = caseFeatureMembership(parameterMembership);
-                if (result == null) result = caseOwningMembership(parameterMembership);
-                if (result == null) result = caseFeaturing(parameterMembership);
-                if (result == null) result = caseMembership(parameterMembership);
-                if (result == null) result = caseRelationship(parameterMembership);
-                if (result == null) result = caseElement(parameterMembership);
-                if (result == null) result = defaultCase(theEObject);
+                ParameterMembership parameterMembership = (ParameterMembership) theEObject;
+                T result = this.caseParameterMembership(parameterMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(parameterMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(parameterMembership);
+                if (result == null)
+                    result = this.caseFeaturing(parameterMembership);
+                if (result == null)
+                    result = this.caseMembership(parameterMembership);
+                if (result == null)
+                    result = this.caseRelationship(parameterMembership);
+                if (result == null)
+                    result = this.caseElement(parameterMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.PART_DEFINITION: {
-                PartDefinition partDefinition = (PartDefinition)theEObject;
-                T result = casePartDefinition(partDefinition);
-                if (result == null) result = caseItemDefinition(partDefinition);
-                if (result == null) result = caseOccurrenceDefinition(partDefinition);
-                if (result == null) result = caseStructure(partDefinition);
-                if (result == null) result = caseDefinition(partDefinition);
-                if (result == null) result = caseClass(partDefinition);
-                if (result == null) result = caseClassifier(partDefinition);
-                if (result == null) result = caseType(partDefinition);
-                if (result == null) result = caseNamespace(partDefinition);
-                if (result == null) result = caseElement(partDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                PartDefinition partDefinition = (PartDefinition) theEObject;
+                T result = this.casePartDefinition(partDefinition);
+                if (result == null)
+                    result = this.caseItemDefinition(partDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(partDefinition);
+                if (result == null)
+                    result = this.caseStructure(partDefinition);
+                if (result == null)
+                    result = this.caseDefinition(partDefinition);
+                if (result == null)
+                    result = this.caseClass(partDefinition);
+                if (result == null)
+                    result = this.caseClassifier(partDefinition);
+                if (result == null)
+                    result = this.caseType(partDefinition);
+                if (result == null)
+                    result = this.caseNamespace(partDefinition);
+                if (result == null)
+                    result = this.caseElement(partDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.PART_USAGE: {
-                PartUsage partUsage = (PartUsage)theEObject;
-                T result = casePartUsage(partUsage);
-                if (result == null) result = caseItemUsage(partUsage);
-                if (result == null) result = caseOccurrenceUsage(partUsage);
-                if (result == null) result = caseUsage(partUsage);
-                if (result == null) result = caseFeature(partUsage);
-                if (result == null) result = caseType(partUsage);
-                if (result == null) result = caseNamespace(partUsage);
-                if (result == null) result = caseElement(partUsage);
-                if (result == null) result = defaultCase(theEObject);
+                PartUsage partUsage = (PartUsage) theEObject;
+                T result = this.casePartUsage(partUsage);
+                if (result == null)
+                    result = this.caseItemUsage(partUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(partUsage);
+                if (result == null)
+                    result = this.caseUsage(partUsage);
+                if (result == null)
+                    result = this.caseFeature(partUsage);
+                if (result == null)
+                    result = this.caseType(partUsage);
+                if (result == null)
+                    result = this.caseNamespace(partUsage);
+                if (result == null)
+                    result = this.caseElement(partUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.PERFORM_ACTION_USAGE: {
-                PerformActionUsage performActionUsage = (PerformActionUsage)theEObject;
-                T result = casePerformActionUsage(performActionUsage);
-                if (result == null) result = caseActionUsage(performActionUsage);
-                if (result == null) result = caseEventOccurrenceUsage(performActionUsage);
-                if (result == null) result = caseOccurrenceUsage(performActionUsage);
-                if (result == null) result = caseStep(performActionUsage);
-                if (result == null) result = caseUsage(performActionUsage);
-                if (result == null) result = caseFeature(performActionUsage);
-                if (result == null) result = caseType(performActionUsage);
-                if (result == null) result = caseNamespace(performActionUsage);
-                if (result == null) result = caseElement(performActionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                PerformActionUsage performActionUsage = (PerformActionUsage) theEObject;
+                T result = this.casePerformActionUsage(performActionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(performActionUsage);
+                if (result == null)
+                    result = this.caseEventOccurrenceUsage(performActionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(performActionUsage);
+                if (result == null)
+                    result = this.caseStep(performActionUsage);
+                if (result == null)
+                    result = this.caseUsage(performActionUsage);
+                if (result == null)
+                    result = this.caseFeature(performActionUsage);
+                if (result == null)
+                    result = this.caseType(performActionUsage);
+                if (result == null)
+                    result = this.caseNamespace(performActionUsage);
+                if (result == null)
+                    result = this.caseElement(performActionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.PORT_CONJUGATION: {
-                PortConjugation portConjugation = (PortConjugation)theEObject;
-                T result = casePortConjugation(portConjugation);
-                if (result == null) result = caseConjugation(portConjugation);
-                if (result == null) result = caseRelationship(portConjugation);
-                if (result == null) result = caseElement(portConjugation);
-                if (result == null) result = defaultCase(theEObject);
+                PortConjugation portConjugation = (PortConjugation) theEObject;
+                T result = this.casePortConjugation(portConjugation);
+                if (result == null)
+                    result = this.caseConjugation(portConjugation);
+                if (result == null)
+                    result = this.caseRelationship(portConjugation);
+                if (result == null)
+                    result = this.caseElement(portConjugation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.PORT_DEFINITION: {
-                PortDefinition portDefinition = (PortDefinition)theEObject;
-                T result = casePortDefinition(portDefinition);
-                if (result == null) result = caseOccurrenceDefinition(portDefinition);
-                if (result == null) result = caseStructure(portDefinition);
-                if (result == null) result = caseDefinition(portDefinition);
-                if (result == null) result = caseClass(portDefinition);
-                if (result == null) result = caseClassifier(portDefinition);
-                if (result == null) result = caseType(portDefinition);
-                if (result == null) result = caseNamespace(portDefinition);
-                if (result == null) result = caseElement(portDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                PortDefinition portDefinition = (PortDefinition) theEObject;
+                T result = this.casePortDefinition(portDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(portDefinition);
+                if (result == null)
+                    result = this.caseStructure(portDefinition);
+                if (result == null)
+                    result = this.caseDefinition(portDefinition);
+                if (result == null)
+                    result = this.caseClass(portDefinition);
+                if (result == null)
+                    result = this.caseClassifier(portDefinition);
+                if (result == null)
+                    result = this.caseType(portDefinition);
+                if (result == null)
+                    result = this.caseNamespace(portDefinition);
+                if (result == null)
+                    result = this.caseElement(portDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.PORT_USAGE: {
-                PortUsage portUsage = (PortUsage)theEObject;
-                T result = casePortUsage(portUsage);
-                if (result == null) result = caseOccurrenceUsage(portUsage);
-                if (result == null) result = caseUsage(portUsage);
-                if (result == null) result = caseFeature(portUsage);
-                if (result == null) result = caseType(portUsage);
-                if (result == null) result = caseNamespace(portUsage);
-                if (result == null) result = caseElement(portUsage);
-                if (result == null) result = defaultCase(theEObject);
+                PortUsage portUsage = (PortUsage) theEObject;
+                T result = this.casePortUsage(portUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(portUsage);
+                if (result == null)
+                    result = this.caseUsage(portUsage);
+                if (result == null)
+                    result = this.caseFeature(portUsage);
+                if (result == null)
+                    result = this.caseType(portUsage);
+                if (result == null)
+                    result = this.caseNamespace(portUsage);
+                if (result == null)
+                    result = this.caseElement(portUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.PREDICATE: {
-                Predicate predicate = (Predicate)theEObject;
-                T result = casePredicate(predicate);
-                if (result == null) result = caseFunction(predicate);
-                if (result == null) result = caseBehavior(predicate);
-                if (result == null) result = caseClass(predicate);
-                if (result == null) result = caseClassifier(predicate);
-                if (result == null) result = caseType(predicate);
-                if (result == null) result = caseNamespace(predicate);
-                if (result == null) result = caseElement(predicate);
-                if (result == null) result = defaultCase(theEObject);
+                Predicate predicate = (Predicate) theEObject;
+                T result = this.casePredicate(predicate);
+                if (result == null)
+                    result = this.caseFunction(predicate);
+                if (result == null)
+                    result = this.caseBehavior(predicate);
+                if (result == null)
+                    result = this.caseClass(predicate);
+                if (result == null)
+                    result = this.caseClassifier(predicate);
+                if (result == null)
+                    result = this.caseType(predicate);
+                if (result == null)
+                    result = this.caseNamespace(predicate);
+                if (result == null)
+                    result = this.caseElement(predicate);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.REDEFINITION: {
-                Redefinition redefinition = (Redefinition)theEObject;
-                T result = caseRedefinition(redefinition);
-                if (result == null) result = caseSubsetting(redefinition);
-                if (result == null) result = caseSpecialization(redefinition);
-                if (result == null) result = caseRelationship(redefinition);
-                if (result == null) result = caseElement(redefinition);
-                if (result == null) result = defaultCase(theEObject);
+                Redefinition redefinition = (Redefinition) theEObject;
+                T result = this.caseRedefinition(redefinition);
+                if (result == null)
+                    result = this.caseSubsetting(redefinition);
+                if (result == null)
+                    result = this.caseSpecialization(redefinition);
+                if (result == null)
+                    result = this.caseRelationship(redefinition);
+                if (result == null)
+                    result = this.caseElement(redefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.REFERENCE_SUBSETTING: {
-                ReferenceSubsetting referenceSubsetting = (ReferenceSubsetting)theEObject;
-                T result = caseReferenceSubsetting(referenceSubsetting);
-                if (result == null) result = caseSubsetting(referenceSubsetting);
-                if (result == null) result = caseSpecialization(referenceSubsetting);
-                if (result == null) result = caseRelationship(referenceSubsetting);
-                if (result == null) result = caseElement(referenceSubsetting);
-                if (result == null) result = defaultCase(theEObject);
+                ReferenceSubsetting referenceSubsetting = (ReferenceSubsetting) theEObject;
+                T result = this.caseReferenceSubsetting(referenceSubsetting);
+                if (result == null)
+                    result = this.caseSubsetting(referenceSubsetting);
+                if (result == null)
+                    result = this.caseSpecialization(referenceSubsetting);
+                if (result == null)
+                    result = this.caseRelationship(referenceSubsetting);
+                if (result == null)
+                    result = this.caseElement(referenceSubsetting);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.REFERENCE_USAGE: {
-                ReferenceUsage referenceUsage = (ReferenceUsage)theEObject;
-                T result = caseReferenceUsage(referenceUsage);
-                if (result == null) result = caseUsage(referenceUsage);
-                if (result == null) result = caseFeature(referenceUsage);
-                if (result == null) result = caseType(referenceUsage);
-                if (result == null) result = caseNamespace(referenceUsage);
-                if (result == null) result = caseElement(referenceUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ReferenceUsage referenceUsage = (ReferenceUsage) theEObject;
+                T result = this.caseReferenceUsage(referenceUsage);
+                if (result == null)
+                    result = this.caseUsage(referenceUsage);
+                if (result == null)
+                    result = this.caseFeature(referenceUsage);
+                if (result == null)
+                    result = this.caseType(referenceUsage);
+                if (result == null)
+                    result = this.caseNamespace(referenceUsage);
+                if (result == null)
+                    result = this.caseElement(referenceUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.RELATIONSHIP: {
-                Relationship relationship = (Relationship)theEObject;
-                T result = caseRelationship(relationship);
-                if (result == null) result = caseElement(relationship);
-                if (result == null) result = defaultCase(theEObject);
+                Relationship relationship = (Relationship) theEObject;
+                T result = this.caseRelationship(relationship);
+                if (result == null)
+                    result = this.caseElement(relationship);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.RENDERING_DEFINITION: {
-                RenderingDefinition renderingDefinition = (RenderingDefinition)theEObject;
-                T result = caseRenderingDefinition(renderingDefinition);
-                if (result == null) result = casePartDefinition(renderingDefinition);
-                if (result == null) result = caseItemDefinition(renderingDefinition);
-                if (result == null) result = caseOccurrenceDefinition(renderingDefinition);
-                if (result == null) result = caseStructure(renderingDefinition);
-                if (result == null) result = caseDefinition(renderingDefinition);
-                if (result == null) result = caseClass(renderingDefinition);
-                if (result == null) result = caseClassifier(renderingDefinition);
-                if (result == null) result = caseType(renderingDefinition);
-                if (result == null) result = caseNamespace(renderingDefinition);
-                if (result == null) result = caseElement(renderingDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                RenderingDefinition renderingDefinition = (RenderingDefinition) theEObject;
+                T result = this.caseRenderingDefinition(renderingDefinition);
+                if (result == null)
+                    result = this.casePartDefinition(renderingDefinition);
+                if (result == null)
+                    result = this.caseItemDefinition(renderingDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(renderingDefinition);
+                if (result == null)
+                    result = this.caseStructure(renderingDefinition);
+                if (result == null)
+                    result = this.caseDefinition(renderingDefinition);
+                if (result == null)
+                    result = this.caseClass(renderingDefinition);
+                if (result == null)
+                    result = this.caseClassifier(renderingDefinition);
+                if (result == null)
+                    result = this.caseType(renderingDefinition);
+                if (result == null)
+                    result = this.caseNamespace(renderingDefinition);
+                if (result == null)
+                    result = this.caseElement(renderingDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.RENDERING_USAGE: {
-                RenderingUsage renderingUsage = (RenderingUsage)theEObject;
-                T result = caseRenderingUsage(renderingUsage);
-                if (result == null) result = casePartUsage(renderingUsage);
-                if (result == null) result = caseItemUsage(renderingUsage);
-                if (result == null) result = caseOccurrenceUsage(renderingUsage);
-                if (result == null) result = caseUsage(renderingUsage);
-                if (result == null) result = caseFeature(renderingUsage);
-                if (result == null) result = caseType(renderingUsage);
-                if (result == null) result = caseNamespace(renderingUsage);
-                if (result == null) result = caseElement(renderingUsage);
-                if (result == null) result = defaultCase(theEObject);
+                RenderingUsage renderingUsage = (RenderingUsage) theEObject;
+                T result = this.caseRenderingUsage(renderingUsage);
+                if (result == null)
+                    result = this.casePartUsage(renderingUsage);
+                if (result == null)
+                    result = this.caseItemUsage(renderingUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(renderingUsage);
+                if (result == null)
+                    result = this.caseUsage(renderingUsage);
+                if (result == null)
+                    result = this.caseFeature(renderingUsage);
+                if (result == null)
+                    result = this.caseType(renderingUsage);
+                if (result == null)
+                    result = this.caseNamespace(renderingUsage);
+                if (result == null)
+                    result = this.caseElement(renderingUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP: {
-                RequirementConstraintMembership requirementConstraintMembership = (RequirementConstraintMembership)theEObject;
-                T result = caseRequirementConstraintMembership(requirementConstraintMembership);
-                if (result == null) result = caseFeatureMembership(requirementConstraintMembership);
-                if (result == null) result = caseOwningMembership(requirementConstraintMembership);
-                if (result == null) result = caseFeaturing(requirementConstraintMembership);
-                if (result == null) result = caseMembership(requirementConstraintMembership);
-                if (result == null) result = caseRelationship(requirementConstraintMembership);
-                if (result == null) result = caseElement(requirementConstraintMembership);
-                if (result == null) result = defaultCase(theEObject);
+                RequirementConstraintMembership requirementConstraintMembership = (RequirementConstraintMembership) theEObject;
+                T result = this.caseRequirementConstraintMembership(requirementConstraintMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(requirementConstraintMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(requirementConstraintMembership);
+                if (result == null)
+                    result = this.caseFeaturing(requirementConstraintMembership);
+                if (result == null)
+                    result = this.caseMembership(requirementConstraintMembership);
+                if (result == null)
+                    result = this.caseRelationship(requirementConstraintMembership);
+                if (result == null)
+                    result = this.caseElement(requirementConstraintMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.REQUIREMENT_DEFINITION: {
-                RequirementDefinition requirementDefinition = (RequirementDefinition)theEObject;
-                T result = caseRequirementDefinition(requirementDefinition);
-                if (result == null) result = caseConstraintDefinition(requirementDefinition);
-                if (result == null) result = caseOccurrenceDefinition(requirementDefinition);
-                if (result == null) result = casePredicate(requirementDefinition);
-                if (result == null) result = caseDefinition(requirementDefinition);
-                if (result == null) result = caseFunction(requirementDefinition);
-                if (result == null) result = caseClassifier(requirementDefinition);
-                if (result == null) result = caseBehavior(requirementDefinition);
-                if (result == null) result = caseType(requirementDefinition);
-                if (result == null) result = caseClass(requirementDefinition);
-                if (result == null) result = caseNamespace(requirementDefinition);
-                if (result == null) result = caseElement(requirementDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                RequirementDefinition requirementDefinition = (RequirementDefinition) theEObject;
+                T result = this.caseRequirementDefinition(requirementDefinition);
+                if (result == null)
+                    result = this.caseConstraintDefinition(requirementDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(requirementDefinition);
+                if (result == null)
+                    result = this.casePredicate(requirementDefinition);
+                if (result == null)
+                    result = this.caseDefinition(requirementDefinition);
+                if (result == null)
+                    result = this.caseFunction(requirementDefinition);
+                if (result == null)
+                    result = this.caseClassifier(requirementDefinition);
+                if (result == null)
+                    result = this.caseBehavior(requirementDefinition);
+                if (result == null)
+                    result = this.caseType(requirementDefinition);
+                if (result == null)
+                    result = this.caseClass(requirementDefinition);
+                if (result == null)
+                    result = this.caseNamespace(requirementDefinition);
+                if (result == null)
+                    result = this.caseElement(requirementDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.REQUIREMENT_USAGE: {
-                RequirementUsage requirementUsage = (RequirementUsage)theEObject;
-                T result = caseRequirementUsage(requirementUsage);
-                if (result == null) result = caseConstraintUsage(requirementUsage);
-                if (result == null) result = caseOccurrenceUsage(requirementUsage);
-                if (result == null) result = caseBooleanExpression(requirementUsage);
-                if (result == null) result = caseUsage(requirementUsage);
-                if (result == null) result = caseExpression(requirementUsage);
-                if (result == null) result = caseStep(requirementUsage);
-                if (result == null) result = caseFeature(requirementUsage);
-                if (result == null) result = caseType(requirementUsage);
-                if (result == null) result = caseNamespace(requirementUsage);
-                if (result == null) result = caseElement(requirementUsage);
-                if (result == null) result = defaultCase(theEObject);
+                RequirementUsage requirementUsage = (RequirementUsage) theEObject;
+                T result = this.caseRequirementUsage(requirementUsage);
+                if (result == null)
+                    result = this.caseConstraintUsage(requirementUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(requirementUsage);
+                if (result == null)
+                    result = this.caseBooleanExpression(requirementUsage);
+                if (result == null)
+                    result = this.caseUsage(requirementUsage);
+                if (result == null)
+                    result = this.caseExpression(requirementUsage);
+                if (result == null)
+                    result = this.caseStep(requirementUsage);
+                if (result == null)
+                    result = this.caseFeature(requirementUsage);
+                if (result == null)
+                    result = this.caseType(requirementUsage);
+                if (result == null)
+                    result = this.caseNamespace(requirementUsage);
+                if (result == null)
+                    result = this.caseElement(requirementUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP: {
-                RequirementVerificationMembership requirementVerificationMembership = (RequirementVerificationMembership)theEObject;
-                T result = caseRequirementVerificationMembership(requirementVerificationMembership);
-                if (result == null) result = caseRequirementConstraintMembership(requirementVerificationMembership);
-                if (result == null) result = caseFeatureMembership(requirementVerificationMembership);
-                if (result == null) result = caseOwningMembership(requirementVerificationMembership);
-                if (result == null) result = caseFeaturing(requirementVerificationMembership);
-                if (result == null) result = caseMembership(requirementVerificationMembership);
-                if (result == null) result = caseRelationship(requirementVerificationMembership);
-                if (result == null) result = caseElement(requirementVerificationMembership);
-                if (result == null) result = defaultCase(theEObject);
+                RequirementVerificationMembership requirementVerificationMembership = (RequirementVerificationMembership) theEObject;
+                T result = this.caseRequirementVerificationMembership(requirementVerificationMembership);
+                if (result == null)
+                    result = this.caseRequirementConstraintMembership(requirementVerificationMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(requirementVerificationMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(requirementVerificationMembership);
+                if (result == null)
+                    result = this.caseFeaturing(requirementVerificationMembership);
+                if (result == null)
+                    result = this.caseMembership(requirementVerificationMembership);
+                if (result == null)
+                    result = this.caseRelationship(requirementVerificationMembership);
+                if (result == null)
+                    result = this.caseElement(requirementVerificationMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.RESULT_EXPRESSION_MEMBERSHIP: {
-                ResultExpressionMembership resultExpressionMembership = (ResultExpressionMembership)theEObject;
-                T result = caseResultExpressionMembership(resultExpressionMembership);
-                if (result == null) result = caseFeatureMembership(resultExpressionMembership);
-                if (result == null) result = caseOwningMembership(resultExpressionMembership);
-                if (result == null) result = caseFeaturing(resultExpressionMembership);
-                if (result == null) result = caseMembership(resultExpressionMembership);
-                if (result == null) result = caseRelationship(resultExpressionMembership);
-                if (result == null) result = caseElement(resultExpressionMembership);
-                if (result == null) result = defaultCase(theEObject);
+                ResultExpressionMembership resultExpressionMembership = (ResultExpressionMembership) theEObject;
+                T result = this.caseResultExpressionMembership(resultExpressionMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(resultExpressionMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(resultExpressionMembership);
+                if (result == null)
+                    result = this.caseFeaturing(resultExpressionMembership);
+                if (result == null)
+                    result = this.caseMembership(resultExpressionMembership);
+                if (result == null)
+                    result = this.caseRelationship(resultExpressionMembership);
+                if (result == null)
+                    result = this.caseElement(resultExpressionMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.RETURN_PARAMETER_MEMBERSHIP: {
-                ReturnParameterMembership returnParameterMembership = (ReturnParameterMembership)theEObject;
-                T result = caseReturnParameterMembership(returnParameterMembership);
-                if (result == null) result = caseParameterMembership(returnParameterMembership);
-                if (result == null) result = caseFeatureMembership(returnParameterMembership);
-                if (result == null) result = caseOwningMembership(returnParameterMembership);
-                if (result == null) result = caseFeaturing(returnParameterMembership);
-                if (result == null) result = caseMembership(returnParameterMembership);
-                if (result == null) result = caseRelationship(returnParameterMembership);
-                if (result == null) result = caseElement(returnParameterMembership);
-                if (result == null) result = defaultCase(theEObject);
+                ReturnParameterMembership returnParameterMembership = (ReturnParameterMembership) theEObject;
+                T result = this.caseReturnParameterMembership(returnParameterMembership);
+                if (result == null)
+                    result = this.caseParameterMembership(returnParameterMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(returnParameterMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(returnParameterMembership);
+                if (result == null)
+                    result = this.caseFeaturing(returnParameterMembership);
+                if (result == null)
+                    result = this.caseMembership(returnParameterMembership);
+                if (result == null)
+                    result = this.caseRelationship(returnParameterMembership);
+                if (result == null)
+                    result = this.caseElement(returnParameterMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SATISFY_REQUIREMENT_USAGE: {
-                SatisfyRequirementUsage satisfyRequirementUsage = (SatisfyRequirementUsage)theEObject;
-                T result = caseSatisfyRequirementUsage(satisfyRequirementUsage);
-                if (result == null) result = caseRequirementUsage(satisfyRequirementUsage);
-                if (result == null) result = caseAssertConstraintUsage(satisfyRequirementUsage);
-                if (result == null) result = caseConstraintUsage(satisfyRequirementUsage);
-                if (result == null) result = caseInvariant(satisfyRequirementUsage);
-                if (result == null) result = caseOccurrenceUsage(satisfyRequirementUsage);
-                if (result == null) result = caseBooleanExpression(satisfyRequirementUsage);
-                if (result == null) result = caseUsage(satisfyRequirementUsage);
-                if (result == null) result = caseExpression(satisfyRequirementUsage);
-                if (result == null) result = caseStep(satisfyRequirementUsage);
-                if (result == null) result = caseFeature(satisfyRequirementUsage);
-                if (result == null) result = caseType(satisfyRequirementUsage);
-                if (result == null) result = caseNamespace(satisfyRequirementUsage);
-                if (result == null) result = caseElement(satisfyRequirementUsage);
-                if (result == null) result = defaultCase(theEObject);
+                SatisfyRequirementUsage satisfyRequirementUsage = (SatisfyRequirementUsage) theEObject;
+                T result = this.caseSatisfyRequirementUsage(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseRequirementUsage(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseAssertConstraintUsage(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseConstraintUsage(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseInvariant(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseBooleanExpression(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseUsage(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseExpression(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseStep(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseFeature(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseType(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseNamespace(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.caseElement(satisfyRequirementUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SELECT_EXPRESSION: {
-                SelectExpression selectExpression = (SelectExpression)theEObject;
-                T result = caseSelectExpression(selectExpression);
-                if (result == null) result = caseOperatorExpression(selectExpression);
-                if (result == null) result = caseInvocationExpression(selectExpression);
-                if (result == null) result = caseExpression(selectExpression);
-                if (result == null) result = caseStep(selectExpression);
-                if (result == null) result = caseFeature(selectExpression);
-                if (result == null) result = caseType(selectExpression);
-                if (result == null) result = caseNamespace(selectExpression);
-                if (result == null) result = caseElement(selectExpression);
-                if (result == null) result = defaultCase(theEObject);
+                SelectExpression selectExpression = (SelectExpression) theEObject;
+                T result = this.caseSelectExpression(selectExpression);
+                if (result == null)
+                    result = this.caseOperatorExpression(selectExpression);
+                if (result == null)
+                    result = this.caseInvocationExpression(selectExpression);
+                if (result == null)
+                    result = this.caseExpression(selectExpression);
+                if (result == null)
+                    result = this.caseStep(selectExpression);
+                if (result == null)
+                    result = this.caseFeature(selectExpression);
+                if (result == null)
+                    result = this.caseType(selectExpression);
+                if (result == null)
+                    result = this.caseNamespace(selectExpression);
+                if (result == null)
+                    result = this.caseElement(selectExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SEND_ACTION_USAGE: {
-                SendActionUsage sendActionUsage = (SendActionUsage)theEObject;
-                T result = caseSendActionUsage(sendActionUsage);
-                if (result == null) result = caseActionUsage(sendActionUsage);
-                if (result == null) result = caseOccurrenceUsage(sendActionUsage);
-                if (result == null) result = caseStep(sendActionUsage);
-                if (result == null) result = caseUsage(sendActionUsage);
-                if (result == null) result = caseFeature(sendActionUsage);
-                if (result == null) result = caseType(sendActionUsage);
-                if (result == null) result = caseNamespace(sendActionUsage);
-                if (result == null) result = caseElement(sendActionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                SendActionUsage sendActionUsage = (SendActionUsage) theEObject;
+                T result = this.caseSendActionUsage(sendActionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(sendActionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(sendActionUsage);
+                if (result == null)
+                    result = this.caseStep(sendActionUsage);
+                if (result == null)
+                    result = this.caseUsage(sendActionUsage);
+                if (result == null)
+                    result = this.caseFeature(sendActionUsage);
+                if (result == null)
+                    result = this.caseType(sendActionUsage);
+                if (result == null)
+                    result = this.caseNamespace(sendActionUsage);
+                if (result == null)
+                    result = this.caseElement(sendActionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SPECIALIZATION: {
-                Specialization specialization = (Specialization)theEObject;
-                T result = caseSpecialization(specialization);
-                if (result == null) result = caseRelationship(specialization);
-                if (result == null) result = caseElement(specialization);
-                if (result == null) result = defaultCase(theEObject);
+                Specialization specialization = (Specialization) theEObject;
+                T result = this.caseSpecialization(specialization);
+                if (result == null)
+                    result = this.caseRelationship(specialization);
+                if (result == null)
+                    result = this.caseElement(specialization);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.STAKEHOLDER_MEMBERSHIP: {
-                StakeholderMembership stakeholderMembership = (StakeholderMembership)theEObject;
-                T result = caseStakeholderMembership(stakeholderMembership);
-                if (result == null) result = caseParameterMembership(stakeholderMembership);
-                if (result == null) result = caseFeatureMembership(stakeholderMembership);
-                if (result == null) result = caseOwningMembership(stakeholderMembership);
-                if (result == null) result = caseFeaturing(stakeholderMembership);
-                if (result == null) result = caseMembership(stakeholderMembership);
-                if (result == null) result = caseRelationship(stakeholderMembership);
-                if (result == null) result = caseElement(stakeholderMembership);
-                if (result == null) result = defaultCase(theEObject);
+                StakeholderMembership stakeholderMembership = (StakeholderMembership) theEObject;
+                T result = this.caseStakeholderMembership(stakeholderMembership);
+                if (result == null)
+                    result = this.caseParameterMembership(stakeholderMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(stakeholderMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(stakeholderMembership);
+                if (result == null)
+                    result = this.caseFeaturing(stakeholderMembership);
+                if (result == null)
+                    result = this.caseMembership(stakeholderMembership);
+                if (result == null)
+                    result = this.caseRelationship(stakeholderMembership);
+                if (result == null)
+                    result = this.caseElement(stakeholderMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.STATE_DEFINITION: {
-                StateDefinition stateDefinition = (StateDefinition)theEObject;
-                T result = caseStateDefinition(stateDefinition);
-                if (result == null) result = caseActionDefinition(stateDefinition);
-                if (result == null) result = caseOccurrenceDefinition(stateDefinition);
-                if (result == null) result = caseBehavior(stateDefinition);
-                if (result == null) result = caseDefinition(stateDefinition);
-                if (result == null) result = caseClass(stateDefinition);
-                if (result == null) result = caseClassifier(stateDefinition);
-                if (result == null) result = caseType(stateDefinition);
-                if (result == null) result = caseNamespace(stateDefinition);
-                if (result == null) result = caseElement(stateDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                StateDefinition stateDefinition = (StateDefinition) theEObject;
+                T result = this.caseStateDefinition(stateDefinition);
+                if (result == null)
+                    result = this.caseActionDefinition(stateDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(stateDefinition);
+                if (result == null)
+                    result = this.caseBehavior(stateDefinition);
+                if (result == null)
+                    result = this.caseDefinition(stateDefinition);
+                if (result == null)
+                    result = this.caseClass(stateDefinition);
+                if (result == null)
+                    result = this.caseClassifier(stateDefinition);
+                if (result == null)
+                    result = this.caseType(stateDefinition);
+                if (result == null)
+                    result = this.caseNamespace(stateDefinition);
+                if (result == null)
+                    result = this.caseElement(stateDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.STATE_SUBACTION_MEMBERSHIP: {
-                StateSubactionMembership stateSubactionMembership = (StateSubactionMembership)theEObject;
-                T result = caseStateSubactionMembership(stateSubactionMembership);
-                if (result == null) result = caseFeatureMembership(stateSubactionMembership);
-                if (result == null) result = caseOwningMembership(stateSubactionMembership);
-                if (result == null) result = caseFeaturing(stateSubactionMembership);
-                if (result == null) result = caseMembership(stateSubactionMembership);
-                if (result == null) result = caseRelationship(stateSubactionMembership);
-                if (result == null) result = caseElement(stateSubactionMembership);
-                if (result == null) result = defaultCase(theEObject);
+                StateSubactionMembership stateSubactionMembership = (StateSubactionMembership) theEObject;
+                T result = this.caseStateSubactionMembership(stateSubactionMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(stateSubactionMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(stateSubactionMembership);
+                if (result == null)
+                    result = this.caseFeaturing(stateSubactionMembership);
+                if (result == null)
+                    result = this.caseMembership(stateSubactionMembership);
+                if (result == null)
+                    result = this.caseRelationship(stateSubactionMembership);
+                if (result == null)
+                    result = this.caseElement(stateSubactionMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.STATE_USAGE: {
-                StateUsage stateUsage = (StateUsage)theEObject;
-                T result = caseStateUsage(stateUsage);
-                if (result == null) result = caseActionUsage(stateUsage);
-                if (result == null) result = caseOccurrenceUsage(stateUsage);
-                if (result == null) result = caseStep(stateUsage);
-                if (result == null) result = caseUsage(stateUsage);
-                if (result == null) result = caseFeature(stateUsage);
-                if (result == null) result = caseType(stateUsage);
-                if (result == null) result = caseNamespace(stateUsage);
-                if (result == null) result = caseElement(stateUsage);
-                if (result == null) result = defaultCase(theEObject);
+                StateUsage stateUsage = (StateUsage) theEObject;
+                T result = this.caseStateUsage(stateUsage);
+                if (result == null)
+                    result = this.caseActionUsage(stateUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(stateUsage);
+                if (result == null)
+                    result = this.caseStep(stateUsage);
+                if (result == null)
+                    result = this.caseUsage(stateUsage);
+                if (result == null)
+                    result = this.caseFeature(stateUsage);
+                if (result == null)
+                    result = this.caseType(stateUsage);
+                if (result == null)
+                    result = this.caseNamespace(stateUsage);
+                if (result == null)
+                    result = this.caseElement(stateUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.STEP: {
-                Step step = (Step)theEObject;
-                T result = caseStep(step);
-                if (result == null) result = caseFeature(step);
-                if (result == null) result = caseType(step);
-                if (result == null) result = caseNamespace(step);
-                if (result == null) result = caseElement(step);
-                if (result == null) result = defaultCase(theEObject);
+                Step step = (Step) theEObject;
+                T result = this.caseStep(step);
+                if (result == null)
+                    result = this.caseFeature(step);
+                if (result == null)
+                    result = this.caseType(step);
+                if (result == null)
+                    result = this.caseNamespace(step);
+                if (result == null)
+                    result = this.caseElement(step);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.STRUCTURE: {
-                Structure structure = (Structure)theEObject;
-                T result = caseStructure(structure);
-                if (result == null) result = caseClass(structure);
-                if (result == null) result = caseClassifier(structure);
-                if (result == null) result = caseType(structure);
-                if (result == null) result = caseNamespace(structure);
-                if (result == null) result = caseElement(structure);
-                if (result == null) result = defaultCase(theEObject);
+                Structure structure = (Structure) theEObject;
+                T result = this.caseStructure(structure);
+                if (result == null)
+                    result = this.caseClass(structure);
+                if (result == null)
+                    result = this.caseClassifier(structure);
+                if (result == null)
+                    result = this.caseType(structure);
+                if (result == null)
+                    result = this.caseNamespace(structure);
+                if (result == null)
+                    result = this.caseElement(structure);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SUBCLASSIFICATION: {
-                Subclassification subclassification = (Subclassification)theEObject;
-                T result = caseSubclassification(subclassification);
-                if (result == null) result = caseSpecialization(subclassification);
-                if (result == null) result = caseRelationship(subclassification);
-                if (result == null) result = caseElement(subclassification);
-                if (result == null) result = defaultCase(theEObject);
+                Subclassification subclassification = (Subclassification) theEObject;
+                T result = this.caseSubclassification(subclassification);
+                if (result == null)
+                    result = this.caseSpecialization(subclassification);
+                if (result == null)
+                    result = this.caseRelationship(subclassification);
+                if (result == null)
+                    result = this.caseElement(subclassification);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SUBJECT_MEMBERSHIP: {
-                SubjectMembership subjectMembership = (SubjectMembership)theEObject;
-                T result = caseSubjectMembership(subjectMembership);
-                if (result == null) result = caseParameterMembership(subjectMembership);
-                if (result == null) result = caseFeatureMembership(subjectMembership);
-                if (result == null) result = caseOwningMembership(subjectMembership);
-                if (result == null) result = caseFeaturing(subjectMembership);
-                if (result == null) result = caseMembership(subjectMembership);
-                if (result == null) result = caseRelationship(subjectMembership);
-                if (result == null) result = caseElement(subjectMembership);
-                if (result == null) result = defaultCase(theEObject);
+                SubjectMembership subjectMembership = (SubjectMembership) theEObject;
+                T result = this.caseSubjectMembership(subjectMembership);
+                if (result == null)
+                    result = this.caseParameterMembership(subjectMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(subjectMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(subjectMembership);
+                if (result == null)
+                    result = this.caseFeaturing(subjectMembership);
+                if (result == null)
+                    result = this.caseMembership(subjectMembership);
+                if (result == null)
+                    result = this.caseRelationship(subjectMembership);
+                if (result == null)
+                    result = this.caseElement(subjectMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SUBSETTING: {
-                Subsetting subsetting = (Subsetting)theEObject;
-                T result = caseSubsetting(subsetting);
-                if (result == null) result = caseSpecialization(subsetting);
-                if (result == null) result = caseRelationship(subsetting);
-                if (result == null) result = caseElement(subsetting);
-                if (result == null) result = defaultCase(theEObject);
+                Subsetting subsetting = (Subsetting) theEObject;
+                T result = this.caseSubsetting(subsetting);
+                if (result == null)
+                    result = this.caseSpecialization(subsetting);
+                if (result == null)
+                    result = this.caseRelationship(subsetting);
+                if (result == null)
+                    result = this.caseElement(subsetting);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SUCCESSION: {
-                Succession succession = (Succession)theEObject;
-                T result = caseSuccession(succession);
-                if (result == null) result = caseConnector(succession);
-                if (result == null) result = caseFeature(succession);
-                if (result == null) result = caseRelationship(succession);
-                if (result == null) result = caseType(succession);
-                if (result == null) result = caseNamespace(succession);
-                if (result == null) result = caseElement(succession);
-                if (result == null) result = defaultCase(theEObject);
+                Succession succession = (Succession) theEObject;
+                T result = this.caseSuccession(succession);
+                if (result == null)
+                    result = this.caseConnector(succession);
+                if (result == null)
+                    result = this.caseFeature(succession);
+                if (result == null)
+                    result = this.caseRelationship(succession);
+                if (result == null)
+                    result = this.caseType(succession);
+                if (result == null)
+                    result = this.caseNamespace(succession);
+                if (result == null)
+                    result = this.caseElement(succession);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SUCCESSION_AS_USAGE: {
-                SuccessionAsUsage successionAsUsage = (SuccessionAsUsage)theEObject;
-                T result = caseSuccessionAsUsage(successionAsUsage);
-                if (result == null) result = caseConnectorAsUsage(successionAsUsage);
-                if (result == null) result = caseSuccession(successionAsUsage);
-                if (result == null) result = caseUsage(successionAsUsage);
-                if (result == null) result = caseConnector(successionAsUsage);
-                if (result == null) result = caseFeature(successionAsUsage);
-                if (result == null) result = caseRelationship(successionAsUsage);
-                if (result == null) result = caseType(successionAsUsage);
-                if (result == null) result = caseNamespace(successionAsUsage);
-                if (result == null) result = caseElement(successionAsUsage);
-                if (result == null) result = defaultCase(theEObject);
+                SuccessionAsUsage successionAsUsage = (SuccessionAsUsage) theEObject;
+                T result = this.caseSuccessionAsUsage(successionAsUsage);
+                if (result == null)
+                    result = this.caseConnectorAsUsage(successionAsUsage);
+                if (result == null)
+                    result = this.caseSuccession(successionAsUsage);
+                if (result == null)
+                    result = this.caseUsage(successionAsUsage);
+                if (result == null)
+                    result = this.caseConnector(successionAsUsage);
+                if (result == null)
+                    result = this.caseFeature(successionAsUsage);
+                if (result == null)
+                    result = this.caseRelationship(successionAsUsage);
+                if (result == null)
+                    result = this.caseType(successionAsUsage);
+                if (result == null)
+                    result = this.caseNamespace(successionAsUsage);
+                if (result == null)
+                    result = this.caseElement(successionAsUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SUCCESSION_FLOW_CONNECTION_USAGE: {
-                SuccessionFlowConnectionUsage successionFlowConnectionUsage = (SuccessionFlowConnectionUsage)theEObject;
-                T result = caseSuccessionFlowConnectionUsage(successionFlowConnectionUsage);
-                if (result == null) result = caseFlowConnectionUsage(successionFlowConnectionUsage);
-                if (result == null) result = caseSuccessionItemFlow(successionFlowConnectionUsage);
-                if (result == null) result = caseConnectionUsage(successionFlowConnectionUsage);
-                if (result == null) result = caseActionUsage(successionFlowConnectionUsage);
-                if (result == null) result = caseItemFlow(successionFlowConnectionUsage);
-                if (result == null) result = caseSuccession(successionFlowConnectionUsage);
-                if (result == null) result = caseConnectorAsUsage(successionFlowConnectionUsage);
-                if (result == null) result = casePartUsage(successionFlowConnectionUsage);
-                if (result == null) result = caseStep(successionFlowConnectionUsage);
-                if (result == null) result = caseConnector(successionFlowConnectionUsage);
-                if (result == null) result = caseItemUsage(successionFlowConnectionUsage);
-                if (result == null) result = caseFeature(successionFlowConnectionUsage);
-                if (result == null) result = caseRelationship(successionFlowConnectionUsage);
-                if (result == null) result = caseOccurrenceUsage(successionFlowConnectionUsage);
-                if (result == null) result = caseUsage(successionFlowConnectionUsage);
-                if (result == null) result = caseType(successionFlowConnectionUsage);
-                if (result == null) result = caseNamespace(successionFlowConnectionUsage);
-                if (result == null) result = caseElement(successionFlowConnectionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                SuccessionFlowConnectionUsage successionFlowConnectionUsage = (SuccessionFlowConnectionUsage) theEObject;
+                T result = this.caseSuccessionFlowConnectionUsage(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseFlowConnectionUsage(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseSuccessionItemFlow(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseConnectionUsage(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseItemFlow(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseSuccession(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseConnectorAsUsage(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.casePartUsage(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseStep(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseConnector(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseItemUsage(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseFeature(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseRelationship(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseUsage(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseType(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseNamespace(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.caseElement(successionFlowConnectionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.SUCCESSION_ITEM_FLOW: {
-                SuccessionItemFlow successionItemFlow = (SuccessionItemFlow)theEObject;
-                T result = caseSuccessionItemFlow(successionItemFlow);
-                if (result == null) result = caseItemFlow(successionItemFlow);
-                if (result == null) result = caseSuccession(successionItemFlow);
-                if (result == null) result = caseConnector(successionItemFlow);
-                if (result == null) result = caseStep(successionItemFlow);
-                if (result == null) result = caseFeature(successionItemFlow);
-                if (result == null) result = caseRelationship(successionItemFlow);
-                if (result == null) result = caseType(successionItemFlow);
-                if (result == null) result = caseNamespace(successionItemFlow);
-                if (result == null) result = caseElement(successionItemFlow);
-                if (result == null) result = defaultCase(theEObject);
+                SuccessionItemFlow successionItemFlow = (SuccessionItemFlow) theEObject;
+                T result = this.caseSuccessionItemFlow(successionItemFlow);
+                if (result == null)
+                    result = this.caseItemFlow(successionItemFlow);
+                if (result == null)
+                    result = this.caseSuccession(successionItemFlow);
+                if (result == null)
+                    result = this.caseConnector(successionItemFlow);
+                if (result == null)
+                    result = this.caseStep(successionItemFlow);
+                if (result == null)
+                    result = this.caseFeature(successionItemFlow);
+                if (result == null)
+                    result = this.caseRelationship(successionItemFlow);
+                if (result == null)
+                    result = this.caseType(successionItemFlow);
+                if (result == null)
+                    result = this.caseNamespace(successionItemFlow);
+                if (result == null)
+                    result = this.caseElement(successionItemFlow);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.TEXTUAL_REPRESENTATION: {
-                TextualRepresentation textualRepresentation = (TextualRepresentation)theEObject;
-                T result = caseTextualRepresentation(textualRepresentation);
-                if (result == null) result = caseAnnotatingElement(textualRepresentation);
-                if (result == null) result = caseElement(textualRepresentation);
-                if (result == null) result = defaultCase(theEObject);
+                TextualRepresentation textualRepresentation = (TextualRepresentation) theEObject;
+                T result = this.caseTextualRepresentation(textualRepresentation);
+                if (result == null)
+                    result = this.caseAnnotatingElement(textualRepresentation);
+                if (result == null)
+                    result = this.caseElement(textualRepresentation);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP: {
-                TransitionFeatureMembership transitionFeatureMembership = (TransitionFeatureMembership)theEObject;
-                T result = caseTransitionFeatureMembership(transitionFeatureMembership);
-                if (result == null) result = caseFeatureMembership(transitionFeatureMembership);
-                if (result == null) result = caseOwningMembership(transitionFeatureMembership);
-                if (result == null) result = caseFeaturing(transitionFeatureMembership);
-                if (result == null) result = caseMembership(transitionFeatureMembership);
-                if (result == null) result = caseRelationship(transitionFeatureMembership);
-                if (result == null) result = caseElement(transitionFeatureMembership);
-                if (result == null) result = defaultCase(theEObject);
+                TransitionFeatureMembership transitionFeatureMembership = (TransitionFeatureMembership) theEObject;
+                T result = this.caseTransitionFeatureMembership(transitionFeatureMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(transitionFeatureMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(transitionFeatureMembership);
+                if (result == null)
+                    result = this.caseFeaturing(transitionFeatureMembership);
+                if (result == null)
+                    result = this.caseMembership(transitionFeatureMembership);
+                if (result == null)
+                    result = this.caseRelationship(transitionFeatureMembership);
+                if (result == null)
+                    result = this.caseElement(transitionFeatureMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.TRANSITION_USAGE: {
-                TransitionUsage transitionUsage = (TransitionUsage)theEObject;
-                T result = caseTransitionUsage(transitionUsage);
-                if (result == null) result = caseActionUsage(transitionUsage);
-                if (result == null) result = caseOccurrenceUsage(transitionUsage);
-                if (result == null) result = caseStep(transitionUsage);
-                if (result == null) result = caseUsage(transitionUsage);
-                if (result == null) result = caseFeature(transitionUsage);
-                if (result == null) result = caseType(transitionUsage);
-                if (result == null) result = caseNamespace(transitionUsage);
-                if (result == null) result = caseElement(transitionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                TransitionUsage transitionUsage = (TransitionUsage) theEObject;
+                T result = this.caseTransitionUsage(transitionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(transitionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(transitionUsage);
+                if (result == null)
+                    result = this.caseStep(transitionUsage);
+                if (result == null)
+                    result = this.caseUsage(transitionUsage);
+                if (result == null)
+                    result = this.caseFeature(transitionUsage);
+                if (result == null)
+                    result = this.caseType(transitionUsage);
+                if (result == null)
+                    result = this.caseNamespace(transitionUsage);
+                if (result == null)
+                    result = this.caseElement(transitionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.TRIGGER_INVOCATION_EXPRESSION: {
-                TriggerInvocationExpression triggerInvocationExpression = (TriggerInvocationExpression)theEObject;
-                T result = caseTriggerInvocationExpression(triggerInvocationExpression);
-                if (result == null) result = caseInvocationExpression(triggerInvocationExpression);
-                if (result == null) result = caseExpression(triggerInvocationExpression);
-                if (result == null) result = caseStep(triggerInvocationExpression);
-                if (result == null) result = caseFeature(triggerInvocationExpression);
-                if (result == null) result = caseType(triggerInvocationExpression);
-                if (result == null) result = caseNamespace(triggerInvocationExpression);
-                if (result == null) result = caseElement(triggerInvocationExpression);
-                if (result == null) result = defaultCase(theEObject);
+                TriggerInvocationExpression triggerInvocationExpression = (TriggerInvocationExpression) theEObject;
+                T result = this.caseTriggerInvocationExpression(triggerInvocationExpression);
+                if (result == null)
+                    result = this.caseInvocationExpression(triggerInvocationExpression);
+                if (result == null)
+                    result = this.caseExpression(triggerInvocationExpression);
+                if (result == null)
+                    result = this.caseStep(triggerInvocationExpression);
+                if (result == null)
+                    result = this.caseFeature(triggerInvocationExpression);
+                if (result == null)
+                    result = this.caseType(triggerInvocationExpression);
+                if (result == null)
+                    result = this.caseNamespace(triggerInvocationExpression);
+                if (result == null)
+                    result = this.caseElement(triggerInvocationExpression);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.TYPE: {
-                Type type = (Type)theEObject;
-                T result = caseType(type);
-                if (result == null) result = caseNamespace(type);
-                if (result == null) result = caseElement(type);
-                if (result == null) result = defaultCase(theEObject);
+                Type type = (Type) theEObject;
+                T result = this.caseType(type);
+                if (result == null)
+                    result = this.caseNamespace(type);
+                if (result == null)
+                    result = this.caseElement(type);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.TYPE_FEATURING: {
-                TypeFeaturing typeFeaturing = (TypeFeaturing)theEObject;
-                T result = caseTypeFeaturing(typeFeaturing);
-                if (result == null) result = caseFeaturing(typeFeaturing);
-                if (result == null) result = caseRelationship(typeFeaturing);
-                if (result == null) result = caseElement(typeFeaturing);
-                if (result == null) result = defaultCase(theEObject);
+                TypeFeaturing typeFeaturing = (TypeFeaturing) theEObject;
+                T result = this.caseTypeFeaturing(typeFeaturing);
+                if (result == null)
+                    result = this.caseFeaturing(typeFeaturing);
+                if (result == null)
+                    result = this.caseRelationship(typeFeaturing);
+                if (result == null)
+                    result = this.caseElement(typeFeaturing);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.UNIONING: {
-                Unioning unioning = (Unioning)theEObject;
-                T result = caseUnioning(unioning);
-                if (result == null) result = caseRelationship(unioning);
-                if (result == null) result = caseElement(unioning);
-                if (result == null) result = defaultCase(theEObject);
+                Unioning unioning = (Unioning) theEObject;
+                T result = this.caseUnioning(unioning);
+                if (result == null)
+                    result = this.caseRelationship(unioning);
+                if (result == null)
+                    result = this.caseElement(unioning);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.USAGE: {
-                Usage usage = (Usage)theEObject;
-                T result = caseUsage(usage);
-                if (result == null) result = caseFeature(usage);
-                if (result == null) result = caseType(usage);
-                if (result == null) result = caseNamespace(usage);
-                if (result == null) result = caseElement(usage);
-                if (result == null) result = defaultCase(theEObject);
+                Usage usage = (Usage) theEObject;
+                T result = this.caseUsage(usage);
+                if (result == null)
+                    result = this.caseFeature(usage);
+                if (result == null)
+                    result = this.caseType(usage);
+                if (result == null)
+                    result = this.caseNamespace(usage);
+                if (result == null)
+                    result = this.caseElement(usage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.USE_CASE_DEFINITION: {
-                UseCaseDefinition useCaseDefinition = (UseCaseDefinition)theEObject;
-                T result = caseUseCaseDefinition(useCaseDefinition);
-                if (result == null) result = caseCaseDefinition(useCaseDefinition);
-                if (result == null) result = caseCalculationDefinition(useCaseDefinition);
-                if (result == null) result = caseActionDefinition(useCaseDefinition);
-                if (result == null) result = caseFunction(useCaseDefinition);
-                if (result == null) result = caseOccurrenceDefinition(useCaseDefinition);
-                if (result == null) result = caseBehavior(useCaseDefinition);
-                if (result == null) result = caseDefinition(useCaseDefinition);
-                if (result == null) result = caseClass(useCaseDefinition);
-                if (result == null) result = caseClassifier(useCaseDefinition);
-                if (result == null) result = caseType(useCaseDefinition);
-                if (result == null) result = caseNamespace(useCaseDefinition);
-                if (result == null) result = caseElement(useCaseDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                UseCaseDefinition useCaseDefinition = (UseCaseDefinition) theEObject;
+                T result = this.caseUseCaseDefinition(useCaseDefinition);
+                if (result == null)
+                    result = this.caseCaseDefinition(useCaseDefinition);
+                if (result == null)
+                    result = this.caseCalculationDefinition(useCaseDefinition);
+                if (result == null)
+                    result = this.caseActionDefinition(useCaseDefinition);
+                if (result == null)
+                    result = this.caseFunction(useCaseDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(useCaseDefinition);
+                if (result == null)
+                    result = this.caseBehavior(useCaseDefinition);
+                if (result == null)
+                    result = this.caseDefinition(useCaseDefinition);
+                if (result == null)
+                    result = this.caseClass(useCaseDefinition);
+                if (result == null)
+                    result = this.caseClassifier(useCaseDefinition);
+                if (result == null)
+                    result = this.caseType(useCaseDefinition);
+                if (result == null)
+                    result = this.caseNamespace(useCaseDefinition);
+                if (result == null)
+                    result = this.caseElement(useCaseDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.USE_CASE_USAGE: {
-                UseCaseUsage useCaseUsage = (UseCaseUsage)theEObject;
-                T result = caseUseCaseUsage(useCaseUsage);
-                if (result == null) result = caseCaseUsage(useCaseUsage);
-                if (result == null) result = caseCalculationUsage(useCaseUsage);
-                if (result == null) result = caseActionUsage(useCaseUsage);
-                if (result == null) result = caseExpression(useCaseUsage);
-                if (result == null) result = caseOccurrenceUsage(useCaseUsage);
-                if (result == null) result = caseStep(useCaseUsage);
-                if (result == null) result = caseUsage(useCaseUsage);
-                if (result == null) result = caseFeature(useCaseUsage);
-                if (result == null) result = caseType(useCaseUsage);
-                if (result == null) result = caseNamespace(useCaseUsage);
-                if (result == null) result = caseElement(useCaseUsage);
-                if (result == null) result = defaultCase(theEObject);
+                UseCaseUsage useCaseUsage = (UseCaseUsage) theEObject;
+                T result = this.caseUseCaseUsage(useCaseUsage);
+                if (result == null)
+                    result = this.caseCaseUsage(useCaseUsage);
+                if (result == null)
+                    result = this.caseCalculationUsage(useCaseUsage);
+                if (result == null)
+                    result = this.caseActionUsage(useCaseUsage);
+                if (result == null)
+                    result = this.caseExpression(useCaseUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(useCaseUsage);
+                if (result == null)
+                    result = this.caseStep(useCaseUsage);
+                if (result == null)
+                    result = this.caseUsage(useCaseUsage);
+                if (result == null)
+                    result = this.caseFeature(useCaseUsage);
+                if (result == null)
+                    result = this.caseType(useCaseUsage);
+                if (result == null)
+                    result = this.caseNamespace(useCaseUsage);
+                if (result == null)
+                    result = this.caseElement(useCaseUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.VARIANT_MEMBERSHIP: {
-                VariantMembership variantMembership = (VariantMembership)theEObject;
-                T result = caseVariantMembership(variantMembership);
-                if (result == null) result = caseOwningMembership(variantMembership);
-                if (result == null) result = caseMembership(variantMembership);
-                if (result == null) result = caseRelationship(variantMembership);
-                if (result == null) result = caseElement(variantMembership);
-                if (result == null) result = defaultCase(theEObject);
+                VariantMembership variantMembership = (VariantMembership) theEObject;
+                T result = this.caseVariantMembership(variantMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(variantMembership);
+                if (result == null)
+                    result = this.caseMembership(variantMembership);
+                if (result == null)
+                    result = this.caseRelationship(variantMembership);
+                if (result == null)
+                    result = this.caseElement(variantMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.VERIFICATION_CASE_DEFINITION: {
-                VerificationCaseDefinition verificationCaseDefinition = (VerificationCaseDefinition)theEObject;
-                T result = caseVerificationCaseDefinition(verificationCaseDefinition);
-                if (result == null) result = caseCaseDefinition(verificationCaseDefinition);
-                if (result == null) result = caseCalculationDefinition(verificationCaseDefinition);
-                if (result == null) result = caseActionDefinition(verificationCaseDefinition);
-                if (result == null) result = caseFunction(verificationCaseDefinition);
-                if (result == null) result = caseOccurrenceDefinition(verificationCaseDefinition);
-                if (result == null) result = caseBehavior(verificationCaseDefinition);
-                if (result == null) result = caseDefinition(verificationCaseDefinition);
-                if (result == null) result = caseClass(verificationCaseDefinition);
-                if (result == null) result = caseClassifier(verificationCaseDefinition);
-                if (result == null) result = caseType(verificationCaseDefinition);
-                if (result == null) result = caseNamespace(verificationCaseDefinition);
-                if (result == null) result = caseElement(verificationCaseDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                VerificationCaseDefinition verificationCaseDefinition = (VerificationCaseDefinition) theEObject;
+                T result = this.caseVerificationCaseDefinition(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseCaseDefinition(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseCalculationDefinition(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseActionDefinition(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseFunction(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseBehavior(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseDefinition(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseClass(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseClassifier(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseType(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseNamespace(verificationCaseDefinition);
+                if (result == null)
+                    result = this.caseElement(verificationCaseDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.VERIFICATION_CASE_USAGE: {
-                VerificationCaseUsage verificationCaseUsage = (VerificationCaseUsage)theEObject;
-                T result = caseVerificationCaseUsage(verificationCaseUsage);
-                if (result == null) result = caseCaseUsage(verificationCaseUsage);
-                if (result == null) result = caseCalculationUsage(verificationCaseUsage);
-                if (result == null) result = caseActionUsage(verificationCaseUsage);
-                if (result == null) result = caseExpression(verificationCaseUsage);
-                if (result == null) result = caseOccurrenceUsage(verificationCaseUsage);
-                if (result == null) result = caseStep(verificationCaseUsage);
-                if (result == null) result = caseUsage(verificationCaseUsage);
-                if (result == null) result = caseFeature(verificationCaseUsage);
-                if (result == null) result = caseType(verificationCaseUsage);
-                if (result == null) result = caseNamespace(verificationCaseUsage);
-                if (result == null) result = caseElement(verificationCaseUsage);
-                if (result == null) result = defaultCase(theEObject);
+                VerificationCaseUsage verificationCaseUsage = (VerificationCaseUsage) theEObject;
+                T result = this.caseVerificationCaseUsage(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseCaseUsage(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseCalculationUsage(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseActionUsage(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseExpression(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseStep(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseUsage(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseFeature(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseType(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseNamespace(verificationCaseUsage);
+                if (result == null)
+                    result = this.caseElement(verificationCaseUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.VIEW_DEFINITION: {
-                ViewDefinition viewDefinition = (ViewDefinition)theEObject;
-                T result = caseViewDefinition(viewDefinition);
-                if (result == null) result = casePartDefinition(viewDefinition);
-                if (result == null) result = caseItemDefinition(viewDefinition);
-                if (result == null) result = caseOccurrenceDefinition(viewDefinition);
-                if (result == null) result = caseStructure(viewDefinition);
-                if (result == null) result = caseDefinition(viewDefinition);
-                if (result == null) result = caseClass(viewDefinition);
-                if (result == null) result = caseClassifier(viewDefinition);
-                if (result == null) result = caseType(viewDefinition);
-                if (result == null) result = caseNamespace(viewDefinition);
-                if (result == null) result = caseElement(viewDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                ViewDefinition viewDefinition = (ViewDefinition) theEObject;
+                T result = this.caseViewDefinition(viewDefinition);
+                if (result == null)
+                    result = this.casePartDefinition(viewDefinition);
+                if (result == null)
+                    result = this.caseItemDefinition(viewDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(viewDefinition);
+                if (result == null)
+                    result = this.caseStructure(viewDefinition);
+                if (result == null)
+                    result = this.caseDefinition(viewDefinition);
+                if (result == null)
+                    result = this.caseClass(viewDefinition);
+                if (result == null)
+                    result = this.caseClassifier(viewDefinition);
+                if (result == null)
+                    result = this.caseType(viewDefinition);
+                if (result == null)
+                    result = this.caseNamespace(viewDefinition);
+                if (result == null)
+                    result = this.caseElement(viewDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.VIEWPOINT_DEFINITION: {
-                ViewpointDefinition viewpointDefinition = (ViewpointDefinition)theEObject;
-                T result = caseViewpointDefinition(viewpointDefinition);
-                if (result == null) result = caseRequirementDefinition(viewpointDefinition);
-                if (result == null) result = caseConstraintDefinition(viewpointDefinition);
-                if (result == null) result = caseOccurrenceDefinition(viewpointDefinition);
-                if (result == null) result = casePredicate(viewpointDefinition);
-                if (result == null) result = caseDefinition(viewpointDefinition);
-                if (result == null) result = caseFunction(viewpointDefinition);
-                if (result == null) result = caseClassifier(viewpointDefinition);
-                if (result == null) result = caseBehavior(viewpointDefinition);
-                if (result == null) result = caseType(viewpointDefinition);
-                if (result == null) result = caseClass(viewpointDefinition);
-                if (result == null) result = caseNamespace(viewpointDefinition);
-                if (result == null) result = caseElement(viewpointDefinition);
-                if (result == null) result = defaultCase(theEObject);
+                ViewpointDefinition viewpointDefinition = (ViewpointDefinition) theEObject;
+                T result = this.caseViewpointDefinition(viewpointDefinition);
+                if (result == null)
+                    result = this.caseRequirementDefinition(viewpointDefinition);
+                if (result == null)
+                    result = this.caseConstraintDefinition(viewpointDefinition);
+                if (result == null)
+                    result = this.caseOccurrenceDefinition(viewpointDefinition);
+                if (result == null)
+                    result = this.casePredicate(viewpointDefinition);
+                if (result == null)
+                    result = this.caseDefinition(viewpointDefinition);
+                if (result == null)
+                    result = this.caseFunction(viewpointDefinition);
+                if (result == null)
+                    result = this.caseClassifier(viewpointDefinition);
+                if (result == null)
+                    result = this.caseBehavior(viewpointDefinition);
+                if (result == null)
+                    result = this.caseType(viewpointDefinition);
+                if (result == null)
+                    result = this.caseClass(viewpointDefinition);
+                if (result == null)
+                    result = this.caseNamespace(viewpointDefinition);
+                if (result == null)
+                    result = this.caseElement(viewpointDefinition);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.VIEWPOINT_USAGE: {
-                ViewpointUsage viewpointUsage = (ViewpointUsage)theEObject;
-                T result = caseViewpointUsage(viewpointUsage);
-                if (result == null) result = caseRequirementUsage(viewpointUsage);
-                if (result == null) result = caseConstraintUsage(viewpointUsage);
-                if (result == null) result = caseOccurrenceUsage(viewpointUsage);
-                if (result == null) result = caseBooleanExpression(viewpointUsage);
-                if (result == null) result = caseUsage(viewpointUsage);
-                if (result == null) result = caseExpression(viewpointUsage);
-                if (result == null) result = caseStep(viewpointUsage);
-                if (result == null) result = caseFeature(viewpointUsage);
-                if (result == null) result = caseType(viewpointUsage);
-                if (result == null) result = caseNamespace(viewpointUsage);
-                if (result == null) result = caseElement(viewpointUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ViewpointUsage viewpointUsage = (ViewpointUsage) theEObject;
+                T result = this.caseViewpointUsage(viewpointUsage);
+                if (result == null)
+                    result = this.caseRequirementUsage(viewpointUsage);
+                if (result == null)
+                    result = this.caseConstraintUsage(viewpointUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(viewpointUsage);
+                if (result == null)
+                    result = this.caseBooleanExpression(viewpointUsage);
+                if (result == null)
+                    result = this.caseUsage(viewpointUsage);
+                if (result == null)
+                    result = this.caseExpression(viewpointUsage);
+                if (result == null)
+                    result = this.caseStep(viewpointUsage);
+                if (result == null)
+                    result = this.caseFeature(viewpointUsage);
+                if (result == null)
+                    result = this.caseType(viewpointUsage);
+                if (result == null)
+                    result = this.caseNamespace(viewpointUsage);
+                if (result == null)
+                    result = this.caseElement(viewpointUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.VIEW_RENDERING_MEMBERSHIP: {
-                ViewRenderingMembership viewRenderingMembership = (ViewRenderingMembership)theEObject;
-                T result = caseViewRenderingMembership(viewRenderingMembership);
-                if (result == null) result = caseFeatureMembership(viewRenderingMembership);
-                if (result == null) result = caseOwningMembership(viewRenderingMembership);
-                if (result == null) result = caseFeaturing(viewRenderingMembership);
-                if (result == null) result = caseMembership(viewRenderingMembership);
-                if (result == null) result = caseRelationship(viewRenderingMembership);
-                if (result == null) result = caseElement(viewRenderingMembership);
-                if (result == null) result = defaultCase(theEObject);
+                ViewRenderingMembership viewRenderingMembership = (ViewRenderingMembership) theEObject;
+                T result = this.caseViewRenderingMembership(viewRenderingMembership);
+                if (result == null)
+                    result = this.caseFeatureMembership(viewRenderingMembership);
+                if (result == null)
+                    result = this.caseOwningMembership(viewRenderingMembership);
+                if (result == null)
+                    result = this.caseFeaturing(viewRenderingMembership);
+                if (result == null)
+                    result = this.caseMembership(viewRenderingMembership);
+                if (result == null)
+                    result = this.caseRelationship(viewRenderingMembership);
+                if (result == null)
+                    result = this.caseElement(viewRenderingMembership);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.VIEW_USAGE: {
-                ViewUsage viewUsage = (ViewUsage)theEObject;
-                T result = caseViewUsage(viewUsage);
-                if (result == null) result = casePartUsage(viewUsage);
-                if (result == null) result = caseItemUsage(viewUsage);
-                if (result == null) result = caseOccurrenceUsage(viewUsage);
-                if (result == null) result = caseUsage(viewUsage);
-                if (result == null) result = caseFeature(viewUsage);
-                if (result == null) result = caseType(viewUsage);
-                if (result == null) result = caseNamespace(viewUsage);
-                if (result == null) result = caseElement(viewUsage);
-                if (result == null) result = defaultCase(theEObject);
+                ViewUsage viewUsage = (ViewUsage) theEObject;
+                T result = this.caseViewUsage(viewUsage);
+                if (result == null)
+                    result = this.casePartUsage(viewUsage);
+                if (result == null)
+                    result = this.caseItemUsage(viewUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(viewUsage);
+                if (result == null)
+                    result = this.caseUsage(viewUsage);
+                if (result == null)
+                    result = this.caseFeature(viewUsage);
+                if (result == null)
+                    result = this.caseType(viewUsage);
+                if (result == null)
+                    result = this.caseNamespace(viewUsage);
+                if (result == null)
+                    result = this.caseElement(viewUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.WHILE_LOOP_ACTION_USAGE: {
-                WhileLoopActionUsage whileLoopActionUsage = (WhileLoopActionUsage)theEObject;
-                T result = caseWhileLoopActionUsage(whileLoopActionUsage);
-                if (result == null) result = caseLoopActionUsage(whileLoopActionUsage);
-                if (result == null) result = caseActionUsage(whileLoopActionUsage);
-                if (result == null) result = caseOccurrenceUsage(whileLoopActionUsage);
-                if (result == null) result = caseStep(whileLoopActionUsage);
-                if (result == null) result = caseUsage(whileLoopActionUsage);
-                if (result == null) result = caseFeature(whileLoopActionUsage);
-                if (result == null) result = caseType(whileLoopActionUsage);
-                if (result == null) result = caseNamespace(whileLoopActionUsage);
-                if (result == null) result = caseElement(whileLoopActionUsage);
-                if (result == null) result = defaultCase(theEObject);
+                WhileLoopActionUsage whileLoopActionUsage = (WhileLoopActionUsage) theEObject;
+                T result = this.caseWhileLoopActionUsage(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseLoopActionUsage(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseStep(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseUsage(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseFeature(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseType(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseNamespace(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseElement(whileLoopActionUsage);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
                 return result;
             }
-            default: return defaultCase(theEObject);
+            default:
+                return this.defaultCase(theEObject);
         }
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Accept Action Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Accept Action Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Accept Action Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2454,12 +3605,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Action Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Action Definition</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Action Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2469,12 +3620,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Action Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Action Usage</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Action Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2484,12 +3634,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Actor Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Actor Membership</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Actor Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2499,12 +3649,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Allocation Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Allocation Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Allocation Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2514,12 +3664,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Allocation Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Allocation Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Allocation Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2529,12 +3679,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Analysis Case Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Analysis Case Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Analysis Case Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2544,12 +3694,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Analysis Case Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Analysis Case Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Analysis Case Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2559,12 +3709,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Annotating Element</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Annotating Element</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Annotating Element</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2574,12 +3724,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Annotation</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Annotation</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Annotation</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2589,12 +3738,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Assert Constraint Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Assert Constraint Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Assert Constraint Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2604,12 +3753,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Assignment Action Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Assignment Action Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Assignment Action Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2619,12 +3768,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Association</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Association</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Association</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2634,12 +3782,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Association Structure</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Association Structure</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Association Structure</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2649,12 +3797,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Attribute Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Attribute Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Attribute Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2664,12 +3812,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Attribute Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Attribute Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Attribute Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2679,12 +3827,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Behavior</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Behavior</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Behavior</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2694,12 +3841,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Binding Connector</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Binding Connector</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Binding Connector</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2709,12 +3856,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Binding Connector As Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Binding Connector As Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Binding Connector As Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2724,12 +3871,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Boolean Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Boolean Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Boolean Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2739,12 +3886,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Calculation Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Calculation Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Calculation Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2754,12 +3901,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Calculation Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Calculation Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Calculation Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2769,12 +3916,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Case Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Case Definition</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Case Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2784,12 +3931,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Case Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Case Usage</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Case Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2799,12 +3945,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Class</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Class</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Class</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2814,12 +3959,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Classifier</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Classifier</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Classifier</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2829,12 +3973,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Collect Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Collect Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Collect Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2844,12 +3988,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Comment</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Comment</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Comment</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2859,12 +4002,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Concern Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Concern Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Concern Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2874,12 +4017,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Concern Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Concern Usage</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Concern Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2889,12 +4031,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Conjugated Port Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Conjugated Port Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conjugated Port Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2904,12 +4046,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Conjugated Port Typing</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Conjugated Port Typing</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conjugated Port Typing</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2919,12 +4061,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Conjugation</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Conjugation</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Conjugation</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2934,12 +4075,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Connection Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Connection Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Connection Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2949,12 +4090,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Connection Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Connection Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Connection Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2964,12 +4105,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Connector</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Connector</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Connector</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2979,12 +4119,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Connector As Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Connector As Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Connector As Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -2994,12 +4134,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Constraint Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Constraint Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Constraint Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3009,12 +4149,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Constraint Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Constraint Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Constraint Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3024,12 +4164,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Control Node</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Control Node</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Control Node</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3039,12 +4178,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Data Type</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Data Type</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Data Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3054,12 +4192,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Decision Node</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Decision Node</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Decision Node</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3069,12 +4206,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Definition</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3084,12 +4220,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Dependency</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Dependency</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Dependency</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3099,12 +4234,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Differencing</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Differencing</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Differencing</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3114,12 +4248,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Disjoining</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Disjoining</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Disjoining</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3129,12 +4262,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Documentation</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Documentation</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Documentation</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3144,12 +4276,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Element</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Element</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Element</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3159,12 +4290,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Element Filter Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Element Filter Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Element Filter Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3174,12 +4305,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>End Feature Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>End Feature Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>End Feature Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3189,12 +4320,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Enumeration Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Enumeration Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Enumeration Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3204,12 +4335,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Enumeration Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Enumeration Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Enumeration Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3219,12 +4350,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Event Occurrence Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Event Occurrence Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Event Occurrence Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3234,12 +4365,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Exhibit State Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Exhibit State Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Exhibit State Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3249,12 +4380,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Expose</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Expose</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Expose</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3264,12 +4394,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Expression</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3279,12 +4408,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Feature</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Feature</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Feature</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3294,12 +4422,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Feature Chain Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Feature Chain Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Feature Chain Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3309,12 +4437,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Feature Chaining</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Feature Chaining</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Feature Chaining</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3324,12 +4452,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Feature Inverting</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Feature Inverting</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Feature Inverting</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3339,12 +4467,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Feature Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Feature Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Feature Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3354,12 +4482,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Feature Reference Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Feature Reference Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Feature Reference Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3369,12 +4497,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Feature Typing</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Feature Typing</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Feature Typing</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3384,12 +4512,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Feature Value</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Feature Value</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Feature Value</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3399,12 +4526,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Featuring</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Featuring</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Featuring</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3414,12 +4540,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Flow Connection Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Flow Connection Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Flow Connection Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3429,12 +4555,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Flow Connection Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Flow Connection Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Flow Connection Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3444,12 +4570,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Fork Node</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Fork Node</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Fork Node</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3459,12 +4584,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>For Loop Action Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>For Loop Action Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>For Loop Action Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3474,12 +4599,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Framed Concern Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Framed Concern Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Framed Concern Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3489,12 +4614,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Function</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Function</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Function</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3504,12 +4628,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>If Action Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>If Action Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>If Action Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3519,12 +4643,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Import</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Import</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Import</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3534,12 +4657,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Include Use Case Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Include Use Case Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Include Use Case Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3549,12 +4672,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Interaction</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Interaction</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Interaction</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3564,12 +4686,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Interface Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Interface Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Interface Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3579,12 +4701,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Interface Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Interface Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Interface Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3594,12 +4716,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Intersecting</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Intersecting</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Intersecting</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3609,12 +4730,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Invariant</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Invariant</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Invariant</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3624,12 +4744,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Invocation Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Invocation Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Invocation Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3639,12 +4759,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Item Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Item Definition</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Item Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3654,12 +4774,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Item Feature</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Item Feature</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Item Feature</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3669,12 +4788,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Item Flow</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Item Flow</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Item Flow</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3684,12 +4802,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Item Flow End</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Item Flow End</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Item Flow End</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3699,12 +4816,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Item Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Item Usage</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Item Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3714,12 +4830,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Join Node</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Join Node</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Join Node</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3729,12 +4844,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Library Package</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Library Package</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Library Package</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3744,12 +4859,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Life Class</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Life Class</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Life Class</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3759,12 +4873,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Literal Boolean</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Literal Boolean</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Literal Boolean</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3774,12 +4888,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Literal Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Literal Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Literal Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3789,12 +4903,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Literal Infinity</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Literal Infinity</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Literal Infinity</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3804,12 +4918,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Literal Integer</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Literal Integer</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Literal Integer</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3819,12 +4933,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Literal Rational</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Literal Rational</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Literal Rational</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3834,12 +4948,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Literal String</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Literal String</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Literal String</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3849,12 +4963,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Loop Action Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Loop Action Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Loop Action Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3864,12 +4978,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Membership</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3879,12 +4992,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Membership Expose</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Membership Expose</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Membership Expose</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3894,12 +5007,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Membership Import</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Membership Import</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Membership Import</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3909,12 +5022,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Merge Node</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Merge Node</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Merge Node</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3924,12 +5036,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Metaclass</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Metaclass</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Metaclass</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3939,12 +5050,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Metadata Access Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Metadata Access Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Metadata Access Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3954,12 +5065,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Metadata Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Metadata Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Metadata Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3969,12 +5080,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Metadata Feature</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Metadata Feature</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Metadata Feature</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3984,12 +5095,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Metadata Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Metadata Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Metadata Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -3999,12 +5110,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Multiplicity</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Multiplicity</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4014,12 +5124,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Multiplicity Range</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Multiplicity Range</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Multiplicity Range</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4029,12 +5139,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Namespace</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Namespace</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Namespace</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4044,12 +5153,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Namespace Expose</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Namespace Expose</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Namespace Expose</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4059,12 +5168,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Namespace Import</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Namespace Import</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Namespace Import</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4074,12 +5183,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Null Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Null Expression</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Null Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4089,12 +5198,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Objective Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Objective Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Objective Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4104,12 +5213,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Occurrence Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Occurrence Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Occurrence Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4119,12 +5228,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Occurrence Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Occurrence Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Occurrence Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4134,12 +5243,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Operator Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Operator Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Operator Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4149,12 +5258,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Owning Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Owning Membership</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Owning Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4164,12 +5273,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Package</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Package</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Package</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4179,12 +5287,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Parameter Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Parameter Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Parameter Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4194,12 +5302,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Part Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Part Definition</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Part Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4209,12 +5317,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Part Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Part Usage</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Part Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4224,12 +5331,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Perform Action Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Perform Action Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Perform Action Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4239,12 +5346,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Port Conjugation</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Port Conjugation</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Port Conjugation</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4254,12 +5361,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Port Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Port Definition</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Port Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4269,12 +5376,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Port Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Port Usage</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Port Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4284,12 +5390,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Predicate</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Predicate</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Predicate</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4299,12 +5404,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Redefinition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Redefinition</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Redefinition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4314,12 +5418,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Reference Subsetting</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Reference Subsetting</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Reference Subsetting</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4329,12 +5433,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Reference Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Reference Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Reference Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4344,12 +5448,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Relationship</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Relationship</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Relationship</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4359,12 +5462,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Rendering Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Rendering Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Rendering Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4374,12 +5477,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Rendering Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Rendering Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Rendering Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4390,11 +5493,11 @@ public class SysmlSwitch<T> extends Switch<T> {
 
     /**
      * Returns the result of interpreting the object as an instance of '<em>Requirement Constraint Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Requirement Constraint Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4404,12 +5507,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Requirement Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Requirement Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Requirement Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4419,12 +5522,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Requirement Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Requirement Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Requirement Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4435,11 +5538,11 @@ public class SysmlSwitch<T> extends Switch<T> {
 
     /**
      * Returns the result of interpreting the object as an instance of '<em>Requirement Verification Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch.
      * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Requirement Verification Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4449,12 +5552,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Result Expression Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Result Expression Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Result Expression Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4464,12 +5567,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Return Parameter Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Return Parameter Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Return Parameter Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4479,12 +5582,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Satisfy Requirement Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Satisfy Requirement Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Satisfy Requirement Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4494,12 +5597,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Select Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Select Expression</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Select Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4509,12 +5612,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Send Action Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Send Action Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Send Action Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4524,12 +5627,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Specialization</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Specialization</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Specialization</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4539,12 +5642,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Stakeholder Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Stakeholder Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Stakeholder Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4554,12 +5657,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>State Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>State Definition</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>State Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4569,12 +5672,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>State Subaction Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>State Subaction Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>State Subaction Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4584,12 +5687,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>State Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>State Usage</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>State Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4599,12 +5701,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Step</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Step</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Step</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4614,12 +5715,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Structure</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Structure</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Structure</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4629,12 +5729,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Subclassification</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Subclassification</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Subclassification</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4644,12 +5744,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Subject Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Subject Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Subject Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4659,12 +5759,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Subsetting</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Subsetting</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Subsetting</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4674,12 +5773,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Succession</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Succession</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Succession</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4689,12 +5787,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Succession As Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Succession As Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Succession As Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4704,12 +5802,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Succession Flow Connection Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Succession Flow Connection Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Succession Flow Connection Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4719,12 +5817,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Succession Item Flow</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Succession Item Flow</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Succession Item Flow</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4734,12 +5832,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Textual Representation</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Textual Representation</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Textual Representation</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4749,12 +5847,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Transition Feature Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Transition Feature Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Transition Feature Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4764,12 +5862,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Transition Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Transition Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Transition Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4779,12 +5877,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Trigger Invocation Expression</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Trigger Invocation Expression</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Trigger Invocation Expression</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4794,12 +5892,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Type</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Type</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Type</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4809,12 +5906,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Type Featuring</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Type Featuring</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Type Featuring</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4824,12 +5921,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Unioning</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Unioning</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Unioning</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4839,12 +5935,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Usage</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4854,12 +5949,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Use Case Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Use Case Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Use Case Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4869,12 +5964,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Use Case Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Use Case Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Use Case Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4884,12 +5979,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Variant Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Variant Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Variant Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4899,12 +5994,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Verification Case Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Verification Case Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Verification Case Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4914,12 +6009,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Verification Case Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Verification Case Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Verification Case Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4929,12 +6024,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>View Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>View Definition</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>View Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4944,12 +6039,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Viewpoint Definition</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Viewpoint Definition</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Viewpoint Definition</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4959,12 +6054,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Viewpoint Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>Viewpoint Usage</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Viewpoint Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4974,12 +6069,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>View Rendering Membership</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>View Rendering Membership</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>View Rendering Membership</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -4989,12 +6084,11 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>View Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>View Usage</em>'. <!-- begin-user-doc -->
+     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>View Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -5004,12 +6098,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>While Loop Action Usage</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>While Loop Action Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>While Loop Action Usage</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
@@ -5019,12 +6113,12 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
-     * <!-- begin-user-doc -->
-     * This implementation returns null;
-     * returning a non-null result will terminate the switch, but this is the last case anyway.
-     * <!-- end-user-doc -->
-     * @param object the target of the switch.
+     * Returns the result of interpreting the object as an instance of '<em>EObject</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch, but this is the last case
+     * anyway. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject)
      * @generated
@@ -5034,4 +6128,4 @@ public class SysmlSwitch<T> extends Switch<T> {
         return null;
     }
 
-} //SysmlSwitch
+} // SysmlSwitch

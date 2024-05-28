@@ -37,44 +37,44 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.TypeFeaturing;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Feature</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Feature</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getDirection <em>Direction</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsComposite <em>Is Composite</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsDerived <em>Is Derived</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsEnd <em>Is End</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsNonunique <em>Is Nonunique</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsOrdered <em>Is Ordered</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsPortion <em>Is Portion</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsReadOnly <em>Is Read Only</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsUnique <em>Is Unique</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getChainingFeature <em>Chaining Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getEndOwningType <em>End Owning Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getFeaturingType <em>Featuring Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedFeatureChaining <em>Owned Feature Chaining</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedFeatureInverting <em>Owned Feature Inverting</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedRedefinition <em>Owned Redefinition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedReferenceSubsetting <em>Owned Reference Subsetting</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedSubsetting <em>Owned Subsetting</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedTypeFeaturing <em>Owned Type Featuring</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedTyping <em>Owned Typing</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwningFeatureMembership <em>Owning Feature Membership</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwningType <em>Owning Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getType <em>Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getDirection <em>Direction</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsComposite <em>Is Composite</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsDerived <em>Is Derived</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsEnd <em>Is End</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsNonunique <em>Is Nonunique</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsOrdered <em>Is Ordered</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsPortion <em>Is Portion</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsReadOnly <em>Is Read Only</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#isIsUnique <em>Is Unique</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getChainingFeature <em>Chaining Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getEndOwningType <em>End Owning Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getFeaturingType <em>Featuring Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedFeatureChaining <em>Owned Feature Chaining</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedFeatureInverting <em>Owned Feature Inverting</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedRedefinition <em>Owned Redefinition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedReferenceSubsetting <em>Owned Reference
+ * Subsetting</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedSubsetting <em>Owned Subsetting</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedTypeFeaturing <em>Owned Type Featuring</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwnedTyping <em>Owned Typing</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwningFeatureMembership <em>Owning Feature
+ * Membership</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getOwningType <em>Owning Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class FeatureImpl extends TypeImpl implements Feature {
     /**
-     * The default value of the '{@link #getDirection() <em>Direction</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getDirection() <em>Direction</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getDirection()
      * @generated
      * @ordered
@@ -82,9 +82,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected static final FeatureDirectionKind DIRECTION_EDEFAULT = FeatureDirectionKind.IN;
 
     /**
-     * The cached value of the '{@link #getDirection() <em>Direction</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getDirection() <em>Direction</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getDirection()
      * @generated
      * @ordered
@@ -92,9 +92,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected FeatureDirectionKind direction = DIRECTION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsComposite() <em>Is Composite</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsComposite() <em>Is Composite</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsComposite()
      * @generated
      * @ordered
@@ -102,9 +102,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected static final boolean IS_COMPOSITE_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsComposite() <em>Is Composite</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsComposite() <em>Is Composite</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsComposite()
      * @generated
      * @ordered
@@ -112,9 +112,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected boolean isComposite = IS_COMPOSITE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsDerived() <em>Is Derived</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsDerived() <em>Is Derived</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsDerived()
      * @generated
      * @ordered
@@ -122,9 +122,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected static final boolean IS_DERIVED_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsDerived() <em>Is Derived</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsDerived() <em>Is Derived</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsDerived()
      * @generated
      * @ordered
@@ -132,9 +132,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected boolean isDerived = IS_DERIVED_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsEnd() <em>Is End</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsEnd() <em>Is End</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsEnd()
      * @generated
      * @ordered
@@ -142,9 +142,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected static final boolean IS_END_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsEnd() <em>Is End</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsEnd() <em>Is End</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
      * @see #isIsEnd()
      * @generated
      * @ordered
@@ -152,9 +152,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected boolean isEnd = IS_END_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsNonunique() <em>Is Nonunique</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsNonunique() <em>Is Nonunique</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsNonunique()
      * @generated
      * @ordered
@@ -162,9 +162,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected static final boolean IS_NONUNIQUE_EDEFAULT = false;
 
     /**
-     * The default value of the '{@link #isIsOrdered() <em>Is Ordered</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsOrdered() <em>Is Ordered</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsOrdered()
      * @generated
      * @ordered
@@ -172,9 +172,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected static final boolean IS_ORDERED_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsOrdered() <em>Is Ordered</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsOrdered() <em>Is Ordered</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsOrdered()
      * @generated
      * @ordered
@@ -182,9 +182,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected boolean isOrdered = IS_ORDERED_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsPortion() <em>Is Portion</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsPortion() <em>Is Portion</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsPortion()
      * @generated
      * @ordered
@@ -192,9 +192,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected static final boolean IS_PORTION_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsPortion() <em>Is Portion</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsPortion() <em>Is Portion</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsPortion()
      * @generated
      * @ordered
@@ -202,9 +202,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected boolean isPortion = IS_PORTION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsReadOnly() <em>Is Read Only</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsReadOnly() <em>Is Read Only</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsReadOnly()
      * @generated
      * @ordered
@@ -212,9 +212,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected static final boolean IS_READ_ONLY_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsReadOnly() <em>Is Read Only</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsReadOnly() <em>Is Read Only</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsReadOnly()
      * @generated
      * @ordered
@@ -222,9 +222,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected boolean isReadOnly = IS_READ_ONLY_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsUnique() <em>Is Unique</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsUnique() <em>Is Unique</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsUnique()
      * @generated
      * @ordered
@@ -232,9 +232,9 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected static final boolean IS_UNIQUE_EDEFAULT = true;
 
     /**
-     * The cached value of the '{@link #isIsUnique() <em>Is Unique</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsUnique() <em>Is Unique</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsUnique()
      * @generated
      * @ordered
@@ -242,8 +242,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
     protected boolean isUnique = IS_UNIQUE_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected FeatureImpl() {
@@ -251,8 +251,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -261,8 +261,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -272,42 +272,42 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public FeatureDirectionKind getDirection() {
-        return direction;
+        return this.direction;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setDirection(FeatureDirectionKind newDirection) {
-        FeatureDirectionKind oldDirection = direction;
-        direction = newDirection == null ? DIRECTION_EDEFAULT : newDirection;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__DIRECTION, oldDirection, direction));
+        FeatureDirectionKind oldDirection = this.direction;
+        this.direction = newDirection == null ? DIRECTION_EDEFAULT : newDirection;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__DIRECTION, oldDirection, this.direction));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getEndOwningType() {
-        Type endOwningType = basicGetEndOwningType();
-        return endOwningType != null && endOwningType.eIsProxy() ? (Type)eResolveProxy((InternalEObject)endOwningType) : endOwningType;
+        Type endOwningType = this.basicGetEndOwningType();
+        return endOwningType != null && endOwningType.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) endOwningType) : endOwningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetEndOwningType() {
@@ -318,8 +318,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -329,77 +329,77 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsComposite() {
-        return isComposite;
+        return this.isComposite;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsComposite(boolean newIsComposite) {
-        boolean oldIsComposite = isComposite;
-        isComposite = newIsComposite;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_COMPOSITE, oldIsComposite, isComposite));
+        boolean oldIsComposite = this.isComposite;
+        this.isComposite = newIsComposite;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_COMPOSITE, oldIsComposite, this.isComposite));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsDerived() {
-        return isDerived;
+        return this.isDerived;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsDerived(boolean newIsDerived) {
-        boolean oldIsDerived = isDerived;
-        isDerived = newIsDerived;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_DERIVED, oldIsDerived, isDerived));
+        boolean oldIsDerived = this.isDerived;
+        this.isDerived = newIsDerived;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_DERIVED, oldIsDerived, this.isDerived));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsEnd() {
-        return isEnd;
+        return this.isEnd;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsEnd(boolean newIsEnd) {
-        boolean oldIsEnd = isEnd;
-        isEnd = newIsEnd;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_END, oldIsEnd, isEnd));
+        boolean oldIsEnd = this.isEnd;
+        this.isEnd = newIsEnd;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_END, oldIsEnd, this.isEnd));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -408,115 +408,115 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsOrdered() {
-        return isOrdered;
+        return this.isOrdered;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsOrdered(boolean newIsOrdered) {
-        boolean oldIsOrdered = isOrdered;
-        isOrdered = newIsOrdered;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_ORDERED, oldIsOrdered, isOrdered));
+        boolean oldIsOrdered = this.isOrdered;
+        this.isOrdered = newIsOrdered;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_ORDERED, oldIsOrdered, this.isOrdered));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsPortion() {
-        return isPortion;
+        return this.isPortion;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsPortion(boolean newIsPortion) {
-        boolean oldIsPortion = isPortion;
-        isPortion = newIsPortion;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_PORTION, oldIsPortion, isPortion));
+        boolean oldIsPortion = this.isPortion;
+        this.isPortion = newIsPortion;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_PORTION, oldIsPortion, this.isPortion));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsReadOnly() {
-        return isReadOnly;
+        return this.isReadOnly;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsReadOnly(boolean newIsReadOnly) {
-        boolean oldIsReadOnly = isReadOnly;
-        isReadOnly = newIsReadOnly;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_READ_ONLY, oldIsReadOnly, isReadOnly));
+        boolean oldIsReadOnly = this.isReadOnly;
+        this.isReadOnly = newIsReadOnly;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_READ_ONLY, oldIsReadOnly, this.isReadOnly));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsUnique() {
-        return isUnique;
+        return this.isUnique;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsUnique(boolean newIsUnique) {
-        boolean oldIsUnique = isUnique;
-        isUnique = newIsUnique;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_UNIQUE, oldIsUnique, isUnique));
+        boolean oldIsUnique = this.isUnique;
+        this.isUnique = newIsUnique;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__IS_UNIQUE, oldIsUnique, this.isUnique));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<FeatureChaining> getOwnedFeatureChaining() {
         List<FeatureChaining> ownedFeatureChainings = new ArrayList<>();
         this.getOwnedRelationship().stream()
-            .filter(FeatureChaining.class::isInstance)
-            .map(FeatureChaining.class::cast)
-            .forEach(ownedFeatureChainings::add);
+                .filter(FeatureChaining.class::isInstance)
+                .map(FeatureChaining.class::cast)
+                .forEach(ownedFeatureChainings::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedFeatureChaining(), ownedFeatureChainings.size(), ownedFeatureChainings.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -526,61 +526,62 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<Redefinition> getOwnedRedefinition() {
         List<Redefinition> ownedRedefinitions = new ArrayList<>();
         this.getOwnedRelationship().stream()
-            .filter(Redefinition.class::isInstance)
-            .map(Redefinition.class::cast)
-            .forEach(ownedRedefinitions::add);
+                .filter(Redefinition.class::isInstance)
+                .map(Redefinition.class::cast)
+                .forEach(ownedRedefinitions::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedRedefinition(), ownedRedefinitions.size(), ownedRedefinitions.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ReferenceSubsetting getOwnedReferenceSubsetting() {
-        ReferenceSubsetting ownedReferenceSubsetting = basicGetOwnedReferenceSubsetting();
-        return ownedReferenceSubsetting != null && ownedReferenceSubsetting.eIsProxy() ? (ReferenceSubsetting)eResolveProxy((InternalEObject)ownedReferenceSubsetting) : ownedReferenceSubsetting;
+        ReferenceSubsetting ownedReferenceSubsetting = this.basicGetOwnedReferenceSubsetting();
+        return ownedReferenceSubsetting != null && ownedReferenceSubsetting.eIsProxy() ? (ReferenceSubsetting) this.eResolveProxy((InternalEObject) ownedReferenceSubsetting)
+                : ownedReferenceSubsetting;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public ReferenceSubsetting basicGetOwnedReferenceSubsetting() {
         return this.getOwnedRelationship().stream()
-            .filter(ReferenceSubsetting.class::isInstance)
-            .map(ReferenceSubsetting.class::cast)
-            .findFirst()
-            .orElse(null);
+                .filter(ReferenceSubsetting.class::isInstance)
+                .map(ReferenceSubsetting.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<Subsetting> getOwnedSubsetting() {
         Subsetting[] subSettings = this.getOwnedRelationship().stream()
-            .filter(Subsetting.class::isInstance)
-            .map(Subsetting.class::cast)
-            .toArray(Subsetting[]::new);
+                .filter(Subsetting.class::isInstance)
+                .map(Subsetting.class::cast)
+                .toArray(Subsetting[]::new);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedSubsetting(), subSettings.length, subSettings);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -590,42 +591,42 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<FeatureTyping> getOwnedTyping() {
         List<FeatureTyping> ownedTypings = new ArrayList<>();
-        //The ownedSpecializations of this Feature that are FeatureTypings, for which the Feature is the typedFeature.
+        // The ownedSpecializations of this Feature that are FeatureTypings, for which the Feature is the typedFeature.
         this.getOwnedSpecialization().stream()
-            .filter(FeatureTyping.class::isInstance)
-            .map(FeatureTyping.class::cast)
-            .filter(ft -> this.equals(ft.getTypedFeature()))
-            .forEach(ownedTypings::add);
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .filter(ft -> this.equals(ft.getTypedFeature()))
+                .forEach(ownedTypings::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_OwnedTyping(), ownedTypings.size(), ownedTypings.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * The FeatureMembership that owns this Feature as an ownedMemberFeature, determining its owningType.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> The FeatureMembership that owns this Feature as an ownedMemberFeature, determining its
+     * owningType. <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public FeatureMembership getOwningFeatureMembership() {
-        FeatureMembership owningFeatureMembership = basicGetOwningFeatureMembership();
-        return owningFeatureMembership != null && owningFeatureMembership.eIsProxy() ? (FeatureMembership)eResolveProxy((InternalEObject)owningFeatureMembership) : owningFeatureMembership;
+        FeatureMembership owningFeatureMembership = this.basicGetOwningFeatureMembership();
+        return owningFeatureMembership != null && owningFeatureMembership.eIsProxy() ? (FeatureMembership) this.eResolveProxy((InternalEObject) owningFeatureMembership) : owningFeatureMembership;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * The FeatureMembership that owns this Feature as an ownedMemberFeature, determining its owningType.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> The FeatureMembership that owns this Feature as an ownedMemberFeature, determining its
+     * owningType. <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public FeatureMembership basicGetOwningFeatureMembership() {
-        OwningMembership owningMembership = getOwningMembership();
+        OwningMembership owningMembership = this.getOwningMembership();
         if (owningMembership instanceof FeatureMembership featureMembershipt) {
             return featureMembershipt;
         }
@@ -633,20 +634,20 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * The Type that is the owningType of the owningFeatureMembership of this Feature.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> The Type that is the owningType of the owningFeatureMembership of this Feature. <!--
+     * end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getOwningType() {
-        Type owningType = basicGetOwningType();
-        return owningType != null && owningType.eIsProxy() ? (Type)eResolveProxy((InternalEObject)owningType) : owningType;
+        Type owningType = this.basicGetOwningType();
+        return owningType != null && owningType.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) owningType) : owningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Type basicGetOwningType() {
@@ -658,24 +659,24 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<Type> getType() {
         List<Type> types = new ArrayList<>();
         this.getOwnedRelationship().stream()
-            .filter(FeatureTyping.class::isInstance)
-            .map(FeatureTyping.class::cast)
-            .map(typing -> typing.getType())
-            .forEach(types::add);
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .map(typing -> typing.getType())
+                .forEach(types::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_Type(), types.size(), types.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -686,8 +687,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -696,8 +697,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -708,8 +709,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -718,8 +719,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -728,8 +729,8 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -738,68 +739,72 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURE__DIRECTION:
-                return getDirection();
+                return this.getDirection();
             case SysmlPackage.FEATURE__IS_COMPOSITE:
-                return isIsComposite();
+                return this.isIsComposite();
             case SysmlPackage.FEATURE__IS_DERIVED:
-                return isIsDerived();
+                return this.isIsDerived();
             case SysmlPackage.FEATURE__IS_END:
-                return isIsEnd();
+                return this.isIsEnd();
             case SysmlPackage.FEATURE__IS_NONUNIQUE:
-                return isIsNonunique();
+                return this.isIsNonunique();
             case SysmlPackage.FEATURE__IS_ORDERED:
-                return isIsOrdered();
+                return this.isIsOrdered();
             case SysmlPackage.FEATURE__IS_PORTION:
-                return isIsPortion();
+                return this.isIsPortion();
             case SysmlPackage.FEATURE__IS_READ_ONLY:
-                return isIsReadOnly();
+                return this.isIsReadOnly();
             case SysmlPackage.FEATURE__IS_UNIQUE:
-                return isIsUnique();
+                return this.isIsUnique();
             case SysmlPackage.FEATURE__CHAINING_FEATURE:
-                return getChainingFeature();
+                return this.getChainingFeature();
             case SysmlPackage.FEATURE__END_OWNING_TYPE:
-                if (resolve) return getEndOwningType();
-                return basicGetEndOwningType();
+                if (resolve)
+                    return this.getEndOwningType();
+                return this.basicGetEndOwningType();
             case SysmlPackage.FEATURE__FEATURING_TYPE:
-                return getFeaturingType();
+                return this.getFeaturingType();
             case SysmlPackage.FEATURE__OWNED_FEATURE_CHAINING:
-                return getOwnedFeatureChaining();
+                return this.getOwnedFeatureChaining();
             case SysmlPackage.FEATURE__OWNED_FEATURE_INVERTING:
-                return getOwnedFeatureInverting();
+                return this.getOwnedFeatureInverting();
             case SysmlPackage.FEATURE__OWNED_REDEFINITION:
-                return getOwnedRedefinition();
+                return this.getOwnedRedefinition();
             case SysmlPackage.FEATURE__OWNED_REFERENCE_SUBSETTING:
-                if (resolve) return getOwnedReferenceSubsetting();
-                return basicGetOwnedReferenceSubsetting();
+                if (resolve)
+                    return this.getOwnedReferenceSubsetting();
+                return this.basicGetOwnedReferenceSubsetting();
             case SysmlPackage.FEATURE__OWNED_SUBSETTING:
-                return getOwnedSubsetting();
+                return this.getOwnedSubsetting();
             case SysmlPackage.FEATURE__OWNED_TYPE_FEATURING:
-                return getOwnedTypeFeaturing();
+                return this.getOwnedTypeFeaturing();
             case SysmlPackage.FEATURE__OWNED_TYPING:
-                return getOwnedTyping();
+                return this.getOwnedTyping();
             case SysmlPackage.FEATURE__OWNING_FEATURE_MEMBERSHIP:
-                if (resolve) return getOwningFeatureMembership();
-                return basicGetOwningFeatureMembership();
+                if (resolve)
+                    return this.getOwningFeatureMembership();
+                return this.basicGetOwningFeatureMembership();
             case SysmlPackage.FEATURE__OWNING_TYPE:
-                if (resolve) return getOwningType();
-                return basicGetOwningType();
+                if (resolve)
+                    return this.getOwningType();
+                return this.basicGetOwningType();
             case SysmlPackage.FEATURE__TYPE:
-                return getType();
+                return this.getType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -807,177 +812,178 @@ public class FeatureImpl extends TypeImpl implements Feature {
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.FEATURE__DIRECTION:
-                setDirection((FeatureDirectionKind)newValue);
+                this.setDirection((FeatureDirectionKind) newValue);
                 return;
             case SysmlPackage.FEATURE__IS_COMPOSITE:
-                setIsComposite((Boolean)newValue);
+                this.setIsComposite((Boolean) newValue);
                 return;
             case SysmlPackage.FEATURE__IS_DERIVED:
-                setIsDerived((Boolean)newValue);
+                this.setIsDerived((Boolean) newValue);
                 return;
             case SysmlPackage.FEATURE__IS_END:
-                setIsEnd((Boolean)newValue);
+                this.setIsEnd((Boolean) newValue);
                 return;
             case SysmlPackage.FEATURE__IS_ORDERED:
-                setIsOrdered((Boolean)newValue);
+                this.setIsOrdered((Boolean) newValue);
                 return;
             case SysmlPackage.FEATURE__IS_PORTION:
-                setIsPortion((Boolean)newValue);
+                this.setIsPortion((Boolean) newValue);
                 return;
             case SysmlPackage.FEATURE__IS_READ_ONLY:
-                setIsReadOnly((Boolean)newValue);
+                this.setIsReadOnly((Boolean) newValue);
                 return;
             case SysmlPackage.FEATURE__IS_UNIQUE:
-                setIsUnique((Boolean)newValue);
+                this.setIsUnique((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.FEATURE__DIRECTION:
-                setDirection(DIRECTION_EDEFAULT);
+                this.setDirection(DIRECTION_EDEFAULT);
                 return;
             case SysmlPackage.FEATURE__IS_COMPOSITE:
-                setIsComposite(IS_COMPOSITE_EDEFAULT);
+                this.setIsComposite(IS_COMPOSITE_EDEFAULT);
                 return;
             case SysmlPackage.FEATURE__IS_DERIVED:
-                setIsDerived(IS_DERIVED_EDEFAULT);
+                this.setIsDerived(IS_DERIVED_EDEFAULT);
                 return;
             case SysmlPackage.FEATURE__IS_END:
-                setIsEnd(IS_END_EDEFAULT);
+                this.setIsEnd(IS_END_EDEFAULT);
                 return;
             case SysmlPackage.FEATURE__IS_ORDERED:
-                setIsOrdered(IS_ORDERED_EDEFAULT);
+                this.setIsOrdered(IS_ORDERED_EDEFAULT);
                 return;
             case SysmlPackage.FEATURE__IS_PORTION:
-                setIsPortion(IS_PORTION_EDEFAULT);
+                this.setIsPortion(IS_PORTION_EDEFAULT);
                 return;
             case SysmlPackage.FEATURE__IS_READ_ONLY:
-                setIsReadOnly(IS_READ_ONLY_EDEFAULT);
+                this.setIsReadOnly(IS_READ_ONLY_EDEFAULT);
                 return;
             case SysmlPackage.FEATURE__IS_UNIQUE:
-                setIsUnique(IS_UNIQUE_EDEFAULT);
+                this.setIsUnique(IS_UNIQUE_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.FEATURE__DIRECTION:
-                return direction != DIRECTION_EDEFAULT;
+                return this.direction != DIRECTION_EDEFAULT;
             case SysmlPackage.FEATURE__IS_COMPOSITE:
-                return isComposite != IS_COMPOSITE_EDEFAULT;
+                return this.isComposite != IS_COMPOSITE_EDEFAULT;
             case SysmlPackage.FEATURE__IS_DERIVED:
-                return isDerived != IS_DERIVED_EDEFAULT;
+                return this.isDerived != IS_DERIVED_EDEFAULT;
             case SysmlPackage.FEATURE__IS_END:
-                return isEnd != IS_END_EDEFAULT;
+                return this.isEnd != IS_END_EDEFAULT;
             case SysmlPackage.FEATURE__IS_NONUNIQUE:
-                return isIsNonunique() != IS_NONUNIQUE_EDEFAULT;
+                return this.isIsNonunique() != IS_NONUNIQUE_EDEFAULT;
             case SysmlPackage.FEATURE__IS_ORDERED:
-                return isOrdered != IS_ORDERED_EDEFAULT;
+                return this.isOrdered != IS_ORDERED_EDEFAULT;
             case SysmlPackage.FEATURE__IS_PORTION:
-                return isPortion != IS_PORTION_EDEFAULT;
+                return this.isPortion != IS_PORTION_EDEFAULT;
             case SysmlPackage.FEATURE__IS_READ_ONLY:
-                return isReadOnly != IS_READ_ONLY_EDEFAULT;
+                return this.isReadOnly != IS_READ_ONLY_EDEFAULT;
             case SysmlPackage.FEATURE__IS_UNIQUE:
-                return isUnique != IS_UNIQUE_EDEFAULT;
+                return this.isUnique != IS_UNIQUE_EDEFAULT;
             case SysmlPackage.FEATURE__CHAINING_FEATURE:
-                return !getChainingFeature().isEmpty();
+                return !this.getChainingFeature().isEmpty();
             case SysmlPackage.FEATURE__END_OWNING_TYPE:
-                return basicGetEndOwningType() != null;
+                return this.basicGetEndOwningType() != null;
             case SysmlPackage.FEATURE__FEATURING_TYPE:
-                return !getFeaturingType().isEmpty();
+                return !this.getFeaturingType().isEmpty();
             case SysmlPackage.FEATURE__OWNED_FEATURE_CHAINING:
-                return !getOwnedFeatureChaining().isEmpty();
+                return !this.getOwnedFeatureChaining().isEmpty();
             case SysmlPackage.FEATURE__OWNED_FEATURE_INVERTING:
-                return !getOwnedFeatureInverting().isEmpty();
+                return !this.getOwnedFeatureInverting().isEmpty();
             case SysmlPackage.FEATURE__OWNED_REDEFINITION:
-                return !getOwnedRedefinition().isEmpty();
+                return !this.getOwnedRedefinition().isEmpty();
             case SysmlPackage.FEATURE__OWNED_REFERENCE_SUBSETTING:
-                return basicGetOwnedReferenceSubsetting() != null;
+                return this.basicGetOwnedReferenceSubsetting() != null;
             case SysmlPackage.FEATURE__OWNED_SUBSETTING:
-                return !getOwnedSubsetting().isEmpty();
+                return !this.getOwnedSubsetting().isEmpty();
             case SysmlPackage.FEATURE__OWNED_TYPE_FEATURING:
-                return !getOwnedTypeFeaturing().isEmpty();
+                return !this.getOwnedTypeFeaturing().isEmpty();
             case SysmlPackage.FEATURE__OWNED_TYPING:
-                return !getOwnedTyping().isEmpty();
+                return !this.getOwnedTyping().isEmpty();
             case SysmlPackage.FEATURE__OWNING_FEATURE_MEMBERSHIP:
-                return basicGetOwningFeatureMembership() != null;
+                return this.basicGetOwningFeatureMembership() != null;
             case SysmlPackage.FEATURE__OWNING_TYPE:
-                return basicGetOwningType() != null;
+                return this.basicGetOwningType() != null;
             case SysmlPackage.FEATURE__TYPE:
-                return !getType().isEmpty();
+                return !this.getType().isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
             case SysmlPackage.FEATURE___DIRECTION_FOR__TYPE:
-                return directionFor((Type)arguments.get(0));
+                return this.directionFor((Type) arguments.get(0));
             case SysmlPackage.FEATURE___IS_FEATURED_WITHIN__TYPE:
-                return isFeaturedWithin((Type)arguments.get(0));
+                return this.isFeaturedWithin((Type) arguments.get(0));
             case SysmlPackage.FEATURE___NAMING_FEATURE:
-                return namingFeature();
+                return this.namingFeature();
             case SysmlPackage.FEATURE___REDEFINES__FEATURE:
-                return redefines((Feature)arguments.get(0));
+                return this.redefines((Feature) arguments.get(0));
             case SysmlPackage.FEATURE___REDEFINES_FROM_LIBRARY__STRING:
-                return redefinesFromLibrary((String)arguments.get(0));
+                return this.redefinesFromLibrary((String) arguments.get(0));
             case SysmlPackage.FEATURE___SUBSETS_CHAIN__FEATURE_FEATURE:
-                return subsetsChain((Feature)arguments.get(0), (Feature)arguments.get(1));
+                return this.subsetsChain((Feature) arguments.get(0), (Feature) arguments.get(1));
         }
         return super.eInvoke(operationID, arguments);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (direction: ");
-        result.append(direction);
+        result.append(this.direction);
         result.append(", isComposite: ");
-        result.append(isComposite);
+        result.append(this.isComposite);
         result.append(", isDerived: ");
-        result.append(isDerived);
+        result.append(this.isDerived);
         result.append(", isEnd: ");
-        result.append(isEnd);
+        result.append(this.isEnd);
         result.append(", isOrdered: ");
-        result.append(isOrdered);
+        result.append(this.isOrdered);
         result.append(", isPortion: ");
-        result.append(isPortion);
+        result.append(this.isPortion);
         result.append(", isReadOnly: ");
-        result.append(isReadOnly);
+        result.append(this.isReadOnly);
         result.append(", isUnique: ");
-        result.append(isUnique);
+        result.append(this.isUnique);
         result.append(')');
         return result.toString();
     }
 
-} //FeatureImpl
+} // FeatureImpl

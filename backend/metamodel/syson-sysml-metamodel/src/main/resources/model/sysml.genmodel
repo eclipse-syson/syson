@@ -4,10 +4,11 @@
     modelDirectory="/syson-sysml-metamodel/src/main/java" editDirectory="/syson-sysml-metamodel-edit/src/main/java"
     editorDirectory="/syson-sysml-metamodel-editor/src/main/java" modelPluginID="syson-sysml-metamodel"
     modelName="Sysml" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    testsDirectory="/syson-sysml-metamodel-tests/src/main/java" importerID="org.eclipse.emf.importer.ecore"
-    bundleManifest="false" complianceLevel="17.0" copyrightFields="false" editPluginID="syson-sysml-metamodel-edit"
-    editorPluginID="syson-sysml-metamodel-editor" testsPluginID="syson-sysml-metamodel-tests"
-    operationReflection="true" importOrganizing="true">
+    codeFormatting="true" commentFormatting="true" testsDirectory="/syson-sysml-metamodel-tests/src/main/java"
+    importerID="org.eclipse.emf.importer.ecore" bundleManifest="false" complianceLevel="17.0"
+    copyrightFields="false" editPluginID="syson-sysml-metamodel-edit" editorPluginID="syson-sysml-metamodel-editor"
+    testsPluginID="syson-sysml-metamodel-tests" operationReflection="true" importOrganizing="true"
+    cleanup="true">
   <foreignModel>sysml.ecore</foreignModel>
   <genPackages prefix="Sysml" basePackage="org.eclipse.syson" resource="XMI" disposableProviderFactory="true"
       literalsInterface="false" extensibleProviderFactory="true" childCreationExtenders="true"

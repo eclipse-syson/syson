@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,23 +19,23 @@ import org.eclipse.syson.sysml.FramedConcernMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Framed Concern Membership</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Framed Concern Membership</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.FramedConcernMembershipImpl#getOwnedConcern <em>Owned Concern</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FramedConcernMembershipImpl#getReferencedConcern <em>Referenced Concern</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FramedConcernMembershipImpl#getOwnedConcern <em>Owned Concern</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FramedConcernMembershipImpl#getReferencedConcern <em>Referenced
+ * Concern</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class FramedConcernMembershipImpl extends RequirementConstraintMembershipImpl implements FramedConcernMembership {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected FramedConcernMembershipImpl() {
@@ -43,8 +43,8 @@ public class FramedConcernMembershipImpl extends RequirementConstraintMembership
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -53,19 +53,19 @@ public class FramedConcernMembershipImpl extends RequirementConstraintMembership
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ConcernUsage getOwnedConcern() {
-        ConcernUsage ownedConcern = basicGetOwnedConcern();
-        return ownedConcern != null && ownedConcern.eIsProxy() ? (ConcernUsage)eResolveProxy((InternalEObject)ownedConcern) : ownedConcern;
+        ConcernUsage ownedConcern = this.basicGetOwnedConcern();
+        return ownedConcern != null && ownedConcern.eIsProxy() ? (ConcernUsage) this.eResolveProxy((InternalEObject) ownedConcern) : ownedConcern;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ConcernUsage basicGetOwnedConcern() {
@@ -76,19 +76,19 @@ public class FramedConcernMembershipImpl extends RequirementConstraintMembership
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ConcernUsage getReferencedConcern() {
-        ConcernUsage referencedConcern = basicGetReferencedConcern();
-        return referencedConcern != null && referencedConcern.eIsProxy() ? (ConcernUsage)eResolveProxy((InternalEObject)referencedConcern) : referencedConcern;
+        ConcernUsage referencedConcern = this.basicGetReferencedConcern();
+        return referencedConcern != null && referencedConcern.eIsProxy() ? (ConcernUsage) this.eResolveProxy((InternalEObject) referencedConcern) : referencedConcern;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ConcernUsage basicGetReferencedConcern() {
@@ -99,37 +99,39 @@ public class FramedConcernMembershipImpl extends RequirementConstraintMembership
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FRAMED_CONCERN_MEMBERSHIP__OWNED_CONCERN:
-                if (resolve) return getOwnedConcern();
-                return basicGetOwnedConcern();
+                if (resolve)
+                    return this.getOwnedConcern();
+                return this.basicGetOwnedConcern();
             case SysmlPackage.FRAMED_CONCERN_MEMBERSHIP__REFERENCED_CONCERN:
-                if (resolve) return getReferencedConcern();
-                return basicGetReferencedConcern();
+                if (resolve)
+                    return this.getReferencedConcern();
+                return this.basicGetReferencedConcern();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.FRAMED_CONCERN_MEMBERSHIP__OWNED_CONCERN:
-                return basicGetOwnedConcern() != null;
+                return this.basicGetOwnedConcern() != null;
             case SysmlPackage.FRAMED_CONCERN_MEMBERSHIP__REFERENCED_CONCERN:
-                return basicGetReferencedConcern() != null;
+                return this.basicGetReferencedConcern() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //FramedConcernMembershipImpl
+} // FramedConcernMembershipImpl

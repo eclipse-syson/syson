@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -28,27 +28,26 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>State Definition</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>State Definition</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#isIsParallel <em>Is Parallel</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#getDoAction <em>Do Action</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#getEntryAction <em>Entry Action</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#getExitAction <em>Exit Action</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#getState <em>State</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#isIsParallel <em>Is Parallel</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#getDoAction <em>Do Action</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#getEntryAction <em>Entry Action</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#getExitAction <em>Exit Action</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.StateDefinitionImpl#getState <em>State</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDefinition {
     /**
-     * The default value of the '{@link #isIsParallel() <em>Is Parallel</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsParallel() <em>Is Parallel</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsParallel()
      * @generated
      * @ordered
@@ -56,9 +55,9 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     protected static final boolean IS_PARALLEL_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsParallel() <em>Is Parallel</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsParallel() <em>Is Parallel</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsParallel()
      * @generated
      * @ordered
@@ -66,8 +65,8 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     protected boolean isParallel = IS_PARALLEL_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected StateDefinitionImpl() {
@@ -75,8 +74,8 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -85,19 +84,19 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ActionUsage getDoAction() {
-        ActionUsage doAction = basicGetDoAction();
-        return doAction != null && doAction.eIsProxy() ? (ActionUsage)eResolveProxy((InternalEObject)doAction) : doAction;
+        ActionUsage doAction = this.basicGetDoAction();
+        return doAction != null && doAction.eIsProxy() ? (ActionUsage) this.eResolveProxy((InternalEObject) doAction) : doAction;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ActionUsage basicGetDoAction() {
@@ -108,19 +107,19 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ActionUsage getEntryAction() {
-        ActionUsage entryAction = basicGetEntryAction();
-        return entryAction != null && entryAction.eIsProxy() ? (ActionUsage)eResolveProxy((InternalEObject)entryAction) : entryAction;
+        ActionUsage entryAction = this.basicGetEntryAction();
+        return entryAction != null && entryAction.eIsProxy() ? (ActionUsage) this.eResolveProxy((InternalEObject) entryAction) : entryAction;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ActionUsage basicGetEntryAction() {
@@ -131,19 +130,19 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ActionUsage getExitAction() {
-        ActionUsage exitAction = basicGetExitAction();
-        return exitAction != null && exitAction.eIsProxy() ? (ActionUsage)eResolveProxy((InternalEObject)exitAction) : exitAction;
+        ActionUsage exitAction = this.basicGetExitAction();
+        return exitAction != null && exitAction.eIsProxy() ? (ActionUsage) this.eResolveProxy((InternalEObject) exitAction) : exitAction;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ActionUsage basicGetExitAction() {
@@ -154,31 +153,31 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsParallel() {
-        return isParallel;
+        return this.isParallel;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsParallel(boolean newIsParallel) {
-        boolean oldIsParallel = isParallel;
-        isParallel = newIsParallel;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.STATE_DEFINITION__IS_PARALLEL, oldIsParallel, isParallel));
+        boolean oldIsParallel = this.isParallel;
+        this.isParallel = newIsParallel;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.STATE_DEFINITION__IS_PARALLEL, oldIsParallel, this.isParallel));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -188,33 +187,36 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.STATE_DEFINITION__IS_PARALLEL:
-                return isIsParallel();
+                return this.isIsParallel();
             case SysmlPackage.STATE_DEFINITION__DO_ACTION:
-                if (resolve) return getDoAction();
-                return basicGetDoAction();
+                if (resolve)
+                    return this.getDoAction();
+                return this.basicGetDoAction();
             case SysmlPackage.STATE_DEFINITION__ENTRY_ACTION:
-                if (resolve) return getEntryAction();
-                return basicGetEntryAction();
+                if (resolve)
+                    return this.getEntryAction();
+                return this.basicGetEntryAction();
             case SysmlPackage.STATE_DEFINITION__EXIT_ACTION:
-                if (resolve) return getExitAction();
-                return basicGetExitAction();
+                if (resolve)
+                    return this.getExitAction();
+                return this.basicGetExitAction();
             case SysmlPackage.STATE_DEFINITION__STATE:
-                return getState();
+                return this.getState();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -222,63 +224,64 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.STATE_DEFINITION__IS_PARALLEL:
-                setIsParallel((Boolean)newValue);
+                this.setIsParallel((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.STATE_DEFINITION__IS_PARALLEL:
-                setIsParallel(IS_PARALLEL_EDEFAULT);
+                this.setIsParallel(IS_PARALLEL_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.STATE_DEFINITION__IS_PARALLEL:
-                return isParallel != IS_PARALLEL_EDEFAULT;
+                return this.isParallel != IS_PARALLEL_EDEFAULT;
             case SysmlPackage.STATE_DEFINITION__DO_ACTION:
-                return basicGetDoAction() != null;
+                return this.basicGetDoAction() != null;
             case SysmlPackage.STATE_DEFINITION__ENTRY_ACTION:
-                return basicGetEntryAction() != null;
+                return this.basicGetEntryAction() != null;
             case SysmlPackage.STATE_DEFINITION__EXIT_ACTION:
-                return basicGetExitAction() != null;
+                return this.basicGetExitAction() != null;
             case SysmlPackage.STATE_DEFINITION__STATE:
-                return !getState().isEmpty();
+                return !this.getState().isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isParallel: ");
-        result.append(isParallel);
+        result.append(this.isParallel);
         result.append(')');
         return result.toString();
     }
 
-} //StateDefinitionImpl
+} // StateDefinitionImpl

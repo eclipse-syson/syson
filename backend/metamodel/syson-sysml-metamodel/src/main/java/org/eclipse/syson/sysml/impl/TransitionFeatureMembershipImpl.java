@@ -1,18 +1,16 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
-
-import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -25,26 +23,25 @@ import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionFeatureMembership;
 
 /**
- * <!-- begin-user-doc -->
- * A TransitionFeatureMembership is a FeatureMembership for a trigger, guard or effect of 
- * a TransitionUsage, whose transitionFeature is a AcceptActionUsage, Boolean-valued 
- * Expression or ActionUsage, depending on its kind.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A TransitionFeatureMembership is a FeatureMembership for a trigger, guard or effect of a
+ * TransitionUsage, whose transitionFeature is a AcceptActionUsage, Boolean-valued Expression or ActionUsage, depending
+ * on its kind. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.TransitionFeatureMembershipImpl#getKind <em>Kind</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TransitionFeatureMembershipImpl#getTransitionFeature <em>Transition Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TransitionFeatureMembershipImpl#getKind <em>Kind</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TransitionFeatureMembershipImpl#getTransitionFeature <em>Transition
+ * Feature</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl implements TransitionFeatureMembership {
     /**
-     * The default value of the '{@link #getKind() <em>Kind</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getKind() <em>Kind</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
      * @see #getKind()
      * @generated
      * @ordered
@@ -52,9 +49,9 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
     protected static final TransitionFeatureKind KIND_EDEFAULT = TransitionFeatureKind.EFFECT;
 
     /**
-     * The cached value of the '{@link #getKind() <em>Kind</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getKind() <em>Kind</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
      * @see #getKind()
      * @generated
      * @ordered
@@ -62,8 +59,8 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
     protected TransitionFeatureKind kind = KIND_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected TransitionFeatureMembershipImpl() {
@@ -71,8 +68,8 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -81,43 +78,43 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public TransitionFeatureKind getKind() {
-        return kind;
+        return this.kind;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setKind(TransitionFeatureKind newKind) {
-        TransitionFeatureKind oldKind = kind;
-        kind = newKind == null ? KIND_EDEFAULT : newKind;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__KIND, oldKind, kind));
+        TransitionFeatureKind oldKind = this.kind;
+        this.kind = newKind == null ? KIND_EDEFAULT : newKind;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__KIND, oldKind, this.kind));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * The Step that is the ownedMemberFeature of this TransitionFeatureMembership.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> The Step that is the ownedMemberFeature of this TransitionFeatureMembership. <!--
+     * end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Step getTransitionFeature() {
-        Step transitionFeature = basicGetTransitionFeature();
-        return transitionFeature != null && transitionFeature.eIsProxy() ? (Step)eResolveProxy((InternalEObject)transitionFeature) : transitionFeature;
+        Step transitionFeature = this.basicGetTransitionFeature();
+        return transitionFeature != null && transitionFeature.eIsProxy() ? (Step) this.eResolveProxy((InternalEObject) transitionFeature) : transitionFeature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Step basicGetTransitionFeature() {
@@ -129,82 +126,84 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__KIND:
-                return getKind();
+                return this.getKind();
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__TRANSITION_FEATURE:
-                if (resolve) return getTransitionFeature();
-                return basicGetTransitionFeature();
+                if (resolve)
+                    return this.getTransitionFeature();
+                return this.basicGetTransitionFeature();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__KIND:
-                setKind((TransitionFeatureKind)newValue);
+                this.setKind((TransitionFeatureKind) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__KIND:
-                setKind(KIND_EDEFAULT);
+                this.setKind(KIND_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__KIND:
-                return kind != KIND_EDEFAULT;
+                return this.kind != KIND_EDEFAULT;
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__TRANSITION_FEATURE:
-                return basicGetTransitionFeature() != null;
+                return this.basicGetTransitionFeature() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (kind: ");
-        result.append(kind);
+        result.append(this.kind);
         result.append(')');
         return result.toString();
     }
 
-} //TransitionFeatureMembershipImpl
+} // TransitionFeatureMembershipImpl

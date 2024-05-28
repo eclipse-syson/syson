@@ -22,25 +22,26 @@ import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Requirement Constraint Membership</b></em>'.
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Requirement Constraint Membership</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementConstraintMembershipImpl#getKind <em>Kind</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementConstraintMembershipImpl#getOwnedConstraint <em>Owned Constraint</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementConstraintMembershipImpl#getReferencedConstraint <em>Referenced Constraint</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementConstraintMembershipImpl#getKind <em>Kind</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementConstraintMembershipImpl#getOwnedConstraint <em>Owned
+ * Constraint</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementConstraintMembershipImpl#getReferencedConstraint <em>Referenced
+ * Constraint</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl implements RequirementConstraintMembership {
     /**
-     * The default value of the '{@link #getKind() <em>Kind</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getKind() <em>Kind</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
      * @see #getKind()
      * @generated
      * @ordered
@@ -48,9 +49,9 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     protected static final RequirementConstraintKind KIND_EDEFAULT = RequirementConstraintKind.ASSUMPTION;
 
     /**
-     * The cached value of the '{@link #getKind() <em>Kind</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getKind() <em>Kind</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
      * @see #getKind()
      * @generated
      * @ordered
@@ -58,8 +59,8 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     protected RequirementConstraintKind kind = KIND_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected RequirementConstraintMembershipImpl() {
@@ -67,8 +68,8 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -77,8 +78,8 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -87,33 +88,32 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setKind(RequirementConstraintKind newKind) {
         RequirementConstraintKind oldKind = this.kind;
         this.kind = newKind == null ? KIND_EDEFAULT : newKind;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND, oldKind, this.kind));
-        }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ConstraintUsage getOwnedConstraint() {
         ConstraintUsage ownedConstraint = this.basicGetOwnedConstraint();
-        return ownedConstraint != null && ownedConstraint.eIsProxy() ? (ConstraintUsage)this.eResolveProxy((InternalEObject)ownedConstraint) : ownedConstraint;
+        return ownedConstraint != null && ownedConstraint.eIsProxy() ? (ConstraintUsage) this.eResolveProxy((InternalEObject) ownedConstraint) : ownedConstraint;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public ConstraintUsage basicGetOwnedConstraint() {
@@ -125,19 +125,19 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ConstraintUsage getReferencedConstraint() {
         ConstraintUsage referencedConstraint = this.basicGetReferencedConstraint();
-        return referencedConstraint != null && referencedConstraint.eIsProxy() ? (ConstraintUsage)this.eResolveProxy((InternalEObject)referencedConstraint) : referencedConstraint;
+        return referencedConstraint != null && referencedConstraint.eIsProxy() ? (ConstraintUsage) this.eResolveProxy((InternalEObject) referencedConstraint) : referencedConstraint;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ConstraintUsage basicGetReferencedConstraint() {
@@ -148,8 +148,8 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -158,37 +158,35 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND:
                 return this.getKind();
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__OWNED_CONSTRAINT:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedConstraint();
-                }
                 return this.basicGetOwnedConstraint();
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__REFERENCED_CONSTRAINT:
-                if (resolve) {
+                if (resolve)
                     return this.getReferencedConstraint();
-                }
                 return this.basicGetReferencedConstraint();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND:
-                this.setKind((RequirementConstraintKind)newValue);
+                this.setKind((RequirementConstraintKind) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -202,8 +200,8 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -220,15 +218,14 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (this.eIsProxy()) {
+        if (this.eIsProxy())
             return super.toString();
-        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (kind: ");
@@ -237,4 +234,4 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
         return result.toString();
     }
 
-} //RequirementConstraintMembershipImpl
+} // RequirementConstraintMembershipImpl

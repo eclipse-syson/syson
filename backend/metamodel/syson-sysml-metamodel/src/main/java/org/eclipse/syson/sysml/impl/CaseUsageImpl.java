@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -29,25 +29,23 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Case Usage</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Case Usage</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.CaseUsageImpl#getActorParameter <em>Actor Parameter</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.CaseUsageImpl#getCaseDefinition <em>Case Definition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.CaseUsageImpl#getObjectiveRequirement <em>Objective Requirement</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.CaseUsageImpl#getSubjectParameter <em>Subject Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.CaseUsageImpl#getActorParameter <em>Actor Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.CaseUsageImpl#getCaseDefinition <em>Case Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.CaseUsageImpl#getObjectiveRequirement <em>Objective Requirement</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.CaseUsageImpl#getSubjectParameter <em>Subject Parameter</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected CaseUsageImpl() {
@@ -55,8 +53,8 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -65,8 +63,8 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -76,19 +74,19 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public CaseDefinition getCaseDefinition() {
         CaseDefinition caseDefinition = this.basicGetCaseDefinition();
-        return caseDefinition != null && caseDefinition.eIsProxy() ? (CaseDefinition)this.eResolveProxy((InternalEObject)caseDefinition) : caseDefinition;
+        return caseDefinition != null && caseDefinition.eIsProxy() ? (CaseDefinition) this.eResolveProxy((InternalEObject) caseDefinition) : caseDefinition;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public CaseDefinition basicGetCaseDefinition() {
@@ -99,19 +97,19 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public RequirementUsage getObjectiveRequirement() {
         RequirementUsage objectiveRequirement = this.basicGetObjectiveRequirement();
-        return objectiveRequirement != null && objectiveRequirement.eIsProxy() ? (RequirementUsage)this.eResolveProxy((InternalEObject)objectiveRequirement) : objectiveRequirement;
+        return objectiveRequirement != null && objectiveRequirement.eIsProxy() ? (RequirementUsage) this.eResolveProxy((InternalEObject) objectiveRequirement) : objectiveRequirement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public RequirementUsage basicGetObjectiveRequirement() {
@@ -124,19 +122,19 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Usage getSubjectParameter() {
         Usage subjectParameter = this.basicGetSubjectParameter();
-        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage)this.eResolveProxy((InternalEObject)subjectParameter) : subjectParameter;
+        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage) this.eResolveProxy((InternalEObject) subjectParameter) : subjectParameter;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Usage basicGetSubjectParameter() {
@@ -149,8 +147,8 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -159,27 +157,24 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
             case SysmlPackage.CASE_USAGE__ACTOR_PARAMETER:
                 return this.getActorParameter();
             case SysmlPackage.CASE_USAGE__CASE_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getCaseDefinition();
-                }
                 return this.basicGetCaseDefinition();
             case SysmlPackage.CASE_USAGE__OBJECTIVE_REQUIREMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getObjectiveRequirement();
-                }
                 return this.basicGetObjectiveRequirement();
             case SysmlPackage.CASE_USAGE__SUBJECT_PARAMETER:
-                if (resolve) {
+                if (resolve)
                     return this.getSubjectParameter();
-                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -197,4 +192,4 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
         return super.eIsSet(featureID);
     }
 
-} //CaseUsageImpl
+} // CaseUsageImpl

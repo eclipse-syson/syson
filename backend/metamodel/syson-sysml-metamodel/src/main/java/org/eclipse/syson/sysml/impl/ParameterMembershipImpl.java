@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,22 +19,22 @@ import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Parameter Membership</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Parameter Membership</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ParameterMembershipImpl#getOwnedMemberParameter <em>Owned Member Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ParameterMembershipImpl#getOwnedMemberParameter <em>Owned Member
+ * Parameter</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ParameterMembershipImpl extends FeatureMembershipImpl implements ParameterMembership {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ParameterMembershipImpl() {
@@ -42,8 +42,8 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -52,19 +52,19 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Feature getOwnedMemberParameter() {
-        Feature ownedMemberParameter = basicGetOwnedMemberParameter();
-        return ownedMemberParameter != null && ownedMemberParameter.eIsProxy() ? (Feature)eResolveProxy((InternalEObject)ownedMemberParameter) : ownedMemberParameter;
+        Feature ownedMemberParameter = this.basicGetOwnedMemberParameter();
+        return ownedMemberParameter != null && ownedMemberParameter.eIsProxy() ? (Feature) this.eResolveProxy((InternalEObject) ownedMemberParameter) : ownedMemberParameter;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Feature basicGetOwnedMemberParameter() {
@@ -74,9 +74,10 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
                 .findFirst()
                 .orElse(null);
     }
-    
+
     /**
      * ownedMemberParameter : Feature {redefines ownedMemberFeature}
+     *
      * @generated NOT
      */
     @Override
@@ -85,32 +86,33 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.PARAMETER_MEMBERSHIP__OWNED_MEMBER_PARAMETER:
-                if (resolve) return getOwnedMemberParameter();
-                return basicGetOwnedMemberParameter();
+                if (resolve)
+                    return this.getOwnedMemberParameter();
+                return this.basicGetOwnedMemberParameter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.PARAMETER_MEMBERSHIP__OWNED_MEMBER_PARAMETER:
-                return basicGetOwnedMemberParameter() != null;
+                return this.basicGetOwnedMemberParameter() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //ParameterMembershipImpl
+} // ParameterMembershipImpl

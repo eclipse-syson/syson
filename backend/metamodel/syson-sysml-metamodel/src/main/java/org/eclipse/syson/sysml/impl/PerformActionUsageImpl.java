@@ -1,20 +1,19 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -22,32 +21,28 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.EventOccurrenceUsage;
-import org.eclipse.syson.sysml.FeatureMembership;
-import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 
-
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Perform Action Usage</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Perform Action Usage</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.PerformActionUsageImpl#getEventOccurrence <em>Event Occurrence</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.PerformActionUsageImpl#getPerformedAction <em>Performed Action</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.PerformActionUsageImpl#getEventOccurrence <em>Event Occurrence</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.PerformActionUsageImpl#getPerformedAction <em>Performed Action</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class PerformActionUsageImpl extends ActionUsageImpl implements PerformActionUsage {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected PerformActionUsageImpl() {
@@ -55,8 +50,8 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -65,19 +60,19 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public OccurrenceUsage getEventOccurrence() {
-        OccurrenceUsage eventOccurrence = basicGetEventOccurrence();
-        return eventOccurrence != null && eventOccurrence.eIsProxy() ? (OccurrenceUsage)eResolveProxy((InternalEObject)eventOccurrence) : eventOccurrence;
+        OccurrenceUsage eventOccurrence = this.basicGetEventOccurrence();
+        return eventOccurrence != null && eventOccurrence.eIsProxy() ? (OccurrenceUsage) this.eResolveProxy((InternalEObject) eventOccurrence) : eventOccurrence;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public OccurrenceUsage basicGetEventOccurrence() {
@@ -88,19 +83,19 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ActionUsage getPerformedAction() {
-        ActionUsage performedAction = basicGetPerformedAction();
-        return performedAction != null && performedAction.eIsProxy() ? (ActionUsage)eResolveProxy((InternalEObject)performedAction) : performedAction;
+        ActionUsage performedAction = this.basicGetPerformedAction();
+        return performedAction != null && performedAction.eIsProxy() ? (ActionUsage) this.eResolveProxy((InternalEObject) performedAction) : performedAction;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ActionUsage basicGetPerformedAction() {
@@ -111,75 +106,80 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.PERFORM_ACTION_USAGE__EVENT_OCCURRENCE:
-                if (resolve) return getEventOccurrence();
-                return basicGetEventOccurrence();
+                if (resolve)
+                    return this.getEventOccurrence();
+                return this.basicGetEventOccurrence();
             case SysmlPackage.PERFORM_ACTION_USAGE__PERFORMED_ACTION:
-                if (resolve) return getPerformedAction();
-                return basicGetPerformedAction();
+                if (resolve)
+                    return this.getPerformedAction();
+                return this.basicGetPerformedAction();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.PERFORM_ACTION_USAGE__EVENT_OCCURRENCE:
-                return basicGetEventOccurrence() != null;
+                return this.basicGetEventOccurrence() != null;
             case SysmlPackage.PERFORM_ACTION_USAGE__PERFORMED_ACTION:
-                return basicGetPerformedAction() != null;
+                return this.basicGetPerformedAction() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == EventOccurrenceUsage.class) {
             switch (derivedFeatureID) {
-                case SysmlPackage.PERFORM_ACTION_USAGE__EVENT_OCCURRENCE: return SysmlPackage.EVENT_OCCURRENCE_USAGE__EVENT_OCCURRENCE;
-                default: return -1;
+                case SysmlPackage.PERFORM_ACTION_USAGE__EVENT_OCCURRENCE:
+                    return SysmlPackage.EVENT_OCCURRENCE_USAGE__EVENT_OCCURRENCE;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == EventOccurrenceUsage.class) {
             switch (baseFeatureID) {
-                case SysmlPackage.EVENT_OCCURRENCE_USAGE__EVENT_OCCURRENCE: return SysmlPackage.PERFORM_ACTION_USAGE__EVENT_OCCURRENCE;
-                default: return -1;
+                case SysmlPackage.EVENT_OCCURRENCE_USAGE__EVENT_OCCURRENCE:
+                    return SysmlPackage.PERFORM_ACTION_USAGE__EVENT_OCCURRENCE;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
-
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -188,4 +188,4 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
-} //PerformActionUsageImpl
+} // PerformActionUsageImpl

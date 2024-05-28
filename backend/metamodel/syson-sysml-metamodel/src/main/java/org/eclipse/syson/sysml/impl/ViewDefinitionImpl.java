@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -28,25 +28,24 @@ import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.ViewpointUsage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>View Definition</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>View Definition</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ViewDefinitionImpl#getSatisfiedViewpoint <em>Satisfied Viewpoint</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ViewDefinitionImpl#getView <em>View</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ViewDefinitionImpl#getViewCondition <em>View Condition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ViewDefinitionImpl#getViewRendering <em>View Rendering</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ViewDefinitionImpl#getSatisfiedViewpoint <em>Satisfied Viewpoint</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ViewDefinitionImpl#getView <em>View</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ViewDefinitionImpl#getViewCondition <em>View Condition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ViewDefinitionImpl#getViewRendering <em>View Rendering</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ViewDefinitionImpl extends PartDefinitionImpl implements ViewDefinition {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ViewDefinitionImpl() {
@@ -54,8 +53,8 @@ public class ViewDefinitionImpl extends PartDefinitionImpl implements ViewDefini
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -64,8 +63,8 @@ public class ViewDefinitionImpl extends PartDefinitionImpl implements ViewDefini
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -75,8 +74,8 @@ public class ViewDefinitionImpl extends PartDefinitionImpl implements ViewDefini
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -86,8 +85,8 @@ public class ViewDefinitionImpl extends PartDefinitionImpl implements ViewDefini
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -97,19 +96,19 @@ public class ViewDefinitionImpl extends PartDefinitionImpl implements ViewDefini
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public RenderingUsage getViewRendering() {
-        RenderingUsage viewRendering = basicGetViewRendering();
-        return viewRendering != null && viewRendering.eIsProxy() ? (RenderingUsage)eResolveProxy((InternalEObject)viewRendering) : viewRendering;
+        RenderingUsage viewRendering = this.basicGetViewRendering();
+        return viewRendering != null && viewRendering.eIsProxy() ? (RenderingUsage) this.eResolveProxy((InternalEObject) viewRendering) : viewRendering;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public RenderingUsage basicGetViewRendering() {
@@ -120,44 +119,45 @@ public class ViewDefinitionImpl extends PartDefinitionImpl implements ViewDefini
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.VIEW_DEFINITION__SATISFIED_VIEWPOINT:
-                return getSatisfiedViewpoint();
+                return this.getSatisfiedViewpoint();
             case SysmlPackage.VIEW_DEFINITION__VIEW:
-                return getView();
+                return this.getView();
             case SysmlPackage.VIEW_DEFINITION__VIEW_CONDITION:
-                return getViewCondition();
+                return this.getViewCondition();
             case SysmlPackage.VIEW_DEFINITION__VIEW_RENDERING:
-                if (resolve) return getViewRendering();
-                return basicGetViewRendering();
+                if (resolve)
+                    return this.getViewRendering();
+                return this.basicGetViewRendering();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.VIEW_DEFINITION__SATISFIED_VIEWPOINT:
-                return !getSatisfiedViewpoint().isEmpty();
+                return !this.getSatisfiedViewpoint().isEmpty();
             case SysmlPackage.VIEW_DEFINITION__VIEW:
-                return !getView().isEmpty();
+                return !this.getView().isEmpty();
             case SysmlPackage.VIEW_DEFINITION__VIEW_CONDITION:
-                return !getViewCondition().isEmpty();
+                return !this.getViewCondition().isEmpty();
             case SysmlPackage.VIEW_DEFINITION__VIEW_RENDERING:
-                return basicGetViewRendering() != null;
+                return this.basicGetViewRendering() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //ViewDefinitionImpl
+} // ViewDefinitionImpl

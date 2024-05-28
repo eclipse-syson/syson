@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -21,24 +21,25 @@ import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Reference Subsetting</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Reference Subsetting</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ReferenceSubsettingImpl#getReferencedFeature <em>Referenced Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ReferenceSubsettingImpl#getReferencingFeature <em>Referencing Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ReferenceSubsettingImpl#getReferencedFeature <em>Referenced
+ * Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ReferenceSubsettingImpl#getReferencingFeature <em>Referencing
+ * Feature</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ReferenceSubsettingImpl extends SubsettingImpl implements ReferenceSubsetting {
     /**
-     * The cached value of the '{@link #getReferencedFeature() <em>Referenced Feature</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getReferencedFeature() <em>Referenced Feature</em>}' reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getReferencedFeature()
      * @generated
      * @ordered
@@ -46,8 +47,8 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
     protected Feature referencedFeature;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ReferenceSubsettingImpl() {
@@ -55,8 +56,8 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -65,28 +66,28 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Feature getReferencedFeature() {
-        if (referencedFeature != null && referencedFeature.eIsProxy()) {
-            InternalEObject oldReferencedFeature = (InternalEObject)referencedFeature;
-            referencedFeature = (Feature)eResolveProxy(oldReferencedFeature);
-            if (referencedFeature != oldReferencedFeature) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE, oldReferencedFeature, referencedFeature));
+        if (this.referencedFeature != null && this.referencedFeature.eIsProxy()) {
+            InternalEObject oldReferencedFeature = (InternalEObject) this.referencedFeature;
+            this.referencedFeature = (Feature) this.eResolveProxy(oldReferencedFeature);
+            if (this.referencedFeature != oldReferencedFeature) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE, oldReferencedFeature, this.referencedFeature));
             }
         }
-        return referencedFeature;
+        return this.referencedFeature;
     }
-    
+
     /**
      * referencedFeature : Feature {redefines subsettedFeature}.
-     * 
+     *
      * The Feature that is referenced by the referencingFeature of this ReferenceSubsetting.
-     * 
+     *
      * @generated NOT
      */
     @Override
@@ -94,13 +95,11 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
         return this.getReferencedFeature();
     }
 
-    
     /**
      * referencedFeature : Feature {redefines subsettedFeature}.
-     * 
-     * The Feature that is referenced by the referencingFeature of this ReferenceSubsetting.
-     * Setter.
-     * 
+     *
+     * The Feature that is referenced by the referencingFeature of this ReferenceSubsetting. Setter.
+     *
      * @generated NOT
      */
     @Override
@@ -110,41 +109,41 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Feature basicGetReferencedFeature() {
-        return referencedFeature;
+        return this.referencedFeature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setReferencedFeature(Feature newReferencedFeature) {
-        Feature oldReferencedFeature = referencedFeature;
-        referencedFeature = newReferencedFeature;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE, oldReferencedFeature, referencedFeature));
+        Feature oldReferencedFeature = this.referencedFeature;
+        this.referencedFeature = newReferencedFeature;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE, oldReferencedFeature, this.referencedFeature));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Feature getReferencingFeature() {
-        Feature referencingFeature = basicGetReferencingFeature();
-        return referencingFeature != null && referencingFeature.eIsProxy() ? (Feature)eResolveProxy((InternalEObject)referencingFeature) : referencingFeature;
+        Feature referencingFeature = this.basicGetReferencingFeature();
+        return referencingFeature != null && referencingFeature.eIsProxy() ? (Feature) this.eResolveProxy((InternalEObject) referencingFeature) : referencingFeature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Feature basicGetReferencingFeature() {
@@ -155,67 +154,69 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE:
-                if (resolve) return getReferencedFeature();
-                return basicGetReferencedFeature();
+                if (resolve)
+                    return this.getReferencedFeature();
+                return this.basicGetReferencedFeature();
             case SysmlPackage.REFERENCE_SUBSETTING__REFERENCING_FEATURE:
-                if (resolve) return getReferencingFeature();
-                return basicGetReferencingFeature();
+                if (resolve)
+                    return this.getReferencingFeature();
+                return this.basicGetReferencingFeature();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE:
-                setReferencedFeature((Feature)newValue);
+                this.setReferencedFeature((Feature) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE:
-                setReferencedFeature((Feature)null);
+                this.setReferencedFeature((Feature) null);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE:
-                return referencedFeature != null;
+                return this.referencedFeature != null;
             case SysmlPackage.REFERENCE_SUBSETTING__REFERENCING_FEATURE:
-                return basicGetReferencingFeature() != null;
+                return this.basicGetReferencingFeature() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //ReferenceSubsettingImpl
+} // ReferenceSubsettingImpl

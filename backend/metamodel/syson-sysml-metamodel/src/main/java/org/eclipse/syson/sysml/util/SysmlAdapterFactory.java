@@ -1,217 +1,41 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
-
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
-
 import org.eclipse.emf.ecore.EObject;
-
-import org.eclipse.syson.sysml.AcceptActionUsage;
-import org.eclipse.syson.sysml.ActionDefinition;
-import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.ActorMembership;
-import org.eclipse.syson.sysml.AllocationDefinition;
-import org.eclipse.syson.sysml.AllocationUsage;
-import org.eclipse.syson.sysml.AnalysisCaseDefinition;
-import org.eclipse.syson.sysml.AnalysisCaseUsage;
-import org.eclipse.syson.sysml.AnnotatingElement;
-import org.eclipse.syson.sysml.Annotation;
-import org.eclipse.syson.sysml.AssertConstraintUsage;
-import org.eclipse.syson.sysml.AssignmentActionUsage;
-import org.eclipse.syson.sysml.Association;
-import org.eclipse.syson.sysml.AssociationStructure;
-import org.eclipse.syson.sysml.AttributeDefinition;
-import org.eclipse.syson.sysml.AttributeUsage;
-import org.eclipse.syson.sysml.Behavior;
-import org.eclipse.syson.sysml.BindingConnector;
-import org.eclipse.syson.sysml.BindingConnectorAsUsage;
-import org.eclipse.syson.sysml.BooleanExpression;
-import org.eclipse.syson.sysml.CalculationDefinition;
-import org.eclipse.syson.sysml.CalculationUsage;
-import org.eclipse.syson.sysml.CaseDefinition;
-import org.eclipse.syson.sysml.CaseUsage;
-import org.eclipse.syson.sysml.Classifier;
-import org.eclipse.syson.sysml.CollectExpression;
-import org.eclipse.syson.sysml.Comment;
-import org.eclipse.syson.sysml.ConcernDefinition;
-import org.eclipse.syson.sysml.ConcernUsage;
-import org.eclipse.syson.sysml.ConjugatedPortDefinition;
-import org.eclipse.syson.sysml.ConjugatedPortTyping;
-import org.eclipse.syson.sysml.Conjugation;
-import org.eclipse.syson.sysml.ConnectionDefinition;
-import org.eclipse.syson.sysml.ConnectionUsage;
-import org.eclipse.syson.sysml.Connector;
-import org.eclipse.syson.sysml.ConnectorAsUsage;
-import org.eclipse.syson.sysml.ConstraintDefinition;
-import org.eclipse.syson.sysml.ConstraintUsage;
-import org.eclipse.syson.sysml.ControlNode;
-import org.eclipse.syson.sysml.DataType;
-import org.eclipse.syson.sysml.DecisionNode;
-import org.eclipse.syson.sysml.Definition;
-import org.eclipse.syson.sysml.Dependency;
-import org.eclipse.syson.sysml.Differencing;
-import org.eclipse.syson.sysml.Disjoining;
-import org.eclipse.syson.sysml.Documentation;
-import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.ElementFilterMembership;
-import org.eclipse.syson.sysml.EndFeatureMembership;
-import org.eclipse.syson.sysml.EnumerationDefinition;
-import org.eclipse.syson.sysml.EnumerationUsage;
-import org.eclipse.syson.sysml.EventOccurrenceUsage;
-import org.eclipse.syson.sysml.ExhibitStateUsage;
-import org.eclipse.syson.sysml.Expose;
-import org.eclipse.syson.sysml.Expression;
-import org.eclipse.syson.sysml.Feature;
-import org.eclipse.syson.sysml.FeatureChainExpression;
-import org.eclipse.syson.sysml.FeatureChaining;
-import org.eclipse.syson.sysml.FeatureInverting;
-import org.eclipse.syson.sysml.FeatureMembership;
-import org.eclipse.syson.sysml.FeatureReferenceExpression;
-import org.eclipse.syson.sysml.FeatureTyping;
-import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.Featuring;
-import org.eclipse.syson.sysml.FlowConnectionDefinition;
-import org.eclipse.syson.sysml.FlowConnectionUsage;
-import org.eclipse.syson.sysml.ForLoopActionUsage;
-import org.eclipse.syson.sysml.ForkNode;
-import org.eclipse.syson.sysml.FramedConcernMembership;
-import org.eclipse.syson.sysml.Function;
-import org.eclipse.syson.sysml.IfActionUsage;
-import org.eclipse.syson.sysml.Import;
-import org.eclipse.syson.sysml.IncludeUseCaseUsage;
-import org.eclipse.syson.sysml.Interaction;
-import org.eclipse.syson.sysml.InterfaceDefinition;
-import org.eclipse.syson.sysml.InterfaceUsage;
-import org.eclipse.syson.sysml.Intersecting;
-import org.eclipse.syson.sysml.Invariant;
-import org.eclipse.syson.sysml.InvocationExpression;
-import org.eclipse.syson.sysml.ItemDefinition;
-import org.eclipse.syson.sysml.ItemFeature;
-import org.eclipse.syson.sysml.ItemFlow;
-import org.eclipse.syson.sysml.ItemFlowEnd;
-import org.eclipse.syson.sysml.ItemUsage;
-import org.eclipse.syson.sysml.JoinNode;
-import org.eclipse.syson.sysml.LibraryPackage;
-import org.eclipse.syson.sysml.LifeClass;
-import org.eclipse.syson.sysml.LiteralBoolean;
-import org.eclipse.syson.sysml.LiteralExpression;
-import org.eclipse.syson.sysml.LiteralInfinity;
-import org.eclipse.syson.sysml.LiteralInteger;
-import org.eclipse.syson.sysml.LiteralRational;
-import org.eclipse.syson.sysml.LiteralString;
-import org.eclipse.syson.sysml.LoopActionUsage;
-import org.eclipse.syson.sysml.Membership;
-import org.eclipse.syson.sysml.MembershipExpose;
-import org.eclipse.syson.sysml.MembershipImport;
-import org.eclipse.syson.sysml.MergeNode;
-import org.eclipse.syson.sysml.Metaclass;
-import org.eclipse.syson.sysml.MetadataAccessExpression;
-import org.eclipse.syson.sysml.MetadataDefinition;
-import org.eclipse.syson.sysml.MetadataFeature;
-import org.eclipse.syson.sysml.MetadataUsage;
-import org.eclipse.syson.sysml.Multiplicity;
-import org.eclipse.syson.sysml.MultiplicityRange;
-import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.sysml.NamespaceExpose;
-import org.eclipse.syson.sysml.NamespaceImport;
-import org.eclipse.syson.sysml.NullExpression;
-import org.eclipse.syson.sysml.ObjectiveMembership;
-import org.eclipse.syson.sysml.OccurrenceDefinition;
-import org.eclipse.syson.sysml.OccurrenceUsage;
-import org.eclipse.syson.sysml.OperatorExpression;
-import org.eclipse.syson.sysml.OwningMembership;
-import org.eclipse.syson.sysml.ParameterMembership;
-import org.eclipse.syson.sysml.PartDefinition;
-import org.eclipse.syson.sysml.PartUsage;
-import org.eclipse.syson.sysml.PerformActionUsage;
-import org.eclipse.syson.sysml.PortConjugation;
-import org.eclipse.syson.sysml.PortDefinition;
-import org.eclipse.syson.sysml.PortUsage;
-import org.eclipse.syson.sysml.Predicate;
-import org.eclipse.syson.sysml.Redefinition;
-import org.eclipse.syson.sysml.ReferenceSubsetting;
-import org.eclipse.syson.sysml.ReferenceUsage;
-import org.eclipse.syson.sysml.Relationship;
-import org.eclipse.syson.sysml.RenderingDefinition;
-import org.eclipse.syson.sysml.RenderingUsage;
-import org.eclipse.syson.sysml.RequirementConstraintMembership;
-import org.eclipse.syson.sysml.RequirementDefinition;
-import org.eclipse.syson.sysml.RequirementUsage;
-import org.eclipse.syson.sysml.RequirementVerificationMembership;
-import org.eclipse.syson.sysml.ResultExpressionMembership;
-import org.eclipse.syson.sysml.ReturnParameterMembership;
-import org.eclipse.syson.sysml.SatisfyRequirementUsage;
-import org.eclipse.syson.sysml.SelectExpression;
-import org.eclipse.syson.sysml.SendActionUsage;
-import org.eclipse.syson.sysml.Specialization;
-import org.eclipse.syson.sysml.StakeholderMembership;
-import org.eclipse.syson.sysml.StateDefinition;
-import org.eclipse.syson.sysml.StateSubactionMembership;
-import org.eclipse.syson.sysml.StateUsage;
-import org.eclipse.syson.sysml.Step;
-import org.eclipse.syson.sysml.Structure;
-import org.eclipse.syson.sysml.Subclassification;
-import org.eclipse.syson.sysml.SubjectMembership;
-import org.eclipse.syson.sysml.Subsetting;
-import org.eclipse.syson.sysml.Succession;
-import org.eclipse.syson.sysml.SuccessionAsUsage;
-import org.eclipse.syson.sysml.SuccessionFlowConnectionUsage;
-import org.eclipse.syson.sysml.SuccessionItemFlow;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.TextualRepresentation;
-import org.eclipse.syson.sysml.TransitionFeatureMembership;
-import org.eclipse.syson.sysml.TransitionUsage;
-import org.eclipse.syson.sysml.TriggerInvocationExpression;
-import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.TypeFeaturing;
-import org.eclipse.syson.sysml.Unioning;
-import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.sysml.UseCaseDefinition;
-import org.eclipse.syson.sysml.UseCaseUsage;
-import org.eclipse.syson.sysml.VariantMembership;
-import org.eclipse.syson.sysml.VerificationCaseDefinition;
-import org.eclipse.syson.sysml.VerificationCaseUsage;
-import org.eclipse.syson.sysml.ViewDefinition;
-import org.eclipse.syson.sysml.ViewRenderingMembership;
-import org.eclipse.syson.sysml.ViewUsage;
-import org.eclipse.syson.sysml.ViewpointDefinition;
-import org.eclipse.syson.sysml.ViewpointUsage;
-import org.eclipse.syson.sysml.WhileLoopActionUsage;
+import org.eclipse.syson.sysml.*;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Adapter Factory</b> for the model.
- * It provides an adapter <code>createXXX</code> method for each class of the model.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
+ * method for each class of the model. <!-- end-user-doc -->
+ *
  * @see org.eclipse.syson.sysml.SysmlPackage
  * @generated
  */
 public class SysmlAdapterFactory extends AdapterFactoryImpl {
     /**
-     * The cached model package.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected static SysmlPackage modelPackage;
 
     /**
-     * Creates an instance of the adapter factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public SysmlAdapterFactory() {
@@ -221,10 +45,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Returns whether this factory is applicable for the type of the object.
-     * <!-- begin-user-doc -->
-     * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
-     * <!-- end-user-doc -->
+     * Returns whether this factory is applicable for the type of the object. <!-- begin-user-doc --> This
+     * implementation returns <code>true</code> if the object is either the model's package or is an instance object of
+     * the model. <!-- end-user-doc -->
+     *
      * @return whether this factory is applicable for the type of the object.
      * @generated
      */
@@ -234,733 +58,901 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
             return true;
         }
         if (object instanceof EObject) {
-            return ((EObject)object).eClass().getEPackage() == modelPackage;
+            return ((EObject) object).eClass().getEPackage() == modelPackage;
         }
         return false;
     }
 
     /**
-     * The switch that delegates to the <code>createXXX</code> methods.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The switch that delegates to the <code>createXXX</code> methods. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
-    protected SysmlSwitch<Adapter> modelSwitch =
-        new SysmlSwitch<Adapter>() {
-            @Override
-            public Adapter caseAcceptActionUsage(AcceptActionUsage object) {
-                return createAcceptActionUsageAdapter();
-            }
-            @Override
-            public Adapter caseActionDefinition(ActionDefinition object) {
-                return createActionDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseActionUsage(ActionUsage object) {
-                return createActionUsageAdapter();
-            }
-            @Override
-            public Adapter caseActorMembership(ActorMembership object) {
-                return createActorMembershipAdapter();
-            }
-            @Override
-            public Adapter caseAllocationDefinition(AllocationDefinition object) {
-                return createAllocationDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseAllocationUsage(AllocationUsage object) {
-                return createAllocationUsageAdapter();
-            }
-            @Override
-            public Adapter caseAnalysisCaseDefinition(AnalysisCaseDefinition object) {
-                return createAnalysisCaseDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseAnalysisCaseUsage(AnalysisCaseUsage object) {
-                return createAnalysisCaseUsageAdapter();
-            }
-            @Override
-            public Adapter caseAnnotatingElement(AnnotatingElement object) {
-                return createAnnotatingElementAdapter();
-            }
-            @Override
-            public Adapter caseAnnotation(Annotation object) {
-                return createAnnotationAdapter();
-            }
-            @Override
-            public Adapter caseAssertConstraintUsage(AssertConstraintUsage object) {
-                return createAssertConstraintUsageAdapter();
-            }
-            @Override
-            public Adapter caseAssignmentActionUsage(AssignmentActionUsage object) {
-                return createAssignmentActionUsageAdapter();
-            }
-            @Override
-            public Adapter caseAssociation(Association object) {
-                return createAssociationAdapter();
-            }
-            @Override
-            public Adapter caseAssociationStructure(AssociationStructure object) {
-                return createAssociationStructureAdapter();
-            }
-            @Override
-            public Adapter caseAttributeDefinition(AttributeDefinition object) {
-                return createAttributeDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseAttributeUsage(AttributeUsage object) {
-                return createAttributeUsageAdapter();
-            }
-            @Override
-            public Adapter caseBehavior(Behavior object) {
-                return createBehaviorAdapter();
-            }
-            @Override
-            public Adapter caseBindingConnector(BindingConnector object) {
-                return createBindingConnectorAdapter();
-            }
-            @Override
-            public Adapter caseBindingConnectorAsUsage(BindingConnectorAsUsage object) {
-                return createBindingConnectorAsUsageAdapter();
-            }
-            @Override
-            public Adapter caseBooleanExpression(BooleanExpression object) {
-                return createBooleanExpressionAdapter();
-            }
-            @Override
-            public Adapter caseCalculationDefinition(CalculationDefinition object) {
-                return createCalculationDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseCalculationUsage(CalculationUsage object) {
-                return createCalculationUsageAdapter();
-            }
-            @Override
-            public Adapter caseCaseDefinition(CaseDefinition object) {
-                return createCaseDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseCaseUsage(CaseUsage object) {
-                return createCaseUsageAdapter();
-            }
-            @Override
-            public Adapter caseClass(org.eclipse.syson.sysml.Class object) {
-                return createClassAdapter();
-            }
-            @Override
-            public Adapter caseClassifier(Classifier object) {
-                return createClassifierAdapter();
-            }
-            @Override
-            public Adapter caseCollectExpression(CollectExpression object) {
-                return createCollectExpressionAdapter();
-            }
-            @Override
-            public Adapter caseComment(Comment object) {
-                return createCommentAdapter();
-            }
-            @Override
-            public Adapter caseConcernDefinition(ConcernDefinition object) {
-                return createConcernDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseConcernUsage(ConcernUsage object) {
-                return createConcernUsageAdapter();
-            }
-            @Override
-            public Adapter caseConjugatedPortDefinition(ConjugatedPortDefinition object) {
-                return createConjugatedPortDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseConjugatedPortTyping(ConjugatedPortTyping object) {
-                return createConjugatedPortTypingAdapter();
-            }
-            @Override
-            public Adapter caseConjugation(Conjugation object) {
-                return createConjugationAdapter();
-            }
-            @Override
-            public Adapter caseConnectionDefinition(ConnectionDefinition object) {
-                return createConnectionDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseConnectionUsage(ConnectionUsage object) {
-                return createConnectionUsageAdapter();
-            }
-            @Override
-            public Adapter caseConnector(Connector object) {
-                return createConnectorAdapter();
-            }
-            @Override
-            public Adapter caseConnectorAsUsage(ConnectorAsUsage object) {
-                return createConnectorAsUsageAdapter();
-            }
-            @Override
-            public Adapter caseConstraintDefinition(ConstraintDefinition object) {
-                return createConstraintDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseConstraintUsage(ConstraintUsage object) {
-                return createConstraintUsageAdapter();
-            }
-            @Override
-            public Adapter caseControlNode(ControlNode object) {
-                return createControlNodeAdapter();
-            }
-            @Override
-            public Adapter caseDataType(DataType object) {
-                return createDataTypeAdapter();
-            }
-            @Override
-            public Adapter caseDecisionNode(DecisionNode object) {
-                return createDecisionNodeAdapter();
-            }
-            @Override
-            public Adapter caseDefinition(Definition object) {
-                return createDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseDependency(Dependency object) {
-                return createDependencyAdapter();
-            }
-            @Override
-            public Adapter caseDifferencing(Differencing object) {
-                return createDifferencingAdapter();
-            }
-            @Override
-            public Adapter caseDisjoining(Disjoining object) {
-                return createDisjoiningAdapter();
-            }
-            @Override
-            public Adapter caseDocumentation(Documentation object) {
-                return createDocumentationAdapter();
-            }
-            @Override
-            public Adapter caseElement(Element object) {
-                return createElementAdapter();
-            }
-            @Override
-            public Adapter caseElementFilterMembership(ElementFilterMembership object) {
-                return createElementFilterMembershipAdapter();
-            }
-            @Override
-            public Adapter caseEndFeatureMembership(EndFeatureMembership object) {
-                return createEndFeatureMembershipAdapter();
-            }
-            @Override
-            public Adapter caseEnumerationDefinition(EnumerationDefinition object) {
-                return createEnumerationDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseEnumerationUsage(EnumerationUsage object) {
-                return createEnumerationUsageAdapter();
-            }
-            @Override
-            public Adapter caseEventOccurrenceUsage(EventOccurrenceUsage object) {
-                return createEventOccurrenceUsageAdapter();
-            }
-            @Override
-            public Adapter caseExhibitStateUsage(ExhibitStateUsage object) {
-                return createExhibitStateUsageAdapter();
-            }
-            @Override
-            public Adapter caseExpose(Expose object) {
-                return createExposeAdapter();
-            }
-            @Override
-            public Adapter caseExpression(Expression object) {
-                return createExpressionAdapter();
-            }
-            @Override
-            public Adapter caseFeature(Feature object) {
-                return createFeatureAdapter();
-            }
-            @Override
-            public Adapter caseFeatureChainExpression(FeatureChainExpression object) {
-                return createFeatureChainExpressionAdapter();
-            }
-            @Override
-            public Adapter caseFeatureChaining(FeatureChaining object) {
-                return createFeatureChainingAdapter();
-            }
-            @Override
-            public Adapter caseFeatureInverting(FeatureInverting object) {
-                return createFeatureInvertingAdapter();
-            }
-            @Override
-            public Adapter caseFeatureMembership(FeatureMembership object) {
-                return createFeatureMembershipAdapter();
-            }
-            @Override
-            public Adapter caseFeatureReferenceExpression(FeatureReferenceExpression object) {
-                return createFeatureReferenceExpressionAdapter();
-            }
-            @Override
-            public Adapter caseFeatureTyping(FeatureTyping object) {
-                return createFeatureTypingAdapter();
-            }
-            @Override
-            public Adapter caseFeatureValue(FeatureValue object) {
-                return createFeatureValueAdapter();
-            }
-            @Override
-            public Adapter caseFeaturing(Featuring object) {
-                return createFeaturingAdapter();
-            }
-            @Override
-            public Adapter caseFlowConnectionDefinition(FlowConnectionDefinition object) {
-                return createFlowConnectionDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseFlowConnectionUsage(FlowConnectionUsage object) {
-                return createFlowConnectionUsageAdapter();
-            }
-            @Override
-            public Adapter caseForkNode(ForkNode object) {
-                return createForkNodeAdapter();
-            }
-            @Override
-            public Adapter caseForLoopActionUsage(ForLoopActionUsage object) {
-                return createForLoopActionUsageAdapter();
-            }
-            @Override
-            public Adapter caseFramedConcernMembership(FramedConcernMembership object) {
-                return createFramedConcernMembershipAdapter();
-            }
-            @Override
-            public Adapter caseFunction(Function object) {
-                return createFunctionAdapter();
-            }
-            @Override
-            public Adapter caseIfActionUsage(IfActionUsage object) {
-                return createIfActionUsageAdapter();
-            }
-            @Override
-            public Adapter caseImport(Import object) {
-                return createImportAdapter();
-            }
-            @Override
-            public Adapter caseIncludeUseCaseUsage(IncludeUseCaseUsage object) {
-                return createIncludeUseCaseUsageAdapter();
-            }
-            @Override
-            public Adapter caseInteraction(Interaction object) {
-                return createInteractionAdapter();
-            }
-            @Override
-            public Adapter caseInterfaceDefinition(InterfaceDefinition object) {
-                return createInterfaceDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseInterfaceUsage(InterfaceUsage object) {
-                return createInterfaceUsageAdapter();
-            }
-            @Override
-            public Adapter caseIntersecting(Intersecting object) {
-                return createIntersectingAdapter();
-            }
-            @Override
-            public Adapter caseInvariant(Invariant object) {
-                return createInvariantAdapter();
-            }
-            @Override
-            public Adapter caseInvocationExpression(InvocationExpression object) {
-                return createInvocationExpressionAdapter();
-            }
-            @Override
-            public Adapter caseItemDefinition(ItemDefinition object) {
-                return createItemDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseItemFeature(ItemFeature object) {
-                return createItemFeatureAdapter();
-            }
-            @Override
-            public Adapter caseItemFlow(ItemFlow object) {
-                return createItemFlowAdapter();
-            }
-            @Override
-            public Adapter caseItemFlowEnd(ItemFlowEnd object) {
-                return createItemFlowEndAdapter();
-            }
-            @Override
-            public Adapter caseItemUsage(ItemUsage object) {
-                return createItemUsageAdapter();
-            }
-            @Override
-            public Adapter caseJoinNode(JoinNode object) {
-                return createJoinNodeAdapter();
-            }
-            @Override
-            public Adapter caseLibraryPackage(LibraryPackage object) {
-                return createLibraryPackageAdapter();
-            }
-            @Override
-            public Adapter caseLifeClass(LifeClass object) {
-                return createLifeClassAdapter();
-            }
-            @Override
-            public Adapter caseLiteralBoolean(LiteralBoolean object) {
-                return createLiteralBooleanAdapter();
-            }
-            @Override
-            public Adapter caseLiteralExpression(LiteralExpression object) {
-                return createLiteralExpressionAdapter();
-            }
-            @Override
-            public Adapter caseLiteralInfinity(LiteralInfinity object) {
-                return createLiteralInfinityAdapter();
-            }
-            @Override
-            public Adapter caseLiteralInteger(LiteralInteger object) {
-                return createLiteralIntegerAdapter();
-            }
-            @Override
-            public Adapter caseLiteralRational(LiteralRational object) {
-                return createLiteralRationalAdapter();
-            }
-            @Override
-            public Adapter caseLiteralString(LiteralString object) {
-                return createLiteralStringAdapter();
-            }
-            @Override
-            public Adapter caseLoopActionUsage(LoopActionUsage object) {
-                return createLoopActionUsageAdapter();
-            }
-            @Override
-            public Adapter caseMembership(Membership object) {
-                return createMembershipAdapter();
-            }
-            @Override
-            public Adapter caseMembershipExpose(MembershipExpose object) {
-                return createMembershipExposeAdapter();
-            }
-            @Override
-            public Adapter caseMembershipImport(MembershipImport object) {
-                return createMembershipImportAdapter();
-            }
-            @Override
-            public Adapter caseMergeNode(MergeNode object) {
-                return createMergeNodeAdapter();
-            }
-            @Override
-            public Adapter caseMetaclass(Metaclass object) {
-                return createMetaclassAdapter();
-            }
-            @Override
-            public Adapter caseMetadataAccessExpression(MetadataAccessExpression object) {
-                return createMetadataAccessExpressionAdapter();
-            }
-            @Override
-            public Adapter caseMetadataDefinition(MetadataDefinition object) {
-                return createMetadataDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseMetadataFeature(MetadataFeature object) {
-                return createMetadataFeatureAdapter();
-            }
-            @Override
-            public Adapter caseMetadataUsage(MetadataUsage object) {
-                return createMetadataUsageAdapter();
-            }
-            @Override
-            public Adapter caseMultiplicity(Multiplicity object) {
-                return createMultiplicityAdapter();
-            }
-            @Override
-            public Adapter caseMultiplicityRange(MultiplicityRange object) {
-                return createMultiplicityRangeAdapter();
-            }
-            @Override
-            public Adapter caseNamespace(Namespace object) {
-                return createNamespaceAdapter();
-            }
-            @Override
-            public Adapter caseNamespaceExpose(NamespaceExpose object) {
-                return createNamespaceExposeAdapter();
-            }
-            @Override
-            public Adapter caseNamespaceImport(NamespaceImport object) {
-                return createNamespaceImportAdapter();
-            }
-            @Override
-            public Adapter caseNullExpression(NullExpression object) {
-                return createNullExpressionAdapter();
-            }
-            @Override
-            public Adapter caseObjectiveMembership(ObjectiveMembership object) {
-                return createObjectiveMembershipAdapter();
-            }
-            @Override
-            public Adapter caseOccurrenceDefinition(OccurrenceDefinition object) {
-                return createOccurrenceDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseOccurrenceUsage(OccurrenceUsage object) {
-                return createOccurrenceUsageAdapter();
-            }
-            @Override
-            public Adapter caseOperatorExpression(OperatorExpression object) {
-                return createOperatorExpressionAdapter();
-            }
-            @Override
-            public Adapter caseOwningMembership(OwningMembership object) {
-                return createOwningMembershipAdapter();
-            }
-            @Override
-            public Adapter casePackage(org.eclipse.syson.sysml.Package object) {
-                return createPackageAdapter();
-            }
-            @Override
-            public Adapter caseParameterMembership(ParameterMembership object) {
-                return createParameterMembershipAdapter();
-            }
-            @Override
-            public Adapter casePartDefinition(PartDefinition object) {
-                return createPartDefinitionAdapter();
-            }
-            @Override
-            public Adapter casePartUsage(PartUsage object) {
-                return createPartUsageAdapter();
-            }
-            @Override
-            public Adapter casePerformActionUsage(PerformActionUsage object) {
-                return createPerformActionUsageAdapter();
-            }
-            @Override
-            public Adapter casePortConjugation(PortConjugation object) {
-                return createPortConjugationAdapter();
-            }
-            @Override
-            public Adapter casePortDefinition(PortDefinition object) {
-                return createPortDefinitionAdapter();
-            }
-            @Override
-            public Adapter casePortUsage(PortUsage object) {
-                return createPortUsageAdapter();
-            }
-            @Override
-            public Adapter casePredicate(Predicate object) {
-                return createPredicateAdapter();
-            }
-            @Override
-            public Adapter caseRedefinition(Redefinition object) {
-                return createRedefinitionAdapter();
-            }
-            @Override
-            public Adapter caseReferenceSubsetting(ReferenceSubsetting object) {
-                return createReferenceSubsettingAdapter();
-            }
-            @Override
-            public Adapter caseReferenceUsage(ReferenceUsage object) {
-                return createReferenceUsageAdapter();
-            }
-            @Override
-            public Adapter caseRelationship(Relationship object) {
-                return createRelationshipAdapter();
-            }
-            @Override
-            public Adapter caseRenderingDefinition(RenderingDefinition object) {
-                return createRenderingDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseRenderingUsage(RenderingUsage object) {
-                return createRenderingUsageAdapter();
-            }
-            @Override
-            public Adapter caseRequirementConstraintMembership(RequirementConstraintMembership object) {
-                return createRequirementConstraintMembershipAdapter();
-            }
-            @Override
-            public Adapter caseRequirementDefinition(RequirementDefinition object) {
-                return createRequirementDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseRequirementUsage(RequirementUsage object) {
-                return createRequirementUsageAdapter();
-            }
-            @Override
-            public Adapter caseRequirementVerificationMembership(RequirementVerificationMembership object) {
-                return createRequirementVerificationMembershipAdapter();
-            }
-            @Override
-            public Adapter caseResultExpressionMembership(ResultExpressionMembership object) {
-                return createResultExpressionMembershipAdapter();
-            }
-            @Override
-            public Adapter caseReturnParameterMembership(ReturnParameterMembership object) {
-                return createReturnParameterMembershipAdapter();
-            }
-            @Override
-            public Adapter caseSatisfyRequirementUsage(SatisfyRequirementUsage object) {
-                return createSatisfyRequirementUsageAdapter();
-            }
-            @Override
-            public Adapter caseSelectExpression(SelectExpression object) {
-                return createSelectExpressionAdapter();
-            }
-            @Override
-            public Adapter caseSendActionUsage(SendActionUsage object) {
-                return createSendActionUsageAdapter();
-            }
-            @Override
-            public Adapter caseSpecialization(Specialization object) {
-                return createSpecializationAdapter();
-            }
-            @Override
-            public Adapter caseStakeholderMembership(StakeholderMembership object) {
-                return createStakeholderMembershipAdapter();
-            }
-            @Override
-            public Adapter caseStateDefinition(StateDefinition object) {
-                return createStateDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseStateSubactionMembership(StateSubactionMembership object) {
-                return createStateSubactionMembershipAdapter();
-            }
-            @Override
-            public Adapter caseStateUsage(StateUsage object) {
-                return createStateUsageAdapter();
-            }
-            @Override
-            public Adapter caseStep(Step object) {
-                return createStepAdapter();
-            }
-            @Override
-            public Adapter caseStructure(Structure object) {
-                return createStructureAdapter();
-            }
-            @Override
-            public Adapter caseSubclassification(Subclassification object) {
-                return createSubclassificationAdapter();
-            }
-            @Override
-            public Adapter caseSubjectMembership(SubjectMembership object) {
-                return createSubjectMembershipAdapter();
-            }
-            @Override
-            public Adapter caseSubsetting(Subsetting object) {
-                return createSubsettingAdapter();
-            }
-            @Override
-            public Adapter caseSuccession(Succession object) {
-                return createSuccessionAdapter();
-            }
-            @Override
-            public Adapter caseSuccessionAsUsage(SuccessionAsUsage object) {
-                return createSuccessionAsUsageAdapter();
-            }
-            @Override
-            public Adapter caseSuccessionFlowConnectionUsage(SuccessionFlowConnectionUsage object) {
-                return createSuccessionFlowConnectionUsageAdapter();
-            }
-            @Override
-            public Adapter caseSuccessionItemFlow(SuccessionItemFlow object) {
-                return createSuccessionItemFlowAdapter();
-            }
-            @Override
-            public Adapter caseTextualRepresentation(TextualRepresentation object) {
-                return createTextualRepresentationAdapter();
-            }
-            @Override
-            public Adapter caseTransitionFeatureMembership(TransitionFeatureMembership object) {
-                return createTransitionFeatureMembershipAdapter();
-            }
-            @Override
-            public Adapter caseTransitionUsage(TransitionUsage object) {
-                return createTransitionUsageAdapter();
-            }
-            @Override
-            public Adapter caseTriggerInvocationExpression(TriggerInvocationExpression object) {
-                return createTriggerInvocationExpressionAdapter();
-            }
-            @Override
-            public Adapter caseType(Type object) {
-                return createTypeAdapter();
-            }
-            @Override
-            public Adapter caseTypeFeaturing(TypeFeaturing object) {
-                return createTypeFeaturingAdapter();
-            }
-            @Override
-            public Adapter caseUnioning(Unioning object) {
-                return createUnioningAdapter();
-            }
-            @Override
-            public Adapter caseUsage(Usage object) {
-                return createUsageAdapter();
-            }
-            @Override
-            public Adapter caseUseCaseDefinition(UseCaseDefinition object) {
-                return createUseCaseDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseUseCaseUsage(UseCaseUsage object) {
-                return createUseCaseUsageAdapter();
-            }
-            @Override
-            public Adapter caseVariantMembership(VariantMembership object) {
-                return createVariantMembershipAdapter();
-            }
-            @Override
-            public Adapter caseVerificationCaseDefinition(VerificationCaseDefinition object) {
-                return createVerificationCaseDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseVerificationCaseUsage(VerificationCaseUsage object) {
-                return createVerificationCaseUsageAdapter();
-            }
-            @Override
-            public Adapter caseViewDefinition(ViewDefinition object) {
-                return createViewDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseViewpointDefinition(ViewpointDefinition object) {
-                return createViewpointDefinitionAdapter();
-            }
-            @Override
-            public Adapter caseViewpointUsage(ViewpointUsage object) {
-                return createViewpointUsageAdapter();
-            }
-            @Override
-            public Adapter caseViewRenderingMembership(ViewRenderingMembership object) {
-                return createViewRenderingMembershipAdapter();
-            }
-            @Override
-            public Adapter caseViewUsage(ViewUsage object) {
-                return createViewUsageAdapter();
-            }
-            @Override
-            public Adapter caseWhileLoopActionUsage(WhileLoopActionUsage object) {
-                return createWhileLoopActionUsageAdapter();
-            }
-            @Override
-            public Adapter defaultCase(EObject object) {
-                return createEObjectAdapter();
-            }
-        };
+    protected SysmlSwitch<Adapter> modelSwitch = new SysmlSwitch<>() {
+        @Override
+        public Adapter caseAcceptActionUsage(AcceptActionUsage object) {
+            return SysmlAdapterFactory.this.createAcceptActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseActionDefinition(ActionDefinition object) {
+            return SysmlAdapterFactory.this.createActionDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseActionUsage(ActionUsage object) {
+            return SysmlAdapterFactory.this.createActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseActorMembership(ActorMembership object) {
+            return SysmlAdapterFactory.this.createActorMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseAllocationDefinition(AllocationDefinition object) {
+            return SysmlAdapterFactory.this.createAllocationDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseAllocationUsage(AllocationUsage object) {
+            return SysmlAdapterFactory.this.createAllocationUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseAnalysisCaseDefinition(AnalysisCaseDefinition object) {
+            return SysmlAdapterFactory.this.createAnalysisCaseDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseAnalysisCaseUsage(AnalysisCaseUsage object) {
+            return SysmlAdapterFactory.this.createAnalysisCaseUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseAnnotatingElement(AnnotatingElement object) {
+            return SysmlAdapterFactory.this.createAnnotatingElementAdapter();
+        }
+
+        @Override
+        public Adapter caseAnnotation(Annotation object) {
+            return SysmlAdapterFactory.this.createAnnotationAdapter();
+        }
+
+        @Override
+        public Adapter caseAssertConstraintUsage(AssertConstraintUsage object) {
+            return SysmlAdapterFactory.this.createAssertConstraintUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseAssignmentActionUsage(AssignmentActionUsage object) {
+            return SysmlAdapterFactory.this.createAssignmentActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseAssociation(Association object) {
+            return SysmlAdapterFactory.this.createAssociationAdapter();
+        }
+
+        @Override
+        public Adapter caseAssociationStructure(AssociationStructure object) {
+            return SysmlAdapterFactory.this.createAssociationStructureAdapter();
+        }
+
+        @Override
+        public Adapter caseAttributeDefinition(AttributeDefinition object) {
+            return SysmlAdapterFactory.this.createAttributeDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseAttributeUsage(AttributeUsage object) {
+            return SysmlAdapterFactory.this.createAttributeUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseBehavior(Behavior object) {
+            return SysmlAdapterFactory.this.createBehaviorAdapter();
+        }
+
+        @Override
+        public Adapter caseBindingConnector(BindingConnector object) {
+            return SysmlAdapterFactory.this.createBindingConnectorAdapter();
+        }
+
+        @Override
+        public Adapter caseBindingConnectorAsUsage(BindingConnectorAsUsage object) {
+            return SysmlAdapterFactory.this.createBindingConnectorAsUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseBooleanExpression(BooleanExpression object) {
+            return SysmlAdapterFactory.this.createBooleanExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseCalculationDefinition(CalculationDefinition object) {
+            return SysmlAdapterFactory.this.createCalculationDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseCalculationUsage(CalculationUsage object) {
+            return SysmlAdapterFactory.this.createCalculationUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseCaseDefinition(CaseDefinition object) {
+            return SysmlAdapterFactory.this.createCaseDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseCaseUsage(CaseUsage object) {
+            return SysmlAdapterFactory.this.createCaseUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseClass(org.eclipse.syson.sysml.Class object) {
+            return SysmlAdapterFactory.this.createClassAdapter();
+        }
+
+        @Override
+        public Adapter caseClassifier(Classifier object) {
+            return SysmlAdapterFactory.this.createClassifierAdapter();
+        }
+
+        @Override
+        public Adapter caseCollectExpression(CollectExpression object) {
+            return SysmlAdapterFactory.this.createCollectExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseComment(Comment object) {
+            return SysmlAdapterFactory.this.createCommentAdapter();
+        }
+
+        @Override
+        public Adapter caseConcernDefinition(ConcernDefinition object) {
+            return SysmlAdapterFactory.this.createConcernDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseConcernUsage(ConcernUsage object) {
+            return SysmlAdapterFactory.this.createConcernUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseConjugatedPortDefinition(ConjugatedPortDefinition object) {
+            return SysmlAdapterFactory.this.createConjugatedPortDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseConjugatedPortTyping(ConjugatedPortTyping object) {
+            return SysmlAdapterFactory.this.createConjugatedPortTypingAdapter();
+        }
+
+        @Override
+        public Adapter caseConjugation(Conjugation object) {
+            return SysmlAdapterFactory.this.createConjugationAdapter();
+        }
+
+        @Override
+        public Adapter caseConnectionDefinition(ConnectionDefinition object) {
+            return SysmlAdapterFactory.this.createConnectionDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseConnectionUsage(ConnectionUsage object) {
+            return SysmlAdapterFactory.this.createConnectionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseConnector(Connector object) {
+            return SysmlAdapterFactory.this.createConnectorAdapter();
+        }
+
+        @Override
+        public Adapter caseConnectorAsUsage(ConnectorAsUsage object) {
+            return SysmlAdapterFactory.this.createConnectorAsUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseConstraintDefinition(ConstraintDefinition object) {
+            return SysmlAdapterFactory.this.createConstraintDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseConstraintUsage(ConstraintUsage object) {
+            return SysmlAdapterFactory.this.createConstraintUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseControlNode(ControlNode object) {
+            return SysmlAdapterFactory.this.createControlNodeAdapter();
+        }
+
+        @Override
+        public Adapter caseDataType(DataType object) {
+            return SysmlAdapterFactory.this.createDataTypeAdapter();
+        }
+
+        @Override
+        public Adapter caseDecisionNode(DecisionNode object) {
+            return SysmlAdapterFactory.this.createDecisionNodeAdapter();
+        }
+
+        @Override
+        public Adapter caseDefinition(Definition object) {
+            return SysmlAdapterFactory.this.createDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseDependency(Dependency object) {
+            return SysmlAdapterFactory.this.createDependencyAdapter();
+        }
+
+        @Override
+        public Adapter caseDifferencing(Differencing object) {
+            return SysmlAdapterFactory.this.createDifferencingAdapter();
+        }
+
+        @Override
+        public Adapter caseDisjoining(Disjoining object) {
+            return SysmlAdapterFactory.this.createDisjoiningAdapter();
+        }
+
+        @Override
+        public Adapter caseDocumentation(Documentation object) {
+            return SysmlAdapterFactory.this.createDocumentationAdapter();
+        }
+
+        @Override
+        public Adapter caseElement(Element object) {
+            return SysmlAdapterFactory.this.createElementAdapter();
+        }
+
+        @Override
+        public Adapter caseElementFilterMembership(ElementFilterMembership object) {
+            return SysmlAdapterFactory.this.createElementFilterMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseEndFeatureMembership(EndFeatureMembership object) {
+            return SysmlAdapterFactory.this.createEndFeatureMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseEnumerationDefinition(EnumerationDefinition object) {
+            return SysmlAdapterFactory.this.createEnumerationDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseEnumerationUsage(EnumerationUsage object) {
+            return SysmlAdapterFactory.this.createEnumerationUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseEventOccurrenceUsage(EventOccurrenceUsage object) {
+            return SysmlAdapterFactory.this.createEventOccurrenceUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseExhibitStateUsage(ExhibitStateUsage object) {
+            return SysmlAdapterFactory.this.createExhibitStateUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseExpose(Expose object) {
+            return SysmlAdapterFactory.this.createExposeAdapter();
+        }
+
+        @Override
+        public Adapter caseExpression(Expression object) {
+            return SysmlAdapterFactory.this.createExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseFeature(Feature object) {
+            return SysmlAdapterFactory.this.createFeatureAdapter();
+        }
+
+        @Override
+        public Adapter caseFeatureChainExpression(FeatureChainExpression object) {
+            return SysmlAdapterFactory.this.createFeatureChainExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseFeatureChaining(FeatureChaining object) {
+            return SysmlAdapterFactory.this.createFeatureChainingAdapter();
+        }
+
+        @Override
+        public Adapter caseFeatureInverting(FeatureInverting object) {
+            return SysmlAdapterFactory.this.createFeatureInvertingAdapter();
+        }
+
+        @Override
+        public Adapter caseFeatureMembership(FeatureMembership object) {
+            return SysmlAdapterFactory.this.createFeatureMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseFeatureReferenceExpression(FeatureReferenceExpression object) {
+            return SysmlAdapterFactory.this.createFeatureReferenceExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseFeatureTyping(FeatureTyping object) {
+            return SysmlAdapterFactory.this.createFeatureTypingAdapter();
+        }
+
+        @Override
+        public Adapter caseFeatureValue(FeatureValue object) {
+            return SysmlAdapterFactory.this.createFeatureValueAdapter();
+        }
+
+        @Override
+        public Adapter caseFeaturing(Featuring object) {
+            return SysmlAdapterFactory.this.createFeaturingAdapter();
+        }
+
+        @Override
+        public Adapter caseFlowConnectionDefinition(FlowConnectionDefinition object) {
+            return SysmlAdapterFactory.this.createFlowConnectionDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseFlowConnectionUsage(FlowConnectionUsage object) {
+            return SysmlAdapterFactory.this.createFlowConnectionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseForkNode(ForkNode object) {
+            return SysmlAdapterFactory.this.createForkNodeAdapter();
+        }
+
+        @Override
+        public Adapter caseForLoopActionUsage(ForLoopActionUsage object) {
+            return SysmlAdapterFactory.this.createForLoopActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseFramedConcernMembership(FramedConcernMembership object) {
+            return SysmlAdapterFactory.this.createFramedConcernMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseFunction(Function object) {
+            return SysmlAdapterFactory.this.createFunctionAdapter();
+        }
+
+        @Override
+        public Adapter caseIfActionUsage(IfActionUsage object) {
+            return SysmlAdapterFactory.this.createIfActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseImport(Import object) {
+            return SysmlAdapterFactory.this.createImportAdapter();
+        }
+
+        @Override
+        public Adapter caseIncludeUseCaseUsage(IncludeUseCaseUsage object) {
+            return SysmlAdapterFactory.this.createIncludeUseCaseUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseInteraction(Interaction object) {
+            return SysmlAdapterFactory.this.createInteractionAdapter();
+        }
+
+        @Override
+        public Adapter caseInterfaceDefinition(InterfaceDefinition object) {
+            return SysmlAdapterFactory.this.createInterfaceDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseInterfaceUsage(InterfaceUsage object) {
+            return SysmlAdapterFactory.this.createInterfaceUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseIntersecting(Intersecting object) {
+            return SysmlAdapterFactory.this.createIntersectingAdapter();
+        }
+
+        @Override
+        public Adapter caseInvariant(Invariant object) {
+            return SysmlAdapterFactory.this.createInvariantAdapter();
+        }
+
+        @Override
+        public Adapter caseInvocationExpression(InvocationExpression object) {
+            return SysmlAdapterFactory.this.createInvocationExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseItemDefinition(ItemDefinition object) {
+            return SysmlAdapterFactory.this.createItemDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseItemFeature(ItemFeature object) {
+            return SysmlAdapterFactory.this.createItemFeatureAdapter();
+        }
+
+        @Override
+        public Adapter caseItemFlow(ItemFlow object) {
+            return SysmlAdapterFactory.this.createItemFlowAdapter();
+        }
+
+        @Override
+        public Adapter caseItemFlowEnd(ItemFlowEnd object) {
+            return SysmlAdapterFactory.this.createItemFlowEndAdapter();
+        }
+
+        @Override
+        public Adapter caseItemUsage(ItemUsage object) {
+            return SysmlAdapterFactory.this.createItemUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseJoinNode(JoinNode object) {
+            return SysmlAdapterFactory.this.createJoinNodeAdapter();
+        }
+
+        @Override
+        public Adapter caseLibraryPackage(LibraryPackage object) {
+            return SysmlAdapterFactory.this.createLibraryPackageAdapter();
+        }
+
+        @Override
+        public Adapter caseLifeClass(LifeClass object) {
+            return SysmlAdapterFactory.this.createLifeClassAdapter();
+        }
+
+        @Override
+        public Adapter caseLiteralBoolean(LiteralBoolean object) {
+            return SysmlAdapterFactory.this.createLiteralBooleanAdapter();
+        }
+
+        @Override
+        public Adapter caseLiteralExpression(LiteralExpression object) {
+            return SysmlAdapterFactory.this.createLiteralExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseLiteralInfinity(LiteralInfinity object) {
+            return SysmlAdapterFactory.this.createLiteralInfinityAdapter();
+        }
+
+        @Override
+        public Adapter caseLiteralInteger(LiteralInteger object) {
+            return SysmlAdapterFactory.this.createLiteralIntegerAdapter();
+        }
+
+        @Override
+        public Adapter caseLiteralRational(LiteralRational object) {
+            return SysmlAdapterFactory.this.createLiteralRationalAdapter();
+        }
+
+        @Override
+        public Adapter caseLiteralString(LiteralString object) {
+            return SysmlAdapterFactory.this.createLiteralStringAdapter();
+        }
+
+        @Override
+        public Adapter caseLoopActionUsage(LoopActionUsage object) {
+            return SysmlAdapterFactory.this.createLoopActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseMembership(Membership object) {
+            return SysmlAdapterFactory.this.createMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseMembershipExpose(MembershipExpose object) {
+            return SysmlAdapterFactory.this.createMembershipExposeAdapter();
+        }
+
+        @Override
+        public Adapter caseMembershipImport(MembershipImport object) {
+            return SysmlAdapterFactory.this.createMembershipImportAdapter();
+        }
+
+        @Override
+        public Adapter caseMergeNode(MergeNode object) {
+            return SysmlAdapterFactory.this.createMergeNodeAdapter();
+        }
+
+        @Override
+        public Adapter caseMetaclass(Metaclass object) {
+            return SysmlAdapterFactory.this.createMetaclassAdapter();
+        }
+
+        @Override
+        public Adapter caseMetadataAccessExpression(MetadataAccessExpression object) {
+            return SysmlAdapterFactory.this.createMetadataAccessExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseMetadataDefinition(MetadataDefinition object) {
+            return SysmlAdapterFactory.this.createMetadataDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseMetadataFeature(MetadataFeature object) {
+            return SysmlAdapterFactory.this.createMetadataFeatureAdapter();
+        }
+
+        @Override
+        public Adapter caseMetadataUsage(MetadataUsage object) {
+            return SysmlAdapterFactory.this.createMetadataUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseMultiplicity(Multiplicity object) {
+            return SysmlAdapterFactory.this.createMultiplicityAdapter();
+        }
+
+        @Override
+        public Adapter caseMultiplicityRange(MultiplicityRange object) {
+            return SysmlAdapterFactory.this.createMultiplicityRangeAdapter();
+        }
+
+        @Override
+        public Adapter caseNamespace(Namespace object) {
+            return SysmlAdapterFactory.this.createNamespaceAdapter();
+        }
+
+        @Override
+        public Adapter caseNamespaceExpose(NamespaceExpose object) {
+            return SysmlAdapterFactory.this.createNamespaceExposeAdapter();
+        }
+
+        @Override
+        public Adapter caseNamespaceImport(NamespaceImport object) {
+            return SysmlAdapterFactory.this.createNamespaceImportAdapter();
+        }
+
+        @Override
+        public Adapter caseNullExpression(NullExpression object) {
+            return SysmlAdapterFactory.this.createNullExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseObjectiveMembership(ObjectiveMembership object) {
+            return SysmlAdapterFactory.this.createObjectiveMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseOccurrenceDefinition(OccurrenceDefinition object) {
+            return SysmlAdapterFactory.this.createOccurrenceDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseOccurrenceUsage(OccurrenceUsage object) {
+            return SysmlAdapterFactory.this.createOccurrenceUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseOperatorExpression(OperatorExpression object) {
+            return SysmlAdapterFactory.this.createOperatorExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseOwningMembership(OwningMembership object) {
+            return SysmlAdapterFactory.this.createOwningMembershipAdapter();
+        }
+
+        @Override
+        public Adapter casePackage(org.eclipse.syson.sysml.Package object) {
+            return SysmlAdapterFactory.this.createPackageAdapter();
+        }
+
+        @Override
+        public Adapter caseParameterMembership(ParameterMembership object) {
+            return SysmlAdapterFactory.this.createParameterMembershipAdapter();
+        }
+
+        @Override
+        public Adapter casePartDefinition(PartDefinition object) {
+            return SysmlAdapterFactory.this.createPartDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter casePartUsage(PartUsage object) {
+            return SysmlAdapterFactory.this.createPartUsageAdapter();
+        }
+
+        @Override
+        public Adapter casePerformActionUsage(PerformActionUsage object) {
+            return SysmlAdapterFactory.this.createPerformActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter casePortConjugation(PortConjugation object) {
+            return SysmlAdapterFactory.this.createPortConjugationAdapter();
+        }
+
+        @Override
+        public Adapter casePortDefinition(PortDefinition object) {
+            return SysmlAdapterFactory.this.createPortDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter casePortUsage(PortUsage object) {
+            return SysmlAdapterFactory.this.createPortUsageAdapter();
+        }
+
+        @Override
+        public Adapter casePredicate(Predicate object) {
+            return SysmlAdapterFactory.this.createPredicateAdapter();
+        }
+
+        @Override
+        public Adapter caseRedefinition(Redefinition object) {
+            return SysmlAdapterFactory.this.createRedefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseReferenceSubsetting(ReferenceSubsetting object) {
+            return SysmlAdapterFactory.this.createReferenceSubsettingAdapter();
+        }
+
+        @Override
+        public Adapter caseReferenceUsage(ReferenceUsage object) {
+            return SysmlAdapterFactory.this.createReferenceUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseRelationship(Relationship object) {
+            return SysmlAdapterFactory.this.createRelationshipAdapter();
+        }
+
+        @Override
+        public Adapter caseRenderingDefinition(RenderingDefinition object) {
+            return SysmlAdapterFactory.this.createRenderingDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseRenderingUsage(RenderingUsage object) {
+            return SysmlAdapterFactory.this.createRenderingUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseRequirementConstraintMembership(RequirementConstraintMembership object) {
+            return SysmlAdapterFactory.this.createRequirementConstraintMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseRequirementDefinition(RequirementDefinition object) {
+            return SysmlAdapterFactory.this.createRequirementDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseRequirementUsage(RequirementUsage object) {
+            return SysmlAdapterFactory.this.createRequirementUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseRequirementVerificationMembership(RequirementVerificationMembership object) {
+            return SysmlAdapterFactory.this.createRequirementVerificationMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseResultExpressionMembership(ResultExpressionMembership object) {
+            return SysmlAdapterFactory.this.createResultExpressionMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseReturnParameterMembership(ReturnParameterMembership object) {
+            return SysmlAdapterFactory.this.createReturnParameterMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseSatisfyRequirementUsage(SatisfyRequirementUsage object) {
+            return SysmlAdapterFactory.this.createSatisfyRequirementUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseSelectExpression(SelectExpression object) {
+            return SysmlAdapterFactory.this.createSelectExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseSendActionUsage(SendActionUsage object) {
+            return SysmlAdapterFactory.this.createSendActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseSpecialization(Specialization object) {
+            return SysmlAdapterFactory.this.createSpecializationAdapter();
+        }
+
+        @Override
+        public Adapter caseStakeholderMembership(StakeholderMembership object) {
+            return SysmlAdapterFactory.this.createStakeholderMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseStateDefinition(StateDefinition object) {
+            return SysmlAdapterFactory.this.createStateDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseStateSubactionMembership(StateSubactionMembership object) {
+            return SysmlAdapterFactory.this.createStateSubactionMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseStateUsage(StateUsage object) {
+            return SysmlAdapterFactory.this.createStateUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseStep(Step object) {
+            return SysmlAdapterFactory.this.createStepAdapter();
+        }
+
+        @Override
+        public Adapter caseStructure(Structure object) {
+            return SysmlAdapterFactory.this.createStructureAdapter();
+        }
+
+        @Override
+        public Adapter caseSubclassification(Subclassification object) {
+            return SysmlAdapterFactory.this.createSubclassificationAdapter();
+        }
+
+        @Override
+        public Adapter caseSubjectMembership(SubjectMembership object) {
+            return SysmlAdapterFactory.this.createSubjectMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseSubsetting(Subsetting object) {
+            return SysmlAdapterFactory.this.createSubsettingAdapter();
+        }
+
+        @Override
+        public Adapter caseSuccession(Succession object) {
+            return SysmlAdapterFactory.this.createSuccessionAdapter();
+        }
+
+        @Override
+        public Adapter caseSuccessionAsUsage(SuccessionAsUsage object) {
+            return SysmlAdapterFactory.this.createSuccessionAsUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseSuccessionFlowConnectionUsage(SuccessionFlowConnectionUsage object) {
+            return SysmlAdapterFactory.this.createSuccessionFlowConnectionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseSuccessionItemFlow(SuccessionItemFlow object) {
+            return SysmlAdapterFactory.this.createSuccessionItemFlowAdapter();
+        }
+
+        @Override
+        public Adapter caseTextualRepresentation(TextualRepresentation object) {
+            return SysmlAdapterFactory.this.createTextualRepresentationAdapter();
+        }
+
+        @Override
+        public Adapter caseTransitionFeatureMembership(TransitionFeatureMembership object) {
+            return SysmlAdapterFactory.this.createTransitionFeatureMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseTransitionUsage(TransitionUsage object) {
+            return SysmlAdapterFactory.this.createTransitionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseTriggerInvocationExpression(TriggerInvocationExpression object) {
+            return SysmlAdapterFactory.this.createTriggerInvocationExpressionAdapter();
+        }
+
+        @Override
+        public Adapter caseType(Type object) {
+            return SysmlAdapterFactory.this.createTypeAdapter();
+        }
+
+        @Override
+        public Adapter caseTypeFeaturing(TypeFeaturing object) {
+            return SysmlAdapterFactory.this.createTypeFeaturingAdapter();
+        }
+
+        @Override
+        public Adapter caseUnioning(Unioning object) {
+            return SysmlAdapterFactory.this.createUnioningAdapter();
+        }
+
+        @Override
+        public Adapter caseUsage(Usage object) {
+            return SysmlAdapterFactory.this.createUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseUseCaseDefinition(UseCaseDefinition object) {
+            return SysmlAdapterFactory.this.createUseCaseDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseUseCaseUsage(UseCaseUsage object) {
+            return SysmlAdapterFactory.this.createUseCaseUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseVariantMembership(VariantMembership object) {
+            return SysmlAdapterFactory.this.createVariantMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseVerificationCaseDefinition(VerificationCaseDefinition object) {
+            return SysmlAdapterFactory.this.createVerificationCaseDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseVerificationCaseUsage(VerificationCaseUsage object) {
+            return SysmlAdapterFactory.this.createVerificationCaseUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseViewDefinition(ViewDefinition object) {
+            return SysmlAdapterFactory.this.createViewDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseViewpointDefinition(ViewpointDefinition object) {
+            return SysmlAdapterFactory.this.createViewpointDefinitionAdapter();
+        }
+
+        @Override
+        public Adapter caseViewpointUsage(ViewpointUsage object) {
+            return SysmlAdapterFactory.this.createViewpointUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseViewRenderingMembership(ViewRenderingMembership object) {
+            return SysmlAdapterFactory.this.createViewRenderingMembershipAdapter();
+        }
+
+        @Override
+        public Adapter caseViewUsage(ViewUsage object) {
+            return SysmlAdapterFactory.this.createViewUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseWhileLoopActionUsage(WhileLoopActionUsage object) {
+            return SysmlAdapterFactory.this.createWhileLoopActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter defaultCase(EObject object) {
+            return SysmlAdapterFactory.this.createEObjectAdapter();
+        }
+    };
 
     /**
-     * Creates an adapter for the <code>target</code>.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param target the object to adapt.
+     * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param target
+     *            the object to adapt.
      * @return the adapter for the <code>target</code>.
      * @generated
      */
     @Override
     public Adapter createAdapter(Notifier target) {
-        return modelSwitch.doSwitch((EObject)target);
+        return this.modelSwitch.doSwitch((EObject) target);
     }
 
-
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AcceptActionUsage <em>Accept Action Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AcceptActionUsage <em>Accept Action
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AcceptActionUsage
      * @generated
@@ -970,11 +962,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ActionDefinition <em>Action Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ActionDefinition <em>Action
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ActionDefinition
      * @generated
@@ -985,10 +976,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ActionUsage <em>Action Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ActionUsage
      * @generated
@@ -998,11 +988,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ActorMembership <em>Actor Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ActorMembership <em>Actor
+     * Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ActorMembership
      * @generated
@@ -1012,11 +1001,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AllocationDefinition <em>Allocation Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AllocationDefinition <em>Allocation
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AllocationDefinition
      * @generated
@@ -1026,11 +1014,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AllocationUsage <em>Allocation Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AllocationUsage <em>Allocation
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AllocationUsage
      * @generated
@@ -1040,11 +1027,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AnalysisCaseDefinition <em>Analysis Case Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AnalysisCaseDefinition <em>Analysis
+     * Case Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AnalysisCaseDefinition
      * @generated
@@ -1054,11 +1041,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AnalysisCaseUsage <em>Analysis Case Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AnalysisCaseUsage <em>Analysis Case
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AnalysisCaseUsage
      * @generated
@@ -1068,11 +1054,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AnnotatingElement <em>Annotating Element</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AnnotatingElement <em>Annotating
+     * Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AnnotatingElement
      * @generated
@@ -1083,10 +1068,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Annotation <em>Annotation</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Annotation
      * @generated
@@ -1096,11 +1080,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AssertConstraintUsage <em>Assert Constraint Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AssertConstraintUsage <em>Assert
+     * Constraint Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AssertConstraintUsage
      * @generated
@@ -1110,11 +1094,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AssignmentActionUsage <em>Assignment Action Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AssignmentActionUsage <em>Assignment
+     * Action Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AssignmentActionUsage
      * @generated
@@ -1125,10 +1109,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Association <em>Association</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Association
      * @generated
@@ -1138,11 +1121,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AssociationStructure <em>Association Structure</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AssociationStructure <em>Association
+     * Structure</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AssociationStructure
      * @generated
@@ -1152,11 +1134,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AttributeDefinition <em>Attribute Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AttributeDefinition <em>Attribute
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AttributeDefinition
      * @generated
@@ -1166,11 +1147,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AttributeUsage <em>Attribute Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.AttributeUsage <em>Attribute
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.AttributeUsage
      * @generated
@@ -1180,11 +1160,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Behavior <em>Behavior</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Behavior <em>Behavior</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Behavior
      * @generated
@@ -1194,11 +1173,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.BindingConnector <em>Binding Connector</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.BindingConnector <em>Binding
+     * Connector</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.BindingConnector
      * @generated
@@ -1208,11 +1186,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.BindingConnectorAsUsage <em>Binding Connector As Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.BindingConnectorAsUsage <em>Binding
+     * Connector As Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.BindingConnectorAsUsage
      * @generated
@@ -1222,11 +1200,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.BooleanExpression <em>Boolean Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.BooleanExpression <em>Boolean
+     * Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.BooleanExpression
      * @generated
@@ -1236,11 +1213,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CalculationDefinition <em>Calculation Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CalculationDefinition
+     * <em>Calculation Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.CalculationDefinition
      * @generated
@@ -1250,11 +1227,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CalculationUsage <em>Calculation Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CalculationUsage <em>Calculation
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.CalculationUsage
      * @generated
@@ -1264,11 +1240,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CaseDefinition <em>Case Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CaseDefinition <em>Case
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.CaseDefinition
      * @generated
@@ -1279,10 +1254,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CaseUsage <em>Case Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.CaseUsage
      * @generated
@@ -1292,11 +1266,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Class <em>Class</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Class <em>Class</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Class
      * @generated
@@ -1307,10 +1280,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Classifier <em>Classifier</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Classifier
      * @generated
@@ -1320,11 +1292,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CollectExpression <em>Collect Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.CollectExpression <em>Collect
+     * Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.CollectExpression
      * @generated
@@ -1334,11 +1305,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Comment <em>Comment</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Comment <em>Comment</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Comment
      * @generated
@@ -1348,11 +1318,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConcernDefinition <em>Concern Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConcernDefinition <em>Concern
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ConcernDefinition
      * @generated
@@ -1362,11 +1331,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConcernUsage <em>Concern Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConcernUsage <em>Concern
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ConcernUsage
      * @generated
@@ -1376,11 +1344,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConjugatedPortDefinition <em>Conjugated Port Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConjugatedPortDefinition
+     * <em>Conjugated Port Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ConjugatedPortDefinition
      * @generated
@@ -1390,11 +1358,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConjugatedPortTyping <em>Conjugated Port Typing</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConjugatedPortTyping <em>Conjugated
+     * Port Typing</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ConjugatedPortTyping
      * @generated
@@ -1405,10 +1372,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Conjugation <em>Conjugation</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Conjugation
      * @generated
@@ -1418,11 +1384,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConnectionDefinition <em>Connection Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConnectionDefinition <em>Connection
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ConnectionDefinition
      * @generated
@@ -1432,11 +1397,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConnectionUsage <em>Connection Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConnectionUsage <em>Connection
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ConnectionUsage
      * @generated
@@ -1446,11 +1410,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Connector <em>Connector</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Connector <em>Connector</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Connector
      * @generated
@@ -1460,11 +1423,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConnectorAsUsage <em>Connector As Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConnectorAsUsage <em>Connector As
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ConnectorAsUsage
      * @generated
@@ -1474,11 +1436,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConstraintDefinition <em>Constraint Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConstraintDefinition <em>Constraint
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ConstraintDefinition
      * @generated
@@ -1488,11 +1449,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConstraintUsage <em>Constraint Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ConstraintUsage <em>Constraint
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ConstraintUsage
      * @generated
@@ -1503,10 +1463,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ControlNode <em>Control Node</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ControlNode
      * @generated
@@ -1516,11 +1475,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.DataType <em>Data Type</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.DataType <em>Data Type</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.DataType
      * @generated
@@ -1530,11 +1488,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.DecisionNode <em>Decision Node</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.DecisionNode <em>Decision
+     * Node</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.DecisionNode
      * @generated
@@ -1545,10 +1502,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Definition <em>Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Definition
      * @generated
@@ -1559,10 +1515,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Dependency <em>Dependency</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Dependency
      * @generated
@@ -1572,11 +1527,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Differencing <em>Differencing</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Differencing
+     * <em>Differencing</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Differencing
      * @generated
@@ -1587,10 +1542,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Disjoining <em>Disjoining</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Disjoining
      * @generated
@@ -1600,11 +1554,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Documentation <em>Documentation</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Documentation
+     * <em>Documentation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Documentation
      * @generated
@@ -1614,11 +1568,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Element <em>Element</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Element <em>Element</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Element
      * @generated
@@ -1628,11 +1581,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ElementFilterMembership <em>Element Filter Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ElementFilterMembership <em>Element
+     * Filter Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ElementFilterMembership
      * @generated
@@ -1642,11 +1595,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.EndFeatureMembership <em>End Feature Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.EndFeatureMembership <em>End Feature
+     * Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.EndFeatureMembership
      * @generated
@@ -1656,11 +1608,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.EnumerationDefinition <em>Enumeration Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.EnumerationDefinition
+     * <em>Enumeration Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.EnumerationDefinition
      * @generated
@@ -1670,11 +1622,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.EnumerationUsage <em>Enumeration Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.EnumerationUsage <em>Enumeration
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.EnumerationUsage
      * @generated
@@ -1684,11 +1635,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.EventOccurrenceUsage <em>Event Occurrence Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.EventOccurrenceUsage <em>Event
+     * Occurrence Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.EventOccurrenceUsage
      * @generated
@@ -1698,11 +1649,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ExhibitStateUsage <em>Exhibit State Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ExhibitStateUsage <em>Exhibit State
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ExhibitStateUsage
      * @generated
@@ -1712,11 +1662,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Expose <em>Expose</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Expose <em>Expose</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Expose
      * @generated
@@ -1727,10 +1676,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Expression <em>Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Expression
      * @generated
@@ -1740,11 +1688,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Feature <em>Feature</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Feature <em>Feature</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Feature
      * @generated
@@ -1754,11 +1701,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureChainExpression <em>Feature Chain Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureChainExpression <em>Feature
+     * Chain Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FeatureChainExpression
      * @generated
@@ -1768,11 +1715,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureChaining <em>Feature Chaining</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureChaining <em>Feature
+     * Chaining</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FeatureChaining
      * @generated
@@ -1782,11 +1728,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureInverting <em>Feature Inverting</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureInverting <em>Feature
+     * Inverting</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FeatureInverting
      * @generated
@@ -1796,11 +1741,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureMembership <em>Feature Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureMembership <em>Feature
+     * Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FeatureMembership
      * @generated
@@ -1810,11 +1754,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureReferenceExpression <em>Feature Reference Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureReferenceExpression
+     * <em>Feature Reference Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FeatureReferenceExpression
      * @generated
@@ -1824,11 +1768,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureTyping <em>Feature Typing</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureTyping <em>Feature
+     * Typing</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FeatureTyping
      * @generated
@@ -1838,11 +1781,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureValue <em>Feature Value</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FeatureValue <em>Feature
+     * Value</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FeatureValue
      * @generated
@@ -1852,11 +1794,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Featuring <em>Featuring</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Featuring <em>Featuring</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Featuring
      * @generated
@@ -1866,11 +1807,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FlowConnectionDefinition <em>Flow Connection Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FlowConnectionDefinition <em>Flow
+     * Connection Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FlowConnectionDefinition
      * @generated
@@ -1880,11 +1821,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FlowConnectionUsage <em>Flow Connection Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FlowConnectionUsage <em>Flow
+     * Connection Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FlowConnectionUsage
      * @generated
@@ -1894,11 +1835,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ForkNode <em>Fork Node</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ForkNode <em>Fork Node</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ForkNode
      * @generated
@@ -1908,11 +1848,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ForLoopActionUsage <em>For Loop Action Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ForLoopActionUsage <em>For Loop
+     * Action Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ForLoopActionUsage
      * @generated
@@ -1922,11 +1862,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FramedConcernMembership <em>Framed Concern Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.FramedConcernMembership <em>Framed
+     * Concern Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.FramedConcernMembership
      * @generated
@@ -1936,11 +1876,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Function <em>Function</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Function <em>Function</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Function
      * @generated
@@ -1950,11 +1889,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.IfActionUsage <em>If Action Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.IfActionUsage <em>If Action
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.IfActionUsage
      * @generated
@@ -1964,11 +1902,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Import <em>Import</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Import <em>Import</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Import
      * @generated
@@ -1978,11 +1915,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.IncludeUseCaseUsage <em>Include Use Case Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.IncludeUseCaseUsage <em>Include Use
+     * Case Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.IncludeUseCaseUsage
      * @generated
@@ -1993,10 +1929,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Interaction <em>Interaction</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Interaction
      * @generated
@@ -2006,11 +1941,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.InterfaceDefinition <em>Interface Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.InterfaceDefinition <em>Interface
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.InterfaceDefinition
      * @generated
@@ -2020,11 +1954,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.InterfaceUsage <em>Interface Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.InterfaceUsage <em>Interface
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.InterfaceUsage
      * @generated
@@ -2034,11 +1967,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Intersecting <em>Intersecting</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Intersecting
+     * <em>Intersecting</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Intersecting
      * @generated
@@ -2048,11 +1981,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Invariant <em>Invariant</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Invariant <em>Invariant</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Invariant
      * @generated
@@ -2062,11 +1994,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.InvocationExpression <em>Invocation Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.InvocationExpression <em>Invocation
+     * Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.InvocationExpression
      * @generated
@@ -2076,11 +2007,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemDefinition <em>Item Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemDefinition <em>Item
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ItemDefinition
      * @generated
@@ -2091,10 +2021,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemFeature <em>Item Feature</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ItemFeature
      * @generated
@@ -2104,11 +2033,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemFlow <em>Item Flow</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemFlow <em>Item Flow</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ItemFlow
      * @generated
@@ -2118,11 +2046,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemFlowEnd <em>Item Flow End</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemFlowEnd <em>Item Flow
+     * End</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ItemFlowEnd
      * @generated
@@ -2133,10 +2060,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ItemUsage <em>Item Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ItemUsage
      * @generated
@@ -2146,11 +2072,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.JoinNode <em>Join Node</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.JoinNode <em>Join Node</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.JoinNode
      * @generated
@@ -2160,11 +2085,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LibraryPackage <em>Library Package</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LibraryPackage <em>Library
+     * Package</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.LibraryPackage
      * @generated
@@ -2175,10 +2099,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LifeClass <em>Life Class</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.LifeClass
      * @generated
@@ -2188,11 +2111,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralBoolean <em>Literal Boolean</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralBoolean <em>Literal
+     * Boolean</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.LiteralBoolean
      * @generated
@@ -2202,11 +2124,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralExpression <em>Literal Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralExpression <em>Literal
+     * Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.LiteralExpression
      * @generated
@@ -2216,11 +2137,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralInfinity <em>Literal Infinity</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralInfinity <em>Literal
+     * Infinity</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.LiteralInfinity
      * @generated
@@ -2230,11 +2150,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralInteger <em>Literal Integer</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralInteger <em>Literal
+     * Integer</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.LiteralInteger
      * @generated
@@ -2244,11 +2163,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralRational <em>Literal Rational</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralRational <em>Literal
+     * Rational</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.LiteralRational
      * @generated
@@ -2258,11 +2176,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralString <em>Literal String</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LiteralString <em>Literal
+     * String</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.LiteralString
      * @generated
@@ -2272,11 +2189,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LoopActionUsage <em>Loop Action Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.LoopActionUsage <em>Loop Action
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.LoopActionUsage
      * @generated
@@ -2287,10 +2203,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Membership <em>Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Membership
      * @generated
@@ -2300,11 +2215,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MembershipExpose <em>Membership Expose</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MembershipExpose <em>Membership
+     * Expose</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.MembershipExpose
      * @generated
@@ -2314,11 +2228,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MembershipImport <em>Membership Import</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MembershipImport <em>Membership
+     * Import</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.MembershipImport
      * @generated
@@ -2329,10 +2242,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MergeNode <em>Merge Node</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.MergeNode
      * @generated
@@ -2342,11 +2254,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Metaclass <em>Metaclass</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Metaclass <em>Metaclass</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Metaclass
      * @generated
@@ -2356,11 +2267,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MetadataAccessExpression <em>Metadata Access Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MetadataAccessExpression
+     * <em>Metadata Access Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.MetadataAccessExpression
      * @generated
@@ -2370,11 +2281,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MetadataDefinition <em>Metadata Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MetadataDefinition <em>Metadata
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.MetadataDefinition
      * @generated
@@ -2384,11 +2294,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MetadataFeature <em>Metadata Feature</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MetadataFeature <em>Metadata
+     * Feature</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.MetadataFeature
      * @generated
@@ -2398,11 +2307,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MetadataUsage <em>Metadata Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MetadataUsage <em>Metadata
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.MetadataUsage
      * @generated
@@ -2412,11 +2320,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Multiplicity <em>Multiplicity</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Multiplicity
+     * <em>Multiplicity</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Multiplicity
      * @generated
@@ -2426,11 +2334,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MultiplicityRange <em>Multiplicity Range</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.MultiplicityRange <em>Multiplicity
+     * Range</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.MultiplicityRange
      * @generated
@@ -2440,11 +2347,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Namespace <em>Namespace</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Namespace <em>Namespace</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Namespace
      * @generated
@@ -2454,11 +2360,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.NamespaceExpose <em>Namespace Expose</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.NamespaceExpose <em>Namespace
+     * Expose</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.NamespaceExpose
      * @generated
@@ -2468,11 +2373,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.NamespaceImport <em>Namespace Import</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.NamespaceImport <em>Namespace
+     * Import</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.NamespaceImport
      * @generated
@@ -2482,11 +2386,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.NullExpression <em>Null Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.NullExpression <em>Null
+     * Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.NullExpression
      * @generated
@@ -2496,11 +2399,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ObjectiveMembership <em>Objective Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ObjectiveMembership <em>Objective
+     * Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ObjectiveMembership
      * @generated
@@ -2510,11 +2412,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.OccurrenceDefinition <em>Occurrence Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.OccurrenceDefinition <em>Occurrence
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.OccurrenceDefinition
      * @generated
@@ -2524,11 +2425,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.OccurrenceUsage <em>Occurrence Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.OccurrenceUsage <em>Occurrence
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.OccurrenceUsage
      * @generated
@@ -2538,11 +2438,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.OperatorExpression <em>Operator Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.OperatorExpression <em>Operator
+     * Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.OperatorExpression
      * @generated
@@ -2552,11 +2451,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.OwningMembership <em>Owning Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.OwningMembership <em>Owning
+     * Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.OwningMembership
      * @generated
@@ -2566,11 +2464,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Package <em>Package</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Package <em>Package</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Package
      * @generated
@@ -2580,11 +2477,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ParameterMembership <em>Parameter Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ParameterMembership <em>Parameter
+     * Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ParameterMembership
      * @generated
@@ -2594,11 +2490,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PartDefinition <em>Part Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PartDefinition <em>Part
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.PartDefinition
      * @generated
@@ -2609,10 +2504,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PartUsage <em>Part Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.PartUsage
      * @generated
@@ -2622,11 +2516,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PerformActionUsage <em>Perform Action Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PerformActionUsage <em>Perform
+     * Action Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.PerformActionUsage
      * @generated
@@ -2636,11 +2530,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PortConjugation <em>Port Conjugation</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PortConjugation <em>Port
+     * Conjugation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.PortConjugation
      * @generated
@@ -2650,11 +2543,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PortDefinition <em>Port Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PortDefinition <em>Port
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.PortDefinition
      * @generated
@@ -2665,10 +2557,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.PortUsage <em>Port Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.PortUsage
      * @generated
@@ -2678,11 +2569,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Predicate <em>Predicate</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Predicate <em>Predicate</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Predicate
      * @generated
@@ -2692,11 +2582,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Redefinition <em>Redefinition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Redefinition
+     * <em>Redefinition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Redefinition
      * @generated
@@ -2706,11 +2596,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ReferenceSubsetting <em>Reference Subsetting</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ReferenceSubsetting <em>Reference
+     * Subsetting</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ReferenceSubsetting
      * @generated
@@ -2720,11 +2609,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ReferenceUsage <em>Reference Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ReferenceUsage <em>Reference
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ReferenceUsage
      * @generated
@@ -2734,11 +2622,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Relationship <em>Relationship</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Relationship
+     * <em>Relationship</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Relationship
      * @generated
@@ -2748,11 +2636,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RenderingDefinition <em>Rendering Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RenderingDefinition <em>Rendering
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.RenderingDefinition
      * @generated
@@ -2762,11 +2649,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RenderingUsage <em>Rendering Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RenderingUsage <em>Rendering
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.RenderingUsage
      * @generated
@@ -2776,11 +2662,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RequirementConstraintMembership <em>Requirement Constraint Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RequirementConstraintMembership
+     * <em>Requirement Constraint Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so
+     * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.RequirementConstraintMembership
      * @generated
@@ -2790,11 +2676,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RequirementDefinition <em>Requirement Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RequirementDefinition
+     * <em>Requirement Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.RequirementDefinition
      * @generated
@@ -2804,11 +2690,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RequirementUsage <em>Requirement Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RequirementUsage <em>Requirement
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.RequirementUsage
      * @generated
@@ -2818,11 +2703,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RequirementVerificationMembership <em>Requirement Verification Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.RequirementVerificationMembership
+     * <em>Requirement Verification Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null
+     * so that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases
+     * anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.RequirementVerificationMembership
      * @generated
@@ -2832,11 +2717,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ResultExpressionMembership <em>Result Expression Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ResultExpressionMembership
+     * <em>Result Expression Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ResultExpressionMembership
      * @generated
@@ -2846,11 +2731,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ReturnParameterMembership <em>Return Parameter Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ReturnParameterMembership <em>Return
+     * Parameter Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ReturnParameterMembership
      * @generated
@@ -2860,11 +2745,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SatisfyRequirementUsage <em>Satisfy Requirement Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SatisfyRequirementUsage <em>Satisfy
+     * Requirement Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.SatisfyRequirementUsage
      * @generated
@@ -2874,11 +2759,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SelectExpression <em>Select Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SelectExpression <em>Select
+     * Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.SelectExpression
      * @generated
@@ -2888,11 +2772,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SendActionUsage <em>Send Action Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SendActionUsage <em>Send Action
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.SendActionUsage
      * @generated
@@ -2902,11 +2785,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Specialization <em>Specialization</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Specialization
+     * <em>Specialization</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Specialization
      * @generated
@@ -2916,11 +2799,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.StakeholderMembership <em>Stakeholder Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.StakeholderMembership
+     * <em>Stakeholder Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.StakeholderMembership
      * @generated
@@ -2930,11 +2813,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.StateDefinition <em>State Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.StateDefinition <em>State
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.StateDefinition
      * @generated
@@ -2944,11 +2826,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.StateSubactionMembership <em>State Subaction Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.StateSubactionMembership <em>State
+     * Subaction Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.StateSubactionMembership
      * @generated
@@ -2959,10 +2841,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.StateUsage <em>State Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.StateUsage
      * @generated
@@ -2972,11 +2853,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Step <em>Step</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Step <em>Step</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Step
      * @generated
@@ -2986,11 +2866,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Structure <em>Structure</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Structure <em>Structure</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Structure
      * @generated
@@ -3000,11 +2879,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Subclassification <em>Subclassification</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Subclassification
+     * <em>Subclassification</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Subclassification
      * @generated
@@ -3014,11 +2893,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SubjectMembership <em>Subject Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SubjectMembership <em>Subject
+     * Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.SubjectMembership
      * @generated
@@ -3029,10 +2907,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Subsetting <em>Subsetting</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Subsetting
      * @generated
@@ -3043,10 +2920,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Succession <em>Succession</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Succession
      * @generated
@@ -3056,11 +2932,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionAsUsage <em>Succession As Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionAsUsage <em>Succession As
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.SuccessionAsUsage
      * @generated
@@ -3070,11 +2945,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionFlowConnectionUsage <em>Succession Flow Connection Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionFlowConnectionUsage
+     * <em>Succession Flow Connection Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so
+     * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.SuccessionFlowConnectionUsage
      * @generated
@@ -3084,11 +2959,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionItemFlow <em>Succession Item Flow</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.SuccessionItemFlow <em>Succession
+     * Item Flow</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.SuccessionItemFlow
      * @generated
@@ -3098,11 +2972,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TextualRepresentation <em>Textual Representation</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TextualRepresentation <em>Textual
+     * Representation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.TextualRepresentation
      * @generated
@@ -3112,11 +2986,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TransitionFeatureMembership <em>Transition Feature Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TransitionFeatureMembership
+     * <em>Transition Feature Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so
+     * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.TransitionFeatureMembership
      * @generated
@@ -3126,11 +3000,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TransitionUsage <em>Transition Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TransitionUsage <em>Transition
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.TransitionUsage
      * @generated
@@ -3140,11 +3013,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TriggerInvocationExpression <em>Trigger Invocation Expression</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TriggerInvocationExpression
+     * <em>Trigger Invocation Expression</em>}'. <!-- begin-user-doc --> This default implementation returns null so
+     * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway.
      * <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.TriggerInvocationExpression
      * @generated
@@ -3154,11 +3027,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Type <em>Type</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Type <em>Type</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Type
      * @generated
@@ -3168,11 +3040,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TypeFeaturing <em>Type Featuring</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TypeFeaturing <em>Type
+     * Featuring</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.TypeFeaturing
      * @generated
@@ -3182,11 +3053,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Unioning <em>Unioning</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Unioning <em>Unioning</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Unioning
      * @generated
@@ -3196,11 +3066,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Usage <em>Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.Usage <em>Usage</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.Usage
      * @generated
@@ -3210,11 +3079,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.UseCaseDefinition <em>Use Case Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.UseCaseDefinition <em>Use Case
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.UseCaseDefinition
      * @generated
@@ -3224,11 +3092,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.UseCaseUsage <em>Use Case Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.UseCaseUsage <em>Use Case
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.UseCaseUsage
      * @generated
@@ -3238,11 +3105,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.VariantMembership <em>Variant Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.VariantMembership <em>Variant
+     * Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.VariantMembership
      * @generated
@@ -3252,11 +3118,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.VerificationCaseDefinition <em>Verification Case Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.VerificationCaseDefinition
+     * <em>Verification Case Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+     * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.VerificationCaseDefinition
      * @generated
@@ -3266,11 +3132,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.VerificationCaseUsage <em>Verification Case Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.VerificationCaseUsage
+     * <em>Verification Case Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+     * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.VerificationCaseUsage
      * @generated
@@ -3280,11 +3146,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ViewDefinition <em>View Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ViewDefinition <em>View
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ViewDefinition
      * @generated
@@ -3294,11 +3159,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ViewpointDefinition <em>Viewpoint Definition</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ViewpointDefinition <em>Viewpoint
+     * Definition</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ViewpointDefinition
      * @generated
@@ -3308,11 +3172,10 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ViewpointUsage <em>Viewpoint Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ViewpointUsage <em>Viewpoint
+     * Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ViewpointUsage
      * @generated
@@ -3322,11 +3185,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ViewRenderingMembership <em>View Rendering Membership</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ViewRenderingMembership <em>View
+     * Rendering Membership</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ViewRenderingMembership
      * @generated
@@ -3337,10 +3200,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.ViewUsage <em>View Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.ViewUsage
      * @generated
@@ -3350,11 +3212,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.WhileLoopActionUsage <em>While Loop Action Usage</em>}'.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null so that we can easily ignore cases;
-     * it's useful to ignore a case when inheritance will catch all the cases anyway.
-     * <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.WhileLoopActionUsage <em>While Loop
+     * Action Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
      * @return the new adapter.
      * @see org.eclipse.syson.sysml.WhileLoopActionUsage
      * @generated
@@ -3364,10 +3226,9 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for the default case.
-     * <!-- begin-user-doc -->
-     * This default implementation returns null.
+     * Creates a new adapter for the default case. <!-- begin-user-doc --> This default implementation returns null.
      * <!-- end-user-doc -->
+     *
      * @return the new adapter.
      * @generated
      */
@@ -3375,4 +3236,4 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         return null;
     }
 
-} //SysmlAdapterFactory
+} // SysmlAdapterFactory

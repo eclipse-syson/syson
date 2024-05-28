@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.syson.sysml.DataType;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
@@ -30,22 +29,22 @@ import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Type;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Enumeration Usage</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Enumeration Usage</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.EnumerationUsageImpl#getEnumerationDefinition <em>Enumeration Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.EnumerationUsageImpl#getEnumerationDefinition <em>Enumeration
+ * Definition</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class EnumerationUsageImpl extends AttributeUsageImpl implements EnumerationUsage {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected EnumerationUsageImpl() {
@@ -53,8 +52,8 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -63,19 +62,19 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EnumerationDefinition getEnumerationDefinition() {
-        EnumerationDefinition enumerationDefinition = basicGetEnumerationDefinition();
-        return enumerationDefinition != null && enumerationDefinition.eIsProxy() ? (EnumerationDefinition)eResolveProxy((InternalEObject)enumerationDefinition) : enumerationDefinition;
+        EnumerationDefinition enumerationDefinition = this.basicGetEnumerationDefinition();
+        return enumerationDefinition != null && enumerationDefinition.eIsProxy() ? (EnumerationDefinition) this.eResolveProxy((InternalEObject) enumerationDefinition) : enumerationDefinition;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public EnumerationDefinition basicGetEnumerationDefinition() {
@@ -91,7 +90,7 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
             }
         }
         if (enumerationDefinition == null) {
-            Definition owningDefinition = getOwningDefinition();
+            Definition owningDefinition = this.getOwningDefinition();
             if (owningDefinition instanceof EnumerationDefinition definition) {
                 enumerationDefinition = definition;
             }
@@ -100,38 +99,38 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ENUMERATION_USAGE__ENUMERATION_DEFINITION:
-                if (resolve) return getEnumerationDefinition();
-                return basicGetEnumerationDefinition();
+                if (resolve)
+                    return this.getEnumerationDefinition();
+                return this.basicGetEnumerationDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.ENUMERATION_USAGE__ENUMERATION_DEFINITION:
-                return basicGetEnumerationDefinition() != null;
+                return this.basicGetEnumerationDefinition() != null;
         }
         return super.eIsSet(featureID);
     }
 
-
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -140,4 +139,4 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
-} //EnumerationUsageImpl
+} // EnumerationUsageImpl

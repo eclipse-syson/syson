@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -21,25 +21,23 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Disjoining</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Disjoining</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.DisjoiningImpl#getDisjoiningType <em>Disjoining Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.DisjoiningImpl#getOwningType <em>Owning Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.DisjoiningImpl#getTypeDisjoined <em>Type Disjoined</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.DisjoiningImpl#getDisjoiningType <em>Disjoining Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.DisjoiningImpl#getOwningType <em>Owning Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.DisjoiningImpl#getTypeDisjoined <em>Type Disjoined</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
     /**
-     * The cached value of the '{@link #getDisjoiningType() <em>Disjoining Type</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getDisjoiningType() <em>Disjoining Type</em>}' reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
      * @see #getDisjoiningType()
      * @generated
      * @ordered
@@ -47,9 +45,9 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
     protected Type disjoiningType;
 
     /**
-     * The cached value of the '{@link #getTypeDisjoined() <em>Type Disjoined</em>}' reference.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getTypeDisjoined() <em>Type Disjoined</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #getTypeDisjoined()
      * @generated
      * @ordered
@@ -57,8 +55,8 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
     protected Type typeDisjoined;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected DisjoiningImpl() {
@@ -66,8 +64,8 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -76,59 +74,59 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getDisjoiningType() {
-        if (disjoiningType != null && disjoiningType.eIsProxy()) {
-            InternalEObject oldDisjoiningType = (InternalEObject)disjoiningType;
-            disjoiningType = (Type)eResolveProxy(oldDisjoiningType);
-            if (disjoiningType != oldDisjoiningType) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DISJOINING__DISJOINING_TYPE, oldDisjoiningType, disjoiningType));
+        if (this.disjoiningType != null && this.disjoiningType.eIsProxy()) {
+            InternalEObject oldDisjoiningType = (InternalEObject) this.disjoiningType;
+            this.disjoiningType = (Type) this.eResolveProxy(oldDisjoiningType);
+            if (this.disjoiningType != oldDisjoiningType) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DISJOINING__DISJOINING_TYPE, oldDisjoiningType, this.disjoiningType));
             }
         }
-        return disjoiningType;
+        return this.disjoiningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetDisjoiningType() {
-        return disjoiningType;
+        return this.disjoiningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setDisjoiningType(Type newDisjoiningType) {
-        Type oldDisjoiningType = disjoiningType;
-        disjoiningType = newDisjoiningType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DISJOINING__DISJOINING_TYPE, oldDisjoiningType, disjoiningType));
+        Type oldDisjoiningType = this.disjoiningType;
+        this.disjoiningType = newDisjoiningType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DISJOINING__DISJOINING_TYPE, oldDisjoiningType, this.disjoiningType));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getOwningType() {
-        Type owningType = basicGetOwningType();
-        return owningType != null && owningType.eIsProxy() ? (Type)eResolveProxy((InternalEObject)owningType) : owningType;
+        Type owningType = this.basicGetOwningType();
+        return owningType != null && owningType.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) owningType) : owningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetOwningType() {
@@ -139,118 +137,121 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getTypeDisjoined() {
-        if (typeDisjoined != null && typeDisjoined.eIsProxy()) {
-            InternalEObject oldTypeDisjoined = (InternalEObject)typeDisjoined;
-            typeDisjoined = (Type)eResolveProxy(oldTypeDisjoined);
-            if (typeDisjoined != oldTypeDisjoined) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DISJOINING__TYPE_DISJOINED, oldTypeDisjoined, typeDisjoined));
+        if (this.typeDisjoined != null && this.typeDisjoined.eIsProxy()) {
+            InternalEObject oldTypeDisjoined = (InternalEObject) this.typeDisjoined;
+            this.typeDisjoined = (Type) this.eResolveProxy(oldTypeDisjoined);
+            if (this.typeDisjoined != oldTypeDisjoined) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DISJOINING__TYPE_DISJOINED, oldTypeDisjoined, this.typeDisjoined));
             }
         }
-        return typeDisjoined;
+        return this.typeDisjoined;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetTypeDisjoined() {
-        return typeDisjoined;
+        return this.typeDisjoined;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setTypeDisjoined(Type newTypeDisjoined) {
-        Type oldTypeDisjoined = typeDisjoined;
-        typeDisjoined = newTypeDisjoined;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DISJOINING__TYPE_DISJOINED, oldTypeDisjoined, typeDisjoined));
+        Type oldTypeDisjoined = this.typeDisjoined;
+        this.typeDisjoined = newTypeDisjoined;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DISJOINING__TYPE_DISJOINED, oldTypeDisjoined, this.typeDisjoined));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.DISJOINING__DISJOINING_TYPE:
-                if (resolve) return getDisjoiningType();
-                return basicGetDisjoiningType();
+                if (resolve)
+                    return this.getDisjoiningType();
+                return this.basicGetDisjoiningType();
             case SysmlPackage.DISJOINING__OWNING_TYPE:
-                if (resolve) return getOwningType();
-                return basicGetOwningType();
+                if (resolve)
+                    return this.getOwningType();
+                return this.basicGetOwningType();
             case SysmlPackage.DISJOINING__TYPE_DISJOINED:
-                if (resolve) return getTypeDisjoined();
-                return basicGetTypeDisjoined();
+                if (resolve)
+                    return this.getTypeDisjoined();
+                return this.basicGetTypeDisjoined();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.DISJOINING__DISJOINING_TYPE:
-                setDisjoiningType((Type)newValue);
+                this.setDisjoiningType((Type) newValue);
                 return;
             case SysmlPackage.DISJOINING__TYPE_DISJOINED:
-                setTypeDisjoined((Type)newValue);
+                this.setTypeDisjoined((Type) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.DISJOINING__DISJOINING_TYPE:
-                setDisjoiningType((Type)null);
+                this.setDisjoiningType((Type) null);
                 return;
             case SysmlPackage.DISJOINING__TYPE_DISJOINED:
-                setTypeDisjoined((Type)null);
+                this.setTypeDisjoined((Type) null);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.DISJOINING__DISJOINING_TYPE:
-                return disjoiningType != null;
+                return this.disjoiningType != null;
             case SysmlPackage.DISJOINING__OWNING_TYPE:
-                return basicGetOwningType() != null;
+                return this.basicGetOwningType() != null;
             case SysmlPackage.DISJOINING__TYPE_DISJOINED:
-                return typeDisjoined != null;
+                return this.typeDisjoined != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //DisjoiningImpl
+} // DisjoiningImpl

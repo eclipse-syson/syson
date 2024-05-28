@@ -20,22 +20,22 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Subject Membership</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Subject Membership</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.SubjectMembershipImpl#getOwnedSubjectParameter <em>Owned Subject Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.SubjectMembershipImpl#getOwnedSubjectParameter <em>Owned Subject
+ * Parameter</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class SubjectMembershipImpl extends ParameterMembershipImpl implements SubjectMembership {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected SubjectMembershipImpl() {
@@ -43,8 +43,8 @@ public class SubjectMembershipImpl extends ParameterMembershipImpl implements Su
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -53,49 +53,48 @@ public class SubjectMembershipImpl extends ParameterMembershipImpl implements Su
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Usage getOwnedSubjectParameter() {
         Usage ownedSubjectParameter = this.basicGetOwnedSubjectParameter();
-        return ownedSubjectParameter != null && ownedSubjectParameter.eIsProxy() ? (Usage)this.eResolveProxy((InternalEObject)ownedSubjectParameter) : ownedSubjectParameter;
+        return ownedSubjectParameter != null && ownedSubjectParameter.eIsProxy() ? (Usage) this.eResolveProxy((InternalEObject) ownedSubjectParameter) : ownedSubjectParameter;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Usage basicGetOwnedSubjectParameter() {
         return this.getOwnedRelatedElement().stream()
-            .filter(ReferenceUsage.class::isInstance)
-            .map(ReferenceUsage.class::cast)
-            .findFirst()
-            .orElse(null);
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SUBJECT_MEMBERSHIP__OWNED_SUBJECT_PARAMETER:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedSubjectParameter();
-                }
                 return this.basicGetOwnedSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -107,4 +106,4 @@ public class SubjectMembershipImpl extends ParameterMembershipImpl implements Su
         return super.eIsSet(featureID);
     }
 
-} //SubjectMembershipImpl
+} // SubjectMembershipImpl

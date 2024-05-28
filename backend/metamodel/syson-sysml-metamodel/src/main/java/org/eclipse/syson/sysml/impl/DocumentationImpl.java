@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -25,22 +25,20 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Documentation</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Documentation</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.DocumentationImpl#getDocumentedElement <em>Documented Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.DocumentationImpl#getDocumentedElement <em>Documented Element</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class DocumentationImpl extends CommentImpl implements Documentation {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected DocumentationImpl() {
@@ -48,8 +46,8 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -58,19 +56,19 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Element getDocumentedElement() {
-        Element documentedElement = basicGetDocumentedElement();
-        return documentedElement != null && documentedElement.eIsProxy() ? (Element)eResolveProxy((InternalEObject)documentedElement) : documentedElement;
+        Element documentedElement = this.basicGetDocumentedElement();
+        return documentedElement != null && documentedElement.eIsProxy() ? (Element) this.eResolveProxy((InternalEObject) documentedElement) : documentedElement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Element basicGetDocumentedElement() {
@@ -81,37 +79,38 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-                if (resolve) return getDocumentedElement();
-                return basicGetDocumentedElement();
+                if (resolve)
+                    return this.getDocumentedElement();
+                return this.basicGetDocumentedElement();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-                return basicGetDocumentedElement() != null;
+                return this.basicGetDocumentedElement() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -120,4 +119,4 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
-} //DocumentationImpl
+} // DocumentationImpl

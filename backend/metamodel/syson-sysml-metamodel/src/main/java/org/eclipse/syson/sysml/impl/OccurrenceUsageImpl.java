@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -27,26 +27,27 @@ import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Occurrence Usage</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Occurrence Usage</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.OccurrenceUsageImpl#isIsIndividual <em>Is Individual</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.OccurrenceUsageImpl#getPortionKind <em>Portion Kind</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.OccurrenceUsageImpl#getIndividualDefinition <em>Individual Definition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.OccurrenceUsageImpl#getOccurrenceDefinition <em>Occurrence Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.OccurrenceUsageImpl#isIsIndividual <em>Is Individual</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.OccurrenceUsageImpl#getPortionKind <em>Portion Kind</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.OccurrenceUsageImpl#getIndividualDefinition <em>Individual
+ * Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.OccurrenceUsageImpl#getOccurrenceDefinition <em>Occurrence
+ * Definition</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     /**
-     * The default value of the '{@link #isIsIndividual() <em>Is Individual</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The default value of the '{@link #isIsIndividual() <em>Is Individual</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #isIsIndividual()
      * @generated
      * @ordered
@@ -54,9 +55,9 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     protected static final boolean IS_INDIVIDUAL_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsIndividual() <em>Is Individual</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #isIsIndividual() <em>Is Individual</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #isIsIndividual()
      * @generated
      * @ordered
@@ -64,9 +65,9 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     protected boolean isIndividual = IS_INDIVIDUAL_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getPortionKind() <em>Portion Kind</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The default value of the '{@link #getPortionKind() <em>Portion Kind</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #getPortionKind()
      * @generated
      * @ordered
@@ -74,9 +75,9 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     protected static final PortionKind PORTION_KIND_EDEFAULT = PortionKind.SNAPSHOT;
 
     /**
-     * The cached value of the '{@link #getPortionKind() <em>Portion Kind</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getPortionKind() <em>Portion Kind</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getPortionKind()
      * @generated
      * @ordered
@@ -84,8 +85,8 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     protected PortionKind portionKind = PORTION_KIND_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected OccurrenceUsageImpl() {
@@ -93,8 +94,8 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -103,19 +104,19 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public OccurrenceDefinition getIndividualDefinition() {
-        OccurrenceDefinition individualDefinition = basicGetIndividualDefinition();
-        return individualDefinition != null && individualDefinition.eIsProxy() ? (OccurrenceDefinition)eResolveProxy((InternalEObject)individualDefinition) : individualDefinition;
+        OccurrenceDefinition individualDefinition = this.basicGetIndividualDefinition();
+        return individualDefinition != null && individualDefinition.eIsProxy() ? (OccurrenceDefinition) this.eResolveProxy((InternalEObject) individualDefinition) : individualDefinition;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public OccurrenceDefinition basicGetIndividualDefinition() {
@@ -126,31 +127,31 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsIndividual() {
-        return isIndividual;
+        return this.isIndividual;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsIndividual(boolean newIsIndividual) {
-        boolean oldIsIndividual = isIndividual;
-        isIndividual = newIsIndividual;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL, oldIsIndividual, isIndividual));
+        boolean oldIsIndividual = this.isIndividual;
+        this.isIndividual = newIsIndividual;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL, oldIsIndividual, this.isIndividual));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -160,52 +161,53 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public PortionKind getPortionKind() {
-        return portionKind;
+        return this.portionKind;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setPortionKind(PortionKind newPortionKind) {
-        PortionKind oldPortionKind = portionKind;
-        portionKind = newPortionKind == null ? PORTION_KIND_EDEFAULT : newPortionKind;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND, oldPortionKind, portionKind));
+        PortionKind oldPortionKind = this.portionKind;
+        this.portionKind = newPortionKind == null ? PORTION_KIND_EDEFAULT : newPortionKind;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND, oldPortionKind, this.portionKind));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL:
-                return isIsIndividual();
+                return this.isIsIndividual();
             case SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND:
-                return getPortionKind();
+                return this.getPortionKind();
             case SysmlPackage.OCCURRENCE_USAGE__INDIVIDUAL_DEFINITION:
-                if (resolve) return getIndividualDefinition();
-                return basicGetIndividualDefinition();
+                if (resolve)
+                    return this.getIndividualDefinition();
+                return this.basicGetIndividualDefinition();
             case SysmlPackage.OCCURRENCE_USAGE__OCCURRENCE_DEFINITION:
-                return getOccurrenceDefinition();
+                return this.getOccurrenceDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -213,69 +215,70 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL:
-                setIsIndividual((Boolean)newValue);
+                this.setIsIndividual((Boolean) newValue);
                 return;
             case SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND:
-                setPortionKind((PortionKind)newValue);
+                this.setPortionKind((PortionKind) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL:
-                setIsIndividual(IS_INDIVIDUAL_EDEFAULT);
+                this.setIsIndividual(IS_INDIVIDUAL_EDEFAULT);
                 return;
             case SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND:
-                setPortionKind(PORTION_KIND_EDEFAULT);
+                this.setPortionKind(PORTION_KIND_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL:
-                return isIndividual != IS_INDIVIDUAL_EDEFAULT;
+                return this.isIndividual != IS_INDIVIDUAL_EDEFAULT;
             case SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND:
-                return portionKind != PORTION_KIND_EDEFAULT;
+                return this.portionKind != PORTION_KIND_EDEFAULT;
             case SysmlPackage.OCCURRENCE_USAGE__INDIVIDUAL_DEFINITION:
-                return basicGetIndividualDefinition() != null;
+                return this.basicGetIndividualDefinition() != null;
             case SysmlPackage.OCCURRENCE_USAGE__OCCURRENCE_DEFINITION:
-                return !getOccurrenceDefinition().isEmpty();
+                return !this.getOccurrenceDefinition().isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isIndividual: ");
-        result.append(isIndividual);
+        result.append(this.isIndividual);
         result.append(", portionKind: ");
-        result.append(portionKind);
+        result.append(this.portionKind);
         result.append(')');
         return result.toString();
     }
 
-} //OccurrenceUsageImpl
+} // OccurrenceUsageImpl

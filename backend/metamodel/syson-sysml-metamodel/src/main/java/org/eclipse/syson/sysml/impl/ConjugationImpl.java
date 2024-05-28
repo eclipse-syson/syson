@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -21,25 +21,23 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Conjugation</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Conjugation</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConjugationImpl#getConjugatedType <em>Conjugated Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConjugationImpl#getOriginalType <em>Original Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConjugationImpl#getOwningType <em>Owning Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConjugationImpl#getConjugatedType <em>Conjugated Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConjugationImpl#getOriginalType <em>Original Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConjugationImpl#getOwningType <em>Owning Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     /**
-     * The cached value of the '{@link #getConjugatedType() <em>Conjugated Type</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getConjugatedType() <em>Conjugated Type</em>}' reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
      * @see #getConjugatedType()
      * @generated
      * @ordered
@@ -47,9 +45,9 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     protected Type conjugatedType;
 
     /**
-     * The cached value of the '{@link #getOriginalType() <em>Original Type</em>}' reference.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getOriginalType() <em>Original Type</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #getOriginalType()
      * @generated
      * @ordered
@@ -57,8 +55,8 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     protected Type originalType;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ConjugationImpl() {
@@ -66,8 +64,8 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -76,99 +74,99 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getConjugatedType() {
-        if (conjugatedType != null && conjugatedType.eIsProxy()) {
-            InternalEObject oldConjugatedType = (InternalEObject)conjugatedType;
-            conjugatedType = (Type)eResolveProxy(oldConjugatedType);
-            if (conjugatedType != oldConjugatedType) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.CONJUGATION__CONJUGATED_TYPE, oldConjugatedType, conjugatedType));
+        if (this.conjugatedType != null && this.conjugatedType.eIsProxy()) {
+            InternalEObject oldConjugatedType = (InternalEObject) this.conjugatedType;
+            this.conjugatedType = (Type) this.eResolveProxy(oldConjugatedType);
+            if (this.conjugatedType != oldConjugatedType) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.CONJUGATION__CONJUGATED_TYPE, oldConjugatedType, this.conjugatedType));
             }
         }
-        return conjugatedType;
+        return this.conjugatedType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetConjugatedType() {
-        return conjugatedType;
+        return this.conjugatedType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setConjugatedType(Type newConjugatedType) {
-        Type oldConjugatedType = conjugatedType;
-        conjugatedType = newConjugatedType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONJUGATION__CONJUGATED_TYPE, oldConjugatedType, conjugatedType));
+        Type oldConjugatedType = this.conjugatedType;
+        this.conjugatedType = newConjugatedType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONJUGATION__CONJUGATED_TYPE, oldConjugatedType, this.conjugatedType));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getOriginalType() {
-        if (originalType != null && originalType.eIsProxy()) {
-            InternalEObject oldOriginalType = (InternalEObject)originalType;
-            originalType = (Type)eResolveProxy(oldOriginalType);
-            if (originalType != oldOriginalType) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.CONJUGATION__ORIGINAL_TYPE, oldOriginalType, originalType));
+        if (this.originalType != null && this.originalType.eIsProxy()) {
+            InternalEObject oldOriginalType = (InternalEObject) this.originalType;
+            this.originalType = (Type) this.eResolveProxy(oldOriginalType);
+            if (this.originalType != oldOriginalType) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.CONJUGATION__ORIGINAL_TYPE, oldOriginalType, this.originalType));
             }
         }
-        return originalType;
+        return this.originalType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetOriginalType() {
-        return originalType;
+        return this.originalType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setOriginalType(Type newOriginalType) {
-        Type oldOriginalType = originalType;
-        originalType = newOriginalType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONJUGATION__ORIGINAL_TYPE, oldOriginalType, originalType));
+        Type oldOriginalType = this.originalType;
+        this.originalType = newOriginalType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONJUGATION__ORIGINAL_TYPE, oldOriginalType, this.originalType));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getOwningType() {
-        Type owningType = basicGetOwningType();
-        return owningType != null && owningType.eIsProxy() ? (Type)eResolveProxy((InternalEObject)owningType) : owningType;
+        Type owningType = this.basicGetOwningType();
+        return owningType != null && owningType.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) owningType) : owningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetOwningType() {
@@ -179,78 +177,81 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONJUGATION__CONJUGATED_TYPE:
-                if (resolve) return getConjugatedType();
-                return basicGetConjugatedType();
+                if (resolve)
+                    return this.getConjugatedType();
+                return this.basicGetConjugatedType();
             case SysmlPackage.CONJUGATION__ORIGINAL_TYPE:
-                if (resolve) return getOriginalType();
-                return basicGetOriginalType();
+                if (resolve)
+                    return this.getOriginalType();
+                return this.basicGetOriginalType();
             case SysmlPackage.CONJUGATION__OWNING_TYPE:
-                if (resolve) return getOwningType();
-                return basicGetOwningType();
+                if (resolve)
+                    return this.getOwningType();
+                return this.basicGetOwningType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.CONJUGATION__CONJUGATED_TYPE:
-                setConjugatedType((Type)newValue);
+                this.setConjugatedType((Type) newValue);
                 return;
             case SysmlPackage.CONJUGATION__ORIGINAL_TYPE:
-                setOriginalType((Type)newValue);
+                this.setOriginalType((Type) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.CONJUGATION__CONJUGATED_TYPE:
-                setConjugatedType((Type)null);
+                this.setConjugatedType((Type) null);
                 return;
             case SysmlPackage.CONJUGATION__ORIGINAL_TYPE:
-                setOriginalType((Type)null);
+                this.setOriginalType((Type) null);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.CONJUGATION__CONJUGATED_TYPE:
-                return conjugatedType != null;
+                return this.conjugatedType != null;
             case SysmlPackage.CONJUGATION__ORIGINAL_TYPE:
-                return originalType != null;
+                return this.originalType != null;
             case SysmlPackage.CONJUGATION__OWNING_TYPE:
-                return basicGetOwningType() != null;
+                return this.basicGetOwningType() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //ConjugationImpl
+} // ConjugationImpl

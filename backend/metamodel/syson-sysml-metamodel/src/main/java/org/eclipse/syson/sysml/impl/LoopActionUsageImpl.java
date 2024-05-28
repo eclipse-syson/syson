@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,22 +19,21 @@ import org.eclipse.syson.sysml.LoopActionUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Loop Action Usage</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Loop Action Usage</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.LoopActionUsageImpl#getBodyAction <em>Body Action</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.LoopActionUsageImpl#getBodyAction <em>Body Action</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class LoopActionUsageImpl extends ActionUsageImpl implements LoopActionUsage {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected LoopActionUsageImpl() {
@@ -42,8 +41,8 @@ public abstract class LoopActionUsageImpl extends ActionUsageImpl implements Loo
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -52,19 +51,19 @@ public abstract class LoopActionUsageImpl extends ActionUsageImpl implements Loo
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ActionUsage getBodyAction() {
-        ActionUsage bodyAction = basicGetBodyAction();
-        return bodyAction != null && bodyAction.eIsProxy() ? (ActionUsage)eResolveProxy((InternalEObject)bodyAction) : bodyAction;
+        ActionUsage bodyAction = this.basicGetBodyAction();
+        return bodyAction != null && bodyAction.eIsProxy() ? (ActionUsage) this.eResolveProxy((InternalEObject) bodyAction) : bodyAction;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ActionUsage basicGetBodyAction() {
@@ -75,32 +74,33 @@ public abstract class LoopActionUsageImpl extends ActionUsageImpl implements Loo
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.LOOP_ACTION_USAGE__BODY_ACTION:
-                if (resolve) return getBodyAction();
-                return basicGetBodyAction();
+                if (resolve)
+                    return this.getBodyAction();
+                return this.basicGetBodyAction();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.LOOP_ACTION_USAGE__BODY_ACTION:
-                return basicGetBodyAction() != null;
+                return this.basicGetBodyAction() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //LoopActionUsageImpl
+} // LoopActionUsageImpl

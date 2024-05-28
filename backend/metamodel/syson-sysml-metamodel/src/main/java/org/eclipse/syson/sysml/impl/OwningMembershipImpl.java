@@ -46,7 +46,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
     /**
      * The default value of the '{@link #getOwnedMemberElementId() <em>Owned Member Element Id</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getOwnedMemberElementId()
      * @generated
      * @ordered
@@ -56,7 +56,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
     /**
      * The default value of the '{@link #getOwnedMemberName() <em>Owned Member Name</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getOwnedMemberName()
      * @generated
      * @ordered
@@ -66,7 +66,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
     /**
      * The default value of the '{@link #getOwnedMemberShortName() <em>Owned Member Short Name</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getOwnedMemberShortName()
      * @generated
      * @ordered
@@ -75,7 +75,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected OwningMembershipImpl() {
@@ -84,7 +84,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -94,7 +94,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -105,7 +105,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     public Element basicGetOwnedMemberElement() {
@@ -118,7 +118,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     @Override
@@ -132,7 +132,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     @Override
@@ -146,7 +146,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     @Override
@@ -160,7 +160,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     @Override
@@ -170,7 +170,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     @Override
@@ -180,7 +180,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -193,9 +193,8 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_SHORT_NAME:
                 return this.getOwnedMemberShortName();
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_ELEMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedMemberElement();
-                }
                 return this.basicGetOwnedMemberElement();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -203,7 +202,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -223,7 +222,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     @Override

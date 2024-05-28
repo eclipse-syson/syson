@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,23 +19,24 @@ import org.eclipse.syson.sysml.RequirementVerificationMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Requirement Verification Membership</b></em>'.
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Requirement Verification Membership</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementVerificationMembershipImpl#getOwnedRequirement <em>Owned Requirement</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementVerificationMembershipImpl#getVerifiedRequirement <em>Verified Requirement</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementVerificationMembershipImpl#getOwnedRequirement <em>Owned
+ * Requirement</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementVerificationMembershipImpl#getVerifiedRequirement <em>Verified
+ * Requirement</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class RequirementVerificationMembershipImpl extends RequirementConstraintMembershipImpl implements RequirementVerificationMembership {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected RequirementVerificationMembershipImpl() {
@@ -43,8 +44,8 @@ public class RequirementVerificationMembershipImpl extends RequirementConstraint
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -53,19 +54,19 @@ public class RequirementVerificationMembershipImpl extends RequirementConstraint
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public RequirementUsage getOwnedRequirement() {
-        RequirementUsage ownedRequirement = basicGetOwnedRequirement();
-        return ownedRequirement != null && ownedRequirement.eIsProxy() ? (RequirementUsage)eResolveProxy((InternalEObject)ownedRequirement) : ownedRequirement;
+        RequirementUsage ownedRequirement = this.basicGetOwnedRequirement();
+        return ownedRequirement != null && ownedRequirement.eIsProxy() ? (RequirementUsage) this.eResolveProxy((InternalEObject) ownedRequirement) : ownedRequirement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public RequirementUsage basicGetOwnedRequirement() {
@@ -76,19 +77,19 @@ public class RequirementVerificationMembershipImpl extends RequirementConstraint
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public RequirementUsage getVerifiedRequirement() {
-        RequirementUsage verifiedRequirement = basicGetVerifiedRequirement();
-        return verifiedRequirement != null && verifiedRequirement.eIsProxy() ? (RequirementUsage)eResolveProxy((InternalEObject)verifiedRequirement) : verifiedRequirement;
+        RequirementUsage verifiedRequirement = this.basicGetVerifiedRequirement();
+        return verifiedRequirement != null && verifiedRequirement.eIsProxy() ? (RequirementUsage) this.eResolveProxy((InternalEObject) verifiedRequirement) : verifiedRequirement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public RequirementUsage basicGetVerifiedRequirement() {
@@ -99,37 +100,39 @@ public class RequirementVerificationMembershipImpl extends RequirementConstraint
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__OWNED_REQUIREMENT:
-                if (resolve) return getOwnedRequirement();
-                return basicGetOwnedRequirement();
+                if (resolve)
+                    return this.getOwnedRequirement();
+                return this.basicGetOwnedRequirement();
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__VERIFIED_REQUIREMENT:
-                if (resolve) return getVerifiedRequirement();
-                return basicGetVerifiedRequirement();
+                if (resolve)
+                    return this.getVerifiedRequirement();
+                return this.basicGetVerifiedRequirement();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__OWNED_REQUIREMENT:
-                return basicGetOwnedRequirement() != null;
+                return this.basicGetOwnedRequirement() != null;
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__VERIFIED_REQUIREMENT:
-                return basicGetVerifiedRequirement() != null;
+                return this.basicGetVerifiedRequirement() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //RequirementVerificationMembershipImpl
+} // RequirementVerificationMembershipImpl

@@ -35,31 +35,32 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Requirement Usage</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Requirement Usage</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getReqId <em>Req Id</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getText <em>Text</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getActorParameter <em>Actor Parameter</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getAssumedConstraint <em>Assumed Constraint</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getFramedConcern <em>Framed Concern</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getRequiredConstraint <em>Required Constraint</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getRequirementDefinition <em>Requirement Definition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getStakeholderParameter <em>Stakeholder Parameter</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getSubjectParameter <em>Subject Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getReqId <em>Req Id</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getText <em>Text</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getActorParameter <em>Actor Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getAssumedConstraint <em>Assumed Constraint</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getFramedConcern <em>Framed Concern</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getRequiredConstraint <em>Required Constraint</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getRequirementDefinition <em>Requirement
+ * Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getStakeholderParameter <em>Stakeholder
+ * Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementUsageImpl#getSubjectParameter <em>Subject Parameter</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class RequirementUsageImpl extends ConstraintUsageImpl implements RequirementUsage {
     /**
-     * The default value of the '{@link #getReqId() <em>Req Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getReqId() <em>Req Id</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getReqId()
      * @generated
      * @ordered
@@ -67,9 +68,9 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     protected static final String REQ_ID_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getReqId() <em>Req Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getReqId() <em>Req Id</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getReqId()
      * @generated
      * @ordered
@@ -77,8 +78,8 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     protected String reqId = REQ_ID_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected RequirementUsageImpl() {
@@ -86,8 +87,8 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -96,8 +97,8 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -107,27 +108,27 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<ConstraintUsage> getAssumedConstraint() {
         List<ConstraintUsage> assumedConstraints = new ArrayList<>();
         this.getOwnedRelationship().stream()
-            .filter(RequirementConstraintMembership.class::isInstance)
-            .map(RequirementConstraintMembership.class::cast)
-            .filter(rcm -> RequirementConstraintKind.ASSUMPTION.equals(rcm.getKind()))
-            .flatMap(rcm -> rcm.getOwnedRelatedElement().stream())
-            .filter(ConstraintUsage.class::isInstance)
-            .map(ConstraintUsage.class::cast)
-            .forEach(assumedConstraints::add);
+                .filter(RequirementConstraintMembership.class::isInstance)
+                .map(RequirementConstraintMembership.class::cast)
+                .filter(rcm -> RequirementConstraintKind.ASSUMPTION.equals(rcm.getKind()))
+                .flatMap(rcm -> rcm.getOwnedRelatedElement().stream())
+                .filter(ConstraintUsage.class::isInstance)
+                .map(ConstraintUsage.class::cast)
+                .forEach(assumedConstraints::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), assumedConstraints.size(), assumedConstraints.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -137,8 +138,8 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -147,52 +148,51 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setReqId(String newReqId) {
         String oldReqId = this.reqId;
         this.reqId = newReqId;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_USAGE__REQ_ID, oldReqId, this.reqId));
-        }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<ConstraintUsage> getRequiredConstraint() {
         List<ConstraintUsage> requiredConstraints = new ArrayList<>();
         this.getOwnedRelationship().stream()
-            .filter(RequirementConstraintMembership.class::isInstance)
-            .map(RequirementConstraintMembership.class::cast)
-            .filter(rcm -> RequirementConstraintKind.REQUIREMENT.equals(rcm.getKind()))
-            .flatMap(rcm -> rcm.getOwnedRelatedElement().stream())
-            .filter(ConstraintUsage.class::isInstance)
-            .map(ConstraintUsage.class::cast)
-            .forEach(requiredConstraints::add);
+                .filter(RequirementConstraintMembership.class::isInstance)
+                .map(RequirementConstraintMembership.class::cast)
+                .filter(rcm -> RequirementConstraintKind.REQUIREMENT.equals(rcm.getKind()))
+                .flatMap(rcm -> rcm.getOwnedRelatedElement().stream())
+                .filter(ConstraintUsage.class::isInstance)
+                .map(ConstraintUsage.class::cast)
+                .forEach(requiredConstraints::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint(), requiredConstraints.size(), requiredConstraints.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public RequirementDefinition getRequirementDefinition() {
         RequirementDefinition requirementDefinition = this.basicGetRequirementDefinition();
-        return requirementDefinition != null && requirementDefinition.eIsProxy() ? (RequirementDefinition)this.eResolveProxy((InternalEObject)requirementDefinition) : requirementDefinition;
+        return requirementDefinition != null && requirementDefinition.eIsProxy() ? (RequirementDefinition) this.eResolveProxy((InternalEObject) requirementDefinition) : requirementDefinition;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public RequirementDefinition basicGetRequirementDefinition() {
@@ -203,8 +203,8 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -214,52 +214,52 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Usage getSubjectParameter() {
         Usage subjectParameter = this.basicGetSubjectParameter();
-        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage)this.eResolveProxy((InternalEObject)subjectParameter) : subjectParameter;
+        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage) this.eResolveProxy((InternalEObject) subjectParameter) : subjectParameter;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Usage basicGetSubjectParameter() {
         return this.getOwnedRelationship().stream()
-            .filter(SubjectMembership.class::isInstance)
-            .map(SubjectMembership.class::cast)
-            .map(sm -> sm.getOwnedSubjectParameter())
-            .findFirst()
-            .orElse(null);
+                .filter(SubjectMembership.class::isInstance)
+                .map(SubjectMembership.class::cast)
+                .map(sm -> sm.getOwnedSubjectParameter())
+                .findFirst()
+                .orElse(null);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<String> getText() {
         List<String> text = new ArrayList<>();
         this.getOwnedRelationship().stream()
-            .filter(OwningMembership.class::isInstance)
-            .map(OwningMembership.class::cast)
-            .flatMap(om -> om.getOwnedRelatedElement().stream())
-            .filter(Documentation.class::isInstance)
-            .map(Documentation.class::cast)
-            .map(Documentation::getBody)
-            .forEach(text::add);
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(om -> om.getOwnedRelatedElement().stream())
+                .filter(Documentation.class::isInstance)
+                .map(Documentation.class::cast)
+                .map(Documentation::getBody)
+                .forEach(text::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementUsage_Text(), text.size(), text.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -278,24 +278,22 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
             case SysmlPackage.REQUIREMENT_USAGE__REQUIRED_CONSTRAINT:
                 return this.getRequiredConstraint();
             case SysmlPackage.REQUIREMENT_USAGE__REQUIREMENT_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getRequirementDefinition();
-                }
                 return this.basicGetRequirementDefinition();
             case SysmlPackage.REQUIREMENT_USAGE__STAKEHOLDER_PARAMETER:
                 return this.getStakeholderParameter();
             case SysmlPackage.REQUIREMENT_USAGE__SUBJECT_PARAMETER:
-                if (resolve) {
+                if (resolve)
                     return this.getSubjectParameter();
-                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -303,15 +301,15 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_USAGE__REQ_ID:
-                this.setReqId((String)newValue);
+                this.setReqId((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -325,8 +323,8 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -355,15 +353,14 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (this.eIsProxy()) {
+        if (this.eIsProxy())
             return super.toString();
-        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (reqId: ");
@@ -372,4 +369,4 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
         return result.toString();
     }
 
-} //RequirementUsageImpl
+} // RequirementUsageImpl

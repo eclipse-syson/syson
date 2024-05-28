@@ -33,28 +33,27 @@ import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Relationship</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Relationship</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#isIsImplied <em>Is Implied</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getOwnedRelatedElement <em>Owned Related Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getOwningRelatedElement <em>Owning Related Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getRelatedElement <em>Related Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getSource <em>Source</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getTarget <em>Target</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#isIsImplied <em>Is Implied</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getOwnedRelatedElement <em>Owned Related Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getOwningRelatedElement <em>Owning Related
+ * Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getRelatedElement <em>Related Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getSource <em>Source</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RelationshipImpl#getTarget <em>Target</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class RelationshipImpl extends ElementImpl implements Relationship {
     /**
-     * The default value of the '{@link #isIsImplied() <em>Is Implied</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsImplied() <em>Is Implied</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsImplied()
      * @generated
      * @ordered
@@ -62,9 +61,9 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     protected static final boolean IS_IMPLIED_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsImplied() <em>Is Implied</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsImplied() <em>Is Implied</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsImplied()
      * @generated
      * @ordered
@@ -72,9 +71,9 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     protected boolean isImplied = IS_IMPLIED_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getOwnedRelatedElement() <em>Owned Related Element</em>}' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getOwnedRelatedElement() <em>Owned Related Element</em>}' containment reference
+     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getOwnedRelatedElement()
      * @generated
      * @ordered
@@ -82,9 +81,9 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     protected EList<Element> ownedRelatedElement;
 
     /**
-     * The cached value of the '{@link #getSource() <em>Source</em>}' reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getSource() <em>Source</em>}' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getSource()
      * @generated
      * @ordered
@@ -92,9 +91,9 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     protected EList<Element> source;
 
     /**
-     * The cached value of the '{@link #getTarget() <em>Target</em>}' reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getTarget() <em>Target</em>}' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getTarget()
      * @generated
      * @ordered
@@ -102,8 +101,8 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     protected EList<Element> target;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected RelationshipImpl() {
@@ -111,8 +110,8 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -121,87 +120,89 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsImplied() {
-        return isImplied;
+        return this.isImplied;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsImplied(boolean newIsImplied) {
-        boolean oldIsImplied = isImplied;
-        isImplied = newIsImplied;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.RELATIONSHIP__IS_IMPLIED, oldIsImplied, isImplied));
+        boolean oldIsImplied = this.isImplied;
+        this.isImplied = newIsImplied;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.RELATIONSHIP__IS_IMPLIED, oldIsImplied, this.isImplied));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EList<Element> getOwnedRelatedElement() {
-        if (ownedRelatedElement == null) {
-            ownedRelatedElement = new EObjectContainmentWithInverseEList<Element>(Element.class, this, SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT, SysmlPackage.ELEMENT__OWNING_RELATIONSHIP);
+        if (this.ownedRelatedElement == null) {
+            this.ownedRelatedElement = new EObjectContainmentWithInverseEList<>(Element.class, this, SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT,
+                    SysmlPackage.ELEMENT__OWNING_RELATIONSHIP);
         }
-        return ownedRelatedElement;
+        return this.ownedRelatedElement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Element getOwningRelatedElement() {
-        if (eContainerFeatureID() != SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT) return null;
-        return (Element)eInternalContainer();
+        if (this.eContainerFeatureID() != SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT)
+            return null;
+        return (Element) this.eInternalContainer();
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public NotificationChain basicSetOwningRelatedElement(Element newOwningRelatedElement, NotificationChain msgs) {
-        msgs = eBasicSetContainer((InternalEObject)newOwningRelatedElement, SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT, msgs);
+        msgs = this.eBasicSetContainer((InternalEObject) newOwningRelatedElement, SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT, msgs);
         return msgs;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setOwningRelatedElement(Element newOwningRelatedElement) {
-        if (newOwningRelatedElement != eInternalContainer() || (eContainerFeatureID() != SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT && newOwningRelatedElement != null)) {
+        if (newOwningRelatedElement != this.eInternalContainer() || (this.eContainerFeatureID() != SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT && newOwningRelatedElement != null)) {
             if (EcoreUtil.isAncestor(this, newOwningRelatedElement))
-                throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+                throw new IllegalArgumentException("Recursive containment not allowed for " + this.toString());
             NotificationChain msgs = null;
-            if (eInternalContainer() != null)
-                msgs = eBasicRemoveFromContainer(msgs);
+            if (this.eInternalContainer() != null)
+                msgs = this.eBasicRemoveFromContainer(msgs);
             if (newOwningRelatedElement != null)
-                msgs = ((InternalEObject)newOwningRelatedElement).eInverseAdd(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
-            msgs = basicSetOwningRelatedElement(newOwningRelatedElement, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT, newOwningRelatedElement, newOwningRelatedElement));
+                msgs = ((InternalEObject) newOwningRelatedElement).eInverseAdd(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
+            msgs = this.basicSetOwningRelatedElement(newOwningRelatedElement, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT, newOwningRelatedElement, newOwningRelatedElement));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -213,50 +214,50 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EList<Element> getSource() {
-        if (source == null) {
-            source = new EObjectResolvingEList<Element>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE);
+        if (this.source == null) {
+            this.source = new EObjectResolvingEList<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE);
         }
-        return source;
+        return this.source;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EList<Element> getTarget() {
-        if (target == null) {
-            target = new EObjectResolvingEList<Element>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET);
+        if (this.target == null) {
+            this.target = new EObjectResolvingEList<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET);
         }
-        return target;
+        return this.target;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public Namespace libraryNamespace() {
         Namespace libraryNamespace = null;
-        if (getOwningRelatedElement() != null) {
-            libraryNamespace = getOwningRelatedElement().libraryNamespace();
-        } else if (getOwningRelationship() != null) {
-            libraryNamespace = getOwningRelationship().libraryNamespace();
+        if (this.getOwningRelatedElement() != null) {
+            libraryNamespace = this.getOwningRelatedElement().libraryNamespace();
+        } else if (this.getOwningRelationship() != null) {
+            libraryNamespace = this.getOwningRelationship().libraryNamespace();
         }
         return libraryNamespace;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -264,72 +265,72 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT:
-                return ((InternalEList<InternalEObject>)(InternalEList<?>)getOwnedRelatedElement()).basicAdd(otherEnd, msgs);
+                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getOwnedRelatedElement()).basicAdd(otherEnd, msgs);
             case SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT:
-                if (eInternalContainer() != null)
-                    msgs = eBasicRemoveFromContainer(msgs);
-                return basicSetOwningRelatedElement((Element)otherEnd, msgs);
+                if (this.eInternalContainer() != null)
+                    msgs = this.eBasicRemoveFromContainer(msgs);
+                return this.basicSetOwningRelatedElement((Element) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT:
-                return ((InternalEList<?>)getOwnedRelatedElement()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>) this.getOwnedRelatedElement()).basicRemove(otherEnd, msgs);
             case SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT:
-                return basicSetOwningRelatedElement(null, msgs);
+                return this.basicSetOwningRelatedElement(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
-        switch (eContainerFeatureID()) {
+        switch (this.eContainerFeatureID()) {
             case SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT:
-                return eInternalContainer().eInverseRemove(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
+                return this.eInternalContainer().eInverseRemove(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
         }
         return super.eBasicRemoveFromContainerFeature(msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.RELATIONSHIP__IS_IMPLIED:
-                return isIsImplied();
+                return this.isIsImplied();
             case SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT:
-                return getOwnedRelatedElement();
+                return this.getOwnedRelatedElement();
             case SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT:
-                return getOwningRelatedElement();
+                return this.getOwningRelatedElement();
             case SysmlPackage.RELATIONSHIP__RELATED_ELEMENT:
-                return getRelatedElement();
+                return this.getRelatedElement();
             case SysmlPackage.RELATIONSHIP__SOURCE:
-                return getSource();
+                return this.getSource();
             case SysmlPackage.RELATIONSHIP__TARGET:
-                return getTarget();
+                return this.getTarget();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -337,92 +338,93 @@ public abstract class RelationshipImpl extends ElementImpl implements Relationsh
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.RELATIONSHIP__IS_IMPLIED:
-                setIsImplied((Boolean)newValue);
+                this.setIsImplied((Boolean) newValue);
                 return;
             case SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT:
-                getOwnedRelatedElement().clear();
-                getOwnedRelatedElement().addAll((Collection<? extends Element>)newValue);
+                this.getOwnedRelatedElement().clear();
+                this.getOwnedRelatedElement().addAll((Collection<? extends Element>) newValue);
                 return;
             case SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT:
-                setOwningRelatedElement((Element)newValue);
+                this.setOwningRelatedElement((Element) newValue);
                 return;
             case SysmlPackage.RELATIONSHIP__SOURCE:
-                getSource().clear();
-                getSource().addAll((Collection<? extends Element>)newValue);
+                this.getSource().clear();
+                this.getSource().addAll((Collection<? extends Element>) newValue);
                 return;
             case SysmlPackage.RELATIONSHIP__TARGET:
-                getTarget().clear();
-                getTarget().addAll((Collection<? extends Element>)newValue);
+                this.getTarget().clear();
+                this.getTarget().addAll((Collection<? extends Element>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.RELATIONSHIP__IS_IMPLIED:
-                setIsImplied(IS_IMPLIED_EDEFAULT);
+                this.setIsImplied(IS_IMPLIED_EDEFAULT);
                 return;
             case SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT:
-                getOwnedRelatedElement().clear();
+                this.getOwnedRelatedElement().clear();
                 return;
             case SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT:
-                setOwningRelatedElement((Element)null);
+                this.setOwningRelatedElement((Element) null);
                 return;
             case SysmlPackage.RELATIONSHIP__SOURCE:
-                getSource().clear();
+                this.getSource().clear();
                 return;
             case SysmlPackage.RELATIONSHIP__TARGET:
-                getTarget().clear();
+                this.getTarget().clear();
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.RELATIONSHIP__IS_IMPLIED:
-                return isImplied != IS_IMPLIED_EDEFAULT;
+                return this.isImplied != IS_IMPLIED_EDEFAULT;
             case SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT:
-                return ownedRelatedElement != null && !ownedRelatedElement.isEmpty();
+                return this.ownedRelatedElement != null && !this.ownedRelatedElement.isEmpty();
             case SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT:
-                return getOwningRelatedElement() != null;
+                return this.getOwningRelatedElement() != null;
             case SysmlPackage.RELATIONSHIP__RELATED_ELEMENT:
-                return !getRelatedElement().isEmpty();
+                return !this.getRelatedElement().isEmpty();
             case SysmlPackage.RELATIONSHIP__SOURCE:
-                return source != null && !source.isEmpty();
+                return this.source != null && !this.source.isEmpty();
             case SysmlPackage.RELATIONSHIP__TARGET:
-                return target != null && !target.isEmpty();
+                return this.target != null && !this.target.isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isImplied: ");
-        result.append(isImplied);
+        result.append(this.isImplied);
         result.append(')');
         return result.toString();
     }
 
-} //RelationshipImpl
+} // RelationshipImpl
