@@ -19,6 +19,7 @@
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/298[#298] [syson] Add root Namespace to SysON models and libraries
+- https://github.com/eclipse-syson/syson/issues/324[#324] [diagrams] Improve support for whitespaces, quotes, and special characters in direct edit
 
 === New features
 
