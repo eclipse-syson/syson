@@ -46,8 +46,11 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 
 /**
@@ -133,6 +136,31 @@ public class DetailsViewService {
         if (resource != null) {
             String uri = resource.getURI().toString();
             isReadOnly = uri.startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME) || uri.startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME);
+        }
+        return isReadOnly;
+    }
+
+    /**
+     * Checks that {@code element} OR {@code eStructuralFeature} are readOnly respectively based on isReadOnly(Element)
+     * and isReadOnly(EStructuralFeature).
+     *
+     * @param element
+     *            The {@link Element} to check
+     * @param eStructuralFeature
+     *            The {@link EStructuralFeature} to check
+     * @return
+     */
+    public boolean isReadOnly(Element element, EStructuralFeature eStructuralFeature) {
+        boolean isReadOnly = false;
+        if (eStructuralFeature != null) {
+            isReadOnly = isReadOnly || this.isReadOnly(eStructuralFeature);
+        }
+        if (element != null) {
+            isReadOnly = isReadOnly || this.isReadOnly(element);
+            if ((element instanceof StateUsage && SysmlPackage.eINSTANCE.getStateUsage_IsParallel().equals(eStructuralFeature))
+                    || (element instanceof StateDefinition && SysmlPackage.eINSTANCE.getStateDefinition_IsParallel().equals(eStructuralFeature))) {
+                isReadOnly = isReadOnly || ((Type) element).getOwnedFeature().stream().filter(TransitionUsage.class::isInstance).findAny().isPresent();
+            }
         }
         return isReadOnly;
     }

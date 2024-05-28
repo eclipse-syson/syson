@@ -133,44 +133,6 @@ public class StateTransitionViewToolService extends ViewToolService {
     }
 
     /**
-     * Precondition for the "New State" tool from StateTransition View StateDefinition node.
-     * <p>
-     * This method ensures that child states of a StateDefinition are either all Parallel or none are.
-     * </p>
-     *
-     * @param stateDefinition
-     *            the {@link StateDefinition} corresponding to the target object on which the tool has been called.
-     * @param isParallel
-     *            whether or not the created State will be set as parallel.
-     * @return whether an owned ({@code parallel} or not) StateUsage can be created in {@code stateDefinition}.
-     */
-    public boolean canCreateChildState(StateDefinition stateDefinition, boolean isParallel) {
-        boolean isEmpty = stateDefinition.getOwnedState().isEmpty();
-        boolean allMatch = stateDefinition.getOwnedState().stream().allMatch(st -> {
-            return st.isIsParallel() == isParallel;
-        });
-        return isEmpty || allMatch;
-    }
-
-    /**
-     * Precondition for the "New State" tool from StateTransition View StateUsage node.
-     * <p>
-     * This method ensures that child states of a {@link StateUsage} are either all parallel or none are.
-     * </p>
-     * 
-     * @param stateUsage
-     *            the {@link StateUsage} corresponding to the target object on which the tool has been called
-     * @param isParallel
-     *            whether or not the created State will be set as parallel
-     * @return whether an owned {@code parallel} or not) StateUsage can be created in {@code stateDefinition}
-     */
-    public boolean canCreateChildState(StateUsage stateUsage, boolean isParallel) {
-        boolean isEmpty = stateUsage.getNestedState().isEmpty();
-        boolean allMatch = stateUsage.getNestedState().stream().allMatch(st -> st.isIsParallel() == isParallel);
-        return isEmpty || allMatch;
-    }
-
-    /**
      * Create a child State onto {@code stateDefinition}.
      *
      * @param stateDefinition
