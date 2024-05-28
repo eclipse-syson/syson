@@ -86,6 +86,12 @@ WS :
 	[ \t\r\n\u000C]+ -> skip
 ;
 
+ANY:
+	// This token is required to make sure the parser rule name can match any input (since it is defined as a negation 
+	// we need a dedicated token to match anything). 
+	.
+;
+
 Boolean :
 	TRUE|FALSE
 ;
@@ -98,13 +104,6 @@ Real :
 	[0-9]+'.'[0-9]+
 ;
 
-SingleQuotedString :
-	'\'' (SingleQuoteEscape|.)*? '\''
-;
-
-fragment SingleQuoteEscape : '\\\\' | '\\\''
-;
-
 DoubleQuotedString :
 	'"' (~[\r\n"] | '""')* '"'
 ;
@@ -114,26 +113,12 @@ qualifiedName :
 ;
 
 name :
-	BasicName | SingleQuotedString
+	// We can't use ANY+ or .+ here because it conflicts with reserved keywords, which will be matched over ANY since 
+	// they are longer. Using .+ is also too greedy, and will match ':' ':>' etc, making the parser unable to properly 
+	// handle the input.
+	~(':' | ':>' | '::>' | ':>>' | '=' | '[' )+
 ;
 
-BasicName :
-	BasicInitialCharacter BasicNameCharacter*
-;
-
-BasicInitialCharacter :
-	Letter | '_' | '~'
-;
-
-BasicNameCharacter :
-	BasicInitialCharacter | DeciamlDigit
-;
-
-fragment Letter : [a-zA-Z]
-;
-
-fragment DeciamlDigit : [0-9]
-;
 
 // Reserved Keywords
 

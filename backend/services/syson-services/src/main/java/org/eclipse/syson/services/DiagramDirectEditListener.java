@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.emf.ecore.EClass;
@@ -109,6 +110,27 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.getVisitedTransitionFeatures().put(TransitionFeatureKind.EFFECT, false);
     }
 
+    /**
+     * Returns the full text contained in the provided {@code ctx}.
+     * <p>
+     * The full text includes whitespaces that are skipped by the lexer. It is used to handle KerML unrestricted names
+     * without quotes (e.g. "A Part" as the name of a Part Definition).
+     * </p>
+     *
+     * @param ctx
+     *            the parser rule's context
+     * @return the full text contained in the provided {@code ctx}
+     */
+    private String getFullText(ParserRuleContext ctx) {
+        if (ctx.start == null || ctx.stop == null || ctx.start.getStartIndex() < 0 || ctx.stop.getStopIndex() < 0) {
+            // Fallback
+            return ctx.getText();
+        } else {
+            return ctx.start.getInputStream().getText(Interval.of(ctx.start.getStartIndex(), ctx.stop.getStopIndex()))
+                    .strip();
+        }
+    }
+
     @Override
     public void exitExpression(ExpressionContext ctx) {
         if (!this.options.contains(LabelService.NAME_OFF)) {
@@ -117,7 +139,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 if (identifier.getText().isBlank()) {
                     this.element.setDeclaredName(null);
                 } else {
-                    this.element.setDeclaredName(identifier.getText());
+                    this.element.setDeclaredName(this.getFullText(identifier));
                 }
             }
         }
@@ -166,7 +188,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (!this.options.contains(LabelService.TYPING_OFF) && this.element instanceof Usage usage) {
             var identifier = ctx.qualifiedName();
             if (identifier != null) {
-                var typeAsString = identifier.getText();
+                var typeAsString = this.getFullText(identifier);
                 var type = this.utilService.findByNameAndType(this.element, typeAsString, Type.class);
                 if (type == null && this.utilService.isQualifiedName(typeAsString)) {
                     this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the typing does not exist", MessageLevel.ERROR));
@@ -272,7 +294,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     private void handleSubclassification(SubsettingExpressionContext ctx, Definition subclassificationDef) {
         var identifier = ctx.qualifiedName();
         if (identifier != null) {
-            var definitionAsString = identifier.getText();
+            var definitionAsString = this.getFullText(identifier);
             var definition = this.utilService.findByNameAndType(subclassificationDef, definitionAsString, Classifier.class);
             if (definition == null && this.utilService.isQualifiedName(definitionAsString)) {
                 this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the subclassification does not exist", MessageLevel.ERROR));
@@ -318,7 +340,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     private void handleSubsetting(SubsettingExpressionContext ctx, Usage subsettingUsage) {
         var identifier = ctx.qualifiedName();
         if (identifier != null) {
-            var usageAsString = identifier.getText();
+            var usageAsString = this.getFullText(identifier);
             var usage = this.utilService.findByNameAndType(subsettingUsage, usageAsString, Feature.class);
             if (usage == null && this.utilService.isQualifiedName(usageAsString)) {
                 this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the subsetting does not exist", MessageLevel.ERROR));
@@ -369,7 +391,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage redefining) {
             var identifier = ctx.qualifiedName();
             if (identifier != null) {
-                var usageAsString = identifier.getText();
+                var usageAsString = this.getFullText(identifier);
                 var usage = this.utilService.findByNameAndType(redefining, usageAsString, Feature.class);
                 if (usage == null && this.utilService.isQualifiedName(usageAsString)) {
                     this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the redefinition does not exist", MessageLevel.ERROR));
