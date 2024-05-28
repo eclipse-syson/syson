@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,22 +19,22 @@ import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Objective Membership</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Objective Membership</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ObjectiveMembershipImpl#getOwnedObjectiveRequirement <em>Owned Objective Requirement</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ObjectiveMembershipImpl#getOwnedObjectiveRequirement <em>Owned Objective
+ * Requirement</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements ObjectiveMembership {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ObjectiveMembershipImpl() {
@@ -42,8 +42,8 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -52,19 +52,20 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public RequirementUsage getOwnedObjectiveRequirement() {
         RequirementUsage ownedObjectiveRequirement = this.basicGetOwnedObjectiveRequirement();
-        return ownedObjectiveRequirement != null && ownedObjectiveRequirement.eIsProxy() ? (RequirementUsage)this.eResolveProxy((InternalEObject)ownedObjectiveRequirement) : ownedObjectiveRequirement;
+        return ownedObjectiveRequirement != null && ownedObjectiveRequirement.eIsProxy() ? (RequirementUsage) this.eResolveProxy((InternalEObject) ownedObjectiveRequirement)
+                : ownedObjectiveRequirement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public RequirementUsage basicGetOwnedObjectiveRequirement() {
@@ -77,25 +78,24 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.OBJECTIVE_MEMBERSHIP__OWNED_OBJECTIVE_REQUIREMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedObjectiveRequirement();
-                }
                 return this.basicGetOwnedObjectiveRequirement();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -107,4 +107,4 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
         return super.eIsSet(featureID);
     }
 
-} //ObjectiveMembershipImpl
+} // ObjectiveMembershipImpl

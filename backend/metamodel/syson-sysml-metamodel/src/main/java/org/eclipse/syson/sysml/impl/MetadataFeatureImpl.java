@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
@@ -34,25 +34,24 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Metadata Feature</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Metadata Feature</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.MetadataFeatureImpl#getAnnotatedElement <em>Annotated Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.MetadataFeatureImpl#getAnnotation <em>Annotation</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.MetadataFeatureImpl#getMetaclass <em>Metaclass</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MetadataFeatureImpl#getAnnotatedElement <em>Annotated Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MetadataFeatureImpl#getAnnotation <em>Annotation</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MetadataFeatureImpl#getMetaclass <em>Metaclass</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature {
     /**
-     * The cached value of the '{@link #getAnnotation() <em>Annotation</em>}' reference list.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getAnnotation() <em>Annotation</em>}' reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #getAnnotation()
      * @generated
      * @ordered
@@ -60,8 +59,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     protected EList<Annotation> annotation;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected MetadataFeatureImpl() {
@@ -69,8 +68,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -79,8 +78,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -90,32 +89,32 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EList<Annotation> getAnnotation() {
-        if (annotation == null) {
-            annotation = new EObjectWithInverseResolvingEList<Annotation>(Annotation.class, this, SysmlPackage.METADATA_FEATURE__ANNOTATION, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT);
+        if (this.annotation == null) {
+            this.annotation = new EObjectWithInverseResolvingEList<>(Annotation.class, this, SysmlPackage.METADATA_FEATURE__ANNOTATION, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT);
         }
-        return annotation;
+        return this.annotation;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Metaclass getMetaclass() {
-        Metaclass metaclass = basicGetMetaclass();
-        return metaclass != null && metaclass.eIsProxy() ? (Metaclass)eResolveProxy((InternalEObject)metaclass) : metaclass;
+        Metaclass metaclass = this.basicGetMetaclass();
+        return metaclass != null && metaclass.eIsProxy() ? (Metaclass) this.eResolveProxy((InternalEObject) metaclass) : metaclass;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Metaclass basicGetMetaclass() {
@@ -126,8 +125,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -138,8 +137,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -148,8 +147,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -158,8 +157,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -170,8 +169,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -179,47 +178,48 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                return ((InternalEList<InternalEObject>)(InternalEList<?>)getAnnotation()).basicAdd(otherEnd, msgs);
+                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getAnnotation()).basicAdd(otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                return ((InternalEList<?>)getAnnotation()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>) this.getAnnotation()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.METADATA_FEATURE__ANNOTATED_ELEMENT:
-                return getAnnotatedElement();
+                return this.getAnnotatedElement();
             case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                return getAnnotation();
+                return this.getAnnotation();
             case SysmlPackage.METADATA_FEATURE__METACLASS:
-                if (resolve) return getMetaclass();
-                return basicGetMetaclass();
+                if (resolve)
+                    return this.getMetaclass();
+                return this.basicGetMetaclass();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -227,98 +227,104 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                getAnnotation().clear();
-                getAnnotation().addAll((Collection<? extends Annotation>)newValue);
+                this.getAnnotation().clear();
+                this.getAnnotation().addAll((Collection<? extends Annotation>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                getAnnotation().clear();
+                this.getAnnotation().clear();
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.METADATA_FEATURE__ANNOTATED_ELEMENT:
-                return !getAnnotatedElement().isEmpty();
+                return !this.getAnnotatedElement().isEmpty();
             case SysmlPackage.METADATA_FEATURE__ANNOTATION:
-                return annotation != null && !annotation.isEmpty();
+                return this.annotation != null && !this.annotation.isEmpty();
             case SysmlPackage.METADATA_FEATURE__METACLASS:
-                return basicGetMetaclass() != null;
+                return this.basicGetMetaclass() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == AnnotatingElement.class) {
             switch (derivedFeatureID) {
-                case SysmlPackage.METADATA_FEATURE__ANNOTATED_ELEMENT: return SysmlPackage.ANNOTATING_ELEMENT__ANNOTATED_ELEMENT;
-                case SysmlPackage.METADATA_FEATURE__ANNOTATION: return SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION;
-                default: return -1;
+                case SysmlPackage.METADATA_FEATURE__ANNOTATED_ELEMENT:
+                    return SysmlPackage.ANNOTATING_ELEMENT__ANNOTATED_ELEMENT;
+                case SysmlPackage.METADATA_FEATURE__ANNOTATION:
+                    return SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == AnnotatingElement.class) {
             switch (baseFeatureID) {
-                case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATED_ELEMENT: return SysmlPackage.METADATA_FEATURE__ANNOTATED_ELEMENT;
-                case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION: return SysmlPackage.METADATA_FEATURE__ANNOTATION;
-                default: return -1;
+                case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATED_ELEMENT:
+                    return SysmlPackage.METADATA_FEATURE__ANNOTATED_ELEMENT;
+                case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
+                    return SysmlPackage.METADATA_FEATURE__ANNOTATION;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
             case SysmlPackage.METADATA_FEATURE___EVALUATE_FEATURE__FEATURE:
-                return evaluateFeature((Feature)arguments.get(0));
+                return this.evaluateFeature((Feature) arguments.get(0));
             case SysmlPackage.METADATA_FEATURE___IS_SEMANTIC:
-                return isSemantic();
+                return this.isSemantic();
             case SysmlPackage.METADATA_FEATURE___IS_SYNTACTIC:
-                return isSyntactic();
+                return this.isSyntactic();
             case SysmlPackage.METADATA_FEATURE___SYNTAX_ELEMENT:
-                return syntaxElement();
+                return this.syntaxElement();
         }
         return super.eInvoke(operationID, arguments);
     }
 
-} //MetadataFeatureImpl
+} // MetadataFeatureImpl

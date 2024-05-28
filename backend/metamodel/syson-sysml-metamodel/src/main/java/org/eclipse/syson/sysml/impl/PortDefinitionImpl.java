@@ -14,41 +14,34 @@ package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
-import org.eclipse.syson.sysml.FeatureMembership;
-import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PortDefinition;
-import org.eclipse.syson.sysml.Subclassification;
-import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 
-
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Port Definition</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Port Definition</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.PortDefinitionImpl#getConjugatedPortDefinition <em>Conjugated Port Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.PortDefinitionImpl#getConjugatedPortDefinition <em>Conjugated Port
+ * Definition</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class PortDefinitionImpl extends OccurrenceDefinitionImpl implements PortDefinition {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected PortDefinitionImpl() {
@@ -56,8 +49,8 @@ public class PortDefinitionImpl extends OccurrenceDefinitionImpl implements Port
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -66,65 +59,66 @@ public class PortDefinitionImpl extends OccurrenceDefinitionImpl implements Port
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ConjugatedPortDefinition getConjugatedPortDefinition() {
-        ConjugatedPortDefinition conjugatedPortDefinition = basicGetConjugatedPortDefinition();
-        return conjugatedPortDefinition != null && conjugatedPortDefinition.eIsProxy() ? (ConjugatedPortDefinition)eResolveProxy((InternalEObject)conjugatedPortDefinition) : conjugatedPortDefinition;
+        ConjugatedPortDefinition conjugatedPortDefinition = this.basicGetConjugatedPortDefinition();
+        return conjugatedPortDefinition != null && conjugatedPortDefinition.eIsProxy() ? (ConjugatedPortDefinition) this.eResolveProxy((InternalEObject) conjugatedPortDefinition)
+                : conjugatedPortDefinition;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public ConjugatedPortDefinition basicGetConjugatedPortDefinition() {
         return this.getOwnedRelationship().stream()
-            .filter(OwningMembership.class::isInstance)
-            .map(OwningMembership.class::cast)
-            .flatMap(fm -> fm.getOwnedRelatedElement().stream())
-            .filter(ConjugatedPortDefinition.class::isInstance)
-            .map(ConjugatedPortDefinition.class::cast)
-            .findFirst()
-            .orElse(null);
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(fm -> fm.getOwnedRelatedElement().stream())
+                .filter(ConjugatedPortDefinition.class::isInstance)
+                .map(ConjugatedPortDefinition.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.PORT_DEFINITION__CONJUGATED_PORT_DEFINITION:
-                if (resolve) return getConjugatedPortDefinition();
-                return basicGetConjugatedPortDefinition();
+                if (resolve)
+                    return this.getConjugatedPortDefinition();
+                return this.basicGetConjugatedPortDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.PORT_DEFINITION__CONJUGATED_PORT_DEFINITION:
-                return basicGetConjugatedPortDefinition() != null;
+                return this.basicGetConjugatedPortDefinition() != null;
         }
         return super.eIsSet(featureID);
     }
 
-
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -133,4 +127,4 @@ public class PortDefinitionImpl extends OccurrenceDefinitionImpl implements Port
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
-} //PortDefinitionImpl
+} // PortDefinitionImpl

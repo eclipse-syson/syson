@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -36,34 +36,35 @@ import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Connector As Usage</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Connector As Usage</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#isIsImplied <em>Is Implied</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getOwnedRelatedElement <em>Owned Related Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getOwningRelatedElement <em>Owning Related Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getRelatedElement <em>Related Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getSource <em>Source</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getTarget <em>Target</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#isIsDirected <em>Is Directed</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getAssociation <em>Association</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getConnectorEnd <em>Connector End</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getRelatedFeature <em>Related Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getSourceFeature <em>Source Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getTargetFeature <em>Target Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#isIsImplied <em>Is Implied</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getOwnedRelatedElement <em>Owned Related
+ * Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getOwningRelatedElement <em>Owning Related
+ * Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getRelatedElement <em>Related Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getSource <em>Source</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getTarget <em>Target</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#isIsDirected <em>Is Directed</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getAssociation <em>Association</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getConnectorEnd <em>Connector End</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getRelatedFeature <em>Related Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getSourceFeature <em>Source Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectorAsUsageImpl#getTargetFeature <em>Target Feature</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class ConnectorAsUsageImpl extends UsageImpl implements ConnectorAsUsage {
     /**
-     * The default value of the '{@link #isIsImplied() <em>Is Implied</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsImplied() <em>Is Implied</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsImplied()
      * @generated
      * @ordered
@@ -71,9 +72,9 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     protected static final boolean IS_IMPLIED_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsImplied() <em>Is Implied</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsImplied() <em>Is Implied</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsImplied()
      * @generated
      * @ordered
@@ -81,9 +82,9 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     protected boolean isImplied = IS_IMPLIED_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getOwnedRelatedElement() <em>Owned Related Element</em>}' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getOwnedRelatedElement() <em>Owned Related Element</em>}' containment reference
+     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getOwnedRelatedElement()
      * @generated
      * @ordered
@@ -91,9 +92,9 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     protected EList<Element> ownedRelatedElement;
 
     /**
-     * The cached value of the '{@link #getSource() <em>Source</em>}' reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getSource() <em>Source</em>}' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getSource()
      * @generated
      * @ordered
@@ -101,9 +102,9 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     protected EList<Element> source;
 
     /**
-     * The cached value of the '{@link #getTarget() <em>Target</em>}' reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getTarget() <em>Target</em>}' reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getTarget()
      * @generated
      * @ordered
@@ -111,9 +112,9 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     protected EList<Element> target;
 
     /**
-     * The default value of the '{@link #isIsDirected() <em>Is Directed</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsDirected() <em>Is Directed</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsDirected()
      * @generated
      * @ordered
@@ -121,9 +122,9 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     protected static final boolean IS_DIRECTED_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsDirected() <em>Is Directed</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsDirected() <em>Is Directed</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsDirected()
      * @generated
      * @ordered
@@ -131,8 +132,8 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     protected boolean isDirected = IS_DIRECTED_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ConnectorAsUsageImpl() {
@@ -140,8 +141,8 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -150,87 +151,89 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsImplied() {
-        return isImplied;
+        return this.isImplied;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsImplied(boolean newIsImplied) {
-        boolean oldIsImplied = isImplied;
-        isImplied = newIsImplied;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED, oldIsImplied, isImplied));
+        boolean oldIsImplied = this.isImplied;
+        this.isImplied = newIsImplied;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED, oldIsImplied, this.isImplied));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EList<Element> getOwnedRelatedElement() {
-        if (ownedRelatedElement == null) {
-            ownedRelatedElement = new EObjectContainmentWithInverseEList<Element>(Element.class, this, SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT, SysmlPackage.ELEMENT__OWNING_RELATIONSHIP);
+        if (this.ownedRelatedElement == null) {
+            this.ownedRelatedElement = new EObjectContainmentWithInverseEList<>(Element.class, this, SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT,
+                    SysmlPackage.ELEMENT__OWNING_RELATIONSHIP);
         }
-        return ownedRelatedElement;
+        return this.ownedRelatedElement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Element getOwningRelatedElement() {
-        if (eContainerFeatureID() != SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT) return null;
-        return (Element)eInternalContainer();
+        if (this.eContainerFeatureID() != SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT)
+            return null;
+        return (Element) this.eInternalContainer();
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public NotificationChain basicSetOwningRelatedElement(Element newOwningRelatedElement, NotificationChain msgs) {
-        msgs = eBasicSetContainer((InternalEObject)newOwningRelatedElement, SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT, msgs);
+        msgs = this.eBasicSetContainer((InternalEObject) newOwningRelatedElement, SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT, msgs);
         return msgs;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setOwningRelatedElement(Element newOwningRelatedElement) {
-        if (newOwningRelatedElement != eInternalContainer() || (eContainerFeatureID() != SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT && newOwningRelatedElement != null)) {
+        if (newOwningRelatedElement != this.eInternalContainer() || (this.eContainerFeatureID() != SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT && newOwningRelatedElement != null)) {
             if (EcoreUtil.isAncestor(this, newOwningRelatedElement))
-                throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+                throw new IllegalArgumentException("Recursive containment not allowed for " + this.toString());
             NotificationChain msgs = null;
-            if (eInternalContainer() != null)
-                msgs = eBasicRemoveFromContainer(msgs);
+            if (this.eInternalContainer() != null)
+                msgs = this.eBasicRemoveFromContainer(msgs);
             if (newOwningRelatedElement != null)
-                msgs = ((InternalEObject)newOwningRelatedElement).eInverseAdd(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
-            msgs = basicSetOwningRelatedElement(newOwningRelatedElement, msgs);
-            if (msgs != null) msgs.dispatch();
-        }
-        else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT, newOwningRelatedElement, newOwningRelatedElement));
+                msgs = ((InternalEObject) newOwningRelatedElement).eInverseAdd(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
+            msgs = this.basicSetOwningRelatedElement(newOwningRelatedElement, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT, newOwningRelatedElement, newOwningRelatedElement));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -240,34 +243,34 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EList<Element> getSource() {
-        if (source == null) {
-            source = new EObjectResolvingEList<Element>(Element.class, this, SysmlPackage.CONNECTOR_AS_USAGE__SOURCE);
+        if (this.source == null) {
+            this.source = new EObjectResolvingEList<>(Element.class, this, SysmlPackage.CONNECTOR_AS_USAGE__SOURCE);
         }
-        return source;
+        return this.source;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EList<Element> getTarget() {
-        if (target == null) {
-            target = new EObjectResolvingEList<Element>(Element.class, this, SysmlPackage.CONNECTOR_AS_USAGE__TARGET);
+        if (this.target == null) {
+            this.target = new EObjectResolvingEList<>(Element.class, this, SysmlPackage.CONNECTOR_AS_USAGE__TARGET);
         }
-        return target;
+        return this.target;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -277,8 +280,8 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -288,31 +291,31 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsDirected() {
-        return isDirected;
+        return this.isDirected;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsDirected(boolean newIsDirected) {
-        boolean oldIsDirected = isDirected;
-        isDirected = newIsDirected;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED, oldIsDirected, isDirected));
+        boolean oldIsDirected = this.isDirected;
+        this.isDirected = newIsDirected;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED, oldIsDirected, this.isDirected));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -322,19 +325,19 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Feature getSourceFeature() {
-        Feature sourceFeature = basicGetSourceFeature();
-        return sourceFeature != null && sourceFeature.eIsProxy() ? (Feature)eResolveProxy((InternalEObject)sourceFeature) : sourceFeature;
+        Feature sourceFeature = this.basicGetSourceFeature();
+        return sourceFeature != null && sourceFeature.eIsProxy() ? (Feature) this.eResolveProxy((InternalEObject) sourceFeature) : sourceFeature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Feature basicGetSourceFeature() {
@@ -345,8 +348,8 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -356,8 +359,8 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -365,85 +368,86 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT:
-                return ((InternalEList<InternalEObject>)(InternalEList<?>)getOwnedRelatedElement()).basicAdd(otherEnd, msgs);
+                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getOwnedRelatedElement()).basicAdd(otherEnd, msgs);
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT:
-                if (eInternalContainer() != null)
-                    msgs = eBasicRemoveFromContainer(msgs);
-                return basicSetOwningRelatedElement((Element)otherEnd, msgs);
+                if (this.eInternalContainer() != null)
+                    msgs = this.eBasicRemoveFromContainer(msgs);
+                return this.basicSetOwningRelatedElement((Element) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT:
-                return ((InternalEList<?>)getOwnedRelatedElement()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>) this.getOwnedRelatedElement()).basicRemove(otherEnd, msgs);
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT:
-                return basicSetOwningRelatedElement(null, msgs);
+                return this.basicSetOwningRelatedElement(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
-        switch (eContainerFeatureID()) {
+        switch (this.eContainerFeatureID()) {
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT:
-                return eInternalContainer().eInverseRemove(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
+                return this.eInternalContainer().eInverseRemove(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
         }
         return super.eBasicRemoveFromContainerFeature(msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED:
-                return isIsImplied();
+                return this.isIsImplied();
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT:
-                return getOwnedRelatedElement();
+                return this.getOwnedRelatedElement();
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT:
-                return getOwningRelatedElement();
+                return this.getOwningRelatedElement();
             case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_ELEMENT:
-                return getRelatedElement();
+                return this.getRelatedElement();
             case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE:
-                return getSource();
+                return this.getSource();
             case SysmlPackage.CONNECTOR_AS_USAGE__TARGET:
-                return getTarget();
+                return this.getTarget();
             case SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED:
-                return isIsDirected();
+                return this.isIsDirected();
             case SysmlPackage.CONNECTOR_AS_USAGE__ASSOCIATION:
-                return getAssociation();
+                return this.getAssociation();
             case SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END:
-                return getConnectorEnd();
+                return this.getConnectorEnd();
             case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE:
-                return getRelatedFeature();
+                return this.getRelatedFeature();
             case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE_FEATURE:
-                if (resolve) return getSourceFeature();
-                return basicGetSourceFeature();
+                if (resolve)
+                    return this.getSourceFeature();
+                return this.basicGetSourceFeature();
             case SysmlPackage.CONNECTOR_AS_USAGE__TARGET_FEATURE:
-                return getTargetFeature();
+                return this.getTargetFeature();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -451,176 +455,205 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED:
-                setIsImplied((Boolean)newValue);
+                this.setIsImplied((Boolean) newValue);
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT:
-                getOwnedRelatedElement().clear();
-                getOwnedRelatedElement().addAll((Collection<? extends Element>)newValue);
+                this.getOwnedRelatedElement().clear();
+                this.getOwnedRelatedElement().addAll((Collection<? extends Element>) newValue);
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT:
-                setOwningRelatedElement((Element)newValue);
+                this.setOwningRelatedElement((Element) newValue);
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE:
-                getSource().clear();
-                getSource().addAll((Collection<? extends Element>)newValue);
+                this.getSource().clear();
+                this.getSource().addAll((Collection<? extends Element>) newValue);
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__TARGET:
-                getTarget().clear();
-                getTarget().addAll((Collection<? extends Element>)newValue);
+                this.getTarget().clear();
+                this.getTarget().addAll((Collection<? extends Element>) newValue);
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED:
-                setIsDirected((Boolean)newValue);
+                this.setIsDirected((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED:
-                setIsImplied(IS_IMPLIED_EDEFAULT);
+                this.setIsImplied(IS_IMPLIED_EDEFAULT);
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT:
-                getOwnedRelatedElement().clear();
+                this.getOwnedRelatedElement().clear();
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT:
-                setOwningRelatedElement((Element)null);
+                this.setOwningRelatedElement((Element) null);
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE:
-                getSource().clear();
+                this.getSource().clear();
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__TARGET:
-                getTarget().clear();
+                this.getTarget().clear();
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED:
-                setIsDirected(IS_DIRECTED_EDEFAULT);
+                this.setIsDirected(IS_DIRECTED_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED:
-                return isImplied != IS_IMPLIED_EDEFAULT;
+                return this.isImplied != IS_IMPLIED_EDEFAULT;
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT:
-                return ownedRelatedElement != null && !ownedRelatedElement.isEmpty();
+                return this.ownedRelatedElement != null && !this.ownedRelatedElement.isEmpty();
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT:
-                return getOwningRelatedElement() != null;
+                return this.getOwningRelatedElement() != null;
             case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_ELEMENT:
-                return !getRelatedElement().isEmpty();
+                return !this.getRelatedElement().isEmpty();
             case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE:
-                return source != null && !source.isEmpty();
+                return this.source != null && !this.source.isEmpty();
             case SysmlPackage.CONNECTOR_AS_USAGE__TARGET:
-                return target != null && !target.isEmpty();
+                return this.target != null && !this.target.isEmpty();
             case SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED:
-                return isDirected != IS_DIRECTED_EDEFAULT;
+                return this.isDirected != IS_DIRECTED_EDEFAULT;
             case SysmlPackage.CONNECTOR_AS_USAGE__ASSOCIATION:
-                return !getAssociation().isEmpty();
+                return !this.getAssociation().isEmpty();
             case SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END:
-                return !getConnectorEnd().isEmpty();
+                return !this.getConnectorEnd().isEmpty();
             case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE:
-                return !getRelatedFeature().isEmpty();
+                return !this.getRelatedFeature().isEmpty();
             case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE_FEATURE:
-                return basicGetSourceFeature() != null;
+                return this.basicGetSourceFeature() != null;
             case SysmlPackage.CONNECTOR_AS_USAGE__TARGET_FEATURE:
-                return !getTargetFeature().isEmpty();
+                return !this.getTargetFeature().isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == Relationship.class) {
             switch (derivedFeatureID) {
-                case SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED: return SysmlPackage.RELATIONSHIP__IS_IMPLIED;
-                case SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT: return SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT;
-                case SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT: return SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT;
-                case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_ELEMENT: return SysmlPackage.RELATIONSHIP__RELATED_ELEMENT;
-                case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE: return SysmlPackage.RELATIONSHIP__SOURCE;
-                case SysmlPackage.CONNECTOR_AS_USAGE__TARGET: return SysmlPackage.RELATIONSHIP__TARGET;
-                default: return -1;
+                case SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED:
+                    return SysmlPackage.RELATIONSHIP__IS_IMPLIED;
+                case SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT:
+                    return SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT;
+                case SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT:
+                    return SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT;
+                case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_ELEMENT:
+                    return SysmlPackage.RELATIONSHIP__RELATED_ELEMENT;
+                case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE:
+                    return SysmlPackage.RELATIONSHIP__SOURCE;
+                case SysmlPackage.CONNECTOR_AS_USAGE__TARGET:
+                    return SysmlPackage.RELATIONSHIP__TARGET;
+                default:
+                    return -1;
             }
         }
         if (baseClass == Connector.class) {
             switch (derivedFeatureID) {
-                case SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED: return SysmlPackage.CONNECTOR__IS_DIRECTED;
-                case SysmlPackage.CONNECTOR_AS_USAGE__ASSOCIATION: return SysmlPackage.CONNECTOR__ASSOCIATION;
-                case SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END: return SysmlPackage.CONNECTOR__CONNECTOR_END;
-                case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE: return SysmlPackage.CONNECTOR__RELATED_FEATURE;
-                case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE_FEATURE: return SysmlPackage.CONNECTOR__SOURCE_FEATURE;
-                case SysmlPackage.CONNECTOR_AS_USAGE__TARGET_FEATURE: return SysmlPackage.CONNECTOR__TARGET_FEATURE;
-                default: return -1;
+                case SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED:
+                    return SysmlPackage.CONNECTOR__IS_DIRECTED;
+                case SysmlPackage.CONNECTOR_AS_USAGE__ASSOCIATION:
+                    return SysmlPackage.CONNECTOR__ASSOCIATION;
+                case SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END:
+                    return SysmlPackage.CONNECTOR__CONNECTOR_END;
+                case SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE:
+                    return SysmlPackage.CONNECTOR__RELATED_FEATURE;
+                case SysmlPackage.CONNECTOR_AS_USAGE__SOURCE_FEATURE:
+                    return SysmlPackage.CONNECTOR__SOURCE_FEATURE;
+                case SysmlPackage.CONNECTOR_AS_USAGE__TARGET_FEATURE:
+                    return SysmlPackage.CONNECTOR__TARGET_FEATURE;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == Relationship.class) {
             switch (baseFeatureID) {
-                case SysmlPackage.RELATIONSHIP__IS_IMPLIED: return SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED;
-                case SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT: return SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT;
-                case SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT: return SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT;
-                case SysmlPackage.RELATIONSHIP__RELATED_ELEMENT: return SysmlPackage.CONNECTOR_AS_USAGE__RELATED_ELEMENT;
-                case SysmlPackage.RELATIONSHIP__SOURCE: return SysmlPackage.CONNECTOR_AS_USAGE__SOURCE;
-                case SysmlPackage.RELATIONSHIP__TARGET: return SysmlPackage.CONNECTOR_AS_USAGE__TARGET;
-                default: return -1;
+                case SysmlPackage.RELATIONSHIP__IS_IMPLIED:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED;
+                case SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT;
+                case SysmlPackage.RELATIONSHIP__OWNING_RELATED_ELEMENT:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__OWNING_RELATED_ELEMENT;
+                case SysmlPackage.RELATIONSHIP__RELATED_ELEMENT:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__RELATED_ELEMENT;
+                case SysmlPackage.RELATIONSHIP__SOURCE:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__SOURCE;
+                case SysmlPackage.RELATIONSHIP__TARGET:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__TARGET;
+                default:
+                    return -1;
             }
         }
         if (baseClass == Connector.class) {
             switch (baseFeatureID) {
-                case SysmlPackage.CONNECTOR__IS_DIRECTED: return SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED;
-                case SysmlPackage.CONNECTOR__ASSOCIATION: return SysmlPackage.CONNECTOR_AS_USAGE__ASSOCIATION;
-                case SysmlPackage.CONNECTOR__CONNECTOR_END: return SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END;
-                case SysmlPackage.CONNECTOR__RELATED_FEATURE: return SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE;
-                case SysmlPackage.CONNECTOR__SOURCE_FEATURE: return SysmlPackage.CONNECTOR_AS_USAGE__SOURCE_FEATURE;
-                case SysmlPackage.CONNECTOR__TARGET_FEATURE: return SysmlPackage.CONNECTOR_AS_USAGE__TARGET_FEATURE;
-                default: return -1;
+                case SysmlPackage.CONNECTOR__IS_DIRECTED:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED;
+                case SysmlPackage.CONNECTOR__ASSOCIATION:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__ASSOCIATION;
+                case SysmlPackage.CONNECTOR__CONNECTOR_END:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__CONNECTOR_END;
+                case SysmlPackage.CONNECTOR__RELATED_FEATURE:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__RELATED_FEATURE;
+                case SysmlPackage.CONNECTOR__SOURCE_FEATURE:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__SOURCE_FEATURE;
+                case SysmlPackage.CONNECTOR__TARGET_FEATURE:
+                    return SysmlPackage.CONNECTOR_AS_USAGE__TARGET_FEATURE;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isImplied: ");
-        result.append(isImplied);
+        result.append(this.isImplied);
         result.append(", isDirected: ");
-        result.append(isDirected);
+        result.append(this.isDirected);
         result.append(')');
         return result.toString();
     }
 
-} //ConnectorAsUsageImpl
+} // ConnectorAsUsageImpl

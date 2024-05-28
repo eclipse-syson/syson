@@ -27,28 +27,27 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Membership</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Membership</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMemberElementId <em>Member Element Id</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMemberName <em>Member Name</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMemberShortName <em>Member Short Name</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getVisibility <em>Visibility</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMemberElement <em>Member Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMembershipOwningNamespace <em>Membership Owning Namespace</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMemberElementId <em>Member Element Id</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMemberName <em>Member Name</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMemberShortName <em>Member Short Name</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getVisibility <em>Visibility</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMemberElement <em>Member Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MembershipImpl#getMembershipOwningNamespace <em>Membership Owning
+ * Namespace</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class MembershipImpl extends RelationshipImpl implements Membership {
     /**
-     * The default value of the '{@link #getMemberElementId() <em>Member Element Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getMemberElementId() <em>Member Element Id</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMemberElementId()
      * @generated
      * @ordered
@@ -56,9 +55,9 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     protected static final String MEMBER_ELEMENT_ID_EDEFAULT = null;
 
     /**
-     * The default value of the '{@link #getMemberName() <em>Member Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getMemberName() <em>Member Name</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getMemberName()
      * @generated
      * @ordered
@@ -66,9 +65,9 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     protected static final String MEMBER_NAME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getMemberName() <em>Member Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getMemberName() <em>Member Name</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getMemberName()
      * @generated
      * @ordered
@@ -76,9 +75,9 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     protected String memberName = MEMBER_NAME_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getMemberShortName() <em>Member Short Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getMemberShortName() <em>Member Short Name</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMemberShortName()
      * @generated
      * @ordered
@@ -86,9 +85,9 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     protected static final String MEMBER_SHORT_NAME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getMemberShortName() <em>Member Short Name</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getMemberShortName() <em>Member Short Name</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
      * @see #getMemberShortName()
      * @generated
      * @ordered
@@ -96,9 +95,9 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     protected String memberShortName = MEMBER_SHORT_NAME_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getVisibility()
      * @generated
      * @ordered
@@ -106,9 +105,9 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     protected static final VisibilityKind VISIBILITY_EDEFAULT = VisibilityKind.PUBLIC;
 
     /**
-     * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getVisibility()
      * @generated
      * @ordered
@@ -116,10 +115,9 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getMemberElement() <em>Member Element</em>}' reference.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getMemberElement() <em>Member Element</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #getMemberElement()
      * @generated
      * @ordered
@@ -127,8 +125,8 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     protected Element memberElement;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected MembershipImpl() {
@@ -136,8 +134,8 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -146,48 +144,48 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Element getMemberElement() {
-        if (memberElement != null && memberElement.eIsProxy()) {
-            InternalEObject oldMemberElement = (InternalEObject) memberElement;
-            memberElement = (Element) eResolveProxy(oldMemberElement);
-            if (memberElement != oldMemberElement) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT, oldMemberElement, memberElement));
+        if (this.memberElement != null && this.memberElement.eIsProxy()) {
+            InternalEObject oldMemberElement = (InternalEObject) this.memberElement;
+            this.memberElement = (Element) this.eResolveProxy(oldMemberElement);
+            if (this.memberElement != oldMemberElement) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT, oldMemberElement, this.memberElement));
             }
         }
-        return memberElement;
+        return this.memberElement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Element basicGetMemberElement() {
-        return memberElement;
+        return this.memberElement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setMemberElement(Element newMemberElement) {
-        Element oldMemberElement = memberElement;
-        memberElement = newMemberElement;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT, oldMemberElement, memberElement));
+        Element oldMemberElement = this.memberElement;
+        this.memberElement = newMemberElement;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT, oldMemberElement, this.memberElement));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -200,42 +198,42 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String getMemberName() {
-        return memberName;
+        return this.memberName;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setMemberName(String newMemberName) {
-        String oldMemberName = memberName;
-        memberName = newMemberName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__MEMBER_NAME, oldMemberName, memberName));
+        String oldMemberName = this.memberName;
+        this.memberName = newMemberName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__MEMBER_NAME, oldMemberName, this.memberName));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Namespace getMembershipOwningNamespace() {
-        Namespace membershipOwningNamespace = basicGetMembershipOwningNamespace();
-        return membershipOwningNamespace != null && membershipOwningNamespace.eIsProxy() ? (Namespace) eResolveProxy((InternalEObject) membershipOwningNamespace) : membershipOwningNamespace;
+        Namespace membershipOwningNamespace = this.basicGetMembershipOwningNamespace();
+        return membershipOwningNamespace != null && membershipOwningNamespace.eIsProxy() ? (Namespace) this.eResolveProxy((InternalEObject) membershipOwningNamespace) : membershipOwningNamespace;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Namespace basicGetMembershipOwningNamespace() {
@@ -247,54 +245,54 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String getMemberShortName() {
-        return memberShortName;
+        return this.memberShortName;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setMemberShortName(String newMemberShortName) {
-        String oldMemberShortName = memberShortName;
-        memberShortName = newMemberShortName;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__MEMBER_SHORT_NAME, oldMemberShortName, memberShortName));
+        String oldMemberShortName = this.memberShortName;
+        this.memberShortName = newMemberShortName;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__MEMBER_SHORT_NAME, oldMemberShortName, this.memberShortName));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public VisibilityKind getVisibility() {
-        return visibility;
+        return this.visibility;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setVisibility(VisibilityKind newVisibility) {
-        VisibilityKind oldVisibility = visibility;
-        visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__VISIBILITY, oldVisibility, visibility));
+        VisibilityKind oldVisibility = this.visibility;
+        this.visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__VISIBILITY, oldVisibility, this.visibility));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -303,133 +301,136 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT_ID:
-                return getMemberElementId();
+                return this.getMemberElementId();
             case SysmlPackage.MEMBERSHIP__MEMBER_NAME:
-                return getMemberName();
+                return this.getMemberName();
             case SysmlPackage.MEMBERSHIP__MEMBER_SHORT_NAME:
-                return getMemberShortName();
+                return this.getMemberShortName();
             case SysmlPackage.MEMBERSHIP__VISIBILITY:
-                return getVisibility();
+                return this.getVisibility();
             case SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT:
-                if (resolve) return getMemberElement();
-                return basicGetMemberElement();
+                if (resolve)
+                    return this.getMemberElement();
+                return this.basicGetMemberElement();
             case SysmlPackage.MEMBERSHIP__MEMBERSHIP_OWNING_NAMESPACE:
-                if (resolve) return getMembershipOwningNamespace();
-                return basicGetMembershipOwningNamespace();
+                if (resolve)
+                    return this.getMembershipOwningNamespace();
+                return this.basicGetMembershipOwningNamespace();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.MEMBERSHIP__MEMBER_NAME:
-                setMemberName((String)newValue);
+                this.setMemberName((String) newValue);
                 return;
             case SysmlPackage.MEMBERSHIP__MEMBER_SHORT_NAME:
-                setMemberShortName((String)newValue);
+                this.setMemberShortName((String) newValue);
                 return;
             case SysmlPackage.MEMBERSHIP__VISIBILITY:
-                setVisibility((VisibilityKind)newValue);
+                this.setVisibility((VisibilityKind) newValue);
                 return;
             case SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT:
-                setMemberElement((Element)newValue);
+                this.setMemberElement((Element) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.MEMBERSHIP__MEMBER_NAME:
-                setMemberName(MEMBER_NAME_EDEFAULT);
+                this.setMemberName(MEMBER_NAME_EDEFAULT);
                 return;
             case SysmlPackage.MEMBERSHIP__MEMBER_SHORT_NAME:
-                setMemberShortName(MEMBER_SHORT_NAME_EDEFAULT);
+                this.setMemberShortName(MEMBER_SHORT_NAME_EDEFAULT);
                 return;
             case SysmlPackage.MEMBERSHIP__VISIBILITY:
-                setVisibility(VISIBILITY_EDEFAULT);
+                this.setVisibility(VISIBILITY_EDEFAULT);
                 return;
             case SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT:
-                setMemberElement((Element)null);
+                this.setMemberElement((Element) null);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT_ID:
-                return MEMBER_ELEMENT_ID_EDEFAULT == null ? getMemberElementId() != null : !MEMBER_ELEMENT_ID_EDEFAULT.equals(getMemberElementId());
+                return MEMBER_ELEMENT_ID_EDEFAULT == null ? this.getMemberElementId() != null : !MEMBER_ELEMENT_ID_EDEFAULT.equals(this.getMemberElementId());
             case SysmlPackage.MEMBERSHIP__MEMBER_NAME:
-                return MEMBER_NAME_EDEFAULT == null ? memberName != null : !MEMBER_NAME_EDEFAULT.equals(memberName);
+                return MEMBER_NAME_EDEFAULT == null ? this.memberName != null : !MEMBER_NAME_EDEFAULT.equals(this.memberName);
             case SysmlPackage.MEMBERSHIP__MEMBER_SHORT_NAME:
-                return MEMBER_SHORT_NAME_EDEFAULT == null ? memberShortName != null : !MEMBER_SHORT_NAME_EDEFAULT.equals(memberShortName);
+                return MEMBER_SHORT_NAME_EDEFAULT == null ? this.memberShortName != null : !MEMBER_SHORT_NAME_EDEFAULT.equals(this.memberShortName);
             case SysmlPackage.MEMBERSHIP__VISIBILITY:
-                return visibility != VISIBILITY_EDEFAULT;
+                return this.visibility != VISIBILITY_EDEFAULT;
             case SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT:
-                return memberElement != null;
+                return this.memberElement != null;
             case SysmlPackage.MEMBERSHIP__MEMBERSHIP_OWNING_NAMESPACE:
-                return basicGetMembershipOwningNamespace() != null;
+                return this.basicGetMembershipOwningNamespace() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
             case SysmlPackage.MEMBERSHIP___IS_DISTINGUISHABLE_FROM__MEMBERSHIP:
-                return isDistinguishableFrom((Membership)arguments.get(0));
+                return this.isDistinguishableFrom((Membership) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (memberName: ");
-        result.append(memberName);
+        result.append(this.memberName);
         result.append(", memberShortName: ");
-        result.append(memberShortName);
+        result.append(this.memberShortName);
         result.append(", visibility: ");
-        result.append(visibility);
+        result.append(this.visibility);
         result.append(')');
         return result.toString();
     }

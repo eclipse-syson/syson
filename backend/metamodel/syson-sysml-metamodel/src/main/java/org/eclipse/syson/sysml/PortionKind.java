@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml;
 
 import java.util.Arrays;
@@ -19,19 +19,17 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Portion Kind</b></em>',
- * and utility methods for working with them.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Portion Kind</b></em>', and
+ * utility methods for working with them. <!-- end-user-doc -->
+ *
  * @see org.eclipse.syson.sysml.SysmlPackage#getPortionKind()
  * @model
  * @generated
  */
 public enum PortionKind implements Enumerator {
     /**
-     * The '<em><b>Snapshot</b></em>' literal object.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The '<em><b>Snapshot</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #SNAPSHOT_VALUE
      * @generated
      * @ordered
@@ -39,9 +37,8 @@ public enum PortionKind implements Enumerator {
     SNAPSHOT(0, "snapshot", "snapshot"),
 
     /**
-     * The '<em><b>Timeslice</b></em>' literal object.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The '<em><b>Timeslice</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #TIMESLICE_VALUE
      * @generated
      * @ordered
@@ -49,9 +46,8 @@ public enum PortionKind implements Enumerator {
     TIMESLICE(1, "timeslice", "timeslice");
 
     /**
-     * The '<em><b>Snapshot</b></em>' literal value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The '<em><b>Snapshot</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #SNAPSHOT
      * @model name="snapshot"
      * @generated
@@ -60,9 +56,8 @@ public enum PortionKind implements Enumerator {
     public static final int SNAPSHOT_VALUE = 0;
 
     /**
-     * The '<em><b>Timeslice</b></em>' literal value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The '<em><b>Timeslice</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #TIMESLICE
      * @model name="timeslice"
      * @generated
@@ -71,30 +66,29 @@ public enum PortionKind implements Enumerator {
     public static final int TIMESLICE_VALUE = 1;
 
     /**
-     * An array of all the '<em><b>Portion Kind</b></em>' enumerators.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * An array of all the '<em><b>Portion Kind</b></em>' enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
-    private static final PortionKind[] VALUES_ARRAY =
-        new PortionKind[] {
+    private static final PortionKind[] VALUES_ARRAY = new PortionKind[] {
             SNAPSHOT,
             TIMESLICE,
-        };
+    };
 
     /**
-     * A public read-only list of all the '<em><b>Portion Kind</b></em>' enumerators.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * A public read-only list of all the '<em><b>Portion Kind</b></em>' enumerators. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @generated
      */
     public static final List<PortionKind> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * Returns the '<em><b>Portion Kind</b></em>' literal with the specified literal value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param literal the literal.
+     * Returns the '<em><b>Portion Kind</b></em>' literal with the specified literal value. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @param literal
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -109,10 +103,11 @@ public enum PortionKind implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Portion Kind</b></em>' literal with the specified name.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param name the name.
+     * Returns the '<em><b>Portion Kind</b></em>' literal with the specified name. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @param name
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -127,46 +122,48 @@ public enum PortionKind implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Portion Kind</b></em>' literal with the specified integer value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the integer value.
+     * Returns the '<em><b>Portion Kind</b></em>' literal with the specified integer value. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @param value
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static PortionKind get(int value) {
         switch (value) {
-            case SNAPSHOT_VALUE: return SNAPSHOT;
-            case TIMESLICE_VALUE: return TIMESLICE;
+            case SNAPSHOT_VALUE:
+                return SNAPSHOT;
+            case TIMESLICE_VALUE:
+                return TIMESLICE;
         }
         return null;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private final int value;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private final String name;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private final String literal;
 
     /**
-     * Only this class can construct instances.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private PortionKind(int value, String name, String literal) {
@@ -176,44 +173,44 @@ public enum PortionKind implements Enumerator {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int getValue() {
-      return value;
+        return this.value;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String getName() {
-      return name;
+        return this.name;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String getLiteral() {
-      return literal;
+        return this.literal;
     }
 
     /**
-     * Returns the literal value of the enumerator, which is its string representation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the literal value of the enumerator, which is its string representation. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        return literal;
+        return this.literal;
     }
-    
-} //PortionKind
+
+} // PortionKind

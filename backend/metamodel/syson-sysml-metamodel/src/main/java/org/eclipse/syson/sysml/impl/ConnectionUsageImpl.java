@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -33,29 +33,31 @@ import org.eclipse.syson.sysml.Structure;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Connection Usage</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Connection Usage</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#isIsIndividual <em>Is Individual</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getPortionKind <em>Portion Kind</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getIndividualDefinition <em>Individual Definition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getOccurrenceDefinition <em>Occurrence Definition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getItemDefinition <em>Item Definition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getPartDefinition <em>Part Definition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getConnectionDefinition <em>Connection Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#isIsIndividual <em>Is Individual</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getPortionKind <em>Portion Kind</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getIndividualDefinition <em>Individual
+ * Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getOccurrenceDefinition <em>Occurrence
+ * Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getItemDefinition <em>Item Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getPartDefinition <em>Part Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConnectionUsageImpl#getConnectionDefinition <em>Connection
+ * Definition</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements ConnectionUsage {
     /**
-     * The default value of the '{@link #isIsIndividual() <em>Is Individual</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The default value of the '{@link #isIsIndividual() <em>Is Individual</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #isIsIndividual()
      * @generated
      * @ordered
@@ -63,9 +65,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     protected static final boolean IS_INDIVIDUAL_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsIndividual() <em>Is Individual</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #isIsIndividual() <em>Is Individual</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #isIsIndividual()
      * @generated
      * @ordered
@@ -73,9 +75,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     protected boolean isIndividual = IS_INDIVIDUAL_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getPortionKind() <em>Portion Kind</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The default value of the '{@link #getPortionKind() <em>Portion Kind</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #getPortionKind()
      * @generated
      * @ordered
@@ -83,9 +85,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     protected static final PortionKind PORTION_KIND_EDEFAULT = PortionKind.SNAPSHOT;
 
     /**
-     * The cached value of the '{@link #getPortionKind() <em>Portion Kind</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getPortionKind() <em>Portion Kind</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getPortionKind()
      * @generated
      * @ordered
@@ -93,8 +95,8 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     protected PortionKind portionKind = PORTION_KIND_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ConnectionUsageImpl() {
@@ -102,8 +104,8 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -112,19 +114,19 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public OccurrenceDefinition getIndividualDefinition() {
-        OccurrenceDefinition individualDefinition = basicGetIndividualDefinition();
-        return individualDefinition != null && individualDefinition.eIsProxy() ? (OccurrenceDefinition)eResolveProxy((InternalEObject)individualDefinition) : individualDefinition;
+        OccurrenceDefinition individualDefinition = this.basicGetIndividualDefinition();
+        return individualDefinition != null && individualDefinition.eIsProxy() ? (OccurrenceDefinition) this.eResolveProxy((InternalEObject) individualDefinition) : individualDefinition;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public OccurrenceDefinition basicGetIndividualDefinition() {
@@ -135,31 +137,31 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsIndividual() {
-        return isIndividual;
+        return this.isIndividual;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsIndividual(boolean newIsIndividual) {
-        boolean oldIsIndividual = isIndividual;
-        isIndividual = newIsIndividual;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL, oldIsIndividual, isIndividual));
+        boolean oldIsIndividual = this.isIndividual;
+        this.isIndividual = newIsIndividual;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL, oldIsIndividual, this.isIndividual));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -169,31 +171,31 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public PortionKind getPortionKind() {
-        return portionKind;
+        return this.portionKind;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setPortionKind(PortionKind newPortionKind) {
-        PortionKind oldPortionKind = portionKind;
-        portionKind = newPortionKind == null ? PORTION_KIND_EDEFAULT : newPortionKind;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_USAGE__PORTION_KIND, oldPortionKind, portionKind));
+        PortionKind oldPortionKind = this.portionKind;
+        this.portionKind = newPortionKind == null ? PORTION_KIND_EDEFAULT : newPortionKind;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_USAGE__PORTION_KIND, oldPortionKind, this.portionKind));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -203,8 +205,8 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -214,8 +216,8 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -225,35 +227,36 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL:
-                return isIsIndividual();
+                return this.isIsIndividual();
             case SysmlPackage.CONNECTION_USAGE__PORTION_KIND:
-                return getPortionKind();
+                return this.getPortionKind();
             case SysmlPackage.CONNECTION_USAGE__INDIVIDUAL_DEFINITION:
-                if (resolve) return getIndividualDefinition();
-                return basicGetIndividualDefinition();
+                if (resolve)
+                    return this.getIndividualDefinition();
+                return this.basicGetIndividualDefinition();
             case SysmlPackage.CONNECTION_USAGE__OCCURRENCE_DEFINITION:
-                return getOccurrenceDefinition();
+                return this.getOccurrenceDefinition();
             case SysmlPackage.CONNECTION_USAGE__ITEM_DEFINITION:
-                return getItemDefinition();
+                return this.getItemDefinition();
             case SysmlPackage.CONNECTION_USAGE__PART_DEFINITION:
-                return getPartDefinition();
+                return this.getPartDefinition();
             case SysmlPackage.CONNECTION_USAGE__CONNECTION_DEFINITION:
-                return getConnectionDefinition();
+                return this.getConnectionDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -261,137 +264,156 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL:
-                setIsIndividual((Boolean)newValue);
+                this.setIsIndividual((Boolean) newValue);
                 return;
             case SysmlPackage.CONNECTION_USAGE__PORTION_KIND:
-                setPortionKind((PortionKind)newValue);
+                this.setPortionKind((PortionKind) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL:
-                setIsIndividual(IS_INDIVIDUAL_EDEFAULT);
+                this.setIsIndividual(IS_INDIVIDUAL_EDEFAULT);
                 return;
             case SysmlPackage.CONNECTION_USAGE__PORTION_KIND:
-                setPortionKind(PORTION_KIND_EDEFAULT);
+                this.setPortionKind(PORTION_KIND_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL:
-                return isIndividual != IS_INDIVIDUAL_EDEFAULT;
+                return this.isIndividual != IS_INDIVIDUAL_EDEFAULT;
             case SysmlPackage.CONNECTION_USAGE__PORTION_KIND:
-                return portionKind != PORTION_KIND_EDEFAULT;
+                return this.portionKind != PORTION_KIND_EDEFAULT;
             case SysmlPackage.CONNECTION_USAGE__INDIVIDUAL_DEFINITION:
-                return basicGetIndividualDefinition() != null;
+                return this.basicGetIndividualDefinition() != null;
             case SysmlPackage.CONNECTION_USAGE__OCCURRENCE_DEFINITION:
-                return !getOccurrenceDefinition().isEmpty();
+                return !this.getOccurrenceDefinition().isEmpty();
             case SysmlPackage.CONNECTION_USAGE__ITEM_DEFINITION:
-                return !getItemDefinition().isEmpty();
+                return !this.getItemDefinition().isEmpty();
             case SysmlPackage.CONNECTION_USAGE__PART_DEFINITION:
-                return !getPartDefinition().isEmpty();
+                return !this.getPartDefinition().isEmpty();
             case SysmlPackage.CONNECTION_USAGE__CONNECTION_DEFINITION:
-                return !getConnectionDefinition().isEmpty();
+                return !this.getConnectionDefinition().isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == OccurrenceUsage.class) {
             switch (derivedFeatureID) {
-                case SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL: return SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL;
-                case SysmlPackage.CONNECTION_USAGE__PORTION_KIND: return SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND;
-                case SysmlPackage.CONNECTION_USAGE__INDIVIDUAL_DEFINITION: return SysmlPackage.OCCURRENCE_USAGE__INDIVIDUAL_DEFINITION;
-                case SysmlPackage.CONNECTION_USAGE__OCCURRENCE_DEFINITION: return SysmlPackage.OCCURRENCE_USAGE__OCCURRENCE_DEFINITION;
-                default: return -1;
+                case SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL:
+                    return SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL;
+                case SysmlPackage.CONNECTION_USAGE__PORTION_KIND:
+                    return SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND;
+                case SysmlPackage.CONNECTION_USAGE__INDIVIDUAL_DEFINITION:
+                    return SysmlPackage.OCCURRENCE_USAGE__INDIVIDUAL_DEFINITION;
+                case SysmlPackage.CONNECTION_USAGE__OCCURRENCE_DEFINITION:
+                    return SysmlPackage.OCCURRENCE_USAGE__OCCURRENCE_DEFINITION;
+                default:
+                    return -1;
             }
         }
         if (baseClass == ItemUsage.class) {
             switch (derivedFeatureID) {
-                case SysmlPackage.CONNECTION_USAGE__ITEM_DEFINITION: return SysmlPackage.ITEM_USAGE__ITEM_DEFINITION;
-                default: return -1;
+                case SysmlPackage.CONNECTION_USAGE__ITEM_DEFINITION:
+                    return SysmlPackage.ITEM_USAGE__ITEM_DEFINITION;
+                default:
+                    return -1;
             }
         }
         if (baseClass == PartUsage.class) {
             switch (derivedFeatureID) {
-                case SysmlPackage.CONNECTION_USAGE__PART_DEFINITION: return SysmlPackage.PART_USAGE__PART_DEFINITION;
-                default: return -1;
+                case SysmlPackage.CONNECTION_USAGE__PART_DEFINITION:
+                    return SysmlPackage.PART_USAGE__PART_DEFINITION;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == OccurrenceUsage.class) {
             switch (baseFeatureID) {
-                case SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL: return SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL;
-                case SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND: return SysmlPackage.CONNECTION_USAGE__PORTION_KIND;
-                case SysmlPackage.OCCURRENCE_USAGE__INDIVIDUAL_DEFINITION: return SysmlPackage.CONNECTION_USAGE__INDIVIDUAL_DEFINITION;
-                case SysmlPackage.OCCURRENCE_USAGE__OCCURRENCE_DEFINITION: return SysmlPackage.CONNECTION_USAGE__OCCURRENCE_DEFINITION;
-                default: return -1;
+                case SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL:
+                    return SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL;
+                case SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND:
+                    return SysmlPackage.CONNECTION_USAGE__PORTION_KIND;
+                case SysmlPackage.OCCURRENCE_USAGE__INDIVIDUAL_DEFINITION:
+                    return SysmlPackage.CONNECTION_USAGE__INDIVIDUAL_DEFINITION;
+                case SysmlPackage.OCCURRENCE_USAGE__OCCURRENCE_DEFINITION:
+                    return SysmlPackage.CONNECTION_USAGE__OCCURRENCE_DEFINITION;
+                default:
+                    return -1;
             }
         }
         if (baseClass == ItemUsage.class) {
             switch (baseFeatureID) {
-                case SysmlPackage.ITEM_USAGE__ITEM_DEFINITION: return SysmlPackage.CONNECTION_USAGE__ITEM_DEFINITION;
-                default: return -1;
+                case SysmlPackage.ITEM_USAGE__ITEM_DEFINITION:
+                    return SysmlPackage.CONNECTION_USAGE__ITEM_DEFINITION;
+                default:
+                    return -1;
             }
         }
         if (baseClass == PartUsage.class) {
             switch (baseFeatureID) {
-                case SysmlPackage.PART_USAGE__PART_DEFINITION: return SysmlPackage.CONNECTION_USAGE__PART_DEFINITION;
-                default: return -1;
+                case SysmlPackage.PART_USAGE__PART_DEFINITION:
+                    return SysmlPackage.CONNECTION_USAGE__PART_DEFINITION;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isIndividual: ");
-        result.append(isIndividual);
+        result.append(this.isIndividual);
         result.append(", portionKind: ");
-        result.append(portionKind);
+        result.append(this.portionKind);
         result.append(')');
         return result.toString();
     }
 
-} //ConnectionUsageImpl
+} // ConnectionUsageImpl

@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -23,26 +23,26 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Feature Membership</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Feature Membership</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureMembershipImpl#getFeature <em>Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureMembershipImpl#getType <em>Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureMembershipImpl#getOwnedMemberFeature <em>Owned Member Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.FeatureMembershipImpl#getOwningType <em>Owning Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureMembershipImpl#getFeature <em>Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureMembershipImpl#getType <em>Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureMembershipImpl#getOwnedMemberFeature <em>Owned Member
+ * Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.FeatureMembershipImpl#getOwningType <em>Owning Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class FeatureMembershipImpl extends OwningMembershipImpl implements FeatureMembership {
     /**
-     * The cached value of the '{@link #getFeature() <em>Feature</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getFeature() <em>Feature</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getFeature()
      * @generated
      * @ordered
@@ -50,9 +50,9 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     protected Feature feature;
 
     /**
-     * The cached value of the '{@link #getType() <em>Type</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getType() <em>Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
      * @see #getType()
      * @generated
      * @ordered
@@ -60,8 +60,8 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     protected Type type;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected FeatureMembershipImpl() {
@@ -69,8 +69,8 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -79,127 +79,125 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Feature getFeature() {
-        if (feature != null && feature.eIsProxy()) {
-            InternalEObject oldFeature = (InternalEObject)feature;
-            feature = (Feature)eResolveProxy(oldFeature);
-            if (feature != oldFeature) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_MEMBERSHIP__FEATURE, oldFeature, feature));
+        if (this.feature != null && this.feature.eIsProxy()) {
+            InternalEObject oldFeature = (InternalEObject) this.feature;
+            this.feature = (Feature) this.eResolveProxy(oldFeature);
+            if (this.feature != oldFeature) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_MEMBERSHIP__FEATURE, oldFeature, this.feature));
             }
         }
-        return feature;
+        return this.feature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Feature basicGetFeature() {
-        return feature;
+        return this.feature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setFeature(Feature newFeature) {
-        Feature oldFeature = feature;
-        feature = newFeature;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_MEMBERSHIP__FEATURE, oldFeature, feature));
+        Feature oldFeature = this.feature;
+        this.feature = newFeature;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_MEMBERSHIP__FEATURE, oldFeature, this.feature));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getType() {
-        if (type != null && type.eIsProxy()) {
-            InternalEObject oldType = (InternalEObject)type;
-            type = (Type)eResolveProxy(oldType);
-            if (type != oldType) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_MEMBERSHIP__TYPE, oldType, type));
+        if (this.type != null && this.type.eIsProxy()) {
+            InternalEObject oldType = (InternalEObject) this.type;
+            this.type = (Type) this.eResolveProxy(oldType);
+            if (this.type != oldType) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_MEMBERSHIP__TYPE, oldType, this.type));
             }
         }
-        return type;
+        return this.type;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetType() {
-        return type;
+        return this.type;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setType(Type newType) {
-        Type oldType = type;
-        type = newType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_MEMBERSHIP__TYPE, oldType, type));
+        Type oldType = this.type;
+        this.type = newType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_MEMBERSHIP__TYPE, oldType, this.type));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * The Feature that this FeatureMembership relates to its owningType, making it an ownedFeature of the owningType.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> The Feature that this FeatureMembership relates to its owningType, making it an
+     * ownedFeature of the owningType. <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Feature getOwnedMemberFeature() {
-        Feature ownedMemberFeature = basicGetOwnedMemberFeature();
-        return ownedMemberFeature != null && ownedMemberFeature.eIsProxy() ? (Feature)eResolveProxy((InternalEObject)ownedMemberFeature) : ownedMemberFeature;
+        Feature ownedMemberFeature = this.basicGetOwnedMemberFeature();
+        return ownedMemberFeature != null && ownedMemberFeature.eIsProxy() ? (Feature) this.eResolveProxy((InternalEObject) ownedMemberFeature) : ownedMemberFeature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * The Feature that this FeatureMembership relates to its owningType, making it an ownedFeature of the owningType.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> The Feature that this FeatureMembership relates to its owningType, making it an
+     * ownedFeature of the owningType. <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Feature basicGetOwnedMemberFeature() {
         return this.getOwnedRelatedElement().stream()
-            .filter(Feature.class::isInstance)
-            .map(Feature.class::cast)
-            .findFirst()
-            .orElse(null);
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * The Type that owns this FeatureMembership.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> The Type that owns this FeatureMembership. <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getOwningType() {
-        Type owningType = basicGetOwningType();
-        return owningType != null && owningType.eIsProxy() ? (Type)eResolveProxy((InternalEObject)owningType) : owningType;
+        Type owningType = this.basicGetOwningType();
+        return owningType != null && owningType.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) owningType) : owningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * The Type that owns this FeatureMembership.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> The Type that owns this FeatureMembership. <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Type basicGetOwningType() {
@@ -211,8 +209,8 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -221,8 +219,8 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -231,117 +229,127 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURE_MEMBERSHIP__FEATURE:
-                if (resolve) return getFeature();
-                return basicGetFeature();
+                if (resolve)
+                    return this.getFeature();
+                return this.basicGetFeature();
             case SysmlPackage.FEATURE_MEMBERSHIP__TYPE:
-                if (resolve) return getType();
-                return basicGetType();
+                if (resolve)
+                    return this.getType();
+                return this.basicGetType();
             case SysmlPackage.FEATURE_MEMBERSHIP__OWNED_MEMBER_FEATURE:
-                if (resolve) return getOwnedMemberFeature();
-                return basicGetOwnedMemberFeature();
+                if (resolve)
+                    return this.getOwnedMemberFeature();
+                return this.basicGetOwnedMemberFeature();
             case SysmlPackage.FEATURE_MEMBERSHIP__OWNING_TYPE:
-                if (resolve) return getOwningType();
-                return basicGetOwningType();
+                if (resolve)
+                    return this.getOwningType();
+                return this.basicGetOwningType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.FEATURE_MEMBERSHIP__FEATURE:
-                setFeature((Feature)newValue);
+                this.setFeature((Feature) newValue);
                 return;
             case SysmlPackage.FEATURE_MEMBERSHIP__TYPE:
-                setType((Type)newValue);
+                this.setType((Type) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.FEATURE_MEMBERSHIP__FEATURE:
-                setFeature((Feature)null);
+                this.setFeature((Feature) null);
                 return;
             case SysmlPackage.FEATURE_MEMBERSHIP__TYPE:
-                setType((Type)null);
+                this.setType((Type) null);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.FEATURE_MEMBERSHIP__FEATURE:
-                return feature != null;
+                return this.feature != null;
             case SysmlPackage.FEATURE_MEMBERSHIP__TYPE:
-                return type != null;
+                return this.type != null;
             case SysmlPackage.FEATURE_MEMBERSHIP__OWNED_MEMBER_FEATURE:
-                return basicGetOwnedMemberFeature() != null;
+                return this.basicGetOwnedMemberFeature() != null;
             case SysmlPackage.FEATURE_MEMBERSHIP__OWNING_TYPE:
-                return basicGetOwningType() != null;
+                return this.basicGetOwningType() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == Featuring.class) {
             switch (derivedFeatureID) {
-                case SysmlPackage.FEATURE_MEMBERSHIP__FEATURE: return SysmlPackage.FEATURING__FEATURE;
-                case SysmlPackage.FEATURE_MEMBERSHIP__TYPE: return SysmlPackage.FEATURING__TYPE;
-                default: return -1;
+                case SysmlPackage.FEATURE_MEMBERSHIP__FEATURE:
+                    return SysmlPackage.FEATURING__FEATURE;
+                case SysmlPackage.FEATURE_MEMBERSHIP__TYPE:
+                    return SysmlPackage.FEATURING__TYPE;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == Featuring.class) {
             switch (baseFeatureID) {
-                case SysmlPackage.FEATURING__FEATURE: return SysmlPackage.FEATURE_MEMBERSHIP__FEATURE;
-                case SysmlPackage.FEATURING__TYPE: return SysmlPackage.FEATURE_MEMBERSHIP__TYPE;
-                default: return -1;
+                case SysmlPackage.FEATURING__FEATURE:
+                    return SysmlPackage.FEATURE_MEMBERSHIP__FEATURE;
+                case SysmlPackage.FEATURING__TYPE:
+                    return SysmlPackage.FEATURE_MEMBERSHIP__TYPE;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
-} //FeatureMembershipImpl
+} // FeatureMembershipImpl

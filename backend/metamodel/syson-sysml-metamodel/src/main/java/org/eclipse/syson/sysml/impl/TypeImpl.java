@@ -13,24 +13,20 @@
 package org.eclipse.syson.sysml.impl;
 
 import static java.util.stream.Collectors.toCollection;
-import static java.util.stream.Collectors.toList;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Conjugation;
 import org.eclipse.syson.sysml.Differencing;
 import org.eclipse.syson.sysml.Disjoining;
@@ -48,46 +44,44 @@ import org.eclipse.syson.sysml.Unioning;
 import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Type</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Type</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#isIsAbstract <em>Is Abstract</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#isIsConjugated <em>Is Conjugated</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#isIsSufficient <em>Is Sufficient</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getDifferencingType <em>Differencing Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getDirectedFeature <em>Directed Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getEndFeature <em>End Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getFeature <em>Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getFeatureMembership <em>Feature Membership</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getInheritedFeature <em>Inherited Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getInheritedMembership <em>Inherited Membership</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getInput <em>Input</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getIntersectingType <em>Intersecting Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getMultiplicity <em>Multiplicity</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOutput <em>Output</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedConjugator <em>Owned Conjugator</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedDifferencing <em>Owned Differencing</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedDisjoining <em>Owned Disjoining</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedEndFeature <em>Owned End Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedFeature <em>Owned Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedFeatureMembership <em>Owned Feature Membership</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedIntersecting <em>Owned Intersecting</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedSpecialization <em>Owned Specialization</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedUnioning <em>Owned Unioning</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getUnioningType <em>Unioning Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#isIsAbstract <em>Is Abstract</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#isIsConjugated <em>Is Conjugated</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#isIsSufficient <em>Is Sufficient</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getDifferencingType <em>Differencing Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getDirectedFeature <em>Directed Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getEndFeature <em>End Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getFeature <em>Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getFeatureMembership <em>Feature Membership</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getInheritedFeature <em>Inherited Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getInheritedMembership <em>Inherited Membership</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getInput <em>Input</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getIntersectingType <em>Intersecting Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getMultiplicity <em>Multiplicity</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOutput <em>Output</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedConjugator <em>Owned Conjugator</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedDifferencing <em>Owned Differencing</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedDisjoining <em>Owned Disjoining</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedEndFeature <em>Owned End Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedFeature <em>Owned Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedFeatureMembership <em>Owned Feature Membership</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedIntersecting <em>Owned Intersecting</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedSpecialization <em>Owned Specialization</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getOwnedUnioning <em>Owned Unioning</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.TypeImpl#getUnioningType <em>Unioning Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class TypeImpl extends NamespaceImpl implements Type {
     /**
-     * The default value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsAbstract()
      * @generated
      * @ordered
@@ -95,9 +89,9 @@ public class TypeImpl extends NamespaceImpl implements Type {
     protected static final boolean IS_ABSTRACT_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsAbstract() <em>Is Abstract</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsAbstract()
      * @generated
      * @ordered
@@ -105,9 +99,9 @@ public class TypeImpl extends NamespaceImpl implements Type {
     protected boolean isAbstract = IS_ABSTRACT_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsConjugated() <em>Is Conjugated</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The default value of the '{@link #isIsConjugated() <em>Is Conjugated</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #isIsConjugated()
      * @generated
      * @ordered
@@ -115,9 +109,9 @@ public class TypeImpl extends NamespaceImpl implements Type {
     protected static final boolean IS_CONJUGATED_EDEFAULT = false;
 
     /**
-     * The default value of the '{@link #isIsSufficient() <em>Is Sufficient</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The default value of the '{@link #isIsSufficient() <em>Is Sufficient</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #isIsSufficient()
      * @generated
      * @ordered
@@ -125,9 +119,9 @@ public class TypeImpl extends NamespaceImpl implements Type {
     protected static final boolean IS_SUFFICIENT_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsSufficient() <em>Is Sufficient</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #isIsSufficient() <em>Is Sufficient</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #isIsSufficient()
      * @generated
      * @ordered
@@ -135,8 +129,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     protected boolean isSufficient = IS_SUFFICIENT_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected TypeImpl() {
@@ -144,8 +138,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -154,8 +148,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -165,8 +159,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -176,8 +170,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -189,13 +183,13 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<Feature> getFeature() {
-        Feature[] features = getFeatureMembership().stream()
+        Feature[] features = this.getFeatureMembership().stream()
                 .filter(fm -> fm.getFeature() != null)
                 .map(FeatureMembership::getFeature)
                 .toArray(Feature[]::new);
@@ -203,19 +197,21 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<FeatureMembership> getFeatureMembership() {
-        FeatureMembership[] featureMemberships = Stream.concat(getOwnedFeatureMembership().stream(), inheritedMemberships(new BasicEList<Type>()).stream()).filter(FeatureMembership.class::isInstance).toArray(FeatureMembership[]::new);
+        FeatureMembership[] featureMemberships = Stream.concat(this.getOwnedFeatureMembership().stream(), this.inheritedMemberships(new BasicEList<>()).stream())
+                .filter(FeatureMembership.class::isInstance)
+                .toArray(FeatureMembership[]::new);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_FeatureMembership(), featureMemberships.length, featureMemberships);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -231,16 +227,15 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * Partial implementation (see sub types, e.g. UsageImpl or DefinitionImpl). Should be:
-     * All Memberships inherited by this Type via Specialization or Conjugation.
-     * These are included in the derived union for the memberships of the Type.
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Partial implementation (see sub types, e.g. UsageImpl or DefinitionImpl). Should be: All
+     * Memberships inherited by this Type via Specialization or Conjugation. These are included in the derived union for
+     * the memberships of the Type. <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        FeatureMembership[] data = inheritedMemberships(new BasicEList<Type>()).stream()
+        FeatureMembership[] data = this.inheritedMemberships(new BasicEList<>()).stream()
                 .filter(FeatureMembership.class::isInstance)
                 .map(FeatureMembership.class::cast)
                 .toArray(FeatureMembership[]::new);
@@ -248,8 +243,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -259,8 +254,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -270,31 +265,31 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsAbstract() {
-        return isAbstract;
+        return this.isAbstract;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsAbstract(boolean newIsAbstract) {
-        boolean oldIsAbstract = isAbstract;
-        isAbstract = newIsAbstract;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE__IS_ABSTRACT, oldIsAbstract, isAbstract));
+        boolean oldIsAbstract = this.isAbstract;
+        this.isAbstract = newIsAbstract;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE__IS_ABSTRACT, oldIsAbstract, this.isAbstract));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -303,42 +298,42 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsSufficient() {
-        return isSufficient;
+        return this.isSufficient;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsSufficient(boolean newIsSufficient) {
-        boolean oldIsSufficient = isSufficient;
-        isSufficient = newIsSufficient;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE__IS_SUFFICIENT, oldIsSufficient, isSufficient));
+        boolean oldIsSufficient = this.isSufficient;
+        this.isSufficient = newIsSufficient;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE__IS_SUFFICIENT, oldIsSufficient, this.isSufficient));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Multiplicity getMultiplicity() {
-        Multiplicity multiplicity = basicGetMultiplicity();
-        return multiplicity != null && multiplicity.eIsProxy() ? (Multiplicity)eResolveProxy((InternalEObject)multiplicity) : multiplicity;
+        Multiplicity multiplicity = this.basicGetMultiplicity();
+        return multiplicity != null && multiplicity.eIsProxy() ? (Multiplicity) this.eResolveProxy((InternalEObject) multiplicity) : multiplicity;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Multiplicity basicGetMultiplicity() {
@@ -349,8 +344,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -360,19 +355,19 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Conjugation getOwnedConjugator() {
-        Conjugation ownedConjugator = basicGetOwnedConjugator();
-        return ownedConjugator != null && ownedConjugator.eIsProxy() ? (Conjugation) eResolveProxy((InternalEObject) ownedConjugator) : ownedConjugator;
+        Conjugation ownedConjugator = this.basicGetOwnedConjugator();
+        return ownedConjugator != null && ownedConjugator.eIsProxy() ? (Conjugation) this.eResolveProxy((InternalEObject) ownedConjugator) : ownedConjugator;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Conjugation basicGetOwnedConjugator() {
@@ -383,8 +378,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -394,8 +389,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -405,8 +400,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -416,40 +411,39 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<Feature> getOwnedFeature() {
         List<Feature> ownedFeatures = new ArrayList<>();
         this.getOwnedFeatureMembership().stream()
-            .map(FeatureMembership::getOwnedMemberFeature)
-            .filter(Objects::nonNull)
-            .forEach(ownedFeatures::add);
+                .map(FeatureMembership::getOwnedMemberFeature)
+                .filter(Objects::nonNull)
+                .forEach(ownedFeatures::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedFeature(), ownedFeatures.size(), ownedFeatures.toArray());
     }
 
     /**
-     * <!-- begin-user-doc --> 
-     * The ownedMemberships of this Type that are FeatureMemberships, for which the Type is the
-     * owningType. Each such FeatureMembership identifies an ownedFeature of the Type. 
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> The ownedMemberships of this Type that are FeatureMemberships, for which the Type is the
+     * owningType. Each such FeatureMembership identifies an ownedFeature of the Type. <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<FeatureMembership> getOwnedFeatureMembership() {
         List<FeatureMembership> ownedFeatureMemberships = new ArrayList<>();
         this.getOwnedMembership().stream()
-            .filter(FeatureMembership.class::isInstance)
-            .map(FeatureMembership.class::cast)
-            .forEach(ownedFeatureMemberships::add);
+                .filter(FeatureMembership.class::isInstance)
+                .map(FeatureMembership.class::cast)
+                .forEach(ownedFeatureMemberships::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedFeatureMembership(), ownedFeatureMemberships.size(), ownedFeatureMemberships.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -459,25 +453,26 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<Specialization> getOwnedSpecialization() {
         List<Specialization> ownedSpecializations = new ArrayList<>();
-        // The ownedRelationships of this Type that are Specializations, and for which the Specialization's specific Type is this Type.
+        // The ownedRelationships of this Type that are Specializations, and for which the Specialization's specific
+        // Type is this Type.
         this.getOwnedRelationship().stream()
-            .filter(Specialization.class::isInstance)
-            .map(Specialization.class::cast)
-            .filter(spec -> this.equals(spec.getSpecific()))
-            .forEach(ownedSpecializations::add);
+                .filter(Specialization.class::isInstance)
+                .map(Specialization.class::cast)
+                .filter(spec -> this.equals(spec.getSpecific()))
+                .forEach(ownedSpecializations::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedSpecialization(), ownedSpecializations.size(), ownedSpecializations.toArray());
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -487,8 +482,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -498,8 +493,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -510,8 +505,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -522,14 +517,14 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<Membership> inheritedMemberships(EList<Type> excluded) {
         excluded.add(this);
-        Conjugation conjugator = getOwnedConjugator();
+        Conjugation conjugator = this.getOwnedConjugator();
         List<Membership> conjugatedMemberships = List.of();
         if (conjugator != null) {
             Type type = conjugator.getOriginalType();
@@ -538,10 +533,10 @@ public class TypeImpl extends NamespaceImpl implements Type {
             }
         }
 
-        List<Membership> generalMemberships = getOwnedSpecialization().stream()
+        List<Membership> generalMemberships = this.getOwnedSpecialization().stream()
                 .map(spe -> spe.getGeneral())
                 .filter(g -> g != null && !excluded.contains(g))
-                .flatMap(gen -> gen.visibleMemberships(toNamespaceExclude(excluded), false, true).stream()).toList();
+                .flatMap(gen -> gen.visibleMemberships(this.toNamespaceExclude(excluded), false, true).stream()).toList();
 
         Membership[] data = Stream.concat(conjugatedMemberships.stream(), generalMemberships.stream())
                 // Also inherit protected memberships
@@ -549,19 +544,19 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 .toArray(Membership[]::new);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), data.length, data);
     }
-    
+
     /**
      * @generated NOT
      */
-    private EList<Namespace> toNamespaceExclude(EList<Type> excluded){
+    private EList<Namespace> toNamespaceExclude(EList<Type> excluded) {
         return excluded.stream().filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .collect(toCollection(BasicEList<Namespace>::new));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -570,8 +565,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -580,70 +575,72 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.TYPE__IS_ABSTRACT:
-                return isIsAbstract();
+                return this.isIsAbstract();
             case SysmlPackage.TYPE__IS_CONJUGATED:
-                return isIsConjugated();
+                return this.isIsConjugated();
             case SysmlPackage.TYPE__IS_SUFFICIENT:
-                return isIsSufficient();
+                return this.isIsSufficient();
             case SysmlPackage.TYPE__DIFFERENCING_TYPE:
-                return getDifferencingType();
+                return this.getDifferencingType();
             case SysmlPackage.TYPE__DIRECTED_FEATURE:
-                return getDirectedFeature();
+                return this.getDirectedFeature();
             case SysmlPackage.TYPE__END_FEATURE:
-                return getEndFeature();
+                return this.getEndFeature();
             case SysmlPackage.TYPE__FEATURE:
-                return getFeature();
+                return this.getFeature();
             case SysmlPackage.TYPE__FEATURE_MEMBERSHIP:
-                return getFeatureMembership();
+                return this.getFeatureMembership();
             case SysmlPackage.TYPE__INHERITED_FEATURE:
-                return getInheritedFeature();
+                return this.getInheritedFeature();
             case SysmlPackage.TYPE__INHERITED_MEMBERSHIP:
-                return getInheritedMembership();
+                return this.getInheritedMembership();
             case SysmlPackage.TYPE__INPUT:
-                return getInput();
+                return this.getInput();
             case SysmlPackage.TYPE__INTERSECTING_TYPE:
-                return getIntersectingType();
+                return this.getIntersectingType();
             case SysmlPackage.TYPE__MULTIPLICITY:
-                if (resolve) return getMultiplicity();
-                return basicGetMultiplicity();
+                if (resolve)
+                    return this.getMultiplicity();
+                return this.basicGetMultiplicity();
             case SysmlPackage.TYPE__OUTPUT:
-                return getOutput();
+                return this.getOutput();
             case SysmlPackage.TYPE__OWNED_CONJUGATOR:
-                if (resolve) return getOwnedConjugator();
-                return basicGetOwnedConjugator();
+                if (resolve)
+                    return this.getOwnedConjugator();
+                return this.basicGetOwnedConjugator();
             case SysmlPackage.TYPE__OWNED_DIFFERENCING:
-                return getOwnedDifferencing();
+                return this.getOwnedDifferencing();
             case SysmlPackage.TYPE__OWNED_DISJOINING:
-                return getOwnedDisjoining();
+                return this.getOwnedDisjoining();
             case SysmlPackage.TYPE__OWNED_END_FEATURE:
-                return getOwnedEndFeature();
+                return this.getOwnedEndFeature();
             case SysmlPackage.TYPE__OWNED_FEATURE:
-                return getOwnedFeature();
+                return this.getOwnedFeature();
             case SysmlPackage.TYPE__OWNED_FEATURE_MEMBERSHIP:
-                return getOwnedFeatureMembership();
+                return this.getOwnedFeatureMembership();
             case SysmlPackage.TYPE__OWNED_INTERSECTING:
-                return getOwnedIntersecting();
+                return this.getOwnedIntersecting();
             case SysmlPackage.TYPE__OWNED_SPECIALIZATION:
-                return getOwnedSpecialization();
+                return this.getOwnedSpecialization();
             case SysmlPackage.TYPE__OWNED_UNIONING:
-                return getOwnedUnioning();
+                return this.getOwnedUnioning();
             case SysmlPackage.TYPE__UNIONING_TYPE:
-                return getUnioningType();
+                return this.getUnioningType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -651,89 +648,89 @@ public class TypeImpl extends NamespaceImpl implements Type {
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.TYPE__IS_ABSTRACT:
-                setIsAbstract((Boolean)newValue);
+                this.setIsAbstract((Boolean) newValue);
                 return;
             case SysmlPackage.TYPE__IS_SUFFICIENT:
-                setIsSufficient((Boolean)newValue);
+                this.setIsSufficient((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.TYPE__IS_ABSTRACT:
-                setIsAbstract(IS_ABSTRACT_EDEFAULT);
+                this.setIsAbstract(IS_ABSTRACT_EDEFAULT);
                 return;
             case SysmlPackage.TYPE__IS_SUFFICIENT:
-                setIsSufficient(IS_SUFFICIENT_EDEFAULT);
+                this.setIsSufficient(IS_SUFFICIENT_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.TYPE__IS_ABSTRACT:
-                return isAbstract != IS_ABSTRACT_EDEFAULT;
+                return this.isAbstract != IS_ABSTRACT_EDEFAULT;
             case SysmlPackage.TYPE__IS_CONJUGATED:
-                return isIsConjugated() != IS_CONJUGATED_EDEFAULT;
+                return this.isIsConjugated() != IS_CONJUGATED_EDEFAULT;
             case SysmlPackage.TYPE__IS_SUFFICIENT:
-                return isSufficient != IS_SUFFICIENT_EDEFAULT;
+                return this.isSufficient != IS_SUFFICIENT_EDEFAULT;
             case SysmlPackage.TYPE__DIFFERENCING_TYPE:
-                return !getDifferencingType().isEmpty();
+                return !this.getDifferencingType().isEmpty();
             case SysmlPackage.TYPE__DIRECTED_FEATURE:
-                return !getDirectedFeature().isEmpty();
+                return !this.getDirectedFeature().isEmpty();
             case SysmlPackage.TYPE__END_FEATURE:
-                return !getEndFeature().isEmpty();
+                return !this.getEndFeature().isEmpty();
             case SysmlPackage.TYPE__FEATURE:
-                return !getFeature().isEmpty();
+                return !this.getFeature().isEmpty();
             case SysmlPackage.TYPE__FEATURE_MEMBERSHIP:
-                return !getFeatureMembership().isEmpty();
+                return !this.getFeatureMembership().isEmpty();
             case SysmlPackage.TYPE__INHERITED_FEATURE:
-                return !getInheritedFeature().isEmpty();
+                return !this.getInheritedFeature().isEmpty();
             case SysmlPackage.TYPE__INHERITED_MEMBERSHIP:
-                return !getInheritedMembership().isEmpty();
+                return !this.getInheritedMembership().isEmpty();
             case SysmlPackage.TYPE__INPUT:
-                return !getInput().isEmpty();
+                return !this.getInput().isEmpty();
             case SysmlPackage.TYPE__INTERSECTING_TYPE:
-                return !getIntersectingType().isEmpty();
+                return !this.getIntersectingType().isEmpty();
             case SysmlPackage.TYPE__MULTIPLICITY:
-                return basicGetMultiplicity() != null;
+                return this.basicGetMultiplicity() != null;
             case SysmlPackage.TYPE__OUTPUT:
-                return !getOutput().isEmpty();
+                return !this.getOutput().isEmpty();
             case SysmlPackage.TYPE__OWNED_CONJUGATOR:
-                return basicGetOwnedConjugator() != null;
+                return this.basicGetOwnedConjugator() != null;
             case SysmlPackage.TYPE__OWNED_DIFFERENCING:
-                return !getOwnedDifferencing().isEmpty();
+                return !this.getOwnedDifferencing().isEmpty();
             case SysmlPackage.TYPE__OWNED_DISJOINING:
-                return !getOwnedDisjoining().isEmpty();
+                return !this.getOwnedDisjoining().isEmpty();
             case SysmlPackage.TYPE__OWNED_END_FEATURE:
-                return !getOwnedEndFeature().isEmpty();
+                return !this.getOwnedEndFeature().isEmpty();
             case SysmlPackage.TYPE__OWNED_FEATURE:
-                return !getOwnedFeature().isEmpty();
+                return !this.getOwnedFeature().isEmpty();
             case SysmlPackage.TYPE__OWNED_FEATURE_MEMBERSHIP:
-                return !getOwnedFeatureMembership().isEmpty();
+                return !this.getOwnedFeatureMembership().isEmpty();
             case SysmlPackage.TYPE__OWNED_INTERSECTING:
-                return !getOwnedIntersecting().isEmpty();
+                return !this.getOwnedIntersecting().isEmpty();
             case SysmlPackage.TYPE__OWNED_SPECIALIZATION:
-                return !getOwnedSpecialization().isEmpty();
+                return !this.getOwnedSpecialization().isEmpty();
             case SysmlPackage.TYPE__OWNED_UNIONING:
-                return !getOwnedUnioning().isEmpty();
+                return !this.getOwnedUnioning().isEmpty();
             case SysmlPackage.TYPE__UNIONING_TYPE:
-                return !getUnioningType().isEmpty();
+                return !this.getUnioningType().isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -750,7 +747,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 .collect(toCollection(BasicEList<Type>::new));
 
         EList<Membership> superVisibleMemberships = super.visibleMemberships(excluded, isRecursive, includeAll);
-        EList<Membership> inheritedMemberships = inheritedMemberships(excludedTypes);
+        EList<Membership> inheritedMemberships = this.inheritedMemberships(excludedTypes);
         List<Membership> visibleMemberships = Stream.concat(superVisibleMemberships.stream(),
                 inheritedMemberships.stream())
                 .filter(rel -> includeAll || rel.getVisibility() == VisibilityKind.PUBLIC)
@@ -760,14 +757,14 @@ public class TypeImpl extends NamespaceImpl implements Type {
 
     @Override
     public EList<Membership> getMembership() {
-        Membership[] visibleMemberships = visibleMemberships(new BasicEList<Namespace>(), false, true).toArray(Membership[]::new);
+        Membership[] visibleMemberships = this.visibleMemberships(new BasicEList<>(), false, true).toArray(Membership[]::new);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), visibleMemberships.length, visibleMemberships);
 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -775,35 +772,36 @@ public class TypeImpl extends NamespaceImpl implements Type {
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
             case SysmlPackage.TYPE___ALL_SUPERTYPES:
-                return allSupertypes();
+                return this.allSupertypes();
             case SysmlPackage.TYPE___DIRECTION_OF__FEATURE:
-                return directionOf((Feature)arguments.get(0));
+                return this.directionOf((Feature) arguments.get(0));
             case SysmlPackage.TYPE___INHERITED_MEMBERSHIPS__ELIST:
-                return inheritedMemberships((EList<Type>)arguments.get(0));
+                return this.inheritedMemberships((EList<Type>) arguments.get(0));
             case SysmlPackage.TYPE___SPECIALIZES__TYPE:
-                return specializes((Type)arguments.get(0));
+                return this.specializes((Type) arguments.get(0));
             case SysmlPackage.TYPE___SPECIALIZES_FROM_LIBRARY__STRING:
-                return specializesFromLibrary((String)arguments.get(0));
+                return this.specializesFromLibrary((String) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isAbstract: ");
-        result.append(isAbstract);
+        result.append(this.isAbstract);
         result.append(", isSufficient: ");
-        result.append(isSufficient);
+        result.append(this.isSufficient);
         result.append(')');
         return result.toString();
     }
 
-} //TypeImpl
+} // TypeImpl

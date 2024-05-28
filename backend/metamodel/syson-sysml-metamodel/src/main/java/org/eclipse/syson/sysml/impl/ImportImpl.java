@@ -27,27 +27,25 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Import</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Import</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#isIsImportAll <em>Is Import All</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#isIsRecursive <em>Is Recursive</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#getVisibility <em>Visibility</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#getImportedElement <em>Imported Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#getImportOwningNamespace <em>Import Owning Namespace</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#isIsImportAll <em>Is Import All</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#isIsRecursive <em>Is Recursive</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#getVisibility <em>Visibility</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#getImportedElement <em>Imported Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ImportImpl#getImportOwningNamespace <em>Import Owning Namespace</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class ImportImpl extends RelationshipImpl implements Import {
     /**
-     * The default value of the '{@link #isIsImportAll() <em>Is Import All</em>}' attribute.
-     * <!-- begin-user-doc -->
+     * The default value of the '{@link #isIsImportAll() <em>Is Import All</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #isIsImportAll()
      * @generated
      * @ordered
@@ -55,9 +53,9 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     protected static final boolean IS_IMPORT_ALL_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsImportAll() <em>Is Import All</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsImportAll() <em>Is Import All</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsImportAll()
      * @generated
      * @ordered
@@ -65,9 +63,9 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     protected boolean isImportAll = IS_IMPORT_ALL_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isIsRecursive() <em>Is Recursive</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsRecursive() <em>Is Recursive</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsRecursive()
      * @generated
      * @ordered
@@ -75,9 +73,9 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     protected static final boolean IS_RECURSIVE_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isIsRecursive() <em>Is Recursive</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #isIsRecursive() <em>Is Recursive</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #isIsRecursive()
      * @generated
      * @ordered
@@ -85,9 +83,9 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     protected boolean isRecursive = IS_RECURSIVE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getVisibility()
      * @generated
      * @ordered
@@ -95,9 +93,9 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     protected static final VisibilityKind VISIBILITY_EDEFAULT = VisibilityKind.PUBLIC;
 
     /**
-     * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getVisibility()
      * @generated
      * @ordered
@@ -105,8 +103,8 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     protected VisibilityKind visibility = VISIBILITY_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ImportImpl() {
@@ -114,8 +112,8 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -124,19 +122,19 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Element getImportedElement() {
-        Element importedElement = basicGetImportedElement();
-        return importedElement != null && importedElement.eIsProxy() ? (Element)eResolveProxy((InternalEObject)importedElement) : importedElement;
+        Element importedElement = this.basicGetImportedElement();
+        return importedElement != null && importedElement.eIsProxy() ? (Element) this.eResolveProxy((InternalEObject) importedElement) : importedElement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Element basicGetImportedElement() {
@@ -147,19 +145,19 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Namespace getImportOwningNamespace() {
-        Namespace importOwningNamespace = basicGetImportOwningNamespace();
-        return importOwningNamespace != null && importOwningNamespace.eIsProxy() ? (Namespace)eResolveProxy((InternalEObject)importOwningNamespace) : importOwningNamespace;
+        Namespace importOwningNamespace = this.basicGetImportOwningNamespace();
+        return importOwningNamespace != null && importOwningNamespace.eIsProxy() ? (Namespace) this.eResolveProxy((InternalEObject) importOwningNamespace) : importOwningNamespace;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Namespace basicGetImportOwningNamespace() {
@@ -171,77 +169,77 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsImportAll() {
-        return isImportAll;
+        return this.isImportAll;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsImportAll(boolean newIsImportAll) {
-        boolean oldIsImportAll = isImportAll;
-        isImportAll = newIsImportAll;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.IMPORT__IS_IMPORT_ALL, oldIsImportAll, isImportAll));
+        boolean oldIsImportAll = this.isImportAll;
+        this.isImportAll = newIsImportAll;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.IMPORT__IS_IMPORT_ALL, oldIsImportAll, this.isImportAll));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean isIsRecursive() {
-        return isRecursive;
+        return this.isRecursive;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setIsRecursive(boolean newIsRecursive) {
-        boolean oldIsRecursive = isRecursive;
-        isRecursive = newIsRecursive;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.IMPORT__IS_RECURSIVE, oldIsRecursive, isRecursive));
+        boolean oldIsRecursive = this.isRecursive;
+        this.isRecursive = newIsRecursive;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.IMPORT__IS_RECURSIVE, oldIsRecursive, this.isRecursive));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public VisibilityKind getVisibility() {
-        return visibility;
+        return this.visibility;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setVisibility(VisibilityKind newVisibility) {
-        VisibilityKind oldVisibility = visibility;
-        visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.IMPORT__VISIBILITY, oldVisibility, visibility));
+        VisibilityKind oldVisibility = this.visibility;
+        this.visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.IMPORT__VISIBILITY, oldVisibility, this.visibility));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -252,96 +250,98 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.IMPORT__IS_IMPORT_ALL:
-                return isIsImportAll();
+                return this.isIsImportAll();
             case SysmlPackage.IMPORT__IS_RECURSIVE:
-                return isIsRecursive();
+                return this.isIsRecursive();
             case SysmlPackage.IMPORT__VISIBILITY:
-                return getVisibility();
+                return this.getVisibility();
             case SysmlPackage.IMPORT__IMPORTED_ELEMENT:
-                if (resolve) return getImportedElement();
-                return basicGetImportedElement();
+                if (resolve)
+                    return this.getImportedElement();
+                return this.basicGetImportedElement();
             case SysmlPackage.IMPORT__IMPORT_OWNING_NAMESPACE:
-                if (resolve) return getImportOwningNamespace();
-                return basicGetImportOwningNamespace();
+                if (resolve)
+                    return this.getImportOwningNamespace();
+                return this.basicGetImportOwningNamespace();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.IMPORT__IS_IMPORT_ALL:
-                setIsImportAll((Boolean)newValue);
+                this.setIsImportAll((Boolean) newValue);
                 return;
             case SysmlPackage.IMPORT__IS_RECURSIVE:
-                setIsRecursive((Boolean)newValue);
+                this.setIsRecursive((Boolean) newValue);
                 return;
             case SysmlPackage.IMPORT__VISIBILITY:
-                setVisibility((VisibilityKind)newValue);
+                this.setVisibility((VisibilityKind) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.IMPORT__IS_IMPORT_ALL:
-                setIsImportAll(IS_IMPORT_ALL_EDEFAULT);
+                this.setIsImportAll(IS_IMPORT_ALL_EDEFAULT);
                 return;
             case SysmlPackage.IMPORT__IS_RECURSIVE:
-                setIsRecursive(IS_RECURSIVE_EDEFAULT);
+                this.setIsRecursive(IS_RECURSIVE_EDEFAULT);
                 return;
             case SysmlPackage.IMPORT__VISIBILITY:
-                setVisibility(VISIBILITY_EDEFAULT);
+                this.setVisibility(VISIBILITY_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.IMPORT__IS_IMPORT_ALL:
-                return isImportAll != IS_IMPORT_ALL_EDEFAULT;
+                return this.isImportAll != IS_IMPORT_ALL_EDEFAULT;
             case SysmlPackage.IMPORT__IS_RECURSIVE:
-                return isRecursive != IS_RECURSIVE_EDEFAULT;
+                return this.isRecursive != IS_RECURSIVE_EDEFAULT;
             case SysmlPackage.IMPORT__VISIBILITY:
-                return visibility != VISIBILITY_EDEFAULT;
+                return this.visibility != VISIBILITY_EDEFAULT;
             case SysmlPackage.IMPORT__IMPORTED_ELEMENT:
-                return basicGetImportedElement() != null;
+                return this.basicGetImportedElement() != null;
             case SysmlPackage.IMPORT__IMPORT_OWNING_NAMESPACE:
-                return basicGetImportOwningNamespace() != null;
+                return this.basicGetImportOwningNamespace() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -349,29 +349,30 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
             case SysmlPackage.IMPORT___IMPORTED_MEMBERSHIPS__ELIST:
-                return importedMemberships((EList<Namespace>)arguments.get(0));
+                return this.importedMemberships((EList<Namespace>) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (this.eIsProxy())
+            return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isImportAll: ");
-        result.append(isImportAll);
+        result.append(this.isImportAll);
         result.append(", isRecursive: ");
-        result.append(isRecursive);
+        result.append(this.isRecursive);
         result.append(", visibility: ");
-        result.append(visibility);
+        result.append(this.visibility);
         result.append(')');
         return result.toString();
     }
 
-} //ImportImpl
+} // ImportImpl

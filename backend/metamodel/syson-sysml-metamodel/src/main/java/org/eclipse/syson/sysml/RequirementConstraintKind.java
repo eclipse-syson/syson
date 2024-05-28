@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml;
 
 import java.util.Arrays;
@@ -19,19 +19,17 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Requirement Constraint Kind</b></em>',
- * and utility methods for working with them.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Requirement Constraint
+ * Kind</b></em>', and utility methods for working with them. <!-- end-user-doc -->
+ *
  * @see org.eclipse.syson.sysml.SysmlPackage#getRequirementConstraintKind()
  * @model
  * @generated
  */
 public enum RequirementConstraintKind implements Enumerator {
     /**
-     * The '<em><b>Assumption</b></em>' literal object.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The '<em><b>Assumption</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #ASSUMPTION_VALUE
      * @generated
      * @ordered
@@ -39,9 +37,8 @@ public enum RequirementConstraintKind implements Enumerator {
     ASSUMPTION(0, "assumption", "assumption"),
 
     /**
-     * The '<em><b>Requirement</b></em>' literal object.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The '<em><b>Requirement</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #REQUIREMENT_VALUE
      * @generated
      * @ordered
@@ -49,9 +46,8 @@ public enum RequirementConstraintKind implements Enumerator {
     REQUIREMENT(1, "requirement", "requirement");
 
     /**
-     * The '<em><b>Assumption</b></em>' literal value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The '<em><b>Assumption</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #ASSUMPTION
      * @model name="assumption"
      * @generated
@@ -60,9 +56,8 @@ public enum RequirementConstraintKind implements Enumerator {
     public static final int ASSUMPTION_VALUE = 0;
 
     /**
-     * The '<em><b>Requirement</b></em>' literal value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The '<em><b>Requirement</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #REQUIREMENT
      * @model name="requirement"
      * @generated
@@ -71,30 +66,30 @@ public enum RequirementConstraintKind implements Enumerator {
     public static final int REQUIREMENT_VALUE = 1;
 
     /**
-     * An array of all the '<em><b>Requirement Constraint Kind</b></em>' enumerators.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * An array of all the '<em><b>Requirement Constraint Kind</b></em>' enumerators. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @generated
      */
-    private static final RequirementConstraintKind[] VALUES_ARRAY =
-        new RequirementConstraintKind[] {
+    private static final RequirementConstraintKind[] VALUES_ARRAY = new RequirementConstraintKind[] {
             ASSUMPTION,
             REQUIREMENT,
-        };
+    };
 
     /**
-     * A public read-only list of all the '<em><b>Requirement Constraint Kind</b></em>' enumerators.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * A public read-only list of all the '<em><b>Requirement Constraint Kind</b></em>' enumerators. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public static final List<RequirementConstraintKind> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * Returns the '<em><b>Requirement Constraint Kind</b></em>' literal with the specified literal value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param literal the literal.
+     * Returns the '<em><b>Requirement Constraint Kind</b></em>' literal with the specified literal value. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param literal
+     *            the literal.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -109,10 +104,11 @@ public enum RequirementConstraintKind implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Requirement Constraint Kind</b></em>' literal with the specified name.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param name the name.
+     * Returns the '<em><b>Requirement Constraint Kind</b></em>' literal with the specified name. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @param name
+     *            the name.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
@@ -127,46 +123,48 @@ public enum RequirementConstraintKind implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Requirement Constraint Kind</b></em>' literal with the specified integer value.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the integer value.
+     * Returns the '<em><b>Requirement Constraint Kind</b></em>' literal with the specified integer value. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the integer value.
      * @return the matching enumerator or <code>null</code>.
      * @generated
      */
     public static RequirementConstraintKind get(int value) {
         switch (value) {
-            case ASSUMPTION_VALUE: return ASSUMPTION;
-            case REQUIREMENT_VALUE: return REQUIREMENT;
+            case ASSUMPTION_VALUE:
+                return ASSUMPTION;
+            case REQUIREMENT_VALUE:
+                return REQUIREMENT;
         }
         return null;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private final int value;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private final String name;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private final String literal;
 
     /**
-     * Only this class can construct instances.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private RequirementConstraintKind(int value, String name, String literal) {
@@ -176,44 +174,44 @@ public enum RequirementConstraintKind implements Enumerator {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int getValue() {
-      return value;
+        return this.value;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String getName() {
-      return name;
+        return this.name;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String getLiteral() {
-      return literal;
+        return this.literal;
     }
 
     /**
-     * Returns the literal value of the enumerator, which is its string representation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the literal value of the enumerator, which is its string representation. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        return literal;
+        return this.literal;
     }
-    
-} //RequirementConstraintKind
+
+} // RequirementConstraintKind

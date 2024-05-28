@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,26 +30,24 @@ import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.ViewpointUsage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>View Usage</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>View Usage</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getExposedElement <em>Exposed Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getSatisfiedViewpoint <em>Satisfied Viewpoint</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getViewCondition <em>View Condition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getViewDefinition <em>View Definition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getViewRendering <em>View Rendering</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getExposedElement <em>Exposed Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getSatisfiedViewpoint <em>Satisfied Viewpoint</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getViewCondition <em>View Condition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getViewDefinition <em>View Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ViewUsageImpl#getViewRendering <em>View Rendering</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ViewUsageImpl() {
@@ -57,8 +55,8 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -67,8 +65,8 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -78,8 +76,8 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -89,8 +87,8 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -100,19 +98,19 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ViewDefinition getViewDefinition() {
-        ViewDefinition viewDefinition = basicGetViewDefinition();
-        return viewDefinition != null && viewDefinition.eIsProxy() ? (ViewDefinition)eResolveProxy((InternalEObject)viewDefinition) : viewDefinition;
+        ViewDefinition viewDefinition = this.basicGetViewDefinition();
+        return viewDefinition != null && viewDefinition.eIsProxy() ? (ViewDefinition) this.eResolveProxy((InternalEObject) viewDefinition) : viewDefinition;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ViewDefinition basicGetViewDefinition() {
@@ -123,19 +121,19 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public RenderingUsage getViewRendering() {
-        RenderingUsage viewRendering = basicGetViewRendering();
-        return viewRendering != null && viewRendering.eIsProxy() ? (RenderingUsage)eResolveProxy((InternalEObject)viewRendering) : viewRendering;
+        RenderingUsage viewRendering = this.basicGetViewRendering();
+        return viewRendering != null && viewRendering.eIsProxy() ? (RenderingUsage) this.eResolveProxy((InternalEObject) viewRendering) : viewRendering;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public RenderingUsage basicGetViewRendering() {
@@ -146,8 +144,8 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -156,63 +154,65 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.VIEW_USAGE__EXPOSED_ELEMENT:
-                return getExposedElement();
+                return this.getExposedElement();
             case SysmlPackage.VIEW_USAGE__SATISFIED_VIEWPOINT:
-                return getSatisfiedViewpoint();
+                return this.getSatisfiedViewpoint();
             case SysmlPackage.VIEW_USAGE__VIEW_CONDITION:
-                return getViewCondition();
+                return this.getViewCondition();
             case SysmlPackage.VIEW_USAGE__VIEW_DEFINITION:
-                if (resolve) return getViewDefinition();
-                return basicGetViewDefinition();
+                if (resolve)
+                    return this.getViewDefinition();
+                return this.basicGetViewDefinition();
             case SysmlPackage.VIEW_USAGE__VIEW_RENDERING:
-                if (resolve) return getViewRendering();
-                return basicGetViewRendering();
+                if (resolve)
+                    return this.getViewRendering();
+                return this.basicGetViewRendering();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.VIEW_USAGE__EXPOSED_ELEMENT:
-                return !getExposedElement().isEmpty();
+                return !this.getExposedElement().isEmpty();
             case SysmlPackage.VIEW_USAGE__SATISFIED_VIEWPOINT:
-                return !getSatisfiedViewpoint().isEmpty();
+                return !this.getSatisfiedViewpoint().isEmpty();
             case SysmlPackage.VIEW_USAGE__VIEW_CONDITION:
-                return !getViewCondition().isEmpty();
+                return !this.getViewCondition().isEmpty();
             case SysmlPackage.VIEW_USAGE__VIEW_DEFINITION:
-                return basicGetViewDefinition() != null;
+                return this.basicGetViewDefinition() != null;
             case SysmlPackage.VIEW_USAGE__VIEW_RENDERING:
-                return basicGetViewRendering() != null;
+                return this.basicGetViewRendering() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
             case SysmlPackage.VIEW_USAGE___INCLUDE_AS_EXPOSED__ELEMENT:
-                return includeAsExposed((Element)arguments.get(0));
+                return this.includeAsExposed((Element) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
     }
 
-} //ViewUsageImpl
+} // ViewUsageImpl

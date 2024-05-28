@@ -20,7 +20,6 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
@@ -29,26 +28,24 @@ import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
-import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Membership Import</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Membership Import</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.MembershipImportImpl#getImportedMembership <em>Imported Membership</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MembershipImportImpl#getImportedMembership <em>Imported Membership</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class MembershipImportImpl extends ImportImpl implements MembershipImport {
     /**
-     * The cached value of the '{@link #getImportedMembership() <em>Imported Membership</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getImportedMembership() <em>Imported Membership</em>}' reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getImportedMembership()
      * @generated
      * @ordered
@@ -56,8 +53,8 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
     protected Membership importedMembership;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected MembershipImportImpl() {
@@ -65,8 +62,8 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -75,107 +72,108 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Membership getImportedMembership() {
-        if (importedMembership != null && importedMembership.eIsProxy()) {
-            InternalEObject oldImportedMembership = (InternalEObject)importedMembership;
-            importedMembership = (Membership)eResolveProxy(oldImportedMembership);
-            if (importedMembership != oldImportedMembership) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP, oldImportedMembership, importedMembership));
+        if (this.importedMembership != null && this.importedMembership.eIsProxy()) {
+            InternalEObject oldImportedMembership = (InternalEObject) this.importedMembership;
+            this.importedMembership = (Membership) this.eResolveProxy(oldImportedMembership);
+            if (this.importedMembership != oldImportedMembership) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP, oldImportedMembership, this.importedMembership));
             }
         }
-        return importedMembership;
+        return this.importedMembership;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Membership basicGetImportedMembership() {
-        return importedMembership;
+        return this.importedMembership;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setImportedMembership(Membership newImportedMembership) {
-        Membership oldImportedMembership = importedMembership;
-        importedMembership = newImportedMembership;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP, oldImportedMembership, importedMembership));
+        Membership oldImportedMembership = this.importedMembership;
+        this.importedMembership = newImportedMembership;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP, oldImportedMembership, this.importedMembership));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP:
-                if (resolve) return getImportedMembership();
-                return basicGetImportedMembership();
+                if (resolve)
+                    return this.getImportedMembership();
+                return this.basicGetImportedMembership();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP:
-                setImportedMembership((Membership)newValue);
+                this.setImportedMembership((Membership) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP:
-                setImportedMembership((Membership) null);
+                this.setImportedMembership((Membership) null);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP:
-                return importedMembership != null;
+                return this.importedMembership != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -183,25 +181,26 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
+
     /**
      * @generated NOT
      */
     @Override
     public EList<Membership> importedMemberships(EList<Namespace> excluded) {
-        BasicEList<Membership> importedMemberships = new BasicEList<Membership>();
-        Membership membership = getImportedMembership();
+        BasicEList<Membership> importedMemberships = new BasicEList<>();
+        Membership membership = this.getImportedMembership();
 
         if (membership != null) {
 
             Element member = membership.getMemberElement();
 
-            if(member != null) {
-                if (!isIsRecursive() || !(member instanceof Namespace) || excluded.contains(member)) {
+            if (member != null) {
+                if (!this.isIsRecursive() || !(member instanceof Namespace) || excluded.contains(member)) {
                     importedMemberships.add(membership);
                 } else if (member instanceof Namespace namespace) {
                     excluded.add(namespace);
                     importedMemberships.add(membership);
-                    importedMemberships.addAll(namespace.visibleMemberships(excluded, isIsRecursive(), isIsImportAll()));
+                    importedMemberships.addAll(namespace.visibleMemberships(excluded, this.isIsRecursive(), this.isIsImportAll()));
                     excluded.remove(namespace);
                 }
             }

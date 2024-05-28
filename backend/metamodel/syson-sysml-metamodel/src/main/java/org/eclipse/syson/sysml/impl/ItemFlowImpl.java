@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -31,29 +31,27 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Item Flow</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Item Flow</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getBehavior <em>Behavior</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getParameter <em>Parameter</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getInteraction <em>Interaction</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getItemFeature <em>Item Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getItemFlowEnd <em>Item Flow End</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getItemType <em>Item Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getSourceOutputFeature <em>Source Output Feature</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getTargetInputFeature <em>Target Input Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getBehavior <em>Behavior</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getParameter <em>Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getInteraction <em>Interaction</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getItemFeature <em>Item Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getItemFlowEnd <em>Item Flow End</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getItemType <em>Item Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getSourceOutputFeature <em>Source Output Feature</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ItemFlowImpl#getTargetInputFeature <em>Target Input Feature</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ItemFlowImpl() {
@@ -61,8 +59,8 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -71,8 +69,8 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -82,8 +80,8 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -93,8 +91,8 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -104,19 +102,19 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public ItemFeature getItemFeature() {
-        ItemFeature itemFeature = basicGetItemFeature();
-        return itemFeature != null && itemFeature.eIsProxy() ? (ItemFeature)eResolveProxy((InternalEObject)itemFeature) : itemFeature;
+        ItemFeature itemFeature = this.basicGetItemFeature();
+        return itemFeature != null && itemFeature.eIsProxy() ? (ItemFeature) this.eResolveProxy((InternalEObject) itemFeature) : itemFeature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public ItemFeature basicGetItemFeature() {
@@ -127,8 +125,8 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -138,8 +136,8 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -149,19 +147,19 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Feature getSourceOutputFeature() {
-        Feature sourceOutputFeature = basicGetSourceOutputFeature();
-        return sourceOutputFeature != null && sourceOutputFeature.eIsProxy() ? (Feature)eResolveProxy((InternalEObject)sourceOutputFeature) : sourceOutputFeature;
+        Feature sourceOutputFeature = this.basicGetSourceOutputFeature();
+        return sourceOutputFeature != null && sourceOutputFeature.eIsProxy() ? (Feature) this.eResolveProxy((InternalEObject) sourceOutputFeature) : sourceOutputFeature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Feature basicGetSourceOutputFeature() {
@@ -172,19 +170,19 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Feature getTargetInputFeature() {
-        Feature targetInputFeature = basicGetTargetInputFeature();
-        return targetInputFeature != null && targetInputFeature.eIsProxy() ? (Feature)eResolveProxy((InternalEObject)targetInputFeature) : targetInputFeature;
+        Feature targetInputFeature = this.basicGetTargetInputFeature();
+        return targetInputFeature != null && targetInputFeature.eIsProxy() ? (Feature) this.eResolveProxy((InternalEObject) targetInputFeature) : targetInputFeature;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Feature basicGetTargetInputFeature() {
@@ -195,96 +193,105 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ITEM_FLOW__BEHAVIOR:
-                return getBehavior();
+                return this.getBehavior();
             case SysmlPackage.ITEM_FLOW__PARAMETER:
-                return getParameter();
+                return this.getParameter();
             case SysmlPackage.ITEM_FLOW__INTERACTION:
-                return getInteraction();
+                return this.getInteraction();
             case SysmlPackage.ITEM_FLOW__ITEM_FEATURE:
-                if (resolve) return getItemFeature();
-                return basicGetItemFeature();
+                if (resolve)
+                    return this.getItemFeature();
+                return this.basicGetItemFeature();
             case SysmlPackage.ITEM_FLOW__ITEM_FLOW_END:
-                return getItemFlowEnd();
+                return this.getItemFlowEnd();
             case SysmlPackage.ITEM_FLOW__ITEM_TYPE:
-                return getItemType();
+                return this.getItemType();
             case SysmlPackage.ITEM_FLOW__SOURCE_OUTPUT_FEATURE:
-                if (resolve) return getSourceOutputFeature();
-                return basicGetSourceOutputFeature();
+                if (resolve)
+                    return this.getSourceOutputFeature();
+                return this.basicGetSourceOutputFeature();
             case SysmlPackage.ITEM_FLOW__TARGET_INPUT_FEATURE:
-                if (resolve) return getTargetInputFeature();
-                return basicGetTargetInputFeature();
+                if (resolve)
+                    return this.getTargetInputFeature();
+                return this.basicGetTargetInputFeature();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.ITEM_FLOW__BEHAVIOR:
-                return !getBehavior().isEmpty();
+                return !this.getBehavior().isEmpty();
             case SysmlPackage.ITEM_FLOW__PARAMETER:
-                return !getParameter().isEmpty();
+                return !this.getParameter().isEmpty();
             case SysmlPackage.ITEM_FLOW__INTERACTION:
-                return !getInteraction().isEmpty();
+                return !this.getInteraction().isEmpty();
             case SysmlPackage.ITEM_FLOW__ITEM_FEATURE:
-                return basicGetItemFeature() != null;
+                return this.basicGetItemFeature() != null;
             case SysmlPackage.ITEM_FLOW__ITEM_FLOW_END:
-                return !getItemFlowEnd().isEmpty();
+                return !this.getItemFlowEnd().isEmpty();
             case SysmlPackage.ITEM_FLOW__ITEM_TYPE:
-                return !getItemType().isEmpty();
+                return !this.getItemType().isEmpty();
             case SysmlPackage.ITEM_FLOW__SOURCE_OUTPUT_FEATURE:
-                return basicGetSourceOutputFeature() != null;
+                return this.basicGetSourceOutputFeature() != null;
             case SysmlPackage.ITEM_FLOW__TARGET_INPUT_FEATURE:
-                return basicGetTargetInputFeature() != null;
+                return this.basicGetTargetInputFeature() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == Step.class) {
             switch (derivedFeatureID) {
-                case SysmlPackage.ITEM_FLOW__BEHAVIOR: return SysmlPackage.STEP__BEHAVIOR;
-                case SysmlPackage.ITEM_FLOW__PARAMETER: return SysmlPackage.STEP__PARAMETER;
-                default: return -1;
+                case SysmlPackage.ITEM_FLOW__BEHAVIOR:
+                    return SysmlPackage.STEP__BEHAVIOR;
+                case SysmlPackage.ITEM_FLOW__PARAMETER:
+                    return SysmlPackage.STEP__PARAMETER;
+                default:
+                    return -1;
             }
         }
         return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
         if (baseClass == Step.class) {
             switch (baseFeatureID) {
-                case SysmlPackage.STEP__BEHAVIOR: return SysmlPackage.ITEM_FLOW__BEHAVIOR;
-                case SysmlPackage.STEP__PARAMETER: return SysmlPackage.ITEM_FLOW__PARAMETER;
-                default: return -1;
+                case SysmlPackage.STEP__BEHAVIOR:
+                    return SysmlPackage.ITEM_FLOW__BEHAVIOR;
+                case SysmlPackage.STEP__PARAMETER:
+                    return SysmlPackage.ITEM_FLOW__PARAMETER;
+                default:
+                    return -1;
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
     }
 
-} //ItemFlowImpl
+} // ItemFlowImpl

@@ -1,12 +1,12 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     Obeo - initial API and implementation
  */
@@ -20,44 +20,38 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 
 /**
- * This is the central singleton for the Sysml edit plugin.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the central singleton for the Sysml edit plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
+ *
  * @generated
  */
 public final class SysmlEditPlugin extends EMFPlugin {
     /**
-     * Keep track of the singleton.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public static final SysmlEditPlugin INSTANCE = new SysmlEditPlugin();
 
     /**
-     * Keep track of the singleton.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     private static Implementation plugin;
 
     /**
-     * Create the instance.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Create the instance. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public SysmlEditPlugin() {
-        super
-          (new ResourceLocator [] {
-           });
+        super(new ResourceLocator[] {
+        });
     }
 
     /**
-     * Returns the singleton instance of the Eclipse plugin.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @return the singleton instance.
      * @generated
      */
@@ -67,9 +61,8 @@ public final class SysmlEditPlugin extends EMFPlugin {
     }
 
     /**
-     * Returns the singleton instance of the Eclipse plugin.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @return the singleton instance.
      * @generated
      */
@@ -78,16 +71,14 @@ public final class SysmlEditPlugin extends EMFPlugin {
     }
 
     /**
-     * The actual implementation of the Eclipse <b>Plugin</b>.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public static class Implementation extends EclipsePlugin {
         /**
-         * Creates an instance.
-         * <!-- begin-user-doc -->
-         * <!-- end-user-doc -->
+         * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
          * @generated
          */
         public Implementation() {
@@ -124,14 +115,14 @@ public final class SysmlEditPlugin extends EMFPlugin {
         if (index != -1) {
             String extension = key.substring(index + 1);
             if ("png".equalsIgnoreCase(extension) ||
-                "gif".equalsIgnoreCase(extension) ||
-                "bmp".equalsIgnoreCase(extension) ||
-                "ico".equalsIgnoreCase(extension) ||
-                "jpg".equalsIgnoreCase(extension) ||
-                "jpeg".equalsIgnoreCase(extension) ||
-                "tif".equalsIgnoreCase(extension) ||
-                "tiff".equalsIgnoreCase(extension) ||
-                "svg".equalsIgnoreCase(extension)) {
+                    "gif".equalsIgnoreCase(extension) ||
+                    "bmp".equalsIgnoreCase(extension) ||
+                    "ico".equalsIgnoreCase(extension) ||
+                    "jpg".equalsIgnoreCase(extension) ||
+                    "jpeg".equalsIgnoreCase(extension) ||
+                    "tif".equalsIgnoreCase(extension) ||
+                    "tiff".equalsIgnoreCase(extension) ||
+                    "svg".equalsIgnoreCase(extension)) {
                 result = "";
             }
         }

@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -21,25 +21,23 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Specialization</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Specialization</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.SpecializationImpl#getGeneral <em>General</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.SpecializationImpl#getOwningType <em>Owning Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.SpecializationImpl#getSpecific <em>Specific</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.SpecializationImpl#getGeneral <em>General</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.SpecializationImpl#getOwningType <em>Owning Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.SpecializationImpl#getSpecific <em>Specific</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class SpecializationImpl extends RelationshipImpl implements Specialization {
     /**
-     * The cached value of the '{@link #getGeneral() <em>General</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getGeneral() <em>General</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getGeneral()
      * @generated
      * @ordered
@@ -47,9 +45,9 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     protected Type general;
 
     /**
-     * The cached value of the '{@link #getSpecific() <em>Specific</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getSpecific() <em>Specific</em>}' reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getSpecific()
      * @generated
      * @ordered
@@ -57,8 +55,8 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     protected Type specific;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected SpecializationImpl() {
@@ -66,8 +64,8 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -76,59 +74,59 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getGeneral() {
-        if (general != null && general.eIsProxy()) {
-            InternalEObject oldGeneral = (InternalEObject)general;
-            general = (Type)eResolveProxy(oldGeneral);
-            if (general != oldGeneral) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SPECIALIZATION__GENERAL, oldGeneral, general));
+        if (this.general != null && this.general.eIsProxy()) {
+            InternalEObject oldGeneral = (InternalEObject) this.general;
+            this.general = (Type) this.eResolveProxy(oldGeneral);
+            if (this.general != oldGeneral) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SPECIALIZATION__GENERAL, oldGeneral, this.general));
             }
         }
-        return general;
+        return this.general;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetGeneral() {
-        return general;
+        return this.general;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setGeneral(Type newGeneral) {
-        Type oldGeneral = general;
-        general = newGeneral;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SPECIALIZATION__GENERAL, oldGeneral, general));
+        Type oldGeneral = this.general;
+        this.general = newGeneral;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SPECIALIZATION__GENERAL, oldGeneral, this.general));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getOwningType() {
-        Type owningType = basicGetOwningType();
-        return owningType != null && owningType.eIsProxy() ? (Type)eResolveProxy((InternalEObject)owningType) : owningType;
+        Type owningType = this.basicGetOwningType();
+        return owningType != null && owningType.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) owningType) : owningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetOwningType() {
@@ -139,118 +137,121 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getSpecific() {
-        if (specific != null && specific.eIsProxy()) {
-            InternalEObject oldSpecific = (InternalEObject)specific;
-            specific = (Type)eResolveProxy(oldSpecific);
-            if (specific != oldSpecific) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SPECIALIZATION__SPECIFIC, oldSpecific, specific));
+        if (this.specific != null && this.specific.eIsProxy()) {
+            InternalEObject oldSpecific = (InternalEObject) this.specific;
+            this.specific = (Type) this.eResolveProxy(oldSpecific);
+            if (this.specific != oldSpecific) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SPECIALIZATION__SPECIFIC, oldSpecific, this.specific));
             }
         }
-        return specific;
+        return this.specific;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetSpecific() {
-        return specific;
+        return this.specific;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setSpecific(Type newSpecific) {
-        Type oldSpecific = specific;
-        specific = newSpecific;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SPECIALIZATION__SPECIFIC, oldSpecific, specific));
+        Type oldSpecific = this.specific;
+        this.specific = newSpecific;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SPECIALIZATION__SPECIFIC, oldSpecific, this.specific));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SPECIALIZATION__GENERAL:
-                if (resolve) return getGeneral();
-                return basicGetGeneral();
+                if (resolve)
+                    return this.getGeneral();
+                return this.basicGetGeneral();
             case SysmlPackage.SPECIALIZATION__OWNING_TYPE:
-                if (resolve) return getOwningType();
-                return basicGetOwningType();
+                if (resolve)
+                    return this.getOwningType();
+                return this.basicGetOwningType();
             case SysmlPackage.SPECIALIZATION__SPECIFIC:
-                if (resolve) return getSpecific();
-                return basicGetSpecific();
+                if (resolve)
+                    return this.getSpecific();
+                return this.basicGetSpecific();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.SPECIALIZATION__GENERAL:
-                setGeneral((Type)newValue);
+                this.setGeneral((Type) newValue);
                 return;
             case SysmlPackage.SPECIALIZATION__SPECIFIC:
-                setSpecific((Type)newValue);
+                this.setSpecific((Type) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.SPECIALIZATION__GENERAL:
-                setGeneral((Type)null);
+                this.setGeneral((Type) null);
                 return;
             case SysmlPackage.SPECIALIZATION__SPECIFIC:
-                setSpecific((Type)null);
+                this.setSpecific((Type) null);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.SPECIALIZATION__GENERAL:
-                return general != null;
+                return this.general != null;
             case SysmlPackage.SPECIALIZATION__OWNING_TYPE:
-                return basicGetOwningType() != null;
+                return this.basicGetOwningType() != null;
             case SysmlPackage.SPECIALIZATION__SPECIFIC:
-                return specific != null;
+                return this.specific != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //SpecializationImpl
+} // SpecializationImpl

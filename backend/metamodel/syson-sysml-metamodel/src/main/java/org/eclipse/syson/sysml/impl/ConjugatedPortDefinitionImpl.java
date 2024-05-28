@@ -22,23 +22,24 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Conjugated Port Definition</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Conjugated Port Definition</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConjugatedPortDefinitionImpl#getOriginalPortDefinition <em>Original Port Definition</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ConjugatedPortDefinitionImpl#getOwnedPortConjugator <em>Owned Port Conjugator</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConjugatedPortDefinitionImpl#getOriginalPortDefinition <em>Original Port
+ * Definition</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ConjugatedPortDefinitionImpl#getOwnedPortConjugator <em>Owned Port
+ * Conjugator</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements ConjugatedPortDefinition {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ConjugatedPortDefinitionImpl() {
@@ -46,8 +47,8 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -56,56 +57,56 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public PortDefinition getOriginalPortDefinition() {
         PortDefinition originalPortDefinition = this.basicGetOriginalPortDefinition();
-        return originalPortDefinition != null && originalPortDefinition.eIsProxy() ? (PortDefinition)this.eResolveProxy((InternalEObject)originalPortDefinition) : originalPortDefinition;
+        return originalPortDefinition != null && originalPortDefinition.eIsProxy() ? (PortDefinition) this.eResolveProxy((InternalEObject) originalPortDefinition) : originalPortDefinition;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public PortDefinition basicGetOriginalPortDefinition() {
         Namespace owningNamespace = this.getOwningNamespace();
-        if(owningNamespace instanceof PortDefinition portDefinition) {
+        if (owningNamespace instanceof PortDefinition portDefinition) {
             return portDefinition;
         }
         return null;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public PortConjugation getOwnedPortConjugator() {
         PortConjugation ownedPortConjugator = this.basicGetOwnedPortConjugator();
-        return ownedPortConjugator != null && ownedPortConjugator.eIsProxy() ? (PortConjugation)this.eResolveProxy((InternalEObject)ownedPortConjugator) : ownedPortConjugator;
+        return ownedPortConjugator != null && ownedPortConjugator.eIsProxy() ? (PortConjugation) this.eResolveProxy((InternalEObject) ownedPortConjugator) : ownedPortConjugator;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public PortConjugation basicGetOwnedPortConjugator() {
         return this.getOwnedRelationship().stream()
-            .filter(PortConjugation.class::isInstance)
-            .map(PortConjugation.class::cast)
-            .findFirst()
-            .orElse(null);
+                .filter(PortConjugation.class::isInstance)
+                .map(PortConjugation.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -114,8 +115,8 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -131,30 +132,28 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__ORIGINAL_PORT_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getOriginalPortDefinition();
-                }
                 return this.basicGetOriginalPortDefinition();
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__OWNED_PORT_CONJUGATOR:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedPortConjugator();
-                }
                 return this.basicGetOwnedPortConjugator();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -167,10 +166,10 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
         }
         return super.eIsSet(featureID);
     }
-    
+
     @Override
     public boolean isIsConjugated() {
         return true;
     }
 
-} //ConjugatedPortDefinitionImpl
+} // ConjugatedPortDefinitionImpl

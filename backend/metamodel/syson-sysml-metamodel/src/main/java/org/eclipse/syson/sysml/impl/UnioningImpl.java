@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -21,24 +21,22 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Unioning;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Unioning</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Unioning</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.UnioningImpl#getTypeUnioned <em>Type Unioned</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.UnioningImpl#getUnioningType <em>Unioning Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.UnioningImpl#getTypeUnioned <em>Type Unioned</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.UnioningImpl#getUnioningType <em>Unioning Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class UnioningImpl extends RelationshipImpl implements Unioning {
     /**
-     * The cached value of the '{@link #getUnioningType() <em>Unioning Type</em>}' reference.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getUnioningType() <em>Unioning Type</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #getUnioningType()
      * @generated
      * @ordered
@@ -46,8 +44,8 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
     protected Type unioningType;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected UnioningImpl() {
@@ -55,8 +53,8 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -65,19 +63,19 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getTypeUnioned() {
-        Type typeUnioned = basicGetTypeUnioned();
-        return typeUnioned != null && typeUnioned.eIsProxy() ? (Type)eResolveProxy((InternalEObject)typeUnioned) : typeUnioned;
+        Type typeUnioned = this.basicGetTypeUnioned();
+        return typeUnioned != null && typeUnioned.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) typeUnioned) : typeUnioned;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetTypeUnioned() {
@@ -88,107 +86,109 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getUnioningType() {
-        if (unioningType != null && unioningType.eIsProxy()) {
-            InternalEObject oldUnioningType = (InternalEObject)unioningType;
-            unioningType = (Type)eResolveProxy(oldUnioningType);
-            if (unioningType != oldUnioningType) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.UNIONING__UNIONING_TYPE, oldUnioningType, unioningType));
+        if (this.unioningType != null && this.unioningType.eIsProxy()) {
+            InternalEObject oldUnioningType = (InternalEObject) this.unioningType;
+            this.unioningType = (Type) this.eResolveProxy(oldUnioningType);
+            if (this.unioningType != oldUnioningType) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.UNIONING__UNIONING_TYPE, oldUnioningType, this.unioningType));
             }
         }
-        return unioningType;
+        return this.unioningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetUnioningType() {
-        return unioningType;
+        return this.unioningType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setUnioningType(Type newUnioningType) {
-        Type oldUnioningType = unioningType;
-        unioningType = newUnioningType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.UNIONING__UNIONING_TYPE, oldUnioningType, unioningType));
+        Type oldUnioningType = this.unioningType;
+        this.unioningType = newUnioningType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.UNIONING__UNIONING_TYPE, oldUnioningType, this.unioningType));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.UNIONING__TYPE_UNIONED:
-                if (resolve) return getTypeUnioned();
-                return basicGetTypeUnioned();
+                if (resolve)
+                    return this.getTypeUnioned();
+                return this.basicGetTypeUnioned();
             case SysmlPackage.UNIONING__UNIONING_TYPE:
-                if (resolve) return getUnioningType();
-                return basicGetUnioningType();
+                if (resolve)
+                    return this.getUnioningType();
+                return this.basicGetUnioningType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.UNIONING__UNIONING_TYPE:
-                setUnioningType((Type)newValue);
+                this.setUnioningType((Type) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.UNIONING__UNIONING_TYPE:
-                setUnioningType((Type)null);
+                this.setUnioningType((Type) null);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.UNIONING__TYPE_UNIONED:
-                return basicGetTypeUnioned() != null;
+                return this.basicGetTypeUnioned() != null;
             case SysmlPackage.UNIONING__UNIONING_TYPE:
-                return unioningType != null;
+                return this.unioningType != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //UnioningImpl
+} // UnioningImpl

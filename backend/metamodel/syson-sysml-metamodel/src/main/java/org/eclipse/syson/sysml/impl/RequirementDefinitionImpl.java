@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -32,30 +32,33 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Requirement Definition</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Requirement Definition</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getReqId <em>Req Id</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getText <em>Text</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getActorParameter <em>Actor Parameter</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getAssumedConstraint <em>Assumed Constraint</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getFramedConcern <em>Framed Concern</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getRequiredConstraint <em>Required Constraint</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getStakeholderParameter <em>Stakeholder Parameter</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getSubjectParameter <em>Subject Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getReqId <em>Req Id</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getText <em>Text</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getActorParameter <em>Actor Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getAssumedConstraint <em>Assumed
+ * Constraint</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getFramedConcern <em>Framed Concern</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getRequiredConstraint <em>Required
+ * Constraint</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getStakeholderParameter <em>Stakeholder
+ * Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.RequirementDefinitionImpl#getSubjectParameter <em>Subject
+ * Parameter</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implements RequirementDefinition {
     /**
-     * The default value of the '{@link #getReqId() <em>Req Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #getReqId() <em>Req Id</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getReqId()
      * @generated
      * @ordered
@@ -63,9 +66,9 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     protected static final String REQ_ID_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getReqId() <em>Req Id</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getReqId() <em>Req Id</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
      * @see #getReqId()
      * @generated
      * @ordered
@@ -73,8 +76,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     protected String reqId = REQ_ID_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected RequirementDefinitionImpl() {
@@ -82,8 +85,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -92,8 +95,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -103,8 +106,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -122,8 +125,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -133,8 +136,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -143,22 +146,21 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setReqId(String newReqId) {
         String oldReqId = this.reqId;
         this.reqId = newReqId;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID, oldReqId, this.reqId));
-        }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -176,8 +178,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -187,19 +189,19 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Usage getSubjectParameter() {
         Usage subjectParameter = this.basicGetSubjectParameter();
-        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage)this.eResolveProxy((InternalEObject)subjectParameter) : subjectParameter;
+        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage) this.eResolveProxy((InternalEObject) subjectParameter) : subjectParameter;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Usage basicGetSubjectParameter() {
@@ -212,8 +214,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -223,8 +225,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -245,17 +247,16 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
             case SysmlPackage.REQUIREMENT_DEFINITION__STAKEHOLDER_PARAMETER:
                 return this.getStakeholderParameter();
             case SysmlPackage.REQUIREMENT_DEFINITION__SUBJECT_PARAMETER:
-                if (resolve) {
+                if (resolve)
                     return this.getSubjectParameter();
-                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -263,15 +264,15 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID:
-                this.setReqId((String)newValue);
+                this.setReqId((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -285,8 +286,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -313,15 +314,14 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (this.eIsProxy()) {
+        if (this.eIsProxy())
             return super.toString();
-        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (reqId: ");
@@ -330,4 +330,4 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
         return result.toString();
     }
 
-} //RequirementDefinitionImpl
+} // RequirementDefinitionImpl

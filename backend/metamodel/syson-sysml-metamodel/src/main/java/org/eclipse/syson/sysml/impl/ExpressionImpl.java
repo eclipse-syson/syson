@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
@@ -24,25 +24,24 @@ import org.eclipse.syson.sysml.Function;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.ExpressionImpl#isIsModelLevelEvaluable <em>Is Model Level Evaluable</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ExpressionImpl#getFunction <em>Function</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.ExpressionImpl#getResult <em>Result</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ExpressionImpl#isIsModelLevelEvaluable <em>Is Model Level
+ * Evaluable</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ExpressionImpl#getFunction <em>Function</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.ExpressionImpl#getResult <em>Result</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ExpressionImpl extends StepImpl implements Expression {
     /**
-     * The default value of the '{@link #isIsModelLevelEvaluable() <em>Is Model Level Evaluable</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The default value of the '{@link #isIsModelLevelEvaluable() <em>Is Model Level Evaluable</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #isIsModelLevelEvaluable()
      * @generated
      * @ordered
@@ -50,8 +49,8 @@ public class ExpressionImpl extends StepImpl implements Expression {
     protected static final boolean IS_MODEL_LEVEL_EVALUABLE_EDEFAULT = false;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected ExpressionImpl() {
@@ -59,8 +58,8 @@ public class ExpressionImpl extends StepImpl implements Expression {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -69,19 +68,19 @@ public class ExpressionImpl extends StepImpl implements Expression {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Function getFunction() {
-        Function function = basicGetFunction();
-        return function != null && function.eIsProxy() ? (Function)eResolveProxy((InternalEObject)function) : function;
+        Function function = this.basicGetFunction();
+        return function != null && function.eIsProxy() ? (Function) this.eResolveProxy((InternalEObject) function) : function;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Function basicGetFunction() {
@@ -92,8 +91,8 @@ public class ExpressionImpl extends StepImpl implements Expression {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -102,19 +101,19 @@ public class ExpressionImpl extends StepImpl implements Expression {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Feature getResult() {
-        Feature result = basicGetResult();
-        return result != null && result.eIsProxy() ? (Feature)eResolveProxy((InternalEObject)result) : result;
+        Feature result = this.basicGetResult();
+        return result != null && result.eIsProxy() ? (Feature) this.eResolveProxy((InternalEObject) result) : result;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Feature basicGetResult() {
@@ -125,8 +124,8 @@ public class ExpressionImpl extends StepImpl implements Expression {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -135,8 +134,8 @@ public class ExpressionImpl extends StepImpl implements Expression {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -147,8 +146,8 @@ public class ExpressionImpl extends StepImpl implements Expression {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -157,46 +156,48 @@ public class ExpressionImpl extends StepImpl implements Expression {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.EXPRESSION__IS_MODEL_LEVEL_EVALUABLE:
-                return isIsModelLevelEvaluable();
+                return this.isIsModelLevelEvaluable();
             case SysmlPackage.EXPRESSION__FUNCTION:
-                if (resolve) return getFunction();
-                return basicGetFunction();
+                if (resolve)
+                    return this.getFunction();
+                return this.basicGetFunction();
             case SysmlPackage.EXPRESSION__RESULT:
-                if (resolve) return getResult();
-                return basicGetResult();
+                if (resolve)
+                    return this.getResult();
+                return this.basicGetResult();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.EXPRESSION__IS_MODEL_LEVEL_EVALUABLE:
-                return isIsModelLevelEvaluable() != IS_MODEL_LEVEL_EVALUABLE_EDEFAULT;
+                return this.isIsModelLevelEvaluable() != IS_MODEL_LEVEL_EVALUABLE_EDEFAULT;
             case SysmlPackage.EXPRESSION__FUNCTION:
-                return basicGetFunction() != null;
+                return this.basicGetFunction() != null;
             case SysmlPackage.EXPRESSION__RESULT:
-                return basicGetResult() != null;
+                return this.basicGetResult() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -204,13 +205,13 @@ public class ExpressionImpl extends StepImpl implements Expression {
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
             case SysmlPackage.EXPRESSION___CHECK_CONDITION__ELEMENT:
-                return checkCondition((Element)arguments.get(0));
+                return this.checkCondition((Element) arguments.get(0));
             case SysmlPackage.EXPRESSION___EVALUATE__ELEMENT:
-                return evaluate((Element)arguments.get(0));
+                return this.evaluate((Element) arguments.get(0));
             case SysmlPackage.EXPRESSION___MODEL_LEVEL_EVALUABLE__ELIST:
-                return modelLevelEvaluable((EList<Feature>)arguments.get(0));
+                return this.modelLevelEvaluable((EList<Feature>) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
     }
 
-} //ExpressionImpl
+} // ExpressionImpl

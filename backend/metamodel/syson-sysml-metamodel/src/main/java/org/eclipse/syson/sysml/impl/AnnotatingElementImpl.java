@@ -1,60 +1,51 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Usage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Annotating Element</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Annotating Element</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.AnnotatingElementImpl#getAnnotatedElement <em>Annotated Element</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.AnnotatingElementImpl#getAnnotation <em>Annotation</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.AnnotatingElementImpl#getAnnotatedElement <em>Annotated Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.AnnotatingElementImpl#getAnnotation <em>Annotation</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElement {
     /**
-     * The cached value of the '{@link #getAnnotation() <em>Annotation</em>}' reference list.
-     * <!-- begin-user-doc -->
+     * The cached value of the '{@link #getAnnotation() <em>Annotation</em>}' reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     *
      * @see #getAnnotation()
      * @generated
      * @ordered
@@ -62,8 +53,8 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
     protected EList<Annotation> annotation;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected AnnotatingElementImpl() {
@@ -71,8 +62,8 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -81,17 +72,17 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
     public EList<Element> getAnnotatedElement() {
         final List<Element> data;
 
-        List<Annotation> annotations = getAnnotation();
+        List<Annotation> annotations = this.getAnnotation();
         if (annotations.isEmpty()) {
-            Element owningNamespace = getOwningNamespace();
+            Element owningNamespace = this.getOwningNamespace();
             if (owningNamespace != null) {
                 data = Collections.singletonList(owningNamespace);
             } else {
@@ -108,21 +99,21 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EList<Annotation> getAnnotation() {
-        if (annotation == null) {
-            annotation = new EObjectWithInverseResolvingEList<Annotation>(Annotation.class, this, SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT);
+        if (this.annotation == null) {
+            this.annotation = new EObjectWithInverseResolvingEList<>(Annotation.class, this, SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT);
         }
-        return annotation;
+        return this.annotation;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -130,44 +121,44 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
-                return ((InternalEList<InternalEObject>)(InternalEList<?>)getAnnotation()).basicAdd(otherEnd, msgs);
+                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getAnnotation()).basicAdd(otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
-                return ((InternalEList<?>)getAnnotation()).basicRemove(otherEnd, msgs);
+                return ((InternalEList<?>) this.getAnnotation()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATED_ELEMENT:
-                return getAnnotatedElement();
+                return this.getAnnotatedElement();
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
-                return getAnnotation();
+                return this.getAnnotation();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -175,42 +166,42 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
-                getAnnotation().clear();
-                getAnnotation().addAll((Collection<? extends Annotation>)newValue);
+                this.getAnnotation().clear();
+                this.getAnnotation().addAll((Collection<? extends Annotation>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
-                getAnnotation().clear();
+                this.getAnnotation().clear();
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATED_ELEMENT:
-                return !getAnnotatedElement().isEmpty();
+                return !this.getAnnotatedElement().isEmpty();
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
-                return annotation != null && !annotation.isEmpty();
+                return this.annotation != null && !this.annotation.isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
-} //AnnotatingElementImpl
+} // AnnotatingElementImpl

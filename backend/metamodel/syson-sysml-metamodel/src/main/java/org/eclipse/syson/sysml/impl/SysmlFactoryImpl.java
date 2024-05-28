@@ -22,35 +22,31 @@ import org.eclipse.syson.sysml.*;
 import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
+ *
  * @generated
  */
 public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     /**
-     * Creates the default factory implementation.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public static SysmlFactory init() {
         try {
-            SysmlFactory theSysmlFactory = (SysmlFactory)EPackage.Registry.INSTANCE.getEFactory(SysmlPackage.eNS_URI);
+            SysmlFactory theSysmlFactory = (SysmlFactory) EPackage.Registry.INSTANCE.getEFactory(SysmlPackage.eNS_URI);
             if (theSysmlFactory != null) {
                 return theSysmlFactory;
             }
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             EcorePlugin.INSTANCE.log(exception);
         }
         return new SysmlFactoryImpl();
     }
 
     /**
-     * Creates an instance of the factory.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public SysmlFactoryImpl() {
@@ -58,239 +54,403 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public EObject create(EClass eClass) {
         switch (eClass.getClassifierID()) {
-            case SysmlPackage.ACCEPT_ACTION_USAGE: return createAcceptActionUsage();
-            case SysmlPackage.ACTION_DEFINITION: return createActionDefinition();
-            case SysmlPackage.ACTION_USAGE: return createActionUsage();
-            case SysmlPackage.ACTOR_MEMBERSHIP: return createActorMembership();
-            case SysmlPackage.ALLOCATION_DEFINITION: return createAllocationDefinition();
-            case SysmlPackage.ALLOCATION_USAGE: return createAllocationUsage();
-            case SysmlPackage.ANALYSIS_CASE_DEFINITION: return createAnalysisCaseDefinition();
-            case SysmlPackage.ANALYSIS_CASE_USAGE: return createAnalysisCaseUsage();
-            case SysmlPackage.ANNOTATING_ELEMENT: return createAnnotatingElement();
-            case SysmlPackage.ANNOTATION: return createAnnotation();
-            case SysmlPackage.ASSERT_CONSTRAINT_USAGE: return createAssertConstraintUsage();
-            case SysmlPackage.ASSIGNMENT_ACTION_USAGE: return createAssignmentActionUsage();
-            case SysmlPackage.ASSOCIATION: return createAssociation();
-            case SysmlPackage.ASSOCIATION_STRUCTURE: return createAssociationStructure();
-            case SysmlPackage.ATTRIBUTE_DEFINITION: return createAttributeDefinition();
-            case SysmlPackage.ATTRIBUTE_USAGE: return createAttributeUsage();
-            case SysmlPackage.BEHAVIOR: return createBehavior();
-            case SysmlPackage.BINDING_CONNECTOR: return createBindingConnector();
-            case SysmlPackage.BINDING_CONNECTOR_AS_USAGE: return createBindingConnectorAsUsage();
-            case SysmlPackage.BOOLEAN_EXPRESSION: return createBooleanExpression();
-            case SysmlPackage.CALCULATION_DEFINITION: return createCalculationDefinition();
-            case SysmlPackage.CALCULATION_USAGE: return createCalculationUsage();
-            case SysmlPackage.CASE_DEFINITION: return createCaseDefinition();
-            case SysmlPackage.CASE_USAGE: return createCaseUsage();
-            case SysmlPackage.CLASS: return createClass();
-            case SysmlPackage.CLASSIFIER: return createClassifier();
-            case SysmlPackage.COLLECT_EXPRESSION: return createCollectExpression();
-            case SysmlPackage.COMMENT: return createComment();
-            case SysmlPackage.CONCERN_DEFINITION: return createConcernDefinition();
-            case SysmlPackage.CONCERN_USAGE: return createConcernUsage();
-            case SysmlPackage.CONJUGATED_PORT_DEFINITION: return createConjugatedPortDefinition();
-            case SysmlPackage.CONJUGATED_PORT_TYPING: return createConjugatedPortTyping();
-            case SysmlPackage.CONJUGATION: return createConjugation();
-            case SysmlPackage.CONNECTION_DEFINITION: return createConnectionDefinition();
-            case SysmlPackage.CONNECTION_USAGE: return createConnectionUsage();
-            case SysmlPackage.CONNECTOR: return createConnector();
-            case SysmlPackage.CONSTRAINT_DEFINITION: return createConstraintDefinition();
-            case SysmlPackage.CONSTRAINT_USAGE: return createConstraintUsage();
-            case SysmlPackage.DATA_TYPE: return createDataType();
-            case SysmlPackage.DECISION_NODE: return createDecisionNode();
-            case SysmlPackage.DEFINITION: return createDefinition();
-            case SysmlPackage.DEPENDENCY: return createDependency();
-            case SysmlPackage.DIFFERENCING: return createDifferencing();
-            case SysmlPackage.DISJOINING: return createDisjoining();
-            case SysmlPackage.DOCUMENTATION: return createDocumentation();
-            case SysmlPackage.ELEMENT_FILTER_MEMBERSHIP: return createElementFilterMembership();
-            case SysmlPackage.END_FEATURE_MEMBERSHIP: return createEndFeatureMembership();
-            case SysmlPackage.ENUMERATION_DEFINITION: return createEnumerationDefinition();
-            case SysmlPackage.ENUMERATION_USAGE: return createEnumerationUsage();
-            case SysmlPackage.EVENT_OCCURRENCE_USAGE: return createEventOccurrenceUsage();
-            case SysmlPackage.EXHIBIT_STATE_USAGE: return createExhibitStateUsage();
-            case SysmlPackage.EXPRESSION: return createExpression();
-            case SysmlPackage.FEATURE: return createFeature();
-            case SysmlPackage.FEATURE_CHAIN_EXPRESSION: return createFeatureChainExpression();
-            case SysmlPackage.FEATURE_CHAINING: return createFeatureChaining();
-            case SysmlPackage.FEATURE_INVERTING: return createFeatureInverting();
-            case SysmlPackage.FEATURE_MEMBERSHIP: return createFeatureMembership();
-            case SysmlPackage.FEATURE_REFERENCE_EXPRESSION: return createFeatureReferenceExpression();
-            case SysmlPackage.FEATURE_TYPING: return createFeatureTyping();
-            case SysmlPackage.FEATURE_VALUE: return createFeatureValue();
-            case SysmlPackage.FLOW_CONNECTION_DEFINITION: return createFlowConnectionDefinition();
-            case SysmlPackage.FLOW_CONNECTION_USAGE: return createFlowConnectionUsage();
-            case SysmlPackage.FORK_NODE: return createForkNode();
-            case SysmlPackage.FOR_LOOP_ACTION_USAGE: return createForLoopActionUsage();
-            case SysmlPackage.FRAMED_CONCERN_MEMBERSHIP: return createFramedConcernMembership();
-            case SysmlPackage.FUNCTION: return createFunction();
-            case SysmlPackage.IF_ACTION_USAGE: return createIfActionUsage();
-            case SysmlPackage.INCLUDE_USE_CASE_USAGE: return createIncludeUseCaseUsage();
-            case SysmlPackage.INTERACTION: return createInteraction();
-            case SysmlPackage.INTERFACE_DEFINITION: return createInterfaceDefinition();
-            case SysmlPackage.INTERFACE_USAGE: return createInterfaceUsage();
-            case SysmlPackage.INTERSECTING: return createIntersecting();
-            case SysmlPackage.INVARIANT: return createInvariant();
-            case SysmlPackage.INVOCATION_EXPRESSION: return createInvocationExpression();
-            case SysmlPackage.ITEM_DEFINITION: return createItemDefinition();
-            case SysmlPackage.ITEM_FEATURE: return createItemFeature();
-            case SysmlPackage.ITEM_FLOW: return createItemFlow();
-            case SysmlPackage.ITEM_FLOW_END: return createItemFlowEnd();
-            case SysmlPackage.ITEM_USAGE: return createItemUsage();
-            case SysmlPackage.JOIN_NODE: return createJoinNode();
-            case SysmlPackage.LIBRARY_PACKAGE: return createLibraryPackage();
-            case SysmlPackage.LIFE_CLASS: return createLifeClass();
-            case SysmlPackage.LITERAL_BOOLEAN: return createLiteralBoolean();
-            case SysmlPackage.LITERAL_EXPRESSION: return createLiteralExpression();
-            case SysmlPackage.LITERAL_INFINITY: return createLiteralInfinity();
-            case SysmlPackage.LITERAL_INTEGER: return createLiteralInteger();
-            case SysmlPackage.LITERAL_RATIONAL: return createLiteralRational();
-            case SysmlPackage.LITERAL_STRING: return createLiteralString();
-            case SysmlPackage.MEMBERSHIP: return createMembership();
-            case SysmlPackage.MEMBERSHIP_EXPOSE: return createMembershipExpose();
-            case SysmlPackage.MEMBERSHIP_IMPORT: return createMembershipImport();
-            case SysmlPackage.MERGE_NODE: return createMergeNode();
-            case SysmlPackage.METACLASS: return createMetaclass();
-            case SysmlPackage.METADATA_ACCESS_EXPRESSION: return createMetadataAccessExpression();
-            case SysmlPackage.METADATA_DEFINITION: return createMetadataDefinition();
-            case SysmlPackage.METADATA_FEATURE: return createMetadataFeature();
-            case SysmlPackage.METADATA_USAGE: return createMetadataUsage();
-            case SysmlPackage.MULTIPLICITY: return createMultiplicity();
-            case SysmlPackage.MULTIPLICITY_RANGE: return createMultiplicityRange();
-            case SysmlPackage.NAMESPACE: return createNamespace();
-            case SysmlPackage.NAMESPACE_EXPOSE: return createNamespaceExpose();
-            case SysmlPackage.NAMESPACE_IMPORT: return createNamespaceImport();
-            case SysmlPackage.NULL_EXPRESSION: return createNullExpression();
-            case SysmlPackage.OBJECTIVE_MEMBERSHIP: return createObjectiveMembership();
-            case SysmlPackage.OCCURRENCE_DEFINITION: return createOccurrenceDefinition();
-            case SysmlPackage.OCCURRENCE_USAGE: return createOccurrenceUsage();
-            case SysmlPackage.OPERATOR_EXPRESSION: return createOperatorExpression();
-            case SysmlPackage.OWNING_MEMBERSHIP: return createOwningMembership();
-            case SysmlPackage.PACKAGE: return createPackage();
-            case SysmlPackage.PARAMETER_MEMBERSHIP: return createParameterMembership();
-            case SysmlPackage.PART_DEFINITION: return createPartDefinition();
-            case SysmlPackage.PART_USAGE: return createPartUsage();
-            case SysmlPackage.PERFORM_ACTION_USAGE: return createPerformActionUsage();
-            case SysmlPackage.PORT_CONJUGATION: return createPortConjugation();
-            case SysmlPackage.PORT_DEFINITION: return createPortDefinition();
-            case SysmlPackage.PORT_USAGE: return createPortUsage();
-            case SysmlPackage.PREDICATE: return createPredicate();
-            case SysmlPackage.REDEFINITION: return createRedefinition();
-            case SysmlPackage.REFERENCE_SUBSETTING: return createReferenceSubsetting();
-            case SysmlPackage.REFERENCE_USAGE: return createReferenceUsage();
-            case SysmlPackage.RENDERING_DEFINITION: return createRenderingDefinition();
-            case SysmlPackage.RENDERING_USAGE: return createRenderingUsage();
-            case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP: return createRequirementConstraintMembership();
-            case SysmlPackage.REQUIREMENT_DEFINITION: return createRequirementDefinition();
-            case SysmlPackage.REQUIREMENT_USAGE: return createRequirementUsage();
-            case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP: return createRequirementVerificationMembership();
-            case SysmlPackage.RESULT_EXPRESSION_MEMBERSHIP: return createResultExpressionMembership();
-            case SysmlPackage.RETURN_PARAMETER_MEMBERSHIP: return createReturnParameterMembership();
-            case SysmlPackage.SATISFY_REQUIREMENT_USAGE: return createSatisfyRequirementUsage();
-            case SysmlPackage.SELECT_EXPRESSION: return createSelectExpression();
-            case SysmlPackage.SEND_ACTION_USAGE: return createSendActionUsage();
-            case SysmlPackage.SPECIALIZATION: return createSpecialization();
-            case SysmlPackage.STAKEHOLDER_MEMBERSHIP: return createStakeholderMembership();
-            case SysmlPackage.STATE_DEFINITION: return createStateDefinition();
-            case SysmlPackage.STATE_SUBACTION_MEMBERSHIP: return createStateSubactionMembership();
-            case SysmlPackage.STATE_USAGE: return createStateUsage();
-            case SysmlPackage.STEP: return createStep();
-            case SysmlPackage.STRUCTURE: return createStructure();
-            case SysmlPackage.SUBCLASSIFICATION: return createSubclassification();
-            case SysmlPackage.SUBJECT_MEMBERSHIP: return createSubjectMembership();
-            case SysmlPackage.SUBSETTING: return createSubsetting();
-            case SysmlPackage.SUCCESSION: return createSuccession();
-            case SysmlPackage.SUCCESSION_AS_USAGE: return createSuccessionAsUsage();
-            case SysmlPackage.SUCCESSION_FLOW_CONNECTION_USAGE: return createSuccessionFlowConnectionUsage();
-            case SysmlPackage.SUCCESSION_ITEM_FLOW: return createSuccessionItemFlow();
-            case SysmlPackage.TEXTUAL_REPRESENTATION: return createTextualRepresentation();
-            case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP: return createTransitionFeatureMembership();
-            case SysmlPackage.TRANSITION_USAGE: return createTransitionUsage();
-            case SysmlPackage.TRIGGER_INVOCATION_EXPRESSION: return createTriggerInvocationExpression();
-            case SysmlPackage.TYPE: return createType();
-            case SysmlPackage.TYPE_FEATURING: return createTypeFeaturing();
-            case SysmlPackage.UNIONING: return createUnioning();
-            case SysmlPackage.USAGE: return createUsage();
-            case SysmlPackage.USE_CASE_DEFINITION: return createUseCaseDefinition();
-            case SysmlPackage.USE_CASE_USAGE: return createUseCaseUsage();
-            case SysmlPackage.VARIANT_MEMBERSHIP: return createVariantMembership();
-            case SysmlPackage.VERIFICATION_CASE_DEFINITION: return createVerificationCaseDefinition();
-            case SysmlPackage.VERIFICATION_CASE_USAGE: return createVerificationCaseUsage();
-            case SysmlPackage.VIEW_DEFINITION: return createViewDefinition();
-            case SysmlPackage.VIEWPOINT_DEFINITION: return createViewpointDefinition();
-            case SysmlPackage.VIEWPOINT_USAGE: return createViewpointUsage();
-            case SysmlPackage.VIEW_RENDERING_MEMBERSHIP: return createViewRenderingMembership();
-            case SysmlPackage.VIEW_USAGE: return createViewUsage();
-            case SysmlPackage.WHILE_LOOP_ACTION_USAGE: return createWhileLoopActionUsage();
+            case SysmlPackage.ACCEPT_ACTION_USAGE:
+                return this.createAcceptActionUsage();
+            case SysmlPackage.ACTION_DEFINITION:
+                return this.createActionDefinition();
+            case SysmlPackage.ACTION_USAGE:
+                return this.createActionUsage();
+            case SysmlPackage.ACTOR_MEMBERSHIP:
+                return this.createActorMembership();
+            case SysmlPackage.ALLOCATION_DEFINITION:
+                return this.createAllocationDefinition();
+            case SysmlPackage.ALLOCATION_USAGE:
+                return this.createAllocationUsage();
+            case SysmlPackage.ANALYSIS_CASE_DEFINITION:
+                return this.createAnalysisCaseDefinition();
+            case SysmlPackage.ANALYSIS_CASE_USAGE:
+                return this.createAnalysisCaseUsage();
+            case SysmlPackage.ANNOTATING_ELEMENT:
+                return this.createAnnotatingElement();
+            case SysmlPackage.ANNOTATION:
+                return this.createAnnotation();
+            case SysmlPackage.ASSERT_CONSTRAINT_USAGE:
+                return this.createAssertConstraintUsage();
+            case SysmlPackage.ASSIGNMENT_ACTION_USAGE:
+                return this.createAssignmentActionUsage();
+            case SysmlPackage.ASSOCIATION:
+                return this.createAssociation();
+            case SysmlPackage.ASSOCIATION_STRUCTURE:
+                return this.createAssociationStructure();
+            case SysmlPackage.ATTRIBUTE_DEFINITION:
+                return this.createAttributeDefinition();
+            case SysmlPackage.ATTRIBUTE_USAGE:
+                return this.createAttributeUsage();
+            case SysmlPackage.BEHAVIOR:
+                return this.createBehavior();
+            case SysmlPackage.BINDING_CONNECTOR:
+                return this.createBindingConnector();
+            case SysmlPackage.BINDING_CONNECTOR_AS_USAGE:
+                return this.createBindingConnectorAsUsage();
+            case SysmlPackage.BOOLEAN_EXPRESSION:
+                return this.createBooleanExpression();
+            case SysmlPackage.CALCULATION_DEFINITION:
+                return this.createCalculationDefinition();
+            case SysmlPackage.CALCULATION_USAGE:
+                return this.createCalculationUsage();
+            case SysmlPackage.CASE_DEFINITION:
+                return this.createCaseDefinition();
+            case SysmlPackage.CASE_USAGE:
+                return this.createCaseUsage();
+            case SysmlPackage.CLASS:
+                return this.createClass();
+            case SysmlPackage.CLASSIFIER:
+                return this.createClassifier();
+            case SysmlPackage.COLLECT_EXPRESSION:
+                return this.createCollectExpression();
+            case SysmlPackage.COMMENT:
+                return this.createComment();
+            case SysmlPackage.CONCERN_DEFINITION:
+                return this.createConcernDefinition();
+            case SysmlPackage.CONCERN_USAGE:
+                return this.createConcernUsage();
+            case SysmlPackage.CONJUGATED_PORT_DEFINITION:
+                return this.createConjugatedPortDefinition();
+            case SysmlPackage.CONJUGATED_PORT_TYPING:
+                return this.createConjugatedPortTyping();
+            case SysmlPackage.CONJUGATION:
+                return this.createConjugation();
+            case SysmlPackage.CONNECTION_DEFINITION:
+                return this.createConnectionDefinition();
+            case SysmlPackage.CONNECTION_USAGE:
+                return this.createConnectionUsage();
+            case SysmlPackage.CONNECTOR:
+                return this.createConnector();
+            case SysmlPackage.CONSTRAINT_DEFINITION:
+                return this.createConstraintDefinition();
+            case SysmlPackage.CONSTRAINT_USAGE:
+                return this.createConstraintUsage();
+            case SysmlPackage.DATA_TYPE:
+                return this.createDataType();
+            case SysmlPackage.DECISION_NODE:
+                return this.createDecisionNode();
+            case SysmlPackage.DEFINITION:
+                return this.createDefinition();
+            case SysmlPackage.DEPENDENCY:
+                return this.createDependency();
+            case SysmlPackage.DIFFERENCING:
+                return this.createDifferencing();
+            case SysmlPackage.DISJOINING:
+                return this.createDisjoining();
+            case SysmlPackage.DOCUMENTATION:
+                return this.createDocumentation();
+            case SysmlPackage.ELEMENT_FILTER_MEMBERSHIP:
+                return this.createElementFilterMembership();
+            case SysmlPackage.END_FEATURE_MEMBERSHIP:
+                return this.createEndFeatureMembership();
+            case SysmlPackage.ENUMERATION_DEFINITION:
+                return this.createEnumerationDefinition();
+            case SysmlPackage.ENUMERATION_USAGE:
+                return this.createEnumerationUsage();
+            case SysmlPackage.EVENT_OCCURRENCE_USAGE:
+                return this.createEventOccurrenceUsage();
+            case SysmlPackage.EXHIBIT_STATE_USAGE:
+                return this.createExhibitStateUsage();
+            case SysmlPackage.EXPRESSION:
+                return this.createExpression();
+            case SysmlPackage.FEATURE:
+                return this.createFeature();
+            case SysmlPackage.FEATURE_CHAIN_EXPRESSION:
+                return this.createFeatureChainExpression();
+            case SysmlPackage.FEATURE_CHAINING:
+                return this.createFeatureChaining();
+            case SysmlPackage.FEATURE_INVERTING:
+                return this.createFeatureInverting();
+            case SysmlPackage.FEATURE_MEMBERSHIP:
+                return this.createFeatureMembership();
+            case SysmlPackage.FEATURE_REFERENCE_EXPRESSION:
+                return this.createFeatureReferenceExpression();
+            case SysmlPackage.FEATURE_TYPING:
+                return this.createFeatureTyping();
+            case SysmlPackage.FEATURE_VALUE:
+                return this.createFeatureValue();
+            case SysmlPackage.FLOW_CONNECTION_DEFINITION:
+                return this.createFlowConnectionDefinition();
+            case SysmlPackage.FLOW_CONNECTION_USAGE:
+                return this.createFlowConnectionUsage();
+            case SysmlPackage.FORK_NODE:
+                return this.createForkNode();
+            case SysmlPackage.FOR_LOOP_ACTION_USAGE:
+                return this.createForLoopActionUsage();
+            case SysmlPackage.FRAMED_CONCERN_MEMBERSHIP:
+                return this.createFramedConcernMembership();
+            case SysmlPackage.FUNCTION:
+                return this.createFunction();
+            case SysmlPackage.IF_ACTION_USAGE:
+                return this.createIfActionUsage();
+            case SysmlPackage.INCLUDE_USE_CASE_USAGE:
+                return this.createIncludeUseCaseUsage();
+            case SysmlPackage.INTERACTION:
+                return this.createInteraction();
+            case SysmlPackage.INTERFACE_DEFINITION:
+                return this.createInterfaceDefinition();
+            case SysmlPackage.INTERFACE_USAGE:
+                return this.createInterfaceUsage();
+            case SysmlPackage.INTERSECTING:
+                return this.createIntersecting();
+            case SysmlPackage.INVARIANT:
+                return this.createInvariant();
+            case SysmlPackage.INVOCATION_EXPRESSION:
+                return this.createInvocationExpression();
+            case SysmlPackage.ITEM_DEFINITION:
+                return this.createItemDefinition();
+            case SysmlPackage.ITEM_FEATURE:
+                return this.createItemFeature();
+            case SysmlPackage.ITEM_FLOW:
+                return this.createItemFlow();
+            case SysmlPackage.ITEM_FLOW_END:
+                return this.createItemFlowEnd();
+            case SysmlPackage.ITEM_USAGE:
+                return this.createItemUsage();
+            case SysmlPackage.JOIN_NODE:
+                return this.createJoinNode();
+            case SysmlPackage.LIBRARY_PACKAGE:
+                return this.createLibraryPackage();
+            case SysmlPackage.LIFE_CLASS:
+                return this.createLifeClass();
+            case SysmlPackage.LITERAL_BOOLEAN:
+                return this.createLiteralBoolean();
+            case SysmlPackage.LITERAL_EXPRESSION:
+                return this.createLiteralExpression();
+            case SysmlPackage.LITERAL_INFINITY:
+                return this.createLiteralInfinity();
+            case SysmlPackage.LITERAL_INTEGER:
+                return this.createLiteralInteger();
+            case SysmlPackage.LITERAL_RATIONAL:
+                return this.createLiteralRational();
+            case SysmlPackage.LITERAL_STRING:
+                return this.createLiteralString();
+            case SysmlPackage.MEMBERSHIP:
+                return this.createMembership();
+            case SysmlPackage.MEMBERSHIP_EXPOSE:
+                return this.createMembershipExpose();
+            case SysmlPackage.MEMBERSHIP_IMPORT:
+                return this.createMembershipImport();
+            case SysmlPackage.MERGE_NODE:
+                return this.createMergeNode();
+            case SysmlPackage.METACLASS:
+                return this.createMetaclass();
+            case SysmlPackage.METADATA_ACCESS_EXPRESSION:
+                return this.createMetadataAccessExpression();
+            case SysmlPackage.METADATA_DEFINITION:
+                return this.createMetadataDefinition();
+            case SysmlPackage.METADATA_FEATURE:
+                return this.createMetadataFeature();
+            case SysmlPackage.METADATA_USAGE:
+                return this.createMetadataUsage();
+            case SysmlPackage.MULTIPLICITY:
+                return this.createMultiplicity();
+            case SysmlPackage.MULTIPLICITY_RANGE:
+                return this.createMultiplicityRange();
+            case SysmlPackage.NAMESPACE:
+                return this.createNamespace();
+            case SysmlPackage.NAMESPACE_EXPOSE:
+                return this.createNamespaceExpose();
+            case SysmlPackage.NAMESPACE_IMPORT:
+                return this.createNamespaceImport();
+            case SysmlPackage.NULL_EXPRESSION:
+                return this.createNullExpression();
+            case SysmlPackage.OBJECTIVE_MEMBERSHIP:
+                return this.createObjectiveMembership();
+            case SysmlPackage.OCCURRENCE_DEFINITION:
+                return this.createOccurrenceDefinition();
+            case SysmlPackage.OCCURRENCE_USAGE:
+                return this.createOccurrenceUsage();
+            case SysmlPackage.OPERATOR_EXPRESSION:
+                return this.createOperatorExpression();
+            case SysmlPackage.OWNING_MEMBERSHIP:
+                return this.createOwningMembership();
+            case SysmlPackage.PACKAGE:
+                return this.createPackage();
+            case SysmlPackage.PARAMETER_MEMBERSHIP:
+                return this.createParameterMembership();
+            case SysmlPackage.PART_DEFINITION:
+                return this.createPartDefinition();
+            case SysmlPackage.PART_USAGE:
+                return this.createPartUsage();
+            case SysmlPackage.PERFORM_ACTION_USAGE:
+                return this.createPerformActionUsage();
+            case SysmlPackage.PORT_CONJUGATION:
+                return this.createPortConjugation();
+            case SysmlPackage.PORT_DEFINITION:
+                return this.createPortDefinition();
+            case SysmlPackage.PORT_USAGE:
+                return this.createPortUsage();
+            case SysmlPackage.PREDICATE:
+                return this.createPredicate();
+            case SysmlPackage.REDEFINITION:
+                return this.createRedefinition();
+            case SysmlPackage.REFERENCE_SUBSETTING:
+                return this.createReferenceSubsetting();
+            case SysmlPackage.REFERENCE_USAGE:
+                return this.createReferenceUsage();
+            case SysmlPackage.RENDERING_DEFINITION:
+                return this.createRenderingDefinition();
+            case SysmlPackage.RENDERING_USAGE:
+                return this.createRenderingUsage();
+            case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP:
+                return this.createRequirementConstraintMembership();
+            case SysmlPackage.REQUIREMENT_DEFINITION:
+                return this.createRequirementDefinition();
+            case SysmlPackage.REQUIREMENT_USAGE:
+                return this.createRequirementUsage();
+            case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP:
+                return this.createRequirementVerificationMembership();
+            case SysmlPackage.RESULT_EXPRESSION_MEMBERSHIP:
+                return this.createResultExpressionMembership();
+            case SysmlPackage.RETURN_PARAMETER_MEMBERSHIP:
+                return this.createReturnParameterMembership();
+            case SysmlPackage.SATISFY_REQUIREMENT_USAGE:
+                return this.createSatisfyRequirementUsage();
+            case SysmlPackage.SELECT_EXPRESSION:
+                return this.createSelectExpression();
+            case SysmlPackage.SEND_ACTION_USAGE:
+                return this.createSendActionUsage();
+            case SysmlPackage.SPECIALIZATION:
+                return this.createSpecialization();
+            case SysmlPackage.STAKEHOLDER_MEMBERSHIP:
+                return this.createStakeholderMembership();
+            case SysmlPackage.STATE_DEFINITION:
+                return this.createStateDefinition();
+            case SysmlPackage.STATE_SUBACTION_MEMBERSHIP:
+                return this.createStateSubactionMembership();
+            case SysmlPackage.STATE_USAGE:
+                return this.createStateUsage();
+            case SysmlPackage.STEP:
+                return this.createStep();
+            case SysmlPackage.STRUCTURE:
+                return this.createStructure();
+            case SysmlPackage.SUBCLASSIFICATION:
+                return this.createSubclassification();
+            case SysmlPackage.SUBJECT_MEMBERSHIP:
+                return this.createSubjectMembership();
+            case SysmlPackage.SUBSETTING:
+                return this.createSubsetting();
+            case SysmlPackage.SUCCESSION:
+                return this.createSuccession();
+            case SysmlPackage.SUCCESSION_AS_USAGE:
+                return this.createSuccessionAsUsage();
+            case SysmlPackage.SUCCESSION_FLOW_CONNECTION_USAGE:
+                return this.createSuccessionFlowConnectionUsage();
+            case SysmlPackage.SUCCESSION_ITEM_FLOW:
+                return this.createSuccessionItemFlow();
+            case SysmlPackage.TEXTUAL_REPRESENTATION:
+                return this.createTextualRepresentation();
+            case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP:
+                return this.createTransitionFeatureMembership();
+            case SysmlPackage.TRANSITION_USAGE:
+                return this.createTransitionUsage();
+            case SysmlPackage.TRIGGER_INVOCATION_EXPRESSION:
+                return this.createTriggerInvocationExpression();
+            case SysmlPackage.TYPE:
+                return this.createType();
+            case SysmlPackage.TYPE_FEATURING:
+                return this.createTypeFeaturing();
+            case SysmlPackage.UNIONING:
+                return this.createUnioning();
+            case SysmlPackage.USAGE:
+                return this.createUsage();
+            case SysmlPackage.USE_CASE_DEFINITION:
+                return this.createUseCaseDefinition();
+            case SysmlPackage.USE_CASE_USAGE:
+                return this.createUseCaseUsage();
+            case SysmlPackage.VARIANT_MEMBERSHIP:
+                return this.createVariantMembership();
+            case SysmlPackage.VERIFICATION_CASE_DEFINITION:
+                return this.createVerificationCaseDefinition();
+            case SysmlPackage.VERIFICATION_CASE_USAGE:
+                return this.createVerificationCaseUsage();
+            case SysmlPackage.VIEW_DEFINITION:
+                return this.createViewDefinition();
+            case SysmlPackage.VIEWPOINT_DEFINITION:
+                return this.createViewpointDefinition();
+            case SysmlPackage.VIEWPOINT_USAGE:
+                return this.createViewpointUsage();
+            case SysmlPackage.VIEW_RENDERING_MEMBERSHIP:
+                return this.createViewRenderingMembership();
+            case SysmlPackage.VIEW_USAGE:
+                return this.createViewUsage();
+            case SysmlPackage.WHILE_LOOP_ACTION_USAGE:
+                return this.createWhileLoopActionUsage();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
         switch (eDataType.getClassifierID()) {
             case SysmlPackage.FEATURE_DIRECTION_KIND:
-                return createFeatureDirectionKindFromString(eDataType, initialValue);
+                return this.createFeatureDirectionKindFromString(eDataType, initialValue);
             case SysmlPackage.PORTION_KIND:
-                return createPortionKindFromString(eDataType, initialValue);
+                return this.createPortionKindFromString(eDataType, initialValue);
             case SysmlPackage.REQUIREMENT_CONSTRAINT_KIND:
-                return createRequirementConstraintKindFromString(eDataType, initialValue);
+                return this.createRequirementConstraintKindFromString(eDataType, initialValue);
             case SysmlPackage.STATE_SUBACTION_KIND:
-                return createStateSubactionKindFromString(eDataType, initialValue);
+                return this.createStateSubactionKindFromString(eDataType, initialValue);
             case SysmlPackage.TRANSITION_FEATURE_KIND:
-                return createTransitionFeatureKindFromString(eDataType, initialValue);
+                return this.createTransitionFeatureKindFromString(eDataType, initialValue);
             case SysmlPackage.TRIGGER_KIND:
-                return createTriggerKindFromString(eDataType, initialValue);
+                return this.createTriggerKindFromString(eDataType, initialValue);
             case SysmlPackage.VISIBILITY_KIND:
-                return createVisibilityKindFromString(eDataType, initialValue);
+                return this.createVisibilityKindFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
         switch (eDataType.getClassifierID()) {
             case SysmlPackage.FEATURE_DIRECTION_KIND:
-                return convertFeatureDirectionKindToString(eDataType, instanceValue);
+                return this.convertFeatureDirectionKindToString(eDataType, instanceValue);
             case SysmlPackage.PORTION_KIND:
-                return convertPortionKindToString(eDataType, instanceValue);
+                return this.convertPortionKindToString(eDataType, instanceValue);
             case SysmlPackage.REQUIREMENT_CONSTRAINT_KIND:
-                return convertRequirementConstraintKindToString(eDataType, instanceValue);
+                return this.convertRequirementConstraintKindToString(eDataType, instanceValue);
             case SysmlPackage.STATE_SUBACTION_KIND:
-                return convertStateSubactionKindToString(eDataType, instanceValue);
+                return this.convertStateSubactionKindToString(eDataType, instanceValue);
             case SysmlPackage.TRANSITION_FEATURE_KIND:
-                return convertTransitionFeatureKindToString(eDataType, instanceValue);
+                return this.convertTransitionFeatureKindToString(eDataType, instanceValue);
             case SysmlPackage.TRIGGER_KIND:
-                return convertTriggerKindToString(eDataType, instanceValue);
+                return this.convertTriggerKindToString(eDataType, instanceValue);
             case SysmlPackage.VISIBILITY_KIND:
-                return convertVisibilityKindToString(eDataType, instanceValue);
+                return this.convertVisibilityKindToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -301,8 +461,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -313,8 +473,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -325,8 +485,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -337,8 +497,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -349,8 +509,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -361,8 +521,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -373,8 +533,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -385,8 +545,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -397,8 +557,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -409,8 +569,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -421,8 +581,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -433,8 +593,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -445,8 +605,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -457,8 +617,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -469,8 +629,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -481,8 +641,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -493,8 +653,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -505,8 +665,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -517,8 +677,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -529,8 +689,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -541,8 +701,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -553,8 +713,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -565,8 +725,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -577,8 +737,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -589,8 +749,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -601,8 +761,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -613,8 +773,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -625,8 +785,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -637,8 +797,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -649,8 +809,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -661,8 +821,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -673,8 +833,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -685,8 +845,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -697,8 +857,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -709,8 +869,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -721,8 +881,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -733,8 +893,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -745,8 +905,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -757,8 +917,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -769,8 +929,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -781,8 +941,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -793,8 +953,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -805,8 +965,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -817,8 +977,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -829,8 +989,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -841,8 +1001,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -853,8 +1013,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -865,8 +1025,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -877,8 +1037,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -889,8 +1049,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -901,8 +1061,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -913,8 +1073,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -925,8 +1085,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -937,8 +1097,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -949,8 +1109,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -961,8 +1121,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -973,8 +1133,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -985,8 +1145,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -997,8 +1157,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1009,8 +1169,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1021,8 +1181,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1033,8 +1193,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1045,8 +1205,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1057,8 +1217,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1069,8 +1229,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1081,8 +1241,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1093,8 +1253,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1105,8 +1265,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1117,8 +1277,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1129,8 +1289,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1141,8 +1301,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1153,8 +1313,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1165,8 +1325,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1177,8 +1337,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1189,8 +1349,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1201,8 +1361,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1213,8 +1373,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1225,8 +1385,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1237,8 +1397,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1249,8 +1409,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1261,8 +1421,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1273,8 +1433,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1285,8 +1445,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1297,8 +1457,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1309,8 +1469,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1321,8 +1481,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1333,8 +1493,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1345,8 +1505,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1357,8 +1517,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1369,8 +1529,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1381,8 +1541,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1393,8 +1553,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1405,8 +1565,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1417,8 +1577,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1429,8 +1589,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1441,8 +1601,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1453,8 +1613,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1465,8 +1625,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1477,8 +1637,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1489,8 +1649,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1501,8 +1661,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1513,8 +1673,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1525,8 +1685,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1537,8 +1697,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1549,8 +1709,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1561,8 +1721,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1573,8 +1733,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1585,8 +1745,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1597,8 +1757,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1609,8 +1769,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1621,8 +1781,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1633,8 +1793,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1645,8 +1805,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1657,8 +1817,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1669,8 +1829,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1681,8 +1841,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1693,8 +1853,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1705,8 +1865,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1717,8 +1877,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1729,8 +1889,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1741,8 +1901,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1753,8 +1913,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1765,8 +1925,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1777,8 +1937,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1789,8 +1949,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1801,8 +1961,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1813,8 +1973,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1825,8 +1985,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1837,8 +1997,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1849,8 +2009,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1861,8 +2021,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1873,8 +2033,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1885,8 +2045,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1897,8 +2057,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1909,8 +2069,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1921,8 +2081,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1933,8 +2093,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1945,8 +2105,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1957,8 +2117,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1969,8 +2129,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1981,8 +2141,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -1993,8 +2153,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2005,8 +2165,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2017,8 +2177,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2029,8 +2189,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2041,8 +2201,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2053,8 +2213,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2065,8 +2225,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2077,8 +2237,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2089,8 +2249,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2101,8 +2261,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2113,8 +2273,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2125,8 +2285,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2137,8 +2297,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2149,8 +2309,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2161,8 +2321,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2173,8 +2333,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2185,8 +2345,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2197,8 +2357,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2209,8 +2369,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2221,8 +2381,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2233,8 +2393,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2245,8 +2405,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -2257,19 +2417,20 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public FeatureDirectionKind createFeatureDirectionKindFromString(EDataType eDataType, String initialValue) {
         FeatureDirectionKind result = FeatureDirectionKind.get(initialValue);
-        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public String convertFeatureDirectionKindToString(EDataType eDataType, Object instanceValue) {
@@ -2277,19 +2438,20 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public PortionKind createPortionKindFromString(EDataType eDataType, String initialValue) {
         PortionKind result = PortionKind.get(initialValue);
-        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public String convertPortionKindToString(EDataType eDataType, Object instanceValue) {
@@ -2297,19 +2459,20 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public RequirementConstraintKind createRequirementConstraintKindFromString(EDataType eDataType, String initialValue) {
         RequirementConstraintKind result = RequirementConstraintKind.get(initialValue);
-        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public String convertRequirementConstraintKindToString(EDataType eDataType, Object instanceValue) {
@@ -2317,19 +2480,20 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public StateSubactionKind createStateSubactionKindFromString(EDataType eDataType, String initialValue) {
         StateSubactionKind result = StateSubactionKind.get(initialValue);
-        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public String convertStateSubactionKindToString(EDataType eDataType, Object instanceValue) {
@@ -2337,19 +2501,20 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public TransitionFeatureKind createTransitionFeatureKindFromString(EDataType eDataType, String initialValue) {
         TransitionFeatureKind result = TransitionFeatureKind.get(initialValue);
-        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public String convertTransitionFeatureKindToString(EDataType eDataType, Object instanceValue) {
@@ -2357,19 +2522,20 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public TriggerKind createTriggerKindFromString(EDataType eDataType, String initialValue) {
         TriggerKind result = TriggerKind.get(initialValue);
-        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public String convertTriggerKindToString(EDataType eDataType, Object instanceValue) {
@@ -2377,19 +2543,20 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public VisibilityKind createVisibilityKindFromString(EDataType eDataType, String initialValue) {
         VisibilityKind result = VisibilityKind.get(initialValue);
-        if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
         return result;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public String convertVisibilityKindToString(EDataType eDataType, Object instanceValue) {
@@ -2397,18 +2564,18 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public SysmlPackage getSysmlPackage() {
-        return (SysmlPackage)getEPackage();
+        return (SysmlPackage) this.getEPackage();
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @deprecated
      * @generated
      */
@@ -2417,4 +2584,4 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
         return SysmlPackage.eINSTANCE;
     }
 
-} //SysmlFactoryImpl
+} // SysmlFactoryImpl

@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -21,24 +21,22 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Differencing</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Differencing</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.DifferencingImpl#getDifferencingType <em>Differencing Type</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.DifferencingImpl#getTypeDifferenced <em>Type Differenced</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.DifferencingImpl#getDifferencingType <em>Differencing Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.DifferencingImpl#getTypeDifferenced <em>Type Differenced</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class DifferencingImpl extends RelationshipImpl implements Differencing {
     /**
-     * The cached value of the '{@link #getDifferencingType() <em>Differencing Type</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getDifferencingType() <em>Differencing Type</em>}' reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getDifferencingType()
      * @generated
      * @ordered
@@ -46,8 +44,8 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
     protected Type differencingType;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected DifferencingImpl() {
@@ -55,8 +53,8 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -65,59 +63,59 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getDifferencingType() {
-        if (differencingType != null && differencingType.eIsProxy()) {
-            InternalEObject oldDifferencingType = (InternalEObject)differencingType;
-            differencingType = (Type)eResolveProxy(oldDifferencingType);
-            if (differencingType != oldDifferencingType) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE, oldDifferencingType, differencingType));
+        if (this.differencingType != null && this.differencingType.eIsProxy()) {
+            InternalEObject oldDifferencingType = (InternalEObject) this.differencingType;
+            this.differencingType = (Type) this.eResolveProxy(oldDifferencingType);
+            if (this.differencingType != oldDifferencingType) {
+                if (this.eNotificationRequired())
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE, oldDifferencingType, this.differencingType));
             }
         }
-        return differencingType;
+        return this.differencingType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetDifferencingType() {
-        return differencingType;
+        return this.differencingType;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void setDifferencingType(Type newDifferencingType) {
-        Type oldDifferencingType = differencingType;
-        differencingType = newDifferencingType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE, oldDifferencingType, differencingType));
+        Type oldDifferencingType = this.differencingType;
+        this.differencingType = newDifferencingType;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE, oldDifferencingType, this.differencingType));
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Type getTypeDifferenced() {
-        Type typeDifferenced = basicGetTypeDifferenced();
-        return typeDifferenced != null && typeDifferenced.eIsProxy() ? (Type)eResolveProxy((InternalEObject)typeDifferenced) : typeDifferenced;
+        Type typeDifferenced = this.basicGetTypeDifferenced();
+        return typeDifferenced != null && typeDifferenced.eIsProxy() ? (Type) this.eResolveProxy((InternalEObject) typeDifferenced) : typeDifferenced;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     public Type basicGetTypeDifferenced() {
@@ -128,67 +126,69 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE:
-                if (resolve) return getDifferencingType();
-                return basicGetDifferencingType();
+                if (resolve)
+                    return this.getDifferencingType();
+                return this.basicGetDifferencingType();
             case SysmlPackage.DIFFERENCING__TYPE_DIFFERENCED:
-                if (resolve) return getTypeDifferenced();
-                return basicGetTypeDifferenced();
+                if (resolve)
+                    return this.getTypeDifferenced();
+                return this.basicGetTypeDifferenced();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
             case SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE:
-                setDifferencingType((Type)newValue);
+                this.setDifferencingType((Type) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE:
-                setDifferencingType((Type)null);
+                this.setDifferencingType((Type) null);
                 return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE:
-                return differencingType != null;
+                return this.differencingType != null;
             case SysmlPackage.DIFFERENCING__TYPE_DIFFERENCED:
-                return basicGetTypeDifferenced() != null;
+                return this.basicGetTypeDifferenced() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //DifferencingImpl
+} // DifferencingImpl

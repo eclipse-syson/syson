@@ -1,15 +1,15 @@
- /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- *
- * SPDX-License-Identifier: EPL-2.0
- *
- * Contributors:
- *     Obeo - initial API and implementation
- *******************************************************************************/
+/*******************************************************************************
+* Copyright (c) 2023, 2024 Obeo.
+* This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v2.0
+* which accompanies this distribution, and is available at
+* https://www.eclipse.org/legal/epl-2.0/
+*
+* SPDX-License-Identifier: EPL-2.0
+*
+* Contributors:
+*     Obeo - initial API and implementation
+*******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
@@ -28,24 +28,24 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Case Definition</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Case Definition</b></em>'. <!-- end-user-doc
+ * -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.eclipse.syson.sysml.impl.CaseDefinitionImpl#getActorParameter <em>Actor Parameter</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.CaseDefinitionImpl#getObjectiveRequirement <em>Objective Requirement</em>}</li>
- *   <li>{@link org.eclipse.syson.sysml.impl.CaseDefinitionImpl#getSubjectParameter <em>Subject Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.CaseDefinitionImpl#getActorParameter <em>Actor Parameter</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.CaseDefinitionImpl#getObjectiveRequirement <em>Objective
+ * Requirement</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.CaseDefinitionImpl#getSubjectParameter <em>Subject Parameter</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class CaseDefinitionImpl extends CalculationDefinitionImpl implements CaseDefinition {
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected CaseDefinitionImpl() {
@@ -53,8 +53,8 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -63,8 +63,8 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     @Override
@@ -74,19 +74,19 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public RequirementUsage getObjectiveRequirement() {
-        RequirementUsage objectiveRequirement = basicGetObjectiveRequirement();
-        return objectiveRequirement != null && objectiveRequirement.eIsProxy() ? (RequirementUsage)eResolveProxy((InternalEObject)objectiveRequirement) : objectiveRequirement;
+        RequirementUsage objectiveRequirement = this.basicGetObjectiveRequirement();
+        return objectiveRequirement != null && objectiveRequirement.eIsProxy() ? (RequirementUsage) this.eResolveProxy((InternalEObject) objectiveRequirement) : objectiveRequirement;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public RequirementUsage basicGetObjectiveRequirement() {
@@ -99,19 +99,19 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Usage getSubjectParameter() {
-        Usage subjectParameter = basicGetSubjectParameter();
-        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage)eResolveProxy((InternalEObject)subjectParameter) : subjectParameter;
+        Usage subjectParameter = this.basicGetSubjectParameter();
+        return subjectParameter != null && subjectParameter.eIsProxy() ? (Usage) this.eResolveProxy((InternalEObject) subjectParameter) : subjectParameter;
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated NOT
      */
     public Usage basicGetSubjectParameter() {
@@ -124,41 +124,43 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CASE_DEFINITION__ACTOR_PARAMETER:
-                return getActorParameter();
+                return this.getActorParameter();
             case SysmlPackage.CASE_DEFINITION__OBJECTIVE_REQUIREMENT:
-                if (resolve) return getObjectiveRequirement();
-                return basicGetObjectiveRequirement();
+                if (resolve)
+                    return this.getObjectiveRequirement();
+                return this.basicGetObjectiveRequirement();
             case SysmlPackage.CASE_DEFINITION__SUBJECT_PARAMETER:
-                if (resolve) return getSubjectParameter();
-                return basicGetSubjectParameter();
+                if (resolve)
+                    return this.getSubjectParameter();
+                return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.CASE_DEFINITION__ACTOR_PARAMETER:
-                return !getActorParameter().isEmpty();
+                return !this.getActorParameter().isEmpty();
             case SysmlPackage.CASE_DEFINITION__OBJECTIVE_REQUIREMENT:
-                return basicGetObjectiveRequirement() != null;
+                return this.basicGetObjectiveRequirement() != null;
             case SysmlPackage.CASE_DEFINITION__SUBJECT_PARAMETER:
-                return basicGetSubjectParameter() != null;
+                return this.basicGetSubjectParameter() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} //CaseDefinitionImpl
+} // CaseDefinitionImpl
