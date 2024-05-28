@@ -15,6 +15,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/298[#298] [metamodel] Fix metamodel to manage root namespaces.
+- https://github.com/eclipse-syson/syson/issues/329[#329] [services] Ignore root namespace with no name during qualified name resolution 
 
 === Improvements
 
