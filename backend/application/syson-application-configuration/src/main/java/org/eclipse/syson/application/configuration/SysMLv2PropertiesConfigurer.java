@@ -430,7 +430,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         textfield.setName("TextfieldWidget");
         textfield.setLabelExpression("aql:self.getDetailsViewLabel(eStructuralFeature)");
         textfield.setValueExpression("aql:self.eGet(eStructuralFeature)");
-        textfield.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly() or self.isReadOnly())");
+        textfield.setIsEnabledExpression("aql:not(self.isReadOnly(eStructuralFeature))");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue(eStructuralFeature, " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
         textfield.getBody().add(setNewValueOperation);
@@ -442,7 +442,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         checkbox.setName("CheckboxWidget");
         checkbox.setLabelExpression("aql:self.getDetailsViewLabel(eStructuralFeature)");
         checkbox.setValueExpression("aql:self.eGet(eStructuralFeature)");
-        checkbox.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly() or self.isReadOnly())");
+        checkbox.setIsEnabledExpression("aql:not(self.isReadOnly(eStructuralFeature))");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue(eStructuralFeature, " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
         checkbox.getBody().add(setNewValueOperation);
@@ -456,7 +456,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         radio.setCandidatesExpression("aql:self.getEnumCandidates(eStructuralFeature)");
         radio.setCandidateLabelExpression("aql:candidate.name");
         radio.setValueExpression("aql:self.getEnumValue(eStructuralFeature)");
-        radio.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly() or self.isReadOnly())");
+        radio.setIsEnabledExpression("aql:not(self.isReadOnly(eStructuralFeature))");
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue(eStructuralFeature, newValue.instance)");
         radio.getBody().add(setNewValueOperation);
@@ -469,7 +469,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.setLabelExpression("aql:self.getDetailsViewLabel(eStructuralFeature)");
         refWidget.setReferenceNameExpression("aql:eStructuralFeature.name");
         refWidget.setReferenceOwnerExpression("aql:self");
-        refWidget.setIsEnabledExpression("aql:not(eStructuralFeature.isReadOnly() or self.isReadOnly())");
+        refWidget.setIsEnabledExpression("aql:not(self.isReadOnly(eStructuralFeature))");
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue(eStructuralFeature.name, " + ViewFormDescriptionConverter.NEW_VALUE + LabelConstants.CLOSE_PARENTHESIS);
         refWidget.getBody().add(setRefWidget);

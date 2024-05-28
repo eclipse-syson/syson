@@ -47,15 +47,6 @@ public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartm
     }
 
     @Override
-    protected String getPreconditionExpression() {
-        if (this.isParallel) {
-            return "aql:self.canCreateChildState(true)";
-        } else {
-            return "aql:self.canCreateChildState(false)";
-        }
-    }
-
-    @Override
     protected String getNodeToolIconURLsExpression() {
         return "/icons/full/obj16/StateUsage.svg";
     }

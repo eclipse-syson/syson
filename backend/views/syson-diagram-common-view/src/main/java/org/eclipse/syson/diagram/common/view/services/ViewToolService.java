@@ -54,6 +54,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Succession;
@@ -648,9 +649,7 @@ public class ViewToolService extends ToolService {
         // Check source and target have the same parent
         Element sourceParentElement = sourceAction.getOwner();
         Element targetParentElement = targetAction.getOwner();
-        if (sourceParentElement != targetParentElement
-                // Handle the case where source state or target state is a Parallel state
-                || this.isParallelState(sourceAction) || this.isParallelState(targetAction)) {
+        if (sourceParentElement != targetParentElement || this.isParallelState(sourceParentElement)) {
             // Should probably not be here as the transition creation should not be allowed.
             return sourceAction;
         }
@@ -683,8 +682,16 @@ public class ViewToolService extends ToolService {
         return sourceAction;
     }
 
-    private boolean isParallelState(ActionUsage action) {
-        return action instanceof StateUsage su && su.isIsParallel();
+    /**
+     * Checks whether {@code element} is a Parallel state. This method allows an {@link Element} as a parameter but is
+     * intended to be called either with a {@link StateUsage} or a {@link StateDefinition}. Will return false in the
+     * other cases.
+     *
+     * @param element
+     *            The element to check
+     */
+    private boolean isParallelState(Element element) {
+        return (element instanceof StateUsage su && su.isIsParallel()) || (element instanceof StateDefinition sd && sd.isIsParallel());
     }
 
     /**
