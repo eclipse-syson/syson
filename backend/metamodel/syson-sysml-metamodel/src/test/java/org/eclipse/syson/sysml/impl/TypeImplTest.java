@@ -207,6 +207,20 @@ public class TypeImplTest {
         assertContentEquals(testModel.superSuperDef.inheritedMemberships(new BasicEList<>()));
         assertContentEquals(testModel.megaDef.inheritedMemberships(new BasicEList<>()));
 
+        // Inherited membership is a subset of membership.
+        // All those elements should also be contained in memebership.
+
+        assertContentEquals(testModel.subDef.getMembership(),
+                testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
+        assertContentEquals(testModel.superDef.getMembership(),
+                // All inherited from SuperSuperDef
+                testModel.attr0.getOwningMembership(),
+                // All contained in superDef
+                testModel.attr1.getOwningMembership(), testModel.privateAttr.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
+        
+        assertContentEquals(testModel.superSuperDef.getMembership(), testModel.attr0.getOwningMembership());
+        assertContentEquals(testModel.megaDef.getMembership());
+
     }
 
     @DisplayName("Check that the features get access to inherited feature.")

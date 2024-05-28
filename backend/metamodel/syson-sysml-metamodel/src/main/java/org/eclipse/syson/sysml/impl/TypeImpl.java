@@ -543,7 +543,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
     /**
      * @generated NOT
      */
-    private EList<Membership> getMembership(EList<Namespace> excluded) {
+    @Override
+    protected EList<Membership> getMembership(EList<Namespace> excluded) {
         List<Element> memberships = new ArrayList<>();
         NameConflictingFilter filter = new NameConflictingFilter();
         this.getOwnedMembership().stream().filter(filter).forEach(memberships::add);

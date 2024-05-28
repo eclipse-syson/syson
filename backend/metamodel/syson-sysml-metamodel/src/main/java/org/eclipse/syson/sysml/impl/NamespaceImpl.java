@@ -119,7 +119,7 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
     /**
      * @generated NOT
      */
-    private EList<Membership> getMembership(EList<Namespace> excluded) {
+    protected EList<Membership> getMembership(EList<Namespace> excluded) {
         List<Element> memberships = new ArrayList<>();
         NameConflictingFilter filter = new NameConflictingFilter();
         this.getOwnedMembership().stream().filter(filter).forEach(memberships::add);
