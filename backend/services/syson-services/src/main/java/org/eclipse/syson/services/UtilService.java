@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
@@ -199,7 +200,10 @@ public class UtilService {
      */
     private <T extends Element> T findInRootByQualifiedNameAndTypeFrom(EObject root, List<String> qualifiedName, Class<T> elementType) {
         T element = null;
-        if (root instanceof Element rootElt && this.nameMatches(rootElt, qualifiedName.get(0))) {
+        if (root instanceof Namespace namespace && namespace.eContainer() == null && namespace.getName() == null) {
+            // Ignore top-level namespaces with no name, they aren't part of the qualified name
+            element = this.findByQualifiedNameAndTypeFrom(namespace, qualifiedName, elementType);
+        } else if (root instanceof Element rootElt && this.nameMatches(rootElt, qualifiedName.get(0))) {
             element = this.findByQualifiedNameAndTypeFrom(rootElt, qualifiedName.subList(1, qualifiedName.size()), elementType);
         }
         return element;
@@ -297,10 +301,12 @@ public class UtilService {
         if (element != null && name != null) {
             String elementName = element.getName();
             if (elementName != null) {
-                if (name.contains("\s")) {
+                matches = elementName.strip().equals(name.strip());
+                if (!matches && name.startsWith("'") && name.endsWith("'")) {
+                    // We give the option to quote names, but the quotes aren't part of the model.
                     elementName = "'" + elementName + "'";
+                    matches = elementName.strip().equals(name.strip());
                 }
-                matches = elementName.trim().equals(name.trim());
             }
         }
         return matches;
