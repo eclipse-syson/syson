@@ -28,17 +28,21 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.helper.NameHelper;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysONEContentAdapter;
 
@@ -140,6 +144,32 @@ public class UtilService {
             allReachable = List.of();
         }
         return allReachable;
+    }
+
+    /**
+     * Find an {@link Element} that match the given name in the ResourceSet of the given element.
+     *
+     * @param object
+     *            the object for which to find a corresponding type.
+     * @param elementName
+     *            the element name to match.
+     * @return the found element or <code>null</code>.
+     */
+    public <T extends Element> T findByName(EObject object, String elementName) {
+        T result = null;
+        Namespace namespace = null;
+        if (object instanceof Element element) {
+            namespace = element.getOwningNamespace();
+        } else if (object instanceof Relationship relationship && relationship.getOwner() != null) {
+            namespace = relationship.getOwner().getOwningNamespace();
+        }
+        if (namespace != null) {
+            var membership = namespace.resolve(elementName);
+            if (membership != null) {
+                result = (T) membership.getMemberElement();
+            }
+        }
+        return result;
     }
 
     /**
@@ -320,12 +350,8 @@ public class UtilService {
      * @return <code>true</code> if the given element name is a qualified name, <code>false</code> otherwise.
      */
     public boolean isQualifiedName(String elementName) {
-        boolean isQualifiedName = false;
-        if (elementName != null) {
-            String[] splitElementName = elementName.split("::");
-            isQualifiedName = splitElementName.length > 1;
-        }
-        return isQualifiedName;
+        List<String> segments = NameHelper.parseQualifiedName(elementName);
+        return segments.size() > 1;
     }
 
     /**
@@ -343,5 +369,35 @@ public class UtilService {
                 .filter(tfm -> tfm.getKind().equals(kind))
                 .toList();
         EcoreUtil.removeAll(elementsToDelete);
+    }
+
+    /**
+     * Retrieve the start action defined inside the standard library <code>Actions</code>.
+     *
+     * @param eObject
+     *            an object to access to the library resources.
+     *
+     * @return the standard start ActionUsage defined in the <code>Actions</code> library.
+     */
+    public ActionUsage retrieveStandardStartAction(Element eObject) {
+        return this.findByName(eObject, "Actions::Action::start");
+    }
+
+    /**
+     * Check if the given element is actually the standard start action defined by <code>Actions::Action::start</code>.
+     *
+     * @param element
+     *            an element that could be the standard start action.
+     * @return <code>true</code> if the given element is the standard start action and <code>false</code> otherwise.
+     */
+    public boolean isStandardStartAction(Element element) {
+        var elt = element;
+        if (element instanceof Membership membership) {
+            elt = membership.getMemberElement();
+        }
+        if (elt instanceof ActionUsage au) {
+            return "9a0d2905-0f9c-5bb4-af74-9780d6db1817".equals(au.getElementId());
+        }
+        return false;
     }
 }

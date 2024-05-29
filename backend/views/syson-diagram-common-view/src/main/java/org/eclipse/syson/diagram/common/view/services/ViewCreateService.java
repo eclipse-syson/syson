@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
@@ -29,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
@@ -73,11 +75,14 @@ public class ViewCreateService {
 
     private final DeleteService deleteService;
 
+    private final UtilService utilService;
+
     public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
+        this.utilService = new UtilService();
     }
 
     /**
@@ -565,17 +570,87 @@ public class ViewCreateService {
         return result;
     }
 
-    public Element createSuccessionEdge(ActionUsage sourceAction, ActionUsage targetAction) {
-        Element sourceParentElement = sourceAction.getOwner();
+    public Element createSuccessionEdge(Element successionSource, Element successionTarget) {
+        EObject successionOwner = successionSource.getOwner();
+        if (this.utilService.isStandardStartAction(successionSource)) {
+            // When the source of the succession is the standard start action,
+            // successionSource is a Membership instead of an ActionUsage
+            // In this case, its owner cannot be obtained by getOwner() method.
+            successionOwner = successionSource.eContainer();
+        }
+        return this.createSuccessionEdge(successionSource, successionTarget, successionOwner);
+    }
 
-        Succession succession = SysmlFactory.eINSTANCE.createSuccession();
-        this.elementInitializerSwitch.doSwitch(succession);
+    private Element createSuccessionEdge(Element successionSource, Element successionTarget, EObject successionOwner) {
+        if (successionOwner instanceof Element ownerElement) {
+            Succession succession = SysmlFactory.eINSTANCE.createSuccession();
+            this.elementInitializerSwitch.doSwitch(succession);
+            var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            featureMembership.getOwnedRelatedElement().add(succession);
+            succession.getSource().add(successionSource);
+            succession.getTarget().add(successionTarget);
+            ownerElement.getOwnedRelationship().add(featureMembership);
+        }
+        return successionSource;
+    }
+
+    /**
+     * Add the standard start action as the child of the given element.
+     *
+     * @param ownerElement
+     *            an element that will own the standard start action.
+     * @return the {@link Membership} element containing the start action in its memberElement feature.
+     */
+    public Membership addStartAction(Element ownerElement) {
+        var standardStartAction = this.utilService.retrieveStandardStartAction(ownerElement);
+        if (standardStartAction != null) {
+            var membership = SysmlFactory.eINSTANCE.createMembership();
+            membership.setMemberElement(standardStartAction);
+            ownerElement.getOwnedRelationship().add(membership);
+            return membership;
+        }
+        return null;
+    }
+
+    /**
+     * Create a new action {@link ActionUsage} inside the given element which should be an {@link ActionUsage} or an
+     * {@link ActionDefintion}.
+     *
+     * @param ownerElement
+     *            the owner of the new action usage.
+     * @return the newly created action usage.
+     */
+    public ActionUsage createSubActionUsage(Element ownerElement) {
+        var newActionUsage = SysmlFactory.eINSTANCE.createActionUsage();
+        this.elementInitializerSwitch.doSwitch(newActionUsage);
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        featureMembership.getOwnedRelatedElement().add(succession);
-        succession.getSource().add(sourceAction);
-        succession.getTarget().add(targetAction);
-        sourceParentElement.getOwnedRelationship().add(featureMembership);
+        featureMembership.getOwnedRelatedElement().add(newActionUsage);
+        ownerElement.getOwnedRelationship().add(featureMembership);
+        return newActionUsage;
+    }
 
-        return sourceAction;
+    /**
+     * Removal service for Start action inside an action usage or definition.
+     *
+     * @param selectedNode
+     *            the node element that represents the start action in the diagram.
+     * @param editingContext
+     * @param diagramService
+     * @return the element that owned the start action.
+     */
+    public Element removeStartAction(Node selectedNode, IEditingContext editingContext, IDiagramService diagramService) {
+        Element owner = this.getSourceOwner(selectedNode, editingContext, diagramService);
+        var membership = owner.getOwnedRelationship().stream()
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .filter(m -> {
+                    return m.getMemberElement() instanceof ActionUsage au && this.utilService.isStandardStartAction(au);
+                })
+                .findFirst()
+                .orElse(null);
+        if (membership != null) {
+            this.deleteService.deleteFromModel(membership);
+        }
+        return owner;
     }
 }

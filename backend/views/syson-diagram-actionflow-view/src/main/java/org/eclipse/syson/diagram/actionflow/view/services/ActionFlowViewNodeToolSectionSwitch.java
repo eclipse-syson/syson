@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
@@ -27,6 +28,7 @@ import org.eclipse.syson.diagram.common.view.tools.AcceptActionPayloadNodeToolPr
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPortUsageReceiverToolNodeProvider;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -44,8 +46,11 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
 
     private final List<NodeDescription> allNodeDescriptions;
 
-    public ActionFlowViewNodeToolSectionSwitch(List<NodeDescription> allNodeDescriptions) {
+    private final IViewDiagramElementFinder cache;
+
+    public ActionFlowViewNodeToolSectionSwitch(IViewDiagramElementFinder cache, List<NodeDescription> allNodeDescriptions) {
         super(new AFVDescriptionNameGenerator());
+        this.cache = Objects.requireNonNull(cache);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
     }
 
@@ -75,16 +80,16 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
 
     @Override
     public List<NodeToolSection> caseActionUsage(ActionUsage object) {
-        var createSection = this.buildCreateSection();
-        createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.descriptionNameGenerator).create(null));
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(null));
+        var createSection = this.buildCreateSection(new StartActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
+        createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.descriptionNameGenerator).create(this.cache));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         return List.of(createSection, this.addElementsToolSection());
     }
 
     @Override
     public List<NodeToolSection> caseActionDefinition(ActionDefinition object) {
-        var createSection = this.buildCreateSection();
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(null));
+        var createSection = this.buildCreateSection(new StartActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         return List.of(createSection, this.addElementsToolSection());
     }
 

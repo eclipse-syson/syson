@@ -28,7 +28,12 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.ActionDefinition;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.Namespace;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,8 +48,11 @@ public class ViewNodeService {
 
     private final IObjectService objectService;
 
+    private final UtilService utilService;
+
     public ViewNodeService(IObjectService objectService) {
         this.objectService = Objects.requireNonNull(objectService);
+        this.utilService = new UtilService();
     }
 
     /**
@@ -144,5 +152,31 @@ public class ViewNodeService {
             }
         }
         return isHiddenByDefault;
+    }
+
+    /**
+     * Check if a Start Action can be added to the given element.
+     *
+     * @param self
+     *            a {@link Namespace} element
+     * @return <code>true</code> if the Start action can be added to the given element or <code>false</code> otherwise.
+     */
+    public boolean canAddStartAction(Namespace self) {
+        // Check that self is an Action usage or definition and that there is not yet the start action displayed.
+        return this.getStandardStartAction(self) == null;
+    }
+
+    public Membership getStandardStartAction(Namespace self) {
+        if (self instanceof ActionUsage || self instanceof ActionDefinition) {
+            return self.getOwnedRelationship().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .filter(m -> {
+                        return m.getMemberElement() instanceof ActionUsage au && this.utilService.isStandardStartAction(au);
+                    })
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
     }
 }

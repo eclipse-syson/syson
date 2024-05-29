@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.edges.AbstractSuccessionEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 
 /**
  * Used to create a Succession Edge provider in Action Flow View diagram.
@@ -33,7 +34,7 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
         super(colorProvider, new AFVDescriptionNameGenerator());
     }
 
-    private List<NodeDescription> getSourceAndTargetNodes(IViewDiagramElementFinder cache) {
+    private List<NodeDescription> getAllUsages(IViewDiagramElementFinder cache) {
         var sourcesAndTargets = new ArrayList<NodeDescription>();
 
         ActionFlowViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
@@ -45,11 +46,14 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
 
     @Override
     protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
-        return this.getSourceAndTargetNodes(cache);
+        var sources = this.getAllUsages(cache);
+        // the start node can be the source of a succession
+        cache.getNodeDescription(this.nameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(sources::add);
+        return sources;
     }
 
     @Override
     protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
-        return this.getSourceAndTargetNodes(cache);
+        return this.getAllUsages(cache);
     }
 }

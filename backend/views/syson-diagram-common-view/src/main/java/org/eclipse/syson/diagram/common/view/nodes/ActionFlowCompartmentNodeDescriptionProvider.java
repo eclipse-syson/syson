@@ -21,14 +21,19 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -39,6 +44,8 @@ import org.eclipse.syson.util.ViewConstants;
  * @author Jerome Gout
  */
 public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+
+    public static final String COMPARTMENT_LABEL = "action flow";
 
     private final String name;
 
@@ -67,9 +74,32 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
+    }
+
+    @Override
+    protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
+        var palette = this.diagramBuilderHelper.newNodePalette()
+                .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
+
+        return palette.toolSections(this.createCreationToolSection(cache),
+                this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .build();
+    }
+
+    private NodeToolSection createCreationToolSection(IViewDiagramElementFinder cache) {
+        NodeToolSection nodeToolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
+        nodeToolSection.setName("Create Section");
+        INodeToolProvider compartmentNodeToolProvider = this.getItemCreationToolProvider();
+
+        if (compartmentNodeToolProvider != null) {
+            nodeToolSection.getNodeTools().add(compartmentNodeToolProvider.create(cache));
+        }
+        nodeToolSection.getNodeTools().add(new StartActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
+        return nodeToolSection;
     }
 
     @Override
@@ -83,7 +113,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression("action flow")
+                .labelExpression(COMPARTMENT_LABEL)
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .build();
@@ -108,6 +138,15 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
 
     @Override
     protected String getDropElementFromDiagramExpression() {
-        return "aql:droppedElement.dropActionUsageFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+        var actionUsageDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage());
+        var params = List.of(
+                "droppedNode",
+                "targetElement",
+                "targetNode",
+                AQLUtils.aqlString(actionUsageDescriptionName),
+                "diagramContext",
+                "convertedNodes"
+                );
+        return AQLUtils.getServiceCallExpression("droppedElement", "dropActionUsageFromDiagram", params);
     }
 }

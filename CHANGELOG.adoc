@@ -23,6 +23,8 @@
 - https://github.com/eclipse-syson/syson/issues/298[#298] [syson] Add root Namespace to SysON models and libraries
 - https://github.com/eclipse-syson/syson/issues/324[#324] [diagrams] Improve support for whitespaces, quotes, and special characters in direct edit
 - https://github.com/eclipse-syson/syson/issues/307[#307] [diagrams] Fix parallel states tooling conditions
+- https://github.com/eclipse-syson/syson/issues/269[#269] [diagrams] Handle action start and done nodes in Action Flow View diagram
+
 
 === New features
 
