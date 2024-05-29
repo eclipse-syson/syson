@@ -17,8 +17,10 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
@@ -55,5 +57,18 @@ public abstract class AbstractNodeDescriptionProvider extends AbstractViewElemen
             toolSection.getNodeTools().clear();
             toolSection.getNodeTools().addAll(sortedNodeTools);
         });
+    }
+
+    protected ImageNodeStyleDescription createImageNodeStyleDescription(String shapeId) {
+        return this.createImageNodeStyleDescription(shapeId, this.colorProvider.getColor("transparent"), false);
+    }
+
+    protected ImageNodeStyleDescription createImageNodeStyleDescription(String imagePath, UserColor borderColor, boolean isRotable) {
+        return this.diagramBuilderHelper.newImageNodeStyleDescription()
+                .borderColor(borderColor)
+                .borderRadius(0)
+                .positionDependentRotation(isRotable)
+                .shape(imagePath)
+                .build();
     }
 }

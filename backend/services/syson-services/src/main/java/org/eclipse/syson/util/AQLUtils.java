@@ -22,6 +22,17 @@ import java.util.List;
 public class AQLUtils {
 
     /**
+     * Return an AQL string from the given string.
+     *
+     * @param string
+     *            the string to transform to an AQL string
+     * @return the AQL string built upon the given string.
+     */
+    public static String aqlString(String string) {
+        return '\'' + string + '\'';
+    }
+
+    /**
      * Returns the AQL expression for calling a service without any parameter using <code>self</code> as the
      * instance.<br>
      * For instance: <code>aql:self.myService()</code>

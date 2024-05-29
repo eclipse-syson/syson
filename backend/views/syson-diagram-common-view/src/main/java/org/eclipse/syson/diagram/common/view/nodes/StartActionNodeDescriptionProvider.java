@@ -1,0 +1,113 @@
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.syson.diagram.common.view.nodes;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
+
+/**
+ * Used to create the starting node description of an Action.
+ *
+ * @author Jerome Gout
+ */
+public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+
+    public static final String START_ACTION_NAME = "StartAction";
+
+    private final IDescriptionNameGenerator descriptionNameGenerator;
+
+    public StartActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(colorProvider);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+    }
+
+    @Override
+    public NodeDescription create() {
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getMembership());
+        return this.diagramBuilderHelper.newNodeDescription()
+                .collapsible(false)
+                .domainType(domainType)
+                .defaultWidthExpression("28")
+                .defaultHeightExpression("28")
+                .name(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getStandardStartAction"))
+                .style(this.createImageNodeStyleDescription("images/start_action.svg"))
+                .userResizable(false)
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .build();
+    }
+
+    @Override
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME)).ifPresent(nodeDescription -> {
+            nodeDescription.setPalette(this.createNodePalette(cache));
+            diagramDescription.getNodeDescriptions().add(nodeDescription);
+        });
+    }
+
+    private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
+        var changeContext = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
+
+        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
+                .name("Remove Start")
+                .body(changeContext.build());
+
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.addAll(this.getEdgeTools(cache));
+
+        return this.diagramBuilderHelper.newNodePalette()
+                .deleteTool(deleteTool.build())
+                .edgeTools(edgeTools.toArray(EdgeTool[]::new))
+                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .build();
+    }
+
+    private List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
+        var targetElementDescriptions = this.getStartTargetDescriptions(cache);
+
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", EdgeDescription.SEMANTIC_EDGE_TARGET));
+
+        var createStartEdgeTool = builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
+                .iconURLsExpression("/icons/full/obj16/Succession.svg")
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+
+        return List.of(createStartEdgeTool);
+    }
+
+    private List<NodeDescription> getStartTargetDescriptions(IViewDiagramElementFinder cache) {
+        var targets = new ArrayList<NodeDescription>();
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(targets::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).ifPresent(targets::add);
+        return targets;
+    }
+
+}

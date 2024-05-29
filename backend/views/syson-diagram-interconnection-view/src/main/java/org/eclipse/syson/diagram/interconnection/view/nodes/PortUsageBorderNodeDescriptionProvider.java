@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
-import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
@@ -100,29 +99,21 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
     }
 
     private List<ConditionalNodeStyle> createPortUsageConditionalNodeStyles() {
+        var borderColor = this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR);
         return List.of(
                 this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition("aql:self.isInPort()")
-                        .style(this.createImageNodeStyleDescription("/images/PortUsage_In.svg"))
+                        .style(this.createImageNodeStyleDescription("/images/PortUsage_In.svg", borderColor, true))
                 .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition("aql:self.isOutPort()")
-                        .style(this.createImageNodeStyleDescription("/images/PortUsage_Out.svg"))
+                        .style(this.createImageNodeStyleDescription("/images/PortUsage_Out.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
                         .condition("aql:self.isInOutPort()")
-                        .style(this.createImageNodeStyleDescription("/images/PortUsage_InOut.svg"))
+                        .style(this.createImageNodeStyleDescription("/images/PortUsage_InOut.svg", borderColor, true))
                         .build()
         );
-    }
-
-    private NodeStyleDescription createImageNodeStyleDescription(String imagePath) {
-        return this.diagramBuilderHelper.newImageNodeStyleDescription()
-                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
-                .borderRadius(0)
-                .positionDependentRotation(true)
-                .shape(imagePath)
-                .build();
     }
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {

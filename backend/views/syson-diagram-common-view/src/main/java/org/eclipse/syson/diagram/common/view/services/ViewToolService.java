@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
@@ -447,7 +446,7 @@ public class ViewToolService extends ToolService {
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
             this.moveContraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.ASSUMPTION);
-            this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+            this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
             diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
         }
         return droppedElement;
@@ -458,7 +457,7 @@ public class ViewToolService extends ToolService {
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (droppedElement instanceof ConstraintUsage droppedConstraint && (targetElement instanceof RequirementUsage || targetElement instanceof RequirementDefinition)) {
             this.moveContraintInRequirementConstraintCompartment(droppedConstraint, targetElement, RequirementConstraintKind.REQUIREMENT);
-            this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+            this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
             diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
         }
         return droppedElement;
@@ -487,7 +486,7 @@ public class ViewToolService extends ToolService {
                 if (oldMembership instanceof OwningMembership owningMembership) {
                     this.deleteService.deleteFromModel(owningMembership);
                 }
-                this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+                this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
                 diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
             }
         }
@@ -564,56 +563,63 @@ public class ViewToolService extends ToolService {
     }
 
     /**
-     * Called by "New Action" tool from free-form for both nested and owned ActionUsage .
+     * Create a new graphical view for an element inside a compartment given its label.
      *
-     * @param actionUsage
-     *            the {@link ActionUsage} corresponding to the target object on which the tool has been called.
-     * @param nodeName
-     *            the name of the node description corresponding to the ActionUsage in the context of the tool.
+     * @param childElement
+     *            the semantic object for which the view is created.
+     * @param nodeDescriptionName
+     *            the childElement node description name.
+     * @param parentNodeDescriptionName
+     *            the name of the node description that owns the compartment in which the view should be created.
      * @param compartmentName
-     *            the name of the free-form compartment
-     * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *            the label of the compartment in which the view should be created.
+     * @param selectedNode
+     *            the {@link Node} where the tool was triggered. It can be an element or the compartment itself.
      * @param diagramContext
      *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
-     * @param selectedNode
-     *            the selected node on which the tool has been called. It corresponds to a variable accessible from the
-     *            variable manager.
      * @param convertedNodes
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
-     * @return the created PartUsage
      */
-    public ActionUsage createSubActionUsageAndView(Element actionUsage, String nodeName, String compartmentName, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Element createViewInFreeFormCompartment(Element childElement, String nodeDescriptionName, String parentNodeDescriptionName, String compartmentName, Node selectedNode,
+            IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var membership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        actionUsage.getOwnedRelationship().add(membership);
-        ActionUsage childAction = SysmlFactory.eINSTANCE.createActionUsage();
-        membership.getOwnedRelatedElement().add(childAction);
-        this.elementInitializerSwitch.doSwitch(childAction);
-        // get the children action usage compartment
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildActionUsage = convertedNodes.keySet().stream()
-                .filter(n -> nodeName.equals(n.getName()))
-                .findFirst();
-        if (nodeChildActionUsage.isPresent()) {
-            NodeDescription nodeDescription = convertedNodes.get(nodeChildActionUsage.get());
-            if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId()) && compartmentName != null) {
+
+        var childNodeDescription = this.getNodeDescriptionFromViewName(nodeDescriptionName, convertedNodes);
+        var parentNodeDescription = this.getNodeDescriptionFromViewName(parentNodeDescriptionName, convertedNodes);
+
+        if (childNodeDescription != null && parentNodeDescription != null) {
+            // Is selectedNode the compartment owner or the compartment itself?
+            if (parentNodeDescription.getId().equals(selectedNode.getDescriptionId()) && compartmentName != null) {
+                // compartment owner => need to search the compartment
                 selectedNode.getChildNodes().stream()
                         .filter(child -> compartmentName.equals(child.getInsideLabel().getText()))
                         .findFirst()
                         .ifPresent(compartmentNode -> {
-                            this.createView(childAction, editingContext, diagramContext, compartmentNode, convertedNodes);
+                            var parentElementId = this.getParentElementId(compartmentNode, diagramContext);
+                            this.createView(childElement, parentElementId, childNodeDescription.getId(), diagramContext, NodeContainmentKind.CHILD_NODE);
                         });
             } else {
-                this.createView(childAction, editingContext, diagramContext, selectedNode, convertedNodes);
+                var parentElementId = this.getParentElementId(selectedNode, diagramContext);
+                this.createView(childElement, parentElementId, childNodeDescription.getId(), diagramContext, NodeContainmentKind.CHILD_NODE);
             }
         }
-        return childAction;
+        return childElement;
     }
 
-    public Element dropActionUsageFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+    private NodeDescription getNodeDescriptionFromViewName(String nodeDescriptionName, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var viewNodeDescription = convertedNodes.keySet().stream()
+            .filter(n -> nodeDescriptionName.equals(n.getName()))
+            .findFirst()
+            .orElse(null);
+        if (viewNodeDescription != null) {
+            return convertedNodes.get(viewNodeDescription);
+        }
+        return null;
+    }
+
+    public Element dropActionUsageFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, String dropNodeDescriptionName, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var eContainer = droppedElement.eContainer();
         if (eContainer instanceof FeatureMembership featureMembership) {
@@ -630,7 +636,9 @@ public class ViewToolService extends ToolService {
                 oldParent.getOwnedRelationship().remove(owningMembership);
             }
         }
-        this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+        var parentElementId = this.getParentElementId(targetNode, diagramContext);
+        var droppedNodeDescription = this.getNodeDescriptionFromViewName(dropNodeDescriptionName, convertedNodes);
+        this.createView(droppedElement, parentElementId, droppedNodeDescription.getId(), diagramContext, NodeContainmentKind.CHILD_NODE);
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
         return droppedElement;
     }

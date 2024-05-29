@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -21,45 +22,43 @@ import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Node tool provider for creating both nested and owned ActionUsage inside free-form compartment.
+ * Used to add the standard start action inside diagrams.
  *
  * @author Jerome Gout
  */
-public class ActionFlowCompartmentNodeToolProvider implements INodeToolProvider {
-
-    private final IDescriptionNameGenerator nameGenerator;
+public class StartActionNodeToolProvider implements INodeToolProvider {
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
+    private final IDescriptionNameGenerator descriptionNameGenerator;
+
     private final EClass ownerEClass;
 
-    public ActionFlowCompartmentNodeToolProvider(EClass ownerEClass, IDescriptionNameGenerator nameGenerator) {
-        super();
-        this.ownerEClass = ownerEClass;
-        this.nameGenerator = nameGenerator;
+    public StartActionNodeToolProvider(EClass ownerEClass, IDescriptionNameGenerator descriptionNameGenerator) {
+        this.ownerEClass = Objects.requireNonNull(ownerEClass);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
-        var parentNodeName = this.nameGenerator.getNodeName(this.ownerEClass);
 
         var params = List.of(
-                AQLUtils.aqlString(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())),
-                AQLUtils.aqlString(parentNodeName),
+                AQLUtils.aqlString(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)),
+                AQLUtils.aqlString(this.descriptionNameGenerator.getNodeName(this.ownerEClass)),
                 AQLUtils.aqlString(ActionFlowCompartmentNodeDescriptionProvider.COMPARTMENT_LABEL),
                 "selectedNode",
                 "diagramContext",
                 "convertedNodes");
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createSubActionUsage"));
+                .expression(AQLUtils.getSelfServiceCallExpression("addStartAction"));
 
         var createViewOperation = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createViewInFreeFormCompartment", params))
@@ -71,9 +70,10 @@ public class ActionFlowCompartmentNodeToolProvider implements INodeToolProvider 
 
         creationServiceCall.children(createViewOperation, revealOperation);
 
-        return builder.name("New Action")
-                .iconURLsExpression("/icons/full/obj16/ActionUsage.svg")
+        return builder.name("Add Start Action")
+                .iconURLsExpression("/icons/start_action.svg")
                 .body(creationServiceCall.build())
+                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canAddStartAction"))
                 .build();
     }
 }

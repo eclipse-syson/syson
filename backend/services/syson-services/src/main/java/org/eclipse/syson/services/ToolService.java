@@ -204,22 +204,22 @@ public class ToolService {
 
     protected void createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, NodeContainmentKind nodeKind) {
-        var parentElementId = this.getParentElementId(element, diagramContext, selectedNode, convertedNodes);
-        var descriptionId = this.getDescriptionId(element, editingContext, diagramContext, selectedNode, convertedNodes);
-
-        if (descriptionId.isPresent()) {
-            var request = ViewCreationRequest.newViewCreationRequest()
-                    .containmentKind(nodeKind)
-                    .descriptionId(descriptionId.get())
-                    .parentElementId(parentElementId)
-                    .targetObjectId(this.objectService.getId(element))
-                    .build();
-            diagramContext.getViewCreationRequests().add(request);
-        }
+        var parentElementId = this.getParentElementId(selectedNode, diagramContext);
+        this.getDescriptionId(element, editingContext, diagramContext, selectedNode, convertedNodes)
+                .ifPresent(descriptionId -> this.createView(element, parentElementId, descriptionId, diagramContext, nodeKind));
     }
 
-    protected String getParentElementId(Element element, IDiagramContext diagramContext, Object selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+    protected void createView(Element element, String parentElementId, String descriptionId, IDiagramContext diagramContext, NodeContainmentKind nodeKind) {
+        var request = ViewCreationRequest.newViewCreationRequest()
+                .containmentKind(nodeKind)
+                .descriptionId(descriptionId)
+                .parentElementId(parentElementId)
+                .targetObjectId(this.objectService.getId(element))
+                .build();
+        diagramContext.getViewCreationRequests().add(request);
+    }
+
+    protected String getParentElementId(Object selectedNode, IDiagramContext diagramContext) {
         if (selectedNode instanceof Node node) {
             return node.getId();
         }
@@ -260,7 +260,7 @@ public class ToolService {
         } else {
             return;
         }
-        this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes, NodeContainmentKind.CHILD_NODE);
+        this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
     }
 
