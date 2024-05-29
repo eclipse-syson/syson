@@ -86,12 +86,6 @@ WS :
 	[ \t\r\n\u000C]+ -> skip
 ;
 
-ANY:
-	// This token is required to make sure the parser rule name can match any input (since it is defined as a negation 
-	// we need a dedicated token to match anything). 
-	.
-;
-
 Boolean :
 	TRUE|FALSE
 ;
@@ -218,3 +212,11 @@ TYPED : 'typed';
 TYPING : 'typing';
 UNIONS : 'unions';
 XOR: 'xor';
+
+// This rule is required to make sure the parser rule "name" can match any input (since it is defined as a negation we 
+// need a dedicated rule to match anything).
+// This rule is defined after all the other lexer rules: it should be matched if no other rule can be matched, and should
+// never take priority over other rules that are more precise.
+ANY:
+	.
+;

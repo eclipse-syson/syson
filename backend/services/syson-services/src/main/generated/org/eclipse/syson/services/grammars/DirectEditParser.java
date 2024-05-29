@@ -32,23 +32,23 @@ public class DirectEditParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, WS=14, ANY=15, Boolean=16, Integer=17, 
-		Real=18, DoubleQuotedString=19, ABOUT=20, ABSTRACT=21, ALIAS=22, ALL=23, 
-		AND=24, AS=25, ASSIGN=26, ASSOC=27, BEAHVIOR=28, BINDING=29, BOOL=30, 
-		BY=31, CHAINS=32, CLASS=33, CLASSIFIER=34, COMMENT=35, COMPOSITE=36, CONJUGATE=37, 
-		CONJUGATES=38, CONJUGATION=39, CONNECTOR=40, DATATYPE=41, DEFAULT=42, 
-		DEPENDENCY=43, DERIVED=44, DIFFERENCES=45, DISJOINING=46, DISJOINT=47, 
-		DOC=48, ELSE=49, END=50, EXPR=51, FALSE=52, FEATURE=53, FEATURED=54, FEATURING=55, 
-		FILTER=56, FIRST=57, FLOW=58, FOR=59, FROM=60, FUNCTION=61, HASTYPE=62, 
-		IF=63, INTERSECTS=64, IMPLIES=65, IMPORT=66, IN=67, INPUT=68, INTERACTION=69, 
-		INV=70, INVERSE=71, INVERTING=72, ISTYPE=73, LANGUAGE=74, MEMBER=75, METACLASS=76, 
-		METADATA=77, MULTIPLICITY=78, NAMESPACE=79, NONUNIQUE=80, NOT=81, NULL=82, 
-		OF=83, OR=84, ORDERED=85, OUT=86, PACKAGE=87, PORTION=88, PREDICATE=89, 
-		PRIAVTE=90, PROTECTED=91, PUBLIC=92, READONLY=93, REDEFINES=94, REDEFINITION=95, 
-		RFERENCES=96, REP=97, RETURN=98, SPECIALIZTION=99, SPECIALIZES=100, STEP=101, 
-		STRCUT=102, SUBCLASSIFIER=103, SUBSET=104, SUBSETS=105, SUBTYPE=106, SUCCESSION=107, 
-		THEN=108, TO=109, TRUE=110, TYPE=111, TYPED=112, TYPING=113, UNIONS=114, 
-		XOR=115;
+		T__9=10, T__10=11, T__11=12, T__12=13, WS=14, Boolean=15, Integer=16, 
+		Real=17, DoubleQuotedString=18, ABOUT=19, ABSTRACT=20, ALIAS=21, ALL=22, 
+		AND=23, AS=24, ASSIGN=25, ASSOC=26, BEAHVIOR=27, BINDING=28, BOOL=29, 
+		BY=30, CHAINS=31, CLASS=32, CLASSIFIER=33, COMMENT=34, COMPOSITE=35, CONJUGATE=36, 
+		CONJUGATES=37, CONJUGATION=38, CONNECTOR=39, DATATYPE=40, DEFAULT=41, 
+		DEPENDENCY=42, DERIVED=43, DIFFERENCES=44, DISJOINING=45, DISJOINT=46, 
+		DOC=47, ELSE=48, END=49, EXPR=50, FALSE=51, FEATURE=52, FEATURED=53, FEATURING=54, 
+		FILTER=55, FIRST=56, FLOW=57, FOR=58, FROM=59, FUNCTION=60, HASTYPE=61, 
+		IF=62, INTERSECTS=63, IMPLIES=64, IMPORT=65, IN=66, INPUT=67, INTERACTION=68, 
+		INV=69, INVERSE=70, INVERTING=71, ISTYPE=72, LANGUAGE=73, MEMBER=74, METACLASS=75, 
+		METADATA=76, MULTIPLICITY=77, NAMESPACE=78, NONUNIQUE=79, NOT=80, NULL=81, 
+		OF=82, OR=83, ORDERED=84, OUT=85, PACKAGE=86, PORTION=87, PREDICATE=88, 
+		PRIAVTE=89, PROTECTED=90, PUBLIC=91, READONLY=92, REDEFINES=93, REDEFINITION=94, 
+		RFERENCES=95, REP=96, RETURN=97, SPECIALIZTION=98, SPECIALIZES=99, STEP=100, 
+		STRCUT=101, SUBCLASSIFIER=102, SUBSET=103, SUBSETS=104, SUBTYPE=105, SUCCESSION=106, 
+		THEN=107, TO=108, TRUE=109, TYPE=110, TYPED=111, TYPING=112, UNIONS=113, 
+		XOR=114, ANY=115;
 	public static final int
 		RULE_expression = 0, RULE_multiplicityExpression = 1, RULE_multiplicityExpressionMember = 2, 
 		RULE_featureExpressions = 3, RULE_subsettingExpression = 4, RULE_redefinitionExpression = 5, 
@@ -69,7 +69,7 @@ public class DirectEditParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'['", "'..'", "']'", "'*'", "':>'", "':>>'", "':'", "'='", "'|'", 
-			"'/'", "','", "'::'", "'::>'", null, null, null, null, null, null, "'about'", 
+			"'/'", "','", "'::'", "'::>'", null, null, null, null, null, "'about'", 
 			"'abstract'", "'alias'", "'all'", "'and'", "'as'", "'assign'", "'assoc'", 
 			"'behavior'", "'binding'", "'bool'", "'by'", "'chains'", "'class'", "'classifier'", 
 			"'comment'", "'composite'", "'conjugate'", "'conjugates'", "'conjugation'", 
@@ -92,7 +92,7 @@ public class DirectEditParser extends Parser {
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, "WS", "ANY", "Boolean", "Integer", "Real", "DoubleQuotedString", 
+			null, null, "WS", "Boolean", "Integer", "Real", "DoubleQuotedString", 
 			"ABOUT", "ABSTRACT", "ALIAS", "ALL", "AND", "AS", "ASSIGN", "ASSOC", 
 			"BEAHVIOR", "BINDING", "BOOL", "BY", "CHAINS", "CLASS", "CLASSIFIER", 
 			"COMMENT", "COMPOSITE", "CONJUGATE", "CONJUGATES", "CONJUGATION", "CONNECTOR", 
@@ -106,7 +106,7 @@ public class DirectEditParser extends Parser {
 			"PROTECTED", "PUBLIC", "READONLY", "REDEFINES", "REDEFINITION", "RFERENCES", 
 			"REP", "RETURN", "SPECIALIZTION", "SPECIALIZES", "STEP", "STRCUT", "SUBCLASSIFIER", 
 			"SUBSET", "SUBSETS", "SUBTYPE", "SUCCESSION", "THEN", "TO", "TRUE", "TYPE", 
-			"TYPED", "TYPING", "UNIONS", "XOR"
+			"TYPED", "TYPING", "UNIONS", "XOR", "ANY"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -1101,8 +1101,8 @@ public class DirectEditParser extends Parser {
 		"\fu\b\f\n\f\f\fx\t\f\u0001\r\u0001\r\u0001\r\u0005\r}\b\r\n\r\f\r\u0080"+
 		"\t\r\u0001\u000e\u0004\u000e\u0083\b\u000e\u000b\u000e\f\u000e\u0084\u0001"+
 		"\u000e\u0000\u0000\u000f\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012"+
-		"\u0014\u0016\u0018\u001a\u001c\u0000\u0003\u0002\u0000\u0004\u0004\u0011"+
-		"\u0011\u0001\u0000\u0010\u0013\u0003\u0000\u0001\u0001\u0005\b\r\r\u008d"+
+		"\u0014\u0016\u0018\u001a\u001c\u0000\u0003\u0002\u0000\u0004\u0004\u0010"+
+		"\u0010\u0001\u0000\u000f\u0012\u0003\u0000\u0001\u0001\u0005\b\r\r\u008d"+
 		"\u0000\u001f\u0001\u0000\u0000\u0000\u0002\'\u0001\u0000\u0000\u0000\u0004"+
 		"0\u0001\u0000\u0000\u0000\u0006I\u0001\u0000\u0000\u0000\bK\u0001\u0000"+
 		"\u0000\u0000\nN\u0001\u0000\u0000\u0000\fQ\u0001\u0000\u0000\u0000\u000e"+
