@@ -27,6 +27,7 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -38,7 +39,7 @@ import org.eclipse.syson.sysml.helper.EMFUtils;
 
 /**
  * Helper used to build SysML model.
- * 
+ *
  * @author Arthur Daussy
  */
 public class ModelBuilder {
@@ -53,7 +54,7 @@ public class ModelBuilder {
     }
 
     public void addSuperType(Classifier child, Classifier parent) {
-        Subclassification subClassification = fact.createSubclassification();
+        Subclassification subClassification = this.fact.createSubclassification();
         // Workaround waiting for the subset/refine implementation
         subClassification.setGeneral(parent);
         subClassification.setSpecific(child);
@@ -64,38 +65,44 @@ public class ModelBuilder {
 
     }
 
-    public void addRedefinition(Feature child, Feature parent) {
-        Redefinition redefinition = fact.createRedefinition();
-        redefinition.setGeneral(parent);
-        redefinition.setSpecific(child);
+    public void addRedefinition(Feature redefinedFeature, Feature redefiningFeature) {
+        Redefinition redefinition = this.fact.createRedefinition();
+        redefinition.setGeneral(redefiningFeature);
+        redefinition.setSpecific(redefinedFeature);
         // Workaround waiting for the subset/refine implementation
-        redefinition.setRedefinedFeature(child);
-        redefinition.setRedefiningFeature(parent);
-        redefinition.setSubsettedFeature(child);
-        redefinition.setSubsettingFeature(parent);
+        redefinition.setRedefinedFeature(redefinedFeature);
+        redefinition.setRedefiningFeature(redefiningFeature);
+        redefinition.setSubsettedFeature(redefinedFeature);
+        redefinition.setSubsettingFeature(redefiningFeature);
 
-        child.getOwnedRelationship().add(redefinition);
+        redefinedFeature.getOwnedRelationship().add(redefinition);
 
+    }
+
+    public void addReferenceSubsetting(Element owner, Feature subSettedFeature) {
+        ReferenceSubsetting refSubsetting = this.fact.createReferenceSubsetting();
+        refSubsetting.setReferencedFeature(subSettedFeature);
+        owner.getOwnedRelationship().add(refSubsetting);
     }
 
     public <T extends Element> T create(Class<T> type) {
-        return createIn(type, null);
+        return this.createIn(type, null);
     }
 
     public <T extends Element> T createWithName(Class<T> type, String name) {
-        return createInWithFullName(type, null, name, null);
+        return this.createInWithFullName(type, null, name, null);
     }
 
     public <T extends Element> T createIn(Class<T> type, Element parent) {
-        return createInWithName(type, parent, null);
+        return this.createInWithName(type, parent, null);
     }
 
     public <T extends Element> T createInWithName(Class<T> type, Element parent, String name) {
-        return createInWithFullName(type, parent, name, null);
+        return this.createInWithFullName(type, parent, name, null);
     }
 
     public void setType(Feature feature, Type type) {
-        FeatureTyping featureTyping = fact.createFeatureTyping();
+        FeatureTyping featureTyping = this.fact.createFeatureTyping();
         featureTyping.setSpecific(feature);
         featureTyping.setTypedFeature(feature);
         // Waiting for subset/refine implementation
@@ -105,7 +112,7 @@ public class ModelBuilder {
     }
 
     public <T extends Element> T createInWithFullName(Class<T> type, Element parent, String name, String shortName) {
-        T newInstance = (T) fact.create(CLASS_TO_ECLASS.get(type));
+        T newInstance = (T) this.fact.create(CLASS_TO_ECLASS.get(type));
         if (name != null) {
             newInstance.setDeclaredName(name);
         }
@@ -117,26 +124,26 @@ public class ModelBuilder {
             if (newInstance instanceof Relationship newInstanceRelationship && !(newInstance instanceof Definition)) {
                 parent.getOwnedRelationship().add(newInstanceRelationship);
             } else if (newInstance instanceof EnumerationUsage feature && parent instanceof EnumerationDefinition) {
-                addVariantMembership(parent, feature);
+                this.addVariantMembership(parent, feature);
             } else if (newInstance instanceof Feature feature) {
-                addFeatureMembership(parent, feature);
+                this.addFeatureMembership(parent, feature);
             } else {
-                addOwnedMembership(parent, newInstance);
+                this.addOwnedMembership(parent, newInstance);
             }
         }
         return newInstance;
     }
 
     private void addVariantMembership(Element parent, EnumerationUsage feature) {
-        addOwnedMembership(parent, feature, VariantMembership.class, null);
+        this.addOwnedMembership(parent, feature, VariantMembership.class, null);
     }
 
     private void addOwnedMembership(Element parent, Element ownedElement) {
-        addOwnedMembership(parent, ownedElement, OwningMembership.class, null);
+        this.addOwnedMembership(parent, ownedElement, OwningMembership.class, null);
     }
 
     private <T extends OwningMembership> T addOwnedMembership(Element parent, Element ownedElement, Class<T> relationshipType, VisibilityKind visibility) {
-        T ownedRelation = (T) fact.create(CLASS_TO_ECLASS.get(relationshipType));
+        T ownedRelation = (T) this.fact.create(CLASS_TO_ECLASS.get(relationshipType));
         parent.getOwnedRelationship().add(ownedRelation);
         ownedRelation.getOwnedRelatedElement().add(ownedElement);
         // I guess this should be done automatically when adding to ownedRelatedElement but waiting for subset and super
@@ -154,7 +161,7 @@ public class ModelBuilder {
     }
 
     private void addFeatureMembership(Element parent, Feature feature) {
-        FeatureMembership relationship = addOwnedMembership(parent, feature, FeatureMembership.class, null);
+        FeatureMembership relationship = this.addOwnedMembership(parent, feature, FeatureMembership.class, null);
         // Workaround waiting for subset/refine implementation
         relationship.setFeature(feature);
     }

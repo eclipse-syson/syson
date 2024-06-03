@@ -362,7 +362,8 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
      */
     @Override
     public String getName() {
-        return this.getDeclaredName();
+        // Return an effective name for this Element. By default this is the same as its declaredName.
+        return this.effectiveName();
     }
 
     /**
@@ -574,7 +575,8 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
      */
     @Override
     public String getShortName() {
-        return this.getDeclaredShortName();
+        // Return an effective shortName for this Element. By default this is the same as its declaredShortName.
+        return this.effectiveShortName();
     }
 
     /**

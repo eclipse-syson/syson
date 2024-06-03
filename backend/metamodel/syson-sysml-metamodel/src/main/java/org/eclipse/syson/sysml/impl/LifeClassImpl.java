@@ -32,6 +32,14 @@ public class LifeClassImpl extends ClassImpl implements LifeClass {
     }
 
     /**
+     * @generated NOT
+     */
+    @Override
+    public String effectiveName() {
+        return "Life";
+    }
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated

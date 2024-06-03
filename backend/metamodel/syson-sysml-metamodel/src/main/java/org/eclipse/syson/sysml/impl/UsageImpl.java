@@ -35,6 +35,7 @@ import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationUsage;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
@@ -42,6 +43,7 @@ import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.OccurrenceUsage;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -802,6 +804,23 @@ public class UsageImpl extends FeatureImpl implements Usage {
     public EList<VariantMembership> getVariantMembership() {
         List<VariantMembership> data = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_VariantMembership(), data.size(), data.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    @Override
+    public Feature namingFeature() {
+        OwningMembership owMembership = this.getOwningMembership();
+        final Feature namingFeature;
+        if (owMembership instanceof VariantMembership variantMembership) {
+            namingFeature = super.namingFeature();
+        } else if (this.getOwnedReferenceSubsetting() != null) {
+            namingFeature = this.getOwnedReferenceSubsetting().getReferencedFeature();
+        } else {
+            namingFeature = null;
+        }
+        return namingFeature;
     }
 
     /**
