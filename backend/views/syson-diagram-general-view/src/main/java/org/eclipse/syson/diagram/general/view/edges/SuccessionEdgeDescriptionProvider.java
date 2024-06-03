@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.edges.AbstractSuccessionEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 
@@ -33,11 +34,11 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
         super(colorProvider, new GVDescriptionNameGenerator());
     }
 
-    private List<NodeDescription> getSourceAndTargetNodes(IViewDiagramElementFinder cache) {
+    private List<NodeDescription> getAllUsages(IViewDiagramElementFinder cache) {
         var sourcesAndTargets = new ArrayList<NodeDescription>();
 
         GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            cache.getNodeDescription(nameGenerator.getNodeName(usage)).ifPresent(sourcesAndTargets::add);
+            cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(sourcesAndTargets::add);
         });
 
         return sourcesAndTargets;
@@ -45,11 +46,14 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
 
     @Override
     protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
-        return this.getSourceAndTargetNodes(cache);
+        var sources = this.getAllUsages(cache);
+        // the start node can be the source of a succession
+        cache.getNodeDescription(this.nameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(sources::add);
+        return sources;
     }
 
     @Override
     protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
-        return this.getSourceAndTargetNodes(cache);
+        return this.getAllUsages(cache);
     }
 }
