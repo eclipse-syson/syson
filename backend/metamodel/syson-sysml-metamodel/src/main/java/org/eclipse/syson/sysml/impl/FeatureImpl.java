@@ -699,13 +699,14 @@ public class FeatureImpl extends TypeImpl implements Feature {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Feature namingFeature() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRedefinition().stream()
+                .findFirst()
+                .map(red -> red.getRedefiningFeature())
+                .orElse(null);
     }
 
     /**
@@ -873,6 +874,48 @@ public class FeatureImpl extends TypeImpl implements Feature {
                 return;
         }
         super.eUnset(featureID);
+    }
+
+    /**
+     * @generated NOT
+     */
+    @Override
+    public String effectiveName() {
+        String dName = this.getDeclaredName();
+        String dShortName = this.getDeclaredShortName();
+        final String effectiveName;
+        if (dName != null || dShortName != null) {
+            effectiveName = dName;
+        } else {
+            Feature namingFeature = this.namingFeature();
+            if (namingFeature != null && namingFeature != this) {
+                effectiveName = namingFeature.effectiveName();
+            } else {
+                effectiveName = null;
+            }
+        }
+        return effectiveName;
+    }
+
+    /**
+     * @generated NOT
+     */
+    @Override
+    public String effectiveShortName() {
+        String dName = this.getDeclaredName();
+        String dShortName = this.getDeclaredShortName();
+        final String effectiveName;
+        if (dName != null || dShortName != null) {
+            effectiveName = dShortName;
+        } else {
+            Feature namingFeature = this.namingFeature();
+            if (namingFeature != null && namingFeature != this) {
+                effectiveName = namingFeature.effectiveShortName();
+            } else {
+                effectiveName = null;
+            }
+        }
+        return effectiveName;
     }
 
     /**

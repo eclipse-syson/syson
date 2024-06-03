@@ -19,7 +19,6 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.helper.LabelConstants;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Conjugated Port Definition</b></em>'. <!--
@@ -110,23 +109,10 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
      * @generated NOT
      */
     @Override
-    public void setDeclaredName(String newDeclaredName) {
-        // Nothing to do here
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public String getDeclaredName() {
-        PortDefinition originalPortDefinition = this.getOriginalPortDefinition();
-        if (originalPortDefinition != null) {
-            StringBuilder declaredName = new StringBuilder();
-            declaredName.append(LabelConstants.CONJUGATED);
-            declaredName.append(originalPortDefinition.getDeclaredName());
-            return declaredName.toString();
+    public String effectiveName() {
+        PortDefinition portDef = this.getOriginalPortDefinition();
+        if (portDef != null && portDef.getName() != null) {
+            return "~" + portDef.getName();
         }
         return null;
     }
@@ -140,12 +126,14 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__ORIGINAL_PORT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getOriginalPortDefinition();
+                }
                 return this.basicGetOriginalPortDefinition();
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__OWNED_PORT_CONJUGATOR:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedPortConjugator();
+                }
                 return this.basicGetOwnedPortConjugator();
         }
         return super.eGet(featureID, resolve, coreType);

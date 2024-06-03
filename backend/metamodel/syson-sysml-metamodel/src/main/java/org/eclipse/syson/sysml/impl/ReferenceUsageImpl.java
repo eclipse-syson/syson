@@ -20,9 +20,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.TransitionUsage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Reference Usage</b></em>'. <!-- end-user-doc
@@ -87,6 +90,19 @@ public class ReferenceUsageImpl extends UsageImpl implements ReferenceUsage {
             return foundActionUsage.getDeclaredName();
         }
         return super.getDeclaredName();
+    }
+
+    /**
+     * @generated NOT
+     */
+    @Override
+    public Feature namingFeature() {
+        Type type = this.getOwningType();
+
+        if (type instanceof TransitionUsage transitionUsage && transitionUsage.getParameter().size() >= 2 && transitionUsage.inputParameter(2) == this) {
+            return transitionUsage.triggerPayloadParameter();
+        }
+        return super.namingFeature();
     }
 
 } // ReferenceUsageImpl
