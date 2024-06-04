@@ -21,6 +21,7 @@ import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_MEMBERSH
 import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_METADATA_USAGE;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +42,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
+import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -270,7 +272,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseFeatureReferenceExpression(FeatureReferenceExpression expression) {
         Appender builder = this.newAppender();
-        
+
         Membership membership = expression.getOwnedMembership().stream()
                 .findFirst()
                 .orElse(null);
@@ -283,7 +285,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         return builder.toString();
     }
-    
+
     @Override
     public String caseOperatorExpression(OperatorExpression op) {
         Appender builder = this.newAppender();
@@ -330,44 +332,74 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 LOGGER.warn("IndexExpression are not handled yet");
                 break;
             case ",":
-                LOGGER.warn("SequenceOperatorExpression are not handled yet");
+                this.appendSequenceExpression(builder, op);
                 break;
             default:
                 break;
         }
         return builder.toString();
     }
-    
+
     @Override
     public String caseInvocationExpression(InvocationExpression expression) {
         LOGGER.warn("InvocationExpression are not handled yet");
         return "";
     }
-    
+
     @Override
     public String caseNullExpression(NullExpression expression) {
         LOGGER.warn("NullExpression are not handled yet");
         return "";
     }
-    
+
     @Override
     public String caseCollectExpression(CollectExpression expression) {
         LOGGER.warn("CollectExpression are not handled yet");
         return "";
     }
-    
+
     @Override
     public String caseSelectExpression(SelectExpression expression) {
         LOGGER.warn("SelectExpression are not handled yet");
         return "";
     }
-    
+
     @Override
     public String caseMetadataAccessExpression(MetadataAccessExpression expression) {
         LOGGER.warn("MetadataAccessExpression are not handled yet");
         return "";
     }
-    
+
+    @Override
+    public String caseFeatureChainExpression(FeatureChainExpression feature) {
+        Appender builder = this.newAppender();
+
+        feature.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .findFirst()
+                .map(ParameterMembership::getOwnedMemberParameter)
+                .filter(NOT_NULL)
+                .map(Feature::getOwnedRelationship)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst()
+                .ifPresent(ft -> this.appendNonFeatureChainExpression(builder, ft.getValue()));
+
+        builder.append(".");
+
+        feature.getOwnedRelationship().stream()
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .skip(1)
+                .findFirst()
+                .ifPresent(exp -> this.appendFeatureChainMember(builder, exp));
+
+        return builder.toString();
+    }
+
     private String getUsageKeyword(Usage usage) {
         return this.keywordProvider.doSwitch(usage);
     }
@@ -521,17 +553,62 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendOwnedExpression(Appender builder, Expression expression) {
         if (expression instanceof OperatorExpression op && op.getOperator() != null) {
-            builder.appendSpaceIfNeeded().append(caseOperatorExpression(op));
+            builder.appendSpaceIfNeeded().append(this.caseOperatorExpression(op));
         } else {
             this.appendPrimaryExpression(builder, expression);
         }
     }
 
+    private void appendSequenceExpression(Appender builder, Expression expression) {
+        builder.appendSpaceIfNeeded().append(LabelConstants.OPEN_PARENTHESIS);
+        this.appendSequenceExpressionList(builder, expression);
+        builder.append(LabelConstants.CLOSE_PARENTHESIS);
+    }
+
+    private void appendSequenceOperatorExpression(Appender builder, OperatorExpression expression) {
+        List<ParameterMembership> features = expression.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .toList();
+
+        if (!features.isEmpty()) {
+            this.appendArgumentMember(builder, features.get(0));
+
+            builder.append(LabelConstants.COMMA);
+
+            this.appendSequenceExpressionListMember(builder, features.subList(1, features.size()));
+        }
+    }
+
     private void appendPrimaryExpression(Appender builder, Expression expression) {
         if (expression instanceof FeatureChainExpression feature) {
-            LOGGER.warn("FeatureChainExpression are not handled yet");
+            builder.appendSpaceIfNeeded().append(this.caseFeatureChainExpression(feature));
         } else {
             this.appendNonFeatureChainExpression(builder, expression);
+        }
+    }
+
+    private void appendFeatureChainMember(Appender builder, Membership membership) {
+        if (membership instanceof OwningMembership owningMembership) {
+            if (owningMembership.getOwnedMemberElement() instanceof Feature feature) {
+                this.appendFeatureChain(builder, feature);
+            }
+        } else {
+            if (membership.getMemberElement() instanceof Feature feature) {
+                builder.append(this.getDeresolvableName(feature, membership.getMemberElement()));
+            }
+        }
+    }
+
+    private void appendFeatureChain(Appender builder, Feature feature) {
+        String chainings = feature.getOwnedRelationship().stream()
+                .filter(FeatureChaining.class::isInstance)
+                .map(FeatureChaining.class::cast)
+                .map(featureChaining -> this.getDeresolvableName(featureChaining.getChainingFeature(), featureChaining))
+                .collect(Collectors.joining("."));
+
+        if (!chainings.isEmpty()) {
+            builder.appendSpaceIfNeeded().append(chainings);
         }
     }
 
@@ -551,13 +628,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else if (expression instanceof InvocationExpression exp) {
             builder.appendSpaceIfNeeded().append(this.caseInvocationExpression(exp));
         } else {
-            LOGGER.warn("SequenceExpression are not handled yet");
+            this.appendSequenceExpression(builder, expression);
         }
     }
 
     private void appendSequenceExpressionList(Appender builder, Expression expression) {
         if (expression instanceof OperatorExpression op && LabelConstants.COMMA.equals(op.getOperator())) {
-            LOGGER.warn("SequenceOperatorExpression are not handled yet");
+            this.appendSequenceOperatorExpression(builder, op);
         } else if (expression != null) {
             this.appendOwnedExpression(builder, expression);
         }

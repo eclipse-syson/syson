@@ -54,6 +54,8 @@ import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.Test;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBracketOperatorExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.AttributeUsageWithFeatureChainExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBinaryOperatorExpressionTestModel;
 
 /**
@@ -683,6 +685,18 @@ public class SysMLModelToTextSwitchTest {
     public void attributeUsageWithBracketOperatorExpression() {
         AttributeUsageWithBracketOperatorExpressionTestModel model = new AttributeUsageWithBracketOperatorExpressionTestModel();
         this.assertTextualFormEquals("attribute attribute1 = 80 [millimetre];", model.getAttributeUsage());
+    }
+    
+    @Test
+    public void attributeUsageWithSequenceExpression() {
+        AttributeUsageWithSequenceExpressionTestModel model = new AttributeUsageWithSequenceExpressionTestModel();
+        this.assertTextualFormEquals("attribute attribute1 = (fuel.mass, front.mass, rear.mass, drives.mass);", model.getAttributeUsage());
+    }
+    
+    @Test
+    public void attributeUsageWithFeatureChainExpression() {
+        AttributeUsageWithFeatureChainExpressionTestModel model = new AttributeUsageWithFeatureChainExpressionTestModel();
+        this.assertTextualFormEquals("attribute attribute1 = (fuel.mass, front.mass, rear.drives.mass);", model.getAttributeUsage());
     }
 
     @Test
