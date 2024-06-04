@@ -32,7 +32,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class DescriptionNameGenerator implements IDescriptionNameGenerator {
 
-    private static final String SPACE = " ";
+    protected static final String SPACE = " ";
 
     private static final Pattern WORD_FINDER = Pattern.compile("(([A-Z]?[a-z]+)|([A-Z]))");
 
@@ -133,7 +133,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getNodeName(String type) {
-        return this.getNodeName(this.diagramPrefix, type);
+        return this.getNodeName(this.getDiagramPrefix(), type);
     }
 
     /**
@@ -146,7 +146,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getNodeName(EClass eClass) {
-        return this.getNodeName(this.diagramPrefix, eClass.getName());
+        return this.getNodeName(this.getDiagramPrefix(), eClass.getName());
     }
 
     /**
@@ -159,7 +159,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getBorderNodeName(String type) {
-        return this.getBorderNodeName(this.diagramPrefix, type);
+        return this.getBorderNodeName(this.getDiagramPrefix(), type);
     }
 
     /**
@@ -172,7 +172,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getBorderNodeName(EClass eClass) {
-        return this.getBorderNodeName(this.diagramPrefix, eClass.getName());
+        return this.getBorderNodeName(this.getDiagramPrefix(), eClass.getName());
     }
 
     /**
@@ -188,12 +188,12 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getCompartmentName(EClass eClass, EReference eReference) {
-        return this.getCompartmentName(this.diagramPrefix, eClass.getName() + SPACE + eReference.getName());
+        return this.getCompartmentName(this.getDiagramPrefix(), eClass.getName() + SPACE + eReference.getName());
     }
 
     @Override
     public String getFreeFormCompartmentName(EClass eClass, EReference eReference) {
-        return this.getCompartmentName(this.diagramPrefix, eClass.getName() + SPACE + eReference.getName() + " FreeForm");
+        return this.getCompartmentName(this.getDiagramPrefix(), eClass.getName() + SPACE + eReference.getName() + " FreeForm");
     }
 
     /**
@@ -209,7 +209,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getCompartmentItemName(EClass eClass, EReference eReference) {
-        return this.getCompartmentItemName(this.diagramPrefix, eClass.getName() + SPACE + eReference.getName());
+        return this.getCompartmentItemName(this.getDiagramPrefix(), eClass.getName() + SPACE + eReference.getName());
     }
 
     /**
@@ -225,7 +225,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getInheritedCompartmentItemName(EClass eClass, EReference eReference) {
-        return this.getInheritedCompartmentItemName(this.diagramPrefix, eClass.getName() + SPACE + eReference.getName());
+        return this.getInheritedCompartmentItemName(this.getDiagramPrefix(), eClass.getName() + SPACE + eReference.getName());
     }
 
     /**
@@ -238,7 +238,7 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getEdgeName(EClass eClass) {
-        return this.getEdgeName(this.diagramPrefix, eClass.getName());
+        return this.getEdgeName(this.getDiagramPrefix(), eClass.getName());
     }
 
     /**
@@ -251,6 +251,11 @@ public class DescriptionNameGenerator implements IDescriptionNameGenerator {
      */
     @Override
     public String getEdgeName(String type) {
-        return this.getEdgeName(this.diagramPrefix, type);
+        return this.getEdgeName(this.getDiagramPrefix(), type);
+    }
+
+    @Override
+    public String getDiagramPrefix() {
+        return this.diagramPrefix;
     }
 }

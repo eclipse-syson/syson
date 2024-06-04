@@ -15,6 +15,7 @@ package org.eclipse.syson.util;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 
@@ -159,5 +160,10 @@ public interface IDescriptionNameGenerator {
      */
     String getEdgeName(String type);
 
-
+    /**
+     * Returns the prefix to be used during the computation of the {@link NodeDescription} and {@link EdgeDescription}.
+     *
+     * @return a string used to name a {@link NodeDescription} or a {@link EdgeDescription}.
+     */
+    String getDiagramPrefix();
 }

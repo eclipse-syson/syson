@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -75,7 +76,11 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     *
+     * The ActionUsage that is the ownedMemberFeature of this StateSubactionMembership.
+     *
+     * <!-- end-user-doc -->
      *
      * @generated
      */
@@ -86,14 +91,19 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
      *
-     * @generated
+     * The ActionUsage that is the ownedMemberFeature of this StateSubactionMembership.
+     *
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
      */
     public ActionUsage basicGetAction() {
-        // TODO: implement this method to return the 'Action' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Feature ownedMemberFeature = this.getOwnedMemberFeature();
+        if (ownedMemberFeature instanceof ActionUsage au) {
+            return au;
+        }
         return null;
     }
 
@@ -116,8 +126,9 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
     public void setKind(StateSubactionKind newKind) {
         StateSubactionKind oldKind = this.kind;
         this.kind = newKind == null ? KIND_EDEFAULT : newKind;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.STATE_SUBACTION_MEMBERSHIP__KIND, oldKind, this.kind));
+        }
     }
 
     /**
@@ -131,8 +142,9 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
             case SysmlPackage.STATE_SUBACTION_MEMBERSHIP__KIND:
                 return this.getKind();
             case SysmlPackage.STATE_SUBACTION_MEMBERSHIP__ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getAction();
+                }
                 return this.basicGetAction();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -191,8 +203,9 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (kind: ");

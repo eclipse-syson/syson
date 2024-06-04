@@ -39,7 +39,7 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
         var sourcesAndTargets = new ArrayList<NodeDescription>();
 
         GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(sourcesAndTargets::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(usage)).ifPresent(sourcesAndTargets::add);
         });
 
         return sourcesAndTargets;
@@ -49,7 +49,7 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
     protected List<NodeDescription> getSourceNodes(IViewDiagramElementFinder cache) {
         var sources = this.getAllUsages(cache);
         // the start node can be the source of a succession
-        cache.getNodeDescription(this.nameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(sources::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(sources::add);
         return sources;
     }
 
@@ -57,7 +57,7 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
     protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
         var targets = this.getAllUsages(cache);
         // the done node can be the target of a succession
-        cache.getNodeDescription(this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(targets::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(targets::add);
         return targets;
     }
 }

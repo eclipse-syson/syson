@@ -44,7 +44,7 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
-    private final IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
     private final EClass eClass;
 
@@ -52,7 +52,7 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
 
     public AbstractDefinitionOwnedUsageEdgeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(nameGenerator);
         this.eClass = Objects.requireNonNull(eClass);
         this.eReference = Objects.requireNonNull(eReference);
     }
@@ -72,7 +72,7 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
                 .domainType(domainType)
                 .isDomainBasedEdge(false)
                 .centerLabelExpression(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".getMultiplicityLabel()")
-                .name(this.nameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()))
+                .name(this.descriptionNameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()))
                 .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -82,12 +82,12 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optEdgeDescription = cache.getEdgeDescription(this.nameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()));
-        var optUsageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass));
+        var optEdgeDescription = cache.getEdgeDescription(this.descriptionNameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()));
+        var optUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(this.eClass));
         var sourceNodes = new ArrayList<NodeDescription>();
 
         this.getEdgeSources().forEach(definition -> {
-            cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(sourceNodes::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(sourceNodes::add);
         });
 
         EdgeDescription edgeDescription = optEdgeDescription.get();

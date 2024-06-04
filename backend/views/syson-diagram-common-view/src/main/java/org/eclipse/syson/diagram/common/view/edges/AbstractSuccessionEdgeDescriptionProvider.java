@@ -38,11 +38,11 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractSuccessionEdgeDescriptionProvider extends AbstractEdgeDescriptionProvider {
 
-    protected final IDescriptionNameGenerator nameGenerator;
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public AbstractSuccessionEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public AbstractSuccessionEdgeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
-        this.nameGenerator = nameGenerator;
+        this.descriptionNameGenerator = descriptionNameGenerator;
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
                 .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getSuccessionLabel"))
-                .name(this.nameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSuccession()))
+                .name(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSuccession()))
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -83,7 +83,7 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getEdgeDescription(this.nameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSuccession())).ifPresent(ed -> {
+        cache.getEdgeDescription(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSuccession())).ifPresent(ed -> {
             diagramDescription.getEdgeDescriptions().add(ed);
             ed.getSourceNodeDescriptions().addAll(this.getSourceNodes(cache));
             ed.getTargetNodeDescriptions().addAll(this.getTargetNodes(cache));

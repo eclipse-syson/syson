@@ -23,6 +23,8 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateSubactionKind;
+import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -97,13 +99,18 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ActionUsage basicGetDoAction() {
-        // TODO: implement this method to return the 'Do Action' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(StateSubactionMembership.class::isInstance)
+                .map(StateSubactionMembership.class::cast)
+                .filter(ssm -> ssm.getKind().equals(StateSubactionKind.DO))
+                .map(StateSubactionMembership::getAction)
+                .filter(ActionUsage.class::isInstance)
+                .map(ActionUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -120,13 +127,18 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ActionUsage basicGetEntryAction() {
-        // TODO: implement this method to return the 'Entry Action' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(StateSubactionMembership.class::isInstance)
+                .map(StateSubactionMembership.class::cast)
+                .filter(ssm -> ssm.getKind().equals(StateSubactionKind.ENTRY))
+                .map(StateSubactionMembership::getAction)
+                .filter(ActionUsage.class::isInstance)
+                .map(ActionUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -143,13 +155,18 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ActionUsage basicGetExitAction() {
-        // TODO: implement this method to return the 'Exit Action' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelationship().stream()
+                .filter(StateSubactionMembership.class::isInstance)
+                .map(StateSubactionMembership.class::cast)
+                .filter(ssm -> ssm.getKind().equals(StateSubactionKind.EXIT))
+                .map(StateSubactionMembership::getAction)
+                .filter(ActionUsage.class::isInstance)
+                .map(ActionUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -171,8 +188,9 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     public void setIsParallel(boolean newIsParallel) {
         boolean oldIsParallel = this.isParallel;
         this.isParallel = newIsParallel;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.STATE_DEFINITION__IS_PARALLEL, oldIsParallel, this.isParallel));
+        }
     }
 
     /**
@@ -197,16 +215,19 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
             case SysmlPackage.STATE_DEFINITION__IS_PARALLEL:
                 return this.isIsParallel();
             case SysmlPackage.STATE_DEFINITION__DO_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getDoAction();
+                }
                 return this.basicGetDoAction();
             case SysmlPackage.STATE_DEFINITION__ENTRY_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getEntryAction();
+                }
                 return this.basicGetEntryAction();
             case SysmlPackage.STATE_DEFINITION__EXIT_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getExitAction();
+                }
                 return this.basicGetExitAction();
             case SysmlPackage.STATE_DEFINITION__STATE:
                 return this.getState();
@@ -274,8 +295,9 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isParallel: ");
