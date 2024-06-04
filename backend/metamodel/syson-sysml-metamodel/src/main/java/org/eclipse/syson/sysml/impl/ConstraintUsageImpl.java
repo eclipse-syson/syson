@@ -27,7 +27,9 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Function;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Predicate;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -431,4 +433,15 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
         return super.eInvoke(operationID, arguments);
     }
 
+    /**
+     * @generated NOT
+     */
+    @Override
+    public Feature namingFeature() {
+        OwningMembership owMembership = this.getOwningMembership();
+        if (owMembership instanceof RequirementConstraintMembership && this.getOwnedReferenceSubsetting() != null) {
+            return this.getOwnedReferenceSubsetting().getReferencedFeature();
+        }
+        return super.namingFeature();
+    }
 } // ConstraintUsageImpl

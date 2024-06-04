@@ -79,6 +79,18 @@ public class ModelBuilder {
 
     }
 
+    public void addReferenceSubsetting(Usage child, Feature parent) {
+        ReferenceSubsetting subsetting = this.fact.createReferenceSubsetting();
+        // Workaround waiting for the subset/refine implementation
+        subsetting.setGeneral(parent);
+        subsetting.setSpecific(child);
+        subsetting.setSubsettingFeature(child);
+        subsetting.setSubsettedFeature(parent);
+
+        child.getOwnedRelationship().add(subsetting);
+
+    }
+
     public void addRedefinition(Feature redefiningFeature, Feature redefinedFeature) {
         Redefinition redefinition = this.fact.createRedefinition();
         redefinition.setGeneral(redefiningFeature);
