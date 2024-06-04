@@ -38,6 +38,10 @@ public class Appender {
         this.indentation = indentation;
     }
     
+    public boolean isEmpty() {
+        return builder.isEmpty() || builder.toString().isBlank();
+    }
+    
     public static String toPrintableName(String initialName) {
         return NameHelper.toPrintableName(initialName);
     }
@@ -45,6 +49,10 @@ public class Appender {
     public Appender appendPrintableName(String name) {
         append(toPrintableName(name));
         return this;
+    }
+    
+    public Appender appendWithSpaceIfNeeded(String content) {
+        return appendSpaceIfNeeded().append(content);
     }
 
     public Appender appendSpaceIfNeeded() {
