@@ -21,8 +21,10 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.EventOccurrenceUsage;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 
@@ -96,12 +98,13 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ActionUsage basicGetPerformedAction() {
-        // TODO: implement this method to return the 'Performed Action' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        ReferenceSubsetting referenceSubSetting = this.getOwnedReferenceSubsetting();
+        if (referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage perfomedAction) {
+            return perfomedAction;
+        }
         return null;
     }
 
@@ -186,6 +189,18 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    @Override
+    public Feature namingFeature() {
+        ActionUsage performedAction = this.getPerformedAction();
+        if (performedAction != this) {
+            return performedAction;
+        }
+        return super.namingFeature();
     }
 
 } // PerformActionUsageImpl
