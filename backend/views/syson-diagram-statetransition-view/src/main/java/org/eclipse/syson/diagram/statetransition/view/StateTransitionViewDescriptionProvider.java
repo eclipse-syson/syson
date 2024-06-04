@@ -12,32 +12,25 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.statetransition.view;
 
-import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
-import org.eclipse.sirius.components.view.emf.IViewConverter;
-import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
-import org.eclipse.syson.diagram.common.view.AbstractViewDescriptionProvider;
-import org.springframework.context.annotation.Configuration;
+import org.eclipse.syson.diagram.common.view.IViewDescriptionProvider;
+import org.springframework.stereotype.Service;
 
 /**
  * Allows to register the State Transition View diagram in the application.
  *
  * @author adieumegard
  */
-@Configuration
-public class StateTransitionViewDescriptionProvider extends AbstractViewDescriptionProvider {
-
-    public StateTransitionViewDescriptionProvider(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
-        super(viewConverter, ePackagesRegistry, inMemoryViewRegistry);
-    }
+@Service
+public class StateTransitionViewDescriptionProvider implements IViewDescriptionProvider {
 
     @Override
-    protected String getViewDiagramId() {
+    public String getViewDiagramId() {
         return "StateTransitionViewDiagram";
     }
 
     @Override
-    protected IRepresentationDescriptionProvider getRepresentationDescriptionProvider() {
+    public IRepresentationDescriptionProvider getRepresentationDescriptionProvider() {
         return new StateTransitionViewDiagramDescriptionProvider();
     }
 }

@@ -86,11 +86,6 @@
 			<version>${sirius.web.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-services</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
 			<version>2024.5.1</version>

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.services;
+package org.eclipse.syson.application.sysmlv2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +27,13 @@ import org.springframework.stereotype.Service;
  * @author arichard
  */
 @Service
-public class EditingContextActionProvider implements IEditingContextActionProvider {
+public class SysMLv2EditingContextActionProvider implements IEditingContextActionProvider {
+
+    public static final String SYSMLV2_DOCUMENT_NAME = "SysMLv2";
 
     public static final String EMPTY_SYSML_ID = "empty_sysmlv2";
 
-    private static final EditingContextAction EMPTY_SYSML_EDITING_CONTEXT_ACTION = new EditingContextAction(EMPTY_SYSML_ID, "SysMLv2");
+    private static final EditingContextAction EMPTY_SYSML_EDITING_CONTEXT_ACTION = new EditingContextAction(EMPTY_SYSML_ID, SYSMLV2_DOCUMENT_NAME);
 
     @Override
     public List<EditingContextAction> getEditingContextAction(IEditingContext editingContext) {

@@ -110,7 +110,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
         return this.diagramBuilderHelper.newImageNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor("transparent"))
                 .borderRadius(0)
-                .shape("476856ef-857f-30dc-8b3a-8d0539d38a09")
+                .shape("images/add_your_first_element.svg")
                 .build();
     }
 

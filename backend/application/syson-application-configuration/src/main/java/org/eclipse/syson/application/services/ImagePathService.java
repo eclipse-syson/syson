@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,27 +10,26 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.services;
+package org.eclipse.syson.application.services;
 
-import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
-import org.eclipse.sirius.ext.emf.edit.EditingDomainServices;
+import org.eclipse.sirius.components.core.api.IImagePathService;
 import org.springframework.stereotype.Service;
 
 /**
- * Provider for {@link org.eclipse.sirius.ext.emf.edit.EditingDomainServices} services.
+ * Implementation of {@link IImagePathService} for SysON.
  *
- * @author adaussy
+ * @author arichard
  */
 @Service
-public class EditingDomainServicesProvider implements IJavaServiceProvider {
+public class ImagePathService implements IImagePathService {
+
+    private static final List<String> IMAGES_PATHS = List.of("/img", "/images", "/icons");
 
     @Override
-    public List<Class<?>> getServiceClasses(View view) {
-        return Collections.singletonList(EditingDomainServices.class);
+    public List<String> getPaths() {
+        return IMAGES_PATHS;
     }
 
 }

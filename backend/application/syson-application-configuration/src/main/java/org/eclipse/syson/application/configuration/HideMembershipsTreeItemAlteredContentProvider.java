@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.web.services.explorer.api.IExplorerTreeItemAlteredContentProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeItemAlteredContentProvider;
 import org.eclipse.syson.sysml.Membership;
 import org.springframework.stereotype.Service;
 

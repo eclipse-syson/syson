@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.Position;
@@ -242,6 +243,7 @@ public class InterconnectionViewToolService extends ViewToolService {
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .style(labelStyle)
                 .text("")
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
 
         var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle().background("").borderColor("").borderStyle(LineStyle.Solid).build();

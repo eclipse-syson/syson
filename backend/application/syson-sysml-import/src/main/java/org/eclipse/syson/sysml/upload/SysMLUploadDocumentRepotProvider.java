@@ -13,7 +13,7 @@
 package org.eclipse.syson.sysml.upload;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.sirius.web.services.documents.api.IUploadDocumentReportProvider;
+import org.eclipse.sirius.web.application.document.services.api.IUploadDocumentReportProvider;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.LogBook;
 import org.springframework.stereotype.Service;
