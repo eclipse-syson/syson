@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Tests for {@link PartUsage}.
- * 
+ *
  * @author Arthur Daussy
  */
 public class PartUsageImplTest {
@@ -35,16 +35,16 @@ public class PartUsageImplTest {
             private attribute privateTypeDefAttribute;
             protected attribute protectedTypeDefAttribute;
         }
-    
+
         part superPart : typeDef {
             attribute publicSuperPartAttribute;
             private attribute privateSuperPartAttribute;
             protected attribute protectedSuperPartAttribute;
             part containedPart{
-    
+
             }
         }
-    
+
         part subPart :> superPart {
             attribute publicSubPartAttribute;
             private attribute privateSubPartAttribute;
@@ -55,7 +55,7 @@ public class PartUsageImplTest {
 
     private static class TestModel {
 
-        private ModelBuilder builder = new ModelBuilder();
+        private final ModelBuilder builder = new ModelBuilder();
 
         private PartDefinition typeDef;
 
@@ -84,35 +84,35 @@ public class PartUsageImplTest {
         private AttributeUsage privateSubPartAttribute;
 
         TestModel() {
-            build();
+            this.build();
         }
 
         private void build() {
 
-            typeDef = builder.createWithName(PartDefinition.class, "typeDef");
-            publicTypeDefAttribute = builder.createInWithName(AttributeUsage.class, typeDef, "publicTypeDefAttribute");
-            privateTypeDefAttribute = builder.createInWithName(AttributeUsage.class, typeDef, "privateTypeDefAttribute");
-            privateTypeDefAttribute.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
-            protectedTypeDefAttribute = builder.createInWithName(AttributeUsage.class, typeDef, "protectedTypeDefAttribute");
-            protectedTypeDefAttribute.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
+            this.typeDef = this.builder.createWithName(PartDefinition.class, "typeDef");
+            this.publicTypeDefAttribute = this.builder.createInWithName(AttributeUsage.class, this.typeDef, "publicTypeDefAttribute");
+            this.privateTypeDefAttribute = this.builder.createInWithName(AttributeUsage.class, this.typeDef, "privateTypeDefAttribute");
+            this.privateTypeDefAttribute.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+            this.protectedTypeDefAttribute = this.builder.createInWithName(AttributeUsage.class, this.typeDef, "protectedTypeDefAttribute");
+            this.protectedTypeDefAttribute.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
 
-            superPart = builder.createWithName(PartUsage.class, "superPart");
-            publicSuperPartAttribute = builder.createInWithName(AttributeUsage.class, superPart, "publicSuperPartAttribute");
-            privateSuperPartAttribute = builder.createInWithName(AttributeUsage.class, superPart, "privateSuperPartAttribute");
-            privateSuperPartAttribute.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
-            protectedSuperPartAttribute = builder.createInWithName(AttributeUsage.class, superPart, "protectedSuperPartAttribute");
-            protectedSuperPartAttribute.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
-            builder.setType(superPart, typeDef);
+            this.superPart = this.builder.createWithName(PartUsage.class, "superPart");
+            this.publicSuperPartAttribute = this.builder.createInWithName(AttributeUsage.class, this.superPart, "publicSuperPartAttribute");
+            this.privateSuperPartAttribute = this.builder.createInWithName(AttributeUsage.class, this.superPart, "privateSuperPartAttribute");
+            this.privateSuperPartAttribute.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+            this.protectedSuperPartAttribute = this.builder.createInWithName(AttributeUsage.class, this.superPart, "protectedSuperPartAttribute");
+            this.protectedSuperPartAttribute.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
+            this.builder.setType(this.superPart, this.typeDef);
 
-            containedPart = builder.createInWithName(PartUsage.class, superPart, "containedPart");
+            this.containedPart = this.builder.createInWithName(PartUsage.class, this.superPart, "containedPart");
 
-            subPart = builder.createWithName(PartUsage.class, "subPart");
-            publicSubPartAttribute = builder.createInWithName(AttributeUsage.class, subPart, "publicSubPartAttribute");
-            privateSubPartAttribute = builder.createInWithName(AttributeUsage.class, subPart, "privateSubPartAttribute");
-            privateSubPartAttribute.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
-            protectedSubPartAttribute = builder.createInWithName(AttributeUsage.class, subPart, "protectedSubPartAttribute");
-            protectedSubPartAttribute.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
-            builder.addRedefinition(subPart, superPart);
+            this.subPart = this.builder.createWithName(PartUsage.class, "subPart");
+            this.publicSubPartAttribute = this.builder.createInWithName(AttributeUsage.class, this.subPart, "publicSubPartAttribute");
+            this.privateSubPartAttribute = this.builder.createInWithName(AttributeUsage.class, this.subPart, "privateSubPartAttribute");
+            this.privateSubPartAttribute.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+            this.protectedSubPartAttribute = this.builder.createInWithName(AttributeUsage.class, this.subPart, "protectedSubPartAttribute");
+            this.protectedSubPartAttribute.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
+            this.builder.addSubsetting(this.subPart, this.superPart);
         }
     }
 

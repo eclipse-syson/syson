@@ -705,7 +705,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
     public Feature namingFeature() {
         return this.getOwnedRedefinition().stream()
                 .findFirst()
-                .map(red -> red.getRedefiningFeature())
+                .map(red -> red.getRedefinedFeature())
                 .orElse(null);
     }
 

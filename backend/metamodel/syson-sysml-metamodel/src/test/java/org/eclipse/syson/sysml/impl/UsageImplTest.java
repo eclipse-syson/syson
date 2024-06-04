@@ -41,7 +41,7 @@ public class UsageImplTest {
         Feature feature = this.builder.createWithName(Feature.class, "f1");
         feature.setDeclaredShortName("f");
 
-        this.builder.addReferenceSubsetting(usage, feature);
+        this.builder.addRedefinition(usage, feature);
 
         assertEquals("f1", usage.getName());
         assertEquals("f", usage.getShortName());
@@ -69,7 +69,7 @@ public class UsageImplTest {
         Feature feature = this.builder.createWithName(Feature.class, "f1");
         feature.setDeclaredShortName("f");
 
-        this.builder.addRedefinition(usage, feature);
+        this.builder.addReferenceSubsetting(usage, feature);
 
         assertEquals("f1", usage.getName());
         assertEquals("f", usage.getShortName());
