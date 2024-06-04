@@ -30,9 +30,11 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.EMFUtils;
@@ -65,7 +67,19 @@ public class ModelBuilder {
 
     }
 
-    public void addRedefinition(Feature redefinedFeature, Feature redefiningFeature) {
+    public void addSubsetting(Usage child, Usage parent) {
+        Subsetting subsetting = this.fact.createSubsetting();
+        // Workaround waiting for the subset/refine implementation
+        subsetting.setGeneral(parent);
+        subsetting.setSpecific(child);
+        subsetting.setSubsettingFeature(child);
+        subsetting.setSubsettedFeature(parent);
+
+        child.getOwnedRelationship().add(subsetting);
+
+    }
+
+    public void addRedefinition(Feature redefiningFeature, Feature redefinedFeature) {
         Redefinition redefinition = this.fact.createRedefinition();
         redefinition.setGeneral(redefiningFeature);
         redefinition.setSpecific(redefinedFeature);
@@ -75,7 +89,7 @@ public class ModelBuilder {
         redefinition.setSubsettedFeature(redefinedFeature);
         redefinition.setSubsettingFeature(redefiningFeature);
 
-        redefinedFeature.getOwnedRelationship().add(redefinition);
+        redefiningFeature.getOwnedRelationship().add(redefinition);
 
     }
 
