@@ -12,19 +12,24 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.statetransition.view.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.services.AbstractViewNodeToolSectionSwitch;
+import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.statetransition.view.tools.StateTransitionActionToolProvider;
 import org.eclipse.syson.diagram.statetransition.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -45,12 +50,22 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
 
     @Override
     protected List<EReference> getElementCompartmentReferences(Element element) {
-        List<EReference> refs = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.get(element.eClass());
+        List<EReference> refs = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(element.eClass());
         if (refs != null) {
             return refs;
         } else {
             return List.of();
         }
+    }
+
+    @Override
+    protected List<NodeTool> createToolsForCompartmentItems(Element object) {
+        List<NodeTool> compartmentNodeTools = new ArrayList<>();
+        this.getElementCompartmentReferences(object).forEach(eReference -> {
+            CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
+            compartmentNodeTools.add(provider.create(null));
+        });
+        return compartmentNodeTools;
     }
 
     @Override
@@ -69,7 +84,10 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
     public List<NodeToolSection> caseStateDefinition(StateDefinition object) {
         var createSection = this.buildCreateSection(
                 new StateTransitionCompartmentNodeToolProvider(true).create(null),
-                new StateTransitionCompartmentNodeToolProvider(false).create(null));
+                new StateTransitionCompartmentNodeToolProvider(false).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(null));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -77,7 +95,10 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
     public List<NodeToolSection> caseStateUsage(StateUsage object) {
         var createSection = this.buildCreateSection(
                 new StateTransitionCompartmentNodeToolProvider(true).create(null),
-                new StateTransitionCompartmentNodeToolProvider(false).create(null));
+                new StateTransitionCompartmentNodeToolProvider(false).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(null));
         return List.of(createSection, this.addElementsToolSection());
     }
 

@@ -205,4 +205,25 @@ public class ViewNodeService {
         }
         return null;
     }
+
+    /**
+     * Retrieves all the {@link Element} elements from {@code contents} removing the null content.
+     *
+     * @param self
+     *            The elements onto which the content is gathered
+     * @param contents
+     *            The content to assemble
+     * @return
+     */
+    public List<Element> getAllContentsByReferences(Element self, List<Element> contents) {
+        List<Element> result = new ArrayList<>();
+        contents.stream().filter(Objects::nonNull).forEach(object -> {
+            if (object instanceof List<?> l) {
+                l.stream().filter(Element.class::isInstance).map(Element.class::cast).map(result::add);
+            } else {
+                result.add(object);
+            }
+        });
+        return result;
+    }
 }

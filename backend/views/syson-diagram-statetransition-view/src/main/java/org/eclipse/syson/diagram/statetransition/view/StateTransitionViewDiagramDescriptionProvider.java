@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.MergedReferencesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.statetransition.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.CompartmentNodeDescriptionProvider;
@@ -61,9 +61,9 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
             SysmlPackage.eINSTANCE.getStateUsage()
             );
 
-    public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
-            Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
-            Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedAction()))
+    public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_MERGED_LIST_ITEMS = Map.ofEntries(
+            Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction(), SysmlPackage.eINSTANCE.getStateDefinition_DoAction(), SysmlPackage.eINSTANCE.getStateDefinition_ExitAction())),
+            Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
             );
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
@@ -74,7 +74,7 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
                     ))
             );
 
-    private final IDescriptionNameGenerator nameGenerator = new STVDescriptionNameGenerator();
+    private final IDescriptionNameGenerator descriptionNameGenerator = new STVDescriptionNameGenerator();
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
@@ -109,11 +109,11 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
             diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getNameGenerator()));
         });
 
-        COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
+        COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
                 diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getNameGenerator()));
-                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getNameGenerator()));
             });
+            diagramElementDescriptionProviders.add(new MergedReferencesCompartmentItemNodeDescriptionProvider(eClass, listItems, colorProvider, this.getNameGenerator()));
         });
 
         diagramElementDescriptionProviders.stream().
@@ -128,7 +128,7 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
 
     @Override
     protected IDescriptionNameGenerator getNameGenerator() {
-        return this.nameGenerator;
+        return this.descriptionNameGenerator;
     }
 
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {
@@ -158,7 +158,7 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(nodeDescription -> nodeTools.add(this.createNodeToolFromDiagramBackground(nodeDescription, definition)));
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(nodeDescription -> nodeTools.add(this.createNodeToolFromDiagramBackground(nodeDescription, definition)));
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

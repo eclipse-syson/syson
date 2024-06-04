@@ -39,10 +39,10 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
-        StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
-            listItems.forEach(ref -> {
-                if (this.eReference.getEType().equals(ref.getEType())) {
-                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(type, ref));
+        StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
+            listItems.forEach(eReference -> {
+                if (this.eReference.getEType().equals(eReference.getEType())) {
+                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(type, eReference));
                     if (optCompartmentItemNodeDescription.isPresent()) {
                         acceptedNodeTypes.add(optCompartmentItemNodeDescription.get());
                     }
