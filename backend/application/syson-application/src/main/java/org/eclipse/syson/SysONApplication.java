@@ -12,12 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson;
 
-import org.eclipse.sirius.web.spring.controllers.DocumentController;
-import org.eclipse.syson.services.EMFValidationService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 
 /**
  * Main class of the server, used as the entry point which will start the whole server properly initialized with a
@@ -36,10 +33,7 @@ import org.springframework.context.annotation.FilterType;
  * @author arichard
  */
 @SpringBootApplication
-@ComponentScan(basePackages = { "org.eclipse.syson", "org.eclipse.sirius.web", "org.eclipse.sirius.components" },
-        excludeFilters = {
-            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = EMFValidationService.class),
-            @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DocumentController.class) })
+@ComponentScan(basePackages = { "org.eclipse.syson", "org.eclipse.sirius.web", "org.eclipse.sirius.components" })
 public class SysONApplication {
 
     /**

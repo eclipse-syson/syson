@@ -12,32 +12,24 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view;
 
-import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
-import org.eclipse.sirius.components.view.emf.IViewConverter;
-import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
-import org.eclipse.syson.diagram.common.view.AbstractViewDescriptionProvider;
-import org.springframework.context.annotation.Configuration;
+import org.eclipse.syson.diagram.common.view.IViewDescriptionProvider;
+import org.springframework.stereotype.Service;
 
 /**
  * Allows to register the Interconnection View for Usage diagram in the application.
  *
  * @author arichard
  */
-@Configuration
-public class InterconnectionViewForUsageDescriptionProvider extends AbstractViewDescriptionProvider {
+@Service
+public class InterconnectionViewForUsageDescriptionProvider implements IViewDescriptionProvider {
 
-    public InterconnectionViewForUsageDescriptionProvider(IViewConverter viewConverter, Registry ePackagesRegistry, IInMemoryViewRegistry inMemoryViewRegistry) {
-        super(viewConverter, ePackagesRegistry, inMemoryViewRegistry);
-    }
-
-    @Override
-    protected String getViewDiagramId() {
+    public String getViewDiagramId() {
         return "InterconnectionViewDiagram";
     }
 
     @Override
-    protected IRepresentationDescriptionProvider getRepresentationDescriptionProvider() {
+    public IRepresentationDescriptionProvider getRepresentationDescriptionProvider() {
         return new InterconnectionViewForUsageDiagramDescriptionProvider();
     }
 }

@@ -62,32 +62,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-emf</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-diagram</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-builder</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-collaborative-diagrams</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-services</artifactId>
+			<artifactId>sirius-web-application</artifactId>
 			<version>${sirius.web.version}</version>
 		</dependency>
 		<dependency>

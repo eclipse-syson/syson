@@ -81,48 +81,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-starter</artifactId>
+			<artifactId>sirius-web-starter</artifactId>
 			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-graphql</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-services</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-spring</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-domain-edit</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-domain-design</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-diagram-edit</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-builder</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius.emfjson</groupId>
-			<artifactId>org.eclipse.sirius.emfjson</artifactId>
-			<version>2.3.10-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.eef</groupId>
@@ -133,16 +93,6 @@
 			<groupId>org.eclipse.eef</groupId>
 			<artifactId>org.eclipse.eef.common</artifactId>
 			<version>${eef.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-widget-reference-graphql</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-view-emf-widget-reference</artifactId>
-			<version>${sirius.web.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

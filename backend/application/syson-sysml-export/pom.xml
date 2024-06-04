@@ -59,12 +59,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-services</artifactId>
-			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-starter</artifactId>
+			<artifactId>sirius-web-application</artifactId>
 			<version>${sirius.web.version}</version>
 		</dependency>
 		<dependency>

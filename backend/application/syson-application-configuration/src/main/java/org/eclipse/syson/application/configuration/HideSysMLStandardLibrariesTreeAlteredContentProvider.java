@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.web.services.explorer.api.IExplorerTreeAlteredContentProvider;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeAlteredContentProvider;
 import org.springframework.stereotype.Service;
 
 /**

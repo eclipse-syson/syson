@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelStyle;
+import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -299,6 +300,7 @@ public class ToolService {
                 .overflowStrategy(LabelOverflowStrategy.NONE)
                 .style(labelStyle)
                 .text("")
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
 
         var nodeStyle = RectangularNodeStyle.newRectangularNodeStyle().background("").borderColor("").borderStyle(LineStyle.Solid).build();

@@ -9,6 +9,7 @@
   * Rename `AbstractDiagramDescriptionProvider` `nameGenerator` as `descriptionNameGenerator`. Impacted concrete implementations: `ActionFlowViewDiagramDescriptionProvider`, `GeneralViewDiagramDescriptionProvider`,  `InterconnectionViewForDefinitionDiagramDescriptionProvider`, `InterconnectionViewForUsageDiagramDescriptionProvider`, `StateTransitionViewDiagramDescriptionProvider`.
   * Rename `syson-diagram-statetransition-view` `CompartmentNodeDescriptionProvider` as `StateTransitionActionsCompartmentNodeDescriptionProvider`.
   * `StateTransitionViewEdgeService` removed, services moved to `ViewEdgeService` and `ViewLabelService`.
+- https://github.com/eclipse-syson/syson/issues/349[#349] [syson] Switch to sirius-web domain driven design architecture.
 
 === Dependency update
 

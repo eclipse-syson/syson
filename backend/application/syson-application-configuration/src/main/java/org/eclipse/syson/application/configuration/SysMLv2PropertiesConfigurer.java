@@ -48,7 +48,6 @@ import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
-import org.eclipse.sirius.web.services.api.representations.IInMemoryViewRegistry;
 import org.eclipse.syson.application.services.DetailsViewService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
@@ -94,14 +93,11 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final IInMemoryViewRegistry viewRegistry;
-
     private final ILabelService labelService;
 
     public SysMLv2PropertiesConfigurer(ComposedAdapterFactory composedAdapterFactory, ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService,
-            IInMemoryViewRegistry viewRegistry, ILabelService labelService) {
+            ILabelService labelService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-        this.viewRegistry = Objects.requireNonNull(viewRegistry);
         this.converter = Objects.requireNonNull(converter);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.labelService = Objects.requireNonNull(labelService);
@@ -122,8 +118,6 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         view.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
-
-        this.viewRegistry.register(view);
 
         // Convert the View-based FormDescription and register the result into the system
         AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService), this.labelService),

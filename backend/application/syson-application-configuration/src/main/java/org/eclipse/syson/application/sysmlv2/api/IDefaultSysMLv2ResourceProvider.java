@@ -10,23 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.sysml.export;
 
-import org.eclipse.syson.sysml.Element;
+package org.eclipse.syson.application.sysmlv2.api;
+
+import java.util.UUID;
+
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
- * Service in charge of serializing a SysML Model using the standard defined by the OMG.
- * 
- * @author Arthur Daussy
+ * Provides the content of a default SysMLv2 resource.
+ *
+ * @author gcoutable
  */
-public interface ISysMLModelToTextService {
+public interface IDefaultSysMLv2ResourceProvider {
+    Resource getEmptyResource(UUID resourcePath, String name);
 
-    /**
-     * Gets the textual form of the given element.
-     * 
-     * @param element
-     *            a {@link Element}
-     * @return the textual form of the element or an empty string (never returns <code>null</code>)
-     */
-    String toText(Element element);
+    Resource getDefaultSysMLv2Resource(UUID resourcePath, String name);
+
+    Resource getBatmobileResource();
 }

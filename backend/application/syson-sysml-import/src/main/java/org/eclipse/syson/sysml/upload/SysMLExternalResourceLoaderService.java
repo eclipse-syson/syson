@@ -22,8 +22,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.web.services.documents.api.IExternalResourceLoaderService;
+import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.SysmlToAst;
 import org.springframework.stereotype.Service;
@@ -48,20 +47,20 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
     }
 
     @Override
-    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, AdapterFactoryEditingDomain adapterFactoryEditingDomain) {
+    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
         Resource resource = null;
         InputStream astStream = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension());
         ASTTransformer tranformer = new ASTTransformer();
-        resource = tranformer.convertResource(astStream, this.previousObjectList(adapterFactoryEditingDomain));
+        resource = tranformer.convertResource(astStream, this.previousObjectList(resourceSet));
         if (resource != null) {
             resourceSet.getResources().add(resource);
         }
         return Optional.ofNullable(resource);
     }
 
-    private List<EObject> previousObjectList(AdapterFactoryEditingDomain adapterFactoryEditingDomain) {
+    private List<EObject> previousObjectList(ResourceSet resourceSet) {
         List<EObject> objectList = new ArrayList<EObject>();
-        adapterFactoryEditingDomain.getResourceSet().getResources().stream().forEach(resource -> {
+        resourceSet.getResources().stream().forEach(resource -> {
             resource.getAllContents().forEachRemaining(t -> {
                 if (t != null) {
                     objectList.add(t);
