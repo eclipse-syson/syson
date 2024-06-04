@@ -613,6 +613,24 @@ public class ViewCreateService {
     }
 
     /**
+     * Add the standard done action as the child of the given element.
+     *
+     * @param ownerElement
+     *            an element that will own the standard done action.
+     * @return the {@link Membership} element containing the done action in its memberElement feature.
+     */
+    public Membership addDoneAction(Element ownerElement) {
+        var standardDoneAction = this.utilService.retrieveStandardDoneAction(ownerElement);
+        if (standardDoneAction != null) {
+            var membership = SysmlFactory.eINSTANCE.createMembership();
+            membership.setMemberElement(standardDoneAction);
+            ownerElement.getOwnedRelationship().add(membership);
+            return membership;
+        }
+        return null;
+    }
+
+    /**
      * Create a new action {@link ActionUsage} inside the given element which should be an {@link ActionUsage} or an
      * {@link ActionDefintion}.
      *

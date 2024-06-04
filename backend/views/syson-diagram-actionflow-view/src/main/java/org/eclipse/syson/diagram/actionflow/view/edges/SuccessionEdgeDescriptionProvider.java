@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.edges.AbstractSuccessionEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 
 /**
@@ -54,6 +55,9 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
 
     @Override
     protected List<NodeDescription> getTargetNodes(IViewDiagramElementFinder cache) {
-        return this.getAllUsages(cache);
+        var targets = this.getAllUsages(cache);
+        // the done node can be the target of a succession
+        cache.getNodeDescription(this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(targets::add);
+        return targets;
     }
 }

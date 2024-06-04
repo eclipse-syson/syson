@@ -384,6 +384,18 @@ public class UtilService {
     }
 
     /**
+     * Retrieve the done action defined inside the standard library <code>Actions</code>.
+     *
+     * @param eObject
+     *            an object to access to the library resources.
+     *
+     * @return the standard done ActionUsage defined in the <code>Actions</code> library.
+     */
+    public ActionUsage retrieveStandardDoneAction(Element eObject) {
+        return this.findByName(eObject, "Actions::Action::done");
+    }
+
+    /**
      * Check if the given element is actually the standard start action defined by <code>Actions::Action::start</code>.
      *
      * @param element
@@ -397,6 +409,24 @@ public class UtilService {
         }
         if (elt instanceof ActionUsage au) {
             return "9a0d2905-0f9c-5bb4-af74-9780d6db1817".equals(au.getElementId());
+        }
+        return false;
+    }
+
+    /**
+     * Check if the given element is actually the standard done action defined by <code>Actions::Action::done</code>.
+     *
+     * @param element
+     *            an element that could be the standard done action.
+     * @return <code>true</code> if the given element is the standard done action and <code>false</code> otherwise.
+     */
+    public boolean isStandardDoneAction(Element element) {
+        var elt = element;
+        if (element instanceof Membership membership) {
+            elt = membership.getMemberElement();
+        }
+        if (elt instanceof ActionUsage au) {
+            return "0cdc3cd3-b06c-5c32-beda-0cf4ba164a64".equals(au.getElementId());
         }
         return false;
     }

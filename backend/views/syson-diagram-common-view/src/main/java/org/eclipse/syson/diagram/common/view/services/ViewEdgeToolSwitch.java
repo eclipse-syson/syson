@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
@@ -105,7 +106,8 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     private List<NodeDescription> getSuccessionEdgeTargets() {
         return this.allNodeDescriptions.stream()
                 .filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage()) ||
-                        this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAcceptActionUsage()))
+                        this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAcceptActionUsage()) ||
+                        this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(nodeDesc.getName()))
                 .toList();
     }
 
