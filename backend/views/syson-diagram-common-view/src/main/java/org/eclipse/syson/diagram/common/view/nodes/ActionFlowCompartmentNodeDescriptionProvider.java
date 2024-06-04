@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -75,6 +76,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
             cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
@@ -99,6 +101,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
             nodeToolSection.getNodeTools().add(compartmentNodeToolProvider.create(cache));
         }
         nodeToolSection.getNodeTools().add(new StartActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
+        nodeToolSection.getNodeTools().add(new DoneActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
         return nodeToolSection;
     }
 

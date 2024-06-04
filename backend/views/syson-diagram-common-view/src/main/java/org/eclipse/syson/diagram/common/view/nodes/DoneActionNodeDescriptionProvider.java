@@ -1,0 +1,81 @@
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.syson.diagram.common.view.nodes;
+
+import java.util.Objects;
+
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
+import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
+
+/**
+ * Used to create the ending node description of an Action.
+ *
+ * @author Jerome Gout
+ */
+public class DoneActionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+
+    public static final String DONE_ACTION_NAME = "DoneAction";
+
+    private final IDescriptionNameGenerator descriptionNameGenerator;
+
+    public DoneActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(colorProvider);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+    }
+
+    @Override
+    public NodeDescription create() {
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getMembership());
+        return this.diagramBuilderHelper.newNodeDescription()
+                .collapsible(false)
+                .domainType(domainType)
+                .defaultWidthExpression("36")
+                .defaultHeightExpression("36")
+                .name(this.descriptionNameGenerator.getNodeName(DONE_ACTION_NAME))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getStandardDoneAction"))
+                .style(this.createImageNodeStyleDescription("images/done_action.svg"))
+                .userResizable(false)
+                .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .build();
+    }
+
+    @Override
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DONE_ACTION_NAME)).ifPresent(nodeDescription -> {
+            nodeDescription.setPalette(this.createNodePalette());
+            diagramDescription.getNodeDescriptions().add(nodeDescription);
+        });
+    }
+
+    private NodePalette createNodePalette() {
+        var changeContext = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
+
+        var deleteTool = this.diagramBuilderHelper.newDeleteTool()
+                .name("Remove Done")
+                .body(changeContext.build());
+
+        return this.diagramBuilderHelper.newNodePalette()
+                .deleteTool(deleteTool.build())
+                .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .build();
+    }
+}

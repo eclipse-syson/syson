@@ -190,7 +190,7 @@ public class ViewEdgeService {
         return false;
     }
 
-    public Element reconnectSourceSuccessionEdge(Succession succession, ActionUsage oldSource, ActionUsage newSource) {
+    public Element reconnectSourceSuccessionEdge(Succession succession, Element oldSource, Element newSource) {
         succession.getSource().replaceAll(e -> {
             if (Objects.equals(e, oldSource)) {
                 return newSource;
@@ -200,7 +200,7 @@ public class ViewEdgeService {
         return succession;
     }
 
-    public Element reconnectTargetSuccessionEdge(Succession succession, ActionUsage oldTarget, ActionUsage newTarget) {
+    public Element reconnectTargetSuccessionEdge(Succession succession, Element oldTarget, Element newTarget) {
         succession.getTarget().replaceAll(e -> {
             if (Objects.equals(e, oldTarget)) {
                 return newTarget;

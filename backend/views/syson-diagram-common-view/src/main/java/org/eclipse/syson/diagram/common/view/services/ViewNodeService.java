@@ -179,4 +179,30 @@ public class ViewNodeService {
         }
         return null;
     }
+
+    /**
+     * Check if a Done Action can be added to the given element.
+     *
+     * @param self
+     *            a {@link Namespace} element
+     * @return <code>true</code> if the Done action can be added to the given element or <code>false</code> otherwise.
+     */
+    public boolean canAddDoneAction(Namespace self) {
+        // Check that self is an Action usage or definition and that there is not yet the done action displayed.
+        return this.getStandardDoneAction(self) == null;
+    }
+
+    public Membership getStandardDoneAction(Namespace self) {
+        if (self instanceof ActionUsage || self instanceof ActionDefinition) {
+            return self.getOwnedRelationship().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .filter(m -> {
+                        return m.getMemberElement() instanceof ActionUsage au && this.utilService.isStandardDoneAction(au);
+                    })
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
+    }
 }
