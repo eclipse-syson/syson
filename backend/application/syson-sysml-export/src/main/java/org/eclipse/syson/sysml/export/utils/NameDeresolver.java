@@ -202,7 +202,7 @@ public class NameDeresolver {
         if (resolvedElement != null && resolvedElement != element.getOwningMembership()) {
             // Last try if the element is in the containment tree find the shortest qualified name
             String qualifiedName = getQualifiedName(owningNamespace);
-            if (qualifiedName != null && elementQn.startsWith(qualifiedName)) {
+            if (qualifiedName != null && !qualifiedName.isBlank() && elementQn.startsWith(qualifiedName)) {
                 relativeQualifiedName = elementQn.substring(qualifiedName.length() + 2, elementQn.length());
             } else {
                 relativeQualifiedName = elementQn;
@@ -217,16 +217,11 @@ public class NameDeresolver {
         final String qn;
         Element importedElement = m.getMemberElement();
         String importedElementQualifiedName = getQualifiedName(importedElement);
-        int partToRemove;
-        if (importedElementQualifiedName == null) {
-            partToRemove = 0;
+        if (importedElement != element && importedElementQualifiedName != null && !importedElementQualifiedName.isEmpty()) {
+            int partToRemove = importedElementQualifiedName.length() + 2;
+            qn = Appender.toPrintableName(importedElement.getName()) + "::" + elementQn.substring(partToRemove, elementQn.length());
         } else {
-            partToRemove = importedElementQualifiedName.length() + 2;
-        }
-        if (importedElement != element) {
-            qn = Appender.toPrintableName(importedElement.getDeclaredName()) + "::" + elementQn.substring(partToRemove, elementQn.length());
-        } else {
-            qn = Appender.toPrintableName(element.getDeclaredName());
+            qn = Appender.toPrintableName(element.getName());
         }
         return qn;
     }
