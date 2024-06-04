@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.export.utils;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.eclipse.syson.sysml.helper.NameHelper;
 
 /**
@@ -26,6 +29,8 @@ public class Appender {
     private final String indentation;
 
     private final String newLine;
+    
+    private final Collection<Character> symbols = List.of('[', '(', '.');
 
     public Appender(String newLine, String indentation) {
         super();
@@ -43,7 +48,7 @@ public class Appender {
     }
 
     public Appender appendSpaceIfNeeded() {
-        if (!builder.isEmpty() && !endWithSpace() && !endWithBracket()) {
+        if (!builder.isEmpty() && !endWithSpace() && !endWithSymbol()) {
             append(" ");
         }
         return this;
@@ -75,9 +80,9 @@ public class Appender {
         return charAt == ' ' || charAt == '\t';
     }
     
-    private boolean endWithBracket() {
+    private boolean endWithSymbol() {
         char charAt = builder.charAt(builder.length() - 1);
-        return charAt == '[';
+        return symbols.contains(charAt);
     }
 
     public Appender append(String str) {
