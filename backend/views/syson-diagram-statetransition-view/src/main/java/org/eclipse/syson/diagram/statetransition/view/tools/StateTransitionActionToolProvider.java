@@ -72,16 +72,21 @@ public class StateTransitionActionToolProvider extends AbstractCompartmentNodeTo
     public boolean isHandledAction() {
         return isEntryAction() || isDoAction() || isExitAction();
     }
+
+    @Override
+    protected String getPreconditionExpression() {
+        return AQLUtils.getSelfServiceCallExpression("isEmptyOfActionKindCompartment", "'" + getActionKindValue() + "'");
+    }
     
     private boolean isEntryAction() {
-        return SysmlPackage.eINSTANCE.getStateDefinition_EntryAction().equals(actionStructuralFeature) || SysmlPackage.eINSTANCE.getStateUsage_EntryAction().equals(actionStructuralFeature);
+        return SysmlPackage.eINSTANCE.getStateDefinition_EntryAction().equals(this.actionStructuralFeature) || SysmlPackage.eINSTANCE.getStateUsage_EntryAction().equals(this.actionStructuralFeature);
     }
     
     private boolean isDoAction() {
-        return SysmlPackage.eINSTANCE.getStateDefinition_DoAction().equals(actionStructuralFeature) || SysmlPackage.eINSTANCE.getStateUsage_DoAction().equals(actionStructuralFeature);
+        return SysmlPackage.eINSTANCE.getStateDefinition_DoAction().equals(this.actionStructuralFeature) || SysmlPackage.eINSTANCE.getStateUsage_DoAction().equals(this.actionStructuralFeature);
     }
     
     private boolean isExitAction() {
-        return SysmlPackage.eINSTANCE.getStateDefinition_ExitAction().equals(actionStructuralFeature) || SysmlPackage.eINSTANCE.getStateUsage_ExitAction().equals(actionStructuralFeature);
+        return SysmlPackage.eINSTANCE.getStateDefinition_ExitAction().equals(this.actionStructuralFeature) || SysmlPackage.eINSTANCE.getStateUsage_ExitAction().equals(this.actionStructuralFeature);
     }
 }

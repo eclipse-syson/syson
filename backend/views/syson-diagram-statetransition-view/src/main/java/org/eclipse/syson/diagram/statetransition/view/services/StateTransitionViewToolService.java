@@ -51,18 +51,17 @@ public class StateTransitionViewToolService extends ViewToolService {
     @Override
     public Usage addExistingSubElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (!(usage instanceof StateUsage)) {
-            var nestedUsages = usage.getNestedUsage();
-    
-            nestedUsages.stream()
-                .forEach(subUsage -> {
-                    this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
-                    Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                    if (fakeNode != null) {
-                        this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
-                    }
-                });
-        }
+        var nestedUsages = usage.getNestedUsage();
+
+        nestedUsages.stream().forEach(subUsage -> {
+            if (subUsage instanceof StateUsage || subUsage instanceof ActionUsage) {
+                this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
+                Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
+                if (fakeNode != null) {
+                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
+                }
+            }
+        });
         return usage;
     }
 
@@ -72,7 +71,7 @@ public class StateTransitionViewToolService extends ViewToolService {
         var ownedUsages = definition.getOwnedUsage();
 
         ownedUsages.stream().forEach(subUsage -> {
-            if (subUsage instanceof StateUsage) {
+            if (subUsage instanceof StateUsage || subUsage instanceof ActionUsage) {
                 this.createView(subUsage, editingContext, diagramContext, selectedNode, convertedNodes);
                 Node fakeNode = this.createFakeNode(subUsage, selectedNode, diagramContext, diagramDescription, convertedNodes);
                 if (fakeNode != null) {

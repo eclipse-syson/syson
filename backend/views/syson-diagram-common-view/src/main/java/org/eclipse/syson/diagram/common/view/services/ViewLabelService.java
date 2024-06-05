@@ -18,10 +18,12 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
@@ -61,6 +63,22 @@ public class ViewLabelService extends LabelService {
                 .append(this.getRedefinitionLabel(usage))
                 .append(this.getSubsettingLabel(usage))
                 .append(this.getValueLabel(usage));
+        return label.toString();
+    }
+
+    /**
+     * Return the label for the given {@link Usage} prefixed with additional content.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label for the given {@link Usage}.
+     */
+    public String getPrefixedCompartmentItemUsageLabel(Usage usage) {
+        StringBuilder label = new StringBuilder();
+        if (usage instanceof ActionUsage au && usage.eContainer() instanceof StateSubactionMembership ssm) {
+            label.append(ssm.getKind() + " ");
+        }
+        label.append(this.getCompartmentItemUsageLabel(usage));
         return label.toString();
     }
 

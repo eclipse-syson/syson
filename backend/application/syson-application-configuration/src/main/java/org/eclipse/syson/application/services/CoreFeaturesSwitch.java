@@ -37,6 +37,7 @@ import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
@@ -220,6 +221,14 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         var features = new ArrayList<EStructuralFeature>();
         features.addAll(this.caseOccurrenceDefinition(object));
         features.add(SysmlPackage.eINSTANCE.getStateDefinition_IsParallel());
+        return features;
+    }
+
+    @Override
+    public List<EStructuralFeature> caseStateSubactionMembership(StateSubactionMembership object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseMembership(object));
+        features.add(SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind());
         return features;
     }
 

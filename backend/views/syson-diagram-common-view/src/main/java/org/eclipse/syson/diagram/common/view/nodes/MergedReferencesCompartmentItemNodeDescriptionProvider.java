@@ -71,7 +71,7 @@ public class MergedReferencesCompartmentItemNodeDescriptionProvider extends Abst
 
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression(AQLUtils.getSelfServiceCallExpression("getCompartmentItemUsageLabel"))
+                .labelExpression(AQLUtils.getSelfServiceCallExpression("getPrefixedCompartmentItemUsageLabel"))
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .build();

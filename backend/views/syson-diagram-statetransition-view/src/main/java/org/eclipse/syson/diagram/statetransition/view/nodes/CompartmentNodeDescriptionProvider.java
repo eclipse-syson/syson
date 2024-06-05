@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
@@ -51,5 +52,10 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
         });
 
         return acceptedNodeTypes;
+    }
+
+    @Override
+    protected INodeToolProvider getItemCreationToolProvider() {
+        return null;
     }
 }

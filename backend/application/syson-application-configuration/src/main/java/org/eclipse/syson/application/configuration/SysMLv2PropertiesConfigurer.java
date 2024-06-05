@@ -72,6 +72,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private static final String SUBCLASSIFICATION_PROPERTIES = "Subclassification Properties";
 
+    private static final String STATESUBACTIONKIND_PROPERTIES = "Statesubaction Properties";
+
     private static final String SUBSETTING_PROPERTIES = "Subsetting Properties";
 
     private static final String TYPING_PROPERTIES = "Typing Properties";
@@ -83,6 +85,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
     private static final String ACCEPT_ACTION_USAGE_PROPERTIES = "Accept Action Usage Properties";
 
     private static final String AQL_NOT_SELF_IS_READ_ONLY = "aql:not(self.isReadOnly())";
+
+    private static final String CLOSING_QUOTE_CLOSING_PARENTHESIS = "')";
 
     private final ComposedAdapterFactory composedAdapterFactory;
 
@@ -144,6 +148,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createCorePropertiesGroup());
         pageCore.getGroups().add(this.createExtraMembershipPropertiesGroup());
         pageCore.getGroups().add(this.createExtraRedefinitionPropertiesGroup());
+        pageCore.getGroups().add(this.createExtraStatesubactionMembershipKindPropertiesGroup());
         pageCore.getGroups().add(this.createExtraSubclassificationPropertiesGroup());
         pageCore.getGroups().add(this.createExtraSubsettingPropertiesGroup());
         pageCore.getGroups().add(this.createExtraFeatureTypingPropertiesGroup());
@@ -205,6 +210,29 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         refWidget.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
+
+        return group;
+    }
+
+    private GroupDescription createExtraStatesubactionMembershipKindPropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName(STATESUBACTIONKIND_PROPERTIES);
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression("aql:self.eContainer()->filter(sysml::StateSubactionMembership)");
+
+        RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
+        radio.setName("ExtraRadioKindWidget");
+        radio.setLabelExpression("Kind");
+        radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind().getName() + CLOSING_QUOTE_CLOSING_PARENTHESIS);
+        radio.setCandidateLabelExpression("aql:candidate.name");
+        radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind().getName() + CLOSING_QUOTE_CLOSING_PARENTHESIS);
+        radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
+        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
+        setNewValueOperation.setExpression("aql:self.setNewValue('" + SysmlPackage.eINSTANCE.getStateSubactionMembership_Kind().getName() + "', newValue.instance)");
+        radio.getBody().add(setNewValueOperation);
+
+        group.getChildren().add(radio);
 
         return group;
     }
@@ -288,9 +316,9 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
         radio.setName("ExtraRadioKindWidget");
         radio.setLabelExpression("Kind");
-        radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "')");
+        radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + CLOSING_QUOTE_CLOSING_PARENTHESIS);
         radio.setCandidateLabelExpression("aql:candidate.name");
-        radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "')");
+        radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + CLOSING_QUOTE_CLOSING_PARENTHESIS);
         radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue('" + SysmlPackage.eINSTANCE.getRequirementConstraintMembership_Kind().getName() + "', newValue.instance)");
@@ -311,9 +339,9 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
         radio.setName("ExtraRadioVisibilityWidget");
         radio.setLabelExpression("Visibility");
-        radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "')");
+        radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + CLOSING_QUOTE_CLOSING_PARENTHESIS);
         radio.setCandidateLabelExpression("aql:candidate.name");
-        radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "')");
+        radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + CLOSING_QUOTE_CLOSING_PARENTHESIS);
         radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
         setNewValueOperation.setExpression("aql:self.setNewValue('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "', newValue.instance)");
