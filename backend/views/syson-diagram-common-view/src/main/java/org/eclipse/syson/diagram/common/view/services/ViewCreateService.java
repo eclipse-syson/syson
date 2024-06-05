@@ -52,6 +52,9 @@ import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateSubactionMembership;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -296,6 +299,25 @@ public class ViewCreateService {
                 .filter(ObjectiveMembership.class::isInstance)
                 .map(ObjectiveMembership.class::cast)
                 .findFirst().isEmpty();
+    }
+
+    /**
+     * Service to check whether the given element has a subaction of Kind {@code kind} subject defined or not.
+     *
+     * @param self
+     *            a {@link StateUsage} or a {@link StateDefinition}
+     * @return {@code true} if {@code self} contains a subaction of the specified kind and {@code false} otherwise.
+     */
+    public boolean isEmptyOfActionKindCompartment(Element self, String kind) {
+        if (self instanceof StateUsage
+                || self instanceof StateDefinition) {
+            return !self.getOwnedRelationship().stream()
+                    .filter(StateSubactionMembership.class::isInstance)
+                    .map(StateSubactionMembership.class::cast)
+                    .anyMatch(mem -> mem.getKind().getLiteral().equalsIgnoreCase(kind));
+        }
+        // irrelevant case, this service should only be used upon a StateUsage/StateDefinition
+        return true;
     }
 
     /**
