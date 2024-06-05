@@ -36,6 +36,7 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -52,7 +53,6 @@ import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SubjectMembership;
-import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -583,15 +583,39 @@ public class ViewCreateService {
 
     private Element createSuccessionEdge(Element successionSource, Element successionTarget, EObject successionOwner) {
         if (successionOwner instanceof Element ownerElement) {
-            Succession succession = SysmlFactory.eINSTANCE.createSuccession();
-            this.elementInitializerSwitch.doSwitch(succession);
             var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            featureMembership.getOwnedRelatedElement().add(succession);
+            var succession = SysmlFactory.eINSTANCE.createSuccessionAsUsage();
+            this.elementInitializerSwitch.doSwitch(succession);
+            var sourceEnd = this.createEndFeatureMembershipFor(successionSource);
+            var targetEnd = this.createEndFeatureMembershipFor(successionTarget);
+            succession.getOwnedRelationship().add(sourceEnd);
+            succession.getOwnedRelationship().add(targetEnd);
+            // we are also using source and target features to store edge ends
+            // to be able to retrieve Membership element holding standard actions.
             succession.getSource().add(successionSource);
             succession.getTarget().add(successionTarget);
+            featureMembership.getOwnedRelatedElement().add(succession);
             ownerElement.getOwnedRelationship().add(featureMembership);
         }
         return successionSource;
+    }
+
+    private EndFeatureMembership createEndFeatureMembershipFor(Element sourceOrTarget) {
+        var endFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+        referenceUsage.setIsEnd(true);
+        var referenceSubSetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        if (sourceOrTarget instanceof Membership membership) {
+            // this is a standard start or end action, the actual action is inside the memberElement feature.
+            if (membership.getMemberElement() instanceof ActionUsage au) {
+                referenceSubSetting.setReferencedFeature(au);
+            }
+        } else if (sourceOrTarget instanceof ActionUsage au) {
+            referenceSubSetting.setReferencedFeature(au);
+        }
+        referenceUsage.getOwnedRelationship().add(referenceSubSetting);
+        endFeatureMembership.getOwnedRelatedElement().add(referenceUsage);
+        return endFeatureMembership;
     }
 
     /**
