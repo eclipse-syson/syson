@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.syson.diagram.actionflow.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.DependencyEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.FeatureTypingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.RedefinitionEdgeDescriptionProvider;
@@ -102,6 +103,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
 
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
+        diagramElementDescriptionProviders.add(new AllocateEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));

@@ -160,7 +160,7 @@ public class ViewEdgeService {
         return self;
     }
 
-    public Element reconnectTargetAlocateEdge(AllocationUsage self, Element newTarget) {
+    public Element reconnectTargetAllocateEdge(AllocationUsage self, Element newTarget) {
         if (newTarget instanceof Usage usage) {
             var features = this.getFeatures(self);
             if (features.size() == 2) {

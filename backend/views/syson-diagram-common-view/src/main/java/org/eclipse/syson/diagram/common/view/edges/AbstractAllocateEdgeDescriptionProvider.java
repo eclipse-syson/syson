@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -108,17 +109,15 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
 
     @Override
     protected ChangeContextBuilder getSourceReconnectToolBody() {
-        var params = List.of(AQLConstants.SEMANTIC_RECONNECTION_TARGET);
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnectSourceAllocateEdge(" + String.join(",", params) + ")");
+                .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectSourceAllocateEdge", AQLConstants.SEMANTIC_RECONNECTION_TARGET));
 
     }
 
     @Override
     protected ChangeContextBuilder getTargetReconnectToolBody() {
-        var params = List.of(AQLConstants.SEMANTIC_RECONNECTION_TARGET);
         return this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnectTargetAlocateEdge(" + String.join(",", params) + ")");
+                .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectTargetAllocateEdge", AQLConstants.SEMANTIC_RECONNECTION_TARGET));
     }
 
     @Override
