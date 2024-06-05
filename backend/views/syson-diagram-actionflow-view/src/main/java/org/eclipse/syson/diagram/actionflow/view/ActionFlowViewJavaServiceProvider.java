@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewCreateService;
-import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewEdgeService;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
@@ -42,7 +42,7 @@ public class ActionFlowViewJavaServiceProvider implements IJavaServiceProvider {
         if (optDescription.isPresent()) {
             return List.of(ActionFlowViewCreateService.class,
                     DeleteService.class,
-                    ActionFlowViewEdgeService.class,
+                    ViewEdgeService.class,
                     ViewNodeService.class,
                     ViewLabelService.class,
                     UtilService.class,

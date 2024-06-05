@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.services.LabelService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureValue;
@@ -108,17 +107,6 @@ public class ViewLabelService extends LabelService {
                     .append(valueAsString);
         }
         return label.toString();
-    }
-
-    /**
-     * Return the edge label for the given {@link Dependency}.
-     *
-     * @param dependency
-     *            the given {@link Dependency}.
-     * @return the edge label for the given {@link Dependency}.
-     */
-    public String getDependencyEdgeLabel(Dependency dependency) {
-        return LabelConstants.OPEN_QUOTE + "dependency" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR + dependency.getDeclaredName();
     }
 
     /**

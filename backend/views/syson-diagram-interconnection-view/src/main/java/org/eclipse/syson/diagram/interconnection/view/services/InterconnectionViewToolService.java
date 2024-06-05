@@ -45,7 +45,6 @@ import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenPartUsageCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.FirstLevelChildPartUsageNodeDescriptionProvider;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.sysml.Definition;
@@ -204,7 +203,8 @@ public class InterconnectionViewToolService extends ViewToolService {
             Node fakeAttributesCompartmentNode = this.createFakeCompartmentNode(semanticElement, fakeNode, attributesCompartmentNodeDescription);
             fakeNode.getChildNodes().add(fakeAttributesCompartmentNode);
             Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> childrenPartUsagesCompartment = convertedNodes.keySet().stream()
-                    .filter(n -> ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
+                    .filter(n -> this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart()).equals(n.getName()))
+                    .findFirst();
             NodeDescription childrenPartUsagesCompartmentNodeDescription = convertedNodes.get(childrenPartUsagesCompartment.get());
             Node fakeChildrenPartUsageCompartmentNode = this.createFakeCompartmentNode(semanticElement, fakeNode, childrenPartUsagesCompartmentNodeDescription);
             fakeNode.getChildNodes().add(fakeChildrenPartUsageCompartmentNode);

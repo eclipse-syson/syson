@@ -37,8 +37,6 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public static final String NAME = "IV Part Compartment FreeForm";
-
     public ChildrenPartUsageCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), colorProvider, nameGenerator);
     }
@@ -52,7 +50,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
                 .isHiddenByDefaultExpression("aql:true")
-                .name(NAME)
+                .name(this.descriptionNameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(false)
@@ -62,7 +60,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME);
+        var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference));
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
 
         NodeDescription compartmentFreeFormNodeDescription = optCompartmentFreeFormNodeDescription.get();
