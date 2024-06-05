@@ -48,7 +48,7 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         var childrenNodes = new ArrayList<NodeDescription>();
         cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME)
+        cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
                 .ifPresent(childrenNodes::add);

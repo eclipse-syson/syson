@@ -37,5 +37,6 @@
 		<module>syson-diagram-general-view</module>
 		<module>syson-diagram-interconnection-view</module>
 		<module>syson-diagram-statetransition-view</module>
+		<module>syson-diagram-tests</module>
 	</modules>
 </project>

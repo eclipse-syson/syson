@@ -86,7 +86,8 @@ public class FirstLevelChildPartUsageNodeDescriptionProvider extends AbstractNod
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
         var optAttributesCompartmentNodeDescription = cache
                 .getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()));
-        var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(ChildrenPartUsageCompartmentNodeDescriptionProvider.NAME);
+        var optCompartmentFreeFormNodeDescription = cache
+                .getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart()));
 
         NodeDescription nodeDescription = optChildPartUsageNodeDescription.get();
         nodeDescription.getReusedChildNodeDescriptions().add(optAttributesCompartmentNodeDescription.get());

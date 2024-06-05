@@ -33,6 +33,7 @@
 
 - https://github.com/eclipse-syson/syson/issues/315[#315] [tests] Add Cypress test infrastructure and execute the Cypress tests as part of pull request checks 
 - https://github.com/eclipse-syson/syson/issues/358[#358] [diagrams] Handle the JoinNode concept in actions body of diagrams
+- https://github.com/eclipse-syson/syson/issues/359[#359] [tests] Add tests to enforce a set of conventions on SysON DiagramDescriptions
 
 
 == v2024.5.0
