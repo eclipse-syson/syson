@@ -67,7 +67,7 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
 
     @Override
     public EdgeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSuccession());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getSuccessionAsUsage());
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)

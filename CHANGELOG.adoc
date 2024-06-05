@@ -17,6 +17,7 @@
 - https://github.com/eclipse-syson/syson/issues/298[#298] [metamodel] Fix metamodel to manage root namespaces.
 - https://github.com/eclipse-syson/syson/issues/329[#329] [services] Ignore root namespace with no name during qualified name resolution 
 - https://github.com/eclipse-syson/syson/issues/337[#337] [diagrams] Fix direct edit of single digit cardinalities.
+- https://github.com/eclipse-syson/syson/issues/348[#348] [diagrams] The semantic representation of the Succession edge is not correct.
 
 === Improvements
 

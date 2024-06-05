@@ -26,7 +26,10 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
-import org.eclipse.syson.sysml.Succession;
+import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
@@ -190,7 +193,28 @@ public class ViewEdgeService {
         return false;
     }
 
-    public Element reconnectSourceSuccessionEdge(Succession succession, Element oldSource, Element newSource) {
+    public Element reconnectSourceSuccessionEdge(SuccessionAsUsage succession, Element oldSource, Element newSource) {
+        succession.getOwnedRelationship().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                // the succession source is in the first endFeatureMembership
+                .findFirst()
+                .ifPresent(efm -> {
+                    efm.getOwnedRelatedElement().stream()
+                            .filter(ReferenceUsage.class::isInstance)
+                            .map(ReferenceUsage.class::cast)
+                            .findFirst()
+                            .ifPresent(ru -> {
+                                ru.getOwnedRelationship().stream()
+                                        .filter(ReferenceSubsetting.class::isInstance)
+                                        .map(ReferenceSubsetting.class::cast)
+                                        .findFirst()
+                                        .ifPresent(rss -> {
+                                            this.getAction(newSource).ifPresent(rss::setReferencedFeature);
+                                        });
+                            });
+                });
+        // Succession stores the source in source feature as well.
         succession.getSource().replaceAll(e -> {
             if (Objects.equals(e, oldSource)) {
                 return newSource;
@@ -200,7 +224,29 @@ public class ViewEdgeService {
         return succession;
     }
 
-    public Element reconnectTargetSuccessionEdge(Succession succession, Element oldTarget, Element newTarget) {
+    public Element reconnectTargetSuccessionEdge(SuccessionAsUsage succession, Element oldTarget, Element newTarget) {
+        var endFeatureMemberships = succession.getOwnedRelationship().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .toList();
+        // the succession target is in the second endFeatureMembership
+        if (endFeatureMemberships.size() > 1) {
+            var targetEndFeatureMembership = endFeatureMemberships.get(1);
+            targetEndFeatureMembership.getOwnedRelatedElement().stream()
+                    .filter(ReferenceUsage.class::isInstance)
+                    .map(ReferenceUsage.class::cast)
+                    .findFirst()
+                    .ifPresent(ru -> {
+                        ru.getOwnedRelationship().stream()
+                                .filter(ReferenceSubsetting.class::isInstance)
+                                .map(ReferenceSubsetting.class::cast)
+                                .findFirst()
+                                .ifPresent(rss -> {
+                                    this.getAction(newTarget).ifPresent(rss::setReferencedFeature);
+                                });
+                    });
+        }
+        // Succession stores the target in target feature as well.
         succession.getTarget().replaceAll(e -> {
             if (Objects.equals(e, oldTarget)) {
                 return newTarget;
@@ -208,5 +254,18 @@ public class ViewEdgeService {
             return e;
         });
         return succession;
+    }
+
+    private Optional<ActionUsage> getAction(Element element) {
+        Optional<ActionUsage> result = Optional.empty();
+        if (element instanceof Membership membership) {
+            // this is a standard start or done action, the actual action is inside the memberElement feature.
+            if (membership.getMemberElement() instanceof ActionUsage au) {
+                result = Optional.of(au);
+            }
+        } else if (element instanceof ActionUsage au) {
+            result = Optional.of(au);
+        }
+        return result;
     }
 }
