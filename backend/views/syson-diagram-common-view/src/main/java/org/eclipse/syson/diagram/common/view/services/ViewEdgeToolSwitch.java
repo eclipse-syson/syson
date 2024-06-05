@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
@@ -255,10 +256,15 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseUsage(Usage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.add(this.edgeToolService.createDependencyEdgeTool(this.allNodeDescriptions));
+        // special actions (such as Start or Done) should not be considered to create edges.
+        var targetDescriptions = this.allNodeDescriptions.stream()
+                .filter(nodeDesc -> !this.nameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME).equals(nodeDesc.getName()) &&
+                        !this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(nodeDesc.getName()))
+                .toList();
+        edgeTools.add(this.edgeToolService.createDependencyEdgeTool(targetDescriptions));
         edgeTools.add(this.edgeToolService.createRedefinitionEdgeTool(List.of(this.nodeDescription)));
         edgeTools.add(this.edgeToolService.createSubsettingEdgeTool(List.of(this.nodeDescription)));
-        edgeTools.add(this.edgeToolService.createAllocateEdgeTool(this.allNodeDescriptions));
+        edgeTools.add(this.edgeToolService.createAllocateEdgeTool(targetDescriptions));
         var definitionNodeDescription = this.edgeToolService.getNodeDescription(this.edgeToolService.getDefinitionFromUsage(object));
         if (definitionNodeDescription.isPresent()) {
             edgeTools.add(this.edgeToolService.createFeatureTypingEdgeTool(List.of(definitionNodeDescription.get())));
