@@ -13,6 +13,7 @@
 package org.eclipse.syson.services;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -116,8 +117,7 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
         if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_Target())
                 || this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getRelationship_Source())) {
             // Handle the case where the succession source or target has already been deleted
-            if ((!object.getSource().isEmpty() && object.getSource().get(0).getOwner() == null)
-                    || (!object.getTarget().isEmpty() && object.getTarget().get(0).getOwner() == null)) {
+            if (this.hasBeenAlreadyDeleted(object.getSource()) || this.hasBeenAlreadyDeleted(object.getTarget())) {
                 return relatedElements;
             }
             relatedElements.add(object);
@@ -132,5 +132,9 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
             }
         }
         return relatedElements;
+    }
+
+    private boolean hasBeenAlreadyDeleted(List<Element> ends) {
+        return !ends.isEmpty() && !(ends.get(0) instanceof Membership) && ends.get(0).getOwner() == null;
     }
 }
