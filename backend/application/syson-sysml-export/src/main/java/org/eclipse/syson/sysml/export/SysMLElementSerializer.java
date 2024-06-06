@@ -75,6 +75,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -197,6 +198,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String casePartDefinition(PartDefinition partDef) {
         return this.appendDefaultDefinition(newAppender(), partDef).toString();
+    }
+    
+    @Override
+    public String casePartUsage(PartUsage partUsage) {
+        return this.appendDefaultUsage(newAppender(), partUsage).toString();
     }
     
     private Appender appendDefaultDefinition(Appender builder, Definition def) {

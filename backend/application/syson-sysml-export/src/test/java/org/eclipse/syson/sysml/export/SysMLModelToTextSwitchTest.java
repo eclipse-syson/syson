@@ -43,20 +43,21 @@ import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.export.models.AttributeUsageWithBinaryOperatorExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.AttributeUsageWithBracketOperatorExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.AttributeUsageWithFeatureChainExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressionTestModel;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.Test;
-import org.eclipse.syson.sysml.export.models.AttributeUsageWithBracketOperatorExpressionTestModel;
-import org.eclipse.syson.sysml.export.models.AttributeUsageWithFeatureChainExpressionTestModel;
-import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressionTestModel;
-import org.eclipse.syson.sysml.export.models.AttributeUsageWithBinaryOperatorExpressionTestModel;
 
 /**
  * Test class for SysMLElementSerializer.
@@ -154,6 +155,22 @@ public class SysMLModelToTextSwitchTest {
                         package 'Package 3';
                     }
                 }""", pack1);
+    }
+
+    @Test
+    public void partUsage() {
+
+        PartDefinition partDef = builder.createWithName(PartDefinition.class, "Part Def1");
+
+        PartUsage partUsage = builder.createWithName(PartUsage.class, "PartUsage1");
+
+        builder.setType(partUsage, partDef);
+
+        builder.createIn(Comment.class, partUsage).setBody("A comment");
+        this.assertTextualFormEquals("""
+                ref part PartUsage1 : 'Part Def1' {
+                    /* A comment */
+                }""", partUsage);
     }
 
     @Test
