@@ -103,6 +103,10 @@ const toPackageNode = (
     `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`
   );
 
+  if (data.insideLabel) {
+    data.insideLabel.isHeader = true;
+  }
+
   const node: Node<SysMLPackageNodeData> = {
     id,
     type: 'sysMLPackageNode',
