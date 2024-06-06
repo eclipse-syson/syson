@@ -19,10 +19,13 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.statetransition.view.tools.StateTransitionActionToolProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -53,9 +56,27 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
 
         return acceptedNodeTypes;
     }
-
+    
     @Override
-    protected INodeToolProvider getItemCreationToolProvider() {
-        return null;
+    protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
+        var palette = this.diagramBuilderHelper.newNodePalette()
+                .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
+
+        return palette.toolSections(this.createActionCreationToolSection(cache),
+                this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .build();
+    }
+
+    private NodeToolSection createActionCreationToolSection(IViewDiagramElementFinder cache) {
+        NodeToolSection nodeToolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
+        nodeToolSection.setName("Create Actions Section");
+        
+        List<EReference> refList = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(eClass);
+        if (refList != null) {
+            refList.stream().map(eReference -> new StateTransitionActionToolProvider(eReference).create(cache)).forEach(nodeTool -> {
+                nodeToolSection.getNodeTools().add(nodeTool);
+            });
+        }
+        return nodeToolSection;
     }
 }
