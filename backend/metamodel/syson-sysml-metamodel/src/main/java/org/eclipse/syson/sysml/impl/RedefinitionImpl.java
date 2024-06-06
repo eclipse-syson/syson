@@ -83,8 +83,9 @@ public class RedefinitionImpl extends SubsettingImpl implements Redefinition {
             InternalEObject oldRedefinedFeature = (InternalEObject) this.redefinedFeature;
             this.redefinedFeature = (Feature) this.eResolveProxy(oldRedefinedFeature);
             if (this.redefinedFeature != oldRedefinedFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.REDEFINITION__REDEFINED_FEATURE, oldRedefinedFeature, this.redefinedFeature));
+                }
             }
         }
         return this.redefinedFeature;
@@ -108,8 +109,9 @@ public class RedefinitionImpl extends SubsettingImpl implements Redefinition {
     public void setRedefinedFeature(Feature newRedefinedFeature) {
         Feature oldRedefinedFeature = this.redefinedFeature;
         this.redefinedFeature = newRedefinedFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REDEFINITION__REDEFINED_FEATURE, oldRedefinedFeature, this.redefinedFeature));
+        }
     }
 
     /**
@@ -123,8 +125,9 @@ public class RedefinitionImpl extends SubsettingImpl implements Redefinition {
             InternalEObject oldRedefiningFeature = (InternalEObject) this.redefiningFeature;
             this.redefiningFeature = (Feature) this.eResolveProxy(oldRedefiningFeature);
             if (this.redefiningFeature != oldRedefiningFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.REDEFINITION__REDEFINING_FEATURE, oldRedefiningFeature, this.redefiningFeature));
+                }
             }
         }
         return this.redefiningFeature;
@@ -148,8 +151,9 @@ public class RedefinitionImpl extends SubsettingImpl implements Redefinition {
     public void setRedefiningFeature(Feature newRedefiningFeature) {
         Feature oldRedefiningFeature = this.redefiningFeature;
         this.redefiningFeature = newRedefiningFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REDEFINITION__REDEFINING_FEATURE, oldRedefiningFeature, this.redefiningFeature));
+        }
     }
 
     /**
@@ -161,12 +165,14 @@ public class RedefinitionImpl extends SubsettingImpl implements Redefinition {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.REDEFINITION__REDEFINED_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getRedefinedFeature();
+                }
                 return this.basicGetRedefinedFeature();
             case SysmlPackage.REDEFINITION__REDEFINING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getRedefiningFeature();
+                }
                 return this.basicGetRedefiningFeature();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -222,6 +228,46 @@ public class RedefinitionImpl extends SubsettingImpl implements Redefinition {
                 return this.redefiningFeature != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getSubsettedFeature() {
+        return this.getRedefinedFeature();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public void setSubsettedFeature(Feature newSubsettedFeature) {
+        this.setRedefinedFeature(newSubsettedFeature);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getSubsettingFeature() {
+        return this.getRedefiningFeature();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public void setSubsettingFeature(Feature newSubsettingFeature) {
+        this.setRedefiningFeature(newSubsettingFeature);
     }
 
 } // RedefinitionImpl

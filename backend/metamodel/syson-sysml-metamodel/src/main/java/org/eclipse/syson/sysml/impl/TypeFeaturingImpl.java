@@ -13,9 +13,13 @@
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -86,8 +90,9 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
             InternalEObject oldFeatureOfType = (InternalEObject) this.featureOfType;
             this.featureOfType = (Feature) this.eResolveProxy(oldFeatureOfType);
             if (this.featureOfType != oldFeatureOfType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.TYPE_FEATURING__FEATURE_OF_TYPE, oldFeatureOfType, this.featureOfType));
+                }
             }
         }
         return this.featureOfType;
@@ -111,8 +116,9 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
     public void setFeatureOfType(Feature newFeatureOfType) {
         Feature oldFeatureOfType = this.featureOfType;
         this.featureOfType = newFeatureOfType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE_FEATURING__FEATURE_OF_TYPE, oldFeatureOfType, this.featureOfType));
+        }
     }
 
     /**
@@ -126,8 +132,9 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
             InternalEObject oldFeaturingType = (InternalEObject) this.featuringType;
             this.featuringType = (Type) this.eResolveProxy(oldFeaturingType);
             if (this.featuringType != oldFeaturingType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.TYPE_FEATURING__FEATURING_TYPE, oldFeaturingType, this.featuringType));
+                }
             }
         }
         return this.featuringType;
@@ -151,8 +158,9 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
     public void setFeaturingType(Type newFeaturingType) {
         Type oldFeaturingType = this.featuringType;
         this.featuringType = newFeaturingType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE_FEATURING__FEATURING_TYPE, oldFeaturingType, this.featuringType));
+        }
     }
 
     /**
@@ -187,16 +195,19 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.TYPE_FEATURING__FEATURE_OF_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getFeatureOfType();
+                }
                 return this.basicGetFeatureOfType();
             case SysmlPackage.TYPE_FEATURING__FEATURING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getFeaturingType();
+                }
                 return this.basicGetFeaturingType();
             case SysmlPackage.TYPE_FEATURING__OWNING_FEATURE_OF_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningFeatureOfType();
+                }
                 return this.basicGetOwningFeatureOfType();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -254,6 +265,76 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
                 return this.basicGetOwningFeatureOfType() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getSource() {
+        EList<Element> sources = new BasicEList<>();
+        Feature featureOfType = this.getFeatureOfType();
+        if (featureOfType != null) {
+            sources.add(featureOfType);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getFeature() {
+        return this.getFeatureOfType();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public void setFeature(Feature newFeature) {
+        this.setFeatureOfType(newFeature);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getTarget() {
+        EList<Element> targets = new BasicEList<>();
+        Type featuringType = this.getFeaturingType();
+        if (featuringType != null) {
+            targets.add(featuringType);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Type getType() {
+        return this.getFeaturingType();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public void setType(Type newType) {
+        this.setFeaturingType(newType);
     }
 
 } // TypeFeaturingImpl

@@ -547,9 +547,19 @@ public class TypeImpl extends NamespaceImpl implements Type {
     protected EList<Membership> getMembership(EList<Namespace> excluded) {
         List<Element> memberships = new ArrayList<>();
         NameConflictingFilter filter = new NameConflictingFilter();
-        this.getOwnedMembership().stream().filter(filter).forEach(memberships::add);
-        this.importedMemberships(excluded).stream().filter(filter).forEach(memberships::add);
-        this.inheritedMemberships(excluded.stream().filter(e -> e instanceof Type).map(Type.class::cast).collect(toCollection(UniqueEList::new))).stream().filter(filter).forEach(memberships::add);
+        this.getOwnedMembership().stream()
+            .filter(filter)
+            .forEach(memberships::add);
+        this.importedMemberships(excluded).stream()
+            .filter(filter)
+            .forEach(memberships::add);
+        this.inheritedMemberships(excluded.stream()
+                    .filter(Type.class::isInstance)
+                    .map(Type.class::cast)
+                    .collect(toCollection(UniqueEList::new)))
+                .stream()
+                .filter(filter)
+                .forEach(memberships::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_Membership(), memberships.size(), memberships.toArray());
     }
 

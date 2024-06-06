@@ -13,9 +13,12 @@
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
@@ -114,8 +117,9 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
     public void setBody(String newBody) {
         String oldBody = this.body;
         this.body = newBody;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TEXTUAL_REPRESENTATION__BODY, oldBody, this.body));
+        }
     }
 
     /**
@@ -137,8 +141,9 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
     public void setLanguage(String newLanguage) {
         String oldLanguage = this.language;
         this.language = newLanguage;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TEXTUAL_REPRESENTATION__LANGUAGE, oldLanguage, this.language));
+        }
     }
 
     /**
@@ -177,8 +182,9 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
             case SysmlPackage.TEXTUAL_REPRESENTATION__LANGUAGE:
                 return this.getLanguage();
             case SysmlPackage.TEXTUAL_REPRESENTATION__REPRESENTED_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getRepresentedElement();
+                }
                 return this.basicGetRepresentedElement();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -245,8 +251,9 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (body: ");
@@ -255,6 +262,21 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
         result.append(this.language);
         result.append(')');
         return result.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getAnnotatedElement() {
+        EList<Element> annotatedElements = new BasicEList<>();
+        Element representedElement = this.getRepresentedElement();
+        if (representedElement != null) {
+            annotatedElements.add(representedElement);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_AnnotatedElement(), annotatedElements.size(), annotatedElements.toArray());
     }
 
 } // TextualRepresentationImpl

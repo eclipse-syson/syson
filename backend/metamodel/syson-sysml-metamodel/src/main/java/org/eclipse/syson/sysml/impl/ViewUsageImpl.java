@@ -16,12 +16,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -168,12 +170,14 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
             case SysmlPackage.VIEW_USAGE__VIEW_CONDITION:
                 return this.getViewCondition();
             case SysmlPackage.VIEW_USAGE__VIEW_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getViewDefinition();
+                }
                 return this.basicGetViewDefinition();
             case SysmlPackage.VIEW_USAGE__VIEW_RENDERING:
-                if (resolve)
+                if (resolve) {
                     return this.getViewRendering();
+                }
                 return this.basicGetViewRendering();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -213,6 +217,21 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
                 return this.includeAsExposed((Element) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<PartDefinition> getPartDefinition() {
+        EList<PartDefinition> partDefinitions = new BasicEList<>();
+        ViewDefinition viewDefinition = this.getViewDefinition();
+        if (viewDefinition != null) {
+            partDefinitions.add(viewDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getPartUsage_PartDefinition(), partDefinitions.size(), partDefinitions.toArray());
     }
 
 } // ViewUsageImpl

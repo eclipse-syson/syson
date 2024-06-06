@@ -29,6 +29,7 @@ import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -64,33 +65,22 @@ public class ModelBuilder {
 
     public void addSuperType(Classifier child, Classifier parent) {
         Subclassification subClassification = this.create(Subclassification.class);
-        // Workaround waiting for the subset/refine implementation
-        subClassification.setGeneral(parent);
-        subClassification.setSpecific(child);
         subClassification.setSuperclassifier(parent);
         subClassification.setSubclassifier(child);
 
         child.getOwnedRelationship().add(subClassification);
-
     }
 
     public void addSubsetting(Feature child, Feature parent) {
         Subsetting subsetting = this.create(Subsetting.class);
-        // Workaround waiting for the subset/refine implementation
-        subsetting.setGeneral(parent);
-        subsetting.setSpecific(child);
         subsetting.setSubsettingFeature(child);
         subsetting.setSubsettedFeature(parent);
 
         child.getOwnedRelationship().add(subsetting);
-
     }
 
     public ReferenceSubsetting addReferenceSubsetting(Usage child, Feature parent) {
         ReferenceSubsetting referenceSubsetting = this.create(ReferenceSubsetting.class);
-        // Workaround waiting for the subset/refine implementation
-        referenceSubsetting.setGeneral(parent);
-        referenceSubsetting.setSpecific(child);
         referenceSubsetting.setSubsettingFeature(child);
         referenceSubsetting.setSubsettedFeature(parent);
         referenceSubsetting.setReferencedFeature(parent);
@@ -98,18 +88,12 @@ public class ModelBuilder {
         child.getOwnedRelationship().add(referenceSubsetting);
 
         return referenceSubsetting;
-
     }
 
     public void addRedefinition(Feature redefiningFeature, Feature redefinedFeature) {
         Redefinition redefinition = this.create(Redefinition.class);
-        redefinition.setGeneral(redefiningFeature);
-        redefinition.setSpecific(redefinedFeature);
-        // Workaround waiting for the subset/refine implementation
         redefinition.setRedefinedFeature(redefinedFeature);
         redefinition.setRedefiningFeature(redefiningFeature);
-        redefinition.setSubsettedFeature(redefinedFeature);
-        redefinition.setSubsettingFeature(redefiningFeature);
 
         redefiningFeature.getOwnedRelationship().add(redefinition);
 
@@ -162,7 +146,7 @@ public class ModelBuilder {
         ReferenceUsage targetTefUsage = this.create(ReferenceUsage.class);
         targetTefUsage.setIsEnd(true);
         ReferenceSubsetting targetReferenceSubsetting = this.addReferenceSubsetting(targetTefUsage, target);
-        
+
         // FeatureChains are directly contained by the Subsetting relationship
         if (!target.getOwnedFeatureChaining().isEmpty()) {
             targetReferenceSubsetting.getOwnedRelatedElement().add(target);
@@ -172,7 +156,6 @@ public class ModelBuilder {
         succession.getOwnedRelationship().add(targetEndFeatureMembership);
         targetEndFeatureMembership.getOwnedRelatedElement().add(targetTefUsage);
 
-        // this.addFeatureMembership(succession, targetTefUsage);
         this.addFeatureMembership(parent, succession);
 
         return succession;
@@ -180,11 +163,8 @@ public class ModelBuilder {
 
     public void setType(Feature feature, Type type) {
         FeatureTyping featureTyping = this.fact.createFeatureTyping();
-        featureTyping.setSpecific(feature);
         featureTyping.setTypedFeature(feature);
-        // Waiting for subset/refine implementation
         featureTyping.setType(type);
-        featureTyping.setGeneral(type);
         feature.getOwnedRelationship().add(featureTyping);
     }
 
@@ -203,7 +183,7 @@ public class ModelBuilder {
                 parent.getOwnedRelationship().add(newInstanceRelationship);
             } else if (newInstance instanceof EnumerationUsage feature && parent instanceof EnumerationDefinition) {
                 this.addVariantMembership(parent, feature);
-            } else if (newInstance instanceof Feature feature) {
+            } else if (newInstance instanceof Feature feature && !(parent instanceof Package)) {
                 this.addFeatureMembership(parent, feature);
             } else {
                 this.addOwnedMembership(parent, newInstance);
@@ -226,7 +206,6 @@ public class ModelBuilder {
         ownedRelation.getOwnedRelatedElement().add(ownedElement);
         // I guess this should be done automatically when adding to ownedRelatedElement but waiting for subset and super
         // set to be implemented
-        ownedRelation.getTarget().add(ownedElement);
         ownedRelation.setMemberElement(ownedElement);
 
         if (visibility != null) {
@@ -235,7 +214,6 @@ public class ModelBuilder {
         }
 
         return ownedRelation;
-
     }
 
     private void addFeatureMembership(Element parent, Feature feature) {
@@ -243,5 +221,4 @@ public class ModelBuilder {
         // Workaround waiting for subset/refine implementation
         relationship.setFeature(feature);
     }
-
 }

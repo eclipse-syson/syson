@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -360,6 +361,21 @@ public class StateUsageImpl extends ActionUsageImpl implements StateUsage {
         result.append(this.isParallel);
         result.append(')');
         return result.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Behavior> getActionDefinition() {
+        EList<Behavior> actionDefinitions = new BasicEList<>();
+        EList<Behavior> stateDefinition = this.getStateDefinition();
+        if (stateDefinition != null) {
+            actionDefinitions.addAll(stateDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getActionUsage_ActionDefinition(), actionDefinitions.size(), actionDefinitions.toArray());
     }
 
 } // StateUsageImpl

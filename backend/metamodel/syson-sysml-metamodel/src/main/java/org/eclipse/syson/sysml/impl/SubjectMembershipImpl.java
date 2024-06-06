@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -85,8 +86,9 @@ public class SubjectMembershipImpl extends ParameterMembershipImpl implements Su
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SUBJECT_MEMBERSHIP__OWNED_SUBJECT_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedSubjectParameter();
+                }
                 return this.basicGetOwnedSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -104,6 +106,16 @@ public class SubjectMembershipImpl extends ParameterMembershipImpl implements Su
                 return this.basicGetOwnedSubjectParameter() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getOwnedMemberParameter() {
+        return this.getOwnedSubjectParameter();
     }
 
 } // SubjectMembershipImpl

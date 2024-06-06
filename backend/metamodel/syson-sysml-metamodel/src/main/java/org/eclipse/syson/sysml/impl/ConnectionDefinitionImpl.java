@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -151,8 +152,9 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
     public void setIsImplied(boolean newIsImplied) {
         boolean oldIsImplied = this.isImplied;
         this.isImplied = newIsImplied;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_DEFINITION__IS_IMPLIED, oldIsImplied, this.isImplied));
+        }
     }
 
     /**
@@ -176,8 +178,9 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
      */
     @Override
     public Element getOwningRelatedElement() {
-        if (this.eContainerFeatureID() != SysmlPackage.CONNECTION_DEFINITION__OWNING_RELATED_ELEMENT)
+        if (this.eContainerFeatureID() != SysmlPackage.CONNECTION_DEFINITION__OWNING_RELATED_ELEMENT) {
             return null;
+        }
         return (Element) this.eInternalContainer();
     }
 
@@ -199,18 +202,23 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
     @Override
     public void setOwningRelatedElement(Element newOwningRelatedElement) {
         if (newOwningRelatedElement != this.eInternalContainer() || (this.eContainerFeatureID() != SysmlPackage.CONNECTION_DEFINITION__OWNING_RELATED_ELEMENT && newOwningRelatedElement != null)) {
-            if (EcoreUtil.isAncestor(this, newOwningRelatedElement))
+            if (EcoreUtil.isAncestor(this, newOwningRelatedElement)) {
                 throw new IllegalArgumentException("Recursive containment not allowed for " + this.toString());
+            }
             NotificationChain msgs = null;
-            if (this.eInternalContainer() != null)
+            if (this.eInternalContainer() != null) {
                 msgs = this.eBasicRemoveFromContainer(msgs);
-            if (newOwningRelatedElement != null)
+            }
+            if (newOwningRelatedElement != null) {
                 msgs = ((InternalEObject) newOwningRelatedElement).eInverseAdd(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
+            }
             msgs = this.basicSetOwningRelatedElement(newOwningRelatedElement, msgs);
-            if (msgs != null)
+            if (msgs != null) {
                 msgs.dispatch();
-        } else if (this.eNotificationRequired())
+            }
+        } else if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_DEFINITION__OWNING_RELATED_ELEMENT, newOwningRelatedElement, newOwningRelatedElement));
+        }
     }
 
     /**
@@ -248,16 +256,6 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
             this.target = new EObjectResolvingEList<>(Element.class, this, SysmlPackage.CONNECTION_DEFINITION__TARGET);
         }
         return this.target;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<Feature> getAssociationEnd() {
-        return this.getEndFeature();
     }
 
     /**
@@ -333,8 +331,9 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
             case SysmlPackage.CONNECTION_DEFINITION__OWNED_RELATED_ELEMENT:
                 return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getOwnedRelatedElement()).basicAdd(otherEnd, msgs);
             case SysmlPackage.CONNECTION_DEFINITION__OWNING_RELATED_ELEMENT:
-                if (this.eInternalContainer() != null)
+                if (this.eInternalContainer() != null) {
                     msgs = this.eBasicRemoveFromContainer(msgs);
+                }
                 return this.basicSetOwningRelatedElement((Element) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -395,8 +394,9 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
             case SysmlPackage.CONNECTION_DEFINITION__RELATED_TYPE:
                 return this.getRelatedType();
             case SysmlPackage.CONNECTION_DEFINITION__SOURCE_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getSourceType();
+                }
                 return this.basicGetSourceType();
             case SysmlPackage.CONNECTION_DEFINITION__TARGET_TYPE:
                 return this.getTargetType();
@@ -601,14 +601,30 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isImplied: ");
         result.append(this.isImplied);
         result.append(')');
         return result.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Feature> getAssociationEnd() {
+        EList<Feature> associationEnds = new BasicEList<>();
+        EList<Usage> connectionEnd = this.getConnectionEnd();
+        if (connectionEnd != null) {
+            associationEnds.addAll(connectionEnd);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAssociation_AssociationEnd(), associationEnds.size(), associationEnds.toArray());
     }
 
 } // ConnectionDefinitionImpl

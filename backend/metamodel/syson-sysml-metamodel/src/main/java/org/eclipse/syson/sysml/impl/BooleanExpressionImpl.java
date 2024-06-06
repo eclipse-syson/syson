@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.BooleanExpression;
+import org.eclipse.syson.sysml.Function;
 import org.eclipse.syson.sysml.Predicate;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -82,8 +83,9 @@ public class BooleanExpressionImpl extends ExpressionImpl implements BooleanExpr
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.BOOLEAN_EXPRESSION__PREDICATE:
-                if (resolve)
+                if (resolve) {
                     return this.getPredicate();
+                }
                 return this.basicGetPredicate();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -101,6 +103,16 @@ public class BooleanExpressionImpl extends ExpressionImpl implements BooleanExpr
                 return this.basicGetPredicate() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Function getFunction() {
+        return this.getPredicate();
     }
 
 } // BooleanExpressionImpl

@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -32,6 +33,7 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataFeature;
 import org.eclipse.syson.sysml.MetadataUsage;
+import org.eclipse.syson.sysml.Structure;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
@@ -117,13 +119,10 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Metaclass basicGetMetaclass() {
-        // TODO: implement this method to return the 'Metaclass' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getMetadataDefinition();
     }
 
     /**
@@ -241,12 +240,14 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
             case SysmlPackage.METADATA_USAGE__ANNOTATION:
                 return this.getAnnotation();
             case SysmlPackage.METADATA_USAGE__METACLASS:
-                if (resolve)
+                if (resolve) {
                     return this.getMetaclass();
+                }
                 return this.basicGetMetaclass();
             case SysmlPackage.METADATA_USAGE__METADATA_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getMetadataDefinition();
+                }
                 return this.basicGetMetadataDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -408,6 +409,21 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
                 return this.syntaxElement();
         }
         return super.eInvoke(operationID, arguments);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<Structure> getItemDefinition() {
+        EList<Structure> itemDefinitions = new BasicEList<>();
+        Metaclass metadataDefinition = this.getMetadataDefinition();
+        if (metadataDefinition != null) {
+            itemDefinitions.add(metadataDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getItemUsage_ItemDefinition(), itemDefinitions.size(), itemDefinitions.toArray());
     }
 
 } // MetadataUsageImpl

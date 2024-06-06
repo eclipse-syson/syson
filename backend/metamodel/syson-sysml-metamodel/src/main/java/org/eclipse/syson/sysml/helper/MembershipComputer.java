@@ -43,14 +43,14 @@ import org.eclipse.syson.sysml.VisibilityKind;
  * <li>inheritedMemberships</li>
  * <li>importedMemberships</li>
  * </ul>
- * 
+ *
  * @author Arthur Daussy
  */
 public class MembershipComputer<T extends Element> {
 
-    private Set<Element> visited;
+    private final Set<Element> visited;
 
-    private T sourceElement;
+    private final T sourceElement;
 
     public MembershipComputer(T sourceElement, EList<? extends Namespace> excluded) {
         super();
@@ -59,23 +59,20 @@ public class MembershipComputer<T extends Element> {
     }
 
     public EList<Membership> visibleMemberships(boolean isRecursive, boolean includeAll, boolean includeProtectedInherited) {
-
-        if (sourceElement instanceof Namespace namespace) {
-            return visibleMemberships(namespace, isRecursive, includeAll, includeProtectedInherited);
+        if (this.sourceElement instanceof Namespace namespace) {
+            return this.visibleMemberships(namespace, isRecursive, includeAll, includeProtectedInherited);
         } else {
-            return new BasicEList<Membership>();
+            return new BasicEList<>();
         }
-
     }
 
     private EList<Membership> visibleMemberships(Namespace self, boolean isRecursive, boolean includeAll, boolean includeProtectedInherited) {
-
-        if (visited.contains(self)) {
-            return new BasicEList<Membership>();
+        if (this.visited.contains(self)) {
+            return new BasicEList<>();
         }
 
         // Protected against infinite loop while iterating on imported/inherited elements
-        visited.add(self);
+        this.visited.add(self);
 
         NameConflictingFilter nameConflictingFilter = new NameConflictingFilter();
         List<Membership> directMemberships = self.getOwnedMembership().stream()
@@ -85,28 +82,28 @@ public class MembershipComputer<T extends Element> {
 
         self.getOwnedImport().stream()
                 .filter(m -> includeAll || m.getVisibility() == VisibilityKind.PUBLIC)
-                .flatMap(imp -> importedMemberships(imp).stream())
+                .flatMap(imp -> this.importedMemberships(imp).stream())
                 .filter(nameConflictingFilter)
                 .forEach(directMemberships::add);
 
         if (self instanceof Type type) {
 
-            inheritedMemberships(type).stream()
+            this.inheritedMemberships(type).stream()
                     .filter(rel -> includeAll || (includeProtectedInherited && rel.getVisibility() == VisibilityKind.PROTECTED) || rel.getVisibility() == VisibilityKind.PUBLIC)
                     .filter(nameConflictingFilter)
                     .forEach(directMemberships::add);
 
         }
 
-        BasicEList<Membership> visibleMemberships = new BasicEList<Membership>(directMemberships);
+        BasicEList<Membership> visibleMemberships = new BasicEList<>(directMemberships);
 
         if (isRecursive) {
 
-            List<Membership> recursiveMembers = new BasicEList<Membership>();
+            List<Membership> recursiveMembers = new BasicEList<>();
             for (Membership m : visibleMemberships) {
                 if (m.getMemberElement() instanceof Namespace subNamespace) {
                     if (!visibleMemberships.contains(subNamespace)) {
-                        recursiveMembers.addAll(visibleMemberships(subNamespace, isRecursive, includeAll, includeProtectedInherited));
+                        recursiveMembers.addAll(this.visibleMemberships(subNamespace, isRecursive, includeAll, includeProtectedInherited));
                     }
                 }
             }
@@ -117,17 +114,15 @@ public class MembershipComputer<T extends Element> {
     }
 
     public <T extends Namespace> EList<Membership> inheritedMemberships() {
-
-        if (sourceElement instanceof Type type) {
-            return inheritedMemberships(type);
+        if (this.sourceElement instanceof Type type) {
+            return this.inheritedMemberships(type);
         } else {
-            return new BasicEList<Membership>();
+            return new BasicEList<>();
         }
     }
 
     private <T extends Namespace> EList<Membership> inheritedMemberships(Type self) {
-
-        visited.add((Namespace) self);
+        this.visited.add(self);
 
         NameConflictingFilter namefilter = new NameConflictingFilter();
         namefilter.fillUsedNames(self.getOwnedMembership());
@@ -136,23 +131,23 @@ public class MembershipComputer<T extends Element> {
         if (conjugator != null) {
             Type type = conjugator.getOriginalType();
             if (type != null) {
-                conjugatedMemberships = visibleMemberships(type, false, true, true).stream().filter(namefilter).toList();
+                conjugatedMemberships = this.visibleMemberships(type, false, true, true).stream().filter(namefilter).toList();
             }
         }
 
-        List<Membership> generalMemberships = new BasicEList<Membership>();
+        List<Membership> generalMemberships = new BasicEList<>();
         for (Specialization specialization : self.getOwnedSpecialization()) {
             Type general = specialization.getGeneral();
-            if (general != null && !visited.contains(general)) {
-                visibleMemberships(general, false, true, true).stream()
+            if (general != null && !this.visited.contains(general)) {
+                this.visibleMemberships(general, false, true, true).stream()
                         .filter(namefilter)
                         .forEach(generalMemberships::add);
             }
         }
-        if(self instanceof Usage usage) {
+        if (self instanceof Usage usage) {
             Usage owningUsage = usage.getOwningUsage();
             if (owningUsage != null) {
-                generalMemberships.addAll(inheritedMemberships(owningUsage));
+                generalMemberships.addAll(this.inheritedMemberships(owningUsage));
                 owningUsage.getOwnedFeatureMembership().stream()
                         .filter(m -> m.getVisibility() != VisibilityKind.PRIVATE)
                         .forEach(generalMemberships::add);
@@ -163,30 +158,29 @@ public class MembershipComputer<T extends Element> {
                 // Also inherit protected memberships
                 .filter(rel -> rel.getVisibility() != VisibilityKind.PRIVATE)
                 .toArray(Membership[]::new);
-        return new EcoreEList.UnmodifiableEList<Membership>((InternalEObject) self, SysmlPackage.eINSTANCE.getType_InheritedMembership(), data.length, data);
+        return new EcoreEList.UnmodifiableEList<>((InternalEObject) self, SysmlPackage.eINSTANCE.getType_InheritedMembership(), data.length, data);
     }
 
     public EList<Membership> importedMemberships() {
-
-        if (sourceElement instanceof Import imp) {
-            return importedMemberships(imp);
+        if (this.sourceElement instanceof Import imp) {
+            return this.importedMemberships(imp);
         } else {
-            return new BasicEList<Membership>();
+            return new BasicEList<>();
         }
     }
 
     private EList<Membership> importedMemberships(Import self) {
         if (self instanceof NamespaceImport nmImport) {
-            return importedMemberships(nmImport);
+            return this.importedMemberships(nmImport);
         } else if (self instanceof MembershipImport msImport) {
-            return importedMemberships(msImport);
+            return this.importedMemberships(msImport);
         }
-        return new BasicEList<Membership>();
+        return new BasicEList<>();
     }
 
     private EList<Membership> importedMemberships(MembershipImport msImport) {
 
-        BasicEList<Membership> importedMemberships = new BasicEList<Membership>();
+        BasicEList<Membership> importedMemberships = new BasicEList<>();
         Membership membership = msImport.getImportedMembership();
 
         if (membership != null) {
@@ -197,9 +191,9 @@ public class MembershipComputer<T extends Element> {
                 if (!msImport.isIsRecursive() || !(member instanceof Namespace)) {
                     importedMemberships.add(membership);
                 } else if (member instanceof Namespace namespace) {
-                    if (!visited.contains(namespace)) {
+                    if (!this.visited.contains(namespace)) {
                         importedMemberships.add(membership);
-                        importedMemberships.addAll(visibleMemberships(namespace, msImport.isIsRecursive(), msImport.isIsImportAll(), false));
+                        importedMemberships.addAll(this.visibleMemberships(namespace, msImport.isIsRecursive(), msImport.isIsImportAll(), false));
                     }
                 }
             }
@@ -209,13 +203,11 @@ public class MembershipComputer<T extends Element> {
     }
 
     private EList<Membership> importedMemberships(NamespaceImport self) {
-
         Namespace aImportedNamespace = self.getImportedNamespace();
         BasicEList<Membership> result = new BasicEList<>();
-        if (aImportedNamespace != null && !visited.contains(aImportedNamespace)) {
-            result.addAll(visibleMemberships(aImportedNamespace, self.isIsRecursive(), self.isIsImportAll(), false));
+        if (aImportedNamespace != null && !this.visited.contains(aImportedNamespace)) {
+            result.addAll(this.visibleMemberships(aImportedNamespace, self.isIsRecursive(), self.isIsImportAll(), false));
         }
         return result;
     }
-
 }

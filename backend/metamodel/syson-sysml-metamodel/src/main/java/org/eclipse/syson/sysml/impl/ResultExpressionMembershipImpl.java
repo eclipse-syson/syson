@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -83,8 +84,9 @@ public class ResultExpressionMembershipImpl extends FeatureMembershipImpl implem
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.RESULT_EXPRESSION_MEMBERSHIP__OWNED_RESULT_EXPRESSION:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedResultExpression();
+                }
                 return this.basicGetOwnedResultExpression();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -102,6 +104,16 @@ public class ResultExpressionMembershipImpl extends FeatureMembershipImpl implem
                 return this.basicGetOwnedResultExpression() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getOwnedMemberFeature() {
+        return this.getOwnedResultExpression();
     }
 
 } // ResultExpressionMembershipImpl

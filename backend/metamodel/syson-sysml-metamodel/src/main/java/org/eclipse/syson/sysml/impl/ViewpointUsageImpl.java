@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.ViewpointDefinition;
@@ -102,8 +103,9 @@ public class ViewpointUsageImpl extends RequirementUsageImpl implements Viewpoin
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.VIEWPOINT_USAGE__VIEWPOINT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getViewpointDefinition();
+                }
                 return this.basicGetViewpointDefinition();
             case SysmlPackage.VIEWPOINT_USAGE__VIEWPOINT_STAKEHOLDER:
                 return this.getViewpointStakeholder();
@@ -125,6 +127,16 @@ public class ViewpointUsageImpl extends RequirementUsageImpl implements Viewpoin
                 return !this.getViewpointStakeholder().isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public RequirementDefinition getRequirementDefinition() {
+        return this.getViewpointDefinition();
     }
 
 } // ViewpointUsageImpl

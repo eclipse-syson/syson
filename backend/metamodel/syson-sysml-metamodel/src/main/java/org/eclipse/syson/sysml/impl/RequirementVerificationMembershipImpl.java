@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.RequirementVerificationMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -108,12 +109,14 @@ public class RequirementVerificationMembershipImpl extends RequirementConstraint
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__OWNED_REQUIREMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedRequirement();
+                }
                 return this.basicGetOwnedRequirement();
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__VERIFIED_REQUIREMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getVerifiedRequirement();
+                }
                 return this.basicGetVerifiedRequirement();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -133,6 +136,26 @@ public class RequirementVerificationMembershipImpl extends RequirementConstraint
                 return this.basicGetVerifiedRequirement() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public ConstraintUsage getOwnedConstraint() {
+        return this.getOwnedRequirement();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public ConstraintUsage getReferencedConstraint() {
+        return this.getVerifiedRequirement();
     }
 
 } // RequirementVerificationMembershipImpl

@@ -13,10 +13,14 @@
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Conjugation;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
@@ -84,8 +88,9 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
             InternalEObject oldConjugatedType = (InternalEObject) this.conjugatedType;
             this.conjugatedType = (Type) this.eResolveProxy(oldConjugatedType);
             if (this.conjugatedType != oldConjugatedType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.CONJUGATION__CONJUGATED_TYPE, oldConjugatedType, this.conjugatedType));
+                }
             }
         }
         return this.conjugatedType;
@@ -109,8 +114,9 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     public void setConjugatedType(Type newConjugatedType) {
         Type oldConjugatedType = this.conjugatedType;
         this.conjugatedType = newConjugatedType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONJUGATION__CONJUGATED_TYPE, oldConjugatedType, this.conjugatedType));
+        }
     }
 
     /**
@@ -124,8 +130,9 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
             InternalEObject oldOriginalType = (InternalEObject) this.originalType;
             this.originalType = (Type) this.eResolveProxy(oldOriginalType);
             if (this.originalType != oldOriginalType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.CONJUGATION__ORIGINAL_TYPE, oldOriginalType, this.originalType));
+                }
             }
         }
         return this.originalType;
@@ -149,8 +156,9 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     public void setOriginalType(Type newOriginalType) {
         Type oldOriginalType = this.originalType;
         this.originalType = newOriginalType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONJUGATION__ORIGINAL_TYPE, oldOriginalType, this.originalType));
+        }
     }
 
     /**
@@ -185,16 +193,19 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONJUGATION__CONJUGATED_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getConjugatedType();
+                }
                 return this.basicGetConjugatedType();
             case SysmlPackage.CONJUGATION__ORIGINAL_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getOriginalType();
+                }
                 return this.basicGetOriginalType();
             case SysmlPackage.CONJUGATION__OWNING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningType();
+                }
                 return this.basicGetOwningType();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -252,6 +263,36 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
                 return this.basicGetOwningType() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getSource() {
+        EList<Element> sources = new BasicEList<>();
+        Type conjugatedType = this.getConjugatedType();
+        if (conjugatedType != null) {
+            sources.add(conjugatedType);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getTarget() {
+        EList<Element> targets = new BasicEList<>();
+        Type originalType = this.getOriginalType();
+        if (originalType != null) {
+            targets.add(originalType);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
     }
 
 } // ConjugationImpl

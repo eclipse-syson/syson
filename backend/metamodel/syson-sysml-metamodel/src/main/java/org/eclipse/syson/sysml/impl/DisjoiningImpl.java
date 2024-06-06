@@ -13,10 +13,14 @@
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Disjoining;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
@@ -84,8 +88,9 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
             InternalEObject oldDisjoiningType = (InternalEObject) this.disjoiningType;
             this.disjoiningType = (Type) this.eResolveProxy(oldDisjoiningType);
             if (this.disjoiningType != oldDisjoiningType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DISJOINING__DISJOINING_TYPE, oldDisjoiningType, this.disjoiningType));
+                }
             }
         }
         return this.disjoiningType;
@@ -109,8 +114,9 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
     public void setDisjoiningType(Type newDisjoiningType) {
         Type oldDisjoiningType = this.disjoiningType;
         this.disjoiningType = newDisjoiningType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DISJOINING__DISJOINING_TYPE, oldDisjoiningType, this.disjoiningType));
+        }
     }
 
     /**
@@ -147,8 +153,9 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
             InternalEObject oldTypeDisjoined = (InternalEObject) this.typeDisjoined;
             this.typeDisjoined = (Type) this.eResolveProxy(oldTypeDisjoined);
             if (this.typeDisjoined != oldTypeDisjoined) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DISJOINING__TYPE_DISJOINED, oldTypeDisjoined, this.typeDisjoined));
+                }
             }
         }
         return this.typeDisjoined;
@@ -172,8 +179,9 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
     public void setTypeDisjoined(Type newTypeDisjoined) {
         Type oldTypeDisjoined = this.typeDisjoined;
         this.typeDisjoined = newTypeDisjoined;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DISJOINING__TYPE_DISJOINED, oldTypeDisjoined, this.typeDisjoined));
+        }
     }
 
     /**
@@ -185,16 +193,19 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.DISJOINING__DISJOINING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getDisjoiningType();
+                }
                 return this.basicGetDisjoiningType();
             case SysmlPackage.DISJOINING__OWNING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningType();
+                }
                 return this.basicGetOwningType();
             case SysmlPackage.DISJOINING__TYPE_DISJOINED:
-                if (resolve)
+                if (resolve) {
                     return this.getTypeDisjoined();
+                }
                 return this.basicGetTypeDisjoined();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -252,6 +263,36 @@ public class DisjoiningImpl extends RelationshipImpl implements Disjoining {
                 return this.typeDisjoined != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getTarget() {
+        EList<Element> targets = new BasicEList<>();
+        Type disjoiningType = this.getDisjoiningType();
+        if (disjoiningType != null) {
+            targets.add(disjoiningType);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getSource() {
+        EList<Element> sources = new BasicEList<>();
+        Type typeDisjoined = this.getTypeDisjoined();
+        if (typeDisjoined != null) {
+            sources.add(typeDisjoined);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
     }
 
 } // DisjoiningImpl

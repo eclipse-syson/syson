@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AnalysisCaseDefinition;
 import org.eclipse.syson.sysml.AnalysisCaseUsage;
+import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -129,12 +130,14 @@ public class AnalysisCaseUsageImpl extends CaseUsageImpl implements AnalysisCase
             case SysmlPackage.ANALYSIS_CASE_USAGE__ANALYSIS_ACTION:
                 return this.getAnalysisAction();
             case SysmlPackage.ANALYSIS_CASE_USAGE__ANALYSIS_CASE_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getAnalysisCaseDefinition();
+                }
                 return this.basicGetAnalysisCaseDefinition();
             case SysmlPackage.ANALYSIS_CASE_USAGE__RESULT_EXPRESSION:
-                if (resolve)
+                if (resolve) {
                     return this.getResultExpression();
+                }
                 return this.basicGetResultExpression();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -156,6 +159,16 @@ public class AnalysisCaseUsageImpl extends CaseUsageImpl implements AnalysisCase
                 return this.basicGetResultExpression() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public CaseDefinition getCaseDefinition() {
+        return this.getAnalysisCaseDefinition();
     }
 
 } // AnalysisCaseUsageImpl

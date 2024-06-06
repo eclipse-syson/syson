@@ -14,9 +14,12 @@ package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.CalculationUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
@@ -85,13 +88,10 @@ public class CalculationUsageImpl extends ActionUsageImpl implements Calculation
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Function basicGetFunction() {
-        // TODO: implement this method to return the 'Function' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getCalculationDefinition();
     }
 
     /**
@@ -193,16 +193,19 @@ public class CalculationUsageImpl extends ActionUsageImpl implements Calculation
             case SysmlPackage.CALCULATION_USAGE__IS_MODEL_LEVEL_EVALUABLE:
                 return this.isIsModelLevelEvaluable();
             case SysmlPackage.CALCULATION_USAGE__FUNCTION:
-                if (resolve)
+                if (resolve) {
                     return this.getFunction();
+                }
                 return this.basicGetFunction();
             case SysmlPackage.CALCULATION_USAGE__RESULT:
-                if (resolve)
+                if (resolve) {
                     return this.getResult();
+                }
                 return this.basicGetResult();
             case SysmlPackage.CALCULATION_USAGE__CALCULATION_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getCalculationDefinition();
+                }
                 return this.basicGetCalculationDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -311,6 +314,21 @@ public class CalculationUsageImpl extends ActionUsageImpl implements Calculation
                 return this.modelLevelEvaluable((EList<Feature>) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Behavior> getActionDefinition() {
+        EList<Behavior> actionDefinitions = new BasicEList<>();
+        Function calculationDefinition = this.getCalculationDefinition();
+        if (calculationDefinition != null) {
+            actionDefinitions.add(calculationDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getActionUsage_ActionDefinition(), actionDefinitions.size(), actionDefinitions.toArray());
     }
 
 } // CalculationUsageImpl

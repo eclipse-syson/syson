@@ -15,10 +15,12 @@ package org.eclipse.syson.sysml.impl;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.Membership;
@@ -187,8 +189,9 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     public void setIsImportAll(boolean newIsImportAll) {
         boolean oldIsImportAll = this.isImportAll;
         this.isImportAll = newIsImportAll;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.IMPORT__IS_IMPORT_ALL, oldIsImportAll, this.isImportAll));
+        }
     }
 
     /**
@@ -210,8 +213,9 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     public void setIsRecursive(boolean newIsRecursive) {
         boolean oldIsRecursive = this.isRecursive;
         this.isRecursive = newIsRecursive;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.IMPORT__IS_RECURSIVE, oldIsRecursive, this.isRecursive));
+        }
     }
 
     /**
@@ -233,8 +237,9 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
     public void setVisibility(VisibilityKind newVisibility) {
         VisibilityKind oldVisibility = this.visibility;
         this.visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.IMPORT__VISIBILITY, oldVisibility, this.visibility));
+        }
     }
 
     /**
@@ -264,12 +269,14 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
             case SysmlPackage.IMPORT__VISIBILITY:
                 return this.getVisibility();
             case SysmlPackage.IMPORT__IMPORTED_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getImportedElement();
+                }
                 return this.basicGetImportedElement();
             case SysmlPackage.IMPORT__IMPORT_OWNING_NAMESPACE:
-                if (resolve)
+                if (resolve) {
                     return this.getImportOwningNamespace();
+                }
                 return this.basicGetImportOwningNamespace();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -361,8 +368,9 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isImportAll: ");
@@ -373,6 +381,21 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
         result.append(this.visibility);
         result.append(')');
         return result.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getSource() {
+        EList<Element> sources = new BasicEList<>();
+        Namespace importOwningNamespace = this.getImportOwningNamespace();
+        if (importOwningNamespace != null) {
+            sources.add(importOwningNamespace);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
     }
 
 } // ImportImpl

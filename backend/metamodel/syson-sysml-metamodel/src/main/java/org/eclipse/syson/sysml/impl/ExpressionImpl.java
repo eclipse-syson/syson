@@ -14,9 +14,12 @@ package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
@@ -166,12 +169,14 @@ public class ExpressionImpl extends StepImpl implements Expression {
             case SysmlPackage.EXPRESSION__IS_MODEL_LEVEL_EVALUABLE:
                 return this.isIsModelLevelEvaluable();
             case SysmlPackage.EXPRESSION__FUNCTION:
-                if (resolve)
+                if (resolve) {
                     return this.getFunction();
+                }
                 return this.basicGetFunction();
             case SysmlPackage.EXPRESSION__RESULT:
-                if (resolve)
+                if (resolve) {
                     return this.getResult();
+                }
                 return this.basicGetResult();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -212,6 +217,21 @@ public class ExpressionImpl extends StepImpl implements Expression {
                 return this.modelLevelEvaluable((EList<Feature>) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Behavior> getBehavior() {
+        EList<Behavior> behaviors = new BasicEList<>();
+        Function function = this.getFunction();
+        if (function != null) {
+            behaviors.add(function);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Behavior(), behaviors.size(), behaviors.toArray());
     }
 
 } // ExpressionImpl

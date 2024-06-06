@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.Predicate;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementDefinition;
@@ -156,8 +157,9 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     public void setReqId(String newReqId) {
         String oldReqId = this.reqId;
         this.reqId = newReqId;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_USAGE__REQ_ID, oldReqId, this.reqId));
+        }
     }
 
     /**
@@ -278,14 +280,16 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
             case SysmlPackage.REQUIREMENT_USAGE__REQUIRED_CONSTRAINT:
                 return this.getRequiredConstraint();
             case SysmlPackage.REQUIREMENT_USAGE__REQUIREMENT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getRequirementDefinition();
+                }
                 return this.basicGetRequirementDefinition();
             case SysmlPackage.REQUIREMENT_USAGE__STAKEHOLDER_PARAMETER:
                 return this.getStakeholderParameter();
             case SysmlPackage.REQUIREMENT_USAGE__SUBJECT_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getSubjectParameter();
+                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -359,14 +363,25 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (reqId: ");
         result.append(this.reqId);
         result.append(')');
         return result.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Predicate getConstraintDefinition() {
+        return this.getRequirementDefinition();
     }
 
 } // RequirementUsageImpl

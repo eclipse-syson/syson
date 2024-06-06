@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -83,8 +84,9 @@ public class StakeholderMembershipImpl extends ParameterMembershipImpl implement
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.STAKEHOLDER_MEMBERSHIP__OWNED_STAKEHOLDER_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedStakeholderParameter();
+                }
                 return this.basicGetOwnedStakeholderParameter();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -102,6 +104,16 @@ public class StakeholderMembershipImpl extends ParameterMembershipImpl implement
                 return this.basicGetOwnedStakeholderParameter() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getOwnedMemberParameter() {
+        return this.getOwnedStakeholderParameter();
     }
 
 } // StakeholderMembershipImpl

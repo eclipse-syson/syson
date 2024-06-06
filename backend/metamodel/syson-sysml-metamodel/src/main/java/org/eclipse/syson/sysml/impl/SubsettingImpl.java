@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Subsetting</b></em>'. <!-- end-user-doc -->
@@ -107,8 +108,9 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
             InternalEObject oldSubsettedFeature = (InternalEObject) this.subsettedFeature;
             this.subsettedFeature = (Feature) this.eResolveProxy(oldSubsettedFeature);
             if (this.subsettedFeature != oldSubsettedFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SUBSETTING__SUBSETTED_FEATURE, oldSubsettedFeature, this.subsettedFeature));
+                }
             }
         }
         return this.subsettedFeature;
@@ -132,8 +134,9 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
     public void setSubsettedFeature(Feature newSubsettedFeature) {
         Feature oldSubsettedFeature = this.subsettedFeature;
         this.subsettedFeature = newSubsettedFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SUBSETTING__SUBSETTED_FEATURE, oldSubsettedFeature, this.subsettedFeature));
+        }
     }
 
     /**
@@ -147,8 +150,9 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
             InternalEObject oldSubsettingFeature = (InternalEObject) this.subsettingFeature;
             this.subsettingFeature = (Feature) this.eResolveProxy(oldSubsettingFeature);
             if (this.subsettingFeature != oldSubsettingFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SUBSETTING__SUBSETTING_FEATURE, oldSubsettingFeature, this.subsettingFeature));
+                }
             }
         }
         return this.subsettingFeature;
@@ -172,8 +176,9 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
     public void setSubsettingFeature(Feature newSubsettingFeature) {
         Feature oldSubsettingFeature = this.subsettingFeature;
         this.subsettingFeature = newSubsettingFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SUBSETTING__SUBSETTING_FEATURE, oldSubsettingFeature, this.subsettingFeature));
+        }
     }
 
     /**
@@ -185,16 +190,19 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SUBSETTING__OWNING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningFeature();
+                }
                 return this.basicGetOwningFeature();
             case SysmlPackage.SUBSETTING__SUBSETTED_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getSubsettedFeature();
+                }
                 return this.basicGetSubsettedFeature();
             case SysmlPackage.SUBSETTING__SUBSETTING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getSubsettingFeature();
+                }
                 return this.basicGetSubsettingFeature();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -252,6 +260,60 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
                 return this.subsettingFeature != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Type getOwningType() {
+        return this.getOwningFeature();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Type getGeneral() {
+        return this.getSubsettedFeature();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public void setGeneral(Type newGeneral) {
+        if (newGeneral instanceof Feature newGeneralFeature) {
+            this.setSubsettedFeature(newGeneralFeature);
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Type getSpecific() {
+        return this.getSubsettingFeature();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public void setSpecific(Type newSpecific) {
+        if (newSpecific instanceof Feature newSpecificFeature) {
+            this.setSubsettingFeature(newSpecificFeature);
+        }
     }
 
 } // SubsettingImpl

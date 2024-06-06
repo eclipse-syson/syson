@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -87,8 +88,9 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getDocumentedElement();
+                }
                 return this.basicGetDocumentedElement();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -117,6 +119,21 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getAnnotatedElement() {
+        EList<Element> annotatedElements = new BasicEList<>();
+        Element documentedElement = this.getDocumentedElement();
+        if (documentedElement != null) {
+            annotatedElements.add(documentedElement);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_AnnotatedElement(), annotatedElements.size(), annotatedElements.toArray());
     }
 
 } // DocumentationImpl

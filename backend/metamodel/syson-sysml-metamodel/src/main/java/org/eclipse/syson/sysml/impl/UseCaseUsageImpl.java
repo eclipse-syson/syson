@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
@@ -101,8 +102,9 @@ public class UseCaseUsageImpl extends CaseUsageImpl implements UseCaseUsage {
             case SysmlPackage.USE_CASE_USAGE__INCLUDED_USE_CASE:
                 return this.getIncludedUseCase();
             case SysmlPackage.USE_CASE_USAGE__USE_CASE_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getUseCaseDefinition();
+                }
                 return this.basicGetUseCaseDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -122,6 +124,16 @@ public class UseCaseUsageImpl extends CaseUsageImpl implements UseCaseUsage {
                 return this.basicGetUseCaseDefinition() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public CaseDefinition getCaseDefinition() {
+        return this.getUseCaseDefinition();
     }
 
 } // UseCaseUsageImpl

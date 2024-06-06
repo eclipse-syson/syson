@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.Conjugation;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
@@ -158,6 +159,16 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     @Override
     public boolean isIsConjugated() {
         return true;
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Conjugation getOwnedConjugator() {
+        return this.getOwnedPortConjugator();
     }
 
 } // ConjugatedPortDefinitionImpl

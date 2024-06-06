@@ -13,10 +13,14 @@
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Differencing;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
@@ -73,8 +77,9 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
             InternalEObject oldDifferencingType = (InternalEObject) this.differencingType;
             this.differencingType = (Type) this.eResolveProxy(oldDifferencingType);
             if (this.differencingType != oldDifferencingType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE, oldDifferencingType, this.differencingType));
+                }
             }
         }
         return this.differencingType;
@@ -98,8 +103,9 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
     public void setDifferencingType(Type newDifferencingType) {
         Type oldDifferencingType = this.differencingType;
         this.differencingType = newDifferencingType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE, oldDifferencingType, this.differencingType));
+        }
     }
 
     /**
@@ -134,12 +140,14 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getDifferencingType();
+                }
                 return this.basicGetDifferencingType();
             case SysmlPackage.DIFFERENCING__TYPE_DIFFERENCED:
-                if (resolve)
+                if (resolve) {
                     return this.getTypeDifferenced();
+                }
                 return this.basicGetTypeDifferenced();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -189,6 +197,36 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
                 return this.basicGetTypeDifferenced() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getTarget() {
+        EList<Element> targets = new BasicEList<>();
+        Type differencingType = this.getDifferencingType();
+        if (differencingType != null) {
+            targets.add(differencingType);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getSource() {
+        EList<Element> sources = new BasicEList<>();
+        Type typeDifferenced = this.getTypeDifferenced();
+        if (typeDifferenced != null) {
+            sources.add(typeDifferenced);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
     }
 
 } // DifferencingImpl

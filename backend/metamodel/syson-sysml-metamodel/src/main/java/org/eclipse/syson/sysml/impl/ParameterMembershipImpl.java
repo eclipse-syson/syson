@@ -76,16 +76,6 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
     }
 
     /**
-     * ownedMemberParameter : Feature {redefines ownedMemberFeature}
-     *
-     * @generated NOT
-     */
-    @Override
-    public Feature getOwnedMemberFeature() {
-        return this.getOwnedMemberParameter();
-    }
-
-    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -94,8 +84,9 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.PARAMETER_MEMBERSHIP__OWNED_MEMBER_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedMemberParameter();
+                }
                 return this.basicGetOwnedMemberParameter();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -113,6 +104,16 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
                 return this.basicGetOwnedMemberParameter() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getOwnedMemberFeature() {
+        return this.getOwnedMemberParameter();
     }
 
 } // ParameterMembershipImpl

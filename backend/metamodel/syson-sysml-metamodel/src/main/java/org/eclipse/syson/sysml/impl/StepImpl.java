@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
@@ -108,6 +109,21 @@ public class StepImpl extends FeatureImpl implements Step {
                 return !this.getParameter().isEmpty();
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Feature> getDirectedFeature() {
+        EList<Feature> directedFeatures = new BasicEList<>();
+        EList<Feature> parameter = this.getParameter();
+        if (parameter != null) {
+            directedFeatures.addAll(parameter);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_DirectedFeature(), directedFeatures.size(), directedFeatures.toArray());
     }
 
 } // StepImpl

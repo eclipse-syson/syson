@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.ViewRenderingMembership;
@@ -107,12 +108,14 @@ public class ViewRenderingMembershipImpl extends FeatureMembershipImpl implement
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.VIEW_RENDERING_MEMBERSHIP__OWNED_RENDERING:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedRendering();
+                }
                 return this.basicGetOwnedRendering();
             case SysmlPackage.VIEW_RENDERING_MEMBERSHIP__REFERENCED_RENDERING:
-                if (resolve)
+                if (resolve) {
                     return this.getReferencedRendering();
+                }
                 return this.basicGetReferencedRendering();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -132,6 +135,16 @@ public class ViewRenderingMembershipImpl extends FeatureMembershipImpl implement
                 return this.basicGetReferencedRendering() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getOwnedMemberFeature() {
+        return this.getOwnedRendering();
     }
 
 } // ViewRenderingMembershipImpl

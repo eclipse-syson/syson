@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
@@ -88,8 +89,9 @@ public class VariantMembershipImpl extends OwningMembershipImpl implements Varia
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.VARIANT_MEMBERSHIP__OWNED_VARIANT_USAGE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedVariantUsage();
+                }
                 return this.basicGetOwnedVariantUsage();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -118,6 +120,16 @@ public class VariantMembershipImpl extends OwningMembershipImpl implements Varia
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Element getOwnedMemberElement() {
+        return this.getOwnedVariantUsage();
     }
 
 } // VariantMembershipImpl

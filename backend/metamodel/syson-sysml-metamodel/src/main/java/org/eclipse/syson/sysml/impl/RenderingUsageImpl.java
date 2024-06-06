@@ -12,8 +12,12 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.RenderingDefinition;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -82,8 +86,9 @@ public class RenderingUsageImpl extends PartUsageImpl implements RenderingUsage 
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.RENDERING_USAGE__RENDERING_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getRenderingDefinition();
+                }
                 return this.basicGetRenderingDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -101,6 +106,21 @@ public class RenderingUsageImpl extends PartUsageImpl implements RenderingUsage 
                 return this.basicGetRenderingDefinition() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<PartDefinition> getPartDefinition() {
+        EList<PartDefinition> partDefinitions = new BasicEList<>();
+        RenderingDefinition renderingDefinition = this.getRenderingDefinition();
+        if (renderingDefinition != null) {
+            partDefinitions.add(renderingDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getPartUsage_PartDefinition(), partDefinitions.size(), partDefinitions.toArray());
     }
 
 } // RenderingUsageImpl

@@ -101,8 +101,9 @@ public class SatisfyRequirementUsageImpl extends RequirementUsageImpl implements
     public void setIsNegated(boolean newIsNegated) {
         boolean oldIsNegated = this.isNegated;
         this.isNegated = newIsNegated;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SATISFY_REQUIREMENT_USAGE__IS_NEGATED, oldIsNegated, this.isNegated));
+        }
     }
 
     /**
@@ -122,10 +123,7 @@ public class SatisfyRequirementUsageImpl extends RequirementUsageImpl implements
      * @generated
      */
     public ConstraintUsage basicGetAssertedConstraint() {
-        // TODO: implement this method to return the 'Asserted Constraint' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getSatisfiedRequirement();
     }
 
     /**
@@ -185,16 +183,19 @@ public class SatisfyRequirementUsageImpl extends RequirementUsageImpl implements
             case SysmlPackage.SATISFY_REQUIREMENT_USAGE__IS_NEGATED:
                 return this.isIsNegated();
             case SysmlPackage.SATISFY_REQUIREMENT_USAGE__ASSERTED_CONSTRAINT:
-                if (resolve)
+                if (resolve) {
                     return this.getAssertedConstraint();
+                }
                 return this.basicGetAssertedConstraint();
             case SysmlPackage.SATISFY_REQUIREMENT_USAGE__SATISFIED_REQUIREMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getSatisfiedRequirement();
+                }
                 return this.basicGetSatisfiedRequirement();
             case SysmlPackage.SATISFY_REQUIREMENT_USAGE__SATISFYING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getSatisfyingFeature();
+                }
                 return this.basicGetSatisfyingFeature();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -309,8 +310,9 @@ public class SatisfyRequirementUsageImpl extends RequirementUsageImpl implements
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isNegated: ");
