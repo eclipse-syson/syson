@@ -70,4 +70,20 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
         StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch(this.getAllNodeDescriptions(cache), this.nameGenerator);
         return toolSectionSwitch.doSwitch(this.eClass);
     }
+    
+    @Override
+    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
+        var droppableNodes = new ArrayList<NodeDescription>();
+        StateTransitionViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(droppableNodes::add));
+        StateTransitionViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(droppableNodes::add));
+        StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
+            if (type.equals(this.eClass)) {
+                listItems.forEach(eReference -> {
+                    // list compartment
+                    cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(droppableNodes::add);
+                });
+            }
+        });
+        return droppableNodes;
+    }
 }
