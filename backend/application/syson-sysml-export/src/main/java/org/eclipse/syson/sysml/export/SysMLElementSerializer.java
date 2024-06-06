@@ -81,6 +81,7 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SelectExpression;
+import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -178,33 +179,34 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseItemDefinition(ItemDefinition itemDef) {
-        return this.appendDefaultDefinition(newAppender(), itemDef).toString();
+        return this.appendDefaultDefinition(this.newAppender(), itemDef).toString();
     }
-    
+
     @Override
     public String caseEnumerationDefinition(EnumerationDefinition enumDef) {
-        return this.appendDefaultDefinition(newAppender(), enumDef).toString();
+        return this.appendDefaultDefinition(this.newAppender(), enumDef).toString();
     }
-    
+
     @Override
     public String caseAttributeDefinition(AttributeDefinition attrDef) {
-        return this.appendDefaultDefinition(newAppender(), attrDef).toString();
+        return this.appendDefaultDefinition(this.newAppender(), attrDef).toString();
     }
-    
+
     @Override
     public String casePortDefinition(PortDefinition portDef) {
-        return this.appendDefaultDefinition(newAppender(), portDef).toString();
+        return this.appendDefaultDefinition(this.newAppender(), portDef).toString();
     }
+
     @Override
     public String casePartDefinition(PartDefinition partDef) {
-        return this.appendDefaultDefinition(newAppender(), partDef).toString();
+        return this.appendDefaultDefinition(this.newAppender(), partDef).toString();
     }
-    
+
     @Override
     public String casePartUsage(PartUsage partUsage) {
         return this.appendDefaultUsage(newAppender(), partUsage).toString();
     }
-    
+
     private Appender appendDefaultDefinition(Appender builder, Definition def) {
 
         if (def instanceof OccurrenceDefinition occDef) {
@@ -214,7 +216,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         builder.appendSpaceIfNeeded().append(this.getDefinitionKeyword(def));
 
         this.appendDefinition(builder, def);
-        
+
         return builder;
 
     }
@@ -302,18 +304,18 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseAttributeUsage(AttributeUsage attrUsage) {
-        Appender builder = newAppender();
+        Appender builder = this.newAppender();
 
-        appendDefaultUsage(builder, attrUsage);
+        this.appendDefaultUsage(builder, attrUsage);
 
         return builder.toString();
     }
 
     @Override
     public String caseEnumerationUsage(EnumerationUsage enumUsage) {
-        Appender builder = newAppender();
+        Appender builder = this.newAppender();
 
-        appendDefaultUsage(builder, enumUsage);
+        this.appendDefaultUsage(builder, enumUsage);
 
         return builder.toString();
     }
@@ -391,8 +393,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseInvocationExpression(InvocationExpression expression) {
-        LOGGER.warn("InvocationExpression are not handled yet");
-        return "";
+        Appender builder = this.newAppender();
+        List<Relationship> relationships = expression.getOwnedRelationship();
+        if (!relationships.isEmpty() && (relationships.get(0) instanceof FeatureTyping || relationships.get(0) instanceof Subsetting)) {
+            relationships.stream()
+                    .filter(Specialization.class::isInstance)
+                    .map(Specialization.class::cast)
+                    .findFirst()
+                    .ifPresent(specialization -> builder.appendSpaceIfNeeded().append(this.getDeresolvableName(specialization.getGeneral(), specialization)));
+            this.appendArgumentList(builder, expression);
+        } else {
+            LOGGER.warn("FunctionOperationExpression are not handled yet");
+        }
+        return builder.toString();
     }
 
     @Override
@@ -452,7 +465,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private String getUsageKeyword(Usage usage) {
         return this.keywordProvider.doSwitch(usage);
     }
-
 
     private void appendFeatureSpecilizationPart(Appender builder, Feature feature, boolean includeImplied) {
         List<Redefinition> ownedRedefinition = feature.getOwnedRedefinition();
@@ -782,6 +794,46 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    private void appendArgumentList(Appender builder, InvocationExpression expression) {
+        builder.append(LabelConstants.OPEN_PARENTHESIS);
+        Relationship relationship = expression.getOwnedRelationship().stream()
+                .filter(FeatureMembership.class::isInstance)
+                .map(FeatureMembership.class::cast)
+                .findFirst()
+                .orElse(null);
+        if (relationship instanceof ParameterMembership) {
+            this.appendPositionalArgumentList(builder, expression);
+        } else if (relationship instanceof FeatureMembership) {
+            LOGGER.warn("NamedArgumentList are not handled yet");
+        }
+        builder.append(LabelConstants.CLOSE_PARENTHESIS);
+    }
+
+    private void appendPositionalArgumentList(Appender builder, InvocationExpression expression) {
+        List<ParameterMembership> parameterMemberships = expression.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .filter(param -> {
+                    if (param.getOwnedMemberParameter() != null) {
+                        return param.getOwnedMemberParameter().getOwnedRelationship().stream()
+                                .filter(FeatureValue.class::isInstance)
+                                .map(FeatureValue.class::cast)
+                                .findAny()
+                                .isPresent();
+                    } else {
+                        return false;
+                    }
+                })
+                .toList();
+
+        for (int i = 0; i < parameterMemberships.size(); i++) {
+            this.appendArgumentMember(builder, parameterMemberships.get(i));
+            if (i < parameterMemberships.size() - 1) {
+                builder.append(",");
+            }
+        }
+    }
+
     @Override
     public String caseConjugatedPortDefinition(ConjugatedPortDefinition object) {
         // Conjugated port definition are implicit
@@ -1085,7 +1137,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseOwningMembership(OwningMembership owningMembership) {
         Appender builder = this.newAppender();
 
-        appendMembershipPrefix(owningMembership, builder);
+        this.appendMembershipPrefix(owningMembership, builder);
 
         String content = owningMembership.getOwnedRelatedElement().stream().map(rel -> this.doSwitch(rel)).filter(NOT_NULL).collect(joining(builder.getNewLine()));
         builder.appendSpaceIfNeeded().append(content);
