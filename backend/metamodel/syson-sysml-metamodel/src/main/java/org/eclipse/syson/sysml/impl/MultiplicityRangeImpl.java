@@ -16,10 +16,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.LiteralInfinity;
 import org.eclipse.syson.sysml.LiteralInteger;
@@ -173,12 +175,14 @@ public class MultiplicityRangeImpl extends MultiplicityImpl implements Multiplic
             case SysmlPackage.MULTIPLICITY_RANGE__BOUND:
                 return this.getBound();
             case SysmlPackage.MULTIPLICITY_RANGE__LOWER_BOUND:
-                if (resolve)
+                if (resolve) {
                     return this.getLowerBound();
+                }
                 return this.basicGetLowerBound();
             case SysmlPackage.MULTIPLICITY_RANGE__UPPER_BOUND:
-                if (resolve)
+                if (resolve) {
                     return this.getUpperBound();
+                }
                 return this.basicGetUpperBound();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -216,6 +220,21 @@ public class MultiplicityRangeImpl extends MultiplicityImpl implements Multiplic
                 return this.valueOf((Expression) arguments.get(0));
         }
         return super.eInvoke(operationID, arguments);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getOwnedMember() {
+        EList<Element> ownedMembers = new BasicEList<>();
+        EList<Expression> bound = this.getBound();
+        if (bound != null) {
+            ownedMembers.addAll(bound);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_OwnedMember(), ownedMembers.size(), ownedMembers.toArray());
     }
 
 } // MultiplicityRangeImpl

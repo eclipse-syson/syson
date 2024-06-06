@@ -13,9 +13,13 @@
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Unioning;
@@ -96,8 +100,9 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
             InternalEObject oldUnioningType = (InternalEObject) this.unioningType;
             this.unioningType = (Type) this.eResolveProxy(oldUnioningType);
             if (this.unioningType != oldUnioningType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.UNIONING__UNIONING_TYPE, oldUnioningType, this.unioningType));
+                }
             }
         }
         return this.unioningType;
@@ -121,8 +126,9 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
     public void setUnioningType(Type newUnioningType) {
         Type oldUnioningType = this.unioningType;
         this.unioningType = newUnioningType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.UNIONING__UNIONING_TYPE, oldUnioningType, this.unioningType));
+        }
     }
 
     /**
@@ -134,12 +140,14 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.UNIONING__TYPE_UNIONED:
-                if (resolve)
+                if (resolve) {
                     return this.getTypeUnioned();
+                }
                 return this.basicGetTypeUnioned();
             case SysmlPackage.UNIONING__UNIONING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getUnioningType();
+                }
                 return this.basicGetUnioningType();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -189,6 +197,36 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
                 return this.unioningType != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getSource() {
+        EList<Element> sources = new BasicEList<>();
+        Type typeUnioned = this.getTypeUnioned();
+        if (typeUnioned != null) {
+            sources.add(typeUnioned);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getTarget() {
+        EList<Element> targets = new BasicEList<>();
+        Type unioningType = this.getUnioningType();
+        if (unioningType != null) {
+            targets.add(unioningType);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
     }
 
 } // UnioningImpl

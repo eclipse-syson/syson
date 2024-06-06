@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Subclassification</b></em>'. <!-- end-user-doc
@@ -105,8 +106,9 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
             InternalEObject oldSubclassifier = (InternalEObject) this.subclassifier;
             this.subclassifier = (Classifier) this.eResolveProxy(oldSubclassifier);
             if (this.subclassifier != oldSubclassifier) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SUBCLASSIFICATION__SUBCLASSIFIER, oldSubclassifier, this.subclassifier));
+                }
             }
         }
         return this.subclassifier;
@@ -130,8 +132,9 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
     public void setSubclassifier(Classifier newSubclassifier) {
         Classifier oldSubclassifier = this.subclassifier;
         this.subclassifier = newSubclassifier;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SUBCLASSIFICATION__SUBCLASSIFIER, oldSubclassifier, this.subclassifier));
+        }
     }
 
     /**
@@ -145,8 +148,9 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
             InternalEObject oldSuperclassifier = (InternalEObject) this.superclassifier;
             this.superclassifier = (Classifier) this.eResolveProxy(oldSuperclassifier);
             if (this.superclassifier != oldSuperclassifier) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SUBCLASSIFICATION__SUPERCLASSIFIER, oldSuperclassifier, this.superclassifier));
+                }
             }
         }
         return this.superclassifier;
@@ -170,8 +174,9 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
     public void setSuperclassifier(Classifier newSuperclassifier) {
         Classifier oldSuperclassifier = this.superclassifier;
         this.superclassifier = newSuperclassifier;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SUBCLASSIFICATION__SUPERCLASSIFIER, oldSuperclassifier, this.superclassifier));
+        }
     }
 
     /**
@@ -183,16 +188,19 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SUBCLASSIFICATION__OWNING_CLASSIFIER:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningClassifier();
+                }
                 return this.basicGetOwningClassifier();
             case SysmlPackage.SUBCLASSIFICATION__SUBCLASSIFIER:
-                if (resolve)
+                if (resolve) {
                     return this.getSubclassifier();
+                }
                 return this.basicGetSubclassifier();
             case SysmlPackage.SUBCLASSIFICATION__SUPERCLASSIFIER:
-                if (resolve)
+                if (resolve) {
                     return this.getSuperclassifier();
+                }
                 return this.basicGetSuperclassifier();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -250,6 +258,60 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
                 return this.superclassifier != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Type getOwningType() {
+        return this.getOwningClassifier();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Type getSpecific() {
+        return this.getSubclassifier();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public void setSpecific(Type newSpecific) {
+        if (newSpecific instanceof Classifier newSpecificClassifier) {
+            this.setSubclassifier(newSpecificClassifier);
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Type getGeneral() {
+        return this.getSuperclassifier();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines setter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public void setGeneral(Type newGeneral) {
+        if (newGeneral instanceof Classifier newGeneralClassifier) {
+            this.setSuperclassifier(newGeneralClassifier);
+        }
     }
 
 } // SubclassificationImpl

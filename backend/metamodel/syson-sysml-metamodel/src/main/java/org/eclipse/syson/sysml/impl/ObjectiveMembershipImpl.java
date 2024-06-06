@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -86,8 +87,9 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.OBJECTIVE_MEMBERSHIP__OWNED_OBJECTIVE_REQUIREMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedObjectiveRequirement();
+                }
                 return this.basicGetOwnedObjectiveRequirement();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -105,6 +107,16 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
                 return this.basicGetOwnedObjectiveRequirement() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getOwnedMemberFeature() {
+        return this.getOwnedObjectiveRequirement();
     }
 
 } // ObjectiveMembershipImpl

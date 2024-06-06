@@ -34,22 +34,22 @@ public class PartUsageImplTest {
             attribute publicTypeDefAttribute;
             private attribute privateTypeDefAttribute;
             protected attribute protectedTypeDefAttribute;
-        }
+       }
 
-        part superPart : typeDef {
+       part superPart : typeDef {
             attribute publicSuperPartAttribute;
             private attribute privateSuperPartAttribute;
             protected attribute protectedSuperPartAttribute;
             part containedPart{
 
             }
-        }
+       }
 
-        part subPart :> superPart {
+       part subPart :> superPart {
             attribute publicSubPartAttribute;
             private attribute privateSubPartAttribute;
             protected attribute protectedSubPartAttribute;
-        }
+       }
      * </pre>
      */
 
@@ -88,7 +88,6 @@ public class PartUsageImplTest {
         }
 
         private void build() {
-
             this.typeDef = this.builder.createWithName(PartDefinition.class, "typeDef");
             this.publicTypeDefAttribute = this.builder.createInWithName(AttributeUsage.class, this.typeDef, "publicTypeDefAttribute");
             this.privateTypeDefAttribute = this.builder.createInWithName(AttributeUsage.class, this.typeDef, "privateTypeDefAttribute");
@@ -118,26 +117,23 @@ public class PartUsageImplTest {
 
     @Test
     public void testGetInheritedMembers() {
-
         var testModel = new TestModel();
 
         testInheritedFeature(testModel.typeDef);
         testInheritedFeature(testModel.superPart, testModel.publicTypeDefAttribute, testModel.protectedTypeDefAttribute);
         testInheritedFeature(testModel.containedPart,
-                // Visible from typeDelf
+                // Visible from typeDef
                 testModel.publicTypeDefAttribute, testModel.protectedTypeDefAttribute,
                 // Visible from owning part
                 testModel.publicSuperPartAttribute, testModel.protectedSuperPartAttribute,
-                // Itsef since if a feature of its parent
+                // Itself since it's a feature of its parent
                 testModel.containedPart);
 
         testInheritedFeature(testModel.subPart,
-                // Visible from ypeDelf
+                // Visible from typeDef
                 testModel.publicTypeDefAttribute, testModel.protectedTypeDefAttribute,
                 // Visible from owning part
                 testModel.publicSuperPartAttribute, testModel.protectedSuperPartAttribute,
                 testModel.containedPart);
-
     }
-
 }

@@ -15,11 +15,13 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.AssociationStructure;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.Usage;
@@ -105,6 +107,21 @@ public class AllocationUsageImpl extends ConnectionUsageImpl implements Allocati
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<AssociationStructure> getConnectionDefinition() {
+        EList<AssociationStructure> connectionDefinitions = new BasicEList<>();
+        EList<AllocationDefinition> allocationDefinition = this.getAllocationDefinition();
+        if (allocationDefinition != null) {
+            connectionDefinitions.addAll(allocationDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnectionUsage_ConnectionDefinition(), connectionDefinitions.size(), connectionDefinitions.toArray());
     }
 
 } // AllocationUsageImpl

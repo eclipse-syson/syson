@@ -176,13 +176,10 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Predicate basicGetPredicate() {
-        // TODO: implement this method to return the 'Predicate' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getConstraintDefinition();
     }
 
     /**
@@ -255,20 +252,24 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
             case SysmlPackage.CONSTRAINT_USAGE__IS_MODEL_LEVEL_EVALUABLE:
                 return this.isIsModelLevelEvaluable();
             case SysmlPackage.CONSTRAINT_USAGE__FUNCTION:
-                if (resolve)
+                if (resolve) {
                     return this.getFunction();
+                }
                 return this.basicGetFunction();
             case SysmlPackage.CONSTRAINT_USAGE__RESULT:
-                if (resolve)
+                if (resolve) {
                     return this.getResult();
+                }
                 return this.basicGetResult();
             case SysmlPackage.CONSTRAINT_USAGE__PREDICATE:
-                if (resolve)
+                if (resolve) {
                     return this.getPredicate();
+                }
                 return this.basicGetPredicate();
             case SysmlPackage.CONSTRAINT_USAGE__CONSTRAINT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getConstraintDefinition();
+                }
                 return this.basicGetConstraintDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -444,4 +445,5 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
         }
         return super.namingFeature();
     }
+
 } // ConstraintUsageImpl

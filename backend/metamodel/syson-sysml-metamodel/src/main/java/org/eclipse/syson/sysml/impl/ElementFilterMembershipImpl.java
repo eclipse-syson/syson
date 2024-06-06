@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ElementFilterMembership;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -82,8 +83,9 @@ public class ElementFilterMembershipImpl extends OwningMembershipImpl implements
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ELEMENT_FILTER_MEMBERSHIP__CONDITION:
-                if (resolve)
+                if (resolve) {
                     return this.getCondition();
+                }
                 return this.basicGetCondition();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -101,6 +103,16 @@ public class ElementFilterMembershipImpl extends OwningMembershipImpl implements
                 return this.basicGetCondition() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Element getOwnedMemberElement() {
+        return this.getCondition();
     }
 
 } // ElementFilterMembershipImpl

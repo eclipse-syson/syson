@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
@@ -23,6 +24,7 @@ import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
+import org.eclipse.syson.sysml.Usage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Interface Definition</b></em>'. <!--
@@ -104,6 +106,21 @@ public class InterfaceDefinitionImpl extends ConnectionDefinitionImpl implements
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Usage> getConnectionEnd() {
+        EList<Usage> connectionEnds = new BasicEList<>();
+        EList<PortUsage> interfaceEnd = this.getInterfaceEnd();
+        if (interfaceEnd != null) {
+            connectionEnds.addAll(interfaceEnd);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd(), connectionEnds.size(), connectionEnds.toArray());
     }
 
 } // InterfaceDefinitionImpl

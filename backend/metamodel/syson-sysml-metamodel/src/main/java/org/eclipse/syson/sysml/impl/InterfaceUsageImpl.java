@@ -15,9 +15,11 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.AssociationStructure;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -103,6 +105,21 @@ public class InterfaceUsageImpl extends ConnectionUsageImpl implements Interface
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<AssociationStructure> getConnectionDefinition() {
+        EList<AssociationStructure> connectionDefinitions = new BasicEList<>();
+        EList<InterfaceDefinition> interfaceDefinition = this.getInterfaceDefinition();
+        if (interfaceDefinition != null) {
+            connectionDefinitions.addAll(interfaceDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnectionUsage_ConnectionDefinition(), connectionDefinitions.size(), connectionDefinitions.toArray());
     }
 
 } // InterfaceUsageImpl

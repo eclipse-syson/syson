@@ -227,8 +227,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (optConjugatedPortTyping.isPresent()) {
             ConjugatedPortTyping conjugatedPortTyping = optConjugatedPortTyping.get();
             conjugatedPortTyping.setType(type);
-            conjugatedPortTyping.setGeneral(type);
-            conjugatedPortTyping.setSpecific(usage);
             conjugatedPortTyping.setTypedFeature(usage);
             conjugatedPortTyping.setConjugatedPortDefinition(type);
         } else {
@@ -242,8 +240,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             var newConjugatedPortTyping = SysmlFactory.eINSTANCE.createConjugatedPortTyping();
             this.element.getOwnedRelationship().add(newConjugatedPortTyping);
             newConjugatedPortTyping.setType(type);
-            newConjugatedPortTyping.setGeneral(type);
-            newConjugatedPortTyping.setSpecific(usage);
             newConjugatedPortTyping.setTypedFeature(usage);
             newConjugatedPortTyping.setConjugatedPortDefinition(type);
             this.elementInitializer.doSwitch(newConjugatedPortTyping);
@@ -265,15 +261,11 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (optFeatureTyping.isPresent()) {
             FeatureTyping featureTyping = optFeatureTyping.get();
             featureTyping.setType(type);
-            featureTyping.setGeneral(type);
-            featureTyping.setSpecific(usage);
             featureTyping.setTypedFeature(usage);
         } else {
             var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
             this.element.getOwnedRelationship().add(newFeatureTyping);
             newFeatureTyping.setType(type);
-            newFeatureTyping.setGeneral(type);
-            newFeatureTyping.setSpecific(usage);
             newFeatureTyping.setTypedFeature(usage);
             this.elementInitializer.doSwitch(newFeatureTyping);
         }
@@ -321,16 +313,12 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 if (optSubsetting.isPresent()) {
                     Subclassification subclassification = optSubsetting.get();
                     subclassification.setSuperclassifier(definition);
-                    subclassification.setGeneral(definition);
                     subclassification.setSubclassifier(subclassificationDef);
-                    subclassification.setSpecific(subclassificationDef);
                 } else {
                     var newSubclassification = SysmlFactory.eINSTANCE.createSubclassification();
                     subclassificationDef.getOwnedRelationship().add(newSubclassification);
                     newSubclassification.setSuperclassifier(definition);
-                    newSubclassification.setGeneral(definition);
                     newSubclassification.setSubclassifier(subclassificationDef);
-                    newSubclassification.setSpecific(subclassificationDef);
                     this.elementInitializer.caseSubclassification(newSubclassification);
                 }
             }
@@ -367,16 +355,12 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 if (optSubsetting.isPresent()) {
                     Subsetting subsetting = optSubsetting.get();
                     subsetting.setSubsettedFeature(usage);
-                    subsetting.setGeneral(usage);
                     subsetting.setSubsettingFeature(subsettingUsage);
-                    subsetting.setSpecific(subsettingUsage);
                 } else {
                     var newSubsetting = SysmlFactory.eINSTANCE.createSubsetting();
                     subsettingUsage.getOwnedRelationship().add(newSubsetting);
                     newSubsetting.setSubsettedFeature(usage);
-                    newSubsetting.setGeneral(usage);
                     newSubsetting.setSubsettingFeature(subsettingUsage);
-                    newSubsetting.setSpecific(subsettingUsage);
                     this.elementInitializer.caseSubsetting(newSubsetting);
                 }
             }
@@ -418,20 +402,12 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                     if (optRedefinition.isPresent()) {
                         Redefinition redefinition = optRedefinition.get();
                         redefinition.setRedefinedFeature(usage);
-                        redefinition.setSubsettedFeature(usage);
-                        redefinition.setGeneral(usage);
                         redefinition.setRedefiningFeature(redefining);
-                        redefinition.setSubsettingFeature(redefining);
-                        redefinition.setSpecific(redefining);
                     } else {
                         var newRedefinition = SysmlFactory.eINSTANCE.createRedefinition();
                         redefining.getOwnedRelationship().add(newRedefinition);
                         newRedefinition.setRedefinedFeature(usage);
-                        newRedefinition.setSubsettedFeature(usage);
-                        newRedefinition.setGeneral(usage);
                         newRedefinition.setRedefiningFeature(redefining);
-                        newRedefinition.setSubsettingFeature(redefining);
-                        newRedefinition.setSpecific(redefining);
                         this.elementInitializer.caseRedefinition(newRedefinition);
                     }
                 }

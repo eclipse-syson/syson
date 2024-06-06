@@ -1010,8 +1010,6 @@ public class SysMLModelToTextSwitchTest {
         DataType dataType = this.builder.createWithName(DataType.class, "type1");
         typing.setType(dataType);
         typing.setTypedFeature(attributeUsage);
-        typing.setSpecific(attributeUsage);
-        typing.setGeneral(dataType);
 
         this.assertTextualFormEquals("attribute attribute1 : type1;", attributeUsage);
     }

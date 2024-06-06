@@ -16,11 +16,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AssociationStructure;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Expression;
@@ -98,28 +100,6 @@ public class FlowConnectionUsageImpl extends ConnectionUsageImpl implements Flow
     public EList<Feature> getParameter() {
         List<Usage> data = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), data.size(), data.toArray());
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<Behavior> getActionDefinition() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getActionUsage_ActionDefinition(), data.size(), data.toArray());
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<Interaction> getInteraction() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getItemFlow_Interaction(), data.size(), data.toArray());
     }
 
     /**
@@ -287,20 +267,23 @@ public class FlowConnectionUsageImpl extends ConnectionUsageImpl implements Flow
             case SysmlPackage.FLOW_CONNECTION_USAGE__INTERACTION:
                 return this.getInteraction();
             case SysmlPackage.FLOW_CONNECTION_USAGE__ITEM_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getItemFeature();
+                }
                 return this.basicGetItemFeature();
             case SysmlPackage.FLOW_CONNECTION_USAGE__ITEM_FLOW_END:
                 return this.getItemFlowEnd();
             case SysmlPackage.FLOW_CONNECTION_USAGE__ITEM_TYPE:
                 return this.getItemType();
             case SysmlPackage.FLOW_CONNECTION_USAGE__SOURCE_OUTPUT_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getSourceOutputFeature();
+                }
                 return this.basicGetSourceOutputFeature();
             case SysmlPackage.FLOW_CONNECTION_USAGE__TARGET_INPUT_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getTargetInputFeature();
+                }
                 return this.basicGetTargetInputFeature();
             case SysmlPackage.FLOW_CONNECTION_USAGE__FLOW_CONNECTION_DEFINITION:
                 return this.getFlowConnectionDefinition();
@@ -486,6 +469,52 @@ public class FlowConnectionUsageImpl extends ConnectionUsageImpl implements Flow
                 return this.isSubactionUsage();
         }
         return super.eInvoke(operationID, arguments);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Behavior> getActionDefinition() {
+        EList<Behavior> actionDefinitions = new BasicEList<>();
+        EList<Interaction> flowConnectionDefinition = this.getFlowConnectionDefinition();
+        if (flowConnectionDefinition != null) {
+            actionDefinitions.addAll(flowConnectionDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getActionUsage_ActionDefinition(), actionDefinitions.size(), actionDefinitions.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<AssociationStructure> getConnectionDefinition() {
+        EList<AssociationStructure> connectionDefinitions = new BasicEList<>();
+        // https://issues.omg.org/issues/SYSML2_-173
+        // EList<Interaction> flowConnectionDefinition = this.getFlowConnectionDefinition();
+        // if (flowConnectionDefinition != null) {
+        // connectionDefinitions.addAll(flowConnectionDefinition.stream().filter(Association.class::isInstance).map(Association.class::cast).toList());
+        // }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnectionUsage_ConnectionDefinition(), connectionDefinitions.size(), connectionDefinitions.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Interaction> getInteraction() {
+        EList<Interaction> interactions = new BasicEList<>();
+        EList<Interaction> flowConnectionDefinition = this.getFlowConnectionDefinition();
+        if (flowConnectionDefinition != null) {
+            interactions.addAll(flowConnectionDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getItemFlow_Interaction(), interactions.size(), interactions.toArray());
     }
 
 } // FlowConnectionUsageImpl

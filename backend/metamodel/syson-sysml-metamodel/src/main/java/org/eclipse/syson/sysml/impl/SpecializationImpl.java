@@ -13,9 +13,13 @@
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -84,8 +88,9 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
             InternalEObject oldGeneral = (InternalEObject) this.general;
             this.general = (Type) this.eResolveProxy(oldGeneral);
             if (this.general != oldGeneral) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SPECIALIZATION__GENERAL, oldGeneral, this.general));
+                }
             }
         }
         return this.general;
@@ -109,8 +114,9 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     public void setGeneral(Type newGeneral) {
         Type oldGeneral = this.general;
         this.general = newGeneral;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SPECIALIZATION__GENERAL, oldGeneral, this.general));
+        }
     }
 
     /**
@@ -147,8 +153,9 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
             InternalEObject oldSpecific = (InternalEObject) this.specific;
             this.specific = (Type) this.eResolveProxy(oldSpecific);
             if (this.specific != oldSpecific) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SPECIALIZATION__SPECIFIC, oldSpecific, this.specific));
+                }
             }
         }
         return this.specific;
@@ -172,8 +179,9 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     public void setSpecific(Type newSpecific) {
         Type oldSpecific = this.specific;
         this.specific = newSpecific;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SPECIALIZATION__SPECIFIC, oldSpecific, this.specific));
+        }
     }
 
     /**
@@ -185,16 +193,19 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SPECIALIZATION__GENERAL:
-                if (resolve)
+                if (resolve) {
                     return this.getGeneral();
+                }
                 return this.basicGetGeneral();
             case SysmlPackage.SPECIALIZATION__OWNING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningType();
+                }
                 return this.basicGetOwningType();
             case SysmlPackage.SPECIALIZATION__SPECIFIC:
-                if (resolve)
+                if (resolve) {
                     return this.getSpecific();
+                }
                 return this.basicGetSpecific();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -252,6 +263,36 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
                 return this.specific != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getTarget() {
+        EList<Element> targets = new BasicEList<>();
+        Type general = this.getGeneral();
+        if (general != null) {
+            targets.add(general);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getSource() {
+        EList<Element> sources = new BasicEList<>();
+        Type specific = this.getSpecific();
+        if (specific != null) {
+            sources.add(specific);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
     }
 
 } // SpecializationImpl

@@ -206,4 +206,14 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
         return result.toString();
     }
 
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Feature getOwnedMemberFeature() {
+        return this.getTransitionFeature();
+    }
+
 } // TransitionFeatureMembershipImpl

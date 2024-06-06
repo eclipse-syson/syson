@@ -116,13 +116,10 @@ public class IncludeUseCaseUsageImpl extends UseCaseUsageImpl implements Include
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public UseCaseUsage basicGetUseCaseIncluded() {
-        // TODO: implement this method to return the 'Use Case Included' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getUseCaseIncluded();
     }
 
     /**
@@ -134,16 +131,19 @@ public class IncludeUseCaseUsageImpl extends UseCaseUsageImpl implements Include
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.INCLUDE_USE_CASE_USAGE__EVENT_OCCURRENCE:
-                if (resolve)
+                if (resolve) {
                     return this.getEventOccurrence();
+                }
                 return this.basicGetEventOccurrence();
             case SysmlPackage.INCLUDE_USE_CASE_USAGE__PERFORMED_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getPerformedAction();
+                }
                 return this.basicGetPerformedAction();
             case SysmlPackage.INCLUDE_USE_CASE_USAGE__USE_CASE_INCLUDED:
-                if (resolve)
+                if (resolve) {
                     return this.getUseCaseIncluded();
+                }
                 return this.basicGetUseCaseIncluded();
         }
         return super.eGet(featureID, resolve, coreType);

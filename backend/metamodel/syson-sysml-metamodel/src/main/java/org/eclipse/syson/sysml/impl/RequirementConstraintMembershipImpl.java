@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -96,8 +97,9 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     public void setKind(RequirementConstraintKind newKind) {
         RequirementConstraintKind oldKind = this.kind;
         this.kind = newKind == null ? KIND_EDEFAULT : newKind;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND, oldKind, this.kind));
+        }
     }
 
     /**
@@ -158,12 +160,14 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND:
                 return this.getKind();
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__OWNED_CONSTRAINT:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedConstraint();
+                }
                 return this.basicGetOwnedConstraint();
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__REFERENCED_CONSTRAINT:
-                if (resolve)
+                if (resolve) {
                     return this.getReferencedConstraint();
+                }
                 return this.basicGetReferencedConstraint();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -224,14 +228,25 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (kind: ");
         result.append(this.kind);
         result.append(')');
         return result.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getOwnedMemberFeature() {
+        return this.getOwnedConstraint();
     }
 
 } // RequirementConstraintMembershipImpl

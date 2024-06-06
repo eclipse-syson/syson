@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureValue;
@@ -137,8 +138,9 @@ public class FeatureValueImpl extends OwningMembershipImpl implements FeatureVal
     public void setIsDefault(boolean newIsDefault) {
         boolean oldIsDefault = this.isDefault;
         this.isDefault = newIsDefault;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_VALUE__IS_DEFAULT, oldIsDefault, this.isDefault));
+        }
     }
 
     /**
@@ -160,8 +162,9 @@ public class FeatureValueImpl extends OwningMembershipImpl implements FeatureVal
     public void setIsInitial(boolean newIsInitial) {
         boolean oldIsInitial = this.isInitial;
         this.isInitial = newIsInitial;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_VALUE__IS_INITIAL, oldIsInitial, this.isInitial));
+        }
     }
 
     /**
@@ -201,12 +204,14 @@ public class FeatureValueImpl extends OwningMembershipImpl implements FeatureVal
             case SysmlPackage.FEATURE_VALUE__IS_INITIAL:
                 return this.isIsInitial();
             case SysmlPackage.FEATURE_VALUE__FEATURE_WITH_VALUE:
-                if (resolve)
+                if (resolve) {
                     return this.getFeatureWithValue();
+                }
                 return this.basicGetFeatureWithValue();
             case SysmlPackage.FEATURE_VALUE__VALUE:
-                if (resolve)
+                if (resolve) {
                     return this.getValue();
+                }
                 return this.basicGetValue();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -275,8 +280,9 @@ public class FeatureValueImpl extends OwningMembershipImpl implements FeatureVal
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isDefault: ");
@@ -285,6 +291,16 @@ public class FeatureValueImpl extends OwningMembershipImpl implements FeatureVal
         result.append(this.isInitial);
         result.append(')');
         return result.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Element getOwnedMemberElement() {
+        return this.getValue();
     }
 
 } // FeatureValueImpl

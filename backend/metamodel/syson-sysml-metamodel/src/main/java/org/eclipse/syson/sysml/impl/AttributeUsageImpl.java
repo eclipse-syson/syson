@@ -15,11 +15,13 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.DataType;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TextualRepresentation;
@@ -114,6 +116,21 @@ public class AttributeUsageImpl extends UsageImpl implements AttributeUsage {
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Classifier> getDefinition() {
+        EList<Classifier> definitions = new BasicEList<>();
+        EList<DataType> attributeDefinition = this.getAttributeDefinition();
+        if (attributeDefinition != null) {
+            definitions.addAll(attributeDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getUsage_Definition(), definitions.size(), definitions.toArray());
     }
 
 } // AttributeUsageImpl

@@ -16,11 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Association;
 import org.eclipse.syson.sysml.AssociationStructure;
 import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.ItemUsage;
@@ -155,8 +157,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     public void setIsIndividual(boolean newIsIndividual) {
         boolean oldIsIndividual = this.isIndividual;
         this.isIndividual = newIsIndividual;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL, oldIsIndividual, this.isIndividual));
+        }
     }
 
     /**
@@ -189,8 +192,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     public void setPortionKind(PortionKind newPortionKind) {
         PortionKind oldPortionKind = this.portionKind;
         this.portionKind = newPortionKind == null ? PORTION_KIND_EDEFAULT : newPortionKind;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_USAGE__PORTION_KIND, oldPortionKind, this.portionKind));
+        }
     }
 
     /**
@@ -239,8 +243,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
             case SysmlPackage.CONNECTION_USAGE__PORTION_KIND:
                 return this.getPortionKind();
             case SysmlPackage.CONNECTION_USAGE__INDIVIDUAL_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getIndividualDefinition();
+                }
                 return this.basicGetIndividualDefinition();
             case SysmlPackage.CONNECTION_USAGE__OCCURRENCE_DEFINITION:
                 return this.getOccurrenceDefinition();
@@ -404,8 +409,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isIndividual: ");
@@ -414,6 +420,21 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
         result.append(this.portionKind);
         result.append(')');
         return result.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Association> getAssociation() {
+        EList<Association> associations = new BasicEList<>();
+        EList<AssociationStructure> connectionDefinition = this.getConnectionDefinition();
+        if (connectionDefinition != null) {
+            associations.addAll(connectionDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_Association(), associations.size(), associations.toArray());
     }
 
 } // ConnectionUsageImpl

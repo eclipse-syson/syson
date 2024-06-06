@@ -15,10 +15,12 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Association;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Feature;
@@ -66,17 +68,6 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
     @Override
     protected EClass eStaticClass() {
         return SysmlPackage.eINSTANCE.getItemFlow();
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<Behavior> getBehavior() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Behavior(), data.size(), data.toArray());
     }
 
     /**
@@ -207,20 +198,23 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
             case SysmlPackage.ITEM_FLOW__INTERACTION:
                 return this.getInteraction();
             case SysmlPackage.ITEM_FLOW__ITEM_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getItemFeature();
+                }
                 return this.basicGetItemFeature();
             case SysmlPackage.ITEM_FLOW__ITEM_FLOW_END:
                 return this.getItemFlowEnd();
             case SysmlPackage.ITEM_FLOW__ITEM_TYPE:
                 return this.getItemType();
             case SysmlPackage.ITEM_FLOW__SOURCE_OUTPUT_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getSourceOutputFeature();
+                }
                 return this.basicGetSourceOutputFeature();
             case SysmlPackage.ITEM_FLOW__TARGET_INPUT_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getTargetInputFeature();
+                }
                 return this.basicGetTargetInputFeature();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -292,6 +286,36 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EList<Association> getAssociation() {
+        EList<Association> associations = new BasicEList<>();
+        EList<Interaction> interaction = this.getInteraction();
+        if (interaction != null) {
+            associations.addAll(interaction);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_Association(), associations.size(), associations.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Behavior> getBehavior() {
+        EList<Behavior> behaviors = new BasicEList<>();
+        EList<Interaction> interaction = this.getInteraction();
+        if (interaction != null) {
+            behaviors.addAll(interaction);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Behavior(), behaviors.size(), behaviors.toArray());
     }
 
 } // ItemFlowImpl

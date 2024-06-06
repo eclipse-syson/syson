@@ -16,9 +16,11 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Featuring;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 
@@ -89,8 +91,9 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
             InternalEObject oldFeature = (InternalEObject) this.feature;
             this.feature = (Feature) this.eResolveProxy(oldFeature);
             if (this.feature != oldFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_MEMBERSHIP__FEATURE, oldFeature, this.feature));
+                }
             }
         }
         return this.feature;
@@ -99,9 +102,13 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetFeature() {
+        Feature ownedMemberFeature = this.getOwnedMemberFeature();
+        if (ownedMemberFeature != null) {
+            return ownedMemberFeature;
+        }
         return this.feature;
     }
 
@@ -114,8 +121,9 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     public void setFeature(Feature newFeature) {
         Feature oldFeature = this.feature;
         this.feature = newFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_MEMBERSHIP__FEATURE, oldFeature, this.feature));
+        }
     }
 
     /**
@@ -129,8 +137,9 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
             InternalEObject oldType = (InternalEObject) this.type;
             this.type = (Type) this.eResolveProxy(oldType);
             if (this.type != oldType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_MEMBERSHIP__TYPE, oldType, this.type));
+                }
             }
         }
         return this.type;
@@ -142,6 +151,10 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
      * @generated
      */
     public Type basicGetType() {
+        Type owningType = this.getOwningType();
+        if (owningType != null) {
+            return owningType;
+        }
         return this.type;
     }
 
@@ -154,8 +167,9 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     public void setType(Type newType) {
         Type oldType = this.type;
         this.type = newType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_MEMBERSHIP__TYPE, oldType, this.type));
+        }
     }
 
     /**
@@ -237,20 +251,24 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURE_MEMBERSHIP__FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getFeature();
+                }
                 return this.basicGetFeature();
             case SysmlPackage.FEATURE_MEMBERSHIP__TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getType();
+                }
                 return this.basicGetType();
             case SysmlPackage.FEATURE_MEMBERSHIP__OWNED_MEMBER_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedMemberFeature();
+                }
                 return this.basicGetOwnedMemberFeature();
             case SysmlPackage.FEATURE_MEMBERSHIP__OWNING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningType();
+                }
                 return this.basicGetOwningType();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -350,6 +368,26 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
             }
         }
         return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Element getOwnedMemberElement() {
+        return this.getOwnedMemberFeature();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Namespace getMembershipOwningNamespace() {
+        return this.getOwningType();
     }
 
 } // FeatureMembershipImpl

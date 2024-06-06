@@ -13,9 +13,13 @@
 package org.eclipse.syson.sysml.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Intersecting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -73,8 +77,9 @@ public class IntersectingImpl extends RelationshipImpl implements Intersecting {
             InternalEObject oldIntersectingType = (InternalEObject) this.intersectingType;
             this.intersectingType = (Type) this.eResolveProxy(oldIntersectingType);
             if (this.intersectingType != oldIntersectingType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.INTERSECTING__INTERSECTING_TYPE, oldIntersectingType, this.intersectingType));
+                }
             }
         }
         return this.intersectingType;
@@ -98,8 +103,9 @@ public class IntersectingImpl extends RelationshipImpl implements Intersecting {
     public void setIntersectingType(Type newIntersectingType) {
         Type oldIntersectingType = this.intersectingType;
         this.intersectingType = newIntersectingType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.INTERSECTING__INTERSECTING_TYPE, oldIntersectingType, this.intersectingType));
+        }
     }
 
     /**
@@ -134,12 +140,14 @@ public class IntersectingImpl extends RelationshipImpl implements Intersecting {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.INTERSECTING__INTERSECTING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getIntersectingType();
+                }
                 return this.basicGetIntersectingType();
             case SysmlPackage.INTERSECTING__TYPE_INTERSECTED:
-                if (resolve)
+                if (resolve) {
                     return this.getTypeIntersected();
+                }
                 return this.basicGetTypeIntersected();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -189,6 +197,36 @@ public class IntersectingImpl extends RelationshipImpl implements Intersecting {
                 return this.basicGetTypeIntersected() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getTarget() {
+        EList<Element> targets = new BasicEList<>();
+        Type intersectingType = this.getIntersectingType();
+        if (intersectingType != null) {
+            targets.add(intersectingType);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Element> getSource() {
+        EList<Element> sources = new BasicEList<>();
+        Type typeIntersected = this.getTypeIntersected();
+        if (typeIntersected != null) {
+            sources.add(typeIntersected);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
     }
 
 } // IntersectingImpl

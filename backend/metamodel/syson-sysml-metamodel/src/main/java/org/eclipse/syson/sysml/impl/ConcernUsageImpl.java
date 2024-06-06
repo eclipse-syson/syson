@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.ConcernDefinition;
 import org.eclipse.syson.sysml.ConcernUsage;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -81,8 +82,9 @@ public class ConcernUsageImpl extends RequirementUsageImpl implements ConcernUsa
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONCERN_USAGE__CONCERN_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getConcernDefinition();
+                }
                 return this.basicGetConcernDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -100,6 +102,16 @@ public class ConcernUsageImpl extends RequirementUsageImpl implements ConcernUsa
                 return this.basicGetConcernDefinition() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public RequirementDefinition getRequirementDefinition() {
+        return this.getConcernDefinition();
     }
 
 } // ConcernUsageImpl

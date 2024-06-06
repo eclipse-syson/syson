@@ -115,15 +115,6 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
         }
         return null;
     }
-    
-    /**
-     * @generated NOT
-     */
-    @Override
-    public Element getMemberElement() {
-        return getOwnedMemberElement();
-    }
-    
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -202,8 +193,9 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_SHORT_NAME:
                 return this.getOwnedMemberShortName();
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedMemberElement();
+                }
                 return this.basicGetOwnedMemberElement();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -238,6 +230,16 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Element getMemberElement() {
+        return this.getOwnedMemberElement();
     }
 
 } // OwningMembershipImpl

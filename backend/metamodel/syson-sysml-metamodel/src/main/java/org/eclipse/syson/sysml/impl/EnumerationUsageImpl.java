@@ -15,10 +15,12 @@ package org.eclipse.syson.sysml.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.DataType;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
@@ -107,8 +109,9 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ENUMERATION_USAGE__ENUMERATION_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getEnumerationDefinition();
+                }
                 return this.basicGetEnumerationDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -137,6 +140,21 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
     public EList<TextualRepresentation> getTextualRepresentation() {
         List<TextualRepresentation> textualRepresentation = new ArrayList<>();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<DataType> getAttributeDefinition() {
+        EList<DataType> attributeDefinitions = new BasicEList<>();
+        EnumerationDefinition enumerationDefinition = this.getEnumerationDefinition();
+        if (enumerationDefinition != null) {
+            attributeDefinitions.add(enumerationDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAttributeUsage_AttributeDefinition(), attributeDefinitions.size(), attributeDefinitions.toArray());
     }
 
 } // EnumerationUsageImpl

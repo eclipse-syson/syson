@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
@@ -61,17 +62,6 @@ public class ActionUsageImpl extends OccurrenceUsageImpl implements ActionUsage 
     @Override
     protected EClass eStaticClass() {
         return SysmlPackage.eINSTANCE.getActionUsage();
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<Behavior> getBehavior() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Behavior(), data.size(), data.toArray());
     }
 
     /**
@@ -252,6 +242,36 @@ public class ActionUsageImpl extends OccurrenceUsageImpl implements ActionUsage 
                 return this.isSubactionUsage();
         }
         return super.eInvoke(operationID, arguments);
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Behavior> getBehavior() {
+        EList<Behavior> behaviors = new BasicEList<>();
+        EList<Behavior> actionDefinition = this.getActionDefinition();
+        if (actionDefinition != null) {
+            behaviors.addAll(actionDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Behavior(), behaviors.size(), behaviors.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<org.eclipse.syson.sysml.Class> getOccurrenceDefinition() {
+        EList<org.eclipse.syson.sysml.Class> occurrenceDefinitions = new BasicEList<>();
+        EList<Behavior> actionDefinition = this.getActionDefinition();
+        if (actionDefinition != null) {
+            occurrenceDefinitions.addAll(actionDefinition);
+        }
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getOccurrenceUsage_OccurrenceDefinition(), occurrenceDefinitions.size(), occurrenceDefinitions.toArray());
     }
 
 } // ActionUsageImpl
