@@ -32,6 +32,7 @@
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/315[#315] [tests] Add Cypress test infrastructure and execute the Cypress tests as part of pull request checks 
+- https://github.com/eclipse-syson/syson/issues/358[#358] [diagrams] Handle the JoinNode concept in actions body of diagrams
 
 
 == v2024.5.0

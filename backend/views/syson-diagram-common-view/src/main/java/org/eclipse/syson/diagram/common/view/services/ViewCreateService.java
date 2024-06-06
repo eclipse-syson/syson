@@ -32,6 +32,7 @@ import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
@@ -716,5 +717,23 @@ public class ViewCreateService {
             this.deleteService.deleteFromModel(membership);
         }
         return owner;
+    }
+
+    public Element createJoinAction(Element ownerElement) {
+        Feature joinsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::joins");
+        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && joinsStdAction != null) {
+            var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
+            var join = SysmlFactory.eINSTANCE.createJoinNode();
+            this.elementInitializerSwitch.doSwitch(join);
+            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
+            subsetting.setSubsettingFeature(join);
+            subsetting.setSubsettedFeature(joinsStdAction);
+            subsetting.setIsImplied(true);
+            join.getOwnedRelationship().add(subsetting);
+            featureMember.getOwnedRelatedElement().add(join);
+            ownerElement.getOwnedRelationship().add(featureMember);
+            return join;
+        }
+        return ownerElement;
     }
 }

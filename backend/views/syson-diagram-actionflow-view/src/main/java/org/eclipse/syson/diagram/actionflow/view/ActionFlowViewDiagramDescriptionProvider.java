@@ -48,6 +48,7 @@ import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionP
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -122,6 +123,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new StartActionNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
         diagramElementDescriptionProviders.add(new DoneActionNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new JoinActionNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
 
         DEFINITIONS.forEach(definition -> {
             diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider));

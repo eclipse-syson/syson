@@ -619,30 +619,6 @@ public class ViewToolService extends ToolService {
         return null;
     }
 
-    public Element dropActionUsageFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, String dropNodeDescriptionName, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var eContainer = droppedElement.eContainer();
-        if (eContainer instanceof FeatureMembership featureMembership) {
-            targetElement.getOwnedRelationship().add(featureMembership);
-        } else if (eContainer instanceof OwningMembership owningMembership) {
-            var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            // Set the container of newFeatureMembership first to make sure features owned by
-            // element aren't lost when changing its container.
-            targetElement.getOwnedRelationship().add(newFeatureMembership);
-            newFeatureMembership.getOwnedRelatedElement().add(droppedElement);
-            // need to remove the old membership which is empty now
-            var oldParentEObject = owningMembership.eContainer();
-            if (oldParentEObject instanceof Element oldParent) {
-                oldParent.getOwnedRelationship().remove(owningMembership);
-            }
-        }
-        var parentElementId = this.getParentElementId(targetNode, diagramContext);
-        var droppedNodeDescription = this.getNodeDescriptionFromViewName(dropNodeDescriptionName, convertedNodes);
-        this.createView(droppedElement, parentElementId, droppedNodeDescription.getId(), diagramContext, NodeContainmentKind.CHILD_NODE);
-        diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
-        return droppedElement;
-    }
-
     /**
      * Create a new TransitionUsage and set it as the child of the parent of the sourceAction element. Sets its source
      * and target.

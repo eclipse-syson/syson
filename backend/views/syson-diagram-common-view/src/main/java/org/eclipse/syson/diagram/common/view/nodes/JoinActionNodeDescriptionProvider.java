@@ -23,47 +23,67 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
+import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the starting node description of an Action.
+ * Used to create the Join node description of an Action.
  *
  * @author Jerome Gout
  */
-public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+public class JoinActionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    public static final String START_ACTION_NAME = "StartAction";
+    public static final String JOIN_ACTION_NAME = "JoinAction";
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public StartActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public JoinActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
     public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getMembership());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getJoinNode());
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(false)
                 .domainType(domainType)
-                .defaultWidthExpression("28")
-                .defaultHeightExpression("28")
-                .name(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getStandardStartAction"))
-                .style(this.createImageNodeStyleDescription("images/start_action.svg"))
-                .userResizable(false)
+                .defaultWidthExpression("100")
+                .defaultHeightExpression("12")
+                .outsideLabels(this.createOutsideLabelDescription())
+                .name(this.descriptionNameGenerator.getNodeName(JOIN_ACTION_NAME))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .style(this.createImageNodeStyleDescription("images/join_action.svg"))
+                .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+                .build();
+    }
+
+    private OutsideLabelDescription createOutsideLabelDescription() {
+        return this.diagramBuilderHelper.newOutsideLabelDescription()
+                .labelExpression("aql:self.name")
+                .position(OutsideLabelPosition.BOTTOM_CENTER)
+                .style(this.createOutsideLabelStyle())
+                .build();
+    }
+
+    private OutsideLabelStyle createOutsideLabelStyle() {
+        return this.diagramBuilderHelper.newOutsideLabelStyle()
+                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
+                .showIcon(false)
                 .build();
     }
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME)).ifPresent(nodeDescription -> {
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(JOIN_ACTION_NAME)).ifPresent(nodeDescription -> {
             nodeDescription.setPalette(this.createNodePalette(cache));
             diagramDescription.getNodeDescriptions().add(nodeDescription);
         });
@@ -74,7 +94,7 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
-                .name("Remove Start")
+                .name("Remove Join")
                 .body(changeContext.build());
 
         var edgeTools = new ArrayList<EdgeTool>();
@@ -107,8 +127,9 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
         var targets = new ArrayList<NodeDescription>();
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).ifPresent(targets::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAcceptActionUsage())).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(targets::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(targets::add);
         return targets;
     }
-
 }

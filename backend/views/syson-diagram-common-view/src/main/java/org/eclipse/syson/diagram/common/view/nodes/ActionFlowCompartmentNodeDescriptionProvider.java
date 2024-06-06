@@ -31,10 +31,10 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -75,9 +75,10 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
-            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
@@ -102,6 +103,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
         }
         nodeToolSection.getNodeTools().add(new StartActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
         nodeToolSection.getNodeTools().add(new DoneActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
+        nodeToolSection.getNodeTools().add(new JoinActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
         return nodeToolSection;
     }
 
@@ -109,7 +111,9 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAcceptActionUsage())).ifPresent(droppableNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
@@ -137,19 +141,5 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     protected INodeToolProvider getItemCreationToolProvider() {
         return new ActionFlowCompartmentNodeToolProvider(this.eClass, this.descriptionNameGenerator);
-    }
-
-    @Override
-    protected String getDropElementFromDiagramExpression() {
-        var actionUsageDescriptionName = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage());
-        var params = List.of(
-                "droppedNode",
-                "targetElement",
-                "targetNode",
-                AQLUtils.aqlString(actionUsageDescriptionName),
-                "diagramContext",
-                "convertedNodes"
-                );
-        return AQLUtils.getServiceCallExpression("droppedElement", "dropActionUsageFromDiagram", params);
     }
 }
