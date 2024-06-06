@@ -36,6 +36,7 @@ import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDesc
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.general.view.edges.AllocateEdgeDescriptionProvider;
@@ -230,6 +231,7 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
         diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), colorProvider, this.nameGenerator));
         diagramElementDescriptionProviders.add(new StartActionNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
         diagramElementDescriptionProviders.add(new DoneActionNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new JoinActionNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
 
         // create a node description provider for each element found in a section
         var nodeDescriptionProviderSwitch = new GeneralViewNodeDescriptionProviderSwitch(colorProvider);
