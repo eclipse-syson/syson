@@ -19,6 +19,8 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
@@ -29,6 +31,8 @@ import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -173,26 +177,6 @@ public class ViewEdgeService {
         return self;
     }
 
-    /**
-     * TransitionUsage edge target type checking. Used as a precondition expression for the
-     * TransitionEdgeDescriptionProvider but does not seems to be used to filter the {@link TransitionUsage}
-     * creation.
-     *
-     * @param source
-     *            The source of the transition
-     * @param target
-     *            The target of the transition
-     * @return
-     */
-    public boolean checkTransitionEdgeTarget(Element source, Element target) {
-        if (source instanceof ActionUsage sourceAction && target instanceof ActionUsage targetAction) {
-            Element sourceParentElement = sourceAction.getOwner();
-            Element targetParentElement = targetAction.getOwner();
-            return sourceParentElement == targetParentElement;
-        }
-        return false;
-    }
-
     public Element reconnectSourceSuccessionEdge(SuccessionAsUsage succession, Element oldSource, Element newSource) {
         succession.getOwnedRelationship().stream()
                 .filter(EndFeatureMembership.class::isInstance)
@@ -254,6 +238,99 @@ public class ViewEdgeService {
             return e;
         });
         return succession;
+    }
+
+    /**
+     * Set a new source {@link ActionUsage} for the given {@link TransitionUsage}. Used by
+     * {@code TransitionEdgeDescriptionProvider.createSourceReconnectTool()}
+     *
+     * @param transition
+     *            the given {@link TransitionUsage}.
+     * @param newSource
+     *            the new target {@link ActionUsage}.
+     * @return the given {@link TransitionUsage}.
+     */
+    public TransitionUsage reconnectSourceTransitionEdge(TransitionUsage transition, ActionUsage newSource) {
+        if (!(newSource instanceof StateUsage) || !this.checkTransitionEdgeTarget(newSource, transition.getTarget())) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Invalid new source for transition", MessageLevel.WARNING));
+            return transition;
+        }
+        // Update transition source
+        transition.getOwnedMembership().stream()
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .findFirst()
+                .ifPresent(mem -> mem.setMemberElement(newSource));
+        // Update succession source
+        Succession succession = transition.getSuccession();
+        succession.getFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .findFirst()
+                .ifPresent(endFeat -> {
+                    endFeat.getOwnedRelatedElement().stream()
+                            .findFirst()
+                            .ifPresent(feat -> feat.getOwnedRelationship().stream()
+                                    .filter(ReferenceSubsetting.class::isInstance)
+                                    .map(ReferenceSubsetting.class::cast)
+                                    .findFirst()
+                                    .ifPresent(refSub -> refSub.setReferencedFeature(newSource)));
+                });
+        return transition;
+    }
+
+    /**
+     * Set a new target {@link ActionUsage} for the given {@link TransitionUsage}. Used by
+     * {@code TransitionEdgeDescriptionProvider.createTargetReconnectTool()}
+     *
+     * @param transition
+     *            the given {@link TransitionUsage}.
+     * @param newTarget
+     *            the new target {@link ActionUsage}.
+     * @return the given {@link TransitionUsage}.
+     */
+    public TransitionUsage reconnectTargetTransitionEdge(TransitionUsage transition, ActionUsage newTarget) {
+        if (!(newTarget instanceof StateUsage) || !this.checkTransitionEdgeTarget(transition.getSource(), newTarget)) {
+            this.feedbackMessageService.addFeedbackMessage(new Message("Invalid new target for transition", MessageLevel.WARNING));
+            return transition;
+        }
+        // Update succession target
+        Succession succession = transition.getSuccession();
+        List<EndFeatureMembership> succFeatMemberships = succession.getFeatureMembership().stream()
+                .filter(EndFeatureMembership.class::isInstance)
+                .map(EndFeatureMembership.class::cast)
+                .toList();
+        if (succFeatMemberships.size() > 1) {
+            succFeatMemberships.get(1).getOwnedRelatedElement().stream()
+                    .findFirst()
+                    .ifPresent(feat -> feat.getOwnedRelationship().stream()
+                            .filter(ReferenceSubsetting.class::isInstance)
+                            .map(ReferenceSubsetting.class::cast)
+                            .findFirst()
+                            .ifPresent(refSub -> refSub.setReferencedFeature(newTarget)));
+        }
+        return transition;
+    }
+
+    /**
+     * TransitionUsage edge target checking. Used as a precondition expression for the TransitionEdgeDescriptionProvider
+     * but does not seems to be used to filter the {@link TransitionUsage} creation.
+     *
+     * @param source
+     *            The source of the transition
+     * @param target
+     *            The target of the transition
+     * @return
+     */
+    private boolean checkTransitionEdgeTarget(Element source, Element target) {
+        boolean sameParent = false;
+        if (source instanceof ActionUsage sourceAction && target instanceof ActionUsage targetAction) {
+            Element sourceParentElement = sourceAction.getOwner();
+            Element targetParentElement = targetAction.getOwner();
+            sameParent = sourceParentElement == targetParentElement;
+        }
+        boolean parentIsParallel = this.utilService.isParallelState(source.getOwner());
+        return sameParent && !parentIsParallel;
     }
 
     private Optional<ActionUsage> getAction(Element element) {

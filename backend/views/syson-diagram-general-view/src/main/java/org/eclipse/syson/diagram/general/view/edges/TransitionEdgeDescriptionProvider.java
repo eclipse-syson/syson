@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.statetransition.view.edges;
+package org.eclipse.syson.diagram.general.view.edges;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.edges.AbstractTransitionEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -40,9 +40,8 @@ public class TransitionEdgeDescriptionProvider extends AbstractTransitionEdgeDes
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(this.getEdgeDescriptionName());
         List<NodeDescription> optNodeDescriptions = new ArrayList<>();
-        StateTransitionViewDiagramDescriptionProvider.USAGES.forEach(eClass -> {
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(eClass)).ifPresent(optNodeDescriptions::add);
-        });
+
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(optNodeDescriptions::add);
 
         if (optEdgeDescription.isPresent() && !optNodeDescriptions.isEmpty()) {
             EdgeDescription edgeDescription = optEdgeDescription.get();

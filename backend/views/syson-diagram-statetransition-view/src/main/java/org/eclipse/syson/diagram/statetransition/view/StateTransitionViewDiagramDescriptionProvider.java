@@ -33,10 +33,10 @@ import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionP
 import org.eclipse.syson.diagram.common.view.nodes.MergedReferencesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.statetransition.view.edges.TransitionEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.DefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.PackageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.UsageNodeDescriptionProvider;
@@ -92,28 +92,28 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
 
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders =  new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
-        diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
-        diagramElementDescriptionProviders.add(new StateTransitionViewEmptyDiagramNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
-        diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
-        diagramElementDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new StateTransitionViewEmptyDiagramNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders
-                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.getNameGenerator()));
+                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders
-                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.getNameGenerator()));
+                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.getDescriptionNameGenerator()));
 
         DEFINITIONS.forEach(definition -> {
-            diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider, this.getNameGenerator()));
+            diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider, this.getDescriptionNameGenerator()));
         });
 
         USAGES.forEach(usage -> {
-            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getNameGenerator()));
+            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getDescriptionNameGenerator()));
         });
 
         COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
-                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getNameGenerator()));
+                diagramElementDescriptionProviders.add(new StateTransitionActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
             });
-            diagramElementDescriptionProviders.add(new MergedReferencesCompartmentItemNodeDescriptionProvider(eClass, listItems, colorProvider, this.getNameGenerator()));
+            diagramElementDescriptionProviders.add(new MergedReferencesCompartmentItemNodeDescriptionProvider(eClass, listItems, colorProvider, this.getDescriptionNameGenerator()));
         });
 
         diagramElementDescriptionProviders.stream().
@@ -127,7 +127,7 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
     }
 
     @Override
-    protected IDescriptionNameGenerator getNameGenerator() {
+    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
         return this.descriptionNameGenerator;
     }
 

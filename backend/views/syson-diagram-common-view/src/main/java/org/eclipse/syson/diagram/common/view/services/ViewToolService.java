@@ -36,7 +36,7 @@ import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSear
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ToolService;
-import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -53,8 +53,6 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
-import org.eclipse.syson.sysml.StateDefinition;
-import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -82,12 +80,15 @@ public class ViewToolService extends ToolService {
 
     private final DeleteService deleteService;
 
+    private final UtilService utilService;
+
     public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
         super(objectService, representationDescriptionSearchService, feedbackMessageService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
+        this.utilService = new UtilService();
     }
 
     /**
@@ -620,22 +621,22 @@ public class ViewToolService extends ToolService {
     }
 
     /**
-     * Create a new TransitionUsage and set it as the child of the parent of the sourceAction element. Sets its source
+     * Create a new TransitionUsage and set it as the child of the parent of the source {@link Feature}. Sets its source
      * and target.
      *
-     * @param sourceAction
-     *            the ActionUsage used as a source for the transition
-     * @param targetAction
-     *            the ActionUsage used as a target for the transition
-     * @return the given source {@link ActionUsage}.
+     * @param sourceUsage
+     *            the {@link Feature} used as a source for the transition
+     * @param targetUsage
+     *            the {@link Feature} used as a target for the transition
+     * @return the given source {@link Feature}.
      */
-    public ActionUsage createTransitionUsage(ActionUsage sourceAction, ActionUsage targetAction) {
+    public Feature createTransitionUsage(Feature sourceUsage, Feature targetUsage) {
         // Check source and target have the same parent
-        Element sourceParentElement = sourceAction.getOwner();
-        Element targetParentElement = targetAction.getOwner();
-        if (sourceParentElement != targetParentElement || this.isParallelState(sourceParentElement)) {
+        Element sourceParentElement = sourceUsage.getOwner();
+        Element targetParentElement = targetUsage.getOwner();
+        if (sourceParentElement != targetParentElement || this.utilService.isParallelState(sourceParentElement)) {
             // Should probably not be here as the transition creation should not be allowed.
-            return sourceAction;
+            return sourceUsage;
         }
         // Create transition usage and add it to the parent element
         // sourceParentElement <>-> FeatureMembership -> RelatedElement = TransitionUsage
@@ -649,7 +650,7 @@ public class ViewToolService extends ToolService {
         // TransitionUsage <>-> Membership -> MemberElement = sourceAction
         var sourceMembership = SysmlFactory.eINSTANCE.createMembership();
         newTransitionUsage.getOwnedRelationship().add(sourceMembership);
-        sourceMembership.setMemberElement(sourceAction);
+        sourceMembership.setMemberElement(sourceUsage);
 
         // Create Succession
         // TransitionUsage <>-> FeatureMembership -> RelatedElement = succession
@@ -660,22 +661,10 @@ public class ViewToolService extends ToolService {
         newTransitionUsage.getOwnedRelationship().add(successionFeatureMembership);
 
         // Set Succession Source and Target Features
-        succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceAction));
-        succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetAction));
+        succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceUsage));
+        succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetUsage));
 
-        return sourceAction;
-    }
-
-    /**
-     * Checks whether {@code element} is a Parallel state. This method allows an {@link Element} as a parameter but is
-     * intended to be called either with a {@link StateUsage} or a {@link StateDefinition}. Will return false in the
-     * other cases.
-     *
-     * @param element
-     *            The element to check
-     */
-    private boolean isParallelState(Element element) {
-        return (element instanceof StateUsage su && su.isIsParallel()) || (element instanceof StateDefinition sd && sd.isIsParallel());
+        return sourceUsage;
     }
 
     /**
