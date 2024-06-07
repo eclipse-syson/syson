@@ -30,7 +30,7 @@ public class Appender {
 
     private final String newLine;
     
-    private final Collection<Character> symbols = List.of('[', '(', '.');
+    private final Collection<Character> symbols = List.of('[', '(', '.', '@');
 
     public Appender(String newLine, String indentation) {
         super();

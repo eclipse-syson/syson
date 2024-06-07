@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.ItemDefinition;
@@ -40,6 +41,7 @@ import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
@@ -721,6 +723,25 @@ public class SysMLModelToTextSwitchTest {
     public void attributeUsageWithInvocationExpression() {
         AttributeUsageWithInvocationExpressionTestModel model = new AttributeUsageWithInvocationExpressionTestModel();
         this.assertTextualFormEquals("attribute attribute1 = fuel(front);", model.getAttributeUsage());
+    }
+    
+    /**
+     * Testing an OperatorExpression whose operator is an "@", typed by a MetadataDefinition.
+     */
+    @Test
+    public void classificationExpression() {
+        MetadataDefinition type = this.builder.createWithName(MetadataDefinition.class, "Syson");
+        
+        OperatorExpression classificationExpression = this.builder.create(OperatorExpression.class);
+        classificationExpression.setOperator("@");
+        
+        FeatureMembership featureMembership = this.builder.createIn(FeatureMembership.class, classificationExpression);
+        Feature feature = this.builder.create(Feature.class);
+        featureMembership.getOwnedRelatedElement().add(feature);
+        
+        builder.setType(feature, type);
+
+        this.assertTextualFormEquals("@Syson", classificationExpression);
     }
 
     @Test
