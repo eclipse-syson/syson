@@ -33,9 +33,9 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  *
  * @author adieumegard
  */
-public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class StateTransitionActionsCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public CompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public StateTransitionActionsCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(eClass, eReference, colorProvider, descriptionNameGenerator);
     }
 

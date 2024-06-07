@@ -37,6 +37,8 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -340,6 +342,18 @@ public class UtilService {
             }
         }
         return matches;
+    }
+
+    /**
+     * Checks whether {@code element} is a Parallel state. This method allows an {@link Element} as a parameter but is
+     * intended to be called either with a {@link StateUsage} or a {@link StateDefinition}. Will return false in the
+     * other cases.
+     *
+     * @param element
+     *            The element to check
+     */
+    public boolean isParallelState(Element element) {
+        return (element instanceof StateUsage su && su.isIsParallel()) || (element instanceof StateDefinition sd && sd.isIsParallel());
     }
 
     /**

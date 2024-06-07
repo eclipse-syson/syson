@@ -110,33 +110,33 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.getNameGenerator()));
-        diagramElementDescriptionProviders.add(new UsageNestedActionUsageEdgeDescriptionProvider(colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new UsageNestedActionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new SuccessionEdgeDescriptionProvider(colorProvider));
 
-        diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
-                colorProvider, this.getNameGenerator()));
+                colorProvider, this.getDescriptionNameGenerator()));
 
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new ActionFlowViewEmptyDiagramNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new StartActionNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
-        diagramElementDescriptionProviders.add(new DoneActionNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
-        diagramElementDescriptionProviders.add(new JoinActionNodeDescriptionProvider(colorProvider, this.getNameGenerator()));
+        diagramElementDescriptionProviders.add(new StartActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new DoneActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new JoinActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         DEFINITIONS.forEach(definition -> {
             diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider));
         });
 
         USAGES.forEach(usage -> {
-            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getNameGenerator()));
+            diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getDescriptionNameGenerator()));
         });
 
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
-                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getNameGenerator()));
-                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getNameGenerator()));
+                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
             });
         });
 
@@ -150,7 +150,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
     }
 
     @Override
-    protected IDescriptionNameGenerator getNameGenerator() {
+    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
         return this.descriptionNameGenerator;
     }
 
@@ -181,7 +181,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            nodeTools.add(this.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.getNameGenerator().getNodeName(definition)).get(), definition));
+            nodeTools.add(this.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).get(), definition));
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

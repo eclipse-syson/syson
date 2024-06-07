@@ -32,7 +32,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public abstract class AbstractDiagramDescriptionProvider extends AbstractViewElementDescriptionProvider implements IRepresentationDescriptionProvider {
 
-    protected abstract IDescriptionNameGenerator getNameGenerator();
+    protected abstract IDescriptionNameGenerator getDescriptionNameGenerator();
 
     protected DiagramToolSection addElementsToolSection(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newDiagramToolSection()
@@ -75,7 +75,7 @@ public abstract class AbstractDiagramDescriptionProvider extends AbstractViewEle
                 .children(createEClassInstance.build(), createView.build());
 
         return builder
-                .name(this.getNameGenerator().getCreationToolName(eClass))
+                .name(this.getDescriptionNameGenerator().getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(changeContexMembership.build())
                 .build();

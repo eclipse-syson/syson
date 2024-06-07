@@ -64,19 +64,19 @@ public class InterconnectionViewForDefinitionDiagramDescriptionProvider extends 
 
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
-                new FakeNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new RootDefinitionNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new FirstLevelChildPartUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), colorProvider, this.getNameGenerator()),
-                new ChildPartUsageNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
-                new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
-                new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getNameGenerator()),
-                new ChildrenPartUsageCompartmentNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new RootPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider, this.getNameGenerator()),
-                new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new AllocateEdgeDescriptionProvider(colorProvider, this.getNameGenerator()),
-                new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getNameGenerator())
+                new FakeNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new RootDefinitionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new FirstLevelChildPartUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), colorProvider, this.getDescriptionNameGenerator()),
+                new ChildPartUsageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getDescriptionNameGenerator()),
+                new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getDescriptionNameGenerator()),
+                new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getDescriptionNameGenerator()),
+                new ChildrenPartUsageCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new RootPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider, this.getDescriptionNameGenerator()),
+                new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new AllocateEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator())
         );
 
         diagramElementDescriptionProviders.stream()
@@ -91,7 +91,7 @@ public class InterconnectionViewForDefinitionDiagramDescriptionProvider extends 
     }
 
     @Override
-    protected IDescriptionNameGenerator getNameGenerator() {
+    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
         return this.descriptionNameGenerator;
     }
 

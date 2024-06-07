@@ -118,7 +118,7 @@ public class LabelService {
         DirectEditParser parser = new DirectEditParser(tokens);
         ParseTree tree = parser.expression();
         ParseTreeWalker walker = new ParseTreeWalker();
-        DirectEditListener listener = new DiagramDirectEditListener(element, this.feedbackMessageService, options);
+        DirectEditListener listener = new DiagramDirectEditListener(element, this.getFeedbackMessageService(), options);
         walker.walk(listener, tree);
         return element;
     }
@@ -320,5 +320,9 @@ public class LabelService {
             value = "*";
         }
         return value;
+    }
+
+    public IFeedbackMessageService getFeedbackMessageService() {
+        return this.feedbackMessageService;
     }
 }

@@ -248,8 +248,6 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseStateDefinition(StateDefinition object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateDefinition()).equals(nodeDesc.getName())).collect(Collectors.toList());
-        edgeTools.add(this.edgeToolService.createTransitionUsageEdgeTool(SysmlPackage.eINSTANCE.getTransitionUsage(), targetNodes));
         edgeTools.addAll(this.caseDefinition(object));
         return edgeTools;
     }

@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -85,8 +86,8 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optEdgeDescription = cache.getEdgeDescription(this.descriptionNameGenerator.getEdgeName("Definition Owned " + this.eClass.getName()));
         var optUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(this.eClass));
-        var sourceNodes = new ArrayList<NodeDescription>();
 
+        var sourceNodes = new ArrayList<NodeDescription>();
         this.getEdgeSources().forEach(definition -> {
             cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(sourceNodes::add);
         });
@@ -101,7 +102,7 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
 
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression("aql:self.getContainerLabel()")
+                .labelExpression(AQLUtils.getSelfServiceCallExpression("getContainerLabel"))
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .build();
@@ -134,7 +135,7 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
     @Override
     protected DeleteTool getEdgeDeleteTool() {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:semanticEdgeTarget.moveToClosestContainingPackage()");
+                .expression(AQLUtils.getServiceCallExpression("semanticEdgeTarget", "moveToClosestContainingPackage"));
 
         return this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
