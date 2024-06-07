@@ -204,7 +204,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String casePartUsage(PartUsage partUsage) {
-        return this.appendDefaultUsage(newAppender(), partUsage).toString();
+        return this.appendDefaultUsage(this.newAppender(), partUsage).toString();
     }
 
     private Appender appendDefaultDefinition(Appender builder, Definition def) {
@@ -328,7 +328,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .findFirst()
                 .orElse(null);
 
-        if (membership instanceof FeatureMembership feature) {
+        if (membership instanceof FeatureMembership feature && feature.getOwnedMemberFeature() instanceof Expression exp) {
             LOGGER.warn("BodyExpression are not handled yet");
         } else {
             this.appendFeatureReferenceMember(builder, membership);
@@ -371,7 +371,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             case "hastype":
             case "@":
             case "as":
-                LOGGER.warn("ClassificationExpression are not handled yet");
+                this.appendClassificationExpression(builder, op);
                 break;
             case "all":
                 LOGGER.warn("ExtentExpression are not handled yet");
@@ -689,6 +689,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendSpaceIfNeeded().append(this.caseFeatureReferenceExpression(exp));
         } else if (expression instanceof MetadataAccessExpression exp) {
             builder.appendSpaceIfNeeded().append(this.caseMetadataAccessExpression(exp));
+        } else if (expression instanceof OperatorExpression exp) {
+            builder.appendSpaceIfNeeded().append(this.caseOperatorExpression(exp));
         } else if (expression instanceof InvocationExpression exp) {
             builder.appendSpaceIfNeeded().append(this.caseInvocationExpression(exp));
         } else {
@@ -831,6 +833,34 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             if (i < parameterMemberships.size() - 1) {
                 builder.append(",");
             }
+        }
+    }
+
+    private void appendClassificationExpression(Appender builder, OperatorExpression expression) {
+        expression.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .filter(param -> param.getOwnedMemberParameter() instanceof Feature)
+                .findFirst()
+                .ifPresent(membership -> this.appendArgumentMember(builder, membership));
+
+        builder.appendSpaceIfNeeded().append(expression.getOperator());
+
+        expression.getOwnedRelationship().stream()
+                .filter(FeatureMembership.class::isInstance)
+                .map(FeatureMembership.class::cast)
+                .filter(feature -> feature.getOwnedMemberElement() instanceof Feature)
+                .findFirst()
+                .ifPresent(membership -> this.appendTypeMember(builder, membership));
+    }
+
+    private void appendTypeMember(Appender builder, FeatureMembership membership) {
+        Feature ownedMemberFeature = membership.getOwnedMemberFeature();
+        if (ownedMemberFeature != null) {
+            ownedMemberFeature.getOwnedRelationship().stream()
+                    .filter(FeatureTyping.class::isInstance)
+                    .map(FeatureTyping.class::cast)
+                    .forEach(feature -> builder.appendSpaceIfNeeded().append(this.getDeresolvableName(feature.getType(), feature)));
         }
     }
 
