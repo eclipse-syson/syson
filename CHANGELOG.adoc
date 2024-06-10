@@ -21,6 +21,7 @@
 - [releng] Switch to `typescript` 5.4.5
 - [releng] Switch to `turbo` 1.13.3
 - [releng] Switch to `jacoco` 0.8.12
+- [releng] Switch to `maven-checkstyle-plugin` 3.3.1
 
 === Bug fixes
 
