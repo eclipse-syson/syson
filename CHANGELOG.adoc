@@ -20,6 +20,7 @@
 - [releng] Switch to `vite` 5.2.11, `vitest` 1.6.0, `@vitest/coverage-v8` 1.6.0 and `@vitejs/plugin-react` 4.3.0
 - [releng] Switch to `typescript` 5.4.5
 - [releng] Switch to `turbo` 1.13.3
+- [releng] Switch to `jacoco` 0.8.12
 
 === Bug fixes
 
