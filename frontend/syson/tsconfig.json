@@ -12,7 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noUnusedLocals": true,
-    "types": ["node", "reflect-metadata", "jest"],
+    "types": ["node", "jest"],
     "resolveJsonModule": true,
     "allowJs": true,
     "skipLibCheck": true,
