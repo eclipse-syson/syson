@@ -23,6 +23,7 @@
 - [releng] Switch to `jacoco` 0.8.12
 - [releng] Switch to `maven-checkstyle-plugin` 3.3.1
 - [releng] Remove the dependency to `reflect-metadata`
+- [releng] Switch to `subscriptions-transport-ws` 0.11.0
 
 === Bug fixes
 
