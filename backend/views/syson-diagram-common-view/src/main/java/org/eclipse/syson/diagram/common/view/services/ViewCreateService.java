@@ -719,6 +719,13 @@ public class ViewCreateService {
         return owner;
     }
 
+    /**
+     * Creation of the semantic elements associated to a Join action.
+     *
+     * @param ownerElement
+     *            the element owning the new Join action.
+     * @return the new Join action if it has been successfully created or <code>ownerElement</code> otherwise.
+     */
     public Element createJoinAction(Element ownerElement) {
         Feature joinsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::joins");
         if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && joinsStdAction != null) {
@@ -733,6 +740,31 @@ public class ViewCreateService {
             featureMember.getOwnedRelatedElement().add(join);
             ownerElement.getOwnedRelationship().add(featureMember);
             return join;
+        }
+        return ownerElement;
+    }
+
+    /**
+     * Creation of the semantic elements associated to a Fork action.
+     *
+     * @param ownerElement
+     *            the element owning the new Fork action.
+     * @return the new Fork action if it has been successfully created or <code>ownerElement</code> otherwise.
+     */
+    public Element createForkAction(Element ownerElement) {
+        Feature forksStdAction = this.utilService.findByName(ownerElement, "Actions::Action::forks");
+        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && forksStdAction != null) {
+            var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
+            var fork = SysmlFactory.eINSTANCE.createForkNode();
+            this.elementInitializerSwitch.doSwitch(fork);
+            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
+            subsetting.setSubsettingFeature(fork);
+            subsetting.setSubsettedFeature(forksStdAction);
+            subsetting.setIsImplied(true);
+            fork.getOwnedRelationship().add(subsetting);
+            featureMember.getOwnedRelatedElement().add(fork);
+            ownerElement.getOwnedRelationship().add(featureMember);
+            return fork;
         }
         return ownerElement;
     }
