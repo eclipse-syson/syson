@@ -34,33 +34,33 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the Join node description of an Action.
+ * Used to create the Fork node description of an Action.
  *
  * @author Jerome Gout
  */
-public class JoinActionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+public class ForkActionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    public static final String JOIN_ACTION_NAME = "JoinAction";
+    public static final String FORK_ACTION_NAME = "ForkAction";
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public JoinActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public ForkActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
     public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getJoinNode());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getForkNode());
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(false)
                 .domainType(domainType)
                 .defaultWidthExpression("100")
                 .defaultHeightExpression("12")
                 .outsideLabels(this.createOutsideLabelDescription())
-                .name(this.descriptionNameGenerator.getNodeName(JOIN_ACTION_NAME))
+                .name(this.descriptionNameGenerator.getNodeName(FORK_ACTION_NAME))
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
-                .style(this.createImageNodeStyleDescription("images/join_action.svg"))
+                .style(this.createImageNodeStyleDescription("images/fork_action.svg"))
                 .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .build();
@@ -83,7 +83,7 @@ public class JoinActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(JOIN_ACTION_NAME)).ifPresent(nodeDescription -> {
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(FORK_ACTION_NAME)).ifPresent(nodeDescription -> {
             nodeDescription.setPalette(this.createNodePalette(cache));
             diagramDescription.getNodeDescriptions().add(nodeDescription);
         });
@@ -94,7 +94,7 @@ public class JoinActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
-                .name("Remove Join")
+                .name("Remove Fork")
                 .body(changeContext.build());
 
         var edgeTools = new ArrayList<EdgeTool>();
@@ -108,22 +108,22 @@ public class JoinActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
     }
 
     private List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
-        var targetElementDescriptions = this.getJoinTargetDescriptions(cache);
+        var targetElementDescriptions = this.getForkTargetDescriptions(cache);
 
         var builder = this.diagramBuilderHelper.newEdgeTool();
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
-        var createJoinEdgeTool = builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
+        var createForkEdgeTool = builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
                 .iconURLsExpression("/icons/full/obj16/Succession.svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
 
-        return List.of(createJoinEdgeTool);
+        return List.of(createForkEdgeTool);
     }
 
-    private List<NodeDescription> getJoinTargetDescriptions(IViewDiagramElementFinder cache) {
+    private List<NodeDescription> getForkTargetDescriptions(IViewDiagramElementFinder cache) {
         var targets = new ArrayList<NodeDescription>();
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).ifPresent(targets::add);

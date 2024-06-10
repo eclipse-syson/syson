@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
@@ -30,10 +31,10 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
-import org.eclipse.syson.sysml.JoinNode;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
@@ -108,11 +109,17 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
 
     private List<NodeDescription> getSuccessionEdgeTargets() {
         return this.allNodeDescriptions.stream()
-                .filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage()) ||
-                        this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAcceptActionUsage()) ||
-                        this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(nodeDesc.getName()) ||
-                        this.nameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME).equals(nodeDesc.getName()))
+                .filter(this::isSuccessionTargetNodeDescription)
                 .toList();
+    }
+
+    private boolean isSuccessionTargetNodeDescription(NodeDescription nodeDesc) {
+        boolean result = this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage());
+        result = result || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAcceptActionUsage());
+        result = result || this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(nodeDesc.getName());
+        result = result || this.nameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME).equals(nodeDesc.getName());
+        result = result || this.nameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME).equals(nodeDesc.getName());
+        return result;
     }
 
     @Override
@@ -150,6 +157,13 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     }
 
     @Override
+    public List<EdgeTool> caseControlNode(ControlNode object) {
+        var edgeTools = new ArrayList<EdgeTool>();
+        edgeTools.add(this.edgeToolService.createSuccessionEdgeTool(this.getSuccessionEdgeTargets()));
+        return edgeTools;
+    }
+
+    @Override
     public List<EdgeTool> caseDefinition(Definition object) {
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.add(this.edgeToolService.createDependencyEdgeTool(this.allNodeDescriptions));
@@ -179,13 +193,6 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getItemUsage(), targetNodes));
         edgeTools.addAll(this.caseUsage(object));
-        return edgeTools;
-    }
-
-    @Override
-    public List<EdgeTool> caseJoinNode(JoinNode object) {
-        var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.add(this.edgeToolService.createSuccessionEdgeTool(this.getSuccessionEdgeTargets()));
         return edgeTools;
     }
 
@@ -266,9 +273,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         var edgeTools = new ArrayList<EdgeTool>();
         // special actions (such as Start or Done) should not be considered to create edges.
         var targetDescriptions = this.allNodeDescriptions.stream()
-                .filter(nodeDesc -> !this.nameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME).equals(nodeDesc.getName()) &&
-                        !this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(nodeDesc.getName()) &&
-                        !this.nameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME).equals(nodeDesc.getName()))
+                .filter(this::isRegularNodeDescription)
                 .toList();
         edgeTools.add(this.edgeToolService.createDependencyEdgeTool(targetDescriptions));
         edgeTools.add(this.edgeToolService.createRedefinitionEdgeTool(List.of(this.nodeDescription)));
@@ -279,5 +284,13 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
             edgeTools.add(this.edgeToolService.createFeatureTypingEdgeTool(List.of(definitionNodeDescription.get())));
         }
         return edgeTools;
+    }
+
+    private boolean isRegularNodeDescription(NodeDescription nodeDesc) {
+        boolean isSpecial = this.nameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME).equals(nodeDesc.getName());
+        isSpecial = isSpecial || this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME).equals(nodeDesc.getName());
+        isSpecial = isSpecial || this.nameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME).equals(nodeDesc.getName());
+        isSpecial = isSpecial || this.nameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME).equals(nodeDesc.getName());
+        return !isSpecial;
     }
 }
