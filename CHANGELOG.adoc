@@ -13,7 +13,8 @@
 
 === Dependency update
 
-- Add test dependency to Cypress 12.11.0 (only required to execute integration tests)
+- [tests] Add test dependency to Cypress 12.11.0 (only required to execute integration tests)
+- [releng] Switch to EMF Json 2.3.10
 
 
 === Bug fixes
