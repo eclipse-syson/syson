@@ -17,6 +17,7 @@
 - [releng] Switch to Spring Boot 3.2.5
 - [releng] Switch to `@apollo/client` 3.10.4
 - [releng] Switch to `graphql` 16.8.1
+- [releng] Switch to `vite` 5.2.11, `vitest` 1.6.0, `@vitest/coverage-v8` 1.6.0 and `@vitejs/plugin-react` 4.3.0
 
 === Bug fixes
 
