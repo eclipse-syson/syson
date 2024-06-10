@@ -15,6 +15,7 @@
 
 - [tests] Add test dependency to Cypress 12.11.0 (only required to execute integration tests)
 - [releng] Switch to EMF Json 2.3.10
+- [releng] Switch to Spring Boot 3.2.5
 
 
 === Bug fixes
