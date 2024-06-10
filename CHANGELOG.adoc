@@ -16,6 +16,7 @@
 - [releng] Switch to EMF Json 2.3.10
 - [releng] Switch to Spring Boot 3.2.5
 - [releng] Switch to `@apollo/client` 3.10.4
+- [releng] Switch to `graphql` 16.8.1
 
 === Bug fixes
 
