@@ -161,8 +161,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageAdvanced.setLabelExpression("Advanced");
         pageAdvanced.getGroups().add(this.createAdvancedPropertiesGroup());
 
-        form.getPages().add(pageAdvanced);
         form.getPages().add(pageCore);
+        form.getPages().add(pageAdvanced);
 
         return form;
     }
