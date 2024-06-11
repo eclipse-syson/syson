@@ -27,19 +27,20 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ModelBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
  * Test class for {@link NamespaceImpl}.
- * 
+ *
  * @author Arthur Daussy
  */
 public class NamespaceImplTest {
 
     /**
      * Test model
-     * 
+     *
      * <pre>
      * namespace {
      * package p1 {
@@ -51,19 +52,19 @@ public class NamespaceImplTest {
      *          }
      *          private part def privatedef1x1 :> p4::def4;
      *      }
-     *      
+     *
      *      package p1x2 {
      *         part def def1x2;
      *      }
      *  }
-     *  
+     *
      *  package p2 {
      *      part def def2;
      *      package p2x1 {
      *          part def def2x1;
      *      }
      *  }
-     *  
+     *
      *  package p3 {
      *      part def def3;
      *      private part def privateDef3;
@@ -72,18 +73,18 @@ public class NamespaceImplTest {
      *      }
      *      private part def privateDef3
      *  }
-     *  
+     *
      *  package p4 {
      *      part def def4;
      *  }
      * }
      * </pre>
-     * 
+     *
      * @author Arthur Daussy
      */
     private static class TestModel {
 
-        private ModelBuilder builder = new ModelBuilder();
+        private final ModelBuilder builder = new ModelBuilder();
 
         private ResourceSet context;
 
@@ -134,62 +135,67 @@ public class NamespaceImplTest {
         private PartDefinition def4;
 
         TestModel() {
-            build();
+            this.build();
         }
 
         private void build() {
 
-            root = builder.createWithName(Namespace.class, null);
+            this.root = this.builder.createWithName(Namespace.class, null);
 
-            p1 = builder.createInWithName(Package.class, root, "p1");
-            def1 = builder.createInWithName(PartDefinition.class, p1, "Def1");
+            this.p1 = this.builder.createInWithName(Package.class, this.root, "p1");
+            this.def1 = this.builder.createInWithName(PartDefinition.class, this.p1, "Def1");
 
-            p1x1 = builder.createInWithName(Package.class, p1, "p1x1");
-            def1x1 = builder.createInWithName(PartDefinition.class, p1x1, "def1x1");
-            privatedef1x1 = builder.createInWithName(PartDefinition.class, p1x1, "privatedef1x1");
-            privatedef1x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+            this.p1x1 = this.builder.createInWithName(Package.class, this.p1, "p1x1");
+            this.def1x1 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "def1x1");
+            this.privatedef1x1 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "privatedef1x1");
+            this.privatedef1x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
 
-            p1x1x1 = builder.createInWithName(Package.class, p1x1, "p1x1x1");
-            def1x1x1 = builder.createInWithName(PartDefinition.class, p1x1x1, "def1x1x1");
+            this.p1x1x1 = this.builder.createInWithName(Package.class, this.p1x1, "p1x1x1");
+            this.def1x1x1 = this.builder.createInWithName(PartDefinition.class, this.p1x1x1, "def1x1x1");
 
-            p1x2 = builder.createInWithName(Package.class, p1, "p1x2");
-            def1x2 = builder.createInWithName(PartDefinition.class, p1x2, "def1x2");
+            this.p1x2 = this.builder.createInWithName(Package.class, this.p1, "p1x2");
+            this.def1x2 = this.builder.createInWithName(PartDefinition.class, this.p1x2, "def1x2");
 
-            p2 = builder.createInWithName(Package.class, root, "p2");
-            def2 = builder.createInWithName(PartDefinition.class, p2, "Def2");
-            p2x1 = builder.createInWithName(Package.class, p2, "p2x1");
-            def2x1 = builder.createInWithName(PartDefinition.class, p2x1, "def2x1");
+            this.p2 = this.builder.createInWithName(Package.class, this.root, "p2");
+            this.def2 = this.builder.createInWithName(PartDefinition.class, this.p2, "Def2");
+            this.p2x1 = this.builder.createInWithName(Package.class, this.p2, "p2x1");
+            this.def2x1 = this.builder.createInWithName(PartDefinition.class, this.p2x1, "def2x1");
 
-            p3 = builder.createInWithName(Package.class, root, "p3");
-            def3 = builder.createInWithName(PartDefinition.class, p3, "Def3");
-            privateDef3 = builder.createInWithName(PartDefinition.class, p3, "privateDef3");
-            privateDef3.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+            this.p3 = this.builder.createInWithName(Package.class, this.root, "p3");
+            this.def3 = this.builder.createInWithName(PartDefinition.class, this.p3, "Def3");
+            this.privateDef3 = this.builder.createInWithName(PartDefinition.class, this.p3, "privateDef3");
+            this.privateDef3.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
 
-            p3x1 = builder.createInWithName(Package.class, p3, "p3x1");
-            def3x1 = builder.createInWithName(PartDefinition.class, p3x1, "def3x1");
-            privateDef3x1 = builder.createInWithName(PartDefinition.class, p3x1, "privateDef3x1");
-            privateDef3x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+            this.p3x1 = this.builder.createInWithName(Package.class, this.p3, "p3x1");
+            this.def3x1 = this.builder.createInWithName(PartDefinition.class, this.p3x1, "def3x1");
+            this.privateDef3x1 = this.builder.createInWithName(PartDefinition.class, this.p3x1, "privateDef3x1");
+            this.privateDef3x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
 
 
-            root2 = builder.createWithName(Namespace.class, null);
-            p4 = builder.createInWithName(Package.class, root2, "p9");
-            def4 = builder.createInWithName(PartDefinition.class, p4, "def9");
+            this.root2 = this.builder.createWithName(Namespace.class, null);
+            this.p4 = this.builder.createInWithName(Package.class, this.root2, "p9");
+            this.def4 = this.builder.createInWithName(PartDefinition.class, this.p4, "def9");
 
-            builder.addSuperType(def1x1x1, def4);
-            builder.createIn(NamespaceImport.class, p1x1x1).setImportedNamespace(def4);
-            builder.addSuperType(privatedef1x1, def4);
+            this.builder.addSuperType(this.def1x1x1, this.def4);
+            this.builder.createIn(NamespaceImport.class, this.p1x1x1).setImportedNamespace(this.def4);
+            this.builder.addSuperType(this.privatedef1x1, this.def4);
 
-            context = new ResourceSetImpl();
+            this.context = new ResourceSetImpl();
             Resource doc1 = new ResourceFactoryImpl().createResource(null);
-            doc1.getContents().add(root);
+            doc1.getContents().add(this.root);
             Resource doc2 = new ResourceFactoryImpl().createResource(null);
-            doc2.getContents().add(root2);
-            context.getResources().add(doc1);
-            context.getResources().add(doc2);
+            doc2.getContents().add(this.root2);
+            this.context.getResources().add(doc1);
+            this.context.getResources().add(doc2);
         }
     }
 
-    private ModelBuilder builder = new ModelBuilder();
+    private ModelBuilder builder;
+
+    @BeforeEach
+    public void setUp() {
+        this.builder = new ModelBuilder();
+    }
 
     @DisplayName("Check membership feature")
     @Test
@@ -212,7 +218,7 @@ public class NamespaceImplTest {
 
         assertContentEquals(testModel.p1.getImportedMembership());
 
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
 
         assertContentEquals(testModel.p1.getImportedMembership(), testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
@@ -223,7 +229,7 @@ public class NamespaceImplTest {
     public void importedMembershipSimpleMembershipImport() {
         var testModel = new TestModel();
 
-        MembershipImport nsImport = builder.createIn(MembershipImport.class, testModel.p1);
+        MembershipImport nsImport = this.builder.createIn(MembershipImport.class, testModel.p1);
         nsImport.setImportedMembership(testModel.p2x1.getOwningMembership());
 
         assertContentEquals(testModel.p1.getImportedMembership(), testModel.p2x1.getOwningMembership());
@@ -234,7 +240,7 @@ public class NamespaceImplTest {
     public void importedMembershipSimpleNamespaceImport() {
         var testModel = new TestModel();
 
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
 
         assertContentEquals(testModel.p1.getImportedMembership(), testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
@@ -246,11 +252,11 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p2);
         nmImport0.setImportedNamespace(testModel.p3);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
         nmImport.setIsRecursive(true);
 
@@ -267,11 +273,11 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, testModel.p3);
+        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
 
         assertContentEquals(testModel.p3.getImportedMembership(),
@@ -287,11 +293,11 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, testModel.p3);
+        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
 
         assertContentEquals(testModel.p3.getMembership(),
@@ -316,11 +322,11 @@ public class NamespaceImplTest {
         testModel.def3.setDeclaredShortName("d");
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, testModel.p3);
+        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
 
         assertContentEquals(testModel.p3.getImportedMembership(),
@@ -344,11 +350,11 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = builder.createIn(NamespaceImport.class, testModel.p3);
+        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setVisibility(VisibilityKind.PRIVATE);
 
@@ -365,7 +371,7 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in p1 with recursion
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p3);
         nmImport.setIsRecursive(true);
         nmImport.setIsImportAll(true);
@@ -382,14 +388,14 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p1 in p3
-        builder.createIn(NamespaceImport.class, testModel.p3).setImportedNamespace(testModel.p1);
+        this.builder.createIn(NamespaceImport.class, testModel.p3).setImportedNamespace(testModel.p1);
 
         // Import p3 in P2
-        NamespaceImport namespaceImport = builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport namespaceImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
         namespaceImport.setImportedNamespace(testModel.p3);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
         nmImport.setIsRecursive(true);
 
@@ -414,7 +420,7 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setIsRecursive(true);
 
@@ -428,7 +434,7 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = builder.createIn(NamespaceImport.class, testModel.p1x1x1);
+        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1x1x1);
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setIsRecursive(true);
 
@@ -475,7 +481,7 @@ public class NamespaceImplTest {
         assertEquals(testModel.p1x1x1, testModel.def1x1x1.resolveLocal(testModel.p1x1x1.getName()).getMemberElement());
         // Direct resolve (level n-2) - KO
         assertNull(testModel.p1x1.resolveLocal(testModel.def1x1x1.getName()));
-        
+
         // Parent resolve (level n+2)
         assertEquals(testModel.p1x1, testModel.def1x1x1.resolveLocal(testModel.p1x1.getName()).getMemberElement());
 
@@ -523,12 +529,12 @@ public class NamespaceImplTest {
         *          }
         *          private part def privatedef1x1;
         *      }
-        *      
+        *
         *      package p1x2 {
         *         part def def1x2;
         *      }
         *  }
-        *  
+        *
         *  package p2 {
         *      part def def2;
         *      package p2x1 {
@@ -561,7 +567,7 @@ public class NamespaceImplTest {
          *    }
          *    private part def privatedef1x1 :> p4::def4;
          *  }
-         * 
+         *
          *  package p4 {
          *    part def def4;
          *  }
@@ -590,7 +596,7 @@ public class NamespaceImplTest {
         assertEquals("test 3", testModel.p1.unqualifiedNameOf("test 1::test 2::test 3"));
 
     }
-    
+
     @DisplayName("Test qualificationOf")
     @Test
     public void qualificationOfTest() {
@@ -601,5 +607,5 @@ public class NamespaceImplTest {
         assertEquals("test1", testModel.p1.qualificationOf("test1::test2"));
         assertEquals("test1::test2", testModel.p1.qualificationOf("test1::test2::test3"));
     }
-    
+
 }

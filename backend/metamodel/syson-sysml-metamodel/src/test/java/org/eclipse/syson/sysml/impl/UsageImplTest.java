@@ -19,6 +19,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.util.ModelBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -28,7 +29,12 @@ import org.junit.jupiter.api.Test;
  */
 public class UsageImplTest {
 
-    private final ModelBuilder builder = new ModelBuilder();
+    private ModelBuilder builder;
+
+    @BeforeEach
+    public void setUp() {
+        this.builder = new ModelBuilder();
+    }
 
     @Test
     public void getNamesFromReferenceSubsetting() {

@@ -23,6 +23,7 @@ import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.util.ModelBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +50,12 @@ public class NameDeresolverTest {
 
     private static final String PART_DEF1 = "PartDef1";
 
-    private ModelBuilder builder = new ModelBuilder();
+    private ModelBuilder builder;
+
+    @BeforeEach
+    public void setUp() {
+        builder = new ModelBuilder();
+    }
 
 
     @Test

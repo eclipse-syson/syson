@@ -20,6 +20,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ModelBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -29,7 +30,12 @@ import org.junit.jupiter.api.Test;
  */
 public class PartDefinitionImplTest {
 
-    private ModelBuilder builder = new ModelBuilder();
+    private ModelBuilder builder;
+
+    @BeforeEach
+    public void setUp() {
+        builder = new ModelBuilder();
+    }
 
     @Test
     public void testGetInheritedMembers() {

@@ -12,8 +12,14 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.export;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.syson.sysml.ActionDefinition;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -55,6 +61,7 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBinaryOperatorExpressionTestModel;
@@ -63,8 +70,12 @@ import org.eclipse.syson.sysml.export.models.AttributeUsageWithFeatureChainExpre
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithInvocationExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressionTestModel;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
+import org.eclipse.syson.sysml.export.utils.Severity;
+import org.eclipse.syson.sysml.export.utils.Status;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.ModelBuilder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -84,9 +95,17 @@ public class SysMLModelToTextSwitchTest {
 
     private static final String SUBSETTING2 = "sub2";
 
-    private ModelBuilder builder = new ModelBuilder();
+    private ModelBuilder builder;
+
+    private List<Status> status;
 
     private final SysmlFactory fact = SysmlFactory.eINSTANCE;
+
+    @BeforeEach
+    public void setUp() {
+        builder = new ModelBuilder();
+        status = new ArrayList<>();
+    }
 
     @Test
     public void emptyPackage() {
@@ -681,7 +700,7 @@ public class SysMLModelToTextSwitchTest {
     }
 
     private String convertToText(Element source, Element context, int indent) {
-        return new SysMLElementSerializer("\n", "    ", new NameDeresolver()).doSwitch(source);
+        return new SysMLElementSerializer("\n", "    ", new NameDeresolver(), status::add).doSwitch(source);
     }
 
     private String convertToText(Element source) {
@@ -1034,5 +1053,138 @@ public class SysMLModelToTextSwitchTest {
         LiteralInfinity literalInf = SysmlFactory.eINSTANCE.createLiteralInfinity();
 
         this.assertTextualFormEquals("*", literalInf);
+    }
+
+    @DisplayName("ActionUsage with simple succession with owned sub-actions")
+    @Test
+    public void actionUsageWithSuccessionSimple() {
+        ActionUsage actionUsage = builder.createWithName(ActionUsage.class, "a");
+
+        this.assertTextualFormEquals("action a;", actionUsage);
+
+        ActionUsage subAction1 = builder.createInWithName(ActionUsage.class, actionUsage, "a_1");
+        ActionUsage subAction2 = builder.createInWithName(ActionUsage.class, actionUsage, "a_2");
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                    action a_2;
+                }""", actionUsage);
+
+        builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, subAction2);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                    action a_2;
+                    first a_1 then a_2;
+                }""", actionUsage);
+
+    }
+
+    @DisplayName("Check SuccessionAsUsage using FeatureChaining both as source and target")
+    @Test
+    public void successionUsageWithFeatureChaining() {
+        PartUsage rootPart = builder.createWithName(PartUsage.class, "part1");
+
+        PartUsage u1 = builder.createInWithName(PartUsage.class, rootPart, "u1");
+        AttributeUsage attr1 = builder.createInWithName(AttributeUsage.class, u1, "attr1");
+        PartUsage u2 = builder.createInWithName(PartUsage.class, rootPart, "u2");
+        AttributeUsage attr2 = builder.createInWithName(AttributeUsage.class, u2, "attr2");
+
+        Feature source = builder.createFeatureChaining(u1, attr1);
+        Feature target = builder.createFeatureChaining(u2, attr2);
+
+        SuccessionAsUsage successionUsage = builder.createSuccessionAsUsage(SuccessionAsUsage.class, rootPart, source, target);
+
+        this.assertTextualFormEquals("first u1.attr1 then u2.attr2;", successionUsage);
+
+    }
+
+    @DisplayName("ActionUsage with SuccessionAsUsage linked to an action defined in the ActionDefinition")
+    @Test
+    public void actionUsageWithActionDefinitionAndSuccession() {
+        Package pack1 = builder.createWithName(Package.class, "p1");
+
+        ActionUsage actionUsage = builder.createInWithName(ActionUsage.class, pack1, "a");
+
+        this.assertTextualFormEquals("action a;", actionUsage);
+
+        // Add definition
+        ActionDefinition actionDefinition = builder.createInWithName(ActionDefinition.class, pack1, "A");
+        ActionUsage subAction1 = builder.createInWithName(ActionUsage.class, actionDefinition, "a_1");
+        builder.setType(actionUsage, actionDefinition);
+
+        this.assertTextualFormEquals("action a : A;", actionUsage);
+
+        ActionUsage subAction2 = builder.createInWithName(ActionUsage.class, actionUsage, "a_2");
+        builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, subAction2);
+
+        this.assertTextualFormEquals("""
+                action a : A {
+                    action a_2;
+                    first a_1 then a_2;
+                }""", actionUsage);
+
+        // By construction the inherited ActionUsage can be referenced by a membership
+        // It should be ignored in such case.
+
+        Membership membership = builder.createIn(Membership.class, actionUsage);
+        membership.setMemberElement(subAction1);
+
+        this.assertTextualFormEquals("""
+                action a : A {
+                    action a_2;
+                    first a_1 then a_2;
+                }""", actionUsage);
+
+    }
+
+    /**
+     * This test check that an error is reported when trying to serialize a succession usage with a source or target
+     * with no name. The given model is not invalid but the current implementation of the export feature does not know
+     * how to handle such case.
+     */
+    @DisplayName("ActionUsage with succession linked to an action with no name")
+    @Test
+    public void successionUsageWithUnamedAction() {
+        ActionUsage actionUsage = builder.createWithName(ActionUsage.class, "a");
+
+        this.assertTextualFormEquals("action a;", actionUsage);
+
+        ActionUsage subAction1 = builder.createInWithName(ActionUsage.class, actionUsage, "a_1");
+        ActionUsage unamedAction = builder.createIn(ActionUsage.class, actionUsage);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                    action;
+                }""", actionUsage);
+
+        // Add some content to that action
+        Comment comment = builder.createIn(Comment.class, unamedAction);
+        comment.setBody("This is an action with no name");
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                    action {
+                        /* This is an action with no name */
+                    }
+                }""", actionUsage);
+
+        builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, unamedAction);
+
+        this.assertTextualFormEquals("""
+                action a {
+                    action a_1;
+                    action {
+                        /* This is an action with no name */
+                    }
+                    first a_1 then ;
+                }""", actionUsage);
+
+        // Check that the error is reported
+        assertTrue(status.stream().anyMatch(s -> s.severity() == Severity.ERROR && s.message().startsWith("Unable to compute a valid identifier for")));
+
     }
 }

@@ -144,13 +144,10 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetReferencingFeature() {
-        // TODO: implement this method to return the 'Referencing Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return getSubsettingFeature();
     }
 
     /**

@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
@@ -261,13 +262,14 @@ public class FeatureImpl extends TypeImpl implements Feature {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
      * @generated NOT
      */
     @Override
     public EList<Feature> getChainingFeature() {
-        List<Feature> data = new ArrayList<>();
+        List<Feature> data = this.getOwnedFeatureChaining().stream()
+                .map(FeatureChaining::getChainingFeature)
+                .filter(Objects::nonNull)
+                .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_ChainingFeature(), data.size(), data.toArray());
     }
 
