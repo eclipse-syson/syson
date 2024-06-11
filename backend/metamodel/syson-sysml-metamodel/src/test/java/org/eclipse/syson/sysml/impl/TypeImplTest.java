@@ -22,6 +22,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ModelBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -63,7 +64,7 @@ public class TypeImplTest {
      */
     private static class TestModel {
 
-        private ModelBuilder builder = new ModelBuilder();
+        private final ModelBuilder builder = new ModelBuilder();
 
         private Namespace root;
 
@@ -92,9 +93,9 @@ public class TypeImplTest {
         }
 
         private void build() {
-            this.root = builder.createWithName(Namespace.class, null);
+            this.root = this.builder.createWithName(Namespace.class, null);
 
-            this.p1 = builder.createInWithName(Package.class, root, "p1");
+            this.p1 = this.builder.createInWithName(Package.class, this.root, "p1");
 
             this.attrDef1 = this.builder.createInWithName(AttributeDefinition.class, this.p1, "attrDef1");
 
@@ -121,7 +122,12 @@ public class TypeImplTest {
         }
     }
 
-    private ModelBuilder builder = new ModelBuilder();
+    private ModelBuilder builder;
+
+    @BeforeEach
+    public void setUp() {
+        this.builder = new ModelBuilder();
+    }
 
     @DisplayName("Check name collision with super type memberships")
     @Test
@@ -131,14 +137,14 @@ public class TypeImplTest {
         assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false), testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership());
 
         // Then create an attribute named attr0 in subDef to hide the super SuperSuperDef::attr0 attribute
-        AttributeUsage subDefAttr0 = builder.createInWithName(AttributeUsage.class, testModel.subDef, "attr0");
+        AttributeUsage subDefAttr0 = this.builder.createInWithName(AttributeUsage.class, testModel.subDef, "attr0");
 
         // SuperSuperDef::attr0 should not be visible anymore
         assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false),
                 testModel.attr1.getOwningMembership(), subDefAttr0.getOwningMembership());
         assertContentEquals(testModel.subDef.getInheritedMembership(), testModel.attr1.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
 
-        AttributeUsage subDefAttr1 = builder.createInWithName(AttributeUsage.class, testModel.subDef, "attr1");
+        AttributeUsage subDefAttr1 = this.builder.createInWithName(AttributeUsage.class, testModel.subDef, "attr1");
         // SuperDef::attr1 should not be visible anymore
         assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false),
                 subDefAttr1.getOwningMembership(), subDefAttr0.getOwningMembership());
@@ -164,7 +170,7 @@ public class TypeImplTest {
     public void visibleMembershipsWithLoop() {
         var testModel = new TestModel();
 
-        builder.addSuperType(testModel.megaDef, testModel.subDef);
+        this.builder.addSuperType(testModel.megaDef, testModel.subDef);
         /**
          * <pre>
          * package p1 {
@@ -217,7 +223,7 @@ public class TypeImplTest {
                 testModel.attr0.getOwningMembership(),
                 // All contained in superDef
                 testModel.attr1.getOwningMembership(), testModel.privateAttr.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
-        
+
         assertContentEquals(testModel.superSuperDef.getMembership(), testModel.attr0.getOwningMembership());
         assertContentEquals(testModel.megaDef.getMembership());
 

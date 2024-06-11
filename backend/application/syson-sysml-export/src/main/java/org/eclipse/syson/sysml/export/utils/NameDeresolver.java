@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
 import org.eclipse.syson.sysml.helper.EMFUtils;
@@ -78,7 +79,9 @@ public class NameDeresolver {
         if (deresolvingNamespace == null) {
             qualifiedName = getQualifiedName(element);
         } else {
+            // An element is either reachable form its containment tree or via a reference Membership#memberElement
             Set<Membership> elementAncestors = EMFUtils.getAncestors(Membership.class, element, null).stream().collect(toSet());
+            EMFUtils.getInverse(element, SysmlPackage.eINSTANCE.getMembership_MemberElement()).stream().map(s -> (Membership) s.getEObject()).forEach(elementAncestors::add);
             qualifiedName = this.deresolve(element, deresolvingNamespace, deresolvingNamespace, elementAncestors);
         }
 

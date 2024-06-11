@@ -15,6 +15,8 @@ package org.eclipse.syson.sysml.export.utils;
 import com.google.common.base.Strings;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.syson.sysml.ActionDefinition;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.EnumerationDefinition;
@@ -37,6 +39,8 @@ import org.slf4j.LoggerFactory;
  * @author Arthur Daussy
  */
 public class SysMLKeywordSwitch extends SysmlSwitch<String> {
+
+    private static final String ACTION = "action";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SysMLKeywordSwitch.class);
 
@@ -69,6 +73,16 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     @Override
     public String caseAttributeUsage(AttributeUsage object) {
         return ATTRIBUTE_KEYWORD;
+    }
+
+    @Override
+    public String caseActionDefinition(ActionDefinition object) {
+        return ACTION;
+    }
+
+    @Override
+    public String caseActionUsage(ActionUsage object) {
+        return ACTION;
     }
 
     @Override

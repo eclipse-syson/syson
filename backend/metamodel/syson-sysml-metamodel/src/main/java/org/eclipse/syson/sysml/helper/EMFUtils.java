@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.helper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
@@ -23,8 +24,13 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utils class to browse or edit EMF model.
@@ -32,6 +38,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
  * @author Arthur Daussy
  */
 public class EMFUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EMFUtils.class);
 
     /**
      * Gets the ancestor of given type starting from a specific element.
@@ -57,12 +65,32 @@ public class EMFUtils {
         return result;
     }
 
-    
+    /**
+     * Gets all Settings targeting the given source element with the given {@link EReference}
+     *
+     * @param source
+     *            the source element
+     * @param targetingFeature
+     *            the feature that link the searched elements to the source
+     * @return a {@link Collection} of {@link Setting}
+     */
+    public static Collection<Setting> getInverse(EObject source, EReference targetingFeature) {
+        return source.eAdapters().stream()
+                .filter(ECrossReferenceAdapter.class::isInstance)
+                .map(ECrossReferenceAdapter.class::cast)
+                .map(crossRef -> crossRef.getInverseReferences(source, targetingFeature, false))
+                .findFirst().orElseGet(() -> {
+                    LOGGER.warn("Unable to find a ECrossReference on " + source);
+                    return List.of();
+                });
+
+    }
+
     /**
      * Gets a stream composed from the object itself and all its content.
      *
      * @param o
-     *          an {@link EObject}
+     *            an {@link EObject}
      * @return a stream
      */
     public static Stream<EObject> eAllContentStreamWithSelf(EObject o) {
@@ -77,7 +105,7 @@ public class EMFUtils {
      * Gets a stream composed from the object itself and all its content.
      *
      * @param r
-     *          a resource
+     *            a resource
      * @return a stream
      */
     public static Stream<Notifier> eAllContentSteamWithSelf(Resource r) {
@@ -87,11 +115,12 @@ public class EMFUtils {
         return Stream.concat(Stream.of(r), StreamSupport
                 .stream(Spliterators.spliteratorUnknownSize(r.getAllContents(), Spliterator.NONNULL), false));
     }
+
     /**
      * Gets a stream composed from the object itself and all its content.
      *
      * @param n
-     *          a notifier
+     *            a notifier
      * @return a stream
      */
     public static Stream<Notifier> eAllContentSteamWithSelf(Notifier n) {
@@ -110,7 +139,7 @@ public class EMFUtils {
      * Gets a stream composed from the object itself and all its content.
      *
      * @param rs
-     *           a resource set
+     *            a resource set
      * @return a stream
      */
     public static Stream<Notifier> eAllContentSteamWithSelf(ResourceSet rs) {
@@ -128,9 +157,9 @@ public class EMFUtils {
      * </p>
      *
      * @param self
-     *             a {@link Notifier} (EObject, Resource or ResourceSet)
+     *            a {@link Notifier} (EObject, Resource or ResourceSet)
      * @param type
-     *             the type of the element in the returned stream
+     *            the type of the element in the returned stream
      * @return a stream
      * @param <T>
      *            type of element in the returned stream
@@ -149,10 +178,10 @@ public class EMFUtils {
         }
         return result;
     }
-    
+
     /**
      * Gets the first ancestor from the given object which match the predicated and has the expected type.
-     * 
+     *
      * @param <T>
      *            the expected type
      * @param type
@@ -177,7 +206,7 @@ public class EMFUtils {
 
     /**
      * Gets all the ancestors of the given object which have the expected type.
-     * 
+     *
      * @param <T>
      *            the expected type
      * @param type
@@ -192,7 +221,7 @@ public class EMFUtils {
 
     /**
      * Gets the first common ancestor from both given objects with the expected type.
-     * 
+     *
      * @param <T>
      *            the expected ancestor type
      * @param expectedType
@@ -216,7 +245,7 @@ public class EMFUtils {
 
     /**
      * Resolve all non derived references in the given {@link ResourceSet}.
-     * 
+     *
      * @param rs
      *            the given {@link ResourceSet}.
      */

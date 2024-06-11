@@ -812,13 +812,13 @@ public class UsageImpl extends FeatureImpl implements Usage {
     @Override
     public Feature namingFeature() {
         OwningMembership owMembership = this.getOwningMembership();
-        final Feature namingFeature;
+        Feature namingFeature = null;
         if (!(owMembership instanceof VariantMembership variantMembership)) {
             namingFeature = super.namingFeature();
-        } else if (this.getOwnedReferenceSubsetting() != null) {
+        }
+
+        if (namingFeature == null && this.getOwnedReferenceSubsetting() != null) {
             namingFeature = this.getOwnedReferenceSubsetting().getReferencedFeature();
-        } else {
-            namingFeature = null;
         }
         return namingFeature;
     }

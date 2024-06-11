@@ -18,6 +18,7 @@ import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.ModelBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -27,7 +28,12 @@ import org.junit.jupiter.api.Test;
  */
 public class ConjugatedPortDefinitionImplTest {
 
-    private final ModelBuilder builder = new ModelBuilder();
+    private ModelBuilder builder;
+
+    @BeforeEach
+    public void setUp() {
+        this.builder = new ModelBuilder();
+    }
 
     @Test
     public void getNames() {

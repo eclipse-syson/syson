@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.helper;
 
 import org.eclipse.syson.sysml.Conjugation;
+import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
@@ -21,6 +22,7 @@ import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Type;
 
@@ -85,10 +87,16 @@ public class DeresolvingNamespaceProvider {
         return result;
     }
 
-    private Namespace getDeresolvingNamespaceForSpecialization(Specialization element) {
+    private Namespace getDeresolvingNamespaceForSpecialization(Specialization specialization) {
         // If the Specialization is a ReferenceSubsetting (see 8.3.3.3.9), and its referencingFeature is
         // an end Feature whose owningType is a Connector, then the local Namespace is the
         // owningNamespace of the Connector.
+        if (specialization instanceof ReferenceSubsetting refSubsetting) {
+            Feature feature = refSubsetting.getReferencingFeature();
+            if (feature != null && feature.isIsEnd() && feature.getOwningType() instanceof Connector connector) {
+                return connector.getOwningNamespace();
+            }
+        }
         // If the Specialization is a FeatureTyping (see 8.3.3.3.6), and its owningFeature is an
         // InvocationExpression, then the local Namespace is the non-invocation Namespace for the
         // owningFeature (determined as for a FeatureReferenceExpression under Membership above).
@@ -96,7 +104,7 @@ public class DeresolvingNamespaceProvider {
         // owningType.
         // Otherwise, the local Namespace is the owningNamespace of the Specialization.
 
-        return element.getOwningNamespace();
+        return specialization.getOwningNamespace();
     }
 
     private Namespace getDeresolvingNamespaceFeatureChaining(Element element, FeatureChaining featureChaining) {
@@ -113,7 +121,7 @@ public class DeresolvingNamespaceProvider {
             if (indexOf == 0) {
                 result = this.getDeresolvingNamespace(featureChained.getOwningRelationship());
             } else {
-                result = this.getDeresolvingNamespace(featureChained.getOwnedFeatureChaining().get(indexOf - 1));
+                result = featureChained.getOwnedFeatureChaining().get(indexOf - 1).getChainingFeature();
             }
         } else {
             result = element.getOwningNamespace();
