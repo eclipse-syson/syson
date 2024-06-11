@@ -80,6 +80,7 @@ import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.SelectExpression;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
@@ -836,6 +837,10 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
+    /**
+     * The EBNF stipulates a ResultParameterMembership but this type does not exists so we assumed it was referring to
+     * ReturnParameterMembership
+     */
     private void appendClassificationExpression(Appender builder, OperatorExpression expression) {
         expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
@@ -844,14 +849,25 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .findFirst()
                 .ifPresent(membership -> this.appendArgumentMember(builder, membership));
 
-        builder.appendSpaceIfNeeded().append(expression.getOperator());
+        String operator = expression.getOperator();
+        builder.appendSpaceIfNeeded().append(operator);
 
-        expression.getOwnedRelationship().stream()
-                .filter(FeatureMembership.class::isInstance)
-                .map(FeatureMembership.class::cast)
-                .filter(feature -> feature.getOwnedMemberElement() instanceof Feature)
-                .findFirst()
-                .ifPresent(membership -> this.appendTypeMember(builder, membership));
+        if (operator.equals("as")) {
+            expression.getOwnedRelationship().stream()
+                    .filter(ReturnParameterMembership.class::isInstance)
+                    .map(ReturnParameterMembership.class::cast)
+                    .filter(feature -> feature.getOwnedMemberElement() instanceof Feature)
+                    .findFirst()
+                    .ifPresent(membership -> this.appendTypeMember(builder, membership));
+        } else {
+            expression.getOwnedRelationship().stream()
+                    .filter(FeatureMembership.class::isInstance)
+                    .map(FeatureMembership.class::cast)
+                    .filter(Predicate.not(ParameterMembership.class::isInstance))
+                    .filter(feature -> feature.getOwnedMemberElement() instanceof Feature)
+                    .findFirst()
+                    .ifPresent(membership -> this.appendTypeMember(builder, membership));
+        }
     }
 
     private void appendTypeMember(Appender builder, FeatureMembership membership) {

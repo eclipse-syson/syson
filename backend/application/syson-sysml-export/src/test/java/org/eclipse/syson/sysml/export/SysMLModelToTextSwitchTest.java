@@ -26,7 +26,9 @@ import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.LiteralBoolean;
@@ -41,14 +43,17 @@ import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.VisibilityKind;
@@ -163,13 +168,13 @@ public class SysMLModelToTextSwitchTest {
     @Test
     public void partUsage() {
 
-        PartDefinition partDef = builder.createWithName(PartDefinition.class, "Part Def1");
+        PartDefinition partDef = this.builder.createWithName(PartDefinition.class, "Part Def1");
 
-        PartUsage partUsage = builder.createWithName(PartUsage.class, "PartUsage1");
+        PartUsage partUsage = this.builder.createWithName(PartUsage.class, "PartUsage1");
 
-        builder.setType(partUsage, partDef);
+        this.builder.setType(partUsage, partDef);
 
-        builder.createIn(Comment.class, partUsage).setBody("A comment");
+        this.builder.createIn(Comment.class, partUsage).setBody("A comment");
         this.assertTextualFormEquals("""
                 ref part PartUsage1 : 'Part Def1' {
                     /* A comment */
@@ -706,42 +711,104 @@ public class SysMLModelToTextSwitchTest {
         AttributeUsageWithBracketOperatorExpressionTestModel model = new AttributeUsageWithBracketOperatorExpressionTestModel();
         this.assertTextualFormEquals("attribute attribute1 = 80 [millimetre];", model.getAttributeUsage());
     }
-    
+
     @Test
     public void attributeUsageWithSequenceExpression() {
         AttributeUsageWithSequenceExpressionTestModel model = new AttributeUsageWithSequenceExpressionTestModel();
         this.assertTextualFormEquals("attribute attribute1 = (fuel.mass, front.mass, rear.mass, drives.mass);", model.getAttributeUsage());
     }
-    
+
     @Test
     public void attributeUsageWithFeatureChainExpression() {
         AttributeUsageWithFeatureChainExpressionTestModel model = new AttributeUsageWithFeatureChainExpressionTestModel();
         this.assertTextualFormEquals("attribute attribute1 = (fuel.mass, front.mass, rear.drives.mass);", model.getAttributeUsage());
     }
-    
+
     @Test
     public void attributeUsageWithInvocationExpression() {
         AttributeUsageWithInvocationExpressionTestModel model = new AttributeUsageWithInvocationExpressionTestModel();
         this.assertTextualFormEquals("attribute attribute1 = fuel(front);", model.getAttributeUsage());
     }
-    
+
     /**
      * Testing an OperatorExpression whose operator is an "@", typed by a MetadataDefinition.
      */
     @Test
     public void classificationExpression() {
         MetadataDefinition type = this.builder.createWithName(MetadataDefinition.class, "Syson");
-        
+
         OperatorExpression classificationExpression = this.builder.create(OperatorExpression.class);
         classificationExpression.setOperator("@");
-        
+
         FeatureMembership featureMembership = this.builder.createIn(FeatureMembership.class, classificationExpression);
         Feature feature = this.builder.create(Feature.class);
         featureMembership.getOwnedRelatedElement().add(feature);
-        
-        builder.setType(feature, type);
+
+        this.builder.setType(feature, type);
 
         this.assertTextualFormEquals("@Syson", classificationExpression);
+    }
+
+    /**
+     * Testing an OperatorExpression whose operator is an "@", typed by a MetadataDefinition. The
+     * classificationExpression can be constructed in different ways that does not impact the way the model is
+     * displayed.
+     */
+    @Test
+    public void classificationExpressionWithArgumentMember() {
+        MetadataDefinition type = this.builder.createWithName(MetadataDefinition.class, "Syson");
+
+        OperatorExpression classificationExpression = this.builder.create(OperatorExpression.class);
+        classificationExpression.setOperator("@");
+
+        ParameterMembership parameterMembership = this.builder.createIn(ParameterMembership.class, classificationExpression);
+        Feature feature1 = this.builder.create(Feature.class);
+        parameterMembership.getOwnedRelatedElement().add(feature1);
+        FeatureValue featureValue = this.builder.createIn(FeatureValue.class, feature1);
+
+        FeatureReferenceExpression featureReferenceExpression = this.builder.create(FeatureReferenceExpression.class);
+        featureValue.getOwnedRelatedElement().add(featureReferenceExpression);
+        ReturnParameterMembership returnParameterMembership = this.builder.createIn(ReturnParameterMembership.class, featureReferenceExpression);
+        Feature feature2 = this.builder.create(Feature.class);
+        returnParameterMembership.getOwnedRelatedElement().add(feature2);
+
+        FeatureMembership featureMembership = this.builder.createIn(FeatureMembership.class, classificationExpression);
+        Feature feature = this.builder.create(Feature.class);
+        featureMembership.getOwnedRelatedElement().add(feature);
+
+        this.builder.setType(feature, type);
+
+        this.assertTextualFormEquals("@Syson", classificationExpression);
+    }
+
+    /**
+     * Testing an OperatorExpression whose operator is "as".
+     */
+    @Test
+    public void classificationExpressionWithCastOperator() {
+        MetadataDefinition type = this.builder.createWithName(MetadataDefinition.class, "fuel");
+
+        OperatorExpression classificationExpression = this.builder.create(OperatorExpression.class);
+        classificationExpression.setOperator("as");
+
+        ParameterMembership parameterMembership = this.builder.createIn(ParameterMembership.class, classificationExpression);
+        Feature feature1 = this.builder.create(Feature.class);
+        parameterMembership.getOwnedRelatedElement().add(feature1);
+        FeatureValue featureValue = this.builder.createIn(FeatureValue.class, feature1);
+
+        FeatureReferenceExpression featureReferenceExpression = this.builder.create(FeatureReferenceExpression.class);
+        featureValue.getOwnedRelatedElement().add(featureReferenceExpression);
+        Membership membership = this.builder.createIn(Membership.class, featureReferenceExpression);
+        OccurrenceUsage usage = this.builder.createWithName(OccurrenceUsage.class, "power");
+        membership.setMemberElement(usage);
+
+        ReturnParameterMembership returnParameterMembership = this.builder.createIn(ReturnParameterMembership.class, classificationExpression);
+        Feature feature = this.builder.create(Feature.class);
+        returnParameterMembership.getOwnedRelatedElement().add(feature);
+
+        this.builder.setType(feature, type);
+
+        this.assertTextualFormEquals("power as fuel", classificationExpression);
     }
 
     @Test
