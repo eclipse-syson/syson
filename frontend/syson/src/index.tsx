@@ -63,9 +63,11 @@ const SysONNavigationBarMenu = ({}: NavigationBarMenuProps) => {
 
 const extensionRegistry: ExtensionRegistry = new ExtensionRegistry();
 extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
+  identifier: 'syson_navigationbar#icon',
   Component: SysONNavigationBarIcon,
 });
 extensionRegistry.addComponent(navigationBarMenuExtensionPoint, {
+  identifier: 'syson_navigationbar#menu',
   Component: SysONNavigationBarMenu,
 });
 ReactDOM.render(
