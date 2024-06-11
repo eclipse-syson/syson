@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.ToolSection;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
-import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -44,14 +44,14 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractDefinitionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    protected final IDescriptionNameGenerator nameGenerator;
-
     protected final EClass eClass;
+
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public AbstractDefinitionNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
     /**
@@ -108,8 +108,8 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
-                .name(this.nameGenerator.getNodeName(this.eClass))
-                .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
+                .name(this.getDescriptionNameGenerator().getNodeName(this.eClass))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
                 .style(this.createDefinitionNodeStyle())
                 .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -118,7 +118,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass)).ifPresent(nodeDescription -> {
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(this.eClass)).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
 
             this.getReusedChildren(cache).forEach(nodeDescription.getReusedChildNodeDescriptions()::add);
@@ -129,7 +129,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
 
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression("aql:self.getContainerLabel()")
+                .labelExpression(AQLUtils.getSelfServiceCallExpression("getContainerLabel"))
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .build();
@@ -154,18 +154,18 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
 
     protected NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".deleteFromModel()");
+                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
                 .body(changeContext.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
                 .body(callEditService.build());
 
         var edgeTools = new ArrayList<EdgeTool>();
@@ -185,8 +185,12 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .build();
     }
 
+    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
+        return this.descriptionNameGenerator;
+    }
+
     private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.nameGenerator);
+        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.getDescriptionNameGenerator());
         return edgeToolSwitch.doSwitch(this.eClass);
     }
 
@@ -200,7 +204,8 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
      */
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
+                .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
+                        List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes")));
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")

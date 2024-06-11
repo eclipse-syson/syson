@@ -24,6 +24,7 @@ import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescri
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
 
 /**
  * Used to create the Compartment node description inside the General View diagram.
@@ -56,7 +57,7 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(ref -> {
                 if (this.eReference.getEType().equals(ref.getEType())) {
-                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(type, ref));
+                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(type, ref));
                     acceptedNodeTypes.add(optCompartmentItemNodeDescription.get());
                 }
             });
@@ -70,12 +71,15 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
         String customExpression = super.getDropElementFromDiagramExpression();
         if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint()
                 || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint()) {
-            customExpression = "aql:droppedElement.dropElementFromDiagramInRequirementAssumeConstraintCompartment(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+            customExpression = AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagramInRequirementAssumeConstraintCompartment",
+                    List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes"));
         } else if (this.eReference == SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()
                 || this.eReference == SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint()) {
-            customExpression = "aql:droppedElement.dropElementFromDiagramInRequirementRequireConstraintCompartment(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+            customExpression = AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagramInRequirementRequireConstraintCompartment",
+                    List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes"));
         } else if (this.eReference == SysmlPackage.eINSTANCE.getUsage_NestedConstraint() || this.eReference == SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint()) {
-            customExpression = "aql:droppedElement.dropElementFromDiagramInConstraintCompartment(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+            customExpression = AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagramInConstraintCompartment",
+                    List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes"));
         }
         return customExpression;
     }

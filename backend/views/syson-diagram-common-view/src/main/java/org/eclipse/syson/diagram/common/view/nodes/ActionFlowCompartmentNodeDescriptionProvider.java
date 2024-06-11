@@ -76,11 +76,11 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
-            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
-            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
-            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
-            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
-            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
@@ -103,21 +103,21 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
         if (compartmentNodeToolProvider != null) {
             nodeToolSection.getNodeTools().add(compartmentNodeToolProvider.create(cache));
         }
-        nodeToolSection.getNodeTools().add(new StartActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
-        nodeToolSection.getNodeTools().add(new DoneActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
-        nodeToolSection.getNodeTools().add(new JoinActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
-        nodeToolSection.getNodeTools().add(new ForkActionNodeToolProvider(this.eClass, this.descriptionNameGenerator).create(cache));
+        nodeToolSection.getNodeTools().add(new StartActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        nodeToolSection.getNodeTools().add(new DoneActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        nodeToolSection.getNodeTools().add(new JoinActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        nodeToolSection.getNodeTools().add(new ForkActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         return nodeToolSection;
     }
 
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAcceptActionUsage())).ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getAcceptActionUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
@@ -144,6 +144,6 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
 
     @Override
     protected INodeToolProvider getItemCreationToolProvider() {
-        return new ActionFlowCompartmentNodeToolProvider(this.eClass, this.descriptionNameGenerator);
+        return new ActionFlowCompartmentNodeToolProvider(this.eClass, this.getDescriptionNameGenerator());
     }
 }

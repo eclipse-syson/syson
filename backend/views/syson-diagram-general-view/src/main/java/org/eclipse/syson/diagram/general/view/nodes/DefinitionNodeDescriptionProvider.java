@@ -44,13 +44,22 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
     protected List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
         var reusedChildren = new ArrayList<NodeDescription>();
 
+        GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
+            if (type.equals(this.eClass)) {
+                listItems.forEach(eReference -> {
+                    // list compartment
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(type,
+                            eReference)).ifPresent(reusedChildren::add);
+                });
+            }
+        });
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
                     // list compartment
-                    cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
                     // free form compartment
-                    cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(this.eClass, eReference)).ifPresent(reusedChildren::add);
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, eReference)).ifPresent(reusedChildren::add);
                 });
             }
         });
@@ -61,12 +70,12 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
     protected List<NodeDescription> getAllNodeDescriptions(IViewDiagramElementFinder cache) {
         var allNodes = new ArrayList<NodeDescription>();
 
-        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(allNodes::add));
-        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(allNodes::add));
-        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
-        cache.getNodeDescription(this.nameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(allNodes::add);
-        cache.getNodeDescription(this.nameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(allNodes::add);
-        cache.getNodeDescription(this.nameGenerator.getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(allNodes::add);
+        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).ifPresent(allNodes::add));
+        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(usage)).ifPresent(allNodes::add));
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(allNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(allNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(allNodes::add);
         return allNodes;
     }
 

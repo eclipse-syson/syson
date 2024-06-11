@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.statetransition.view.nodes;
+package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionToolProvider;
-import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -33,9 +33,9 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  *
  * @author adieumegard
  */
-public class StateTransitionActionsCompartmentNodeDescriptionProvider extends AbstractActionsCompartmentNodeDescriptionProvider {
+public class ActionsCompartmentNodeDescriptionProvider extends AbstractActionsCompartmentNodeDescriptionProvider {
 
-    public StateTransitionActionsCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public ActionsCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(eClass, eReference, colorProvider, descriptionNameGenerator);
     }
 
@@ -43,7 +43,7 @@ public class StateTransitionActionsCompartmentNodeDescriptionProvider extends Ab
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
-        StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
+        GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(eReference -> {
                 if (this.eReference.getEType().equals(eReference.getEType())) {
                     var optCompartmentItemNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(type, eReference));
@@ -56,7 +56,7 @@ public class StateTransitionActionsCompartmentNodeDescriptionProvider extends Ab
 
         return acceptedNodeTypes;
     }
-    
+
     @Override
     protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
         var palette = this.diagramBuilderHelper.newNodePalette()
@@ -70,8 +70,8 @@ public class StateTransitionActionsCompartmentNodeDescriptionProvider extends Ab
     private NodeToolSection createActionCreationToolSection(IViewDiagramElementFinder cache) {
         NodeToolSection nodeToolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
         nodeToolSection.setName("Create Actions Section");
-        
-        List<EReference> refList = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(eClass);
+
+        List<EReference> refList = GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(this.eClass);
         if (refList != null) {
             refList.stream().map(eReference -> new StateTransitionActionToolProvider(eReference).create(cache)).forEach(nodeTool -> {
                 nodeToolSection.getNodeTools().add(nodeTool);

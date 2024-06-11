@@ -10,12 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.statetransition.view.tools;
+package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.List;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.syson.diagram.common.view.tools.AbstractCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;

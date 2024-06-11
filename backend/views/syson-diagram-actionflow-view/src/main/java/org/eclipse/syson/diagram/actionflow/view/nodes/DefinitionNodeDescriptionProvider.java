@@ -45,9 +45,9 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
                     // list compartment
-                    cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
                     // free form compartment
-                    cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(this.eClass, eReference)).ifPresent(reusedChildren::add);
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, eReference)).ifPresent(reusedChildren::add);
                 });
             }
         });
@@ -57,10 +57,9 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
     @Override
     protected List<NodeDescription> getAllNodeDescriptions(IViewDiagramElementFinder cache) {
         var allNodes = new ArrayList<NodeDescription>();
-
-        ActionFlowViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(allNodes::add));
-        ActionFlowViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(allNodes::add));
-        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
+        ActionFlowViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).ifPresent(allNodes::add));
+        ActionFlowViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(usage)).ifPresent(allNodes::add));
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
         return allNodes;
     }
 

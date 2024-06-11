@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -48,7 +49,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     protected final EReference eReference;
 
-    protected final IDescriptionNameGenerator descriptionNameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public AbstractCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
@@ -73,7 +74,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      * @return the {@link INodeToolProvider} that handles the item creation inside this compartment.
      */
     protected INodeToolProvider getItemCreationToolProvider() {
-        return new CompartmentNodeToolProvider(this.eReference, this.descriptionNameGenerator);
+        return new CompartmentNodeToolProvider(this.eReference, this.getDescriptionNameGenerator());
     }
 
     /**
@@ -83,7 +84,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      *         <code>false</code> otherwise.
      */
     protected String isHiddenByDefaultExpression() {
-        return "aql:self.isHiddenByDefault('" + this.eReference.getName() + "')";
+        return AQLUtils.getSelfServiceCallExpression("isHiddenByDefault", "'" + this.eReference.getName() + "'");
     }
 
     /**
@@ -92,7 +93,8 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      * @return
      */
     protected String getDropElementFromDiagramExpression() {
-        return "aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)";
+        return AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
+                List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes"));
     }
 
     @Override
@@ -104,7 +106,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
                 .isHiddenByDefaultExpression(this.isHiddenByDefaultExpression())
-                .name(this.descriptionNameGenerator.getCompartmentName(this.eClass, this.eReference))
+                .name(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(false)
@@ -114,10 +116,10 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(this.eClass, this.eReference)).ifPresent(nodeDescription -> {
-            cache.getNodeDescription(this.descriptionNameGenerator.getInheritedCompartmentItemName(this.eClass, this.eReference))
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference)).ifPresent(nodeDescription -> {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, this.eReference))
                     .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
-            cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(this.eClass, this.eReference))
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference))
                     .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
@@ -205,5 +207,9 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
                 .acceptedNodeTypes(this.getDroppableNodes(cache).toArray(NodeDescription[]::new))
                 .body(dropElementFromDiagram.build())
                 .build();
+    }
+
+    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
+        return this.descriptionNameGenerator;
     }
 }

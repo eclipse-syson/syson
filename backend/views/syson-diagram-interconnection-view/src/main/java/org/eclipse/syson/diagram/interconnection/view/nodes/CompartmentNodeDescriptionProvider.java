@@ -39,7 +39,7 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
-        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute())).ifPresent(acceptedNodeTypes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute())).ifPresent(acceptedNodeTypes::add);
         return acceptedNodeTypes;
     }
 }

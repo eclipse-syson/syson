@@ -31,6 +31,8 @@ import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
@@ -49,6 +51,8 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
@@ -116,7 +120,10 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         createSection.getNodeTools().add(new DoneActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().add(new JoinActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().add(new ForkActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(null));
+        if (!(object instanceof StateDefinition)) {
+            // StateDefinition has is own "action" creation tools
+            createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(null));
+        }
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -205,6 +212,28 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     public List<NodeToolSection> caseRequirementDefinition(RequirementDefinition object) {
         var createSection = this.buildCreateSection(this.createPartUsageAsSubjectNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseStateDefinition(StateDefinition object) {
+        var createSection = this.buildCreateSection(
+                new StateTransitionCompartmentNodeToolProvider(true).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(null));
+        return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseStateUsage(StateUsage object) {
+        var createSection = this.buildCreateSection(
+                new StateTransitionCompartmentNodeToolProvider(true).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(null),
+                new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(null));
         return List.of(createSection, this.addElementsToolSection());
     }
 

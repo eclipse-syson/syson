@@ -50,7 +50,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement()))
                 .insideLabel(this.createInsideLabelDescription())
                 .isHiddenByDefaultExpression("aql:true")
-                .name(this.descriptionNameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference))
+                .name(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, this.eReference))
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
                 .style(this.createCompartmentNodeStyle())
                 .userResizable(false)
@@ -60,7 +60,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(this.eClass, this.eReference));
+        var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, this.eReference));
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
 
         NodeDescription compartmentFreeFormNodeDescription = optCompartmentFreeFormNodeDescription.get();
