@@ -768,4 +768,29 @@ public class ViewCreateService {
         }
         return ownerElement;
     }
+
+    /**
+     * Creation of the semantic elements associated to a Merge action.
+     *
+     * @param ownerElement
+     *            the element owning the new Merge action.
+     * @return the new Merge action if it has been successfully created or <code>ownerElement</code> otherwise.
+     */
+    public Element createMergeAction(Element ownerElement) {
+        Feature mergesStdAction = this.utilService.findByName(ownerElement, "Actions::Action::merges");
+        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && mergesStdAction != null) {
+            var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
+            var merge = SysmlFactory.eINSTANCE.createMergeNode();
+            this.elementInitializerSwitch.doSwitch(merge);
+            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
+            subsetting.setSubsettingFeature(merge);
+            subsetting.setSubsettedFeature(mergesStdAction);
+            subsetting.setIsImplied(true);
+            merge.getOwnedRelationship().add(subsetting);
+            featureMember.getOwnedRelatedElement().add(merge);
+            ownerElement.getOwnedRelationship().add(featureMember);
+            return merge;
+        }
+        return ownerElement;
+    }
 }
