@@ -18,35 +18,50 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to create the Fork node description of an Action.
+ * Used to create the Merge node description of an Action.
  *
  * @author Jerome Gout
  */
-public class ForkActionNodeDescriptionProvider extends AbstractControlNodeActionNodeDescriptionProvider {
+public class MergeActionNodeDescriptionProvider extends AbstractControlNodeActionNodeDescriptionProvider {
 
-    public static final String FORK_ACTION_NAME = "ForkAction";
+    public static final String MERGE_ACTION_NAME = "MergeAction";
 
-    public ForkActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public MergeActionNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider, descriptionNameGenerator);
     }
 
     @Override
     protected String getNodeDescriptionName() {
-        return FORK_ACTION_NAME;
+        return MERGE_ACTION_NAME;
     }
 
     @Override
     protected EClass getDomainType() {
-        return SysmlPackage.eINSTANCE.getForkNode();
+        return SysmlPackage.eINSTANCE.getMergeNode();
     }
 
     @Override
     protected String getImagePath() {
-        return "images/fork_action.svg";
+        return "images/merge_action.svg";
     }
 
     @Override
     protected String getRemoveToolLabel() {
-        return "Remove Fork";
+        return "Remove Merge";
+    }
+
+    @Override
+    protected String getDefaultWidthExpression() {
+        return "36";
+    }
+
+    @Override
+    protected String getDefaultHeightExpression() {
+        return this.getDefaultWidthExpression();
+    }
+
+    @Override
+    protected boolean isNodeResizable() {
+        return false;
     }
 }

@@ -33,6 +33,7 @@ import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeTool
 import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -81,6 +82,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
     }
@@ -107,6 +109,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
         nodeToolSection.getNodeTools().add(new DoneActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         nodeToolSection.getNodeTools().add(new JoinActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         nodeToolSection.getNodeTools().add(new ForkActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        nodeToolSection.getNodeTools().add(new MergeActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         return nodeToolSection;
     }
 
@@ -118,6 +121,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(droppableNodes::add);
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME)).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
