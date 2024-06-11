@@ -85,6 +85,18 @@
 			<version>${sirius.web.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-web-tests</artifactId>
+			<version>${sirius.web.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-diagrams-tests</artifactId>
+			<version>${sirius.web.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.eef</groupId>
 			<artifactId>org.eclipse.eef.core</artifactId>
 			<version>${eef.version}</version>
