@@ -10,9 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.statetransition.view.tools;
+package org.eclipse.syson.diagram.common.view.tools;
 
-import org.eclipse.syson.diagram.common.view.tools.AbstractCompartmentNodeToolProvider;
+import java.util.List;
+
+import org.eclipse.syson.util.AQLUtils;
 
 /**
  * Node tool provider for creating nested/owned states in the "state transition" State compartment.
@@ -21,7 +23,7 @@ import org.eclipse.syson.diagram.common.view.tools.AbstractCompartmentNodeToolPr
  */
 public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
 
-    private boolean isParallel;
+    private final boolean isParallel;
 
     public StateTransitionCompartmentNodeToolProvider(boolean isParallel) {
         super();
@@ -31,9 +33,9 @@ public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartm
     @Override
     protected String getServiceCallExpression() {
         if (this.isParallel) {
-            return "aql:self.createChildState(editingContext, diagramContext, selectedNode, convertedNodes, true)";
+            return AQLUtils.getSelfServiceCallExpression("createChildState", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "true"));
         } else {
-            return "aql:self.createChildState(editingContext, diagramContext, selectedNode, convertedNodes, false)";
+            return AQLUtils.getSelfServiceCallExpression("createChildState", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "false"));
         }
     }
 

@@ -38,6 +38,7 @@ import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.MergedReferencesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.general.view.edges.AllocateEdgeDescriptionProvider;
@@ -52,6 +53,7 @@ import org.eclipse.syson.diagram.general.view.edges.SuccessionEdgeDescriptionPro
 import org.eclipse.syson.diagram.general.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.UsageNestedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.UsageNestedUsageEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.ActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.AllocationDefinitionEndsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.FakeNodeDescriptionProvider;
@@ -59,6 +61,7 @@ import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeD
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewNodeDescriptionProviderSwitch;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementDefinitionSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageSubjectCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.UseCaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider;
@@ -134,6 +137,11 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),      List.of(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint()))
             );
 
+    public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_MERGED_LIST_ITEMS = Map.ofEntries(
+            Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction(), SysmlPackage.eINSTANCE.getStateDefinition_DoAction(), SysmlPackage.eINSTANCE.getStateDefinition_ExitAction())),
+            Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
+            );
+
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
             new ToolSectionDescription("Structure", List.of(
                     SysmlPackage.eINSTANCE.getAttributeUsage(),
@@ -202,26 +210,60 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
         diagramElementDescriptionProviders.add(new GeneralViewEmptyDiagramNodeDescriptionProvider(colorProvider));
 
         diagramElementDescriptionProviders.add(new DefinitionOwnedActionUsageEdgeDescriptionProvider(colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAllocation(), colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConstraintUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint(), colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getInterfaceUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), colorProvider, this.descriptionNameGenerator));
-        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.descriptionNameGenerator));
-
+        this.addDefinitionOwnedUsageEdgeDescriptionProviders(colorProvider, diagramElementDescriptionProviders);
         this.addUsageCompositeEdgeProviders(colorProvider, diagramElementDescriptionProviders);
-        diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new AllocateEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new SuccessionEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        this.addEdgeDescriptionProviders(colorProvider, diagramElementDescriptionProviders);
+        this.addCustomNodeDescriptionProviders(colorProvider, diagramElementDescriptionProviders);
+
+        // create a node description provider for each element found in a section
+        var nodeDescriptionProviderSwitch = new GeneralViewNodeDescriptionProviderSwitch(colorProvider);
+        TOOL_SECTIONS.forEach(sectionTool -> {
+            sectionTool.elements().forEach(eClass -> {
+                diagramElementDescriptionProviders.add(nodeDescriptionProviderSwitch.doSwitch(eClass));
+            });
+        });
+
+        COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
+            listItems.forEach(eReference -> {
+                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
+                diagramElementDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.descriptionNameGenerator));
+                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.descriptionNameGenerator));
+            });
+        });
+
+        COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((eClass, listItems) -> {
+            listItems.forEach(eReference -> {
+                diagramElementDescriptionProviders.add(new ActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+            });
+            diagramElementDescriptionProviders.add(new MergedReferencesCompartmentItemNodeDescriptionProvider(eClass, listItems, colorProvider, this.getDescriptionNameGenerator()));
+        });
+
+        diagramElementDescriptionProviders.stream()
+                .map(IDiagramElementDescriptionProvider::create)
+                .forEach(cache::put);
+        // link custom compartments
+        this.linkRequirementSubjectCompartment(cache);
+        this.linkUseCaseSubjectCompartment(cache);
+        this.linkUseCaseObjectiveRequirementCompartment(cache);
+        this.linkAllocationDefinitionEndsCompartment(cache);
+        // link elements each other
+        diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));
+
+        // State compartment must be after general link to ensure compartment order on StateUsage and StateDefinition
+        this.linkStatesCompartment(cache);
+
+        var palette = this.createDiagramPalette(cache);
+        diagramDescription.setPalette(palette);
+
+        return diagramDescription;
+    }
+
+    /**
+     * @param colorProvider
+     * @param diagramElementDescriptionProviders
+     */
+    private void addCustomNodeDescriptionProviders(IColorProvider colorProvider,
+            ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>> diagramElementDescriptionProviders) {
         diagramElementDescriptionProviders.add(new RequirementUsageSubjectCompartmentNodeDescriptionProvider(colorProvider, this.descriptionNameGenerator));
         diagramElementDescriptionProviders.add(new RequirementDefinitionSubjectCompartmentNodeDescriptionProvider(colorProvider, this.descriptionNameGenerator));
         diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, this.descriptionNameGenerator));
@@ -242,38 +284,43 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
         diagramElementDescriptionProviders.add(new DoneActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new JoinActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ForkActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.descriptionNameGenerator));
+    }
 
-        // create a node description provider for each element found in a section
-        var nodeDescriptionProviderSwitch = new GeneralViewNodeDescriptionProviderSwitch(colorProvider);
-        TOOL_SECTIONS.forEach(sectionTool -> {
-            sectionTool.elements().forEach(eClass -> {
-                diagramElementDescriptionProviders.add(nodeDescriptionProviderSwitch.doSwitch(eClass));
-            });
-        });
+    /**
+     * @param colorProvider
+     * @param diagramElementDescriptionProviders
+     */
+    private void addEdgeDescriptionProviders(IColorProvider colorProvider, ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>> diagramElementDescriptionProviders) {
+        diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new AllocateEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new SuccessionEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+    }
 
-        COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
-            listItems.forEach(eReference -> {
-                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider));
-                diagramElementDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.descriptionNameGenerator));
-                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.descriptionNameGenerator));
-            });
-        });
-
-        diagramElementDescriptionProviders.stream()
-                .map(IDiagramElementDescriptionProvider::create)
-                .forEach(cache::put);
-        // link custom compartments
-        this.linkRequirementSubjectCompartment(cache);
-        this.linkUseCaseSubjectCompartment(cache);
-        this.linkUseCaseObjectiveRequirementCompartment(cache);
-        this.linkAllocationDefinitionEndsCompartment(cache);
-        // link elements each other
-        diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));
-
-        var palette = this.createDiagramPalette(cache);
-        diagramDescription.setPalette(palette);
-
-        return diagramDescription;
+    /**
+     * @param colorProvider
+     * @param diagramElementDescriptionProviders
+     */
+    private void addDefinitionOwnedUsageEdgeDescriptionProviders(IColorProvider colorProvider,
+            ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>> diagramElementDescriptionProviders) {
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAllocation(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getConstraintUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getInterfaceUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), colorProvider, this.descriptionNameGenerator));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.descriptionNameGenerator));
     }
 
     private void addUsageCompositeEdgeProviders(IColorProvider colorProvider, ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>> diagramElementDescriptionProviders) {
@@ -327,6 +374,15 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
             .ifPresent(allocationDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
+    private void linkStatesCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription stateDefinitionNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateDefinition())).get();
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+                .ifPresent(stateDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+        NodeDescription stateUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).get();
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+                .ifPresent(stateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+    }
+
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newDiagramPalette()
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
@@ -349,7 +405,8 @@ public class GeneralViewDiagramDescriptionProvider extends AbstractDiagramDescri
         acceptedNodeTypes.add(optPackageNodeDescription.get());
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
+                .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
+                        List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes")));
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")

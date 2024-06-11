@@ -45,12 +45,12 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
                     // list compartment
-                    cache.getNodeDescription(this.nameGenerator.getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
                 });
             }
         });
         if (this.eClass.equals(SysmlPackage.eINSTANCE.getStateUsage())) {
-            cache.getNodeDescription(this.nameGenerator.getFreeFormCompartmentName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedState())).ifPresent(reusedChildren::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedState())).ifPresent(reusedChildren::add);
         }
         return reusedChildren;
     }
@@ -59,15 +59,15 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     protected List<NodeDescription> getAllNodeDescriptions(IViewDiagramElementFinder cache) {
         var allNodes = new ArrayList<NodeDescription>();
 
-        StateTransitionViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(allNodes::add));
-        StateTransitionViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(allNodes::add));
-        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
+        StateTransitionViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).ifPresent(allNodes::add));
+        StateTransitionViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(usage)).ifPresent(allNodes::add));
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
         return allNodes;
     }
 
     @Override
     protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch(this.getAllNodeDescriptions(cache), this.nameGenerator);
+        StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch(this.getAllNodeDescriptions(cache), this.getDescriptionNameGenerator());
         return toolSectionSwitch.doSwitch(this.eClass);
     }
 }

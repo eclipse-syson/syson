@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysmlEClassSwitch;
@@ -101,7 +102,7 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
     protected NodeTool createNestedUsageNodeTool(EClass eClass) {
         NodeDescription nodeDesc = this.getAllNodeDescriptions().stream().filter(nd -> this.descriptionNameGenerator.getNodeName(eClass).equals(nd.getName())).findFirst().get();
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance.elementInitializer()");
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
@@ -112,7 +113,7 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(nodeDesc)
-                .parentViewExpression("aql:self.getParentNode(selectedNode, diagramContext)")
+                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext")))
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 
@@ -137,7 +138,7 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.addExistingNestedElements(editingContext, diagramContext, selectedNode, convertedNodes, " + recursive + ")");
+                .expression(AQLUtils.getSelfServiceCallExpression("addExistingNestedElements", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "" + recursive)));
 
         String title = "Add existing nested elements";
         String iconURL = "/icons/AddExistingElements.svg";

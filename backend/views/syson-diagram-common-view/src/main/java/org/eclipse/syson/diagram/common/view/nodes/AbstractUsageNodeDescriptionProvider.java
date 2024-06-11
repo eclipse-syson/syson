@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.ToolSection;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
-import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -45,12 +45,12 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
 
     protected final EClass eClass;
 
-    protected final IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public AbstractUsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(nameGenerator);
     }
 
     /**
@@ -93,7 +93,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
      * @return the AQL expression to retrieve all semantic candidates for this node.
      */
     protected String getSemanticCandidatesExpression(String domainType) {
-        return "aql:self.getAllReachable(" + domainType + ")";
+        return AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType);
     }
 
     @Override
@@ -106,7 +106,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
-                .name(this.nameGenerator.getNodeName(this.eClass))
+                .name(this.getDescriptionNameGenerator().getNodeName(this.eClass))
                 .semanticCandidatesExpression(this.getSemanticCandidatesExpression(domainType))
                 .style(this.createUsageNodeStyle())
                 .userResizable(true)
@@ -116,7 +116,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.nameGenerator.getNodeName(this.eClass)).ifPresent(nodeDescription -> {
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(this.eClass)).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
 
             nodeDescription.getReusedChildNodeDescriptions().addAll(this.getReusedChildren(cache));
@@ -127,7 +127,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
 
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression("aql:self.getContainerLabel()")
+                .labelExpression(AQLUtils.getSelfServiceCallExpression("getContainerLabel"))
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .build();
@@ -142,6 +142,10 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .build();
     }
 
+    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
+        return this.descriptionNameGenerator;
+    }
+
     private NodeStyleDescription createUsageNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
@@ -152,18 +156,18 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
 
     private NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.deleteFromModel()");
+                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
                 .body(changeContext.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
                 .body(callEditService.build());
 
         var edgeTools = new ArrayList<EdgeTool>();
@@ -183,7 +187,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     }
 
     private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.nameGenerator);
+        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.getDescriptionNameGenerator());
         return edgeToolSwitch.doSwitch(this.eClass);
     }
 }

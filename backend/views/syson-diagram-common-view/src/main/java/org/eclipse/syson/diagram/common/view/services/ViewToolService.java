@@ -33,10 +33,12 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.syson.diagram.common.view.nodes.AbstractActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -53,6 +55,9 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.StateDefinition;
+import org.eclipse.syson.sysml.StateSubactionKind;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -71,6 +76,8 @@ import org.slf4j.LoggerFactory;
  * @author arichard
  */
 public class ViewToolService extends ToolService {
+
+    private static final String STATE_TRANSITION_COMPARTMENT_NAME = "state transition";
 
     protected final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
@@ -683,5 +690,136 @@ public class ViewToolService extends ToolService {
         successionSourceRefSubsetting.setReferencedFeature(feature);
         successionSourceEndFeatureFeature.getOwnedRelationship().add(successionSourceRefSubsetting);
         return successionSourceEndFeatureMembership;
+    }
+
+    /**
+     * Create a new {@link ActionUsage} as a child of {@code parentState}. The {@code actionKind} string is matched
+     * against possible {@link StateSubactionKind} values to set the new {@link ActionUsage} of the correct kind.
+     *
+     * @param parentState
+     *            The state onto which the action is added
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param selectedNode
+     *            the selected node on which the tool has been called. It corresponds to a variable accessible from the
+     *            variable manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @param actionKind
+     *            The value against which the {@link StateSubactionKind} of the {@link ActionUsage} membership is set.
+     * @return
+     */
+    public ActionUsage createOwnedAction(Element parentState, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, String actionKind) {
+        ActionUsage childAction = this.createChildAction(parentState, actionKind);
+
+        if (childAction != null) {
+            if (diagramContext.getDiagram().getLabel().equals("General View")) {
+                this.createView(childAction, editingContext, diagramContext, diagramContext.getDiagram(), convertedNodes);
+            } else if (selectedNode.getInsideLabel().getText().equals(AbstractActionsCompartmentNodeDescriptionProvider.ACTIONS_COMPARTMENT_LABEL)) {
+                this.createView(childAction, editingContext, diagramContext, selectedNode, convertedNodes);
+            } else {
+                selectedNode.getChildNodes().stream().filter(child -> child.getInsideLabel().getText().equals(AbstractActionsCompartmentNodeDescriptionProvider.ACTIONS_COMPARTMENT_LABEL)).findFirst()
+                        .ifPresent(compartmentNode -> {
+                            this.createView(childAction, editingContext, diagramContext, compartmentNode, convertedNodes);
+                        });
+            }
+        }
+
+        return childAction;
+    }
+
+    /**
+     * Create a child Action onto {@code stateDefinition}.
+     *
+     * @param parentState
+     *            The parent {@link StateDefinition} or {@link StateUsage}
+     * @param actionKind
+     *            The string value representing the kind of Action. Expected values are "Entry", "Do" or "Exit".
+     * @return The created {@link ActionUsage} or null if the kind value is not correct
+     */
+    private ActionUsage createChildAction(Element parentState, String actionKind) {
+        var owningMembership = SysmlFactory.eINSTANCE.createStateSubactionMembership();
+        switch (actionKind) {
+            case "Entry":
+                owningMembership.setKind(StateSubactionKind.ENTRY);
+                break;
+            case "Do":
+                owningMembership.setKind(StateSubactionKind.DO);
+                break;
+            case "Exit":
+                owningMembership.setKind(StateSubactionKind.EXIT);
+                break;
+            default:
+                return null;
+        }
+        ActionUsage childAction = SysmlFactory.eINSTANCE.createActionUsage();
+        owningMembership.getOwnedRelatedElement().add(childAction);
+        parentState.getOwnedRelationship().add(owningMembership);
+        this.elementInitializerSwitch.doSwitch(childAction);
+        return childAction;
+    }
+
+    /**
+     * Called by "New State" tool from StateTransition View StateUsage node.
+     *
+     * @param parentState
+     *            The parent {@link StateDefinition} or {@link StateUsage}
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param selectedNode
+     *            the selected node on which the tool has been called. It corresponds to a variable accessible from the
+     *            variable manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @param isParallel
+     *            whether or not the created State is set as parallel.
+     * @return the created {@link StateUsage}.
+     */
+    public StateUsage createChildState(Element parentState, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean isParallel) {
+        StateUsage childState = this.createChildState(parentState, isParallel);
+
+        if (diagramContext.getDiagram().getLabel().equals("General View")) {
+            this.createView(childState, editingContext, diagramContext, diagramContext.getDiagram(), convertedNodes);
+        } else if (selectedNode.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)) {
+            this.createView(childState, editingContext, diagramContext, selectedNode, convertedNodes);
+        } else {
+            selectedNode.getChildNodes().stream().filter(child -> child.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)).findFirst()
+                    .ifPresent(compartmentNode -> {
+                        this.createView(childState, editingContext, diagramContext, compartmentNode, convertedNodes);
+                    });
+        }
+
+        return childState;
+    }
+
+    /**
+     * Create a child State onto {@code stateDefinition}.
+     *
+     * @param parentState
+     *            The parent {@link StateDefinition} or {@link StateUsage}
+     * @param isParallel
+     *            Whether the created state is parallel or not
+     * @return the created {@link StateUsage}.
+     */
+    private StateUsage createChildState(Element parentState, boolean isParallel) {
+        var owningMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        StateUsage childState = SysmlFactory.eINSTANCE.createStateUsage();
+        childState.setIsParallel(isParallel);
+        owningMembership.getOwnedRelatedElement().add(childState);
+        parentState.getOwnedRelationship().add(owningMembership);
+        this.elementInitializerSwitch.doSwitch(childState);
+        return childState;
     }
 }
