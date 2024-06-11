@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-export</artifactId>
-	<version>2024.5.1</version>
+	<version>2024.5.2</version>
 	<name>syson-sysml-export</name>
 	<description>SysON SysML Export</description>
 
@@ -58,6 +58,10 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-application</artifactId>
 			<version>${sirius.web.version}</version>
@@ -65,13 +69,13 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2024.5.1</version>
+			<version>2024.5.2</version>
 		</dependency>
 		<!-- Import test jar to access org.eclipse.syson.sysml.util -->
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2024.5.1</version>
+			<version>2024.5.2</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>

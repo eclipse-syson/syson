@@ -10,6 +10,8 @@
   * Rename `syson-diagram-statetransition-view` `CompartmentNodeDescriptionProvider` as `StateTransitionActionsCompartmentNodeDescriptionProvider`.
   * `StateTransitionViewEdgeService` removed, services moved to `ViewEdgeService` and `ViewLabelService`.
 - https://github.com/eclipse-syson/syson/issues/349[#349] [syson] Switch to sirius-web domain driven design architecture.
+Please download your existing SysON projects before moving to this new version.
+A reset of the database is needed.
 
 === Dependency update
 
