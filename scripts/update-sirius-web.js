@@ -40,6 +40,7 @@ projects.set("syson-diagram-common-view", "views");
 projects.set("syson-diagram-general-view", "views");
 projects.set("syson-diagram-interconnection-view", "views");
 projects.set("syson-diagram-statetransition-view", "views");
+projects.set("syson-diagram-tests", "views");
 
 console.log("Updating the following pom.xml:");
 projects.forEach((folder, project) => {
