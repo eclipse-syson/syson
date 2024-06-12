@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
@@ -53,6 +54,8 @@ import org.eclipse.syson.util.ViewConstants;
 public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
     protected final IDescriptionNameGenerator nameGenerator;
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
 
     public AbstractPackageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
@@ -239,7 +242,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
             sections.add(sectionBuilder.build());
         });
 
-        sections.add(this.addElementsToolSection());
+        sections.add(this.toolDescriptionService.addElementsNodeToolSection());
         sections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
         return sections.toArray(NodeToolSection[]::new);

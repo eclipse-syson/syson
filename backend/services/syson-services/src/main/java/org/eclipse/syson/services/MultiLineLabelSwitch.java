@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -321,6 +322,24 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(LabelConstants.CR)
                 .append(this.caseElement(object))
                 .append(this.subclassification(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseExhibitStateUsage(ExhibitStateUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.abstractType(object))
+                .append(this.getIsParallel(object.isIsParallel()))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("exhibit state")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.featureTyping(object))
+                .append(this.redefinition(object))
+                .append(this.subsetting(object));
         return label.toString();
     }
 

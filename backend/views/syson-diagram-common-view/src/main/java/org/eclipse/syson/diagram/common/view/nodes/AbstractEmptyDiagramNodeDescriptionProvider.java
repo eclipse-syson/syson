@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -43,6 +44,8 @@ import org.eclipse.syson.util.ViewConstants;
  * @author Jerome Gout
  */
 public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
 
     private final IDescriptionNameGenerator nameGenerator;
 
@@ -85,7 +88,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.getName()).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
-            nodeDescription.setPalette(this.createNodePalette(cache));    
+            nodeDescription.setPalette(this.createNodePalette(cache));
         });
     }
 
@@ -166,7 +169,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
             sections.add(sectionBuilder.build());
         });
 
-        sections.add(this.addElementsToolSection());
+        sections.add(this.toolDescriptionService.addElementsNodeToolSection());
 
         return sections.toArray(NodeToolSection[]::new);
     }

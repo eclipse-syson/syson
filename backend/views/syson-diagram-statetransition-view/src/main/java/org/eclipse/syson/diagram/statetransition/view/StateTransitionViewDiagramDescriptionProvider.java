@@ -20,17 +20,21 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.DiagramToolSectionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
-import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.ExhibitStatesCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.ExhibitStatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergedReferencesCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.statetransition.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.DefinitionNodeDescriptionProvider;
@@ -49,7 +53,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  *
  * @author adieumegard
  */
-public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagramDescriptionProvider {
+public class StateTransitionViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
     public static final String DESCRIPTION_NAME = "State Transition View";
 
@@ -58,9 +62,15 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
             );
 
     public static  final List<EClass> USAGES = List.of(
-            SysmlPackage.eINSTANCE.getStateUsage()
+            SysmlPackage.eINSTANCE.getStateUsage(),
+            SysmlPackage.eINSTANCE.getExhibitStateUsage()
             );
-
+    
+    public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
+            Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getUsage_NestedState())),
+            Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),           List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+            );
+    
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_MERGED_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction(), SysmlPackage.eINSTANCE.getStateDefinition_DoAction(), SysmlPackage.eINSTANCE.getStateDefinition_ExitAction())),
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
@@ -73,6 +83,10 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
                     SysmlPackage.eINSTANCE.getPackage()
                     ))
             );
+
+    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new STVDescriptionNameGenerator();
 
@@ -109,6 +123,13 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
             diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getDescriptionNameGenerator()));
         });
 
+        COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
+            listItems.forEach(eReference -> {
+                diagramElementDescriptionProviders.add(new ExhibitStatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                diagramElementDescriptionProviders.add(new ExhibitStatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+            });
+        });
+
         COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
                 diagramElementDescriptionProviders.add(new StateTransitionActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
@@ -126,14 +147,13 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
         return diagramDescription;
     }
 
-    @Override
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {
         return this.descriptionNameGenerator;
     }
 
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newDiagramPalette()
-                .dropTool(this.createDropFromExplorerTool())
+                .dropTool(this.toolDescriptionService.createDropFromExplorerTool())
                 .toolSections(this.createToolSections(cache))
                 .build();
     }
@@ -149,7 +169,7 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
         });
 
         // add extra section for existing elements
-        sections.add(this.addElementsToolSection(cache));
+        sections.add(this.toolDescriptionService.addElementsDiagramToolSection());
 
         return sections.toArray(DiagramToolSection[]::new);
     }
@@ -158,7 +178,9 @@ public class StateTransitionViewDiagramDescriptionProvider extends AbstractDiagr
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(nodeDescription -> nodeTools.add(this.createNodeToolFromDiagramBackground(nodeDescription, definition)));
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).ifPresent(nodeDescription -> 
+                nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription, definition, this.getDescriptionNameGenerator()))
+            );
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

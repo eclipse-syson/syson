@@ -20,9 +20,11 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.DiagramToolSectionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
+import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
@@ -42,7 +44,6 @@ import org.eclipse.syson.diagram.actionflow.view.nodes.FakeNodeDescriptionProvid
 import org.eclipse.syson.diagram.actionflow.view.nodes.PackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
-import org.eclipse.syson.diagram.common.view.diagram.AbstractDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
@@ -51,6 +52,7 @@ import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -61,7 +63,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  *
  * @author Jerome Gout
  */
-public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDescriptionProvider {
+public class ActionFlowViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
     public static final String DESCRIPTION_NAME = "Action Flow View";
 
@@ -86,6 +88,10 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
                     SysmlPackage.eINSTANCE.getActionDefinition(),
                     SysmlPackage.eINSTANCE.getPackage()))
             );
+
+    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new AFVDescriptionNameGenerator();
 
@@ -151,14 +157,13 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         return diagramDescription;
     }
 
-    @Override
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {
         return this.descriptionNameGenerator;
     }
 
     private DiagramPalette createDiagramPalette(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newDiagramPalette()
-                .dropTool(this.createDropFromExplorerTool())
+                .dropTool(this.toolDescriptionService.createDropFromExplorerTool())
                 .toolSections(this.createToolSections(cache))
                 .build();
     }
@@ -174,7 +179,7 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         });
 
         // add extra section for existing elements
-        sections.add(this.addElementsToolSection(cache));
+        sections.add(this.toolDescriptionService.addElementsDiagramToolSection());
 
         return sections.toArray(DiagramToolSection[]::new);
     }
@@ -183,7 +188,8 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            nodeTools.add(this.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).get(), definition));
+            nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).get(), definition,
+                    this.getDescriptionNameGenerator()));
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));

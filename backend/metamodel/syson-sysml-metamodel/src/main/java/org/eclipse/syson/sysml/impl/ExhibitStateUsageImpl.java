@@ -19,6 +19,7 @@ import org.eclipse.syson.sysml.EventOccurrenceUsage;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -100,7 +101,16 @@ public class ExhibitStateUsageImpl extends StateUsageImpl implements ExhibitStat
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc -->
+     *
+     * An ExhibitStateUsage is a StateUsage that represents the exhibiting of a StateUsage. Unless it is the StateUsage
+     * itself, the StateUsage to be exhibited is related to the ExhibitStateUsage by a ReferenceSubsetting Relationship.
+     * An ExhibitStateUsage is also a PerformActionUsage, with its exhibitedState as the performedAction.
+     *
+     * validateExhibitStateUsageReference: If an ExhibitStateUsage has an ownedReferenceSubsetting, then its
+     * referencedFeature must be a StateUsage.
+     *
+     * <!-- end-user-doc -->
      *
      * @generated
      */
@@ -113,12 +123,13 @@ public class ExhibitStateUsageImpl extends StateUsageImpl implements ExhibitStat
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public StateUsage basicGetExhibitedState() {
-        // TODO: implement this method to return the 'Exhibited State' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        ReferenceSubsetting ownedReferenceSubsetting = this.getOwnedReferenceSubsetting();
+        if (ownedReferenceSubsetting != null && ownedReferenceSubsetting.getReferencedFeature() instanceof StateUsage su) {
+            return su;
+        }
         return null;
     }
 

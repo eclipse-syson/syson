@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.ToolSection;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -48,12 +49,15 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
 
     protected final EClass eClass;
 
+    protected final UtilService utilServices;
+
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public AbstractUsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
         this.descriptionNameGenerator = Objects.requireNonNull(nameGenerator);
+        this.utilServices = new UtilService();
     }
 
     /**
@@ -88,16 +92,14 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     protected abstract List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache);
 
     /**
-     * Implementers might provide the expression used to retrieve all semantic candidates.<br>
+     * Implementers should provide the expression used to retrieve all semantic candidates.<br>
      * By default, the expression retrieves all reachable element of the given semantic type.
      *
      * @param domainType
      *            the semantic type of the element.
      * @return the AQL expression to retrieve all semantic candidates for this node.
      */
-    protected String getSemanticCandidatesExpression(String domainType) {
-        return AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType);
-    }
+    protected abstract String getSemanticCandidatesExpression(String domainType);
 
     @Override
     public NodeDescription create() {

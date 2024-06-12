@@ -38,9 +38,14 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     }
 
     @Override
+    protected String getSemanticCandidatesExpression(String domainType) {
+        return this.utilServices.getAllReachableStatesWithoutReferencialExhibitExpression();
+    }
+
+    @Override
     protected List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
         var reusedChildren = new ArrayList<NodeDescription>();
-
+        // Actions compartment
         StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
@@ -49,6 +54,16 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
                 });
             }
         });
+        // Exhibit States compartment
+        StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            if (type.equals(this.eClass)) {
+                listItems.forEach(eReference -> {
+                 // list compartment
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
+                });
+            }
+        });
+        
         if (this.eClass.equals(SysmlPackage.eINSTANCE.getStateUsage())) {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedState())).ifPresent(reusedChildren::add);
         }

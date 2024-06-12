@@ -15,6 +15,14 @@
 - https://github.com/eclipse-syson/syson/issues/349[#349] [syson] Switch to sirius-web domain driven design architecture.
 Please download your existing SysON projects before moving to this new version.
 A reset of the database is needed.
+- https://github.com/eclipse-syson/syson/issues/393[#393] [diagrams] Code refactorings
+  * Move `AbstractDiagramDescriptionProvider.createNodeToolFromDiagramBackground(NodeDescription, EClassifier)` to new `ToolDescriptionService`
+  * Move `AbstractViewElementDescriptionProvider.addExistingElementsTool(boolean)` to new `ToolDescriptionService`
+  * Remove `AbstractViewElementDescriptionProvider`
+  * Move `createDropFromExplorerTool` to new `ToolDescriptionService`
+  * Move and rename `AbstractDiagramDescriptionProvider.addElementsToolSection(IViewDiagramElementFinder)` to `ToolDescriptionService.addElementsDiagramToolSection()`
+  * Move and rename `AbstractNodeDescriptionProvider.addExistingElementsTool()` to `ToolDescriptionService.addElementsNodeToolSection()`
+  * Remove `AbstractDiagramDescriptionProvider`
 
 === Dependency update
 
@@ -73,6 +81,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/381[#381] [diagrams] Handle the MergeNode concept in actions body of diagrams
 - https://github.com/eclipse-syson/syson/issues/389[#389] [diagrams] Handle the DecisionNode concept in actions body of diagrams
 - https://github.com/eclipse-syson/syson/issues/391[#391] [diagrams] AcceptAction is now available inside an Action body
+- https://github.com/eclipse-syson/syson/issues/393[#393] [diagrams] Handle the ExhibitState concept in diagrams
 
 == v2024.5.0
 

@@ -10,8 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.general.view.nodes;
+package org.eclipse.syson.diagram.common.view.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
@@ -20,29 +21,34 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
-import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to handle the Ends compartment of Allocation Definition.
+ * Used to create the Exhibit States Compartment node description inside the State Transition View diagram.
  *
- * @author Jerome Gout
+ * @author adieumegard
  */
-public class StatesCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class ExhibitStatesCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public StatesCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(eClass, eReference, colorProvider, nameGenerator);
-    }
-
-    @Override
-    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
-        return List.of();
+    public ExhibitStatesCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, eReference, colorProvider, descriptionNameGenerator);
     }
 
     @Override
     protected String getCustomCompartmentLabel() {
-        return "states";
+        return "exhibit states";
+    }
+
+    @Override
+    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
+        var acceptedNodeTypes = new ArrayList<NodeDescription>();
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+                .ifPresent(acceptedNodeTypes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+                .ifPresent(acceptedNodeTypes::add);
+        return acceptedNodeTypes;
     }
 
     @Override
@@ -51,9 +57,10 @@ public class StatesCompartmentNodeDescriptionProvider extends AbstractCompartmen
 
         // Do not use getItemCreationToolProvider because the compartment contains multiple creation tools.
         palette.toolSections(this.diagramBuilderHelper.newNodeToolSection()
-                .nodeTools(new StateTransitionCompartmentNodeToolProvider(false).create(cache), new StateTransitionCompartmentNodeToolProvider(true).create(cache)).build());
+                .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, true).create(cache),
+                        new StateTransitionCompartmentNodeToolProvider(true, true).create(cache))
+                .build());
 
         return palette.toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection()).build();
     }
-
 }

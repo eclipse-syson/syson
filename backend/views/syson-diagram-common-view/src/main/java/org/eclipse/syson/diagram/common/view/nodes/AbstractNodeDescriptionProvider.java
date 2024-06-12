@@ -18,20 +18,28 @@ import java.util.Objects;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.sirius.components.view.UserColor;
+import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
-import org.eclipse.syson.diagram.common.view.AbstractViewElementDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 
 /**
  * Common pieces of node descriptions shared by {@link INodeDescriptionProvider} in all diagram View.
  *
  * @author arichard
  */
-public abstract class AbstractNodeDescriptionProvider extends AbstractViewElementDescriptionProvider implements INodeDescriptionProvider {
+public abstract class AbstractNodeDescriptionProvider implements INodeDescriptionProvider {
+
+    protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
+
+    protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+
+    protected final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
 
     protected final IColorProvider colorProvider;
 
@@ -39,13 +47,6 @@ public abstract class AbstractNodeDescriptionProvider extends AbstractViewElemen
 
     public AbstractNodeDescriptionProvider(IColorProvider colorProvider) {
         this.colorProvider = Objects.requireNonNull(colorProvider);
-    }
-
-    protected NodeToolSection addElementsToolSection() {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Add")
-                .nodeTools(this.addExistingElementsTool(false), this.addExistingElementsTool(true))
-                .build();
     }
 
     protected void orderToolSectionsTools(List<NodeToolSection> toolSections) {

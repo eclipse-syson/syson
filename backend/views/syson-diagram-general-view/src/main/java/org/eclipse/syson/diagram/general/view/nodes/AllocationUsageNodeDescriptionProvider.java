@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.general.view.nodes;
 
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
 
 /**
  * Used to create the Allocation usage edge description in General View diagram.
@@ -28,6 +29,6 @@ public class AllocationUsageNodeDescriptionProvider extends UsageNodeDescription
 
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
-        return "aql:self.getAllReachableAllocationUsages()";
+        return AQLUtils.getSelfServiceCallExpression("getAllReachableAllocationUsages");
     }
 }

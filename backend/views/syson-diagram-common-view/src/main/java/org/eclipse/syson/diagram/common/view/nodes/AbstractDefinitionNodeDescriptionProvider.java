@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.ToolSection;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -49,12 +50,15 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
 
     protected final EClass eClass;
 
+    protected final UtilService utilServices;
+
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public AbstractDefinitionNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
         this.descriptionNameGenerator = Objects.requireNonNull(nameGenerator);
+        this.utilServices = new UtilService();
     }
 
     /**
@@ -89,6 +93,16 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
     protected abstract List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache);
 
     /**
+     * Implementers should provide the expression used to retrieve all semantic candidates.<br>
+     * By default, the expression retrieves all reachable element of the given semantic type.
+     *
+     * @param domainType
+     *            the semantic type of the element.
+     * @return the AQL expression to retrieve all semantic candidates for this node.
+     */
+    protected abstract String getSemanticCandidatesExpression(String domainType);
+
+    /**
      * Shall retrieve a list of {@link NodeDescription} containing the {@link NodeDescription} of nodes that can be
      * dropped form the Diagram to this {@link NodeDescription}. DEfault implementation returns an empty list, to be
      * overridden by implementors.
@@ -111,7 +125,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getDescriptionNameGenerator().getNodeName(this.eClass))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .semanticCandidatesExpression(this.getSemanticCandidatesExpression(domainType))
                 .style(this.createDefinitionNodeStyle())
                 .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
