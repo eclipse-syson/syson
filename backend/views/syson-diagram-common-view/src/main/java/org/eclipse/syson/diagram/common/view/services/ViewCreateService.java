@@ -793,4 +793,29 @@ public class ViewCreateService {
         }
         return ownerElement;
     }
+
+    /**
+     * Creation of the semantic elements associated to a Decision action.
+     *
+     * @param ownerElement
+     *            the element owning the new Decision action.
+     * @return the new Decision action if it has been successfully created or <code>ownerElement</code> otherwise.
+     */
+    public Element createDecisionAction(Element ownerElement) {
+        Feature decisionsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::decisions");
+        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && decisionsStdAction != null) {
+            var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
+            var decision = SysmlFactory.eINSTANCE.createDecisionNode();
+            this.elementInitializerSwitch.doSwitch(decision);
+            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
+            subsetting.setSubsettingFeature(decision);
+            subsetting.setSubsettedFeature(decisionsStdAction);
+            subsetting.setIsImplied(true);
+            decision.getOwnedRelationship().add(subsetting);
+            featureMember.getOwnedRelatedElement().add(decision);
+            ownerElement.getOwnedRelationship().add(featureMember);
+            return decision;
+        }
+        return ownerElement;
+    }
 }
