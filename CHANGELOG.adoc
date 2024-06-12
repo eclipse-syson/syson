@@ -58,6 +58,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/359[#359] [tests] Add tests to enforce a set of conventions on SysON DiagramDescriptions
 - https://github.com/eclipse-syson/syson/issues/371[#371] [diagrams] Handle the ForkNode concept in actions body of diagrams
 - https://github.com/eclipse-syson/syson/issues/381[#381] [diagrams] Handle the MergeNode concept in actions body of diagrams
+- https://github.com/eclipse-syson/syson/issues/389[#389] [diagrams] Handle the DecisionNode concept in actions body of diagrams
 
 == v2024.5.0
 
