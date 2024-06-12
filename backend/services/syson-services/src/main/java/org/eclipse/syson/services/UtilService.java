@@ -31,6 +31,7 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
@@ -39,12 +40,14 @@ import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.NameHelper;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysONEContentAdapter;
 
@@ -113,6 +116,29 @@ public class UtilService {
     }
 
     /**
+     * Get the AQL service expression getting all reachable {@link StateUsage} elements which are not referential
+     * ExhibitStates.
+     *
+     * @param domainType
+     *            A type to be converted as an EClass name
+     * @return An AQL expression calling {@code self.getAllReachableStatesWithoutReferentialExhibit()}
+     */
+    public String getAllReachableStatesWithoutReferencialExhibitExpression() {
+        return AQLUtils.getSelfServiceCallExpression("getAllReachableStatesWithoutReferentialExhibit");
+    }
+
+    /**
+     * Get the AQL service expression getting all reachable elements based on the provided {@code domainType} type.
+     *
+     * @param domainType
+     *            A type to be converted as an EClass name
+     * @return An AQL expression calling {@code self.getAllReachable(domainType)}
+     */
+    public String getAllReachableExpression(String domainType) {
+        return AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType);
+    }
+
+    /**
      * Get all reachable elements of a type in the {@link ResourceSet} of given {@link EObject}.
      *
      * @param eObject
@@ -146,6 +172,57 @@ public class UtilService {
             allReachable = List.of();
         }
         return allReachable;
+    }
+
+    /**
+     * Retrieve all exhibited {@link StateUsage} directly accessible from an object which are not referential
+     * {@link ExhibitStateUsage}.
+     *
+     * @param eObject
+     *            The {@link Element} to start from
+     * @return
+     */
+    public List<StateUsage> getAllReachableStatesWithoutReferentialExhibit(Element eObject) {
+        List<StateUsage> result = new ArrayList<>();
+        this.getAllReachable(eObject, SysmlPackage.eINSTANCE.getExhibitStateUsage()).stream().forEach(su -> {
+            if (((ExhibitStateUsage) su).getExhibitedState() == null) {
+                result.add((StateUsage) su);
+            }
+        });
+        this.getAllReachable(eObject, SysmlPackage.eINSTANCE.getStateUsage()).stream().forEach(su -> {
+            result.add((StateUsage) su);
+        });
+        return result;
+    }
+
+    /**
+     * Retrieve all exhibited {@link StateUsage} directly accessible from an object.
+     *
+     * @param eObject
+     *            The {@link Element} to start from
+     * @return
+     */
+    public List<StateUsage> getAllReachableExhibitedStates(Element eObject) {
+        List<StateUsage> result = new ArrayList<>();
+        List<StateUsage> candidates = new ArrayList<>();
+        if (eObject instanceof Usage usage) {
+            candidates = usage.getNestedState();
+        } else if (eObject instanceof Definition def) {
+            candidates = def.getOwnedState();
+        } else if (eObject instanceof ExhibitStateUsage esu) {
+            candidates.add(esu);
+        }
+        candidates.stream().filter(ExhibitStateUsage.class::isInstance)
+            .map(ExhibitStateUsage.class::cast)
+            .map(exhibit -> {
+                StateUsage exhibitedState = exhibit.getExhibitedState();
+                if (exhibitedState != null) {
+                    return exhibitedState;
+                } else {
+                    return exhibit;
+                }
+            }).forEach(result::add);
+        return result;
     }
 
     /**

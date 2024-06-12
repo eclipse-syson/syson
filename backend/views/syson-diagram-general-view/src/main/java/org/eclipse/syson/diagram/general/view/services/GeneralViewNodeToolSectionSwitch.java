@@ -227,8 +227,10 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     @Override
     public List<NodeToolSection> caseStateDefinition(StateDefinition object) {
         var createSection = this.buildCreateSection(
-                new StateTransitionCompartmentNodeToolProvider(true).create(null),
-                new StateTransitionCompartmentNodeToolProvider(false).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false, false).create(null),
+                new StateTransitionCompartmentNodeToolProvider(true, false).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false, true).create(null),
+                new StateTransitionCompartmentNodeToolProvider(true, true).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(null));
@@ -238,8 +240,10 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     @Override
     public List<NodeToolSection> caseStateUsage(StateUsage object) {
         var createSection = this.buildCreateSection(
-                new StateTransitionCompartmentNodeToolProvider(true).create(null),
-                new StateTransitionCompartmentNodeToolProvider(false).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false, false).create(null),
+                new StateTransitionCompartmentNodeToolProvider(true, false).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false, true).create(null),
+                new StateTransitionCompartmentNodeToolProvider(true, true).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(null));

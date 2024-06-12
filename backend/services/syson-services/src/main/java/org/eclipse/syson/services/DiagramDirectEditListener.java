@@ -527,6 +527,18 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         });
     }
 
+    /**
+     * Create and set a Transition Feature to be assigned on the {@link TransitionUsage}.
+     *
+     * @param transition
+     *            The transition onto which a Transition Feature is created.
+     * @param kind
+     *            The {@link TransitionFeatureKind} of the Transition Feature to create.
+     * @param name
+     *            The name of the payload. Should not be null if {@code kind} is TRIGGER.
+     * @param typeValue
+     *            The parameter value to assign to the Transition Feature.
+     */
     private void addTransitionFeature(TransitionUsage transition, TransitionFeatureKind kind, String name, Type typeValue) {
         TransitionFeatureMembership tfMembership = SysmlFactory.eINSTANCE.createTransitionFeatureMembership();
         tfMembership.setKind(kind);

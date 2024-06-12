@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.interconnection.view.tools.ChildrenPartUsageCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -53,6 +54,8 @@ import org.eclipse.syson.util.ViewConstants;
 public class FirstLevelChildPartUsageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
     public static final String NAME = "IV Node FirstLevelChildPartUsage";
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
@@ -151,7 +154,9 @@ public class FirstLevelChildPartUsageNodeDescriptionProvider extends AbstractNod
                 .deleteTool(deleteTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .labelEditTool(editTool.build())
-                .toolSections(this.createNodeToolSection(cache), this.addElementsToolSection(), this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+                .toolSections(this.createNodeToolSection(cache),
+                        this.toolDescriptionService.addElementsNodeToolSection(),
+                        this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }
 

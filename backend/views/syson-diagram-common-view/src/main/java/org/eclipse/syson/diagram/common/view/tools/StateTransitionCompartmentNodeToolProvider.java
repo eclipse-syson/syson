@@ -25,27 +25,31 @@ public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartm
 
     private final boolean isParallel;
 
-    public StateTransitionCompartmentNodeToolProvider(boolean isParallel) {
+    private final boolean isExhibit;
+
+    public StateTransitionCompartmentNodeToolProvider(boolean isParallel, boolean isExhibit) {
         super();
         this.isParallel = isParallel;
+        this.isExhibit = isExhibit;
     }
 
     @Override
     protected String getServiceCallExpression() {
-        if (this.isParallel) {
-            return AQLUtils.getSelfServiceCallExpression("createChildState", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "true"));
-        } else {
-            return AQLUtils.getSelfServiceCallExpression("createChildState", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "false"));
-        }
+        return AQLUtils.getSelfServiceCallExpression("createChildState",
+                List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", String.valueOf(this.isParallel), String.valueOf(this.isExhibit)));
     }
 
     @Override
     protected String getNodeToolName() {
-        if (this.isParallel) {
-            return "New Parallel State";
-        } else {
-            return "New State";
+        StringBuilder builder = new StringBuilder("New ");
+        if (this.isExhibit) {
+            builder.append("Exhibit ");
         }
+        if (this.isParallel) {
+            builder.append("Parallel ");
+        }
+        builder.append("State");
+        return builder.toString();
     }
 
     @Override

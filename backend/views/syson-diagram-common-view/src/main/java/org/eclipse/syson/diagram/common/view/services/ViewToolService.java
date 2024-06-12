@@ -784,11 +784,13 @@ public class ViewToolService extends ToolService {
      *            a variable accessible from the variable manager.
      * @param isParallel
      *            whether or not the created State is set as parallel.
+     * @param isExhibit
+     *            Whether or not the created State is exhibited or not.
      * @return the created {@link StateUsage}.
      */
     public StateUsage createChildState(Element parentState, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean isParallel) {
-        StateUsage childState = this.createChildState(parentState, isParallel);
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean isParallel, boolean isExhibit) {
+        StateUsage childState = this.createChildState(parentState, isParallel, isExhibit);
 
         if (diagramContext.getDiagram().getLabel().equals("General View")) {
             this.createView(childState, editingContext, diagramContext, diagramContext.getDiagram(), convertedNodes);
@@ -811,11 +813,18 @@ public class ViewToolService extends ToolService {
      *            The parent {@link StateDefinition} or {@link StateUsage}
      * @param isParallel
      *            Whether the created state is parallel or not
+     * @param isExhibit
+     *            Whether the created state is exhibited or not
      * @return the created {@link StateUsage}.
      */
-    private StateUsage createChildState(Element parentState, boolean isParallel) {
+    private StateUsage createChildState(Element parentState, boolean isParallel, boolean isExhibit) {
         var owningMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        StateUsage childState = SysmlFactory.eINSTANCE.createStateUsage();
+        StateUsage childState = null;
+        if (isExhibit) {
+            childState = SysmlFactory.eINSTANCE.createExhibitStateUsage();
+        } else {
+            childState = SysmlFactory.eINSTANCE.createStateUsage();
+        }
         childState.setIsParallel(isParallel);
         owningMembership.getOwnedRelatedElement().add(childState);
         parentState.getOwnedRelationship().add(owningMembership);

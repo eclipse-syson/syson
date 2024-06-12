@@ -44,6 +44,11 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     }
 
     @Override
+    protected String getSemanticCandidatesExpression(String domainType) {
+        return this.utilServices.getAllReachableExpression(domainType);
+    }
+
+    @Override
     protected List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
         var reusedChildren = new ArrayList<NodeDescription>();
 

@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -57,8 +58,8 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(SysMLMetamodelHelper.buildQualifiedName(this.eReference.getEType()))
                 .insideLabel(this.createInsideLabelDescription())
-                .name(this.nameGenerator.getCompartmentItemName(this.eClass, this.eReference))
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
+                .name(this.nameGenerator.getCompartmentItemName(this.getEClass(), this.eReference))
+                .semanticCandidatesExpression(this.getSemanticCandidateExpression())
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(false)
                 .palette(this.createCompartmentItemNodePalette())
@@ -66,9 +67,13 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .build();
     }
 
+    protected String getSemanticCandidateExpression() {
+        return AQLConstants.AQL_SELF + "." + this.eReference.getName();
+    }
+
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression(AQLConstants.AQL_SELF + ".getCompartmentItemUsageLabel()")
+                .labelExpression(AQLUtils.getSelfServiceCallExpression("getCompartmentItemUsageLabel"))
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .textAlign(LabelTextAlign.CENTER)
@@ -84,6 +89,10 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .build();
     }
 
+    protected EClass getEClass() {
+        return this.eClass;
+    }
+
     private NodeStyleDescription createCompartmentItemNodeStyle() {
         return this.diagramBuilderHelper.newIconLabelNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
@@ -94,18 +103,18 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
 
     private NodePalette createCompartmentItemNodePalette() {
         var callDeleteService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".deleteFromModel()");
+                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
                 .body(callDeleteService.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getUsageInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getUsageInitialDirectEditLabel"))
                 .body(callEditService.build());
 
         return this.diagramBuilderHelper.newNodePalette()

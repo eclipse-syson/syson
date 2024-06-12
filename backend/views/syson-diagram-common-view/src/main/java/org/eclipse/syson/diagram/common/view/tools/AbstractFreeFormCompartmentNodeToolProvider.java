@@ -111,7 +111,7 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
 
         var params = List.of(
                 AQLUtils.aqlString(this.getNodeDescriptionName()),
-                AQLUtils.aqlString(this.descriptionNameGenerator.getNodeName(this.ownerEClass)),
+                AQLUtils.aqlString(this.getDescriptionNameGenerator().getNodeName(this.ownerEClass)),
                 AQLUtils.aqlString(this.compartmentName),
                 "selectedNode",
                 "diagramContext",

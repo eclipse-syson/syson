@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -45,6 +46,8 @@ import org.eclipse.syson.util.ViewConstants;
  * @author arichard
  */
 public class RootDefinitionNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
@@ -125,7 +128,7 @@ public class RootDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
         return this.diagramBuilderHelper.newNodePalette()
                 .labelEditTool(editTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
-                .toolSections(this.createNodeToolSection(cache), this.addElementsToolSection())
+                .toolSections(this.createNodeToolSection(cache), this.toolDescriptionService.addElementsNodeToolSection())
                 .build();
     }
 

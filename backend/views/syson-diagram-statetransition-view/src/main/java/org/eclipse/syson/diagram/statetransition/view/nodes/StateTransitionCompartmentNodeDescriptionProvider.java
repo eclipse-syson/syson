@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -71,7 +72,9 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            StateTransitionViewDiagramDescriptionProvider.USAGES.stream().forEach(eClass -> {
+                cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(eClass)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            });
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateDefinition())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             nodeDescription.setPalette(this.createCompartmentPalette(cache));
         });
@@ -80,7 +83,9 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(droppableNodes::add);
+        StateTransitionViewDiagramDescriptionProvider.USAGES.stream().forEach(eClass -> {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(eClass)).ifPresent(droppableNodes::add);
+        });
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);        
         return droppableNodes;
     }
@@ -113,7 +118,11 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
 
         // Do not use getItemCreationToolProvider because the compartment contains multiple creation tools.
         palette.toolSections(this.diagramBuilderHelper.newNodeToolSection()
-                .nodeTools(new StateTransitionCompartmentNodeToolProvider(false).create(cache), new StateTransitionCompartmentNodeToolProvider(true).create(cache)).build());
+                .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, false).create(cache), 
+                        new StateTransitionCompartmentNodeToolProvider(true, false).create(cache),
+                        new StateTransitionCompartmentNodeToolProvider(false, true).create(cache),
+                        new StateTransitionCompartmentNodeToolProvider(true, true).create(cache)
+                        ).build());
 
         return palette.toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection()).build();
     }
