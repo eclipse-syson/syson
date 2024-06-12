@@ -35,8 +35,10 @@ import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfigu
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ImportService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
@@ -44,10 +46,12 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -279,6 +283,13 @@ public class DetailsViewService {
         return null;
     }
 
+    public TransitionUsage getTransitionUsage(Element self) {
+        if (self instanceof TransitionUsage transition) {
+            return transition;
+        }
+        return null;
+    }
+
     /**
      * Verify that the given accept action usage contains the correct underneath structure of elements.<br>
      * An @link {@link AcceptActionUsage} should have two @link {@link ParameterMembership} relationships with a
@@ -424,6 +435,56 @@ public class DetailsViewService {
                 ft.setType(newType);
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean setTransitionSourceParameter(TransitionUsage transitionUsage, Element newSource) {
+        if (newSource instanceof ActionUsage au) {
+            // Update transition source
+            transitionUsage.getOwnedMembership().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .findFirst()
+                    .ifPresent(mem -> mem.setMemberElement(au));
+            // Update succession source
+            Succession succession = transitionUsage.getSuccession();
+            succession.getFeatureMembership().stream()
+                    .filter(EndFeatureMembership.class::isInstance)
+                    .map(EndFeatureMembership.class::cast)
+                    .findFirst()
+                    .ifPresent(endFeat -> {
+                        endFeat.getOwnedRelatedElement().stream()
+                                .findFirst()
+                                .ifPresent(feat -> feat.getOwnedRelationship().stream()
+                                        .filter(ReferenceSubsetting.class::isInstance)
+                                        .map(ReferenceSubsetting.class::cast)
+                                        .findFirst()
+                                        .ifPresent(refSub -> refSub.setReferencedFeature(au)));
+                    });
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setTransitionTargetParameter(TransitionUsage transitionUsage, Element newTarget) {
+        if (newTarget instanceof ActionUsage au) {
+            // Update succession target
+            Succession succession = transitionUsage.getSuccession();
+            List<EndFeatureMembership> succFeatMemberships = succession.getFeatureMembership().stream()
+                    .filter(EndFeatureMembership.class::isInstance)
+                    .map(EndFeatureMembership.class::cast)
+                    .toList();
+            if (succFeatMemberships.size() > 1) {
+                succFeatMemberships.get(1).getOwnedRelatedElement().stream()
+                        .findFirst()
+                        .ifPresent(feat -> feat.getOwnedRelationship().stream()
+                                .filter(ReferenceSubsetting.class::isInstance)
+                                .map(ReferenceSubsetting.class::cast)
+                                .findFirst()
+                                .ifPresent(refSub -> refSub.setReferencedFeature(au)));
+            }
+            return true;
         }
         return false;
     }
