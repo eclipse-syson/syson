@@ -35,6 +35,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.CollectExpression;
@@ -73,6 +74,7 @@ import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.NullExpression;
+import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OperatorExpression;
@@ -86,15 +88,18 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.SelectExpression;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.utils.Appender;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
@@ -227,13 +232,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseActionUsage(ActionUsage actionUsage) {
-        Appender builder = new Appender(lineSeparator, indentation);
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
 
-        appendOccurrenceUsagePrefix(builder, actionUsage);
+        this.appendOccurrenceUsagePrefix(builder, actionUsage);
 
-        appendActionNodeUsageDeclaration(builder, actionUsage);
+        this.appendActionNodeUsageDeclaration(builder, actionUsage);
 
-        appendChildrenContent(builder, actionUsage, actionUsage.getOwnedMembership());
+        this.appendChildrenContent(builder, actionUsage, actionUsage.getOwnedMembership());
 
         return builder.toString();
 
@@ -247,11 +252,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseSuccessionAsUsage(SuccessionAsUsage sucession) {
-        Appender builder = new Appender(lineSeparator, indentation);
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
 
         this.appendBasicUsagePrefix(builder, sucession);
 
-        Appender declarationBuilder = new Appender(lineSeparator, indentation);
+        Appender declarationBuilder = new Appender(this.lineSeparator, this.indentation);
         this.appendUsageDeclaration(declarationBuilder, sucession);
 
         if (!declarationBuilder.isEmpty()) {
@@ -266,16 +271,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (endFeatureMemberships.size() == 2) {
 
             builder.appendWithSpaceIfNeeded("first");
-            appendConnectorEndMember(builder, endFeatureMemberships.get(0));
+            this.appendConnectorEndMember(builder, endFeatureMemberships.get(0));
 
             builder.appendWithSpaceIfNeeded("then");
-            appendConnectorEndMember(builder, endFeatureMemberships.get(1));
+            this.appendConnectorEndMember(builder, endFeatureMemberships.get(1));
 
         } else {
-            reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", sucession.getElementId()));
+            this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", sucession.getElementId()));
         }
 
-        appendDefinitionBody(builder, sucession);
+        this.appendDefinitionBody(builder, sucession);
 
         return builder.toString();
     }
@@ -285,7 +290,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .filter(ReferenceUsage.class::isInstance)
                 .map(ReferenceUsage.class::cast)
                 .findFirst()
-                .ifPresent(ref -> appendConnectorEnd(builder, ref));
+                .ifPresent(ref -> this.appendConnectorEnd(builder, ref));
     }
 
     private void appendConnectorEnd(Appender builder, ReferenceUsage referenceUsage) {
@@ -298,7 +303,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         ReferenceSubsetting refSubsetting = referenceUsage.getOwnedReferenceSubsetting();
 
         if (refSubsetting != null) {
-            appendOwnedReferenceSubsetting(builder, refSubsetting);
+            this.appendOwnedReferenceSubsetting(builder, refSubsetting);
         }
 
         // We still need to implement this part here ( ownedRelationship += OwnedMultiplicity )?
@@ -310,13 +315,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         if (referencedFeature != null) {
 
-
             if (!referencedFeature.getOwnedFeatureChaining().isEmpty()) {
-                appendFeatureChain(builder, referencedFeature);
+                this.appendFeatureChain(builder, referencedFeature);
             } else {
-                String deresolvedName = nameDeresolver.getDeresolvedName(referencedFeature, refSubsetting);
+                String deresolvedName = this.nameDeresolver.getDeresolvedName(referencedFeature, refSubsetting);
                 if (deresolvedName == null || deresolvedName.isBlank()) {
-                    reportConsumer.accept(Status.error("Unable to compute a valid identifier for ReferenceSubSetting {0}", refSubsetting.getElementId()));
+                    this.reportConsumer.accept(Status.error("Unable to compute a valid identifier for ReferenceSubSetting {0}", refSubsetting.getElementId()));
                 }
                 builder.appendWithSpaceIfNeeded(deresolvedName);
             }
@@ -411,8 +415,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         this.appendUsageCompletion(builder, usage);
 
-        appendDefinitionBody(builder, usage);
-
         return builder.toString();
     }
 
@@ -449,7 +451,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .orElse(null);
 
         if (membership instanceof FeatureMembership feature && feature.getOwnedMemberFeature() instanceof Expression exp) {
-            reportConsumer.accept(Status.warning("BodyExpression are not handled yet ({0})", exp.getElementId()));
+            this.reportConsumer.accept(Status.warning("BodyExpression are not handled yet ({0})", exp.getElementId()));
         } else {
             this.appendFeatureReferenceMember(builder, membership);
         }
@@ -462,7 +464,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         Appender builder = this.newAppender();
         switch (op.getOperator()) {
             case "if":
-                reportConsumer.accept(Status.warning("ConditionalExpression are not handled yet ({0})", op.getElementId()));
+                this.reportConsumer.accept(Status.warning("ConditionalExpression are not handled yet ({0})", op.getElementId()));
                 break;
             case "|":
             case "&":
@@ -494,13 +496,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 this.appendClassificationExpression(builder, op);
                 break;
             case "all":
-                reportConsumer.accept(Status.warning("ExtentExpression are not handled yet ({0})", op.getElementId()));
+                this.reportConsumer.accept(Status.warning("ExtentExpression are not handled yet ({0})", op.getElementId()));
                 break;
             case LabelConstants.OPEN_BRACKET:
                 this.appendBracketExpression(builder, op);
                 break;
             case "#":
-                reportConsumer.accept(Status.warning("IndexExpression are not handled yet ({0})", op.getElementId()));
+                this.reportConsumer.accept(Status.warning("IndexExpression are not handled yet ({0})", op.getElementId()));
                 break;
             case ",":
                 this.appendSequenceExpression(builder, op);
@@ -523,32 +525,32 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                     .ifPresent(specialization -> builder.appendSpaceIfNeeded().append(this.getDeresolvableName(specialization.getGeneral(), specialization)));
             this.appendArgumentList(builder, expression);
         } else {
-            reportConsumer.accept(Status.warning("FunctionOperationExpression are not handled yet ({0})", expression.getElementId()));
+            this.reportConsumer.accept(Status.warning("FunctionOperationExpression are not handled yet ({0})", expression.getElementId()));
         }
         return builder.toString();
     }
 
     @Override
     public String caseNullExpression(NullExpression expression) {
-        reportConsumer.accept(Status.warning("NullExpression are not handled yet ({0})", expression.getElementId()));
+        this.reportConsumer.accept(Status.warning("NullExpression are not handled yet ({0})", expression.getElementId()));
         return "";
     }
 
     @Override
     public String caseCollectExpression(CollectExpression expression) {
-        reportConsumer.accept(Status.warning("CollectExpression are not handled yet({0})", expression.getElementId()));
+        this.reportConsumer.accept(Status.warning("CollectExpression are not handled yet({0})", expression.getElementId()));
         return "";
     }
 
     @Override
     public String caseSelectExpression(SelectExpression expression) {
-        reportConsumer.accept(Status.warning("SelectExpression are not handled yet({0})", expression.getElementId()));
+        this.reportConsumer.accept(Status.warning("SelectExpression are not handled yet({0})", expression.getElementId()));
         return "";
     }
 
     @Override
     public String caseMetadataAccessExpression(MetadataAccessExpression expression) {
-        reportConsumer.accept(Status.warning("MetadataAccessExpression are not handled yet({0})", expression.getElementId()));
+        this.reportConsumer.accept(Status.warning("MetadataAccessExpression are not handled yet({0})", expression.getElementId()));
         return "";
     }
 
@@ -580,6 +582,114 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .ifPresent(exp -> this.appendFeatureChainMember(builder, exp));
 
         return builder.toString();
+    }
+
+    @Override
+    public String caseUseCaseDefinition(UseCaseDefinition useCase) {
+        Appender builder = this.newAppender();
+
+        this.appendDefinitionPrefix(builder, useCase);
+
+        builder.appendSpaceIfNeeded().append("use");
+        builder.appendSpaceIfNeeded().append("case");
+        builder.appendSpaceIfNeeded().append("def");
+
+        this.appendDefinitionDeclaration(builder, useCase);
+
+        List<Membership> children = useCase.getOwnedMembership().stream()
+                .filter(membership -> membership instanceof SubjectMembership
+                        || membership instanceof ObjectiveMembership
+                        || membership instanceof ActorMembership)
+                .toList();
+
+        this.appendChildrenContent(builder, useCase, children);
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseActorMembership(ActorMembership actor) {
+        Appender builder = this.newAppender();
+
+        VisibilityKind visibility = actor.getVisibility();
+        if (visibility != VisibilityKind.PUBLIC) {
+            builder.append(this.getVisivilityIndicator(visibility));
+        }
+
+        this.appendActorUsage(builder, actor);
+        
+        return builder.toString();
+    }
+
+    @Override
+    public String caseSubjectMembership(SubjectMembership subject) {
+        Appender builder = this.newAppender();
+
+        VisibilityKind visibility = subject.getVisibility();
+        if (visibility != VisibilityKind.PUBLIC) {
+            builder.append(this.getVisivilityIndicator(visibility));
+        }
+
+        this.appendSubjectUsage(builder, subject);
+        
+        return builder.toString();
+    }
+
+    @Override
+    public String caseObjectiveMembership(ObjectiveMembership objective) {
+        Appender builder = this.newAppender();
+
+        VisibilityKind visibility = objective.getVisibility();
+        if (visibility != VisibilityKind.PUBLIC) {
+            builder.append(this.getVisivilityIndicator(visibility));
+        }
+
+        builder.append("objective");
+        this.appendObjectiveRequirementUsage(builder, objective);
+        
+        return builder.toString();
+    }
+
+    private void appendObjectiveRequirementUsage(Appender builder, ObjectiveMembership objective) {
+        RequirementUsage usage = objective.getOwnedRelatedElement().stream()
+                .filter(RequirementUsage.class::isInstance)
+                .map(RequirementUsage.class::cast)
+                .findFirst()
+                .orElse(null);
+
+        if (usage != null) {
+            this.appendCalculationUsageDeclaration(builder, usage);
+            this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
+        }
+    }
+
+    private void appendCalculationUsageDeclaration(Appender builder, Usage usage) {
+        this.appendUsageDeclaration(builder, usage);
+        this.appendValuePart(builder, usage);
+    }
+
+    private void appendActorUsage(Appender builder, ActorMembership actor) {
+        PartUsage usage = actor.getOwnedRelatedElement().stream()
+                .filter(PartUsage.class::isInstance)
+                .map(PartUsage.class::cast)
+                .findFirst()
+                .orElse(null);
+
+        if (usage != null) {
+            this.appendDefaultUsage(builder, usage);
+        }
+    }
+
+    private void appendSubjectUsage(Appender builder, SubjectMembership actor) {
+        ReferenceUsage usage = actor.getOwnedRelatedElement().stream()
+                .filter(ReferenceUsage.class::isInstance)
+                .map(ReferenceUsage.class::cast)
+                .findFirst()
+                .orElse(null);
+
+        if (usage != null) {
+            this.appendDefaultUsage(builder, usage);
+        }
     }
 
     private String getUsageKeyword(Usage usage) {
@@ -712,6 +822,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendUsageCompletion(Appender builder, Usage usage) {
+        this.appendValuePart(builder, usage);
+        this.appendDefinitionBody(builder, usage);
+    }
+
+    private void appendValuePart(Appender builder, Usage usage) {
         List<FeatureValue> ownedRelationship = usage.getOwnedRelationship().stream()
                 .filter(FeatureValue.class::isInstance)
                 .map(FeatureValue.class::cast)
@@ -732,7 +847,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             }
             this.appendOwnedExpression(builder, feature.getValue());
         }
-
     }
 
     private void appendOwnedExpression(Appender builder, Expression expression) {
@@ -899,7 +1013,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         List<String> unaryOperators = List.of("+", "-", LabelConstants.CONJUGATED, "not");
 
         if (ownedRelationships.size() < 2 && (unaryOperators.contains(operator))) {
-            reportConsumer.accept(Status.warning("UnaryOperatorExpression are not handled yet {0}", expression.getElementId()));
+            this.reportConsumer.accept(Status.warning("UnaryOperatorExpression are not handled yet {0}", expression.getElementId()));
         } else {
             this.appendBinaryOperatorExpression(builder, expression);
         }
@@ -926,7 +1040,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (relationship instanceof ParameterMembership) {
             this.appendPositionalArgumentList(builder, expression);
         } else if (relationship instanceof FeatureMembership) {
-            reportConsumer.accept(Status.warning("NamedArgumentList are not handled yet {0}", expression.getElementId()));
+            this.reportConsumer.accept(Status.warning("NamedArgumentList are not handled yet {0}", expression.getElementId()));
         }
         builder.append(LabelConstants.CLOSE_PARENTHESIS);
     }
@@ -1102,7 +1216,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private boolean isImplicitlyReferencial(Usage usage) {
-        return usage instanceof AttributeUsage;
+        return usage instanceof AttributeUsage || usage instanceof ReferenceUsage || usage.getOwningMembership() instanceof ActorMembership;
     }
 
     private void appendExtensionKeyword(Appender builder, Type type) {
