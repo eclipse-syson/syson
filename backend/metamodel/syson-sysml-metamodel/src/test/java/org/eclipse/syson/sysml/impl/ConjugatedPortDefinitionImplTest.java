@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.ModelBuilder;
@@ -39,6 +40,7 @@ public class ConjugatedPortDefinitionImplTest {
     public void getNames() {
         PortDefinition port = this.builder.createWithName(PortDefinition.class, "p1");
         ConjugatedPortDefinition conjugatedPort = this.builder.createInWithName(ConjugatedPortDefinition.class, port, "unusedName");
+        this.builder.createIn(PortConjugation.class, conjugatedPort).setOriginalPortDefinition(port);
         assertEquals(LabelConstants.CONJUGATED + "p1", conjugatedPort.getName());
 
     }

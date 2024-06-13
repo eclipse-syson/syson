@@ -1046,19 +1046,4 @@ public class UsageImpl extends FeatureImpl implements Usage {
         return result.toString();
     }
 
-    /**
-     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EList<Type> getType() {
-        EList<Type> types = new BasicEList<>();
-        EList<Classifier> definition = this.getDefinition();
-        if (definition != null) {
-            types.addAll(definition);
-        }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getFeature_Type(), types.size(), types.toArray());
-    }
-
 } // UsageImpl

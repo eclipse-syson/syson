@@ -83,20 +83,10 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
-    @Override
-    public Feature getFeature() {
-        if (this.feature != null && this.feature.eIsProxy()) {
-            InternalEObject oldFeature = (InternalEObject) this.feature;
-            this.feature = (Feature) this.eResolveProxy(oldFeature);
-            if (this.feature != oldFeature) {
-                if (this.eNotificationRequired()) {
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_MEMBERSHIP__FEATURE, oldFeature, this.feature));
-                }
-            }
-        }
-        return this.feature;
+    public Feature basicGetFeature() {
+        return this.getFeature();
     }
 
     /**
@@ -104,26 +94,9 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
      *
      * @generated NOT
      */
-    public Feature basicGetFeature() {
-        Feature ownedMemberFeature = this.getOwnedMemberFeature();
-        if (ownedMemberFeature != null) {
-            return ownedMemberFeature;
-        }
-        return this.feature;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
     @Override
     public void setFeature(Feature newFeature) {
-        Feature oldFeature = this.feature;
-        this.feature = newFeature;
-        if (this.eNotificationRequired()) {
-            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_MEMBERSHIP__FEATURE, oldFeature, this.feature));
-        }
+        // It redefines "feature" feature from Featuring
     }
 
     /**
@@ -389,5 +362,15 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     public Namespace getMembershipOwningNamespace() {
         return this.getOwningType();
     }
+
+     /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+     @Override
+     public Feature getFeature() {
+         return this.getOwnedMemberFeature();
+     }
 
 } // FeatureMembershipImpl

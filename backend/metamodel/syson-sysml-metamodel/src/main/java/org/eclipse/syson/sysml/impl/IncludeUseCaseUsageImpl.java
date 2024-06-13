@@ -93,13 +93,10 @@ public class IncludeUseCaseUsageImpl extends UseCaseUsageImpl implements Include
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public ActionUsage basicGetPerformedAction() {
-        // TODO: implement this method to return the 'Performed Action' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getUseCaseIncluded();
     }
 
     /**

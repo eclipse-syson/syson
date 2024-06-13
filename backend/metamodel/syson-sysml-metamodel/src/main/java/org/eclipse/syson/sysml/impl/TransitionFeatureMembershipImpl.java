@@ -118,11 +118,11 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
      * @generated NOT
      */
     public Step basicGetTransitionFeature() {
-        Feature memberFeature = this.getFeature();
-        if (memberFeature instanceof Step step) {
-            return step;
-        }
-        return null;
+        return getOwnedRelatedElement().stream()
+                .filter(Step.class::isInstance)
+                .map(Step.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

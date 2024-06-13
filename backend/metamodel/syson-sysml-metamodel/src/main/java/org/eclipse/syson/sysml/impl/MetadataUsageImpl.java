@@ -414,7 +414,7 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
     /**
      * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Structure> getItemDefinition() {

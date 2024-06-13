@@ -100,11 +100,11 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
      * @generated NOT
      */
     public ActionUsage basicGetAction() {
-        Feature ownedMemberFeature = this.getOwnedMemberFeature();
-        if (ownedMemberFeature instanceof ActionUsage au) {
-            return au;
-        }
-        return null;
+        return this.getOwnedRelatedElement().stream()
+                .filter(ActionUsage.class::isInstance)
+                .map(ActionUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -212,6 +212,16 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
         result.append(this.kind);
         result.append(')');
         return result.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getOwnedMemberFeature() {
+        return this.getAction();
     }
 
 } // StateSubactionMembershipImpl
