@@ -261,8 +261,9 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
     public void setDeclaredName(String newDeclaredName) {
         String oldDeclaredName = this.declaredName;
         this.declaredName = newDeclaredName;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.ELEMENT__DECLARED_NAME, oldDeclaredName, this.declaredName));
+        }
     }
 
     /**
@@ -284,8 +285,9 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
     public void setDeclaredShortName(String newDeclaredShortName) {
         String oldDeclaredShortName = this.declaredShortName;
         this.declaredShortName = newDeclaredShortName;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.ELEMENT__DECLARED_SHORT_NAME, oldDeclaredShortName, this.declaredShortName));
+        }
     }
 
     /**
@@ -296,6 +298,10 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
     @Override
     public EList<Documentation> getDocumentation() {
         List<Documentation> documentation = new ArrayList<>();
+        this.getOwnedElement().stream()
+                .filter(Documentation.class::isInstance)
+                .map(Documentation.class::cast)
+                .forEach(documentation::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_Documentation(), documentation.size(), documentation.toArray());
     }
 
@@ -318,8 +324,9 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
     public void setElementId(String newElementId) {
         String oldElementId = this.elementId;
         this.elementId = newElementId;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.ELEMENT__ELEMENT_ID, oldElementId, this.elementId));
+        }
     }
 
     /**
@@ -341,8 +348,9 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
     public void setIsImpliedIncluded(boolean newIsImpliedIncluded) {
         boolean oldIsImpliedIncluded = this.isImpliedIncluded;
         this.isImpliedIncluded = newIsImpliedIncluded;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.ELEMENT__IS_IMPLIED_INCLUDED, oldIsImpliedIncluded, this.isImpliedIncluded));
+        }
     }
 
     /**
@@ -492,8 +500,9 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
      */
     @Override
     public Relationship getOwningRelationship() {
-        if (this.eContainerFeatureID() != SysmlPackage.ELEMENT__OWNING_RELATIONSHIP)
+        if (this.eContainerFeatureID() != SysmlPackage.ELEMENT__OWNING_RELATIONSHIP) {
             return null;
+        }
         return (Relationship) this.eInternalContainer();
     }
 
@@ -515,18 +524,23 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
     @Override
     public void setOwningRelationship(Relationship newOwningRelationship) {
         if (newOwningRelationship != this.eInternalContainer() || (this.eContainerFeatureID() != SysmlPackage.ELEMENT__OWNING_RELATIONSHIP && newOwningRelationship != null)) {
-            if (EcoreUtil.isAncestor(this, newOwningRelationship))
+            if (EcoreUtil.isAncestor(this, newOwningRelationship)) {
                 throw new IllegalArgumentException("Recursive containment not allowed for " + this.toString());
+            }
             NotificationChain msgs = null;
-            if (this.eInternalContainer() != null)
+            if (this.eInternalContainer() != null) {
                 msgs = this.eBasicRemoveFromContainer(msgs);
-            if (newOwningRelationship != null)
+            }
+            if (newOwningRelationship != null) {
                 msgs = ((InternalEObject) newOwningRelationship).eInverseAdd(this, SysmlPackage.RELATIONSHIP__OWNED_RELATED_ELEMENT, Relationship.class, msgs);
+            }
             msgs = this.basicSetOwningRelationship(newOwningRelationship, msgs);
-            if (msgs != null)
+            if (msgs != null) {
                 msgs.dispatch();
-        } else if (this.eNotificationRequired())
+            }
+        } else if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.ELEMENT__OWNING_RELATIONSHIP, newOwningRelationship, newOwningRelationship));
+        }
     }
 
     /**
@@ -656,8 +670,9 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
             case SysmlPackage.ELEMENT__OWNED_RELATIONSHIP:
                 return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getOwnedRelationship()).basicAdd(otherEnd, msgs);
             case SysmlPackage.ELEMENT__OWNING_RELATIONSHIP:
-                if (this.eInternalContainer() != null)
+                if (this.eInternalContainer() != null) {
                     msgs = this.eBasicRemoveFromContainer(msgs);
+                }
                 return this.basicSetOwningRelationship((Relationship) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -728,16 +743,19 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
             case SysmlPackage.ELEMENT__OWNED_RELATIONSHIP:
                 return this.getOwnedRelationship();
             case SysmlPackage.ELEMENT__OWNER:
-                if (resolve)
+                if (resolve) {
                     return this.getOwner();
+                }
                 return this.basicGetOwner();
             case SysmlPackage.ELEMENT__OWNING_MEMBERSHIP:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningMembership();
+                }
                 return this.basicGetOwningMembership();
             case SysmlPackage.ELEMENT__OWNING_NAMESPACE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningNamespace();
+                }
                 return this.basicGetOwningNamespace();
             case SysmlPackage.ELEMENT__OWNING_RELATIONSHIP:
                 return this.getOwningRelationship();
@@ -891,8 +909,9 @@ public abstract class ElementImpl extends MinimalEObjectImpl.Container implement
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (aliasIds: ");

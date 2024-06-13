@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
@@ -25,17 +28,18 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test class for {@link  ElementImpl}.
- * 
+ *
  * @author gescande
  */
 public class ElementTest {
 
     /**
      * Test model
-     * 
+     *
      * <pre>
      * namespace {
      * package p1 {
+     *      doc / * This is a doc * /
      *      part def def1;
      *      package 'p1 x1' {
      *          part def 'def 1x1';
@@ -47,58 +51,52 @@ public class ElementTest {
      *  }
      * }
      * </pre>
-     * 
+     *
      * @author Arthur Daussy
      */
-    private static class TestModel {
-
-        private ModelBuilder builder = new ModelBuilder();
+    private class TestModel {
+        private final ModelBuilder builder = new ModelBuilder();
 
         private Namespace root;
-
         private Package p1;
-
         private PartDefinition def1;
-
         private Package p1x1;
-
         private PartDefinition def1x1;
-
         private PartDefinition privatedef1x1;
 
-        private Package p1x1x1;
-
-
         TestModel() {
-            build();
+            this.build();
         }
 
         private void build() {
-
-            root = builder.createWithName(Namespace.class, null);
-
-            p1 = builder.createInWithName(Package.class, root, "p1");
-            def1 = builder.createInWithName(PartDefinition.class, p1, "Def1");
-
-            p1x1 = builder.createInWithName(Package.class, p1, "p1 x1");
-            def1x1 = builder.createInWithName(PartDefinition.class, p1x1, "def 1x1");
-            p1x1x1 = builder.createInWithName(Package.class, p1x1, "p1x 1x1");
-            privatedef1x1 = builder.createInWithName(PartDefinition.class, p1x1, "private def1x1");
-            privatedef1x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
-
+            this.root = this.builder.createWithName(Namespace.class, null);
+            this.p1 = this.builder.createInWithName(Package.class, this.root, "p1");
+            this.builder.createInWithName(Documentation.class, this.p1, "documentation");
+            this.def1 = this.builder.createInWithName(PartDefinition.class, this.p1, "Def1");
+            this.p1x1 = this.builder.createInWithName(Package.class, this.p1, "p1 x1");
+            this.def1x1 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "def 1x1");
+            this.builder.createInWithName(Package.class, this.p1x1, "p1x 1x1");
+            this.privatedef1x1 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "private def1x1");
+            this.privatedef1x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
         }
     }
 
-    @DisplayName("Check getQualifiedName feature")
+    @DisplayName("Check qualifiedName feature")
     @Test
-    public void getQualifiedNameTEst() {
+    public void getQualifiedNameTest() {
         var testModel = new TestModel();
         assertNull(testModel.root.getQualifiedName());
-
         assertEquals("p1", testModel.p1.getQualifiedName());
         assertEquals("p1::Def1", testModel.def1.getQualifiedName());
         assertEquals("p1::'p1 x1'::'def 1x1'", testModel.def1x1.getQualifiedName());
         assertEquals("p1::'p1 x1'::'private def1x1'", testModel.privatedef1x1.getQualifiedName());
     }
-    
+
+    @DisplayName("Check documentation feature")
+    @Test
+    public void getDocumentationTest() {
+        var testModel = new TestModel();
+        assertNotNull(testModel.p1.getDocumentation());
+        assertFalse(testModel.p1.getDocumentation().isEmpty());
+    }
 }
