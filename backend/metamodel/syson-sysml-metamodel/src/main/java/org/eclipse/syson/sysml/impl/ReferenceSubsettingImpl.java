@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -124,7 +125,7 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
      * @generated NOT
      */
     public Feature basicGetReferencingFeature() {
-        return this.getSubsettingFeature();
+        return this.getOwningFeature();
     }
 
     /**
@@ -222,7 +223,20 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
      */
     @Override
     public Feature getOwningFeature() {
-        return this.getReferencingFeature();
+        Element owner = this.getOwningRelatedElement();
+        if (owner instanceof Feature feature) {
+            return feature;
+        }
+        return null;
     }
 
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Feature getSubsettingFeature() {
+        return this.getReferencingFeature();
+    }
 } // ReferenceSubsettingImpl

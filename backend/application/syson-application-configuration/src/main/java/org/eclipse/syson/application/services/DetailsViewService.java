@@ -41,6 +41,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
@@ -164,6 +165,8 @@ public class DetailsViewService {
             if ((element instanceof StateUsage && SysmlPackage.eINSTANCE.getStateUsage_IsParallel().equals(eStructuralFeature))
                     || (element instanceof StateDefinition && SysmlPackage.eINSTANCE.getStateDefinition_IsParallel().equals(eStructuralFeature))) {
                 isReadOnly = isReadOnly || ((Type) element).getOwnedFeature().stream().filter(TransitionUsage.class::isInstance).findAny().isPresent();
+            } else if (element instanceof FeatureMembership && SysmlPackage.eINSTANCE.getFeaturing_Feature().equals(eStructuralFeature)) {
+                isReadOnly = true;
             }
         }
         return isReadOnly;

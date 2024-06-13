@@ -73,9 +73,9 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
      * @generated NOT
      */
     public PortDefinition basicGetOriginalPortDefinition() {
-        Namespace owningNamespace = this.getOwningNamespace();
-        if (owningNamespace instanceof PortDefinition portDefinition) {
-            return portDefinition;
+        PortConjugation conjugator = this.getOwnedPortConjugator();
+        if (conjugator != null) {
+            return conjugator.getOriginalPortDefinition();
         }
         return null;
     }
@@ -169,6 +169,16 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     @Override
     public Conjugation getOwnedConjugator() {
         return this.getOwnedPortConjugator();
+    }
+
+    /**
+     * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Namespace getOwningNamespace() {
+        return this.getOriginalPortDefinition();
     }
 
 } // ConjugatedPortDefinitionImpl
