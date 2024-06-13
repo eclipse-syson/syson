@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -49,6 +50,7 @@ import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -59,10 +61,14 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBinaryOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBracketOperatorExpressionTestModel;
@@ -103,8 +109,8 @@ public class SysMLModelToTextSwitchTest {
 
     @BeforeEach
     public void setUp() {
-        builder = new ModelBuilder();
-        status = new ArrayList<>();
+        this.builder = new ModelBuilder();
+        this.status = new ArrayList<>();
     }
 
     @Test
@@ -700,7 +706,7 @@ public class SysMLModelToTextSwitchTest {
     }
 
     private String convertToText(Element source, Element context, int indent) {
-        return new SysMLElementSerializer("\n", "    ", new NameDeresolver(), status::add).doSwitch(source);
+        return new SysMLElementSerializer("\n", "    ", new NameDeresolver(), this.status::add).doSwitch(source);
     }
 
     private String convertToText(Element source) {
@@ -1053,15 +1059,47 @@ public class SysMLModelToTextSwitchTest {
         this.assertTextualFormEquals("*", literalInf);
     }
 
+    @DisplayName("UseCaseDefinition containing an ActorMembership, a SubjectMembership and an ObjectiveMembership")
+    @Test
+    public void useCaseDefinition() {
+        UseCaseDefinition useCaseDefinition = this.builder.createWithName(UseCaseDefinition.class, "ucd_1");
+
+        this.assertTextualFormEquals("use case def ucd_1;", useCaseDefinition);
+
+        ObjectiveMembership objectiveMembership = this.builder.createIn(ObjectiveMembership.class, useCaseDefinition);
+        SubjectMembership subject = this.builder.createIn(SubjectMembership.class, useCaseDefinition);
+        ActorMembership actor = this.builder.createIn(ActorMembership.class, useCaseDefinition);
+
+        ReferenceUsage referenceUsage = this.builder.createWithName(ReferenceUsage.class, "subject_1");
+        subject.getOwnedRelatedElement().add(referenceUsage);
+
+        PartDefinition partDefinition = this.builder.createWithName(PartDefinition.class, "partD_1");
+        this.builder.setType(referenceUsage, partDefinition);
+
+        PartUsage partUsage = this.builder.createWithName(PartUsage.class, "partU_1");
+        actor.getOwnedRelatedElement().add(partUsage);
+
+        RequirementUsage requirementUsage = this.builder.createWithName(RequirementUsage.class, "reqU_1");
+        objectiveMembership.getOwnedRelatedElement().add(requirementUsage);
+
+        this.assertTextualFormEquals("""
+                use case def ucd_1 {
+                    objective reqU_1;
+                    subject subject_1 : partD_1;
+                    actor partU_1;
+                }""", useCaseDefinition);
+
+    }
+
     @DisplayName("ActionUsage with simple succession with owned sub-actions")
     @Test
     public void actionUsageWithSuccessionSimple() {
-        ActionUsage actionUsage = builder.createWithName(ActionUsage.class, "a");
+        ActionUsage actionUsage = this.builder.createWithName(ActionUsage.class, "a");
 
         this.assertTextualFormEquals("action a;", actionUsage);
 
-        ActionUsage subAction1 = builder.createInWithName(ActionUsage.class, actionUsage, "a_1");
-        ActionUsage subAction2 = builder.createInWithName(ActionUsage.class, actionUsage, "a_2");
+        ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, "a_1");
+        ActionUsage subAction2 = this.builder.createInWithName(ActionUsage.class, actionUsage, "a_2");
 
         this.assertTextualFormEquals("""
                 action a {
@@ -1069,7 +1107,7 @@ public class SysMLModelToTextSwitchTest {
                     action a_2;
                 }""", actionUsage);
 
-        builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, subAction2);
+        this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, subAction2);
 
         this.assertTextualFormEquals("""
                 action a {
@@ -1083,17 +1121,17 @@ public class SysMLModelToTextSwitchTest {
     @DisplayName("Check SuccessionAsUsage using FeatureChaining both as source and target")
     @Test
     public void successionUsageWithFeatureChaining() {
-        PartUsage rootPart = builder.createWithName(PartUsage.class, "part1");
+        PartUsage rootPart = this.builder.createWithName(PartUsage.class, "part1");
 
-        PartUsage u1 = builder.createInWithName(PartUsage.class, rootPart, "u1");
-        AttributeUsage attr1 = builder.createInWithName(AttributeUsage.class, u1, "attr1");
-        PartUsage u2 = builder.createInWithName(PartUsage.class, rootPart, "u2");
-        AttributeUsage attr2 = builder.createInWithName(AttributeUsage.class, u2, "attr2");
+        PartUsage u1 = this.builder.createInWithName(PartUsage.class, rootPart, "u1");
+        AttributeUsage attr1 = this.builder.createInWithName(AttributeUsage.class, u1, "attr1");
+        PartUsage u2 = this.builder.createInWithName(PartUsage.class, rootPart, "u2");
+        AttributeUsage attr2 = this.builder.createInWithName(AttributeUsage.class, u2, "attr2");
 
-        Feature source = builder.createFeatureChaining(u1, attr1);
-        Feature target = builder.createFeatureChaining(u2, attr2);
+        Feature source = this.builder.createFeatureChaining(u1, attr1);
+        Feature target = this.builder.createFeatureChaining(u2, attr2);
 
-        SuccessionAsUsage successionUsage = builder.createSuccessionAsUsage(SuccessionAsUsage.class, rootPart, source, target);
+        SuccessionAsUsage successionUsage = this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, rootPart, source, target);
 
         this.assertTextualFormEquals("first u1.attr1 then u2.attr2;", successionUsage);
 
@@ -1102,21 +1140,21 @@ public class SysMLModelToTextSwitchTest {
     @DisplayName("ActionUsage with SuccessionAsUsage linked to an action defined in the ActionDefinition")
     @Test
     public void actionUsageWithActionDefinitionAndSuccession() {
-        Package pack1 = builder.createWithName(Package.class, "p1");
+        Package pack1 = this.builder.createWithName(Package.class, "p1");
 
-        ActionUsage actionUsage = builder.createInWithName(ActionUsage.class, pack1, "a");
+        ActionUsage actionUsage = this.builder.createInWithName(ActionUsage.class, pack1, "a");
 
         this.assertTextualFormEquals("action a;", actionUsage);
 
         // Add definition
-        ActionDefinition actionDefinition = builder.createInWithName(ActionDefinition.class, pack1, "A");
-        ActionUsage subAction1 = builder.createInWithName(ActionUsage.class, actionDefinition, "a_1");
-        builder.setType(actionUsage, actionDefinition);
+        ActionDefinition actionDefinition = this.builder.createInWithName(ActionDefinition.class, pack1, "A");
+        ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionDefinition, "a_1");
+        this.builder.setType(actionUsage, actionDefinition);
 
         this.assertTextualFormEquals("action a : A;", actionUsage);
 
-        ActionUsage subAction2 = builder.createInWithName(ActionUsage.class, actionUsage, "a_2");
-        builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, subAction2);
+        ActionUsage subAction2 = this.builder.createInWithName(ActionUsage.class, actionUsage, "a_2");
+        this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, subAction2);
 
         this.assertTextualFormEquals("""
                 action a : A {
@@ -1127,7 +1165,7 @@ public class SysMLModelToTextSwitchTest {
         // By construction the inherited ActionUsage can be referenced by a membership
         // It should be ignored in such case.
 
-        Membership membership = builder.createIn(Membership.class, actionUsage);
+        Membership membership = this.builder.createIn(Membership.class, actionUsage);
         membership.setMemberElement(subAction1);
 
         this.assertTextualFormEquals("""
@@ -1146,12 +1184,12 @@ public class SysMLModelToTextSwitchTest {
     @DisplayName("ActionUsage with succession linked to an action with no name")
     @Test
     public void successionUsageWithUnamedAction() {
-        ActionUsage actionUsage = builder.createWithName(ActionUsage.class, "a");
+        ActionUsage actionUsage = this.builder.createWithName(ActionUsage.class, "a");
 
         this.assertTextualFormEquals("action a;", actionUsage);
 
-        ActionUsage subAction1 = builder.createInWithName(ActionUsage.class, actionUsage, "a_1");
-        ActionUsage unamedAction = builder.createIn(ActionUsage.class, actionUsage);
+        ActionUsage subAction1 = this.builder.createInWithName(ActionUsage.class, actionUsage, "a_1");
+        ActionUsage unamedAction = this.builder.createIn(ActionUsage.class, actionUsage);
 
         this.assertTextualFormEquals("""
                 action a {
@@ -1160,7 +1198,7 @@ public class SysMLModelToTextSwitchTest {
                 }""", actionUsage);
 
         // Add some content to that action
-        Comment comment = builder.createIn(Comment.class, unamedAction);
+        Comment comment = this.builder.createIn(Comment.class, unamedAction);
         comment.setBody("This is an action with no name");
         this.assertTextualFormEquals("""
                 action a {
@@ -1170,7 +1208,7 @@ public class SysMLModelToTextSwitchTest {
                     }
                 }""", actionUsage);
 
-        builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, unamedAction);
+        this.builder.createSuccessionAsUsage(SuccessionAsUsage.class, actionUsage, subAction1, unamedAction);
 
         this.assertTextualFormEquals("""
                 action a {
@@ -1182,7 +1220,7 @@ public class SysMLModelToTextSwitchTest {
                 }""", actionUsage);
 
         // Check that the error is reported
-        assertTrue(status.stream().anyMatch(s -> s.severity() == Severity.ERROR && s.message().startsWith("Unable to compute a valid identifier for")));
+        assertTrue(this.status.stream().anyMatch(s -> s.severity() == Severity.ERROR && s.message().startsWith("Unable to compute a valid identifier for")));
 
     }
 }
