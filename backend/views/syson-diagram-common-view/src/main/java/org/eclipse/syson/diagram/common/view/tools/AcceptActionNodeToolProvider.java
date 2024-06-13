@@ -14,38 +14,38 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to add the join action in actions body for all diagrams.
+ * Used to add an accept action in actions body for all diagrams.
  *
  * @author Jerome Gout
  */
-public class JoinActionNodeToolProvider extends AbstractFreeFormCompartmentNodeToolProvider {
+public class AcceptActionNodeToolProvider extends AbstractFreeFormCompartmentNodeToolProvider {
 
-    public JoinActionNodeToolProvider(EClass ownerEClass, IDescriptionNameGenerator descriptionNameGenerator) {
+    public AcceptActionNodeToolProvider(EClass ownerEClass, IDescriptionNameGenerator descriptionNameGenerator) {
         super(ownerEClass, ActionFlowCompartmentNodeDescriptionProvider.COMPARTMENT_LABEL, descriptionNameGenerator);
     }
 
     @Override
     protected String getNodeDescriptionName() {
-        return this.getDescriptionNameGenerator().getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME);
+        return this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getAcceptActionUsage());
     }
 
     @Override
     protected String getCreationServiceCallExpression() {
-        return AQLUtils.getSelfServiceCallExpression("createJoinAction");
+        return AQLUtils.getSelfServiceCallExpression("createAcceptAction");
     }
 
     @Override
     protected String getLabel() {
-        return "New Join";
+        return this.getDescriptionNameGenerator().getCreationToolName(SysmlPackage.eINSTANCE.getAcceptActionUsage());
     }
 
     @Override
     protected String getIconPath() {
-        return "/icons/full/obj16/JoinNode.svg";
+        return this.getIconPathFromType(SysmlPackage.eINSTANCE.getAcceptActionUsage());
     }
 }

@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.tools.AcceptActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
@@ -79,6 +80,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.name).ifPresent(nodeDescription -> {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getAcceptActionUsage())).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME)).ifPresent(nodeDescription.getReusedChildNodeDescriptions()::add);
@@ -104,15 +106,16 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
         nodeToolSection.setName("Create Section");
         INodeToolProvider compartmentNodeToolProvider = this.getItemCreationToolProvider();
 
+        nodeToolSection.getNodeTools().add(new StartActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         if (compartmentNodeToolProvider != null) {
             nodeToolSection.getNodeTools().add(compartmentNodeToolProvider.create(cache));
         }
-        nodeToolSection.getNodeTools().add(new StartActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new DoneActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new JoinActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new ForkActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new MergeActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        nodeToolSection.getNodeTools().add(new AcceptActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         nodeToolSection.getNodeTools().add(new DecisionActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        nodeToolSection.getNodeTools().add(new ForkActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        nodeToolSection.getNodeTools().add(new JoinActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        nodeToolSection.getNodeTools().add(new MergeActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        nodeToolSection.getNodeTools().add(new DoneActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         return nodeToolSection;
     }
 

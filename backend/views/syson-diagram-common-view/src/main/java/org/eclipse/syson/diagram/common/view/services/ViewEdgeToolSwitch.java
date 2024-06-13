@@ -82,9 +82,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseAcceptActionUsage(AcceptActionUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionUsage())
-                || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getActionDefinition())).collect(Collectors.toList());
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAcceptActionUsage(), targetNodes));
+        edgeTools.add(this.edgeToolService.createSuccessionEdgeTool(this.getSuccessionEdgeTargets()));
         edgeTools.addAll(this.caseUsage(object));
         // since AcceptActionDefintion does not exist, this.caseUsage did not manage the FeatureTyping edge, we need to add it manually.
         this.addFeatureTypingEdgeToolForActionUsageSubType(edgeTools);
@@ -99,11 +97,6 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> caseActionUsage(ActionUsage object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)).collect(Collectors.toList());
-        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()).equals(nodeDesc.getName()));
-        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
-        targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
-        edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getActionUsage(), targetNodes));
         edgeTools.add(this.edgeToolService.createSuccessionEdgeTool(this.getSuccessionEdgeTargets()));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
