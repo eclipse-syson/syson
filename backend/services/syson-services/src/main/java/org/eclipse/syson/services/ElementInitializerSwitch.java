@@ -29,6 +29,7 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
@@ -138,6 +139,12 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseSubsetting(Subsetting object) {
         object.setDeclaredName("subsets");
+        return object;
+    }
+
+    @Override
+    public Element caseSuccessionAsUsage(SuccessionAsUsage object) {
+        object.setDeclaredName("succession");
         return object;
     }
 

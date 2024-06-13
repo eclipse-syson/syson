@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -91,8 +93,9 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
         var targetElementDescriptions = this.getStartTargetDescriptions(cache);
 
         var builder = this.diagramBuilderHelper.newEdgeTool();
+        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", EdgeDescription.SEMANTIC_EDGE_TARGET));
+                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", params));
 
         var createStartEdgeTool = builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
                 .iconURLsExpression("/icons/full/obj16/Succession.svg")

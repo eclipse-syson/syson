@@ -611,8 +611,8 @@ public class ViewCreateService {
         return result;
     }
 
-    public Element createSuccessionEdge(Element successionSource, Element successionTarget) {
-        EObject successionOwner = successionSource.getOwner();
+    public Element createSuccessionEdge(Element successionSource, Element successionTarget, Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
+        EObject successionOwner = this.getSourceOwner(sourceNode, editingContext, diagramService);
         if (this.utilService.isStandardStartAction(successionSource)) {
             // When the source of the succession is the standard start action,
             // successionSource is a Membership instead of an ActionUsage

@@ -383,8 +383,9 @@ public class ViewEdgeToolService {
 
     public EdgeTool createSuccessionEdgeTool(List<NodeDescription> targetElementDescriptions) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
+        var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", EdgeDescription.SEMANTIC_EDGE_TARGET));
+                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", params));
 
         return builder.name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getSuccession().getName() + SVG)
