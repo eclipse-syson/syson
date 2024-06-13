@@ -12,68 +12,45 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.List;
-import java.util.Objects;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
-import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
-import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to add the standard start action inside diagrams.
+ * Used to add the standard start action in actions body for all diagrams.
  *
  * @author Jerome Gout
  */
-public class StartActionNodeToolProvider implements INodeToolProvider {
-
-    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
-
-    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
-
-    private final IDescriptionNameGenerator descriptionNameGenerator;
-
-    private final EClass ownerEClass;
+public class StartActionNodeToolProvider extends AbstractFreeFormCompartmentNodeToolProvider {
 
     public StartActionNodeToolProvider(EClass ownerEClass, IDescriptionNameGenerator descriptionNameGenerator) {
-        this.ownerEClass = Objects.requireNonNull(ownerEClass);
-        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+        super(ownerEClass, ActionFlowCompartmentNodeDescriptionProvider.COMPARTMENT_LABEL, descriptionNameGenerator);
     }
 
     @Override
-    public NodeTool create(IViewDiagramElementFinder cache) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
+    protected String getNodeDescriptionName() {
+        return this.getDescriptionNameGenerator().getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME);
+    }
 
-        var params = List.of(
-                AQLUtils.aqlString(this.descriptionNameGenerator.getNodeName(StartActionNodeDescriptionProvider.START_ACTION_NAME)),
-                AQLUtils.aqlString(this.descriptionNameGenerator.getNodeName(this.ownerEClass)),
-                AQLUtils.aqlString(ActionFlowCompartmentNodeDescriptionProvider.COMPARTMENT_LABEL),
-                "selectedNode",
-                "diagramContext",
-                "convertedNodes");
-        var creationServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("addStartAction"));
+    @Override
+    protected String getCreationServiceCallExpression() {
+        return AQLUtils.getSelfServiceCallExpression("addStartAction");
+    }
 
-        var createViewOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createViewInFreeFormCompartment", params))
-                .build();
+    @Override
+    protected String getLabel() {
+        return "Add Start Action";
+    }
 
-        var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:selectedNode.revealCompartment(self, diagramContext, editingContext, convertedNodes)")
-                .build();
+    @Override
+    protected String getIconPath() {
+        return "/icons/start_action.svg";
+    }
 
-        creationServiceCall.children(createViewOperation, revealOperation);
-
-        return builder.name("Add Start Action")
-                .iconURLsExpression("/icons/start_action.svg")
-                .body(creationServiceCall.build())
-                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canAddStartAction"))
-                .build();
+    @Override
+    protected String getPreconditionServiceCallExpression() {
+        return AQLUtils.getSelfServiceCallExpression("canAddStartAction");
     }
 }

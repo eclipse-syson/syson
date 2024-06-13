@@ -453,6 +453,24 @@ public class ViewCreateService {
         return (Package) owner;
     }
 
+    public Element createAcceptAction(Element ownerElement) {
+        Feature acceptSubActionsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::acceptSubactions");
+        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && acceptSubActionsStdAction != null) {
+            var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
+            var acceptAction = SysmlFactory.eINSTANCE.createAcceptActionUsage();
+            this.elementInitializerSwitch.doSwitch(acceptAction);
+            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
+            subsetting.setSubsettingFeature(acceptAction);
+            subsetting.setSubsettedFeature(acceptSubActionsStdAction);
+            subsetting.setIsImplied(true);
+            acceptAction.getOwnedRelationship().add(subsetting);
+            featureMember.getOwnedRelatedElement().add(acceptAction);
+            ownerElement.getOwnedRelationship().add(featureMember);
+            return acceptAction;
+        }
+        return ownerElement;
+    }
+
     public Element createAcceptActionPayload(AcceptActionUsage self, String payloadEClassName) {
         var classifier = SysmlPackage.eINSTANCE.getEClassifier(payloadEClassName);
         if (classifier instanceof EClass eClass) {

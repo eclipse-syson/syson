@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.AbstractViewNodeToolSectionSwitch;
+import org.eclipse.syson.diagram.common.view.tools.AcceptActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPayloadNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPortUsageReceiverToolNodeProvider;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
@@ -93,6 +94,7 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
         createSection.getNodeTools().add(new DecisionActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
+        createSection.getNodeTools().add(new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -105,6 +107,7 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
         createSection.getNodeTools().add(new MergeActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().add(new DecisionActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
+        createSection.getNodeTools().add(new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         return List.of(createSection, this.addElementsToolSection());
     }
 

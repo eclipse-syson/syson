@@ -35,8 +35,6 @@ import org.eclipse.syson.diagram.actionflow.view.edges.RedefinitionEdgeDescripti
 import org.eclipse.syson.diagram.actionflow.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.SubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.SuccessionEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.actionflow.view.edges.UsageNestedActionUsageEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.actionflow.view.edges.UsageNestedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.ActionFlowViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.DefinitionNodeDescriptionProvider;
@@ -113,8 +111,6 @@ public class ActionFlowViewDiagramDescriptionProvider extends AbstractDiagramDes
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubclassificationEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new SubsettingEdgeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getAcceptActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new UsageNestedActionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new SuccessionEdgeDescriptionProvider(colorProvider));
 
         diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider, this.getDescriptionNameGenerator()));
