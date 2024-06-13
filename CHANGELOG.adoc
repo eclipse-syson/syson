@@ -40,6 +40,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/337[#337] [diagrams] Fix direct edit of single digit cardinalities.
 - https://github.com/eclipse-syson/syson/issues/348[#348] [diagrams] The semantic representation of the Succession edge is not correct.
 - https://github.com/eclipse-syson/syson/issues/356[#356] [action-flow-view] The Allocate edge is not displayed in the Action Flow View diagram.
+- https://github.com/eclipse-syson/syson/issues/403[#403] [diagrams] Wrong computation of the Succession owner
 
 === Improvements
 
