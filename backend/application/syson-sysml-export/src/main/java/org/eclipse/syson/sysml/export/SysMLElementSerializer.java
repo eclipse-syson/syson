@@ -26,22 +26,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.CollectExpression;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
-import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
@@ -109,8 +109,6 @@ import org.eclipse.syson.sysml.export.utils.SysMLKeywordSwitch;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
-
-import reactor.util.function.Tuples;
 
 /**
  * Convert a SysML {@link Element} to its textual representation.
@@ -649,7 +647,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
 
         this.appendActorUsage(builder, actor);
-        
+
         return builder.toString();
     }
 
@@ -663,7 +661,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
 
         this.appendSubjectUsage(builder, subject);
-        
+
         return builder.toString();
     }
 
@@ -678,7 +676,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         builder.append("objective");
         this.appendObjectiveRequirementUsage(builder, objective);
-        
+
         return builder.toString();
     }
 
@@ -738,76 +736,95 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         ownedSubsetting.removeAll(ownedRedefinition);
         ownedSubsetting.remove(feature.getOwnedReferenceSubsetting());
 
-        this.appendSubsettings(builder, ownedSubsetting.stream().filter(s -> includeImplied || !s.isIsImplied()).toList(), feature);
+        this.appendSubsettings(builder, ownedSubsetting, feature, includeImplied);
 
         this.appendFeatureTyping(builder, feature.getOwnedTyping(), feature);
         this.appendMultiplicityPart(builder, feature);
     }
 
-    private void appendSubsettings(Appender builder, List<Subsetting> subSettings, Element element) {
-        if (!subSettings.isEmpty()) {
-            builder.appendSpaceIfNeeded().append(LabelConstants.SUBSETTING);
-            builder.appendSpaceIfNeeded().append(subSettings.stream().map(this.getSubsettedFeature())
-                    .filter(Objects::nonNull)
+    private void appendSubsettings(Appender builder, List<Subsetting> subSettings, Element element, boolean includeImplied) {
+        List<? extends Feature> subSettedDifference = subSettings.stream()
+                .filter(f -> includeImplied || !f.isIsImplied())
+                .map(Subsetting::getSubsettedFeature)
+                .filter(this::isNotNullAndNotAProxy)
+                .toList();
+        if (!subSettedDifference.isEmpty()) {
+            String subSettingPart = subSettedDifference.stream()
                     .map(superFeature -> this.getDeresolvableName(superFeature, element))
-                    .collect(Collectors.joining(", ")));
+                    .filter(this::nameNotNullAndNotBlank)
+                    .collect(Collectors.joining(", "));
+            if (!subSettingPart.isBlank()) {
+                builder.appendSpaceIfNeeded().append(LabelConstants.SUBSETTING);
+                builder.appendSpaceIfNeeded().append(subSettingPart);
+            }
         }
     }
 
-    /**
-     * When the function Subsetting::getSubsettedFeature() is correctly implemented then remove this function and use
-     * only Subsetting::getSubsettedFeature() in appendSubsettings();
-     */
-    private Function<? super Subsetting, ? extends Feature> getSubsettedFeature() {
-        return subsetting -> {
-            Feature subsettedFeature = subsetting.getSubsettedFeature();
-            if (subsettedFeature != null) {
-                return subsettedFeature;
-            } else {
-                return subsettedFeature;
-            }
-        };
-    }
-
     private void appendRedefinition(Appender builder, List<Redefinition> redefinitions, Element element, boolean includeImplied) {
-        if (!redefinitions.isEmpty()) {
-            builder.appendSpaceIfNeeded().append(LabelConstants.REDEFINITION);
-            builder.appendSpaceIfNeeded().append(redefinitions.stream()
-                    .filter(redef -> includeImplied || !redef.isIsImplied())
-                    .map(Redefinition::getRedefinedFeature)
-                    .filter(Objects::nonNull)
+        List<Feature> redefinedFeatures = redefinitions.stream()
+                .filter(redef -> includeImplied || !redef.isIsImplied())
+                .map(Redefinition::getRedefinedFeature)
+                .filter(this::isNotNullAndNotAProxy)
+                .toList();
+        if (!redefinedFeatures.isEmpty()) {
+            String redefinitionPart = redefinedFeatures.stream()
                     .map(superFeature -> this.getDeresolvableName(superFeature, element))
-                    .collect(Collectors.joining(", ")));
+                    .filter(this::nameNotNullAndNotBlank)
+                    .collect(Collectors.joining(", "));
+            if (!redefinitionPart.isBlank()) {
+                builder.appendSpaceIfNeeded().append(LabelConstants.REDEFINITION);
+                builder.appendSpaceIfNeeded().append(redefinitionPart);
+            }
         }
     }
 
     private void appendReferenceSubsetting(Appender builder, ReferenceSubsetting ownedReferenceSubsetting, Element element, boolean includeImplied) {
         if (ownedReferenceSubsetting != null && (includeImplied || !ownedReferenceSubsetting.isIsImplied())) {
-            builder.appendSpaceIfNeeded().append(LabelConstants.REFERENCES);
-            if (ownedReferenceSubsetting.getReferencedFeature() != null) {
-                appendOwnedReferenceSubsetting(builder, ownedReferenceSubsetting);
+            if (isNotNullAndNotAProxy(ownedReferenceSubsetting.getReferencedFeature())) {
+                Appender localBuilder = newAppender();
+                appendOwnedReferenceSubsetting(localBuilder, ownedReferenceSubsetting);
+
+                if (!localBuilder.isEmpty()) {
+                    builder.appendSpaceIfNeeded().append(LabelConstants.REFERENCES);
+                    builder.appendWithSpaceIfNeeded(localBuilder.toString());
+                }
             }
         }
     }
 
+    private boolean isNotNullAndNotAProxy(EObject e) {
+        final boolean result;
+        if (e != null) {
+            if (e.eIsProxy()) {
+                reportConsumer.accept(Status.warning("Found one proxy {0}", ((InternalEObject) e).eProxyURI()));
+                result = false;
+            } else {
+                result = true;
+            }
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    private boolean nameNotNullAndNotBlank(String name) {
+        return name != null && !name.isBlank();
+    }
+
     private void appendFeatureTyping(Appender builder, EList<FeatureTyping> ownedTyping, Element element) {
-        if (!ownedTyping.isEmpty()) {
-            builder.appendSpaceIfNeeded().append(LabelConstants.COLON);
-            builder.appendSpaceIfNeeded().append(ownedTyping.stream()
-                    .filter(ft -> ft.getType() != null)
-                    .map(ft -> Tuples.of(ft, ft.getType()))
-                    .filter(t -> t.getT2() != null)
-                    .map(t -> {
-                        String name = this.getDeresolvableName(t.getT2(), element);
-
-                        if (t.getT1() instanceof ConjugatedPortTyping) {
-                            name = LabelConstants.CONJUGATED + name;
-                        }
-                        return name;
-                    }
-
-                    )
-                    .collect(Collectors.joining(", ")));
+        List<Type> types = ownedTyping.stream()
+                .filter(ft -> isNotNullAndNotAProxy(ft.getType()))
+                .map(ft -> ft.getType())
+                .toList();
+        if (!types.isEmpty()) {
+            String featureTypePart = types.stream()
+                    .map(t -> this.getDeresolvableName(t, element))
+                    .filter(this::nameNotNullAndNotBlank)
+                    .collect(Collectors.joining(", "));
+            if (!featureTypePart.isBlank()) {
+                builder.appendSpaceIfNeeded().append(LabelConstants.COLON);
+                builder.appendSpaceIfNeeded().append(featureTypePart);
+            }
         }
     }
 
@@ -1166,17 +1183,26 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendDefinitionDeclaration(Appender builder, Definition definition) {
         this.appendNameWithShortName(builder, definition);
 
-        EList<Subclassification> subClassification = definition.getOwnedSubclassification();
-        if (!subClassification.isEmpty()) {
-            builder.appendSpaceIfNeeded().append(":> ");
+        List<Subclassification> subClassification = definition.getOwnedSubclassification().stream()
+                .filter(s -> !s.isIsImplied())
+                .toList();
 
-            String superClasses = subClassification.stream()
-                    .map(sub -> sub.getSuperclassifier())
-                    .filter(NOT_NULL)
+        List<Classifier> subClassificationClassifier = subClassification.stream()
+                .map(sub -> sub.getSuperclassifier())
+                .filter(this::isNotNullAndNotAProxy)
+                .toList();
+        if (!subClassificationClassifier.isEmpty()) {
+
+            String superClasses = subClassificationClassifier.stream()
                     .map(sup -> this.getDeresolvableName(sup, definition))
+                    .filter(this::nameNotNullAndNotBlank)
                     .collect(joining(", "));
 
-            builder.append(superClasses);
+            if (!superClasses.isBlank()) {
+                builder.appendSpaceIfNeeded().append(":> ");
+                builder.append(superClasses);
+            }
+
         }
     }
 
@@ -1196,7 +1222,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
      * @return a name
      */
     private String getDeresolvableName(Element toDeresolve, Element context) {
-        return this.nameDeresolver.getDeresolvedName(toDeresolve, context);
+        String deresolvedName = this.nameDeresolver.getDeresolvedName(toDeresolve, context);
+
+        if (deresolvedName == null || deresolvedName.isBlank()) {
+            reportConsumer.accept(Status.warning("Empty deresolved name for an {0} with id {1}", toDeresolve.eClass(), toDeresolve.getElementId()));
+        }
+
+        return deresolvedName;
     }
 
     private void appendDefinitionPrefix(Appender builder, Definition def) {
