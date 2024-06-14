@@ -47,6 +47,10 @@ public class ElementTest {
      *              part def def1x1x1;
      *          }
      *          private part def 'private def1x1';
+     *          private part def 'def-10';
+     *          private part def 'éléphant;
+     *          private part def def_11;
+     *          private part def _def_12;
      *      }
      *  }
      * }
@@ -64,6 +68,14 @@ public class ElementTest {
         private PartDefinition def1x1;
         private PartDefinition privatedef1x1;
 
+        private PartDefinition def10;
+
+        private PartDefinition defElephant;
+
+        private PartDefinition def11;
+
+        private PartDefinition def12;
+
         TestModel() {
             this.build();
         }
@@ -78,6 +90,10 @@ public class ElementTest {
             this.builder.createInWithName(Package.class, this.p1x1, "p1x 1x1");
             this.privatedef1x1 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "private def1x1");
             this.privatedef1x1.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+            this.def10 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "def-10");
+            this.defElephant = this.builder.createInWithName(PartDefinition.class, this.p1x1, "éléphant");
+            this.def11 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "def_11");
+            this.def12 = this.builder.createInWithName(PartDefinition.class, this.p1x1, "_def_12");
         }
     }
 
@@ -90,6 +106,10 @@ public class ElementTest {
         assertEquals("p1::Def1", testModel.def1.getQualifiedName());
         assertEquals("p1::'p1 x1'::'def 1x1'", testModel.def1x1.getQualifiedName());
         assertEquals("p1::'p1 x1'::'private def1x1'", testModel.privatedef1x1.getQualifiedName());
+        assertEquals("p1::'p1 x1'::'def-10'", testModel.def10.getQualifiedName());
+        assertEquals("p1::'p1 x1'::'éléphant'", testModel.defElephant.getQualifiedName());
+        assertEquals("p1::'p1 x1'::def_11", testModel.def11.getQualifiedName());
+        assertEquals("p1::'p1 x1'::_def_12", testModel.def12.getQualifiedName());
     }
 
     @DisplayName("Check documentation feature")

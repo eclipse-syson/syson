@@ -144,6 +144,8 @@ public class NameDeresolverTest {
          * package p1 {
                 attribute 'Attr 1';
                 attribute 'Attr 2' :> 'Attr 1';
+                attribute 'Attr-3';
+                attribute attr4 :> 'Attr-3';
             }
          * </pre>
          */
@@ -152,10 +154,14 @@ public class NameDeresolverTest {
 
         AttributeDefinition attr1 = builder.createInWithName(AttributeDefinition.class, p1, "Attr 1");
         AttributeDefinition attr2 = builder.createInWithName(AttributeDefinition.class, p1, "Attr 2");
+        AttributeDefinition attr3 = builder.createInWithName(AttributeDefinition.class, p1, "Attr-3");
+        AttributeDefinition attr4 = builder.createInWithName(AttributeDefinition.class, p1, "Attr4");
 
         builder.addSuperType(attr2, attr1);
+        builder.addSuperType(attr4, attr3);
 
         assertEquals("'Attr 1'", getDerolvedName(attr1, attr2));
+        assertEquals("'Attr-3'", getDerolvedName(attr3, attr4));
     }
 
     @Test
