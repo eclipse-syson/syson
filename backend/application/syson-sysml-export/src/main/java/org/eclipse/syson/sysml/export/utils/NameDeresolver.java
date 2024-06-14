@@ -27,6 +27,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -64,7 +65,7 @@ public class NameDeresolver {
      * Keeps a cache of the qualified name of an element identified by its elementId.
      */
     private Map<String, String> qualifiedNameCache = new HashMap<>();
-    
+
     private DeresolvingNamespaceProvider deresolvingNamespaceProvider = new DeresolvingNamespaceProvider();
 
     public String getDeresolvedName(Element element, Element context) {
@@ -197,7 +198,7 @@ public class NameDeresolver {
         // If the name resolve against an element which is not the expected element it means that there is a name
         // conflict.
         // In that case keep we need a more detailed qualified name
-        if (resolvedElement != null && resolvedElement != element.getOwningMembership()) {
+        if (resolvedElement != null && !match(element, resolvedElement)) {
             // Last try if the element is in the containment tree find the shortest qualified name
             String qualifiedName = getQualifiedName(owningNamespace);
             if (qualifiedName != null && !qualifiedName.isBlank() && elementQn.startsWith(qualifiedName)) {
@@ -209,6 +210,30 @@ public class NameDeresolver {
 
         return relativeQualifiedName;
 
+    }
+
+    /**
+     * Checks if the resolved element is either the resolved element member or if it implicitly matches the naming
+     * feature of unamed element which name computation used the resolved element.
+     * 
+     * @param element
+     *            the element to compute the name from
+     * @param resolvedElement
+     *            the resolution tested name in the local namespace
+     * @return <code>true</code> if the elements matche
+     */
+    private boolean match(Element element, Membership resolvedElement) {
+        return resolvedElement.getMemberElement() == element || matchImplicite(resolvedElement, element);
+    }
+
+    private boolean matchImplicite(Membership resolvedMembership, Element context) {
+        Element resolvedElement = resolvedMembership.getMemberElement();
+
+        if (resolvedElement.getDeclaredName() == null && resolvedElement.getDeclaredShortName() == null && resolvedElement instanceof Feature feature) {
+            return feature.namingFeature() == context;
+
+        }
+        return false;
     }
 
     private String getRelativeQualifiedName(String elementQn, Element element, Membership m) {
@@ -223,6 +248,5 @@ public class NameDeresolver {
         }
         return qn;
     }
-
 
 }

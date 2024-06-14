@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -42,6 +43,8 @@ import org.slf4j.LoggerFactory;
  * @author Arthur Daussy
  */
 public class SysMLKeywordSwitch extends SysmlSwitch<String> {
+
+    private static final String PERFORM = "perform";
 
     private static final String ACTION = "action";
 
@@ -99,6 +102,11 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
             return "";
         }
         return ENUM_KEYWORD;
+    }
+
+    @Override
+    public String casePerformActionUsage(PerformActionUsage object) {
+        return PERFORM + " " + ACTION;
     }
 
     @Override

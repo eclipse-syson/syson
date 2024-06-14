@@ -24,10 +24,14 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.LiteralInfinity;
+import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.Redefinition;
@@ -40,7 +44,6 @@ import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.EMFUtils;
@@ -79,15 +82,39 @@ public class ModelBuilder {
         child.getOwnedRelationship().add(subsetting);
     }
 
-    public ReferenceSubsetting addReferenceSubsetting(Usage child, Feature parent) {
+    public ReferenceSubsetting addReferenceSubsetting(Feature child, Feature subsettedFeature) {
         ReferenceSubsetting referenceSubsetting = this.create(ReferenceSubsetting.class);
         referenceSubsetting.setSubsettingFeature(child);
-        referenceSubsetting.setSubsettedFeature(parent);
-        referenceSubsetting.setReferencedFeature(parent);
+        referenceSubsetting.setSubsettedFeature(subsettedFeature);
+        referenceSubsetting.setReferencedFeature(subsettedFeature);
 
         child.getOwnedRelationship().add(referenceSubsetting);
 
+        if (!subsettedFeature.getOwnedFeatureChaining().isEmpty()) {
+            referenceSubsetting.getOwnedRelatedElement().add(subsettedFeature);
+        }
+
         return referenceSubsetting;
+    }
+
+    public MultiplicityRange addMultiplicityRange(Element owner, Expression expression) {
+        MultiplicityRange multiplicity = this.createIn(MultiplicityRange.class, owner);
+
+        OwningMembership owningMembership = this.createIn(OwningMembership.class, multiplicity);
+
+        owningMembership.getOwnedRelatedElement().add(expression);
+
+        return multiplicity;
+    }
+
+    public MultiplicityRange addIntMutiplicityRange(Element owner, int value) {
+        LiteralInteger literalInteger = this.create(LiteralInteger.class);
+        literalInteger.setValue(value);
+        return this.addMultiplicityRange(owner, literalInteger);
+    }
+
+    public MultiplicityRange addInfinityMutiplicityRange(Element owner) {
+        return this.addMultiplicityRange(owner, this.create(LiteralInfinity.class));
     }
 
     public void addRedefinition(Feature redefiningFeature, Feature redefinedFeature) {

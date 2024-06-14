@@ -22,6 +22,9 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,7 +59,6 @@ public class NameDeresolverTest {
     public void setUp() {
         builder = new ModelBuilder();
     }
-
 
     @Test
     public void directOnwendMember() {
@@ -369,6 +371,68 @@ public class NameDeresolverTest {
         assertEquals("p2::p2x1::def2x1", getDerolvedName(model.def2x1, model.def1x1x1));
         assertEquals(P2_DEF2, getDerolvedName(model.def2, model.def1x1x1));
 
+    }
+
+    @DisplayName("Check name deresolution with feature with implicite name")
+    @Test
+    public void implicitNameWithConflict() {
+        /**
+         * <pre>
+         *  package p1 {
+         * 
+         *      package p1x1 {
+         *          verification v1;
+         *      }
+         * 
+         *      part pu1 {
+         *          perform v1;
+         *       }
+         *  }
+         * </pre>
+         */
+
+        Package p1 = builder.createWithName(Package.class, "p1");
+
+        Package p1x1 = builder.createInWithName(Package.class, p1, "p1x1");
+
+        VerificationCaseUsage verif = builder.createInWithName(VerificationCaseUsage.class, p1x1, "v1");
+
+        PartUsage partUsage = builder.createInWithName(PartUsage.class, p1, "pu1");
+
+        PerformActionUsage performAction = builder.createInWithName(PerformActionUsage.class, partUsage, null);
+
+        builder.addReferenceSubsetting(performAction, verif);
+
+        assertEquals("p1x1::v1", getDerolvedName(verif, performAction));
+
+        /*
+         * We now add an import in p1 to p1x1 which makes v1 directly accessible from the perform action. Meaning that
+         * we should normally could use directly "v1" to reference the verification. However the specificity of this
+         * test is that the perform action is also named "v1" using the effectiveName rules of the PerformAction. In
+         * such case it should create a name conflict forcing us to use "p1x1:v1" to reference the verification.
+         * However, since the name of the perform action is "derived" we want to allows the "v1" to be resolved
+         * against the verification.
+         */
+
+        /**
+         * <pre>
+         *  package p1 {
+         *      import p1x1::*;
+         * 
+         *      package p1x1 {
+         *          verification v1;
+         *      }
+         * 
+         *      part pu1 {
+         *          perform v1;
+         *       }
+         *  }
+         * </pre>
+         */
+        builder.createIn(NamespaceImport.class, p1).setImportedNamespace(p1x1);
+
+        assertEquals("v1", getDerolvedName(performAction, performAction));
+        assertEquals("v1", getDerolvedName(verif, performAction));
     }
 
     @DisplayName("Check the deresolved names with a NamespaceImport at root level")
