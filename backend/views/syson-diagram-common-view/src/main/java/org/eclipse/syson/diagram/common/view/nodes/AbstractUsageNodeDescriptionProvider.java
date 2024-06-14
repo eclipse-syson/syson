@@ -21,9 +21,11 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -100,7 +102,6 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(this.eClass);
         return this.diagramBuilderHelper.newNodeDescription()
-                .childrenLayoutStrategy(this.diagramBuilderHelper.newListLayoutStrategyDescription().areChildNodesDraggableExpression("false").build())
                 .collapsible(true)
                 .defaultHeightExpression(ViewConstants.DEFAULT_CONTAINER_NODE_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
@@ -118,9 +119,16 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(this.eClass)).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
-
             nodeDescription.getReusedChildNodeDescriptions().addAll(this.getReusedChildren(cache));
-
+            List<NodeDescription> growableNodes = new ArrayList<>();
+            nodeDescription.getReusedChildNodeDescriptions().stream()
+                    .filter(nodeDesc -> nodeDesc.getChildrenLayoutStrategy() instanceof FreeFormLayoutStrategyDescription)
+                    .forEach(growableNodes::add);
+            ListLayoutStrategyDescription layoutStrategy = this.diagramBuilderHelper.newListLayoutStrategyDescription()
+                    .areChildNodesDraggableExpression("false")
+                    .growableNodes(growableNodes.toArray(NodeDescription[]::new))
+                    .build();
+            nodeDescription.setChildrenLayoutStrategy(layoutStrategy);
             nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
         });
     }
