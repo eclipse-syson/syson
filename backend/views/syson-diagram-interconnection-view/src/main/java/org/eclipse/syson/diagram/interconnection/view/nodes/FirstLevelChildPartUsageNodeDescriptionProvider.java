@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -94,6 +95,13 @@ public class FirstLevelChildPartUsageNodeDescriptionProvider extends AbstractNod
         nodeDescription.getReusedChildNodeDescriptions().add(optCompartmentFreeFormNodeDescription.get());
         nodeDescription.getReusedBorderNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
         nodeDescription.setPalette(this.createNodePalette(cache));
+
+        List<NodeDescription> growableNodes = List.of(optCompartmentFreeFormNodeDescription.get());
+        ListLayoutStrategyDescription layoutStrategy = this.diagramBuilderHelper.newListLayoutStrategyDescription()
+                .areChildNodesDraggableExpression("false")
+                .growableNodes(growableNodes.toArray(NodeDescription[]::new))
+                .build();
+        nodeDescription.setChildrenLayoutStrategy(layoutStrategy);
     }
 
     private InsideLabelDescription createInsideLabelDescription() {
