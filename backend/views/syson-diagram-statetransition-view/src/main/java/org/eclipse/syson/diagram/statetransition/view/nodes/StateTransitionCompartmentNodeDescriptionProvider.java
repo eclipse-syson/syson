@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -90,6 +91,7 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
                 .labelExpression(STATE_COMPARTMENT_NAME)
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
     }
 

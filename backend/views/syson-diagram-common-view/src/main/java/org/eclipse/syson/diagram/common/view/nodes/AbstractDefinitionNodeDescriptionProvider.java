@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescript
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -140,6 +141,7 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
                 .labelExpression(AQLUtils.getSelfServiceCallExpression("getContainerLabel"))
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
     }
 

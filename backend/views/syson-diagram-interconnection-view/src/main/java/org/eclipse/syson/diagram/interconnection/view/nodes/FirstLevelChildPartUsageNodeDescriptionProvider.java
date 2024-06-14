@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -109,6 +110,7 @@ public class FirstLevelChildPartUsageNodeDescriptionProvider extends AbstractNod
                 .labelExpression(AQLConstants.AQL_SELF + ".getContainerLabel()")
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
     }
 

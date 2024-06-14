@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
@@ -138,6 +139,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
                 .labelExpression(COMPARTMENT_LABEL)
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
     }
 

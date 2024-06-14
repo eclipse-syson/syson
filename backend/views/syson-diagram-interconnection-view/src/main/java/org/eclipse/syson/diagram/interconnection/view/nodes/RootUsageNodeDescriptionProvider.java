@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -91,6 +92,7 @@ public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .labelExpression(AQLConstants.AQL_SELF + ".getContainerLabel()")
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
+                .textAlign(LabelTextAlign.CENTER)
                 .build();
     }
 
