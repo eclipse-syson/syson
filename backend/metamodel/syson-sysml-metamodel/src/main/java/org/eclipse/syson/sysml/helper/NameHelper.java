@@ -14,15 +14,18 @@ package org.eclipse.syson.sysml.helper;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Set of static method to helm to manipulate / escape name / qualified name of sysml elements
- * 
+ *
  * @author Guillaume Escande
  */
 public class NameHelper {
+
+    private static java.util.regex.Pattern VALID_CHARS = Pattern.compile("[^a-zA-Z0-9_]");
 
     /**
      * Constructor
@@ -32,7 +35,7 @@ public class NameHelper {
 
     /**
      * Parse a qualified name to extract list of sections
-     * 
+     *
      * @param qualifiedName
      *            qualifed name to split
      * @return
@@ -43,7 +46,7 @@ public class NameHelper {
 
     /**
      * Escape a string
-     * 
+     *
      * @param str
      *            string to escape
      * @return
@@ -54,7 +57,7 @@ public class NameHelper {
 
     /**
      * Unescpae a string
-     * 
+     *
      * @param str
      *            string to unescape
      * @return
@@ -65,14 +68,16 @@ public class NameHelper {
 
     /**
      * Set a String printable for Sysml name
-     * @param initialName string to set printable
+     *
+     * @param initialName
+     *            string to set printable
      * @return
      */
     public static String toPrintableName(String initialName) {
         String name;
         if (initialName == null || initialName.isEmpty()) {
             name = "";
-        } else if (initialName.contains(" ") || !isLetterOrUnderscore(initialName.charAt(0))) {
+        } else if (VALID_CHARS.matcher(initialName).find() || !isLetterOrUnderscore(initialName.charAt(0))) {
             name = '\'' + initialName + '\'';
         } else {
             name = initialName;
