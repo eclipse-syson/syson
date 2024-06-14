@@ -83,6 +83,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -236,7 +237,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         this.appendOccurrenceUsagePrefix(builder, actionUsage);
 
-        this.appendActionNodeUsageDeclaration(builder, actionUsage);
+        builder.appendWithSpaceIfNeeded("action");
+
+        this.appendActionUsageDeclaration(builder, actionUsage);
 
         this.appendChildrenContent(builder, actionUsage, actionUsage.getOwnedMembership());
 
@@ -244,10 +247,39 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     }
 
-    private void appendActionNodeUsageDeclaration(Appender builder, ActionUsage actionUsage) {
-        builder.appendSpaceIfNeeded().appendWithSpaceIfNeeded("action");
+    private void appendActionUsageDeclaration(Appender builder, ActionUsage actionUsage) {
 
-        this.appendUsageDeclaration(builder, actionUsage);
+        appendUsageDeclaration(builder, actionUsage);
+
+        appendValuePart(builder, actionUsage);
+    }
+
+    @Override
+    public String casePerformActionUsage(PerformActionUsage perfomActionUsage) {
+
+        Appender builder = new Appender(lineSeparator, indentation);
+
+        appendOccurrenceUsagePrefix(builder, perfomActionUsage);
+
+        builder.appendWithSpaceIfNeeded("perform");
+
+        Appender nameAppender = new Appender(lineSeparator, indentation);
+        appendNameWithShortName(nameAppender, perfomActionUsage);
+
+        if (nameAppender.isEmpty() && perfomActionUsage.getOwnedReferenceSubsetting() != null) {
+            // Use simple form : perfom <nameOfReferenceSubSetting>
+            this.appendOwnedReferenceSubsetting(builder, perfomActionUsage.getOwnedReferenceSubsetting());
+        } else {
+            // Use complete form
+            builder.appendWithSpaceIfNeeded("action");
+            this.appendUsageDeclaration(builder, perfomActionUsage);
+        }
+
+        appendValuePart(builder, perfomActionUsage);
+
+        appendChildrenContent(builder, perfomActionUsage, perfomActionUsage.getOwnedMembership());
+
+        return builder.toString();
     }
 
     @Override
@@ -753,7 +785,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (ownedReferenceSubsetting != null && (includeImplied || !ownedReferenceSubsetting.isIsImplied())) {
             builder.appendSpaceIfNeeded().append(LabelConstants.REFERENCES);
             if (ownedReferenceSubsetting.getReferencedFeature() != null) {
-                builder.appendSpaceIfNeeded().append(this.getDeresolvableName(ownedReferenceSubsetting.getReferencedFeature(), element));
+                appendOwnedReferenceSubsetting(builder, ownedReferenceSubsetting);
             }
         }
     }

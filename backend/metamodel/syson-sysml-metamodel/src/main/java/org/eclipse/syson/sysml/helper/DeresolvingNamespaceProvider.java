@@ -19,7 +19,9 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Import;
+import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -49,7 +51,6 @@ public class DeresolvingNamespaceProvider {
         } else {
             result = element.getOwningNamespace();
         }
-
         return result;
     }
 
@@ -70,7 +71,6 @@ public class DeresolvingNamespaceProvider {
                 ns = resultFeature;
             }
         }
-
         return ns;
     }
 
@@ -91,20 +91,28 @@ public class DeresolvingNamespaceProvider {
         // If the Specialization is a ReferenceSubsetting (see 8.3.3.3.9), and its referencingFeature is
         // an end Feature whose owningType is a Connector, then the local Namespace is the
         // owningNamespace of the Connector.
+        Namespace result = null;
         if (specialization instanceof ReferenceSubsetting refSubsetting) {
             Feature feature = refSubsetting.getReferencingFeature();
             if (feature != null && feature.isIsEnd() && feature.getOwningType() instanceof Connector connector) {
-                return connector.getOwningNamespace();
+                result = connector.getOwningNamespace();
             }
         }
-        // If the Specialization is a FeatureTyping (see 8.3.3.3.6), and its owningFeature is an
-        // InvocationExpression, then the local Namespace is the non-invocation Namespace for the
-        // owningFeature (determined as for a FeatureReferenceExpression under Membership above).
-        // Otherwise, if the owningType is not null, then the local Namespace is the owningNamespace of the
-        // owningType.
-        // Otherwise, the local Namespace is the owningNamespace of the Specialization.
-
-        return specialization.getOwningNamespace();
+        if (result == null && specialization instanceof FeatureTyping featureTyping && featureTyping.getOwningFeature() instanceof InvocationExpression) {
+            // If the Specialization is a FeatureTyping (see 8.3.3.3.6), and its owningFeature is an
+            // InvocationExpression, then the local Namespace is the non-invocation Namespace for the
+            // owningFeature (determined as for a FeatureReferenceExpression under Membership above).
+        }
+        if (result == null && specialization.getOwningType() != null) {
+            // Otherwise, if the owningType is not null, then the local Namespace is the owningNamespace of the
+            // owningType.
+            result = specialization.getOwningType().getOwningNamespace();
+        }
+        if (result == null) {
+            // Otherwise, the local Namespace is the owningNamespace of the Specialization.
+            result = specialization.getOwningNamespace();
+        }
+        return result;
     }
 
     private Namespace getDeresolvingNamespaceFeatureChaining(Element element, FeatureChaining featureChaining) {
@@ -126,8 +134,6 @@ public class DeresolvingNamespaceProvider {
         } else {
             result = element.getOwningNamespace();
         }
-
         return result;
     }
-
 }

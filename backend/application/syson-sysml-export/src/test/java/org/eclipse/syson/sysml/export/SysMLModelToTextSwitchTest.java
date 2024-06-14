@@ -58,6 +58,7 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -69,12 +70,15 @@ import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBinaryOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBracketOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithFeatureChainExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithInvocationExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.sample.CameraModel;
+import org.eclipse.syson.sysml.export.models.sample.PictureTakingModel;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
 import org.eclipse.syson.sysml.export.utils.Severity;
 import org.eclipse.syson.sysml.export.utils.Status;
@@ -1221,6 +1225,55 @@ public class SysMLModelToTextSwitchTest {
 
         // Check that the error is reported
         assertTrue(this.status.stream().anyMatch(s -> s.severity() == Severity.ERROR && s.message().startsWith("Unable to compute a valid identifier for")));
+
+    }
+
+    @DisplayName("Check PerfomAction simple form")
+    @Test
+    public void perfomActionSimpleForm() {
+
+        /**
+         * <pre>
+         *  package p1 {
+         * 
+         *      verification v1;
+         * 
+         *      part pu1 {
+         *          perform v1;
+         *      }
+         *  }
+         * </pre>
+         */
+
+        Package p1 = builder.createWithName(Package.class, "p1");
+
+        VerificationCaseUsage verif = builder.createInWithName(VerificationCaseUsage.class, p1, "v1");
+
+        PartUsage partUsage = builder.createInWithName(PartUsage.class, p1, "pu1");
+
+        PerformActionUsage performAction = builder.createInWithName(PerformActionUsage.class, partUsage, null);
+
+        builder.addReferenceSubsetting(performAction, verif);
+
+        this.assertTextualFormEquals("perform v1;", performAction);
+    }
+    
+    @Test
+    public void perfomActionFullForm() {
+
+        CameraModel cameraModel = new CameraModel(builder, new PictureTakingModel(builder));
+
+        this.assertTextualFormEquals("""
+                part def Camera {
+                    import PictureTaking::*;
+                    perform action takePicture :> PictureTaking::takePicture [0..*];
+                    ref part focusingSubsystem {
+                        perform takePicture.focus;
+                    }
+                    ref part imagingSubsystem {
+                        perform takePicture.shoot;
+                    }
+                }""", cameraModel.getCamera());
 
     }
 }
