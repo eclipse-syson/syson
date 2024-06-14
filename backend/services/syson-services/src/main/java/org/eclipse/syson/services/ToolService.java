@@ -54,7 +54,10 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.slf4j.Logger;
@@ -75,10 +78,13 @@ public class ToolService {
 
     private final Logger logger = LoggerFactory.getLogger(ToolService.class);
 
+    private final DeleteService deleteService;
+
     public ToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
+        this.deleteService = new DeleteService();
     }
 
     /**
@@ -256,13 +262,51 @@ public class ToolService {
 
     protected void moveElement(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (droppedElement.eContainer() instanceof Membership membership) {
-            targetElement.getOwnedRelationship().add(membership);
+        Optional<Membership> membership = this.getMembership(droppedElement, targetElement);
+        if (membership.isPresent()) {
+            targetElement.getOwnedRelationship().add(membership.get());
         } else {
             return;
         }
         this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+    }
+
+    /**
+     * Returns the correct membership to store the droppedElement inside the targetElement one.
+     *
+     * @param droppedElement
+     *            the element that has been dropped
+     * @param targetElement
+     *            the element inside which the drop has been performed
+     * @return
+     */
+    private Optional<Membership> getMembership(Element droppedElement, Element targetElement) {
+        Optional<Membership> result = Optional.empty();
+        if (droppedElement.eContainer() instanceof Membership currentMembership) {
+            if (targetElement instanceof Package) {
+                // the expected membership should be an OwningMembership
+                if (currentMembership instanceof FeatureMembership) {
+                    var owningMemberhip = SysmlFactory.eINSTANCE.createOwningMembership();
+                    owningMemberhip.getOwnedRelatedElement().add(droppedElement);
+                    this.deleteService.deleteFromModel(currentMembership);
+                    result = Optional.of(owningMemberhip);
+                } else {
+                    result = Optional.of(currentMembership);
+                }
+            } else {
+                // the expected membership should be a FeatureMembership
+                if (currentMembership instanceof FeatureMembership) {
+                    result = Optional.of(currentMembership);
+                } else {
+                    var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                    featureMembership.getOwnedRelatedElement().add(droppedElement);
+                    this.deleteService.deleteFromModel(currentMembership);
+                    result = Optional.of(featureMembership);
+                }
+            }
+        }
+        return result;
     }
 
     protected Node createFakeNode(EObject semanticElement, Object parentNode, IDiagramContext diagramContext, DiagramDescription diagramDescription,
