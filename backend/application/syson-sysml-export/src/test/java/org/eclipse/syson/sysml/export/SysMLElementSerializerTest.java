@@ -93,7 +93,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author Arthur Daussy
  */
-public class SysMLModelToTextSwitchTest {
+public class SysMLElementSerializerTest {
 
     private static final String PACKAGE_2 = "Package 2";
 
