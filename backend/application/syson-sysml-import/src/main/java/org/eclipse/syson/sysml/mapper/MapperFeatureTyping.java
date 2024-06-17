@@ -47,7 +47,6 @@ public class MapperFeatureTyping extends MapperVisitorInterface {
         this.logger.debug("Add FeatureTyping to map for p  = " + mapping.getSelf());
 
         FeatureTyping eObject = (FeatureTyping) mapping.getSelf();
-        eObject.getSource().add((Feature) mapping.getParent());
         eObject.setTypedFeature((Feature) mapping.getParent());
 
         if (mapping.getMainNode().has(AstConstant.TARGET_REF_CONST) && mapping.getMainNode().get(AstConstant.TARGET_REF_CONST).has(AstConstant.TEXT_CONST)) {
@@ -61,20 +60,12 @@ public class MapperFeatureTyping extends MapperVisitorInterface {
     public void referenceVisit(final MappingElement mapping) {
         JsonNode subElement = mapping.getMainNode().get(AstConstant.TARGET_REF_CONST);
         EObject referencedObject = this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getType());
-
         FeatureTyping eObject = (FeatureTyping) mapping.getSelf();
-
         if (referencedObject instanceof Type target) {
             this.logger.debug("Reference FeatureTyping " + eObject + " to " + target);
             eObject.setType(target);
-            if (target instanceof Feature) {
-                eObject.getTarget().add(target);
-                this.logger.debug("add to " + eObject + " target " + target);
-            }
-
         } else {
             this.logger.warn("Reference FeatureTyping not found " + subElement);
         }
-
     }
 }

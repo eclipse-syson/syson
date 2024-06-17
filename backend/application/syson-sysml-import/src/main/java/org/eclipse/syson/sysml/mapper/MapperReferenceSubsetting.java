@@ -12,17 +12,16 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.finder.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Implements mapping logic specific to ReferenceSubsetting in SysML models from AST node.
@@ -49,12 +48,6 @@ public class MapperReferenceSubsetting extends MapperVisitorInterface {
         ReferenceSubsetting eObject = (ReferenceSubsetting) mapping.getSelf();
         eObject.setSubsettingFeature((Feature) mapping.getParent());
 
-        eObject.getSource().add((Feature) mapping.getParent());
-
-        if (SysmlPackage.eINSTANCE.getType().isSuperTypeOf(mapping.getParent().eClass())) {
-            eObject.setSpecific((Type) mapping.getParent());
-        }
-
         if (mapping.getMainNode().has(AstConstant.TARGET_REF_CONST) && mapping.getMainNode().get(AstConstant.TARGET_REF_CONST).has(AstConstant.TEXT_CONST)) {
             eObject.setDeclaredName(AstConstant.asCleanedText(mapping.getMainNode().get(AstConstant.TARGET_REF_CONST).get(AstConstant.TEXT_CONST)));
         }
@@ -77,9 +70,6 @@ public class MapperReferenceSubsetting extends MapperVisitorInterface {
         if (referencedObject instanceof Feature target) {
             this.logger.debug("Reference ReferenceSubsetting " + eObject + " to " + target);
             eObject.setReferencedFeature(target);
-            eObject.setSubsettedFeature(target);
-            eObject.setGeneral(target);
-            eObject.getTarget().add(target);
         } else {
             this.logger.warn("Reference ReferenceSubsetting not found " + subElement);
         }

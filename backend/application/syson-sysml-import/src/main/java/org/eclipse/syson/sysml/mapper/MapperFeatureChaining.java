@@ -44,15 +44,10 @@ public class MapperFeatureChaining extends MapperVisitorInterface {
     @Override
     public void mappingVisit(final MappingElement mapping) {
         this.logger.debug("Add FeatureChaining to map for p  = " + mapping.getSelf());
-
-        FeatureChaining eObject = (FeatureChaining) mapping.getSelf();
-        eObject.getSource().add((Feature) mapping.getParent());
-        eObject.setChainingFeature((Feature) mapping.getParent());
-
         if (mapping.getMainNode().has(AstConstant.TARGET_REF_CONST) && mapping.getMainNode().get(AstConstant.TARGET_REF_CONST).has(AstConstant.TEXT_CONST)) {
+            FeatureChaining eObject = (FeatureChaining) mapping.getSelf();
             eObject.setDeclaredName(AstConstant.asCleanedText(mapping.getMainNode().get(AstConstant.TARGET_REF_CONST).get(AstConstant.TEXT_CONST)));
         }
-
         this.mappingState.toResolve().add(mapping);
     }
 
@@ -68,7 +63,7 @@ public class MapperFeatureChaining extends MapperVisitorInterface {
 
         if (referencedObject instanceof Feature target) {
             this.logger.debug("Reference FeatureChaining " + eObject + " to " + target);
-            eObject.getTarget().add(target);
+            eObject.setChainingFeature(target);
         } else {
             this.logger.warn("Reference FeatureChaining not found " + subElement);
         }

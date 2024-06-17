@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
-import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -48,14 +47,8 @@ public class MapperNamespaceImport extends MapperVisitorInterface {
 
         NamespaceImport eObject = (NamespaceImport) mapping.getSelf();
         String importText = AstConstant.asCleanedText(mapping.getMainNode().get(AstConstant.TARGET_REF_CONST).get(AstConstant.TEXT_CONST));
-        if (SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(mapping.getParent().eClass())) {
-            eObject.getSource().add((Feature) mapping.getParent());
-        }
-
         eObject.setDeclaredName(importText);
-
         this.objectFinder.addImportNamespace(importText);
-
 
         JsonNode subElement = mapping.getMainNode().get(AstConstant.TARGET_REF_CONST);
         Namespace referencedNamespace = (Namespace) this.objectFinder.findObject(mapping, subElement, SysmlPackage.eINSTANCE.getNamespace());
@@ -81,9 +74,7 @@ public class MapperNamespaceImport extends MapperVisitorInterface {
         this.logger.debug("Reference NamespaceImport " + eObject + " to " + referencedObject);
         if (referencedObject != null) {
             eObject.setImportedNamespace(referencedObject);
-            eObject.getTarget().add(referencedObject);
         } else {
-
             this.logger.warn("Unable to deresolve " + subElement);
         }
     }
