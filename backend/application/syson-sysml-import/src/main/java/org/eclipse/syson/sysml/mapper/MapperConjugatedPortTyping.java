@@ -12,21 +12,21 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.mapper;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
-import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.finder.ObjectFinder;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Implements mapping logic specific to ConjugatedPortTyping in SysML models from AST node.
@@ -50,15 +50,12 @@ public class MapperConjugatedPortTyping extends MapperVisitorInterface {
     public void mappingVisit(final MappingElement mapping) {
         this.logger.debug("Add ConjugatedPortTyping to map for p  = " + mapping.getSelf());
 
-        ConjugatedPortTyping eObject = (ConjugatedPortTyping) mapping.getSelf();
-        eObject.getSource().add((Feature) mapping.getParent());
-
         if (mapping.getMainNode().has(AstConstant.TARGET_REF_CONST) && mapping.getMainNode().get(AstConstant.TARGET_REF_CONST).has(AstConstant.TEXT_CONST)) {
+            ConjugatedPortTyping eObject = (ConjugatedPortTyping) mapping.getSelf();
             eObject.setDeclaredName(AstConstant.asCleanedText(mapping.getMainNode().get(AstConstant.TARGET_REF_CONST).get(AstConstant.TEXT_CONST)));
         }
 
         this.mappingState.toResolve().add(mapping);
-
     }
 
     @Override
@@ -71,7 +68,6 @@ public class MapperConjugatedPortTyping extends MapperVisitorInterface {
         if (referencedObject instanceof PortDefinition target) {
             this.logger.debug("Retrieving ConjugatedPortDefinition from PortDefintion " + target);
             ConjugatedPortDefinition conjugatedPort = target.getConjugatedPortDefinition();
-            eObject.getTarget().add(target);
             if (conjugatedPort != null) {
                 this.logger.debug("Reference ConjugatedPortDefinition of " + target + " to " + eObject);
                 eObject.setConjugatedPortDefinition(conjugatedPort);
@@ -83,11 +79,10 @@ public class MapperConjugatedPortTyping extends MapperVisitorInterface {
 
                 ConjugatedPortDefinition conjugatedPortDefinition = SysmlFactory.eINSTANCE.createConjugatedPortDefinition();
                 owningMembership.getOwnedRelatedElement().add(conjugatedPortDefinition);
-                conjugatedPortDefinition.setDeclaredName("~" + target.getDeclaredName());
+                conjugatedPortDefinition.setDeclaredName(LabelConstants.CONJUGATED + target.getDeclaredName());
 
                 PortConjugation portConjugation = SysmlFactory.eINSTANCE.createPortConjugation();
                 portConjugation.setOriginalPortDefinition(target);
-                portConjugation.setOriginalType(target);
                 portConjugation.setConjugatedType(conjugatedPortDefinition);
 
                 conjugatedPortDefinition.getOwnedRelationship().add(portConjugation);
@@ -97,6 +92,5 @@ public class MapperConjugatedPortTyping extends MapperVisitorInterface {
         } else {
             this.logger.warn("Reference PortDefinition not found " + subElement);
         }
-
     }
 }

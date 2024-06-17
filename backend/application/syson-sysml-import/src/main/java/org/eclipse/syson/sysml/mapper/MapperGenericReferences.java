@@ -102,11 +102,6 @@ public class MapperGenericReferences extends MapperVisitorInterface {
             this.logger.debug("Map Relationship object " + relationship + " " + jsonPath + "  " + " to object " + target);
 
             this.logger.debug("Map object " + mapping.getSelf() + " to target " + target);
-            relationship.getTarget().add(target);
-
-            this.logger.debug("Map object " + mapping.getSelf() + " to source " + mapping.getParent());
-            relationship.getSource().add((Element) mapping.getParent());
-
             if (target instanceof Membership membership) {
                 membership.setOwningRelatedElement(relationship);
             } else {
