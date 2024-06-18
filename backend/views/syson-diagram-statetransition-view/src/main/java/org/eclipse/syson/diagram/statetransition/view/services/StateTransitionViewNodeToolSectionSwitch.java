@@ -50,12 +50,16 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
 
     @Override
     protected List<EReference> getElementCompartmentReferences(Element element) {
-        List<EReference> refs = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(element.eClass());
+        List<EReference> compartmentRefs = new ArrayList<>();
+        List<EReference> refs = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.get(element.eClass());
         if (refs != null) {
-            return refs;
-        } else {
-            return List.of();
+            compartmentRefs.addAll(refs);
         }
+        refs = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(element.eClass());
+        if (refs != null) {
+            compartmentRefs.addAll(refs);
+        }
+        return compartmentRefs;
     }
 
     @Override
@@ -90,6 +94,7 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(null));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -103,6 +108,7 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(null));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 

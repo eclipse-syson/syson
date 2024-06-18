@@ -13,7 +13,9 @@
 package org.eclipse.syson.diagram.statetransition.view.nodes;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -43,9 +45,18 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     }
 
     @Override
-    protected List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
-        var reusedChildren = new ArrayList<NodeDescription>();
-        // Actions compartment
+    protected Set<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
+        var reusedChildren = new LinkedHashSet<NodeDescription>();
+
+        StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            if (type.equals(this.eClass)) {
+                listItems.forEach(eReference -> {
+                    // list compartment
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
+                });
+            }
+        });
+
         StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
@@ -54,19 +65,16 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
                 });
             }
         });
-        // Exhibit States compartment
+
         StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
-                 // list compartment
-                    cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
+                    // free form compartment
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, eReference)).ifPresent(reusedChildren::add);
                 });
             }
         });
-        
-        if (this.eClass.equals(SysmlPackage.eINSTANCE.getStateUsage())) {
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedState())).ifPresent(reusedChildren::add);
-        }
+
         return reusedChildren;
     }
 

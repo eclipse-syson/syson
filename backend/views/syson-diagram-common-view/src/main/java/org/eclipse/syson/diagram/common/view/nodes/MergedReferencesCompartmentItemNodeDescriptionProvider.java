@@ -107,7 +107,7 @@ public class MergedReferencesCompartmentItemNodeDescriptionProvider extends Abst
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getUsageInitialDirectEditLabel"))
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getInitialDirectEditLabel"))
                 .body(callEditService.build());
 
         return this.diagramBuilderHelper.newNodePalette()

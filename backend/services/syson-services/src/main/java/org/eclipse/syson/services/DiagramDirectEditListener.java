@@ -90,9 +90,9 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private final ElementInitializerSwitch elementInitializer;
 
-    private List<String> options;
-
     private final Map<TransitionFeatureKind, Boolean> visitedTransitionFeatures;
+
+    private List<String> options;
 
     public DiagramDirectEditListener(Element element, IFeedbackMessageService feedbackMessageService, String... options) {
         this.element = Objects.requireNonNull(element);
@@ -136,11 +136,11 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (!this.options.contains(LabelService.NAME_OFF)) {
             var identifier = ctx.name();
             if (identifier != null) {
-                if (identifier.getText().isBlank()) {
-                    this.element.setDeclaredName(null);
-                } else {
-                    this.element.setDeclaredName(this.getFullText(identifier));
+                String newValue = null;
+                if (!identifier.getText().isBlank()) {
+                    newValue = this.getFullText(identifier);
                 }
+                new AttributeToDirectEditSwitch(newValue).doSwitch(this.element);
             }
         }
         this.handleMissingMultiplicityExpression(ctx);

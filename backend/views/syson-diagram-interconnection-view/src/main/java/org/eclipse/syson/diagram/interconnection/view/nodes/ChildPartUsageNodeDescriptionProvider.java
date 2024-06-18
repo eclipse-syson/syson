@@ -40,6 +40,7 @@ import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.interconnection.view.tools.ChildrenPartUsageCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -85,12 +86,15 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
+        var optDocCompartmentNodeDescription = cache
+                .getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getElement_Documentation()));
         var optAttributesCompartmentNodeDescription = cache
                 .getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()));
         var optCompartmentFreeFormNodeDescription = cache
                 .getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart()));
 
         NodeDescription nodeDescription = optChildPartUsageNodeDescription.get();
+        nodeDescription.getReusedChildNodeDescriptions().add(optDocCompartmentNodeDescription.get());
         nodeDescription.getReusedChildNodeDescriptions().add(optAttributesCompartmentNodeDescription.get());
         nodeDescription.getReusedChildNodeDescriptions().add(optCompartmentFreeFormNodeDescription.get());
         nodeDescription.getReusedBorderNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
@@ -106,7 +110,7 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
 
     private InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression(AQLConstants.AQL_SELF + ".getContainerLabel()")
+                .labelExpression(AQLUtils.getSelfServiceCallExpression("getContainerLabel"))
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .textAlign(LabelTextAlign.CENTER)
@@ -132,18 +136,18 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.deleteFromModel()");
+                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
                 .body(changeContext.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
                 .body(callEditService.build());
 
         return this.diagramBuilderHelper.newNodePalette()
@@ -160,6 +164,8 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
         List<NodeTool> nodeTools = new ArrayList<>();
         CompartmentNodeToolProvider attributeTool = new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), this.descriptionNameGenerator);
         nodeTools.add(attributeTool.create(null));
+        CompartmentNodeToolProvider docTool = new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator);
+        nodeTools.add(docTool.create(null));
         ChildrenPartUsageCompartmentNodeToolProvider childPartTool = new ChildrenPartUsageCompartmentNodeToolProvider();
         nodeTools.add(childPartTool.create(null));
         NodeTool portBorderNodeTool = this.createNodeTool(cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get(),
@@ -181,7 +187,7 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance.elementInitializer()");
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
@@ -225,7 +231,8 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
         acceptedNodeTypes.add(optFirstLevelChildPartUsageNodeDescription.get());
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
+                .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram", List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext",
+                        "convertedNodes")));
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")

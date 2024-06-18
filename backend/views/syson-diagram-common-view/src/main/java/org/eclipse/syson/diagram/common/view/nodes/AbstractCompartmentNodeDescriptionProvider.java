@@ -152,6 +152,8 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
             if (defaultName.endsWith("Usage")) {
                 defaultName = defaultName.substring(0, defaultName.length() - 5) + "s";
             }
+        } else if (SysmlPackage.eINSTANCE.getDocumentation().equals(eType)) {
+            defaultName = "doc";
         } else {
             defaultName = eType.getName();
         }

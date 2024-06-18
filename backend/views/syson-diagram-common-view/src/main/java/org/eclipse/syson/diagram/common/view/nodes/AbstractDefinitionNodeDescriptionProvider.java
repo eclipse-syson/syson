@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.common.view.nodes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -62,14 +63,14 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
     }
 
     /**
-     * Implementers should provide the list of {@link NodeDescription} that is reused as child in that Definition node
+     * Implementers should provide the set of {@link NodeDescription} that is reused as child in that Definition node
      * description.
      *
      * @param cache
      *            the cache used to retrieve node descriptions.
-     * @return the list of {@link NodeDescription} that are added as reused child.
+     * @return the set of {@link NodeDescription} that are added as reused child.
      */
-    protected abstract List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache);
+    protected abstract Set<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache);
 
     /**
      * Implementers should provide the list of all {@link NodeDescription} defined in the diagram.<br>

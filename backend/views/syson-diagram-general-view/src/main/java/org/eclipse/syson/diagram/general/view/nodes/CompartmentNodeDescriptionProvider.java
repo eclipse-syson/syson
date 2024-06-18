@@ -27,7 +27,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 
 /**
- * Used to create the Compartment node description inside the General View diagram.
+ * Used to create a Compartment node description inside the General View diagram.
  *
  * @author Jerome Gout
  */

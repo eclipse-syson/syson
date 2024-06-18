@@ -77,44 +77,44 @@ public class AQLUtils {
     /**
      * Returns the AQL expression for calling a service without any parameter.
      *
-     * @param self
-     *            The part of the expression specifying the instance on which the service should be called.
+     * @param var
+     *            The part of the expression specifying the variable on which the service should be called.
      * @param serviceName
      *            The name of the service to call.
      * @return An AQL expression (<code>String</code>) expressing the call of the given service.
      */
-    public static String getServiceCallExpression(String self, String serviceName) {
-        return AQLUtils.getServiceCallExpression(self, serviceName, List.of());
+    public static String getServiceCallExpression(String var, String serviceName) {
+        return AQLUtils.getServiceCallExpression(var, serviceName, List.of());
     }
 
     /**
      * Returns the AQL expression for calling a service with one parameter.
      *
-     * @param self
-     *            The part of the expression specifying the instance on which the service should be called.
+     * @param var
+     *            The part of the expression specifying the variable on which the service should be called.
      * @param serviceName
      *            The name of the service to call.
      * @param parameter
      *            The unique parameter.
      * @return An AQL expression (<code>String</code>) expressing the call of the given service.
      */
-    public static String getServiceCallExpression(String self, String serviceName, String parameter) {
-        return AQLUtils.getServiceCallExpression(self, serviceName, List.of(parameter));
+    public static String getServiceCallExpression(String var, String serviceName, String parameter) {
+        return AQLUtils.getServiceCallExpression(var, serviceName, List.of(parameter));
     }
 
     /**
      * Returns the AQL expression for calling a service with several parameters.
      *
-     * @param self
-     *            The part of the expression specifying the instance on which the service should be called.
+     * @param var
+     *            The part of the expression specifying the variable on which the service should be called.
      * @param serviceName
      *            The name of the service to call.
      * @param parameter
      *            The list of parameters.
      * @return An AQL expression (<code>String</code>) expressing the call of the given service.
      */
-    public static String getServiceCallExpression(String self, String serviceName, List<String> parameters) {
-        return AQLConstants.AQL + self + '.' + serviceName + '(' + String.join(",", parameters) + ')';
+    public static String getServiceCallExpression(String var, String serviceName, List<String> parameters) {
+        return AQLConstants.AQL + var + '.' + serviceName + '(' + String.join(",", parameters) + ')';
     }
 
 }

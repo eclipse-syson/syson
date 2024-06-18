@@ -82,7 +82,9 @@ public class InterconnectionViewForUsageDiagramDescriptionProvider implements IR
                 new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new AllocateEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
-                new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator())
+                new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getElement_Documentation(), colorProvider, this.getDescriptionNameGenerator()),
+                new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getElement_Documentation(), colorProvider, this.getDescriptionNameGenerator())
         );
 
         diagramElementDescriptionProviders.stream()

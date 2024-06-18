@@ -13,7 +13,9 @@
 package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -46,9 +48,17 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
     }
 
     @Override
-    protected List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
-        var reusedChildren = new ArrayList<NodeDescription>();
+    protected Set<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
+        var reusedChildren = new LinkedHashSet<NodeDescription>();
 
+        GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            if (type.equals(this.eClass)) {
+                listItems.forEach(eReference -> {
+                    // list compartment
+                    cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
+                });
+            }
+        });
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
@@ -58,16 +68,16 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
                 });
             }
         });
+
         GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(eReference -> {
-                    // list compartment
-                    cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(type, eReference)).ifPresent(reusedChildren::add);
                     // free form compartment
                     cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, eReference)).ifPresent(reusedChildren::add);
                 });
             }
         });
+
         return reusedChildren;
     }
 

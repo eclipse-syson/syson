@@ -27,6 +27,7 @@ import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureValue;
@@ -66,13 +67,13 @@ public class ViewLabelService extends LabelService {
     }
 
     /**
-     * Return the label for the given {@link Usage}.
+     * Return the label for the given {@link Usage} when displayed as a compartment item.
      *
      * @param usage
      *            the given {@link Usage}.
      * @return the label for the given {@link Usage}.
      */
-    public String getCompartmentItemUsageLabel(Usage usage) {
+    public String getCompartmentItemLabel(Usage usage) {
         StringBuilder label = new StringBuilder();
         String declaredName = usage.getDeclaredName();
         if (declaredName != null) {
@@ -88,6 +89,27 @@ public class ViewLabelService extends LabelService {
     }
 
     /**
+     * Return the label for the given {@link Documentation} when displayed as a compartment item.
+     *
+     * @param documentation
+     *            the given {@link Documentation}.
+     * @return the label for the given {@link Documentation}.
+     */
+    public String getCompartmentItemLabel(Documentation documentation) {
+        StringBuilder label = new StringBuilder();
+        String declaredName = documentation.getDeclaredName();
+        if (declaredName != null && !declaredName.isBlank()) {
+            label.append(declaredName);
+            label.append(LabelConstants.CR);
+        }
+        String body = documentation.getBody();
+        if (body != null) {
+            label.append(body);
+        }
+        return label.toString();
+    }
+
+    /**
      * Return the label for the given {@link Usage} prefixed with additional content.
      *
      * @param usage
@@ -99,7 +121,7 @@ public class ViewLabelService extends LabelService {
         if (usage instanceof ActionUsage au && usage.eContainer() instanceof StateSubactionMembership ssm) {
             label.append(ssm.getKind() + " ");
         }
-        label.append(this.getCompartmentItemUsageLabel(usage));
+        label.append(this.getCompartmentItemLabel(usage));
         return label.toString();
     }
 
@@ -138,8 +160,19 @@ public class ViewLabelService extends LabelService {
      *            the given {@link Usage}.
      * @return the value to display.
      */
-    public String getUsageInitialDirectEditLabel(Usage usage) {
-        return this.getCompartmentItemUsageLabel(usage);
+    public String getInitialDirectEditLabel(Usage usage) {
+        return this.getCompartmentItemLabel(usage);
+    }
+
+    /**
+     * Get the value to display when a direct edit has been called on the given {@link Documentation}.
+     *
+     * @param usage
+     *            the given {@link Documentation}.
+     * @return the value to display.
+     */
+    public String getInitialDirectEditLabel(Documentation documentation) {
+        return documentation.getBody();
     }
 
     public String getMultiplicityRangeInitialDirectEditLabel(Element element) {

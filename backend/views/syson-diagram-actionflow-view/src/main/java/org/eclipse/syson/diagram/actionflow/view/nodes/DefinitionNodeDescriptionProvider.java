@@ -13,7 +13,9 @@
 package org.eclipse.syson.diagram.actionflow.view.nodes;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -43,8 +45,8 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
     }
 
     @Override
-    protected List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
-        var reusedChildren = new ArrayList<NodeDescription>();
+    protected Set<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
+        var reusedChildren = new LinkedHashSet<NodeDescription>();
 
         ActionFlowViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {

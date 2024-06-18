@@ -99,6 +99,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getItemDefinition()),
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getPartDefinition()),
                 this.createPortUsageAsReceiverNodeTool());
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -117,6 +118,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.descriptionNameGenerator).create(null));
         createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(null));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -133,6 +135,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
             // StateDefinition has is own "action" creation tools
             createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(null));
         }
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -234,6 +237,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(null));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -247,6 +251,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(null),
                 new StateTransitionActionToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(null));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -260,6 +265,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     @Override
     public List<NodeToolSection> caseUseCaseDefinition(UseCaseDefinition object) {
         var createSection = this.buildCreateSection(this.createPartUsageAsSubjectNodeTool(), this.createRequirementUsageAsObjectiveRequirementNodeTool());
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -272,6 +278,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()),
                 this.createPartUsageAsSubjectNodeTool(),
                 this.createRequirementUsageAsObjectiveRequirementNodeTool());
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.addElementsToolSection());
     }
 

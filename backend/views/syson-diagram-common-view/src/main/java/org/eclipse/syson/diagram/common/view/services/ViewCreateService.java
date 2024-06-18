@@ -44,7 +44,6 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ObjectiveMembership;
-import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartUsage;
@@ -173,16 +172,18 @@ public class ViewCreateService {
         Element result = element;
         if (feature.getEType() instanceof EClass itemEClass) {
             var item = SysmlFactory.eINSTANCE.create(itemEClass);
-            result = (Element) item;
-            var membership = this.getOwningMembership(feature);
-            membership.getOwnedRelatedElement().add(this.elementInitializer((Element) item));
-            element.getOwnedRelationship().add(membership);
+            if (item instanceof Element elementItem) {
+                result = elementItem;
+                var membership = this.createAppropriateMembership(feature);
+                membership.getOwnedRelatedElement().add(this.elementInitializer(elementItem));
+                element.getOwnedRelationship().add(membership);
+            }
         }
         return result;
     }
 
-    private OwningMembership getOwningMembership(EStructuralFeature feature) {
-        OwningMembership result = SysmlFactory.eINSTANCE.createFeatureMembership();
+    private Membership createAppropriateMembership(EStructuralFeature feature) {
+        Membership result = SysmlFactory.eINSTANCE.createFeatureMembership();
         if (feature.getEType().equals(SysmlPackage.eINSTANCE.getEnumerationUsage())) {
             result = SysmlFactory.eINSTANCE.createVariantMembership();
         } else if (feature.equals(SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint())
@@ -193,6 +194,8 @@ public class ViewCreateService {
                 || feature.equals(SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())) {
             result = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
             ((RequirementConstraintMembership) result).setKind(RequirementConstraintKind.REQUIREMENT);
+        } else if (feature.equals(SysmlPackage.eINSTANCE.getElement_Documentation())) {
+            result = SysmlFactory.eINSTANCE.createOwningMembership();
         }
         return result;
     }
