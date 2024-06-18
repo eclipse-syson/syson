@@ -12,9 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.helper;
 
+import java.util.Objects;
+
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.Conjugation;
 import org.eclipse.syson.sysml.Connector;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureChaining;
@@ -63,15 +67,33 @@ public class DeresolvingNamespaceProvider {
             // FeatureReferenceExpression
             // InvocationExpression
             // ownedFeature of an InvocationExpression
-        } else if (membership instanceof FeatureChainExpression featureChainExpression) {
+            ns = EMFUtils.getAncestors(Namespace.class, ns, e -> !this.isLocalNamespaceForFeatureReferenceExpression(e)).stream()
+                    .findFirst()
+                    .orElse(null);
+        } else if (ns instanceof FeatureChainExpression featureChainExpression) {
             // If the membershipOwningNamespace is a FeatureChainExpression see 8.3.4.8.3, then the local
             // Namespace is the result parameter of the argument Expression of the FeatureChainExpression.
-            Feature resultFeature = featureChainExpression.getResult();
-            if (resultFeature != null) {
-                ns = resultFeature;
-            }
+            ns = featureChainExpression.getArgument().stream()
+                    .map(Expression::getResult)
+                    .filter(Objects::nonNull)
+                    .findFirst()
+                    .orElse(null);
         }
         return ns;
+    }
+
+    private boolean isLocalNamespaceForFeatureReferenceExpression(EObject n) {
+        return n != null
+                && !(n instanceof FeatureReferenceExpression)
+                && !(n instanceof InvocationExpression)
+                && !this.isOwnedFeatureOfInvocationExpression(n);
+    }
+
+    private boolean isOwnedFeatureOfInvocationExpression(EObject n) {
+        if (n instanceof Feature feature) {
+            return ((Feature) n).getOwningType() instanceof InvocationExpression;
+        }
+        return false;
     }
 
     private Namespace getDeresolvingNamespaceForConjugation(Element element, Conjugation conjugation) {
@@ -102,6 +124,10 @@ public class DeresolvingNamespaceProvider {
             // If the Specialization is a FeatureTyping (see 8.3.3.3.6), and its owningFeature is an
             // InvocationExpression, then the local Namespace is the non-invocation Namespace for the
             // owningFeature (determined as for a FeatureReferenceExpression under Membership above).
+            result = EMFUtils.getAncestors(Namespace.class, featureTyping.getOwningFeature(), e -> !this.isLocalNamespaceForFeatureReferenceExpression(e)).stream()
+                    .findFirst()
+                    .orElse(null);
+
         }
         if (result == null && specialization.getOwningType() != null) {
             // Otherwise, if the owningType is not null, then the local Namespace is the owningNamespace of the

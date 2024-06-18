@@ -42,6 +42,10 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/356[#356] [action-flow-view] The Allocate edge is not displayed in the Action Flow View diagram.
 - https://github.com/eclipse-syson/syson/issues/403[#403] [diagrams] Wrong computation of the Succession owner
 - https://github.com/eclipse-syson/syson/issues/407[#407] [diagrams] Fix the owner membership of dropped elements
+- https://github.com/eclipse-syson/syson/issues/376[#376] [export] Fix names used during export in FeatureValue
+- https://github.com/eclipse-syson/syson/issues/373[#373] [export] Fix names used during export in MetadataDefinition
+- https://github.com/eclipse-syson/syson/issues/364[#364] [export] Fix names used during export in FeatureChainExpression
+
 
 === Improvements
 
