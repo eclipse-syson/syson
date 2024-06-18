@@ -69,7 +69,7 @@ public interface Type extends Namespace {
      *
      * @return the value of the '<em>Directed Feature</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_DirectedFeature()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Feature> getDirectedFeature();
@@ -80,7 +80,7 @@ public interface Type extends Namespace {
      *
      * @return the value of the '<em>End Feature</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_EndFeature()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Feature> getEndFeature();
@@ -91,7 +91,7 @@ public interface Type extends Namespace {
      *
      * @return the value of the '<em>Feature</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_Feature()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Feature> getFeature();
@@ -113,7 +113,7 @@ public interface Type extends Namespace {
      *
      * @return the value of the '<em>Inherited Feature</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_InheritedFeature()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Feature> getInheritedFeature();
@@ -124,7 +124,7 @@ public interface Type extends Namespace {
      *
      * @return the value of the '<em>Inherited Membership</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_InheritedMembership()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Membership> getInheritedMembership();
@@ -135,7 +135,7 @@ public interface Type extends Namespace {
      *
      * @return the value of the '<em>Input</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_Input()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Feature> getInput();
@@ -212,7 +212,7 @@ public interface Type extends Namespace {
      *
      * @return the value of the '<em>Multiplicity</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_Multiplicity()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     Multiplicity getMultiplicity();
@@ -223,7 +223,7 @@ public interface Type extends Namespace {
      *
      * @return the value of the '<em>Output</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_Output()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Feature> getOutput();
@@ -237,6 +237,7 @@ public interface Type extends Namespace {
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_OwnedConjugator()
      * @see org.eclipse.syson.sysml.Conjugation#getOwningType
      * @model opposite="owningType" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Conjugation getOwnedConjugator();
@@ -251,6 +252,7 @@ public interface Type extends Namespace {
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_OwnedDifferencing()
      * @see org.eclipse.syson.sysml.Differencing#getTypeDifferenced
      * @model opposite="typeDifferenced" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Differencing> getOwnedDifferencing();
@@ -265,6 +267,7 @@ public interface Type extends Namespace {
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_OwnedDisjoining()
      * @see org.eclipse.syson.sysml.Disjoining#getOwningType
      * @model opposite="owningType" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     EList<Disjoining> getOwnedDisjoining();
@@ -279,6 +282,7 @@ public interface Type extends Namespace {
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_OwnedEndFeature()
      * @see org.eclipse.syson.sysml.Feature#getEndOwningType
      * @model opposite="endOwningType" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Feature> getOwnedEndFeature();
@@ -293,6 +297,7 @@ public interface Type extends Namespace {
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_OwnedFeature()
      * @see org.eclipse.syson.sysml.Feature#getOwningType
      * @model opposite="owningType" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Feature> getOwnedFeature();
@@ -307,6 +312,7 @@ public interface Type extends Namespace {
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_OwnedFeatureMembership()
      * @see org.eclipse.syson.sysml.FeatureMembership#getOwningType
      * @model opposite="owningType" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<FeatureMembership> getOwnedFeatureMembership();
@@ -321,6 +327,7 @@ public interface Type extends Namespace {
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_OwnedIntersecting()
      * @see org.eclipse.syson.sysml.Intersecting#getTypeIntersected
      * @model opposite="typeIntersected" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Intersecting> getOwnedIntersecting();
@@ -335,6 +342,7 @@ public interface Type extends Namespace {
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_OwnedSpecialization()
      * @see org.eclipse.syson.sysml.Specialization#getOwningType
      * @model opposite="owningType" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Specialization> getOwnedSpecialization();
@@ -349,6 +357,7 @@ public interface Type extends Namespace {
      * @see org.eclipse.syson.sysml.SysmlPackage#getType_OwnedUnioning()
      * @see org.eclipse.syson.sysml.Unioning#getTypeUnioned
      * @model opposite="typeUnioned" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Unioning> getOwnedUnioning();

@@ -36,7 +36,7 @@ public interface Step extends Feature {
      *
      * @return the value of the '<em>Behavior</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getStep_Behavior()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Behavior> getBehavior();
@@ -47,7 +47,7 @@ public interface Step extends Feature {
      *
      * @return the value of the '<em>Parameter</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getStep_Parameter()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Feature> getParameter();

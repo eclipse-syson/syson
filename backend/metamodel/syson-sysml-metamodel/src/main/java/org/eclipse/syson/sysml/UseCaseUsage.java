@@ -47,7 +47,7 @@ public interface UseCaseUsage extends CaseUsage {
      *
      * @return the value of the '<em>Use Case Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUseCaseUsage_UseCaseDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     UseCaseDefinition getUseCaseDefinition();

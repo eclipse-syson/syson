@@ -39,7 +39,7 @@ public interface ViewUsage extends PartUsage {
      *
      * @return the value of the '<em>Exposed Element</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getViewUsage_ExposedElement()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Element> getExposedElement();
@@ -50,7 +50,7 @@ public interface ViewUsage extends PartUsage {
      *
      * @return the value of the '<em>Satisfied Viewpoint</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getViewUsage_SatisfiedViewpoint()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ViewpointUsage> getSatisfiedViewpoint();
@@ -61,7 +61,7 @@ public interface ViewUsage extends PartUsage {
      *
      * @return the value of the '<em>View Condition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getViewUsage_ViewCondition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Expression> getViewCondition();

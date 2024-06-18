@@ -35,6 +35,7 @@ public interface ParameterMembership extends FeatureMembership {
      * @return the value of the '<em>Owned Member Parameter</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getParameterMembership_OwnedMemberParameter()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     Feature getOwnedMemberParameter();

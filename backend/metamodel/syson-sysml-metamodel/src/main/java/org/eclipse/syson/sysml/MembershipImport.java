@@ -35,7 +35,7 @@ public interface MembershipImport extends Import {
      * @return the value of the '<em>Imported Membership</em>' reference.
      * @see #setImportedMembership(Membership)
      * @see org.eclipse.syson.sysml.SysmlPackage#getMembershipImport_ImportedMembership()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Membership getImportedMembership();

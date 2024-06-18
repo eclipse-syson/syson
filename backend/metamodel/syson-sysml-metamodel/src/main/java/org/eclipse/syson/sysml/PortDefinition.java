@@ -37,7 +37,7 @@ public interface PortDefinition extends OccurrenceDefinition, Structure {
      * @see org.eclipse.syson.sysml.SysmlPackage#getPortDefinition_ConjugatedPortDefinition()
      * @see org.eclipse.syson.sysml.ConjugatedPortDefinition#getOriginalPortDefinition
      * @model opposite="originalPortDefinition" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
     ConjugatedPortDefinition getConjugatedPortDefinition();

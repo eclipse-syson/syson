@@ -39,7 +39,7 @@ public interface OccurrenceUsage extends Usage {
      *
      * @return the value of the '<em>Individual Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getOccurrenceUsage_IndividualDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     OccurrenceDefinition getIndividualDefinition();
@@ -73,7 +73,7 @@ public interface OccurrenceUsage extends Usage {
      *
      * @return the value of the '<em>Occurrence Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getOccurrenceUsage_OccurrenceDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<org.eclipse.syson.sysml.Class> getOccurrenceDefinition();

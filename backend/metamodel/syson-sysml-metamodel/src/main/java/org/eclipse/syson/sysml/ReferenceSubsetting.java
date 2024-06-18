@@ -36,7 +36,7 @@ public interface ReferenceSubsetting extends Subsetting {
      * @return the value of the '<em>Referenced Feature</em>' reference.
      * @see #setReferencedFeature(Feature)
      * @see org.eclipse.syson.sysml.SysmlPackage#getReferenceSubsetting_ReferencedFeature()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Feature getReferencedFeature();

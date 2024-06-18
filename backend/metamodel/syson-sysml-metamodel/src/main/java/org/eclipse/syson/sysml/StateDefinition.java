@@ -93,7 +93,7 @@ public interface StateDefinition extends ActionDefinition {
      *
      * @return the value of the '<em>State</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getStateDefinition_State()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<StateUsage> getState();

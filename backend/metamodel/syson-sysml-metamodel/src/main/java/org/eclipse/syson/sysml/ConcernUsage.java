@@ -33,7 +33,7 @@ public interface ConcernUsage extends RequirementUsage {
      *
      * @return the value of the '<em>Concern Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getConcernUsage_ConcernDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     ConcernDefinition getConcernDefinition();

@@ -37,7 +37,7 @@ public interface ConjugatedPortTyping extends FeatureTyping {
      * @return the value of the '<em>Conjugated Port Definition</em>' reference.
      * @see #setConjugatedPortDefinition(ConjugatedPortDefinition)
      * @see org.eclipse.syson.sysml.SysmlPackage#getConjugatedPortTyping_ConjugatedPortDefinition()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     ConjugatedPortDefinition getConjugatedPortDefinition();

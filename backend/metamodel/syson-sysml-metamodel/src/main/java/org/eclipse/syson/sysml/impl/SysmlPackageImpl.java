@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import static org.eclipse.syson.sysml.SysmlPackage.CLASS;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
@@ -3511,6 +3512,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
     @Override
     public EReference getFeature_Type() {
         return (EReference) this.featureEClass.getEStructuralFeatures().get(21);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getFeature_Valuation() {
+        return (EReference) this.featureEClass.getEStructuralFeatures().get(22);
     }
 
     /**
@@ -8025,6 +8036,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEReference(this.featureEClass, FEATURE__OWNING_FEATURE_MEMBERSHIP);
         this.createEReference(this.featureEClass, FEATURE__OWNING_TYPE);
         this.createEReference(this.featureEClass, FEATURE__TYPE);
+        this.createEReference(this.featureEClass, FEATURE__VALUATION);
         this.createEOperation(this.featureEClass, FEATURE___DIRECTION_FOR__TYPE);
         this.createEOperation(this.featureEClass, FEATURE___IS_FEATURED_WITHIN__TYPE);
         this.createEOperation(this.featureEClass, FEATURE___NAMING_FEATURE);
@@ -9341,6 +9353,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.initEReference(this.getFeature_Type(), this.getType(), null, "type", null, 0, -1, Feature.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
                 !IS_UNSETTABLE,
                 IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getFeature_Valuation(), this.getFeatureValue(), null, "valuation", null, 0, 1, Feature.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
         op = this.initEOperation(this.getFeature__DirectionFor__Type(), this.getFeatureDirectionKind(), "directionFor", 0, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.getType(), "type", 1, 1, IS_UNIQUE, !IS_ORDERED);
@@ -10411,6 +10426,2199 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
 
         // Create resource
         this.createResource(eNS_URI);
+
+        // Create annotations
+        // subsets
+        this.createSubsetsAnnotations();
+        // redefines
+        this.createRedefinesAnnotations();
+    }
+
+    /**
+     * Initializes the annotations for <b>subsets</b>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void createSubsetsAnnotations() {
+        String source = "subsets";
+        this.addAnnotation(this.getAcceptActionUsage_PayloadParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedReference"),
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter")
+                });
+        this.addAnnotation(this.getActionDefinition_Action(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/step"),
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
+                });
+        this.addAnnotation(this.getAllocationDefinition_Allocation(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
+                });
+        this.addAnnotation(this.getAnalysisCaseDefinition_AnalysisAction(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ActionDefinition/action")
+                });
+        this.addAnnotation(this.getAnalysisCaseDefinition_ResultExpression(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Function/expression"),
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getAnalysisCaseUsage_AnalysisAction(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage")
+                });
+        this.addAnnotation(this.getAnalysisCaseUsage_ResultExpression(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getAnnotation_OwningAnnotatedElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Annotation/annotatedElement"),
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getAssignmentActionUsage_Referent(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/member")
+                });
+        this.addAnnotation(this.getAssociation_SourceType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Association/relatedType")
+                });
+        this.addAnnotation(this.getAssociation_TargetType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Association/relatedType")
+                });
+        this.addAnnotation(this.getBehavior_Step(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/feature")
+                });
+        this.addAnnotation(this.getCalculationDefinition_Calculation(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ActionDefinition/action"),
+                        URI.createURI(eNS_URI).appendFragment("//Function/expression")
+                });
+        this.addAnnotation(this.getCaseDefinition_ActorParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart")
+                });
+        this.addAnnotation(this.getCaseDefinition_ObjectiveRequirement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedRequirement")
+                });
+        this.addAnnotation(this.getCaseDefinition_SubjectParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
+                });
+        this.addAnnotation(this.getCaseUsage_ActorParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart"),
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter")
+                });
+        this.addAnnotation(this.getCaseUsage_ObjectiveRequirement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedRequirement")
+                });
+        this.addAnnotation(this.getCaseUsage_SubjectParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
+                });
+        this.addAnnotation(this.getClassifier_OwnedSubclassification(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedSpecialization")
+                });
+        this.addAnnotation(this.getConjugation_OwningType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Conjugation/conjugatedType"),
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getConnectionUsage_ConnectionDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ItemUsage/itemDefinition")
+                });
+        this.addAnnotation(this.getConnector_SourceFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Connector/relatedFeature")
+                });
+        this.addAnnotation(this.getConnector_TargetFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Connector/relatedFeature")
+                });
+        this.addAnnotation(this.getDefinition_DirectedUsage(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage"),
+                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature")
+                });
+        this.addAnnotation(this.getDefinition_OwnedAction(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedOccurrence")
+                });
+        this.addAnnotation(this.getDefinition_OwnedAllocation(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedConnection")
+                });
+        this.addAnnotation(this.getDefinition_OwnedAnalysisCase(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedCase")
+                });
+        this.addAnnotation(this.getDefinition_OwnedAttribute(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
+                });
+        this.addAnnotation(this.getDefinition_OwnedCalculation(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedAction")
+                });
+        this.addAnnotation(this.getDefinition_OwnedCase(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedCalculation")
+                });
+        this.addAnnotation(this.getDefinition_OwnedConcern(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedRequirement")
+                });
+        this.addAnnotation(this.getDefinition_OwnedConnection(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart")
+                });
+        this.addAnnotation(this.getDefinition_OwnedConstraint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedOccurrence")
+                });
+        this.addAnnotation(this.getDefinition_OwnedEnumeration(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedAttribute")
+                });
+        this.addAnnotation(this.getDefinition_OwnedFlow(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedConnection")
+                });
+        this.addAnnotation(this.getDefinition_OwnedInterface(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedConnection")
+                });
+        this.addAnnotation(this.getDefinition_OwnedItem(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedOccurrence")
+                });
+        this.addAnnotation(this.getDefinition_OwnedMetadata(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedItem")
+                });
+        this.addAnnotation(this.getDefinition_OwnedOccurrence(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
+                });
+        this.addAnnotation(this.getDefinition_OwnedPart(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedItem")
+                });
+        this.addAnnotation(this.getDefinition_OwnedPort(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
+                });
+        this.addAnnotation(this.getDefinition_OwnedReference(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
+                });
+        this.addAnnotation(this.getDefinition_OwnedRendering(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart")
+                });
+        this.addAnnotation(this.getDefinition_OwnedRequirement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedConstraint")
+                });
+        this.addAnnotation(this.getDefinition_OwnedState(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedAction")
+                });
+        this.addAnnotation(this.getDefinition_OwnedTransition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
+                });
+        this.addAnnotation(this.getDefinition_OwnedUsage(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature"),
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
+                });
+        this.addAnnotation(this.getDefinition_OwnedUseCase(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedCase")
+                });
+        this.addAnnotation(this.getDefinition_OwnedVerificationCase(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedCase")
+                });
+        this.addAnnotation(this.getDefinition_OwnedView(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart")
+                });
+        this.addAnnotation(this.getDefinition_OwnedViewpoint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedRequirement")
+                });
+        this.addAnnotation(this.getDefinition_Usage(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/feature")
+                });
+        this.addAnnotation(this.getDefinition_Variant(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getDefinition_VariantMembership(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMembership")
+                });
+        this.addAnnotation(this.getDifferencing_TypeDifferenced(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getDisjoining_OwningType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Disjoining/typeDisjoined"),
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getDocumentation_DocumentedElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/owner")
+                });
+        this.addAnnotation(this.getElement_Documentation(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedElement")
+                });
+        this.addAnnotation(this.getElement_OwnedAnnotation(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getElement_OwningMembership(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/owningRelationship")
+                });
+        this.addAnnotation(this.getElement_TextualRepresentation(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedElement")
+                });
+        this.addAnnotation(this.getExpression_Result(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Type/output")
+                });
+        this.addAnnotation(this.getFeature_EndOwningType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/owningType")
+                });
+        this.addAnnotation(this.getFeature_OwnedFeatureChaining(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getFeature_OwnedFeatureInverting(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getFeature_OwnedRedefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/ownedSubsetting")
+                });
+        this.addAnnotation(this.getFeature_OwnedReferenceSubsetting(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/ownedSubsetting")
+                });
+        this.addAnnotation(this.getFeature_OwnedSubsetting(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedSpecialization")
+                });
+        this.addAnnotation(this.getFeature_OwnedTypeFeaturing(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getFeature_OwnedTyping(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedSpecialization")
+                });
+        this.addAnnotation(this.getFeature_OwningFeatureMembership(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/owningMembership")
+                });
+        this.addAnnotation(this.getFeature_OwningType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/owningNamespace"),
+                        URI.createURI(eNS_URI).appendFragment("//Feature/featuringType")
+                });
+        this.addAnnotation(this.getFeatureChainExpression_TargetFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/member")
+                });
+        this.addAnnotation(this.getFeatureChaining_FeatureChained(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getFeatureInverting_OwningFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement"),
+                        URI.createURI(eNS_URI).appendFragment("//FeatureInverting/featureInverted")
+                });
+        this.addAnnotation(this.getFeatureReferenceExpression_Referent(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/member")
+                });
+        this.addAnnotation(this.getFeatureTyping_OwningFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//FeatureTyping/typedFeature")
+                });
+        this.addAnnotation(this.getFeatureValue_FeatureWithValue(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Membership/membershipOwningNamespace")
+                });
+        this.addAnnotation(this.getFeaturing_Feature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/relatedElement")
+                });
+        this.addAnnotation(this.getFeaturing_Type(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/relatedElement")
+                });
+        this.addAnnotation(this.getFunction_Expression(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/step")
+                });
+        this.addAnnotation(this.getFunction_Result(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Type/output")
+                });
+        this.addAnnotation(this.getImport_ImportOwningNamespace(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getIntersecting_TypeIntersected(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getInvocationExpression_Argument(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getItemFlow_ItemFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getItemFlow_ItemFlowEnd(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Connector/connectorEnd")
+                });
+        this.addAnnotation(this.getItemUsage_ItemDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//OccurrenceUsage/occurrenceDefinition")
+                });
+        this.addAnnotation(this.getMembership_MembershipOwningNamespace(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getMetadataFeature_Metaclass(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/type")
+                });
+        this.addAnnotation(this.getMultiplicityRange_LowerBound(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//MultiplicityRange/bound")
+                });
+        this.addAnnotation(this.getMultiplicityRange_UpperBound(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//MultiplicityRange/bound")
+                });
+        this.addAnnotation(this.getNamespace_ImportedMembership(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/membership")
+                });
+        this.addAnnotation(this.getNamespace_OwnedImport(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getNamespace_OwnedMember(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/member")
+                });
+        this.addAnnotation(this.getNamespace_OwnedMembership(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/membership"),
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getOccurrenceDefinition_LifeClass(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getOccurrenceUsage_IndividualDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//OccurrenceUsage/occurrenceDefinition")
+                });
+        this.addAnnotation(this.getOwningMembership_OwnedMemberElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/ownedRelatedElement")
+                });
+        this.addAnnotation(this.getPackage_FilterCondition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getPartUsage_PartDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ItemUsage/itemDefinition")
+                });
+        this.addAnnotation(this.getPortDefinition_ConjugatedPortDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getRelationship_OwnedRelatedElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/relatedElement")
+                });
+        this.addAnnotation(this.getRelationship_OwningRelatedElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/relatedElement")
+                });
+        this.addAnnotation(this.getRelationship_Source(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/relatedElement")
+                });
+        this.addAnnotation(this.getRelationship_Target(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/relatedElement")
+                });
+        this.addAnnotation(this.getRenderingDefinition_Rendering(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
+                });
+        this.addAnnotation(this.getRequirementDefinition_ActorParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart"),
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter")
+                });
+        this.addAnnotation(this.getRequirementDefinition_AssumedConstraint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getRequirementDefinition_FramedConcern(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//RequirementDefinition/requiredConstraint")
+                });
+        this.addAnnotation(this.getRequirementDefinition_RequiredConstraint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getRequirementDefinition_StakeholderParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedPart"),
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter")
+                });
+        this.addAnnotation(this.getRequirementDefinition_SubjectParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Behavior/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedUsage")
+                });
+        this.addAnnotation(this.getRequirementUsage_ActorParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart"),
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter")
+                });
+        this.addAnnotation(this.getRequirementUsage_AssumedConstraint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getRequirementUsage_FramedConcern(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//RequirementUsage/requiredConstraint")
+                });
+        this.addAnnotation(this.getRequirementUsage_RequiredConstraint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getRequirementUsage_StakeholderParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart"),
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter")
+                });
+        this.addAnnotation(this.getRequirementUsage_SubjectParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Step/parameter"),
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
+                });
+        this.addAnnotation(this.getSpecialization_OwningType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/specific"),
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getStateDefinition_State(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ActionDefinition/action")
+                });
+        this.addAnnotation(this.getStep_Behavior(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/type")
+                });
+        this.addAnnotation(this.getSubsetting_OwningFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/subsettingFeature")
+                });
+        this.addAnnotation(this.getTextualRepresentation_RepresentedElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/owner")
+                });
+        this.addAnnotation(this.getTransitionUsage_EffectAction(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/feature")
+                });
+        this.addAnnotation(this.getTransitionUsage_GuardExpression(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getTransitionUsage_Succession(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getTransitionUsage_TriggerAction(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getType_DirectedFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/feature")
+                });
+        this.addAnnotation(this.getType_EndFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/feature")
+                });
+        this.addAnnotation(this.getType_Feature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/member")
+                });
+        this.addAnnotation(this.getType_InheritedFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/feature")
+                });
+        this.addAnnotation(this.getType_InheritedMembership(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/membership")
+                });
+        this.addAnnotation(this.getType_Input(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature")
+                });
+        this.addAnnotation(this.getType_Multiplicity(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getType_Output(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature")
+                });
+        this.addAnnotation(this.getType_OwnedConjugator(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getType_OwnedDifferencing(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getType_OwnedDisjoining(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getType_OwnedEndFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/endFeature"),
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
+                });
+        this.addAnnotation(this.getType_OwnedFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getType_OwnedFeatureMembership(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMembership"),
+                        URI.createURI(eNS_URI).appendFragment("//Type/featureMembership")
+                });
+        this.addAnnotation(this.getType_OwnedIntersecting(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getType_OwnedSpecialization(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getType_OwnedUnioning(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
+        this.addAnnotation(this.getTypeFeaturing_OwningFeatureOfType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//TypeFeaturing/featureOfType"),
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getUnioning_TypeUnioned(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getUsage_DirectedUsage(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage"),
+                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature")
+                });
+        this.addAnnotation(this.getUsage_NestedAction(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedOccurrence")
+                });
+        this.addAnnotation(this.getUsage_NestedAllocation(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedConnection")
+                });
+        this.addAnnotation(this.getUsage_NestedAnalysisCase(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedCase")
+                });
+        this.addAnnotation(this.getUsage_NestedAttribute(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
+                });
+        this.addAnnotation(this.getUsage_NestedCalculation(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedAction")
+                });
+        this.addAnnotation(this.getUsage_NestedCase(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedCalculation")
+                });
+        this.addAnnotation(this.getUsage_NestedConcern(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedRequirement")
+                });
+        this.addAnnotation(this.getUsage_NestedConnection(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart")
+                });
+        this.addAnnotation(this.getUsage_NestedConstraint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedOccurrence")
+                });
+        this.addAnnotation(this.getUsage_NestedEnumeration(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedAttribute")
+                });
+        this.addAnnotation(this.getUsage_NestedFlow(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedConnection")
+                });
+        this.addAnnotation(this.getUsage_NestedInterface(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedConnection")
+                });
+        this.addAnnotation(this.getUsage_NestedItem(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedOccurrence")
+                });
+        this.addAnnotation(this.getUsage_NestedMetadata(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedItem")
+                });
+        this.addAnnotation(this.getUsage_NestedOccurrence(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
+                });
+        this.addAnnotation(this.getUsage_NestedPart(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedItem")
+                });
+        this.addAnnotation(this.getUsage_NestedPort(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
+                });
+        this.addAnnotation(this.getUsage_NestedReference(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
+                });
+        this.addAnnotation(this.getUsage_NestedRendering(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart")
+                });
+        this.addAnnotation(this.getUsage_NestedRequirement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedConstraint")
+                });
+        this.addAnnotation(this.getUsage_NestedState(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedAction")
+                });
+        this.addAnnotation(this.getUsage_NestedTransition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedUsage")
+                });
+        this.addAnnotation(this.getUsage_NestedUsage(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature"),
+                        URI.createURI(eNS_URI).appendFragment("//Usage/usage")
+                });
+        this.addAnnotation(this.getUsage_NestedUseCase(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedCase")
+                });
+        this.addAnnotation(this.getUsage_NestedVerificationCase(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedCase")
+                });
+        this.addAnnotation(this.getUsage_NestedView(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedPart")
+                });
+        this.addAnnotation(this.getUsage_NestedViewpoint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedRequirement")
+                });
+        this.addAnnotation(this.getUsage_OwningDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/owningType")
+                });
+        this.addAnnotation(this.getUsage_OwningUsage(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/owningType")
+                });
+        this.addAnnotation(this.getUsage_Usage(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/feature")
+                });
+        this.addAnnotation(this.getUsage_Variant(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getUsage_VariantMembership(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMembership")
+                });
+        this.addAnnotation(this.getVerificationCaseUsage_VerificationCaseDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//CaseUsage/caseDefinition")
+                });
+        this.addAnnotation(this.getViewDefinition_SatisfiedViewpoint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/ownedRequirement")
+                });
+        this.addAnnotation(this.getViewDefinition_View(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/usage")
+                });
+        this.addAnnotation(this.getViewDefinition_ViewCondition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getViewUsage_ExposedElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/member")
+                });
+        this.addAnnotation(this.getViewUsage_SatisfiedViewpoint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/nestedRequirement")
+                });
+        this.addAnnotation(this.getViewUsage_ViewCondition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+    }
+
+    /**
+     * Initializes the annotations for <b>redefines</b>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void createRedefinesAnnotations() {
+        String source = "redefines";
+        this.addAnnotation(this.getActionUsage_ActionDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Step/behavior"),
+                        URI.createURI(eNS_URI).appendFragment("//OccurrenceUsage/occurrenceDefinition")
+                });
+        this.addAnnotation(this.getActorMembership_OwnedActorParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ParameterMembership/ownedMemberParameter")
+                });
+        this.addAnnotation(this.getAllocationUsage_AllocationDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ConnectionUsage/connectionDefinition")
+                });
+        this.addAnnotation(this.getAnalysisCaseUsage_AnalysisCaseDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//CaseUsage/caseDefinition")
+                });
+        this.addAnnotation(this.getAnnotation_AnnotatedElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getAnnotation_AnnotatingElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getAssociation_AssociationEnd(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/endFeature")
+                });
+        this.addAnnotation(this.getAssociation_RelatedType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/relatedElement")
+                });
+        this.addAnnotation(this.getAssociation_SourceType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getAssociation_TargetType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getAttributeUsage_AttributeDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/definition")
+                });
+        this.addAnnotation(this.getBehavior_Parameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature")
+                });
+        this.addAnnotation(this.getBooleanExpression_Predicate(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Expression/function")
+                });
+        this.addAnnotation(this.getCalculationUsage_CalculationDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Expression/function"),
+                        URI.createURI(eNS_URI).appendFragment("//ActionUsage/actionDefinition")
+                });
+        this.addAnnotation(this.getCaseUsage_CaseDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//CalculationUsage/calculationDefinition")
+                });
+        this.addAnnotation(this.getConcernUsage_ConcernDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//RequirementUsage/requirementDefinition")
+                });
+        this.addAnnotation(this.getConjugatedPortDefinition_OriginalPortDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/owningNamespace")
+                });
+        this.addAnnotation(this.getConjugatedPortDefinition_OwnedPortConjugator(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/ownedConjugator")
+                });
+        this.addAnnotation(this.getConjugatedPortTyping_ConjugatedPortDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//FeatureTyping/type")
+                });
+        this.addAnnotation(this.getConjugation_ConjugatedType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getConjugation_OriginalType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getConnectionDefinition_ConnectionEnd(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Association/associationEnd")
+                });
+        this.addAnnotation(this.getConnectionUsage_ConnectionDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Connector/association")
+                });
+        this.addAnnotation(this.getConnector_Association(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/type")
+                });
+        this.addAnnotation(this.getConnector_ConnectorEnd(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/endFeature")
+                });
+        this.addAnnotation(this.getConnector_RelatedFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/relatedElement")
+                });
+        this.addAnnotation(this.getConnector_SourceFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getConnector_TargetFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getConstraintUsage_ConstraintDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//BooleanExpression/predicate")
+                });
+        this.addAnnotation(this.getDependency_Client(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getDependency_Supplier(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getDifferencing_DifferencingType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getDifferencing_TypeDifferenced(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getDisjoining_DisjoiningType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getDisjoining_TypeDisjoined(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getDocumentation_DocumentedElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//AnnotatingElement/annotatedElement")
+                });
+        this.addAnnotation(this.getElementFilterMembership_Condition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//OwningMembership/ownedMemberElement")
+                });
+        this.addAnnotation(this.getEnumerationDefinition_EnumeratedValue(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Definition/variant")
+                });
+        this.addAnnotation(this.getEnumerationUsage_EnumerationDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//AttributeUsage/attributeDefinition")
+                });
+        this.addAnnotation(this.getExhibitStateUsage_ExhibitedState(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//PerformActionUsage/performedAction")
+                });
+        this.addAnnotation(this.getExpression_Function(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Step/behavior")
+                });
+        this.addAnnotation(this.getFeatureChaining_ChainingFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getFeatureChaining_FeatureChained(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getFeatureInverting_FeatureInverted(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getFeatureInverting_InvertingFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getFeatureMembership_OwnedMemberFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//OwningMembership/ownedMemberElement"),
+                        URI.createURI(eNS_URI).appendFragment("//Featuring/feature")
+                });
+        this.addAnnotation(this.getFeatureMembership_OwningType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Membership/membershipOwningNamespace"),
+                        URI.createURI(eNS_URI).appendFragment("//Featuring/type")
+                });
+        this.addAnnotation(this.getFeatureTyping_OwningFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/owningType")
+                });
+        this.addAnnotation(this.getFeatureTyping_Type(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/general")
+                });
+        this.addAnnotation(this.getFeatureTyping_TypedFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/specific")
+                });
+        this.addAnnotation(this.getFeatureValue_Value(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//OwningMembership/ownedMemberElement")
+                });
+        this.addAnnotation(this.getFlowConnectionUsage_FlowConnectionDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ActionUsage/actionDefinition"),
+                        URI.createURI(eNS_URI).appendFragment("//ConnectionUsage/connectionDefinition"),
+                        URI.createURI(eNS_URI).appendFragment("//ItemFlow/interaction")
+                });
+        this.addAnnotation(this.getFramedConcernMembership_OwnedConcern(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//RequirementConstraintMembership/ownedConstraint")
+                });
+        this.addAnnotation(this.getFramedConcernMembership_ReferencedConcern(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//RequirementConstraintMembership/referencedConstraint")
+                });
+        this.addAnnotation(this.getImport_ImportOwningNamespace(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getIncludeUseCaseUsage_UseCaseIncluded(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//PerformActionUsage/performedAction")
+                });
+        this.addAnnotation(this.getInterfaceDefinition_InterfaceEnd(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ConnectionDefinition/connectionEnd")
+                });
+        this.addAnnotation(this.getInterfaceUsage_InterfaceDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ConnectionUsage/connectionDefinition")
+                });
+        this.addAnnotation(this.getIntersecting_IntersectingType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getIntersecting_TypeIntersected(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getItemFlow_Interaction(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Connector/association"),
+                        URI.createURI(eNS_URI).appendFragment("//Step/behavior")
+                });
+        this.addAnnotation(this.getMembership_MemberElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getMembership_MembershipOwningNamespace(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getMembershipImport_ImportedMembership(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getMetadataUsage_MetadataDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ItemUsage/itemDefinition"),
+                        URI.createURI(eNS_URI).appendFragment("//MetadataFeature/metaclass")
+                });
+        this.addAnnotation(this.getMultiplicityRange_Bound(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Namespace/ownedMember")
+                });
+        this.addAnnotation(this.getNamespaceImport_ImportedNamespace(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getObjectiveMembership_OwnedObjectiveRequirement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//FeatureMembership/ownedMemberFeature")
+                });
+        this.addAnnotation(this.getOccurrenceUsage_OccurrenceDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Usage/definition")
+                });
+        this.addAnnotation(this.getOwningMembership_OwnedMemberElementId(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Membership/memberElementId")
+                });
+        this.addAnnotation(this.getOwningMembership_OwnedMemberName(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Membership/memberName")
+                });
+        this.addAnnotation(this.getOwningMembership_OwnedMemberShortName(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Membership/memberShortName")
+                });
+        this.addAnnotation(this.getOwningMembership_OwnedMemberElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Membership/memberElement")
+                });
+        this.addAnnotation(this.getParameterMembership_OwnedMemberParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//FeatureMembership/ownedMemberFeature")
+                });
+        this.addAnnotation(this.getPerformActionUsage_PerformedAction(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//EventOccurrenceUsage/eventOccurrence")
+                });
+        this.addAnnotation(this.getPortConjugation_ConjugatedPortDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Conjugation/owningType")
+                });
+        this.addAnnotation(this.getPortConjugation_OriginalPortDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Conjugation/originalType")
+                });
+        this.addAnnotation(this.getPortUsage_PortDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//OccurrenceUsage/occurrenceDefinition")
+                });
+        this.addAnnotation(this.getRedefinition_RedefinedFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/subsettedFeature")
+                });
+        this.addAnnotation(this.getRedefinition_RedefiningFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/subsettingFeature")
+                });
+        this.addAnnotation(this.getReferenceSubsetting_ReferencedFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/subsettedFeature")
+                });
+        this.addAnnotation(this.getReferenceSubsetting_ReferencingFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/subsettingFeature"),
+                        URI.createURI(eNS_URI).appendFragment("//Subsetting/owningFeature")
+                });
+        this.addAnnotation(this.getRenderingUsage_RenderingDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//PartUsage/partDefinition")
+                });
+        this.addAnnotation(this.getRequirementConstraintMembership_OwnedConstraint(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//FeatureMembership/ownedMemberFeature")
+                });
+        this.addAnnotation(this.getRequirementDefinition_ReqId(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/declaredShortName")
+                });
+        this.addAnnotation(this.getRequirementUsage_ReqId(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Element/declaredShortName")
+                });
+        this.addAnnotation(this.getRequirementUsage_RequirementDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ConstraintUsage/constraintDefinition")
+                });
+        this.addAnnotation(this.getRequirementVerificationMembership_OwnedRequirement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//RequirementConstraintMembership/ownedConstraint")
+                });
+        this.addAnnotation(this.getRequirementVerificationMembership_VerifiedRequirement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//RequirementConstraintMembership/referencedConstraint")
+                });
+        this.addAnnotation(this.getResultExpressionMembership_OwnedResultExpression(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//FeatureMembership/ownedMemberFeature")
+                });
+        this.addAnnotation(this.getSatisfyRequirementUsage_SatisfiedRequirement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//AssertConstraintUsage/assertedConstraint")
+                });
+        this.addAnnotation(this.getSpecialization_General(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getSpecialization_Specific(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getStakeholderMembership_OwnedStakeholderParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ParameterMembership/ownedMemberParameter")
+                });
+        this.addAnnotation(this.getStateSubactionMembership_Action(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//FeatureMembership/ownedMemberFeature")
+                });
+        this.addAnnotation(this.getStateUsage_StateDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ActionUsage/actionDefinition")
+                });
+        this.addAnnotation(this.getStep_Parameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Type/directedFeature")
+                });
+        this.addAnnotation(this.getSubclassification_OwningClassifier(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/owningType")
+                });
+        this.addAnnotation(this.getSubclassification_Subclassifier(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/specific")
+                });
+        this.addAnnotation(this.getSubclassification_Superclassifier(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/general")
+                });
+        this.addAnnotation(this.getSubjectMembership_OwnedSubjectParameter(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//ParameterMembership/ownedMemberParameter")
+                });
+        this.addAnnotation(this.getSubsetting_OwningFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/owningType")
+                });
+        this.addAnnotation(this.getSubsetting_SubsettedFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/general")
+                });
+        this.addAnnotation(this.getSubsetting_SubsettingFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Specialization/specific")
+                });
+        this.addAnnotation(this.getTextualRepresentation_RepresentedElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//AnnotatingElement/annotatedElement")
+                });
+        this.addAnnotation(this.getTransitionFeatureMembership_TransitionFeature(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//FeatureMembership/ownedMemberFeature")
+                });
+        this.addAnnotation(this.getTypeFeaturing_FeatureOfType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source"),
+                        URI.createURI(eNS_URI).appendFragment("//Featuring/feature")
+                });
+        this.addAnnotation(this.getTypeFeaturing_FeaturingType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target"),
+                        URI.createURI(eNS_URI).appendFragment("//Featuring/type")
+                });
+        this.addAnnotation(this.getUnioning_TypeUnioned(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/source")
+                });
+        this.addAnnotation(this.getUnioning_UnioningType(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/target")
+                });
+        this.addAnnotation(this.getUsage_Definition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Feature/type")
+                });
+        this.addAnnotation(this.getUseCaseUsage_UseCaseDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//CaseUsage/caseDefinition")
+                });
+        this.addAnnotation(this.getVariantMembership_OwnedVariantUsage(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//OwningMembership/ownedMemberElement")
+                });
+        this.addAnnotation(this.getViewpointUsage_ViewpointDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//RequirementUsage/requirementDefinition")
+                });
+        this.addAnnotation(this.getViewRenderingMembership_OwnedRendering(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//FeatureMembership/ownedMemberFeature")
+                });
+        this.addAnnotation(this.getViewUsage_ViewDefinition(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//PartUsage/partDefinition")
+                });
     }
 
 } // SysmlPackageImpl

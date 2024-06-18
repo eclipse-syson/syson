@@ -34,7 +34,7 @@ public interface ConstraintUsage extends OccurrenceUsage, BooleanExpression {
      *
      * @return the value of the '<em>Constraint Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getConstraintUsage_ConstraintDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     Predicate getConstraintDefinition();

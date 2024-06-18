@@ -36,7 +36,7 @@ public interface InterfaceDefinition extends ConnectionDefinition {
      *
      * @return the value of the '<em>Interface End</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getInterfaceDefinition_InterfaceEnd()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<PortUsage> getInterfaceEnd();

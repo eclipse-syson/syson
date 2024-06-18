@@ -36,7 +36,7 @@ public interface CalculationDefinition extends ActionDefinition, Function {
      *
      * @return the value of the '<em>Calculation</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getCalculationDefinition_Calculation()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<CalculationUsage> getCalculation();

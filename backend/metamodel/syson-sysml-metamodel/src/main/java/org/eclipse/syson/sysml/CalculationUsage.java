@@ -34,7 +34,7 @@ public interface CalculationUsage extends ActionUsage, Expression {
      *
      * @return the value of the '<em>Calculation Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getCalculationUsage_CalculationDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     Function getCalculationDefinition();

@@ -35,7 +35,7 @@ public interface AttributeUsage extends Usage {
      *
      * @return the value of the '<em>Attribute Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getAttributeUsage_AttributeDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<DataType> getAttributeDefinition();

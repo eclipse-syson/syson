@@ -36,7 +36,7 @@ public interface Dependency extends Relationship {
      *
      * @return the value of the '<em>Client</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDependency_Client()
-     * @model required="true"
+     * @model required="true" annotation="redefines"
      * @generated
      */
     EList<Element> getClient();
@@ -47,7 +47,7 @@ public interface Dependency extends Relationship {
      *
      * @return the value of the '<em>Supplier</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDependency_Supplier()
-     * @model required="true"
+     * @model required="true" annotation="redefines"
      * @generated
      */
     EList<Element> getSupplier();

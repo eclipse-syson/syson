@@ -66,7 +66,7 @@ public interface Relationship extends Element {
      * @return the value of the '<em>Owned Related Element</em>' containment reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRelationship_OwnedRelatedElement()
      * @see org.eclipse.syson.sysml.Element#getOwningRelationship
-     * @model opposite="owningRelationship" containment="true"
+     * @model opposite="owningRelationship" containment="true" annotation="subsets"
      * @generated
      */
     EList<Element> getOwnedRelatedElement();
@@ -113,7 +113,7 @@ public interface Relationship extends Element {
      *
      * @return the value of the '<em>Source</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRelationship_Source()
-     * @model
+     * @model annotation="subsets"
      * @generated
      */
     EList<Element> getSource();
@@ -124,7 +124,7 @@ public interface Relationship extends Element {
      *
      * @return the value of the '<em>Target</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRelationship_Target()
-     * @model
+     * @model annotation="subsets"
      * @generated
      */
     EList<Element> getTarget();

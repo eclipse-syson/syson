@@ -36,7 +36,7 @@ public interface AllocationDefinition extends ConnectionDefinition {
      *
      * @return the value of the '<em>Allocation</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getAllocationDefinition_Allocation()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<AllocationUsage> getAllocation();

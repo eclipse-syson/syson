@@ -34,7 +34,7 @@ public interface Featuring extends Relationship {
      * @return the value of the '<em>Feature</em>' reference.
      * @see #setFeature(Feature)
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeaturing_Feature()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="subsets"
      * @generated
      */
     Feature getFeature();
@@ -56,7 +56,7 @@ public interface Featuring extends Relationship {
      * @return the value of the '<em>Type</em>' reference.
      * @see #setType(Type)
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeaturing_Type()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="subsets"
      * @generated
      */
     Type getType();

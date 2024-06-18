@@ -35,7 +35,7 @@ public interface PortUsage extends OccurrenceUsage {
      *
      * @return the value of the '<em>Port Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getPortUsage_PortDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<PortDefinition> getPortDefinition();

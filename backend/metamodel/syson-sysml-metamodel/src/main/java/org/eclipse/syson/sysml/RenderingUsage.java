@@ -33,7 +33,7 @@ public interface RenderingUsage extends PartUsage {
      *
      * @return the value of the '<em>Rendering Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRenderingUsage_RenderingDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     RenderingDefinition getRenderingDefinition();

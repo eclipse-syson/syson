@@ -40,7 +40,7 @@ public interface Connector extends Feature, Relationship {
      *
      * @return the value of the '<em>Association</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getConnector_Association()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Association> getAssociation();
@@ -51,7 +51,7 @@ public interface Connector extends Feature, Relationship {
      *
      * @return the value of the '<em>Connector End</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getConnector_ConnectorEnd()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Feature> getConnectorEnd();
@@ -85,7 +85,7 @@ public interface Connector extends Feature, Relationship {
      *
      * @return the value of the '<em>Related Feature</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getConnector_RelatedFeature()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Feature> getRelatedFeature();
@@ -107,7 +107,8 @@ public interface Connector extends Feature, Relationship {
      *
      * @return the value of the '<em>Target Feature</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getConnector_TargetFeature()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
+     *        annotation="subsets"
      * @generated
      */
     EList<Feature> getTargetFeature();

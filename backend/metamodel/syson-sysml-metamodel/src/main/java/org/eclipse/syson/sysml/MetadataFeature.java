@@ -35,7 +35,7 @@ public interface MetadataFeature extends Feature, AnnotatingElement {
      *
      * @return the value of the '<em>Metaclass</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getMetadataFeature_Metaclass()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     Metaclass getMetaclass();

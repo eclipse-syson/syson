@@ -761,6 +761,9 @@
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" upperBound="-1" eType="#//Type"
         changeable="false" volatile="true" transient="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="valuation" ordered="false"
+        eType="#//FeatureValue" changeable="false" volatile="true" transient="true"
+        derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FeatureChainExpression" eSuperTypes="#//OperatorExpression">
     <eOperations name="sourceTargetFeature" ordered="false" eType="#//Feature"/>

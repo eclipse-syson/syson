@@ -35,7 +35,7 @@ public interface Specialization extends Relationship {
      * @return the value of the '<em>General</em>' reference.
      * @see #setGeneral(Type)
      * @see org.eclipse.syson.sysml.SysmlPackage#getSpecialization_General()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Type getGeneral();
@@ -60,7 +60,7 @@ public interface Specialization extends Relationship {
      * @see org.eclipse.syson.sysml.SysmlPackage#getSpecialization_OwningType()
      * @see org.eclipse.syson.sysml.Type#getOwnedSpecialization
      * @model opposite="ownedSpecialization" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
     Type getOwningType();
@@ -71,7 +71,7 @@ public interface Specialization extends Relationship {
      * @return the value of the '<em>Specific</em>' reference.
      * @see #setSpecific(Type)
      * @see org.eclipse.syson.sysml.SysmlPackage#getSpecialization_Specific()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Type getSpecific();

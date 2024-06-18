@@ -61,7 +61,7 @@ public interface Disjoining extends Relationship {
      * @see org.eclipse.syson.sysml.SysmlPackage#getDisjoining_OwningType()
      * @see org.eclipse.syson.sysml.Type#getOwnedDisjoining
      * @model opposite="ownedDisjoining" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
     Type getOwningType();

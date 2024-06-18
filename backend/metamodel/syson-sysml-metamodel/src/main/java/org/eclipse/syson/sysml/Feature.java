@@ -43,6 +43,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.syson.sysml.Feature#getOwningFeatureMembership <em>Owning Feature Membership</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getOwningType <em>Owning Type</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getType <em>Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Feature#getValuation <em>Valuation</em>}</li>
  * </ul>
  *
  * @see org.eclipse.syson.sysml.SysmlPackage#getFeature()
@@ -95,7 +96,7 @@ public interface Feature extends Type {
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_EndOwningType()
      * @see org.eclipse.syson.sysml.Type#getOwnedEndFeature
      * @model opposite="ownedEndFeature" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
     Type getEndOwningType();
@@ -294,6 +295,7 @@ public interface Feature extends Type {
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_OwnedFeatureChaining()
      * @see org.eclipse.syson.sysml.FeatureChaining#getFeatureChained
      * @model opposite="featureChained" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<FeatureChaining> getOwnedFeatureChaining();
@@ -308,7 +310,7 @@ public interface Feature extends Type {
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_OwnedFeatureInverting()
      * @see org.eclipse.syson.sysml.FeatureInverting#getOwningFeature
      * @model opposite="owningFeature" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
     EList<FeatureInverting> getOwnedFeatureInverting();
@@ -319,7 +321,7 @@ public interface Feature extends Type {
      *
      * @return the value of the '<em>Owned Redefinition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_OwnedRedefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<Redefinition> getOwnedRedefinition();
@@ -333,7 +335,7 @@ public interface Feature extends Type {
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_OwnedReferenceSubsetting()
      * @see org.eclipse.syson.sysml.ReferenceSubsetting#getReferencingFeature
      * @model opposite="referencingFeature" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
     ReferenceSubsetting getOwnedReferenceSubsetting();
@@ -348,7 +350,7 @@ public interface Feature extends Type {
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_OwnedSubsetting()
      * @see org.eclipse.syson.sysml.Subsetting#getOwningFeature
      * @model opposite="owningFeature" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
     EList<Subsetting> getOwnedSubsetting();
@@ -377,6 +379,7 @@ public interface Feature extends Type {
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_OwnedTyping()
      * @see org.eclipse.syson.sysml.FeatureTyping#getOwningFeature
      * @model opposite="owningFeature" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<FeatureTyping> getOwnedTyping();
@@ -390,7 +393,7 @@ public interface Feature extends Type {
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_OwningFeatureMembership()
      * @see org.eclipse.syson.sysml.FeatureMembership#getOwnedMemberFeature
      * @model opposite="ownedMemberFeature" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
     FeatureMembership getOwningFeatureMembership();
@@ -404,6 +407,7 @@ public interface Feature extends Type {
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_OwningType()
      * @see org.eclipse.syson.sysml.Type#getOwnedFeature
      * @model opposite="ownedFeature" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Type getOwningType();
@@ -418,6 +422,16 @@ public interface Feature extends Type {
      * @generated
      */
     EList<Type> getType();
+
+    /**
+     * Returns the value of the '<em><b>Valuation</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Valuation</em>' reference.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_Valuation()
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @generated
+     */
+    FeatureValue getValuation();
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

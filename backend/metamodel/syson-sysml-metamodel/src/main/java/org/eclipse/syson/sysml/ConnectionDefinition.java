@@ -36,7 +36,7 @@ public interface ConnectionDefinition extends PartDefinition, AssociationStructu
      *
      * @return the value of the '<em>Connection End</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getConnectionDefinition_ConnectionEnd()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Usage> getConnectionEnd();

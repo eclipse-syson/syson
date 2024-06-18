@@ -38,7 +38,7 @@ public interface VerificationCaseUsage extends CaseUsage {
      *
      * @return the value of the '<em>Verification Case Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getVerificationCaseUsage_VerificationCaseDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     VerificationCaseDefinition getVerificationCaseDefinition();

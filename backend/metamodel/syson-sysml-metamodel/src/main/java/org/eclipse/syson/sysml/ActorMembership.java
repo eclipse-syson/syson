@@ -35,6 +35,7 @@ public interface ActorMembership extends ParameterMembership {
      * @return the value of the '<em>Owned Actor Parameter</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getActorMembership_OwnedActorParameter()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     PartUsage getOwnedActorParameter();

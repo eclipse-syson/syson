@@ -61,6 +61,7 @@ public interface TransitionFeatureMembership extends FeatureMembership {
      * @return the value of the '<em>Transition Feature</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getTransitionFeatureMembership_TransitionFeature()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     Step getTransitionFeature();

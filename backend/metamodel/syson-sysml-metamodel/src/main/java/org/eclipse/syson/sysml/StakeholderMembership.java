@@ -36,6 +36,7 @@ public interface StakeholderMembership extends ParameterMembership {
      * @return the value of the '<em>Owned Stakeholder Parameter</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getStakeholderMembership_OwnedStakeholderParameter()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     PartUsage getOwnedStakeholderParameter();

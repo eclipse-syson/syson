@@ -36,7 +36,7 @@ public interface Documentation extends Comment {
      * @see org.eclipse.syson.sysml.SysmlPackage#getDocumentation_DocumentedElement()
      * @see org.eclipse.syson.sysml.Element#getDocumentation
      * @model opposite="documentation" required="true" transient="true" changeable="false" volatile="true"
-     *        derived="true" ordered="false"
+     *        derived="true" ordered="false" annotation="redefines" annotation="subsets"
      * @generated
      */
     Element getDocumentedElement();

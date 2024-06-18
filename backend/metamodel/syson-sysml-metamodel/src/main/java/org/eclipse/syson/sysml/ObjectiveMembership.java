@@ -36,6 +36,7 @@ public interface ObjectiveMembership extends FeatureMembership {
      * @return the value of the '<em>Owned Objective Requirement</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getObjectiveMembership_OwnedObjectiveRequirement()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     RequirementUsage getOwnedObjectiveRequirement();

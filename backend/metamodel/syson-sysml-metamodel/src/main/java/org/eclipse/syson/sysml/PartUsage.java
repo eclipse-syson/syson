@@ -35,7 +35,7 @@ public interface PartUsage extends ItemUsage {
      *
      * @return the value of the '<em>Part Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getPartUsage_PartDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<PartDefinition> getPartDefinition();

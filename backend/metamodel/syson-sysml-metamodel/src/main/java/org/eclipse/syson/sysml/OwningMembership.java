@@ -40,7 +40,7 @@ public interface OwningMembership extends Membership {
      * @see org.eclipse.syson.sysml.SysmlPackage#getOwningMembership_OwnedMemberElement()
      * @see org.eclipse.syson.sysml.Element#getOwningMembership
      * @model opposite="owningMembership" required="true" transient="true" changeable="false" volatile="true"
-     *        derived="true" ordered="false"
+     *        derived="true" ordered="false" annotation="redefines" annotation="subsets"
      * @generated
      */
     Element getOwnedMemberElement();
@@ -52,6 +52,7 @@ public interface OwningMembership extends Membership {
      * @return the value of the '<em>Owned Member Element Id</em>' attribute.
      * @see org.eclipse.syson.sysml.SysmlPackage#getOwningMembership_OwnedMemberElementId()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     String getOwnedMemberElementId();
@@ -73,7 +74,7 @@ public interface OwningMembership extends Membership {
      *
      * @return the value of the '<em>Owned Member Short Name</em>' attribute.
      * @see org.eclipse.syson.sysml.SysmlPackage#getOwningMembership_OwnedMemberShortName()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     String getOwnedMemberShortName();

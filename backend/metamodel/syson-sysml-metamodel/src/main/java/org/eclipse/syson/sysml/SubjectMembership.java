@@ -35,6 +35,7 @@ public interface SubjectMembership extends ParameterMembership {
      * @return the value of the '<em>Owned Subject Parameter</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getSubjectMembership_OwnedSubjectParameter()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     Usage getOwnedSubjectParameter();

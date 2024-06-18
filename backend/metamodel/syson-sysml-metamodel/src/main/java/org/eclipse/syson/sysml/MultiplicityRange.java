@@ -39,6 +39,7 @@ public interface MultiplicityRange extends Multiplicity {
      * @return the value of the '<em>Bound</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getMultiplicityRange_Bound()
      * @model required="true" upper="2" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="redefines"
      * @generated
      */
     EList<Expression> getBound();
@@ -48,7 +49,7 @@ public interface MultiplicityRange extends Multiplicity {
      *
      * @return the value of the '<em>Lower Bound</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getMultiplicityRange_LowerBound()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     Expression getLowerBound();
@@ -59,6 +60,7 @@ public interface MultiplicityRange extends Multiplicity {
      * @return the value of the '<em>Upper Bound</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getMultiplicityRange_UpperBound()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Expression getUpperBound();

@@ -36,7 +36,7 @@ public interface ActionDefinition extends OccurrenceDefinition, Behavior {
      *
      * @return the value of the '<em>Action</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getActionDefinition_Action()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ActionUsage> getAction();

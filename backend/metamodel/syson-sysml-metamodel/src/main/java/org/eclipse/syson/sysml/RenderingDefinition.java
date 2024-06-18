@@ -36,7 +36,7 @@ public interface RenderingDefinition extends PartDefinition {
      *
      * @return the value of the '<em>Rendering</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRenderingDefinition_Rendering()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<RenderingUsage> getRendering();

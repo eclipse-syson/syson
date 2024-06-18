@@ -53,7 +53,7 @@ public interface Import extends Relationship {
      * @see org.eclipse.syson.sysml.SysmlPackage#getImport_ImportOwningNamespace()
      * @see org.eclipse.syson.sysml.Namespace#getOwnedImport
      * @model opposite="ownedImport" required="true" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="redefines" annotation="subsets"
      * @generated
      */
     Namespace getImportOwningNamespace();

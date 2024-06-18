@@ -33,7 +33,7 @@ public interface MetadataUsage extends ItemUsage, MetadataFeature {
      *
      * @return the value of the '<em>Metadata Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getMetadataUsage_MetadataDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     Metaclass getMetadataDefinition();

@@ -34,6 +34,7 @@ public interface FeatureReferenceExpression extends Expression {
      * @return the value of the '<em>Referent</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeatureReferenceExpression_Referent()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Feature getReferent();
