@@ -17,6 +17,7 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Dependency;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -58,14 +59,6 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
         return object;
     }
 
-    private ParameterMembership createParameterMembershipWithReferenceUsage(String refName) {
-        var reference = SysmlFactory.eINSTANCE.createReferenceUsage();
-        reference.setDeclaredName(refName);
-        var pm = SysmlFactory.eINSTANCE.createParameterMembership();
-        pm.getOwnedRelatedElement().add(reference);
-        return pm;
-    }
-
     @Override
     public Element caseElement(Element object) {
         return object;
@@ -80,6 +73,12 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseDefinition(Definition object) {
         object.setDeclaredName(object.eClass().getName());
+        return object;
+    }
+
+    @Override
+    public Element caseDocumentation(Documentation object) {
+        object.setBody("add doc here");
         return object;
     }
 
@@ -158,5 +157,13 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
         }
         object.setDeclaredName(defaultName);
         return object;
+    }
+
+    private ParameterMembership createParameterMembershipWithReferenceUsage(String refName) {
+        var reference = SysmlFactory.eINSTANCE.createReferenceUsage();
+        reference.setDeclaredName(refName);
+        var pm = SysmlFactory.eINSTANCE.createParameterMembership();
+        pm.getOwnedRelatedElement().add(reference);
+        return pm;
     }
 }

@@ -77,8 +77,9 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
             );
 
     public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
-            Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(), List.of(SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
-            Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),      List.of(SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
+            Map.entry(SysmlPackage.eINSTANCE.getAcceptActionUsage(), List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
+            Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),  List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
+            Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
             );
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(

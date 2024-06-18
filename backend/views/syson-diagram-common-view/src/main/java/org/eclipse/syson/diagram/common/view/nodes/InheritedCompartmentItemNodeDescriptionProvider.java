@@ -68,7 +68,7 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
 
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression(AQLConstants.AQL + "'^' + self.getCompartmentItemUsageLabel()")
+                .labelExpression(AQLConstants.AQL + "'^' + self.getCompartmentItemLabel()")
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .build();

@@ -46,6 +46,8 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
     @Override
     protected List<NodeDescription> getChildrenDescription(IViewDiagramElementFinder cache) {
         var childrenNodes = new ArrayList<NodeDescription>();
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getElement_Documentation()))
+                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart()))

@@ -12,9 +12,6 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -23,7 +20,6 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.TextualRepresentation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Documentation</b></em>'. <!-- end-user-doc -->
@@ -70,13 +66,10 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Element basicGetDocumentedElement() {
-        // TODO: implement this method to return the 'Documented Element' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwner();
     }
 
     /**
@@ -108,17 +101,6 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
                 return this.basicGetDocumentedElement() != null;
         }
         return super.eIsSet(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<TextualRepresentation> getTextualRepresentation() {
-        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
     /**

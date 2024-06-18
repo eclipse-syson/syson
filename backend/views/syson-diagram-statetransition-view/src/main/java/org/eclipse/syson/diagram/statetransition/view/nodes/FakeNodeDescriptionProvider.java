@@ -47,23 +47,29 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
     @Override
     protected List<NodeDescription> getChildrenDescription(IViewDiagramElementFinder cache) {
         var childrenNodes = new ArrayList<NodeDescription>();
-        
+
         StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(eReference -> {
-                cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add);   
+                cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add);
             });
+        });
+
+        StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            listItems.forEach(eReference -> cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
         });
 
         StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(eReference -> {
-                cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add);   
+                cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(type, eReference)).ifPresent(childrenNodes::add);
             });
         });
 
         // don't forget to add custom compartments
         cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);
-        cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState())).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+                .ifPresent(childrenNodes::add);
+
         return childrenNodes;
     }
 }

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.diagram.interconnection.view.nodes;
+package org.eclipse.syson.diagram.statetransition.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +21,11 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to create a Compartment node description inside the Interconnection View
- * {@link FirstLevelChildPartUsageNodeDescriptionProvider}.
+ * Used to create a Compartment node description inside the State Transition View diagram.
  *
  * @author arichard
  */
@@ -38,7 +38,16 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference)).ifPresent(acceptedNodeTypes::add);
+
+        StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
+            listItems.forEach(ref -> {
+                if (this.eReference.getEType().equals(ref.getEType())) {
+                    var optCompartmentItemNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(type, ref));
+                    acceptedNodeTypes.add(optCompartmentItemNodeDescription.get());
+                }
+            });
+        });
+
         return acceptedNodeTypes;
     }
 }

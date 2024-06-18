@@ -23,6 +23,8 @@ A reset of the database is needed.
   * Move and rename `AbstractDiagramDescriptionProvider.addElementsToolSection(IViewDiagramElementFinder)` to `ToolDescriptionService.addElementsDiagramToolSection()`
   * Move and rename `AbstractNodeDescriptionProvider.addExistingElementsTool()` to `ToolDescriptionService.addElementsNodeToolSection()`
   * Remove `AbstractDiagramDescriptionProvider`
+- https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams]`ViewLabelService#getCompartmentItemUsageLabel` has been renamed to `ViewLabelService#getCompartmentItemLabel`.
+- https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams]`ViewLabelService#getUsageInitialDirectEditLabel` has been renamed to `ViewLabelService#getInitialDirectEditLabel`.
 
 === Dependency update
 
@@ -82,6 +84,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/389[#389] [diagrams] Handle the DecisionNode concept in actions body of diagrams
 - https://github.com/eclipse-syson/syson/issues/391[#391] [diagrams] AcceptAction is now available inside an Action body
 - https://github.com/eclipse-syson/syson/issues/393[#393] [diagrams] Handle the ExhibitState concept in diagrams
+- https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams] Add new documentation compartment on all existing nodes in all diagrams.
 
 == v2024.5.0
 
