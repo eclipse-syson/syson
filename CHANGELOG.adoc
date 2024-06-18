@@ -55,8 +55,9 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/388[#388] [details] Add Transition source and target to Core properties in the Details view
 - https://github.com/eclipse-syson/syson/issues/394[#394] [metamodel] All _redefines_ references have been implemented.
 - https://github.com/eclipse-syson/syson/issues/416[#416] [import] Improve textual import running process.
-End users don't have to copy _syside-cli.js_ near the _syson-application_ jar anymore.
-_org.eclipse.syson.syside.path_ application option is not useful and has been removed.
+By default, end users don't have to copy _syside-cli.js_ near the _syson-application_ jar anymore.
+The embedded _syside-cli.js_ is copied in a system temp folder and executed from there (with node).
+But, if you encounter execution rights problem, you can still copy _syside-cli.js_ in a place where you have the appropriate rights and use the _org.eclipse.syson.syside.path_ application option.
 
 === New features
 
