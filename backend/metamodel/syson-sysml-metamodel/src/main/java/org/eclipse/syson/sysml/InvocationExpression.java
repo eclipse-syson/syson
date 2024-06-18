@@ -36,7 +36,7 @@ public interface InvocationExpression extends Expression {
      *
      * @return the value of the '<em>Argument</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getInvocationExpression_Argument()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Expression> getArgument();

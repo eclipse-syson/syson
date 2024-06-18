@@ -35,7 +35,7 @@ public interface InterfaceUsage extends ConnectionUsage {
      *
      * @return the value of the '<em>Interface Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getInterfaceUsage_InterfaceDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     EList<InterfaceDefinition> getInterfaceDefinition();

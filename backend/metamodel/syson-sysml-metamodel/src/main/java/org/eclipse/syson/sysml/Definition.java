@@ -66,7 +66,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Directed Usage</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_DirectedUsage()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Usage> getDirectedUsage();
@@ -99,7 +99,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Action</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedAction()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ActionUsage> getOwnedAction();
@@ -110,7 +110,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Allocation</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedAllocation()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<AllocationUsage> getOwnedAllocation();
@@ -121,7 +121,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Analysis Case</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedAnalysisCase()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<AnalysisCaseUsage> getOwnedAnalysisCase();
@@ -132,7 +132,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Attribute</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedAttribute()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<AttributeUsage> getOwnedAttribute();
@@ -143,7 +143,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Calculation</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedCalculation()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<CalculationUsage> getOwnedCalculation();
@@ -154,7 +154,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Case</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedCase()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<CaseUsage> getOwnedCase();
@@ -165,7 +165,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Concern</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedConcern()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<ConcernUsage> getOwnedConcern();
@@ -176,7 +176,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Connection</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedConnection()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ConnectorAsUsage> getOwnedConnection();
@@ -187,7 +187,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Constraint</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedConstraint()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ConstraintUsage> getOwnedConstraint();
@@ -198,7 +198,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Enumeration</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedEnumeration()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<EnumerationUsage> getOwnedEnumeration();
@@ -209,7 +209,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Flow</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedFlow()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<FlowConnectionUsage> getOwnedFlow();
@@ -220,7 +220,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Interface</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedInterface()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<InterfaceUsage> getOwnedInterface();
@@ -231,7 +231,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Item</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedItem()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ItemUsage> getOwnedItem();
@@ -242,7 +242,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Metadata</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedMetadata()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<MetadataUsage> getOwnedMetadata();
@@ -253,7 +253,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Occurrence</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedOccurrence()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<OccurrenceUsage> getOwnedOccurrence();
@@ -264,7 +264,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Part</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedPart()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<PartUsage> getOwnedPart();
@@ -275,7 +275,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Port</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedPort()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<PortUsage> getOwnedPort();
@@ -286,7 +286,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Reference</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedReference()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ReferenceUsage> getOwnedReference();
@@ -297,7 +297,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Rendering</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedRendering()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<RenderingUsage> getOwnedRendering();
@@ -308,7 +308,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Requirement</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedRequirement()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<RequirementUsage> getOwnedRequirement();
@@ -319,7 +319,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned State</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedState()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<StateUsage> getOwnedState();
@@ -330,7 +330,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Transition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedTransition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<TransitionUsage> getOwnedTransition();
@@ -345,6 +345,7 @@ public interface Definition extends Classifier {
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedUsage()
      * @see org.eclipse.syson.sysml.Usage#getOwningDefinition
      * @model opposite="owningDefinition" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Usage> getOwnedUsage();
@@ -355,7 +356,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Use Case</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedUseCase()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<UseCaseUsage> getOwnedUseCase();
@@ -366,7 +367,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Verification Case</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedVerificationCase()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<VerificationCaseUsage> getOwnedVerificationCase();
@@ -377,7 +378,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned View</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedView()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ViewUsage> getOwnedView();
@@ -388,7 +389,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Owned Viewpoint</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_OwnedViewpoint()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ViewpointUsage> getOwnedViewpoint();
@@ -399,7 +400,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Usage</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_Usage()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Usage> getUsage();
@@ -410,7 +411,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Variant</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_Variant()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<Usage> getVariant();
@@ -421,7 +422,7 @@ public interface Definition extends Classifier {
      *
      * @return the value of the '<em>Variant Membership</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getDefinition_VariantMembership()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<VariantMembership> getVariantMembership();

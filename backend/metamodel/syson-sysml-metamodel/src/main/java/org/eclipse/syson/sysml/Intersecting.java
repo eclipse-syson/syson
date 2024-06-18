@@ -60,7 +60,7 @@ public interface Intersecting extends Relationship {
      * @see org.eclipse.syson.sysml.SysmlPackage#getIntersecting_TypeIntersected()
      * @see org.eclipse.syson.sysml.Type#getOwnedIntersecting
      * @model opposite="ownedIntersecting" required="true" transient="true" changeable="false" volatile="true"
-     *        derived="true" ordered="false"
+     *        derived="true" ordered="false" annotation="redefines" annotation="subsets"
      * @generated
      */
     Type getTypeIntersected();

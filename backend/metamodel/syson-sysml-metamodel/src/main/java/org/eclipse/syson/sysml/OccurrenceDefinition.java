@@ -57,7 +57,7 @@ public interface OccurrenceDefinition extends Definition, org.eclipse.syson.sysm
      *
      * @return the value of the '<em>Life Class</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getOccurrenceDefinition_LifeClass()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     LifeClass getLifeClass();

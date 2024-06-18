@@ -58,7 +58,7 @@ public interface Redefinition extends Subsetting {
      * @return the value of the '<em>Redefining Feature</em>' reference.
      * @see #setRedefiningFeature(Feature)
      * @see org.eclipse.syson.sysml.SysmlPackage#getRedefinition_RedefiningFeature()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Feature getRedefiningFeature();

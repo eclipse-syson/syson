@@ -43,7 +43,7 @@ public interface RequirementDefinition extends ConstraintDefinition {
      *
      * @return the value of the '<em>Actor Parameter</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRequirementDefinition_ActorParameter()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<PartUsage> getActorParameter();
@@ -54,7 +54,7 @@ public interface RequirementDefinition extends ConstraintDefinition {
      *
      * @return the value of the '<em>Assumed Constraint</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRequirementDefinition_AssumedConstraint()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ConstraintUsage> getAssumedConstraint();
@@ -65,7 +65,7 @@ public interface RequirementDefinition extends ConstraintDefinition {
      *
      * @return the value of the '<em>Framed Concern</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRequirementDefinition_FramedConcern()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ConcernUsage> getFramedConcern();
@@ -76,7 +76,7 @@ public interface RequirementDefinition extends ConstraintDefinition {
      * @return the value of the '<em>Req Id</em>' attribute.
      * @see #setReqId(String)
      * @see org.eclipse.syson.sysml.SysmlPackage#getRequirementDefinition_ReqId()
-     * @model ordered="false"
+     * @model ordered="false" annotation="redefines"
      * @generated
      */
     String getReqId();
@@ -98,7 +98,7 @@ public interface RequirementDefinition extends ConstraintDefinition {
      *
      * @return the value of the '<em>Required Constraint</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRequirementDefinition_RequiredConstraint()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ConstraintUsage> getRequiredConstraint();
@@ -109,7 +109,7 @@ public interface RequirementDefinition extends ConstraintDefinition {
      *
      * @return the value of the '<em>Stakeholder Parameter</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRequirementDefinition_StakeholderParameter()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<PartUsage> getStakeholderParameter();

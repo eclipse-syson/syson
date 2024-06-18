@@ -35,6 +35,7 @@ public interface VariantMembership extends OwningMembership {
      * @return the value of the '<em>Owned Variant Usage</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getVariantMembership_OwnedVariantUsage()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     Usage getOwnedVariantUsage();

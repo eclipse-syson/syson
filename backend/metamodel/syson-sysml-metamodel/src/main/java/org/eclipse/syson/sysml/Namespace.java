@@ -40,7 +40,7 @@ public interface Namespace extends Element {
      *
      * @return the value of the '<em>Imported Membership</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getNamespace_ImportedMembership()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Membership> getImportedMembership();
@@ -91,6 +91,7 @@ public interface Namespace extends Element {
      * @see org.eclipse.syson.sysml.SysmlPackage#getNamespace_OwnedMember()
      * @see org.eclipse.syson.sysml.Element#getOwningNamespace
      * @model opposite="owningNamespace" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Element> getOwnedMember();
@@ -105,6 +106,7 @@ public interface Namespace extends Element {
      * @see org.eclipse.syson.sysml.SysmlPackage#getNamespace_OwnedMembership()
      * @see org.eclipse.syson.sysml.Membership#getMembershipOwningNamespace
      * @model opposite="membershipOwningNamespace" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Membership> getOwnedMembership();

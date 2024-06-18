@@ -36,7 +36,7 @@ public interface ViewpointUsage extends RequirementUsage {
      *
      * @return the value of the '<em>Viewpoint Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getViewpointUsage_ViewpointDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     ViewpointDefinition getViewpointDefinition();

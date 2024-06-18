@@ -36,7 +36,7 @@ public interface Behavior extends org.eclipse.syson.sysml.Class {
      *
      * @return the value of the '<em>Parameter</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getBehavior_Parameter()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Feature> getParameter();
@@ -47,7 +47,7 @@ public interface Behavior extends org.eclipse.syson.sysml.Class {
      *
      * @return the value of the '<em>Step</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getBehavior_Step()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<Step> getStep();

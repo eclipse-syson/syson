@@ -38,7 +38,7 @@ public interface ViewDefinition extends PartDefinition {
      *
      * @return the value of the '<em>Satisfied Viewpoint</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getViewDefinition_SatisfiedViewpoint()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ViewpointUsage> getSatisfiedViewpoint();
@@ -49,7 +49,7 @@ public interface ViewDefinition extends PartDefinition {
      *
      * @return the value of the '<em>View</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getViewDefinition_View()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ViewUsage> getView();
@@ -60,7 +60,7 @@ public interface ViewDefinition extends PartDefinition {
      *
      * @return the value of the '<em>View Condition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getViewDefinition_ViewCondition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Expression> getViewCondition();

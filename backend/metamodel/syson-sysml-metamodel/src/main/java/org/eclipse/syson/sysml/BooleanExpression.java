@@ -33,7 +33,7 @@ public interface BooleanExpression extends Expression {
      *
      * @return the value of the '<em>Predicate</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getBooleanExpression_Predicate()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     Predicate getPredicate();

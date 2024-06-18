@@ -36,7 +36,7 @@ public interface EnumerationDefinition extends AttributeDefinition {
      *
      * @return the value of the '<em>Enumerated Value</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getEnumerationDefinition_EnumeratedValue()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<EnumerationUsage> getEnumeratedValue();

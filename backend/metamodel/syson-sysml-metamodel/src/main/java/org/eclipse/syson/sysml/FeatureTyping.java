@@ -38,6 +38,7 @@ public interface FeatureTyping extends Specialization {
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeatureTyping_OwningFeature()
      * @see org.eclipse.syson.sysml.Feature#getOwnedTyping
      * @model opposite="ownedTyping" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines" annotation="subsets"
      * @generated
      */
     Feature getOwningFeature();
@@ -48,7 +49,7 @@ public interface FeatureTyping extends Specialization {
      * @return the value of the '<em>Type</em>' reference.
      * @see #setType(Type)
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeatureTyping_Type()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Type getType();
@@ -70,7 +71,7 @@ public interface FeatureTyping extends Specialization {
      * @return the value of the '<em>Typed Feature</em>' reference.
      * @see #setTypedFeature(Feature)
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeatureTyping_TypedFeature()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Feature getTypedFeature();

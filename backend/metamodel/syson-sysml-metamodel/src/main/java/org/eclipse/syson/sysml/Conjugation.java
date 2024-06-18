@@ -58,7 +58,7 @@ public interface Conjugation extends Relationship {
      * @return the value of the '<em>Original Type</em>' reference.
      * @see #setOriginalType(Type)
      * @see org.eclipse.syson.sysml.SysmlPackage#getConjugation_OriginalType()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Type getOriginalType();
@@ -83,7 +83,7 @@ public interface Conjugation extends Relationship {
      * @see org.eclipse.syson.sysml.SysmlPackage#getConjugation_OwningType()
      * @see org.eclipse.syson.sysml.Type#getOwnedConjugator
      * @model opposite="ownedConjugator" transient="true" changeable="false" volatile="true" derived="true"
-     *        ordered="false"
+     *        ordered="false" annotation="subsets"
      * @generated
      */
     Type getOwningType();

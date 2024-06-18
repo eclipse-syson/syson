@@ -39,7 +39,7 @@ public interface PortConjugation extends Conjugation {
      * @see org.eclipse.syson.sysml.SysmlPackage#getPortConjugation_ConjugatedPortDefinition()
      * @see org.eclipse.syson.sysml.ConjugatedPortDefinition#getOwnedPortConjugator
      * @model opposite="ownedPortConjugator" required="true" transient="true" changeable="false" volatile="true"
-     *        derived="true" ordered="false"
+     *        derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     ConjugatedPortDefinition getConjugatedPortDefinition();
@@ -51,7 +51,7 @@ public interface PortConjugation extends Conjugation {
      * @return the value of the '<em>Original Port Definition</em>' reference.
      * @see #setOriginalPortDefinition(PortDefinition)
      * @see org.eclipse.syson.sysml.SysmlPackage#getPortConjugation_OriginalPortDefinition()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     PortDefinition getOriginalPortDefinition();

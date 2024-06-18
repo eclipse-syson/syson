@@ -92,7 +92,7 @@ public interface StateUsage extends ActionUsage {
      *
      * @return the value of the '<em>State Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getStateUsage_StateDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Behavior> getStateDefinition();

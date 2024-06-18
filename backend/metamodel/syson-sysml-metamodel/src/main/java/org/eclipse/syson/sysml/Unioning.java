@@ -37,7 +37,7 @@ public interface Unioning extends Relationship {
      * @see org.eclipse.syson.sysml.SysmlPackage#getUnioning_TypeUnioned()
      * @see org.eclipse.syson.sysml.Type#getOwnedUnioning
      * @model opposite="ownedUnioning" required="true" transient="true" changeable="false" volatile="true"
-     *        derived="true" ordered="false"
+     *        derived="true" ordered="false" annotation="redefines" annotation="subsets"
      * @generated
      */
     Type getTypeUnioned();
@@ -48,7 +48,7 @@ public interface Unioning extends Relationship {
      * @return the value of the '<em>Unioning Type</em>' reference.
      * @see #setUnioningType(Type)
      * @see org.eclipse.syson.sysml.SysmlPackage#getUnioning_UnioningType()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Type getUnioningType();

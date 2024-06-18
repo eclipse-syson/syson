@@ -320,6 +320,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/owningFeatureMembership"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/owningType"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//Feature/type"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//Feature/valuation"/>
       <genOperations ecoreOperation="sysml.ecore#//Feature/directionFor">
         <genParameters ecoreParameter="sysml.ecore#//Feature/directionFor/type"/>
       </genOperations>

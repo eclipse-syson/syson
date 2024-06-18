@@ -50,7 +50,7 @@ public interface Subclassification extends Specialization {
      * @return the value of the '<em>Subclassifier</em>' reference.
      * @see #setSubclassifier(Classifier)
      * @see org.eclipse.syson.sysml.SysmlPackage#getSubclassification_Subclassifier()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Classifier getSubclassifier();

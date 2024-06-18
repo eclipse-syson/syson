@@ -37,7 +37,7 @@ public interface AnalysisCaseDefinition extends CaseDefinition {
      *
      * @return the value of the '<em>Analysis Action</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getAnalysisCaseDefinition_AnalysisAction()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ActionUsage> getAnalysisAction();

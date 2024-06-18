@@ -37,7 +37,7 @@ public interface CaseDefinition extends CalculationDefinition {
      *
      * @return the value of the '<em>Actor Parameter</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getCaseDefinition_ActorParameter()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<PartUsage> getActorParameter();
@@ -48,7 +48,7 @@ public interface CaseDefinition extends CalculationDefinition {
      *
      * @return the value of the '<em>Objective Requirement</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getCaseDefinition_ObjectiveRequirement()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     RequirementUsage getObjectiveRequirement();

@@ -60,7 +60,7 @@ public interface Differencing extends Relationship {
      * @see org.eclipse.syson.sysml.SysmlPackage#getDifferencing_TypeDifferenced()
      * @see org.eclipse.syson.sysml.Type#getOwnedDifferencing
      * @model opposite="ownedDifferencing" required="true" transient="true" changeable="false" volatile="true"
-     *        derived="true" ordered="false"
+     *        derived="true" ordered="false" annotation="redefines" annotation="subsets"
      * @generated
      */
     Type getTypeDifferenced();

@@ -49,6 +49,7 @@ public interface RequirementVerificationMembership extends RequirementConstraint
      * @return the value of the '<em>Verified Requirement</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getRequirementVerificationMembership_VerifiedRequirement()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     RequirementUsage getVerifiedRequirement();

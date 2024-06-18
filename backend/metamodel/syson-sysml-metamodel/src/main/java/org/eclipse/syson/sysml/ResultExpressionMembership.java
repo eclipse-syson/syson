@@ -36,6 +36,7 @@ public interface ResultExpressionMembership extends FeatureMembership {
      * @return the value of the '<em>Owned Result Expression</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getResultExpressionMembership_OwnedResultExpression()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     Expression getOwnedResultExpression();

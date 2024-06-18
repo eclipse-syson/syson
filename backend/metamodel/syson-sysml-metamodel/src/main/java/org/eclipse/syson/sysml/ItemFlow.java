@@ -40,7 +40,7 @@ public interface ItemFlow extends Connector, Step {
      *
      * @return the value of the '<em>Interaction</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getItemFlow_Interaction()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Interaction> getInteraction();
@@ -50,7 +50,7 @@ public interface ItemFlow extends Connector, Step {
      *
      * @return the value of the '<em>Item Feature</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getItemFlow_ItemFeature()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     ItemFeature getItemFeature();
@@ -61,7 +61,7 @@ public interface ItemFlow extends Connector, Step {
      *
      * @return the value of the '<em>Item Flow End</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getItemFlow_ItemFlowEnd()
-     * @model upper="2" transient="true" changeable="false" volatile="true" derived="true"
+     * @model upper="2" transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ItemFlowEnd> getItemFlowEnd();

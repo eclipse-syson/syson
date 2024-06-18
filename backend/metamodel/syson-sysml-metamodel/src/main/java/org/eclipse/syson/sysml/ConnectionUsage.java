@@ -36,7 +36,8 @@ public interface ConnectionUsage extends ConnectorAsUsage, PartUsage {
      *
      * @return the value of the '<em>Connection Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getConnectionUsage_ConnectionDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
+     *        annotation="subsets"
      * @generated
      */
     EList<AssociationStructure> getConnectionDefinition();

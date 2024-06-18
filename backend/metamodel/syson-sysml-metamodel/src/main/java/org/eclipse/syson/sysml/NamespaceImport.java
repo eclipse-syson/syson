@@ -35,7 +35,7 @@ public interface NamespaceImport extends Import {
      * @return the value of the '<em>Imported Namespace</em>' reference.
      * @see #setImportedNamespace(Namespace)
      * @see org.eclipse.syson.sysml.SysmlPackage#getNamespaceImport_ImportedNamespace()
-     * @model required="true" ordered="false"
+     * @model required="true" ordered="false" annotation="redefines"
      * @generated
      */
     Namespace getImportedNamespace();

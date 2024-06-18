@@ -72,6 +72,7 @@ public class FeatureItemProvider extends TypeItemProvider {
             this.addOwningFeatureMembershipPropertyDescriptor(object);
             this.addOwningTypePropertyDescriptor(object);
             this.addTypePropertyDescriptor(object);
+            this.addValuationPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -494,6 +495,25 @@ public class FeatureItemProvider extends TypeItemProvider {
                 true,
                 false,
                 true,
+                null,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Valuation feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addValuationPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_Feature_valuation_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_valuation_feature", "_UI_Feature_type"),
+                SysmlPackage.eINSTANCE.getFeature_Valuation(),
+                false,
+                false,
+                false,
                 null,
                 null,
                 null));

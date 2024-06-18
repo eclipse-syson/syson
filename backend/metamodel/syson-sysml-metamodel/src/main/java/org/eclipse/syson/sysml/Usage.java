@@ -70,7 +70,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_Definition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Classifier> getDefinition();
@@ -81,7 +81,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Directed Usage</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_DirectedUsage()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Usage> getDirectedUsage();
@@ -124,7 +124,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Action</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedAction()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ActionUsage> getNestedAction();
@@ -135,7 +135,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Allocation</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedAllocation()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<AllocationUsage> getNestedAllocation();
@@ -146,7 +146,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Analysis Case</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedAnalysisCase()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<AnalysisCaseUsage> getNestedAnalysisCase();
@@ -157,7 +157,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Attribute</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedAttribute()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<AttributeUsage> getNestedAttribute();
@@ -168,7 +168,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Calculation</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedCalculation()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<CalculationUsage> getNestedCalculation();
@@ -179,7 +179,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Case</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedCase()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<CaseUsage> getNestedCase();
@@ -190,7 +190,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Concern</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedConcern()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<ConcernUsage> getNestedConcern();
@@ -201,7 +201,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Connection</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedConnection()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ConnectorAsUsage> getNestedConnection();
@@ -212,7 +212,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Constraint</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedConstraint()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ConstraintUsage> getNestedConstraint();
@@ -223,7 +223,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Enumeration</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedEnumeration()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<EnumerationUsage> getNestedEnumeration();
@@ -234,7 +234,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Flow</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedFlow()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<FlowConnectionUsage> getNestedFlow();
@@ -245,7 +245,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Interface</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedInterface()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<InterfaceUsage> getNestedInterface();
@@ -256,7 +256,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Item</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedItem()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ItemUsage> getNestedItem();
@@ -267,7 +267,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Metadata</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedMetadata()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<MetadataUsage> getNestedMetadata();
@@ -278,7 +278,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Occurrence</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedOccurrence()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<OccurrenceUsage> getNestedOccurrence();
@@ -289,7 +289,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Part</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedPart()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<PartUsage> getNestedPart();
@@ -300,7 +300,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Port</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedPort()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<PortUsage> getNestedPort();
@@ -311,7 +311,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Reference</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedReference()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ReferenceUsage> getNestedReference();
@@ -322,7 +322,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Rendering</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedRendering()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<RenderingUsage> getNestedRendering();
@@ -333,7 +333,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Requirement</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedRequirement()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<RequirementUsage> getNestedRequirement();
@@ -344,7 +344,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested State</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedState()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<StateUsage> getNestedState();
@@ -355,7 +355,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Transition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedTransition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<TransitionUsage> getNestedTransition();
@@ -370,6 +370,7 @@ public interface Usage extends Feature {
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedUsage()
      * @see org.eclipse.syson.sysml.Usage#getOwningUsage
      * @model opposite="owningUsage" transient="true" changeable="false" volatile="true" derived="true"
+     *        annotation="subsets"
      * @generated
      */
     EList<Usage> getNestedUsage();
@@ -380,7 +381,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Use Case</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedUseCase()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<UseCaseUsage> getNestedUseCase();
@@ -391,7 +392,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Verification Case</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedVerificationCase()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<VerificationCaseUsage> getNestedVerificationCase();
@@ -402,7 +403,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested View</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedView()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ViewUsage> getNestedView();
@@ -413,7 +414,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Nested Viewpoint</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_NestedViewpoint()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ViewpointUsage> getNestedViewpoint();
@@ -427,6 +428,7 @@ public interface Usage extends Feature {
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_OwningDefinition()
      * @see org.eclipse.syson.sysml.Definition#getOwnedUsage
      * @model opposite="ownedUsage" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Definition getOwningDefinition();
@@ -440,6 +442,7 @@ public interface Usage extends Feature {
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_OwningUsage()
      * @see org.eclipse.syson.sysml.Usage#getNestedUsage
      * @model opposite="nestedUsage" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Usage getOwningUsage();
@@ -450,7 +453,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Usage</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_Usage()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Usage> getUsage();
@@ -461,7 +464,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Variant</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_Variant()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<Usage> getVariant();
@@ -472,7 +475,7 @@ public interface Usage extends Feature {
      *
      * @return the value of the '<em>Variant Membership</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getUsage_VariantMembership()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<VariantMembership> getVariantMembership();

@@ -34,6 +34,7 @@ public interface ElementFilterMembership extends OwningMembership {
      * @return the value of the '<em>Condition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getElementFilterMembership_Condition()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     Expression getCondition();

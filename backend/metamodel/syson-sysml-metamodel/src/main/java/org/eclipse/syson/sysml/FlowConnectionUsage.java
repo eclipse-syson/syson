@@ -37,7 +37,7 @@ public interface FlowConnectionUsage extends ConnectionUsage, ActionUsage, ItemF
      *
      * @return the value of the '<em>Flow Connection Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getFlowConnectionUsage_FlowConnectionDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Interaction> getFlowConnectionDefinition();

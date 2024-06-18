@@ -37,6 +37,7 @@ public interface SatisfyRequirementUsage extends RequirementUsage, AssertConstra
      * @return the value of the '<em>Satisfied Requirement</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getSatisfyRequirementUsage_SatisfiedRequirement()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     RequirementUsage getSatisfiedRequirement();

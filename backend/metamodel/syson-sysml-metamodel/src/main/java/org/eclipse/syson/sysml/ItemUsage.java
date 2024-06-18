@@ -35,7 +35,7 @@ public interface ItemUsage extends OccurrenceUsage {
      *
      * @return the value of the '<em>Item Definition</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getItemUsage_ItemDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<Structure> getItemDefinition();

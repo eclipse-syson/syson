@@ -38,7 +38,7 @@ public interface Association extends Classifier, Relationship {
      *
      * @return the value of the '<em>Association End</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getAssociation_AssociationEnd()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     EList<Feature> getAssociationEnd();
@@ -49,7 +49,7 @@ public interface Association extends Classifier, Relationship {
      *
      * @return the value of the '<em>Related Type</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getAssociation_RelatedType()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="redefines"
      * @generated
      */
     EList<Type> getRelatedType();
@@ -59,7 +59,8 @@ public interface Association extends Classifier, Relationship {
      *
      * @return the value of the '<em>Source Type</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getAssociation_SourceType()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
+     *        annotation="subsets"
      * @generated
      */
     Type getSourceType();
@@ -70,7 +71,8 @@ public interface Association extends Classifier, Relationship {
      *
      * @return the value of the '<em>Target Type</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getAssociation_TargetType()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
+     *        annotation="subsets"
      * @generated
      */
     EList<Type> getTargetType();

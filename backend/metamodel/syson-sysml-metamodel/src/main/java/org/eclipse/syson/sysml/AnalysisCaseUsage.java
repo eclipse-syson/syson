@@ -39,7 +39,7 @@ public interface AnalysisCaseUsage extends CaseUsage {
      *
      * @return the value of the '<em>Analysis Action</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getAnalysisCaseUsage_AnalysisAction()
-     * @model transient="true" changeable="false" volatile="true" derived="true"
+     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
      * @generated
      */
     EList<ActionUsage> getAnalysisAction();
@@ -50,7 +50,7 @@ public interface AnalysisCaseUsage extends CaseUsage {
      *
      * @return the value of the '<em>Analysis Case Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getAnalysisCaseUsage_AnalysisCaseDefinition()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     AnalysisCaseDefinition getAnalysisCaseDefinition();

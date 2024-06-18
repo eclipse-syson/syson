@@ -37,6 +37,7 @@ public interface FeatureValue extends OwningMembership {
      * @return the value of the '<em>Feature With Value</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeatureValue_FeatureWithValue()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Feature getFeatureWithValue();
@@ -93,6 +94,7 @@ public interface FeatureValue extends OwningMembership {
      * @return the value of the '<em>Value</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeatureValue_Value()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     Expression getValue();

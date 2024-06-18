@@ -61,7 +61,7 @@ public interface Annotation extends Relationship {
      * @see #setAnnotatingElement(AnnotatingElement)
      * @see org.eclipse.syson.sysml.SysmlPackage#getAnnotation_AnnotatingElement()
      * @see org.eclipse.syson.sysml.AnnotatingElement#getAnnotation
-     * @model opposite="annotation" required="true" ordered="false"
+     * @model opposite="annotation" required="true" ordered="false" annotation="redefines"
      * @generated
      */
     AnnotatingElement getAnnotatingElement();

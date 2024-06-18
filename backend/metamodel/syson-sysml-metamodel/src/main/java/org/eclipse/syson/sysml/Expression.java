@@ -36,7 +36,7 @@ public interface Expression extends Step {
      *
      * @return the value of the '<em>Function</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getExpression_Function()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="redefines"
      * @generated
      */
     Function getFunction();
@@ -58,6 +58,7 @@ public interface Expression extends Step {
      * @return the value of the '<em>Result</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getExpression_Result()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Feature getResult();

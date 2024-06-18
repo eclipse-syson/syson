@@ -41,7 +41,7 @@ public interface TransitionUsage extends ActionUsage {
      *
      * @return the value of the '<em>Effect Action</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getTransitionUsage_EffectAction()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<ActionUsage> getEffectAction();
@@ -52,7 +52,7 @@ public interface TransitionUsage extends ActionUsage {
      *
      * @return the value of the '<em>Guard Expression</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getTransitionUsage_GuardExpression()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<Expression> getGuardExpression();
@@ -73,6 +73,7 @@ public interface TransitionUsage extends ActionUsage {
      * @return the value of the '<em>Succession</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getTransitionUsage_Succession()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Succession getSuccession();
@@ -93,7 +94,7 @@ public interface TransitionUsage extends ActionUsage {
      *
      * @return the value of the '<em>Trigger Action</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getTransitionUsage_TriggerAction()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<AcceptActionUsage> getTriggerAction();

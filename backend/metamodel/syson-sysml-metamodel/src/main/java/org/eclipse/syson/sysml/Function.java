@@ -37,7 +37,7 @@ public interface Function extends Behavior {
      *
      * @return the value of the '<em>Expression</em>' reference list.
      * @see org.eclipse.syson.sysml.SysmlPackage#getFunction_Expression()
-     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @model transient="true" changeable="false" volatile="true" derived="true" ordered="false" annotation="subsets"
      * @generated
      */
     EList<Expression> getExpression();
@@ -59,6 +59,7 @@ public interface Function extends Behavior {
      * @return the value of the '<em>Result</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getFunction_Result()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="subsets"
      * @generated
      */
     Feature getResult();

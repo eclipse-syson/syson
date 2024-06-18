@@ -35,6 +35,7 @@ public interface EnumerationUsage extends AttributeUsage {
      * @return the value of the '<em>Enumeration Definition</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getEnumerationUsage_EnumerationDefinition()
      * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     *        annotation="redefines"
      * @generated
      */
     EnumerationDefinition getEnumerationDefinition();
