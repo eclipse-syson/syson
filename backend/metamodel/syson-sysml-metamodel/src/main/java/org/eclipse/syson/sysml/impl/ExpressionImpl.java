@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
@@ -24,6 +25,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Function;
+import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -84,13 +86,14 @@ public class ExpressionImpl extends StepImpl implements Expression {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Function basicGetFunction() {
-        // TODO: implement this method to return the 'Function' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedTyping().stream()
+                .filter(Function.class::isInstance)
+                .map(Function.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -117,13 +120,16 @@ public class ExpressionImpl extends StepImpl implements Expression {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetResult() {
-        // TODO: implement this method to return the 'Result' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedFeatureMembership().stream()
+                .filter(ReturnParameterMembership.class::isInstance)
+                .map(ReturnParameterMembership.class::cast)
+                .map(ReturnParameterMembership::getOwnedMemberParameter)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElseGet(this::getResultFromFeature);
     }
 
     /**
@@ -232,6 +238,17 @@ public class ExpressionImpl extends StepImpl implements Expression {
             behaviors.add(function);
         }
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Behavior(), behaviors.size(), behaviors.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    private Feature getResultFromFeature() {
+        Function f = this.getFunction();
+        if (f != null) {
+            return f.getResult();
+        }
+        return null;
     }
 
 } // ExpressionImpl

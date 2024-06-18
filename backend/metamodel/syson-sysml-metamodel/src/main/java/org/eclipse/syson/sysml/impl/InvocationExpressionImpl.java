@@ -12,16 +12,18 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Usage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Invocation Expression</b></em>'. <!--
@@ -62,8 +64,14 @@ public class InvocationExpressionImpl extends ExpressionImpl implements Invocati
      */
     @Override
     public EList<Expression> getArgument() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getInvocationExpression_Argument(), data.size(), data.toArray());
+        List<Expression> arguments = this.getOwnedFeature().stream()
+                .filter(f -> f.getDirection() == FeatureDirectionKind.IN)
+                .map(Feature::getValuation)
+                .filter(Objects::nonNull)
+                .map(v -> v.getValue())
+                .filter(Objects::nonNull)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getInvocationExpression_Argument(), arguments.size(), arguments.toArray());
     }
 
     /**

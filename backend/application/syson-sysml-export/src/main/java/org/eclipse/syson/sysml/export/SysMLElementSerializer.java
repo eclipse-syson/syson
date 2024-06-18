@@ -728,30 +728,29 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendFeatureSpecilizationPart(Appender builder, Feature feature, boolean includeImplied) {
         List<Redefinition> ownedRedefinition = feature.getOwnedRedefinition();
-        this.appendRedefinition(builder, ownedRedefinition, feature, includeImplied);
+        this.appendRedefinition(builder, ownedRedefinition, includeImplied);
 
-        this.appendReferenceSubsetting(builder, feature.getOwnedReferenceSubsetting(), feature, includeImplied);
+        this.appendReferenceSubsetting(builder, feature.getOwnedReferenceSubsetting(), includeImplied);
 
         List<Subsetting> ownedSubsetting = new ArrayList<>(feature.getOwnedSubsetting());
         ownedSubsetting.removeAll(ownedRedefinition);
         ownedSubsetting.remove(feature.getOwnedReferenceSubsetting());
 
-        this.appendSubsettings(builder, ownedSubsetting, feature, includeImplied);
+        this.appendSubsettings(builder, ownedSubsetting, includeImplied);
 
-        this.appendFeatureTyping(builder, feature.getOwnedTyping(), feature);
+        this.appendFeatureTyping(builder, feature.getOwnedTyping());
         this.appendMultiplicityPart(builder, feature);
     }
 
-    private void appendSubsettings(Appender builder, List<Subsetting> subSettings, Element element, boolean includeImplied) {
-        List<? extends Feature> subSettedDifference = subSettings.stream()
+    private void appendSubsettings(Appender builder, List<Subsetting> subSettings, boolean includeImplied) {
+        List<String> subSettedDifference = subSettings.stream()
                 .filter(f -> includeImplied || !f.isIsImplied())
-                .map(Subsetting::getSubsettedFeature)
-                .filter(this::isNotNullAndNotAProxy)
+                .filter(sub -> isNotNullAndNotAProxy(sub.getSubsettedFeature()))
+                .map(sub -> this.getDeresolvableName(sub.getSubsettedFeature(), sub))
+                .filter(this::nameNotNullAndNotBlank)
                 .toList();
         if (!subSettedDifference.isEmpty()) {
             String subSettingPart = subSettedDifference.stream()
-                    .map(superFeature -> this.getDeresolvableName(superFeature, element))
-                    .filter(this::nameNotNullAndNotBlank)
                     .collect(Collectors.joining(", "));
             if (!subSettingPart.isBlank()) {
                 builder.appendSpaceIfNeeded().append(LabelConstants.SUBSETTING);
@@ -760,16 +759,15 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
-    private void appendRedefinition(Appender builder, List<Redefinition> redefinitions, Element element, boolean includeImplied) {
-        List<Feature> redefinedFeatures = redefinitions.stream()
+    private void appendRedefinition(Appender builder, List<Redefinition> redefinitions, boolean includeImplied) {
+        List<String> redefinedFeatures = redefinitions.stream()
                 .filter(redef -> includeImplied || !redef.isIsImplied())
-                .map(Redefinition::getRedefinedFeature)
-                .filter(this::isNotNullAndNotAProxy)
+                .filter(red -> isNotNullAndNotAProxy(red.getRedefinedFeature()))
+                .map(red -> this.getDeresolvableName(red.getRedefinedFeature(), red))
+                .filter(this::nameNotNullAndNotBlank)
                 .toList();
         if (!redefinedFeatures.isEmpty()) {
             String redefinitionPart = redefinedFeatures.stream()
-                    .map(superFeature -> this.getDeresolvableName(superFeature, element))
-                    .filter(this::nameNotNullAndNotBlank)
                     .collect(Collectors.joining(", "));
             if (!redefinitionPart.isBlank()) {
                 builder.appendSpaceIfNeeded().append(LabelConstants.REDEFINITION);
@@ -778,7 +776,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
-    private void appendReferenceSubsetting(Appender builder, ReferenceSubsetting ownedReferenceSubsetting, Element element, boolean includeImplied) {
+    private void appendReferenceSubsetting(Appender builder, ReferenceSubsetting ownedReferenceSubsetting, boolean includeImplied) {
         if (ownedReferenceSubsetting != null && (includeImplied || !ownedReferenceSubsetting.isIsImplied())) {
             if (isNotNullAndNotAProxy(ownedReferenceSubsetting.getReferencedFeature())) {
                 Appender localBuilder = newAppender();
@@ -811,15 +809,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return name != null && !name.isBlank();
     }
 
-    private void appendFeatureTyping(Appender builder, EList<FeatureTyping> ownedTyping, Element element) {
-        List<Type> types = ownedTyping.stream()
+    private void appendFeatureTyping(Appender builder, EList<FeatureTyping> ownedTyping) {
+        List<String> types = ownedTyping.stream()
                 .filter(ft -> isNotNullAndNotAProxy(ft.getType()))
-                .map(ft -> ft.getType())
+                .map(ft -> getDeresolvableName(ft.getType(), ft))
+                .filter(this::nameNotNullAndNotBlank)
                 .toList();
         if (!types.isEmpty()) {
             String featureTypePart = types.stream()
-                    .map(t -> this.getDeresolvableName(t, element))
-                    .filter(this::nameNotNullAndNotBlank)
                     .collect(Collectors.joining(", "));
             if (!featureTypePart.isBlank()) {
                 builder.appendSpaceIfNeeded().append(LabelConstants.COLON);

@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -88,12 +89,13 @@ public class FeatureTypingImpl extends SpecializationImpl implements FeatureTypi
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetOwningFeature() {
-        // TODO: implement this method to return the 'Owning Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
+        Element owningRelElement = this.getOwningRelatedElement();
+        if (owningRelElement instanceof Feature owningFeature) {
+            return owningFeature;
+        }
         return null;
     }
 

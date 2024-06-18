@@ -14,6 +14,7 @@ package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -22,6 +23,7 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Function;
+import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 
@@ -103,13 +105,16 @@ public class FunctionImpl extends BehaviorImpl implements Function {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetResult() {
-        // TODO: implement this method to return the 'Result' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedFeatureMembership().stream()
+                .filter(ReturnParameterMembership.class::isInstance)
+                .map(ReturnParameterMembership.class::cast)
+                .map(ReturnParameterMembership::getOwnedMemberParameter)
+                .filter(Objects::nonNull)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
