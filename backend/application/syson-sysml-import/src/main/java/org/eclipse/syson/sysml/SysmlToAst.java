@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -41,17 +42,27 @@ public class SysmlToAst {
 
     private final Logger logger = LoggerFactory.getLogger(SysmlToAst.class);
 
+    private final String cliPath;
+
+    public SysmlToAst(@Value("${org.eclipse.syson.syside.path:#{null}}") String cliPath) {
+        this.cliPath = cliPath;
+    }
+
     public InputStream convert(InputStream input, String fileExtension) {
         InputStream output = null;
 
         try {
             Path sysmlInputPath = this.createTempFile(input, "syson", fileExtension);
 
-            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-            Resource resource = resolver.getResource(ResourcePatternResolver.CLASSPATH_URL_PREFIX + "syside-cli.js");
-            InputStream sysIdeInputStream = resource.getInputStream();
-
-            Path sysIdeInputPath = this.createTempFile(sysIdeInputStream, "syside-cli", "js");
+            Path sysIdeInputPath = null;
+            if (this.cliPath != null) {
+                sysIdeInputPath = Path.of(this.cliPath);
+            } else {
+                PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+                Resource resource = resolver.getResource(ResourcePatternResolver.CLASSPATH_URL_PREFIX + "syside-cli.js");
+                InputStream sysIdeInputStream = resource.getInputStream();
+                sysIdeInputPath = this.createTempFile(sysIdeInputStream, "syside-cli", "js");
+            }
 
             this.logger.info("Call syside application : node " + sysIdeInputPath.toString() + " dump " + sysmlInputPath.toString());
             String[] args = { "node", sysIdeInputPath.toString(), "dump", sysmlInputPath.toString() };
@@ -82,7 +93,9 @@ public class SysmlToAst {
             output = new ByteArrayInputStream(builder.toString().getBytes());
 
             sysmlInputPath.toFile().delete();
-            sysIdeInputPath.toFile().delete();
+            if (this.cliPath == null) {
+                sysIdeInputPath.toFile().delete();
+            }
 
         } catch (IOException e) {
             this.logger.error(e.getMessage());
