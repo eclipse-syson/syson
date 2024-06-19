@@ -286,6 +286,13 @@ public class DetailsViewService {
         return null;
     }
 
+    public StateUsage getStateUsage(Element self) {
+        if (self instanceof StateUsage su) {
+            return su;
+        }
+        return null;
+    }
+
     public TransitionUsage getTransitionUsage(Element self) {
         if (self instanceof TransitionUsage transition) {
             return transition;

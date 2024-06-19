@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ViewNodeService {
 
-    private final Logger logger = LoggerFactory.getLogger(ViewCreateService.class);
+    private final Logger logger = LoggerFactory.getLogger(ViewNodeService.class);
 
     private final IObjectService objectService;
 

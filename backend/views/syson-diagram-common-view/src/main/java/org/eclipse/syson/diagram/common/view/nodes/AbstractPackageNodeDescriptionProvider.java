@@ -242,7 +242,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
             sections.add(sectionBuilder.build());
         });
 
-        sections.add(this.toolDescriptionService.addElementsNodeToolSection());
+        sections.add(this.toolDescriptionService.addElementsNodeToolSection(true));
         sections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
         return sections.toArray(NodeToolSection[]::new);

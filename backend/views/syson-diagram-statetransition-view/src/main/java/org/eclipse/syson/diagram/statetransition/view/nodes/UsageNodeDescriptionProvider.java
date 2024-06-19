@@ -74,7 +74,6 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
                 });
             }
         });
-
         return reusedChildren;
     }
 

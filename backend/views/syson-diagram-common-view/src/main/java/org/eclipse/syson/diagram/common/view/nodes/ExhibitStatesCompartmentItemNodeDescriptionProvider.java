@@ -15,6 +15,8 @@ package org.eclipse.syson.diagram.common.view.nodes;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.diagram.common.view.tools.StateTransitionToggleExhibitStateToolProvider;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -33,6 +35,16 @@ public class ExhibitStatesCompartmentItemNodeDescriptionProvider extends Compart
     @Override
     protected String getSemanticCandidateExpression() {
         return AQLUtils.getSelfServiceCallExpression("getAllReachableExhibitedStates");
+    }
+
+    @Override
+    public NodeDescription create() {
+        NodeDescription nd = super.create();
+        var editSection = this.toolDescriptionService.buildEditSection(
+                new StateTransitionToggleExhibitStateToolProvider(true).create(null),
+                new StateTransitionToggleExhibitStateToolProvider(false).create(null));
+        nd.getPalette().getToolSections().add(editSection);
+        return nd;
     }
 
 }

@@ -155,7 +155,7 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .labelEditTool(editTool.build())
                 .toolSections(this.createNodeToolSection(cache),
-                        this.toolDescriptionService.addElementsNodeToolSection(),
+                        this.toolDescriptionService.addElementsNodeToolSection(true),
                         this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }

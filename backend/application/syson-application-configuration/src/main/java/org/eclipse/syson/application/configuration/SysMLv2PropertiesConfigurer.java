@@ -50,6 +50,7 @@ import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
 import org.eclipse.syson.application.services.DetailsViewService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.AQLConstants;
@@ -87,6 +88,8 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private static final String ACCEPT_ACTION_USAGE_PROPERTIES = "Accept Action Usage Properties";
 
+    private static final String EXHIBITED_STATE_USAGE_PROPERTIES = "Exhibited State Usage Properties";
+
     private static final String AQL_NOT_SELF_IS_READ_ONLY = "aql:not(self.isReadOnly())";
 
     private static final String AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE = "aql:not(self.isReadOnly(eStructuralFeature))";
@@ -103,12 +106,15 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private final ILabelService labelService;
 
+    private final UtilService utilService;
+
     public SysMLv2PropertiesConfigurer(ComposedAdapterFactory composedAdapterFactory, ViewFormDescriptionConverter converter, IFeedbackMessageService feedbackMessageService,
             ILabelService labelService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.converter = Objects.requireNonNull(converter);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.labelService = Objects.requireNonNull(labelService);
+        this.utilService = new UtilService();
     }
 
     @Override
@@ -128,7 +134,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         });
 
         // Convert the View-based FormDescription and register the result into the system
-        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService), this.labelService),
+        AQLInterpreter interpreter = new AQLInterpreter(List.of(), List.of(new DetailsViewService(this.composedAdapterFactory, this.feedbackMessageService), this.labelService, this.utilService),
                 List.of(SysmlPackage.eINSTANCE));
         IRepresentationDescription converted = this.converter.convert(viewFormDescription, List.of(), interpreter);
         if (converted instanceof org.eclipse.sirius.components.forms.description.FormDescription formDescription) {
@@ -156,6 +162,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createExtraFeatureTypingPropertiesGroup());
         pageCore.getGroups().add(this.createExtraRequirementConstraintMembershipPropertiesGroup());
         pageCore.getGroups().add(this.createExtraAcceptActionUsagePropertiesGroup());
+        pageCore.getGroups().add(this.createExtraExhibitStateUsagePropertiesGroup());
         pageCore.getGroups().add(this.createExtraTransitionSourceTargetPropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
@@ -360,30 +367,51 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(ACCEPT_ACTION_USAGE_PROPERTIES);
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(AQLConstants.AQL_SELF + ".getAcceptActionUsage()");
+        group.setSemanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAcceptActionUsage"));
 
         ReferenceWidgetDescription payloadRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         payloadRefWidget.setName("ExtraPayloadWidget");
         payloadRefWidget.setLabelExpression("Payload");
         payloadRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName());
-        payloadRefWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF + ".getAcceptActionUsagePayloadFeatureTyping()");
+        payloadRefWidget.setReferenceOwnerExpression(AQLUtils.getSelfServiceCallExpression("getAcceptActionUsagePayloadFeatureTyping"));
         payloadRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setPayloadRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setPayloadRefWidget.setExpression(AQLConstants.AQL_SELF + ".setAcceptActionUsagePayloadParameter(" + ViewFormDescriptionConverter.NEW_VALUE + ")");
+        setPayloadRefWidget.setExpression(AQLUtils.getSelfServiceCallExpression("setAcceptActionUsagePayloadParameter", ViewFormDescriptionConverter.NEW_VALUE));
         payloadRefWidget.getBody().add(setPayloadRefWidget);
 
         ReferenceWidgetDescription receiverRefWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         receiverRefWidget.setName("ExtraReceiverWidget");
         receiverRefWidget.setLabelExpression("Receiver");
         receiverRefWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getMembership_MemberElement().getName());
-        receiverRefWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF + ".getAcceptActionUsageReceiverMembership()");
+        receiverRefWidget.setReferenceOwnerExpression(AQLUtils.getSelfServiceCallExpression("getAcceptActionUsageReceiverMembership"));
         receiverRefWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setReceiverRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setReceiverRefWidget.setExpression(AQLConstants.AQL_SELF + ".setAcceptActionUsageReceiverArgument(" + ViewFormDescriptionConverter.NEW_VALUE + ")");
+        setReceiverRefWidget.setExpression(AQLUtils.getSelfServiceCallExpression("setAcceptActionUsageReceiverArgument", ViewFormDescriptionConverter.NEW_VALUE));
         receiverRefWidget.getBody().add(setReceiverRefWidget);
 
         group.getChildren().add(payloadRefWidget);
         group.getChildren().add(receiverRefWidget);
+
+        return group;
+    }
+
+    private GroupDescription createExtraExhibitStateUsagePropertiesGroup() {
+        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
+        group.setDisplayMode(GroupDisplayMode.LIST);
+        group.setName(EXHIBITED_STATE_USAGE_PROPERTIES);
+        group.setLabelExpression("");
+        group.setSemanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getStateUsage"));
+
+        CheckboxDescription exhibitStateCheckbox = FormFactory.eINSTANCE.createCheckboxDescription();
+        exhibitStateCheckbox.setName("ExhibitStateCheckbox");
+        exhibitStateCheckbox.setLabelExpression("is Exhibited");
+        exhibitStateCheckbox.setValueExpression(AQLUtils.getSelfServiceCallExpression("isExhibitedStateUsage"));
+        exhibitStateCheckbox.setIsEnabledExpression(AQLConstants.AQL + "self.canBeExhibitedStateUsage() or self.isExhibitedStateUsage()");
+        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
+        setNewValueOperation.setExpression(AQLUtils.getSelfServiceCallExpression("setUnsetAsExhibit"));
+        exhibitStateCheckbox.getBody().add(setNewValueOperation);
+
+        group.getChildren().add(exhibitStateCheckbox);
 
         return group;
     }

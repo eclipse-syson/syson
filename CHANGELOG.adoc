@@ -16,13 +16,16 @@
 Please download your existing SysON projects before moving to this new version.
 A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/393[#393] [diagrams] Code refactorings
-  * Move `AbstractDiagramDescriptionProvider.createNodeToolFromDiagramBackground(NodeDescription, EClassifier)` to new `ToolDescriptionService`
-  * Move `AbstractViewElementDescriptionProvider.addExistingElementsTool(boolean)` to new `ToolDescriptionService`
+  * Move `AbstractDiagramDescriptionProvider#createNodeToolFromDiagramBackground(NodeDescription, EClassifier)` to new `ToolDescriptionService`
+  * Move `AbstractViewElementDescriptionProvider#addExistingElementsTool(boolean)` to new `ToolDescriptionService`
   * Remove `AbstractViewElementDescriptionProvider`
   * Move `createDropFromExplorerTool` to new `ToolDescriptionService`
-  * Move and rename `AbstractDiagramDescriptionProvider.addElementsToolSection(IViewDiagramElementFinder)` to `ToolDescriptionService.addElementsDiagramToolSection()`
-  * Move and rename `AbstractNodeDescriptionProvider.addExistingElementsTool()` to `ToolDescriptionService.addElementsNodeToolSection()`
+  * Move and rename `AbstractDiagramDescriptionProvider.addElementsToolSection(IViewDiagramElementFinder)` to `ToolDescriptionService#addElementsDiagramToolSection()`
+  * Move and rename `AbstractNodeDescriptionProvider#addExistingElementsTool()` to `ToolDescriptionService#addElementsNodeToolSection()`
   * Remove `AbstractDiagramDescriptionProvider`
+  * Rename `StateTransitionActionToolProvider` to `StateTransitionActionCompartmentToolProvider`
+  * Move `AbstractViewNodeToolSectionSwitch#buildCreateSection(NodeTool...)` to `ToolDescriptionService#buildCreateSection(NodeTool...)`
+  * Merge `AbstractViewNodeToolSectionSwitch#addElementsToolSection()` and `AbstractViewNodeToolSectionSwitch#addExistingNestedElementsTool()` in `ToolDescriptionService#addElementsNodeToolSection(boolean)`
 - https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams]`ViewLabelService#getCompartmentItemUsageLabel` has been renamed to `ViewLabelService#getCompartmentItemLabel`.
 - https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams]`ViewLabelService#getUsageInitialDirectEditLabel` has been renamed to `ViewLabelService#getInitialDirectEditLabel`.
 

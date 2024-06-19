@@ -159,7 +159,7 @@ public class FirstLevelChildPartUsageNodeDescriptionProvider extends AbstractNod
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .labelEditTool(editTool.build())
                 .toolSections(this.createNodeToolSection(cache),
-                        this.toolDescriptionService.addElementsNodeToolSection(),
+                        this.toolDescriptionService.addElementsNodeToolSection(true),
                         this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
     }
