@@ -104,6 +104,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     public static  final List<EClass> USAGES = List.of(
             SysmlPackage.eINSTANCE.getAcceptActionUsage(),
             SysmlPackage.eINSTANCE.getActionUsage(),
+            SysmlPackage.eINSTANCE.getAssignmentActionUsage(),
             SysmlPackage.eINSTANCE.getAllocationUsage(),
             SysmlPackage.eINSTANCE.getAttributeUsage(),
             SysmlPackage.eINSTANCE.getConstraintUsage(),
@@ -171,7 +172,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             new ToolSectionDescription("ActionFlow", List.of(
                     SysmlPackage.eINSTANCE.getAcceptActionUsage(),
                     SysmlPackage.eINSTANCE.getActionUsage(),
-                    SysmlPackage.eINSTANCE.getActionDefinition()
+                    SysmlPackage.eINSTANCE.getActionDefinition(),
+                    SysmlPackage.eINSTANCE.getAssignmentActionUsage()
                     )),
             new ToolSectionDescription("Requirement", List.of(
                     SysmlPackage.eINSTANCE.getConstraintUsage(),
