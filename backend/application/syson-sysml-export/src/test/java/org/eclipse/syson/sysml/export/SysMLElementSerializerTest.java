@@ -75,6 +75,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.export.models.AssertConstraintUsageWithOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBinaryOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBracketOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithFeatureChainExpressionTestModel;
@@ -82,6 +83,7 @@ import org.eclipse.syson.sysml.export.models.AttributeUsageWithInvocationExpress
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.sample.CameraModel;
 import org.eclipse.syson.sysml.export.models.sample.PictureTakingModel;
+import org.eclipse.syson.sysml.export.utils.IsImplicitTest;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
 import org.eclipse.syson.sysml.export.utils.Severity;
 import org.eclipse.syson.sysml.export.utils.Status;
@@ -762,6 +764,38 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("attribute attribute1 = fuel(front);", model.getAttributeUsage());
     }
 
+    @DisplayName("AssertConstraintUsage containing BinaryOperatorExpression and NullExpression")
+    @Test
+    public void assertConstraintUsageWithOperatorExpression() {
+        AssertConstraintUsageWithOperatorExpressionTestModel model = new AssertConstraintUsageWithOperatorExpressionTestModel();
+        this.assertTextualFormEquals("""
+                assert constraint {
+                    runner != null xor walker != null
+                }""", model.getAssertConstraintUsage());
+    }
+
+    @Test
+    public void isImplicit() {
+        IsImplicitTest model = new IsImplicitTest();
+        this.assertTextualFormEquals(null, model.getObjectiveMembership());
+    }
+
+    @Test
+    public void returnParameterMembership() {
+        ReturnParameterMembership returnParameterMembership = this.builder.create(ReturnParameterMembership.class);
+
+        ReferenceUsage referenceUsage = this.builder.createWithName(ReferenceUsage.class, "dist");
+        Subsetting subsetting = this.builder.createIn(Subsetting.class, referenceUsage);
+
+        AttributeUsage attributeUsage = this.builder.createWithName(AttributeUsage.class, "len");
+        subsetting.setSubsettedFeature(attributeUsage);
+        subsetting.setSubsettingFeature(referenceUsage);
+
+        returnParameterMembership.getOwnedRelatedElement().add(referenceUsage);
+
+        this.assertTextualFormEquals("return dist :> len;", returnParameterMembership);
+    }
+
     /**
      * Testing an OperatorExpression whose operator is an "@", typed by a MetadataDefinition.
      */
@@ -1238,9 +1272,9 @@ public class SysMLElementSerializerTest {
         /**
          * <pre>
          *  package p1 {
-         * 
+         *
          *      verification v1;
-         * 
+         *
          *      part pu1 {
          *          perform v1;
          *      }
@@ -1248,15 +1282,15 @@ public class SysMLElementSerializerTest {
          * </pre>
          */
 
-        Package p1 = builder.createWithName(Package.class, "p1");
+        Package p1 = this.builder.createWithName(Package.class, "p1");
 
-        VerificationCaseUsage verif = builder.createInWithName(VerificationCaseUsage.class, p1, "v1");
+        VerificationCaseUsage verif = this.builder.createInWithName(VerificationCaseUsage.class, p1, "v1");
 
-        PartUsage partUsage = builder.createInWithName(PartUsage.class, p1, "pu1");
+        PartUsage partUsage = this.builder.createInWithName(PartUsage.class, p1, "pu1");
 
-        PerformActionUsage performAction = builder.createInWithName(PerformActionUsage.class, partUsage, null);
+        PerformActionUsage performAction = this.builder.createInWithName(PerformActionUsage.class, partUsage, null);
 
-        builder.addReferenceSubsetting(performAction, verif);
+        this.builder.addReferenceSubsetting(performAction, verif);
 
         this.assertTextualFormEquals("perform v1;", performAction);
     }
@@ -1264,7 +1298,7 @@ public class SysMLElementSerializerTest {
     @Test
     public void perfomActionFullForm() {
 
-        CameraModel cameraModel = new CameraModel(builder, new PictureTakingModel(builder));
+        CameraModel cameraModel = new CameraModel(this.builder, new PictureTakingModel(this.builder));
 
         this.assertTextualFormEquals("""
                 part def Camera {
@@ -1285,42 +1319,41 @@ public class SysMLElementSerializerTest {
         /**
          * <pre>
          *package pack1 {
-        
+
             port def 'port 1';
-        
+
             interface int1 {
                 end p1 : 'port 1';
                 end p2 : \u007E'port 1';
                 attribute attr1;
             }
-               
+
         }
          * </pre>
          */
 
-        Package root = builder.createWithName(Package.class, "pack1");
+        Package root = this.builder.createWithName(Package.class, "pack1");
 
-        PortDefinition portDefinition = builder.createInWithName(PortDefinition.class, root, "port 1");
+        PortDefinition portDefinition = this.builder.createInWithName(PortDefinition.class, root, "port 1");
 
-        ConjugatedPortDefinition conjugated = builder.createIn(ConjugatedPortDefinition.class, portDefinition);
+        ConjugatedPortDefinition conjugated = this.builder.createIn(ConjugatedPortDefinition.class, portDefinition);
 
-        builder.createIn(PortConjugation.class, conjugated).setOriginalPortDefinition(portDefinition);
+        this.builder.createIn(PortConjugation.class, conjugated).setOriginalPortDefinition(portDefinition);
 
-        InterfaceDefinition interfaceDef = builder.createInWithName(InterfaceDefinition.class, root, "int1");
-        
-        builder.createIn(Comment.class, interfaceDef).setBody("Some comment");
-        
+        InterfaceDefinition interfaceDef = this.builder.createInWithName(InterfaceDefinition.class, root, "int1");
 
-        PortUsage portUsage1 = builder.createInWithName(PortUsage.class, interfaceDef, "p1");
+        this.builder.createIn(Comment.class, interfaceDef).setBody("Some comment");
+
+        PortUsage portUsage1 = this.builder.createInWithName(PortUsage.class, interfaceDef, "p1");
         portUsage1.setIsEnd(true);
-        builder.setType(portUsage1, portDefinition);
+        this.builder.setType(portUsage1, portDefinition);
 
-        PortUsage portUsage2 = builder.createInWithName(PortUsage.class, interfaceDef, "p2");
+        PortUsage portUsage2 = this.builder.createInWithName(PortUsage.class, interfaceDef, "p2");
         portUsage2.setIsEnd(true);
-        ConjugatedPortTyping conjugatedPortTyping = builder.createIn(ConjugatedPortTyping.class, portUsage2);
+        ConjugatedPortTyping conjugatedPortTyping = this.builder.createIn(ConjugatedPortTyping.class, portUsage2);
 
-        builder.createInWithName(AttributeUsage.class, interfaceDef, "attr1");
-        
+        this.builder.createInWithName(AttributeUsage.class, interfaceDef, "attr1");
+
         conjugatedPortTyping.setConjugatedPortDefinition(conjugated);
         conjugatedPortTyping.setTypedFeature(portUsage2);
 
@@ -1334,23 +1367,24 @@ public class SysMLElementSerializerTest {
                         attribute attr1;
                     }
                 }""", root);
-        
+
     }
+
     @Test
     public void portUsageFull() {
-        Package root = builder.createWithName(Package.class, "pack1");
-        
-        PortDefinition portDefinition = builder.createInWithName(PortDefinition.class, root, "port 1");
-        
-        PortUsage portUsage = builder.createInWithName(PortUsage.class, root, "portUsage1");
-        
-        builder.setType(portUsage, portDefinition);
-        
-        builder.createIn(Comment.class, portUsage).setBody("Some Comment");
-        
-        PortUsage subPortUsage = builder.createInWithName(PortUsage.class, portUsage, "subPortUsage 1");
-        builder.setType(subPortUsage, portDefinition);
-        
+        Package root = this.builder.createWithName(Package.class, "pack1");
+
+        PortDefinition portDefinition = this.builder.createInWithName(PortDefinition.class, root, "port 1");
+
+        PortUsage portUsage = this.builder.createInWithName(PortUsage.class, root, "portUsage1");
+
+        this.builder.setType(portUsage, portDefinition);
+
+        this.builder.createIn(Comment.class, portUsage).setBody("Some Comment");
+
+        PortUsage subPortUsage = this.builder.createInWithName(PortUsage.class, portUsage, "subPortUsage 1");
+        this.builder.setType(subPortUsage, portDefinition);
+
         this.assertTextualFormEquals("""
                 package pack1 {
                     port def 'port 1';
@@ -1359,7 +1393,6 @@ public class SysMLElementSerializerTest {
                         port 'subPortUsage 1' : 'port 1';
                     }
                 }""", root);
-        
-        
+
     }
 }
