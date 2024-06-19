@@ -18,6 +18,7 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Classifier;
@@ -277,6 +278,46 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.featureTyping(object))
                 .append(this.redefinition(object))
                 .append(this.subsetting(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseAssignmentActionUsage(AssignmentActionUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("assign")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.assignmentActionUsageDetails(object));
+        return label.toString();
+    }
+
+    private String assignmentActionUsageDetails(AssignmentActionUsage aau) {
+        StringBuilder label = new StringBuilder();
+        if (aau.getReferent() != null) {
+            label
+                    .append(aau.getReferent().getName())
+                    .append(LabelConstants.SPACE)
+                    .append(":=")
+                    .append(LabelConstants.SPACE)
+                    .append(this.getAssignmentValue(aau.getValueExpression()));
+        }
+        return label.toString();
+    }
+
+    private String getAssignmentValue(Expression expression) {
+        StringBuilder label = new StringBuilder();
+        if (expression != null) {
+            // At the moment, we do not have the service to retrieve the textual representation of an
+            // expression.
+            // this code should be enhanced to cover all kind of expression.
+            var value = this.getValue(expression);
+            if (value != null) {
+                label.append(value);
+            }
+        }
         return label.toString();
     }
 

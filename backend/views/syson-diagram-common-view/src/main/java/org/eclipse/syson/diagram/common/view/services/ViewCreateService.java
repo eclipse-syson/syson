@@ -839,4 +839,29 @@ public class ViewCreateService {
         }
         return ownerElement;
     }
+
+    /**
+     * Creation of the semantic elements associated to an Assignment action inside an Action or ActionDefinition.
+     *
+     * @param ownerElement
+     *            the element owning the new Assignment action.
+     * @return the new Assignment action if it has been successfully created or <code>ownerElement</code> otherwise.
+     */
+    public Element createAssignmentAction(Element ownerElement) {
+        Feature assignmentSubActionsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::assignments");
+        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && assignmentSubActionsStdAction != null) {
+            var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
+            var assignmentAction = SysmlFactory.eINSTANCE.createAssignmentActionUsage();
+            this.elementInitializerSwitch.doSwitch(assignmentAction);
+            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
+            subsetting.setSubsettingFeature(assignmentAction);
+            subsetting.setSubsettedFeature(assignmentSubActionsStdAction);
+            subsetting.setIsImplied(true);
+            assignmentAction.getOwnedRelationship().add(subsetting);
+            featureMember.getOwnedRelatedElement().add(assignmentAction);
+            ownerElement.getOwnedRelationship().add(featureMember);
+            return assignmentAction;
+        }
+        return ownerElement;
+    }
 }

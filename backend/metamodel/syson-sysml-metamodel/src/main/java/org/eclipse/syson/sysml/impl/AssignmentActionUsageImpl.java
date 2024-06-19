@@ -17,6 +17,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -65,15 +67,32 @@ public class AssignmentActionUsageImpl extends ActionUsageImpl implements Assign
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> From Sysmlv2 specification: The referent of an {@link AssignmentActionUsage} is the first
+     * Feature that is the memberElement of a ownedMembership that is not a FeatureMembership. <br>
+     * <br>
+     * <code> referent = let unownedFeatures : Sequence(Feature) = ownedMembership-><br>
+     *     reject(oclIsKindOf(FeatureMembership)).memberElement-> selectByKind(Feature) in<br>
+     *     if unownedFeatures->isEmpty()<br>
+     *     then null else unownedFeatures->first().oclAsType(Feature) endif
+     * </code> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetReferent() {
-        // TODO: implement this method to return the 'Referent' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        var unownedFeatures = this.getOwnedRelationship().stream()
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .filter(m -> !(m instanceof FeatureMembership))
+                .map(m -> m.getMemberElement())
+                .toList();
+        if (unownedFeatures.isEmpty()) {
+            return null;
+        }
+        return unownedFeatures.stream()
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -88,15 +107,18 @@ public class AssignmentActionUsageImpl extends ActionUsageImpl implements Assign
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> From Sysmlv2 specification: The <code>targetArgument</code> of a
+     * {@link AssignmentActionUsage} is its first argument <code>Expression</code>.<br>
+     * <br>
      *
-     * @generated
+     * <code>
+     * valueExpression = argument(1)
+     * </code> <!-- end-user-doc -->
+     *
+     * @generated NOT
      */
     public Expression basicGetTargetArgument() {
-        // TODO: implement this method to return the 'Target Argument' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.argument(0);
     }
 
     /**
@@ -111,15 +133,19 @@ public class AssignmentActionUsageImpl extends ActionUsageImpl implements Assign
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> From Sysmlv2 specification: The <code>valueExpression</code> of a
+     * {@link AssignmentActionUsage} is its second argument <code>Expression</code>.<br>
+     * <br>
      *
-     * @generated
+     * <code>
+     * valueExpression = argument(2)
+     * </code>
+     * <!-- end-user-doc -->
+     *
+     * @generated NOT
      */
     public Expression basicGetValueExpression() {
-        // TODO: implement this method to return the 'Value Expression' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.argument(1);
     }
 
     /**
@@ -131,16 +157,19 @@ public class AssignmentActionUsageImpl extends ActionUsageImpl implements Assign
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ASSIGNMENT_ACTION_USAGE__REFERENT:
-                if (resolve)
+                if (resolve) {
                     return this.getReferent();
+                }
                 return this.basicGetReferent();
             case SysmlPackage.ASSIGNMENT_ACTION_USAGE__TARGET_ARGUMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getTargetArgument();
+                }
                 return this.basicGetTargetArgument();
             case SysmlPackage.ASSIGNMENT_ACTION_USAGE__VALUE_EXPRESSION:
-                if (resolve)
+                if (resolve) {
                     return this.getValueExpression();
+                }
                 return this.basicGetValueExpression();
         }
         return super.eGet(featureID, resolve, coreType);

@@ -85,6 +85,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/391[#391] [diagrams] AcceptAction is now available inside an Action body
 - https://github.com/eclipse-syson/syson/issues/393[#393] [diagrams] Handle the ExhibitState concept in diagrams
 - https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams] Add new documentation compartment on all existing nodes in all diagrams.
+- https://github.com/eclipse-syson/syson/issues/420[#420] [diagrams] Handle AssignmentAction concept in actions body in diagrams
 
 == v2024.5.0
 
