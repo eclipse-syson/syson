@@ -19,6 +19,7 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintDefinition;
@@ -94,6 +95,11 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
     @Override
     public INodeDescriptionProvider caseAttributeUsage(AttributeUsage object) {
         return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAttributeUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseAssignmentActionUsage(AssignmentActionUsage object) {
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), this.colorProvider);
     }
 
     @Override

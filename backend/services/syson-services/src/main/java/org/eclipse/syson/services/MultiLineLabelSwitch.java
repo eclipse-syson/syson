@@ -294,33 +294,6 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         return label.toString();
     }
 
-    private String assignmentActionUsageDetails(AssignmentActionUsage aau) {
-        StringBuilder label = new StringBuilder();
-        if (aau.getReferent() != null) {
-            label
-                    .append(aau.getReferent().getName())
-                    .append(LabelConstants.SPACE)
-                    .append(":=")
-                    .append(LabelConstants.SPACE)
-                    .append(this.getAssignmentValue(aau.getValueExpression()));
-        }
-        return label.toString();
-    }
-
-    private String getAssignmentValue(Expression expression) {
-        StringBuilder label = new StringBuilder();
-        if (expression != null) {
-            // At the moment, we do not have the service to retrieve the textual representation of an
-            // expression.
-            // this code should be enhanced to cover all kind of expression.
-            var value = this.getValue(expression);
-            if (value != null) {
-                label.append(value);
-            }
-        }
-        return label.toString();
-    }
-
     @Override
     public String caseConstraintDefinition(ConstraintDefinition object) {
         StringBuilder label = new StringBuilder();
@@ -837,6 +810,33 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                     .append("individual")
                     .append(LabelConstants.CLOSE_QUOTE)
                     .append(LabelConstants.CR);
+        }
+        return label.toString();
+    }
+
+    private String assignmentActionUsageDetails(AssignmentActionUsage aau) {
+        StringBuilder label = new StringBuilder();
+        if (aau.getReferent() != null) {
+            label
+                    .append(aau.getReferent().getName())
+                    .append(LabelConstants.SPACE)
+                    .append(":=")
+                    .append(LabelConstants.SPACE)
+                    .append(this.getAssignmentValue(aau.getValueExpression()));
+        }
+        return label.toString();
+    }
+
+    private String getAssignmentValue(Expression expression) {
+        StringBuilder label = new StringBuilder();
+        if (expression != null) {
+            // At the moment, we do not have the service to retrieve the textual representation of an
+            // expression.
+            // this code should be enhanced to cover all kind of expression.
+            var value = this.getValue(expression);
+            if (value != null) {
+                label.append(value);
+            }
         }
         return label.toString();
     }
