@@ -28,6 +28,7 @@ import org.eclipse.syson.diagram.common.view.tools.AcceptActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPayloadNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPortUsageReceiverToolNodeProvider;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.AssignmentActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
@@ -38,6 +39,7 @@ import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -97,7 +99,8 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
                 new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.descriptionNameGenerator).create(this.cache),
                 new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
-                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache));
+                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache),
+                new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         return List.of(createSection, this.addElementsToolSection());
     }
 
@@ -111,8 +114,16 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
                 new DecisionActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
                 new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache),
-                new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
+                new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
+                new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         return List.of(createSection, this.addElementsToolSection());
+    }
+
+    @Override
+    public List<NodeToolSection> caseAssignmentActionUsage(AssignmentActionUsage object) {
+        // Define here the set of node tools that should be added to the Assignment action palette,
+        // such as "Set assigned element" and "Set value".
+        return List.of(this.addElementsToolSection());
     }
 
     @Override

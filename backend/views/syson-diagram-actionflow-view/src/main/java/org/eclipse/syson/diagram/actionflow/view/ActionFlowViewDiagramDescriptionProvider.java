@@ -73,7 +73,8 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
 
     public static final List<EClass> USAGES = List.of(
             SysmlPackage.eINSTANCE.getAcceptActionUsage(),
-            SysmlPackage.eINSTANCE.getActionUsage()
+            SysmlPackage.eINSTANCE.getActionUsage(),
+            SysmlPackage.eINSTANCE.getAssignmentActionUsage()
             );
 
     public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
@@ -87,6 +88,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
                     SysmlPackage.eINSTANCE.getAcceptActionUsage(),
                     SysmlPackage.eINSTANCE.getActionUsage(),
                     SysmlPackage.eINSTANCE.getActionDefinition(),
+                    SysmlPackage.eINSTANCE.getAssignmentActionUsage(),
                     SysmlPackage.eINSTANCE.getPackage()))
             );
 
