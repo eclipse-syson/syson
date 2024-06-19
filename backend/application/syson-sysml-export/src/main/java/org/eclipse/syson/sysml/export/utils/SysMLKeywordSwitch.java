@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.EnumerationDefinition;
@@ -65,6 +66,10 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     private static final String ACTOR_KEYWORD = "actor";
     
     private static final String SUBJECT_KEYWORD = "subject";
+    
+    private static final String ASSERT_KEYWORD = "assert";
+    
+    private static final String NOT_KEYWORD = "not";
     
     @Override
     public String defaultCase(EObject object) {
@@ -163,5 +168,13 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
             return SUBJECT_KEYWORD;
         }
         return "";
+    }
+    
+    @Override
+    public String caseAssertConstraintUsage(AssertConstraintUsage object) {
+        if (object.isIsNegated()) {
+            return ASSERT_KEYWORD + " " + NOT_KEYWORD;
+        }
+        return ASSERT_KEYWORD;
     }
 }

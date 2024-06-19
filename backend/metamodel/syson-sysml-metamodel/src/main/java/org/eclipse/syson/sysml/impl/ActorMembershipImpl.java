@@ -66,13 +66,14 @@ public class ActorMembershipImpl extends ParameterMembershipImpl implements Acto
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public PartUsage basicGetOwnedActorParameter() {
-        // TODO: implement this method to return the 'Owned Actor Parameter' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getOwnedRelatedElement().stream()
+                .filter(PartUsage.class::isInstance)
+                .map(PartUsage.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**

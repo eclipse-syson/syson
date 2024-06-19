@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Classifier;
@@ -250,22 +251,22 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendActionUsageDeclaration(Appender builder, ActionUsage actionUsage) {
 
-        appendUsageDeclaration(builder, actionUsage);
+        this.appendUsageDeclaration(builder, actionUsage);
 
-        appendValuePart(builder, actionUsage);
+        this.appendValuePart(builder, actionUsage);
     }
 
     @Override
     public String casePerformActionUsage(PerformActionUsage perfomActionUsage) {
 
-        Appender builder = new Appender(lineSeparator, indentation);
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
 
-        appendOccurrenceUsagePrefix(builder, perfomActionUsage);
+        this.appendOccurrenceUsagePrefix(builder, perfomActionUsage);
 
         builder.appendWithSpaceIfNeeded("perform");
 
-        Appender nameAppender = new Appender(lineSeparator, indentation);
-        appendNameWithShortName(nameAppender, perfomActionUsage);
+        Appender nameAppender = new Appender(this.lineSeparator, this.indentation);
+        this.appendNameWithShortName(nameAppender, perfomActionUsage);
 
         if (nameAppender.isEmpty() && perfomActionUsage.getOwnedReferenceSubsetting() != null) {
             // Use simple form : perfom <nameOfReferenceSubSetting>
@@ -276,9 +277,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             this.appendUsageDeclaration(builder, perfomActionUsage);
         }
 
-        appendValuePart(builder, perfomActionUsage);
+        this.appendValuePart(builder, perfomActionUsage);
 
-        appendChildrenContent(builder, perfomActionUsage, perfomActionUsage.getOwnedMembership());
+        this.appendChildrenContent(builder, perfomActionUsage, perfomActionUsage.getOwnedMembership());
 
         return builder.toString();
     }
@@ -565,8 +566,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseNullExpression(NullExpression expression) {
-        this.reportConsumer.accept(Status.warning("NullExpression are not handled yet ({0})", expression.getElementId()));
-        return "";
+        return "null";
     }
 
     @Override
@@ -629,13 +629,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         this.appendDefinitionDeclaration(builder, useCase);
 
-        List<Membership> children = useCase.getOwnedMembership().stream()
-                .filter(membership -> membership instanceof SubjectMembership
-                        || membership instanceof ObjectiveMembership
-                        || membership instanceof ActorMembership)
-                .toList();
-
-        this.appendChildrenContent(builder, useCase, children);
+        this.appendChildrenContent(builder, useCase, useCase.getOwnedMembership());
 
         return builder.toString();
     }
@@ -644,12 +638,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     public String caseActorMembership(ActorMembership actor) {
         Appender builder = this.newAppender();
 
-        VisibilityKind visibility = actor.getVisibility();
-        if (visibility != VisibilityKind.PUBLIC) {
-            builder.append(this.getVisivilityIndicator(visibility));
-        }
+        PartUsage ownedActorParameter = actor.getOwnedActorParameter();
 
-        this.appendActorUsage(builder, actor);
+        if (ownedActorParameter != null) {
+            VisibilityKind visibility = actor.getVisibility();
+            if (visibility != VisibilityKind.PUBLIC) {
+                builder.append(this.getVisivilityIndicator(visibility));
+            }
+
+            this.appendDefaultUsage(builder, ownedActorParameter);
+        }
 
         return builder.toString();
     }
@@ -657,13 +655,16 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseSubjectMembership(SubjectMembership subject) {
         Appender builder = this.newAppender();
+        Usage ownedSubjectParameter = subject.getOwnedSubjectParameter();
 
-        VisibilityKind visibility = subject.getVisibility();
-        if (visibility != VisibilityKind.PUBLIC) {
-            builder.append(this.getVisivilityIndicator(visibility));
+        if (ownedSubjectParameter != null && !this.isImplicit(ownedSubjectParameter)) {
+            VisibilityKind visibility = subject.getVisibility();
+            if (visibility != VisibilityKind.PUBLIC) {
+                builder.append(this.getVisivilityIndicator(visibility));
+            }
+
+            this.appendDefaultUsage(builder, ownedSubjectParameter);
         }
-
-        this.appendSubjectUsage(builder, subject);
 
         return builder.toString();
     }
@@ -671,58 +672,91 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseObjectiveMembership(ObjectiveMembership objective) {
         Appender builder = this.newAppender();
+        RequirementUsage ownedObjectiveRequirement = objective.getOwnedObjectiveRequirement();
 
-        VisibilityKind visibility = objective.getVisibility();
-        if (visibility != VisibilityKind.PUBLIC) {
-            builder.append(this.getVisivilityIndicator(visibility));
+        if (ownedObjectiveRequirement != null && !this.isImplicit(ownedObjectiveRequirement)) {
+            VisibilityKind visibility = objective.getVisibility();
+            if (visibility != VisibilityKind.PUBLIC) {
+                builder.append(this.getVisivilityIndicator(visibility));
+            }
+
+            builder.append("objective");
+            this.appendObjectiveRequirementUsage(builder, ownedObjectiveRequirement);
         }
-
-        builder.append("objective");
-        this.appendObjectiveRequirementUsage(builder, objective);
 
         return builder.toString();
     }
 
-    private void appendObjectiveRequirementUsage(Appender builder, ObjectiveMembership objective) {
-        RequirementUsage usage = objective.getOwnedRelatedElement().stream()
-                .filter(RequirementUsage.class::isInstance)
-                .map(RequirementUsage.class::cast)
-                .findFirst()
-                .orElse(null);
+    @Override
+    public String caseAssertConstraintUsage(AssertConstraintUsage usage) {
+        Appender builder = this.newAppender();
 
-        if (usage != null) {
-            this.appendCalculationUsageDeclaration(builder, usage);
-            this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
+        this.appendOccurrenceUsagePrefix(builder, usage);
+
+        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
+
+        ReferenceSubsetting ownedReferenceSubsetting = usage.getOwnedReferenceSubsetting();
+
+        if (ownedReferenceSubsetting != null) {
+            // We still need to implement this part
+            // ownedRelationship += OwnedReferenceSubsetting
+            // FeatureSpecializationPart?
+        } else {
+            builder.appendSpaceIfNeeded().append("constraint");
+            this.appendUsageDeclaration(builder, usage);
         }
+
+        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseReturnParameterMembership(ReturnParameterMembership parameter) {
+        // We still need to implement this part
+        // ReturnFeatureMember : ReturnParameterMembership =
+        // MemberPrefix 'return'
+        // ownedRelatedElement += FeatureElement
+
+        Appender builder = this.newAppender();
+        Feature ownedMemberParameter = parameter.getOwnedMemberParameter();
+
+        if (ownedMemberParameter != null && !this.isImplicit(ownedMemberParameter) && ownedMemberParameter instanceof Usage usage) {
+            VisibilityKind visibility = parameter.getVisibility();
+            if (visibility != VisibilityKind.PUBLIC) {
+                builder.append(this.getVisivilityIndicator(visibility));
+            }
+
+            builder.append("return");
+            this.appendDefaultUsage(builder, usage);
+        }
+        return builder.toString();
+    }
+
+    private boolean isImplicit(Element element) {
+        boolean result = false;
+
+        if (element != null) {
+            if (element instanceof Relationship relationship && relationship.isIsImplied()) {
+                result = true;
+            } else if (element.isIsImpliedIncluded() && element.getOwnedRelationship().stream().allMatch(this::isImplicit)) {
+                result = true;
+            } else if (element instanceof Membership membership && this.isImplicit(membership.getMemberElement())) {
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    private void appendObjectiveRequirementUsage(Appender builder, RequirementUsage usage) {
+        this.appendCalculationUsageDeclaration(builder, usage);
+        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
     }
 
     private void appendCalculationUsageDeclaration(Appender builder, Usage usage) {
         this.appendUsageDeclaration(builder, usage);
         this.appendValuePart(builder, usage);
-    }
-
-    private void appendActorUsage(Appender builder, ActorMembership actor) {
-        PartUsage usage = actor.getOwnedRelatedElement().stream()
-                .filter(PartUsage.class::isInstance)
-                .map(PartUsage.class::cast)
-                .findFirst()
-                .orElse(null);
-
-        if (usage != null) {
-            this.appendDefaultUsage(builder, usage);
-        }
-    }
-
-    private void appendSubjectUsage(Appender builder, SubjectMembership actor) {
-        ReferenceUsage usage = actor.getOwnedRelatedElement().stream()
-                .filter(ReferenceUsage.class::isInstance)
-                .map(ReferenceUsage.class::cast)
-                .findFirst()
-                .orElse(null);
-
-        if (usage != null) {
-            this.appendDefaultUsage(builder, usage);
-        }
     }
 
     private String getUsageKeyword(Usage usage) {
@@ -748,7 +782,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendSubsettings(Appender builder, List<Subsetting> subSettings, boolean includeImplied) {
         List<String> subSettedDifference = subSettings.stream()
                 .filter(f -> includeImplied || !f.isIsImplied())
-                .filter(sub -> isNotNullAndNotAProxy(sub.getSubsettedFeature()))
+                .filter(sub -> this.isNotNullAndNotAProxy(sub.getSubsettedFeature()))
                 .map(sub -> this.getDeresolvableName(sub.getSubsettedFeature(), sub))
                 .filter(this::nameNotNullAndNotBlank)
                 .toList();
@@ -765,7 +799,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendRedefinition(Appender builder, List<Redefinition> redefinitions, boolean includeImplied) {
         List<String> redefinedFeatures = redefinitions.stream()
                 .filter(redef -> includeImplied || !redef.isIsImplied())
-                .filter(red -> isNotNullAndNotAProxy(red.getRedefinedFeature()))
+                .filter(red -> this.isNotNullAndNotAProxy(red.getRedefinedFeature()))
                 .map(red -> this.getDeresolvableName(red.getRedefinedFeature(), red))
                 .filter(this::nameNotNullAndNotBlank)
                 .toList();
@@ -781,9 +815,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendReferenceSubsetting(Appender builder, ReferenceSubsetting ownedReferenceSubsetting, boolean includeImplied) {
         if (ownedReferenceSubsetting != null && (includeImplied || !ownedReferenceSubsetting.isIsImplied())) {
-            if (isNotNullAndNotAProxy(ownedReferenceSubsetting.getReferencedFeature())) {
-                Appender localBuilder = newAppender();
-                appendOwnedReferenceSubsetting(localBuilder, ownedReferenceSubsetting);
+            if (this.isNotNullAndNotAProxy(ownedReferenceSubsetting.getReferencedFeature())) {
+                Appender localBuilder = this.newAppender();
+                this.appendOwnedReferenceSubsetting(localBuilder, ownedReferenceSubsetting);
 
                 if (!localBuilder.isEmpty()) {
                     builder.appendSpaceIfNeeded().append(LabelConstants.REFERENCES);
@@ -797,7 +831,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         final boolean result;
         if (e != null) {
             if (e.eIsProxy()) {
-                reportConsumer.accept(Status.warning("Found one proxy {0}", ((InternalEObject) e).eProxyURI()));
+                this.reportConsumer.accept(Status.warning("Found one proxy {0}", ((InternalEObject) e).eProxyURI()));
                 result = false;
             } else {
                 result = true;
@@ -814,7 +848,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendFeatureTyping(Appender builder, EList<FeatureTyping> ownedTyping) {
         List<String> types = ownedTyping.stream()
-                .filter(ft -> isNotNullAndNotAProxy(ft.getType()))
+                .filter(ft -> this.isNotNullAndNotAProxy(ft.getType()))
                 .map(this::getFeatureTypingTypeName)
                 .filter(this::nameNotNullAndNotBlank)
                 .toList();
@@ -836,10 +870,10 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 ConjugatedPortDefinition conjugatedPortDefinition = cTyping.getConjugatedPortDefinition();
                 if (conjugatedPortDefinition != null) {
                     PortDefinition originalPort = conjugatedPortDefinition.getOriginalPortDefinition();
-                    qName = LabelConstants.CONJUGATED + getDeresolvableName(originalPort, fTyping);
+                    qName = LabelConstants.CONJUGATED + this.getDeresolvableName(originalPort, fTyping);
                 }
             } else {
-                qName = getDeresolvableName(type, fTyping);
+                qName = this.getDeresolvableName(type, fTyping);
             }
         }
 
@@ -1248,7 +1282,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         String deresolvedName = this.nameDeresolver.getDeresolvedName(toDeresolve, context);
 
         if (deresolvedName == null || deresolvedName.isBlank()) {
-            reportConsumer.accept(Status.warning("Empty deresolved name for an {0} with id {1}", toDeresolve.eClass(), toDeresolve.getElementId()));
+            this.reportConsumer.accept(Status.warning("Empty deresolved name for an {0} with id {1}", toDeresolve.eClass(), toDeresolve.getElementId()));
         }
 
         return deresolvedName;
@@ -1538,11 +1572,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (owner instanceof InterfaceDefinition def && def.getInterfaceEnd().contains(portUsage)) {
             this.appendInterfaceEndPortUsage(builder, portUsage);
         } else {
-            appendOccurrenceUsagePrefix(builder, portUsage);
-            
+            this.appendOccurrenceUsagePrefix(builder, portUsage);
+
             builder.appendWithSpaceIfNeeded("port");
-            
-            appendUsage(builder, portUsage);
+
+            this.appendUsage(builder, portUsage);
         }
         return builder.toString();
     }
@@ -1563,14 +1597,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendWithSpaceIfNeeded("end");
         }
 
-        appendUsage(builder, portUsage);
+        this.appendUsage(builder, portUsage);
 
     }
 
     private void appendUsage(Appender builder, PortUsage portUsage) {
-        appendUsageDeclaration(builder, portUsage);
+        this.appendUsageDeclaration(builder, portUsage);
 
-        appendUsageCompletion(builder, portUsage);
+        this.appendUsageCompletion(builder, portUsage);
     }
 
     private void appendMembershipPrefix(Membership membership, Appender builder) {
