@@ -64,8 +64,7 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
             );
 
     public static  final List<EClass> USAGES = List.of(
-            SysmlPackage.eINSTANCE.getStateUsage(),
-            SysmlPackage.eINSTANCE.getExhibitStateUsage()
+            SysmlPackage.eINSTANCE.getStateUsage()
             );
     
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
@@ -125,6 +124,13 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
             diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getDescriptionNameGenerator()));
         });
 
+        COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((eClass, listItems) -> {
+            listItems.forEach(eReference -> {
+                diagramElementDescriptionProviders.add(new StateTransitionActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+            });
+            diagramElementDescriptionProviders.add(new MergedReferencesCompartmentItemNodeDescriptionProvider(eClass, listItems, colorProvider, this.getDescriptionNameGenerator()));
+        });
+
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
                 if (SysmlPackage.eINSTANCE.getStateUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedState().equals(eReference)) {
@@ -138,13 +144,6 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
                     diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                 }
             });
-        });
-
-        COMPARTMENTS_WITH_MERGED_LIST_ITEMS.forEach((eClass, listItems) -> {
-            listItems.forEach(eReference -> {
-                diagramElementDescriptionProviders.add(new StateTransitionActionsCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
-            });
-            diagramElementDescriptionProviders.add(new MergedReferencesCompartmentItemNodeDescriptionProvider(eClass, listItems, colorProvider, this.getDescriptionNameGenerator()));
         });
 
         diagramElementDescriptionProviders.stream().

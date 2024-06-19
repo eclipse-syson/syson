@@ -128,7 +128,7 @@ public class RootDefinitionNodeDescriptionProvider extends AbstractNodeDescripti
         return this.diagramBuilderHelper.newNodePalette()
                 .labelEditTool(editTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
-                .toolSections(this.createNodeToolSection(cache), this.toolDescriptionService.addElementsNodeToolSection())
+                .toolSections(this.createNodeToolSection(cache), this.toolDescriptionService.addElementsNodeToolSection(true))
                 .build();
     }
 

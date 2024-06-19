@@ -74,7 +74,6 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
                 });
             }
         });
-
         return reusedChildren;
     }
 

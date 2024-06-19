@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractActionsCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionCompartmentToolProvider;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -73,7 +73,7 @@ public class StateTransitionActionsCompartmentNodeDescriptionProvider extends Ab
         
         List<EReference> refList = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(eClass);
         if (refList != null) {
-            refList.stream().map(eReference -> new StateTransitionActionToolProvider(eReference).create(cache)).forEach(nodeTool -> {
+            refList.stream().map(eReference -> new StateTransitionActionCompartmentToolProvider(eReference).create(cache)).forEach(nodeTool -> {
                 nodeToolSection.getNodeTools().add(nodeTool);
             });
         }

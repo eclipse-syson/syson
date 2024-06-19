@@ -18,7 +18,6 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
@@ -68,28 +67,6 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
      */
     protected abstract List<NodeDescription> getAllNodeDescriptions();
 
-    /**
-     * Return a tool section used to new children creation.
-     *
-     * @param nodeTools
-     *            optional list of {@link NodeTool}
-     *
-     * @return the {@link ToolSection} grouping all creations of children.
-     */
-    protected NodeToolSection buildCreateSection(NodeTool... nodeTools) {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Create")
-                .nodeTools(nodeTools)
-                .build();
-    }
-
-    protected NodeToolSection addElementsToolSection() {
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Add")
-                .nodeTools(this.addExistingNestedElementsTool(false), this.addExistingNestedElementsTool(true))
-                .build();
-    }
-
     protected List<NodeTool> createToolsForCompartmentItems(Element object) {
         List<NodeTool> compartmentNodeTools = new ArrayList<>();
         this.getElementCompartmentReferences(object).forEach(eReference -> {
@@ -131,26 +108,6 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
                 .name(this.descriptionNameGenerator.getCreationToolName("New ", eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
-                .build();
-    }
-
-    private NodeTool addExistingNestedElementsTool(boolean recursive) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("addExistingNestedElements", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "" + recursive)));
-
-        String title = "Add existing nested elements";
-        String iconURL = "/icons/AddExistingElements.svg";
-        if (recursive) {
-            title += " (recursive)";
-            iconURL = "/icons/AddExistingElementsRecursive.svg";
-        }
-
-        return builder
-                .name(title)
-                .iconURLsExpression(iconURL)
-                .body(addExistingelements.build())
                 .build();
     }
 }

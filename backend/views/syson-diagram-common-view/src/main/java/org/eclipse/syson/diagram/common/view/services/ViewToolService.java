@@ -716,7 +716,7 @@ public class ViewToolService extends ToolService {
      */
     public ActionUsage createOwnedAction(Element parentState, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, String actionKind) {
-        ActionUsage childAction = this.createChildAction(parentState, actionKind);
+        ActionUsage childAction = this.utilService.createChildAction(parentState, actionKind);
 
         if (childAction != null) {
             if (diagramContext.getDiagram().getLabel().equals("General View")) {
@@ -731,37 +731,6 @@ public class ViewToolService extends ToolService {
             }
         }
 
-        return childAction;
-    }
-
-    /**
-     * Create a child Action onto {@code stateDefinition}.
-     *
-     * @param parentState
-     *            The parent {@link StateDefinition} or {@link StateUsage}
-     * @param actionKind
-     *            The string value representing the kind of Action. Expected values are "Entry", "Do" or "Exit".
-     * @return The created {@link ActionUsage} or null if the kind value is not correct
-     */
-    private ActionUsage createChildAction(Element parentState, String actionKind) {
-        var owningMembership = SysmlFactory.eINSTANCE.createStateSubactionMembership();
-        switch (actionKind) {
-            case "Entry":
-                owningMembership.setKind(StateSubactionKind.ENTRY);
-                break;
-            case "Do":
-                owningMembership.setKind(StateSubactionKind.DO);
-                break;
-            case "Exit":
-                owningMembership.setKind(StateSubactionKind.EXIT);
-                break;
-            default:
-                return null;
-        }
-        ActionUsage childAction = SysmlFactory.eINSTANCE.createActionUsage();
-        owningMembership.getOwnedRelatedElement().add(childAction);
-        parentState.getOwnedRelationship().add(owningMembership);
-        this.elementInitializerSwitch.doSwitch(childAction);
         return childAction;
     }
 
@@ -790,7 +759,7 @@ public class ViewToolService extends ToolService {
      */
     public StateUsage createChildState(Element parentState, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean isParallel, boolean isExhibit) {
-        StateUsage childState = this.createChildState(parentState, isParallel, isExhibit);
+        StateUsage childState = this.utilService.createChildState(parentState, isParallel, isExhibit);
 
         if (diagramContext.getDiagram().getLabel().equals("General View")) {
             this.createView(childState, editingContext, diagramContext, diagramContext.getDiagram(), convertedNodes);
@@ -803,32 +772,6 @@ public class ViewToolService extends ToolService {
                     });
         }
 
-        return childState;
-    }
-
-    /**
-     * Create a child State onto {@code stateDefinition}.
-     *
-     * @param parentState
-     *            The parent {@link StateDefinition} or {@link StateUsage}
-     * @param isParallel
-     *            Whether the created state is parallel or not
-     * @param isExhibit
-     *            Whether the created state is exhibited or not
-     * @return the created {@link StateUsage}.
-     */
-    private StateUsage createChildState(Element parentState, boolean isParallel, boolean isExhibit) {
-        var owningMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        StateUsage childState = null;
-        if (isExhibit) {
-            childState = SysmlFactory.eINSTANCE.createExhibitStateUsage();
-        } else {
-            childState = SysmlFactory.eINSTANCE.createStateUsage();
-        }
-        childState.setIsParallel(isParallel);
-        owningMembership.getOwnedRelatedElement().add(childState);
-        parentState.getOwnedRelationship().add(owningMembership);
-        this.elementInitializerSwitch.doSwitch(childState);
         return childState;
     }
 }

@@ -23,6 +23,7 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
+import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -92,11 +93,15 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
     @Override
     public Set<EObject> caseReferenceSubsetting(ReferenceSubsetting object) {
         Set<EObject> relatedElements = new HashSet<>();
-        if (object.getReferencedFeature() instanceof ActionUsage && object.eContainer() instanceof Feature feat) {
+        if (object.getReferencedFeature() instanceof ActionUsage au && object.eContainer() instanceof Feature feat) {
             if (feat.eContainer() instanceof EndFeatureMembership efm && efm.eContainer() instanceof Succession succ) {
                 if (succ.eContainer() instanceof FeatureMembership fm && fm.eContainer() instanceof TransitionUsage tu) {
                     relatedElements.add(tu);
                 }
+            }
+
+            if (feat instanceof ExhibitStateUsage esu && esu.getExhibitedState().equals(au)) {
+                relatedElements.add(esu);
             }
         }
         return relatedElements;

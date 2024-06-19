@@ -15,7 +15,7 @@ package org.eclipse.syson.diagram.general.view;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractActionsCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionCompartmentToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.DescriptionNameGenerator;
 
@@ -45,7 +45,7 @@ public class GVDescriptionNameGenerator extends DescriptionNameGenerator {
 
     @Override
     public String getCompartmentName(EClass eClass, EReference eReference) {
-        if (new StateTransitionActionToolProvider(eReference).isHandledAction()) {
+        if (new StateTransitionActionCompartmentToolProvider(eReference).isHandledAction()) {
             return this.getCompartmentName(this.getDiagramPrefix(), eClass.getName() + SPACE + AbstractActionsCompartmentNodeDescriptionProvider.ACTIONS_COMPARTMENT_LABEL);
         } else {
             return super.getCompartmentName(eClass, eReference);
@@ -54,7 +54,7 @@ public class GVDescriptionNameGenerator extends DescriptionNameGenerator {
 
     @Override
     public String getCompartmentItemName(EClass eClass, EReference eReference) {
-        if (new StateTransitionActionToolProvider(eReference).isHandledAction()) {
+        if (new StateTransitionActionCompartmentToolProvider(eReference).isHandledAction()) {
             return this.getCompartmentItemName(this.getDiagramPrefix(), eClass.getName() + SPACE + AbstractActionsCompartmentNodeDescriptionProvider.ACTION);
         } else {
             return super.getCompartmentItemName(eClass, eReference);

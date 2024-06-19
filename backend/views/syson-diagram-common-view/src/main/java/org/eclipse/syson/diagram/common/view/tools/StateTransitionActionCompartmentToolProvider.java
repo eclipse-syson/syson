@@ -24,11 +24,11 @@ import org.eclipse.syson.util.AQLUtils;
  *
  * @author adieumegard
  */
-public class StateTransitionActionToolProvider extends AbstractCompartmentNodeToolProvider {
+public class StateTransitionActionCompartmentToolProvider extends AbstractCompartmentNodeToolProvider {
 
     private EStructuralFeature actionStructuralFeature;
 
-    public StateTransitionActionToolProvider(EStructuralFeature actionStructuralFeature) {
+    public StateTransitionActionCompartmentToolProvider(EStructuralFeature actionStructuralFeature) {
         super();
         this.actionStructuralFeature = actionStructuralFeature;
     }
