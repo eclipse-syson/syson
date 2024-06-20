@@ -12,13 +12,15 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureInverting;
@@ -273,12 +275,27 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new BasicEList<>();
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+            @Override
+            public boolean addAll(Collection<? extends Element> collection) {
+                if (collection != null) {
+                    Iterator<? extends Element> iterator = collection.iterator();
+                    if (iterator.hasNext()) {
+                        Element next = iterator.next();
+                        if (next instanceof Feature feature) {
+                            FeatureInvertingImpl.this.setFeatureInverted(feature);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        };
         Feature featureInverted = this.getFeatureInverted();
         if (featureInverted != null) {
             sources.add(featureInverted);
         }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
+        return sources;
     }
 
     /**
@@ -288,12 +305,27 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new BasicEList<>();
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+            @Override
+            public boolean addAll(Collection<? extends Element> collection) {
+                if (collection != null) {
+                    Iterator<? extends Element> iterator = collection.iterator();
+                    if (iterator.hasNext()) {
+                        Element next = iterator.next();
+                        if (next instanceof Feature feature) {
+                            FeatureInvertingImpl.this.setInvertingFeature(feature);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        };
         Feature invertingFeature = this.getInvertingFeature();
         if (invertingFeature != null) {
             targets.add(invertingFeature);
         }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
+        return targets;
     }
 
 } // FeatureInvertingImpl

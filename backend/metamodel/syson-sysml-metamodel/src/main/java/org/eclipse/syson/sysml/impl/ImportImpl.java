@@ -13,14 +13,14 @@
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.Membership;
@@ -390,12 +390,17 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new BasicEList<>();
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+            @Override
+            public boolean addAll(Collection<? extends Element> collection) {
+                return false;
+            }
+        };
         Namespace importOwningNamespace = this.getImportOwningNamespace();
         if (importOwningNamespace != null) {
             sources.add(importOwningNamespace);
         }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
+        return sources;
     }
 
 } // ImportImpl

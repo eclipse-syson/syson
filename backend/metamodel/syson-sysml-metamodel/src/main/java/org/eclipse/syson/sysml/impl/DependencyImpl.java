@@ -14,11 +14,9 @@ package org.eclipse.syson.sysml.impl;
 
 import java.util.Collection;
 
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
-import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -179,12 +177,7 @@ public class DependencyImpl extends RelationshipImpl implements Dependency {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new BasicEList<>();
-        EList<Element> client = this.getClient();
-        if (client != null) {
-            sources.addAll(client);
-        }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
+        return this.getClient();
     }
 
     /**
@@ -194,12 +187,7 @@ public class DependencyImpl extends RelationshipImpl implements Dependency {
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new BasicEList<>();
-        EList<Element> supplier = this.getSupplier();
-        if (supplier != null) {
-            targets.addAll(supplier);
-        }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
+        return this.getSupplier();
     }
 
 } // DependencyImpl

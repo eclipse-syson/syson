@@ -77,8 +77,6 @@ public class PartUsageImplTest {
 
         private PartUsage subPart;
 
-        private AttributeUsage publicSubPartAttribute;
-
         private AttributeUsage protectedSubPartAttribute;
 
         private AttributeUsage privateSubPartAttribute;
@@ -106,7 +104,7 @@ public class PartUsageImplTest {
             this.containedPart = this.builder.createInWithName(PartUsage.class, this.superPart, "containedPart");
 
             this.subPart = this.builder.createWithName(PartUsage.class, "subPart");
-            this.publicSubPartAttribute = this.builder.createInWithName(AttributeUsage.class, this.subPart, "publicSubPartAttribute");
+            this.builder.createInWithName(AttributeUsage.class, this.subPart, "publicSubPartAttribute");
             this.privateSubPartAttribute = this.builder.createInWithName(AttributeUsage.class, this.subPart, "privateSubPartAttribute");
             this.privateSubPartAttribute.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
             this.protectedSubPartAttribute = this.builder.createInWithName(AttributeUsage.class, this.subPart, "protectedSubPartAttribute");

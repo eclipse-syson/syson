@@ -12,13 +12,15 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.syson.sysml.Conjugation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -272,12 +274,27 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new BasicEList<>();
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+            @Override
+            public boolean addAll(Collection<? extends Element> collection) {
+                if (collection != null) {
+                    Iterator<? extends Element> iterator = collection.iterator();
+                    if (iterator.hasNext()) {
+                        Element next = iterator.next();
+                        if (next instanceof Type type) {
+                            ConjugationImpl.this.setConjugatedType(type);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        };
         Type conjugatedType = this.getConjugatedType();
         if (conjugatedType != null) {
             sources.add(conjugatedType);
         }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
+        return sources;
     }
 
     /**
@@ -287,12 +304,27 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new BasicEList<>();
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+            @Override
+            public boolean addAll(Collection<? extends Element> collection) {
+                if (collection != null) {
+                    Iterator<? extends Element> iterator = collection.iterator();
+                    if (iterator.hasNext()) {
+                        Element next = iterator.next();
+                        if (next instanceof Type type) {
+                            ConjugationImpl.this.setOriginalType(type);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        };
         Type originalType = this.getOriginalType();
         if (originalType != null) {
             targets.add(originalType);
         }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
+        return targets;
     }
 
 } // ConjugationImpl
