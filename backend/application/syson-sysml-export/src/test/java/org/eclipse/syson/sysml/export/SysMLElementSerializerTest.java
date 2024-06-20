@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.DataType;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
@@ -59,7 +60,9 @@ import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -466,7 +469,7 @@ public class SysMLElementSerializerTest {
     }
 
     @Test
-    public void fullComment() {
+    public void commentFull() {
         Package pack1 = this.fact.createPackage();
         pack1.setDeclaredName("Pack1");
 
@@ -1257,7 +1260,7 @@ public class SysMLElementSerializerTest {
 
         this.assertTextualFormEquals("perform v1;", performAction);
     }
-    
+
     @Test
     public void perfomActionFullForm() {
 
@@ -1275,5 +1278,88 @@ public class SysMLElementSerializerTest {
                     }
                 }""", cameraModel.getCamera());
 
+    }
+
+    @Test
+    public void interfaceDefinitionFull() {
+        /**
+         * <pre>
+         *package pack1 {
+        
+            port def 'port 1';
+        
+            interface int1 {
+                end p1 : 'port 1';
+                end p2 : \u007E'port 1';
+                attribute attr1;
+            }
+               
+        }
+         * </pre>
+         */
+
+        Package root = builder.createWithName(Package.class, "pack1");
+
+        PortDefinition portDefinition = builder.createInWithName(PortDefinition.class, root, "port 1");
+
+        ConjugatedPortDefinition conjugated = builder.createIn(ConjugatedPortDefinition.class, portDefinition);
+
+        builder.createIn(PortConjugation.class, conjugated).setOriginalPortDefinition(portDefinition);
+
+        InterfaceDefinition interfaceDef = builder.createInWithName(InterfaceDefinition.class, root, "int1");
+        
+        builder.createIn(Comment.class, interfaceDef).setBody("Some comment");
+        
+
+        PortUsage portUsage1 = builder.createInWithName(PortUsage.class, interfaceDef, "p1");
+        portUsage1.setIsEnd(true);
+        builder.setType(portUsage1, portDefinition);
+
+        PortUsage portUsage2 = builder.createInWithName(PortUsage.class, interfaceDef, "p2");
+        portUsage2.setIsEnd(true);
+        ConjugatedPortTyping conjugatedPortTyping = builder.createIn(ConjugatedPortTyping.class, portUsage2);
+
+        builder.createInWithName(AttributeUsage.class, interfaceDef, "attr1");
+        
+        conjugatedPortTyping.setConjugatedPortDefinition(conjugated);
+        conjugatedPortTyping.setTypedFeature(portUsage2);
+
+        this.assertTextualFormEquals("""
+                package pack1 {
+                    port def 'port 1';
+                    interface def int1 {
+                        /* Some comment */
+                        end p1 : 'port 1';
+                        end p2 : \u007E'port 1';
+                        attribute attr1;
+                    }
+                }""", root);
+        
+    }
+    @Test
+    public void portUsageFull() {
+        Package root = builder.createWithName(Package.class, "pack1");
+        
+        PortDefinition portDefinition = builder.createInWithName(PortDefinition.class, root, "port 1");
+        
+        PortUsage portUsage = builder.createInWithName(PortUsage.class, root, "portUsage1");
+        
+        builder.setType(portUsage, portDefinition);
+        
+        builder.createIn(Comment.class, portUsage).setBody("Some Comment");
+        
+        PortUsage subPortUsage = builder.createInWithName(PortUsage.class, portUsage, "subPortUsage 1");
+        builder.setType(subPortUsage, portDefinition);
+        
+        this.assertTextualFormEquals("""
+                package pack1 {
+                    port def 'port 1';
+                    port portUsage1 : 'port 1' {
+                        /* Some Comment */
+                        port 'subPortUsage 1' : 'port 1';
+                    }
+                }""", root);
+        
+        
     }
 }
