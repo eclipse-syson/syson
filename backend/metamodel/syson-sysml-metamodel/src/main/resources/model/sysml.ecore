@@ -678,7 +678,7 @@
       <eParameters name="second" ordered="false" lowerBound="1" eType="#//Feature"/>
     </eOperations>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="direction" ordered="false"
-        eType="#//FeatureDirectionKind"/>
+        eType="#//FeatureDirectionKind" unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isComposite" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>

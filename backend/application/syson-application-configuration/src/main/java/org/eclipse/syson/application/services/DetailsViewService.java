@@ -12,11 +12,14 @@
  *******************************************************************************/
 package org.eclipse.syson.application.services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
@@ -24,6 +27,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -71,10 +75,15 @@ public class DetailsViewService {
 
     private final ImportService importService;
 
+    private final EEnumLiteral unsetEnumLiteral;
+
     public DetailsViewService(ComposedAdapterFactory composedAdapterFactory, IFeedbackMessageService feedbackMessageService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.importService = new ImportService();
+        this.unsetEnumLiteral = EcoreFactory.eINSTANCE.createEEnumLiteral();
+        this.unsetEnumLiteral.setName("unset");
+        this.unsetEnumLiteral.setLiteral("unset");
     }
 
     public String getDetailsViewLabel(Element element, EStructuralFeature eStructuralFeature) {
@@ -97,10 +106,14 @@ public class DetailsViewService {
     public boolean setNewValue(Element element, EStructuralFeature eStructuralFeature, Object newValue) {
         try {
             Object valueToSet = newValue;
-            if (eStructuralFeature.getEType() instanceof EDataType eDataType && newValue instanceof String stringValue) {
-                valueToSet = EcoreUtil.createFromString(eDataType, stringValue);
+            if (eStructuralFeature.getEType() instanceof EEnum eDataType && eStructuralFeature.isUnsettable() && !(valueToSet instanceof Enumerator)) {
+                element.eUnset(eStructuralFeature);
+            } else {
+                if (eStructuralFeature.getEType() instanceof EDataType eDataType && newValue instanceof String stringValue) {
+                    valueToSet = EcoreUtil.createFromString(eDataType, stringValue);
+                }
+                element.eSet(eStructuralFeature, valueToSet);
             }
-            element.eSet(eStructuralFeature, valueToSet);
         } catch (IllegalArgumentException | ClassCastException | ArrayStoreException e) {
             this.feedbackMessageService.addFeedbackMessage(new Message("Unable to update the value of the " + eStructuralFeature.getName() + " feature", MessageLevel.ERROR));
             return false;
@@ -109,18 +122,13 @@ public class DetailsViewService {
     }
 
     public boolean setNewValue(Element element, String eStructuralFeatureName, Object newValue) {
-        try {
-            EStructuralFeature eStructuralFeature = element.eClass().getEStructuralFeature(eStructuralFeatureName);
-            Object valueToSet = newValue;
-            if (eStructuralFeature.getEType() instanceof EDataType eDataType && newValue instanceof String stringValue) {
-                valueToSet = EcoreUtil.createFromString(eDataType, stringValue);
-            }
-            element.eSet(eStructuralFeature, valueToSet);
-        } catch (IllegalArgumentException | ClassCastException | ArrayStoreException e) {
+        EStructuralFeature eStructuralFeature = element.eClass().getEStructuralFeature(eStructuralFeatureName);
+        if (eStructuralFeature != null) {
+            return this.setNewValue(element, eStructuralFeature, newValue);
+        } else {
             this.feedbackMessageService.addFeedbackMessage(new Message("Unable to update the value of the " + eStructuralFeatureName + " feature", MessageLevel.ERROR));
             return false;
         }
-        return true;
     }
 
     public boolean isReadOnly(EStructuralFeature eStructuralFeature) {
@@ -228,10 +236,15 @@ public class DetailsViewService {
     }
 
     public List<EEnumLiteral> getEnumCandidates(Element element, EAttribute eAttribute) {
+        List<EEnumLiteral> candidates = new ArrayList<>();
         if (eAttribute.getEAttributeType() instanceof EEnum eEnum) {
-            return eEnum.getELiterals();
+            EList<EEnumLiteral> eLiterals = eEnum.getELiterals();
+            candidates.addAll(eLiterals);
+            if (eAttribute.isUnsettable()) {
+                candidates.add(this.unsetEnumLiteral);
+            }
         }
-        return List.of();
+        return candidates;
     }
 
     public List<EEnumLiteral> getEnumCandidates(Element element, String eAttributeName) {
@@ -243,11 +256,16 @@ public class DetailsViewService {
     }
 
     public EEnumLiteral getEnumValue(Element element, EAttribute eAttribute) {
+        EEnumLiteral enumValue = null;
         if (eAttribute.getEAttributeType() instanceof EEnum eEnum) {
             Object eLiteralValue = element.eGet(eAttribute);
-            return eEnum.getEEnumLiteralByLiteral(eLiteralValue.toString());
+            if (eLiteralValue != null) {
+                enumValue = eEnum.getEEnumLiteralByLiteral(eLiteralValue.toString());
+            } else if (eAttribute.isUnsettable()) {
+                enumValue = this.unsetEnumLiteral;
+            }
         }
-        return null;
+        return enumValue;
     }
 
     public EEnumLiteral getEnumValue(Element element, String eAttributeName) {
