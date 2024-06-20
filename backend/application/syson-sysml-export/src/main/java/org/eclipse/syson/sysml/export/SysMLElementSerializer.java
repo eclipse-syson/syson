@@ -1550,8 +1550,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendBasicUsagePrefix(Appender builder, Usage usage) {
 
-        if (usage.getDirection() != FeatureDirectionKind.IN) {
-            builder.appendWithSpaceIfNeeded(usage.getDirection().toString());
+        FeatureDirectionKind direction = usage.getDirection();
+        if (direction != null && direction != FeatureDirectionKind.IN) {
+            builder.appendWithSpaceIfNeeded(direction.toString());
         }
 
         if (usage.isIsAbstract()) {
@@ -1798,9 +1799,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendInterfaceEndPortUsage(Appender builder, PortUsage portUsage) {
-
-        if (portUsage.getDirection() != FeatureDirectionKind.IN) {
-            builder.appendWithSpaceIfNeeded(portUsage.getDirection().toString());
+        FeatureDirectionKind direction = portUsage.getDirection();
+        if (direction != null && direction != FeatureDirectionKind.IN) {
+            builder.appendWithSpaceIfNeeded(direction.toString());
         }
 
         if (portUsage.isIsAbstract()) {

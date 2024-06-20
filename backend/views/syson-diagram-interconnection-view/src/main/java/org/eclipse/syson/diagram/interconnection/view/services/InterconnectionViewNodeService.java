@@ -30,15 +30,15 @@ public class InterconnectionViewNodeService extends ViewNodeService {
     }
 
     public boolean isInPort(PortUsage portUsage) {
-        return portUsage.getDirection().equals(FeatureDirectionKind.IN);
+        return FeatureDirectionKind.IN.equals(portUsage.getDirection());
     }
 
     public boolean isOutPort(PortUsage portUsage) {
-        return portUsage.getDirection().equals(FeatureDirectionKind.OUT);
+        return FeatureDirectionKind.OUT.equals(portUsage.getDirection());
     }
 
     public boolean isInOutPort(PortUsage portUsage) {
-        return portUsage.getDirection().equals(FeatureDirectionKind.INOUT);
+        return FeatureDirectionKind.INOUT.equals(portUsage.getDirection());
     }
 
 }
