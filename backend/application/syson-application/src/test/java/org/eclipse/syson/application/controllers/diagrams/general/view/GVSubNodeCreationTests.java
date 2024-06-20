@@ -88,6 +88,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
 
     private static final String ATTRIBUTES_COMPARTMENT = "attributes";
 
+    private static final String DOC_COMPARTMENT = "doc";
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -125,22 +127,25 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
 
-    private static Stream<Arguments> attributeDefinitionSubNodeParameters() {
+    private static Stream<Arguments> attributeDefinitionChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()))
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> attributeUsageSubNodeParameters() {
+    private static Stream<Arguments> attributeUsageChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference()))
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> enumerationDefinitionSubNodeParameters() {
+    private static Stream<Arguments> enumerationDefinitionChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationUsage(), "enumerations", SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue()))
+                Arguments.of(SysmlPackage.eINSTANCE.getEnumerationUsage(), "enumerations", SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -150,9 +155,10 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> itemDefinitionSubNodeParameters() {
+    private static Stream<Arguments> itemDefinitionChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()))
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -164,14 +170,15 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> itemUsageSubNodeParameters() {
+    private static Stream<Arguments> itemUsageChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference()))
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> packageSubNodeParameters() {
+    private static Stream<Arguments> packageChildNodeParameters() {
         EReference ownedMember = SysmlPackage.eINSTANCE.getNamespace_OwnedMember();
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ownedMember, 3),
@@ -207,10 +214,11 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> partDefinitionSubNodeParameters() {
+    private static Stream<Arguments> partDefinitionChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort()))
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -221,10 +229,11 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> partUsageSubNodeParameters() {
+    private static Stream<Arguments> partUsageChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getUsage_NestedPort()))
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getUsage_NestedPort()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -242,9 +251,10 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> allocationUsageSubNodeParameters() {
+    private static Stream<Arguments> allocationUsageChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocations", SysmlPackage.eINSTANCE.getUsage_NestedAllocation()))
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocations", SysmlPackage.eINSTANCE.getUsage_NestedAllocation()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -262,18 +272,20 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> interfaceUsageSubNodeParameters() {
+    private static Stream<Arguments> interfaceUsageChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getUsage_NestedPort()))
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getUsage_NestedPort()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> interfaceDefinitionSubNodeParameters() {
+    private static Stream<Arguments> interfaceDefinitionChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
                 Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interfaces", SysmlPackage.eINSTANCE.getDefinition_OwnedInterface()),
-                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort()))
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -283,10 +295,11 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> portUsageSubNodeParameters() {
+    private static Stream<Arguments> portUsageChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference()))
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getUsage_NestedReference()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -296,11 +309,12 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
-    private static Stream<Arguments> portDefinitionSubNodeParameters() {
+    private static Stream<Arguments> portDefinitionChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getDefinition_OwnedReference()))
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getDefinition_OwnedReference()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -368,7 +382,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> constraintUsageChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "constraints", SysmlPackage.eINSTANCE.getUsage_NestedConstraint()))
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "constraints", SysmlPackage.eINSTANCE.getUsage_NestedConstraint()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -380,7 +395,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> constraintDefinitionChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "constraints", SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint()))
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "constraints", SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -395,13 +411,15 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> requirementUsageChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()))
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAttribute()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
     private static Stream<Arguments> requirementDefinitionChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()))
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -416,7 +434,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
 
     private static Stream<Arguments> occurrenceUsageChildNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), "occurrences", SysmlPackage.eINSTANCE.getUsage_NestedOccurrence()))
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), "occurrences", SysmlPackage.eINSTANCE.getUsage_NestedOccurrence()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -429,7 +448,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> occurrenceDefinitionChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), "occurrences", SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence()))
+                Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), "occurrences", SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -442,7 +462,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> metadataDefinitionChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getDefinition_OwnedReference()))
+                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getDefinition_OwnedReference()),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -471,7 +492,7 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("attributeDefinitionSubNodeParameters")
+    @MethodSource("attributeDefinitionChildNodeParameters")
     public void createAttributeDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getAttributeDefinition();
         String parentLabel = "AttributeDefinition";
@@ -483,7 +504,7 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("attributeUsageSubNodeParameters")
+    @MethodSource("attributeUsageChildNodeParameters")
     public void createAttributeUsageSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getAttributeUsage();
         String parentLabel = "attribute";
@@ -495,7 +516,7 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("enumerationDefinitionSubNodeParameters")
+    @MethodSource("enumerationDefinitionChildNodeParameters")
     public void createEnumerationDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getEnumerationDefinition();
         String parentLabel = "EnumerationDefinition";
@@ -519,7 +540,7 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("itemDefinitionSubNodeParameters")
+    @MethodSource("itemDefinitionChildNodeParameters")
     public void createItemDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getItemDefinition();
         String parentLabel = "ItemDefinition";
@@ -543,8 +564,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("itemUsageSubNodeParameters")
-    public void createItemUsageSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    @MethodSource("itemUsageChildNodeParameters")
+    public void createItemUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getItemUsage();
         String parentLabel = "item";
         this.createNode(parentEClass, parentLabel, childEClass);
@@ -555,8 +576,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("packageSubNodeParameters")
-    public void createPackageSubNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
+    @MethodSource("packageChildNodeParameters")
+    public void createPackageChildNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPackage();
         String parentLabel = "Package";
         this.createNode(parentEClass, parentLabel, childEClass);
@@ -567,8 +588,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("partDefinitionSubNodeParameters")
-    public void createPartDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    @MethodSource("partDefinitionChildNodeParameters")
+    public void createPartDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
         String parentLabel = "PartDefinition";
         this.createNode(parentEClass, parentLabel, childEClass);
@@ -591,8 +612,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("partUsageSubNodeParameters")
-    public void createPartUsageSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    @MethodSource("partUsageChildNodeParameters")
+    public void createPartUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPartUsage();
         String parentLabel = "part";
         this.createNode(parentEClass, parentLabel, childEClass);
@@ -627,8 +648,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("allocationUsageSubNodeParameters")
-    public void createAllocationUsageSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    @MethodSource("allocationUsageChildNodeParameters")
+    public void createAllocationUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getAllocationUsage();
         String parentLabel = "allocation";
         this.createNode(parentEClass, parentLabel, childEClass);
@@ -663,8 +684,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("interfaceUsageSubNodeParameters")
-    public void createInterfaceUsageSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    @MethodSource("interfaceUsageChildNodeParameters")
+    public void createInterfaceUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getInterfaceUsage();
         String parentLabel = "interface";
         this.createNode(parentEClass, parentLabel, childEClass);
@@ -675,8 +696,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("interfaceDefinitionSubNodeParameters")
-    public void createInterfaceDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    @MethodSource("interfaceDefinitionChildNodeParameters")
+    public void createInterfaceDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getInterfaceDefinition();
         String parentLabel = "InterfaceDefinition";
         this.createNode(parentEClass, parentLabel, childEClass);
@@ -699,8 +720,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("portUsageSubNodeParameters")
-    public void createPortUsageSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    @MethodSource("portUsageChildNodeParameters")
+    public void createPortUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPortUsage();
         String parentLabel = "port";
         this.createNode(parentEClass, parentLabel, childEClass);
@@ -723,8 +744,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
-    @MethodSource("portDefinitionSubNodeParameters")
-    public void createPortDefinitionSubNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+    @MethodSource("portDefinitionChildNodeParameters")
+    public void createPortDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPortDefinition();
         String parentLabel = "PortDefinition";
         this.createNode(parentEClass, parentLabel, childEClass);
