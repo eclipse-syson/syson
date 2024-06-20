@@ -13,14 +13,16 @@
 package org.eclipse.syson.sysml.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
@@ -201,12 +203,27 @@ public class NamespaceImportImpl extends ImportImpl implements NamespaceImport {
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new BasicEList<>();
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+            @Override
+            public boolean addAll(Collection<? extends Element> collection) {
+                if (collection != null) {
+                    Iterator<? extends Element> iterator = collection.iterator();
+                    if (iterator.hasNext()) {
+                        Element next = iterator.next();
+                        if (next instanceof Namespace namespace) {
+                            NamespaceImportImpl.this.setImportedNamespace(namespace);
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        };
         Namespace importedNamespace = this.getImportedNamespace();
         if (importedNamespace != null) {
             targets.add(importedNamespace);
         }
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
+        return targets;
     }
 
 } // NamespaceImportImpl
