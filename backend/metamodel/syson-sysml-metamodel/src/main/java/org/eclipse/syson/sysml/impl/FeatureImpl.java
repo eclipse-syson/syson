@@ -79,10 +79,10 @@ public class FeatureImpl extends TypeImpl implements Feature {
      * end-user-doc -->
      *
      * @see #getDirection()
-     * @generated
+     * @generated NOT
      * @ordered
      */
-    protected static final FeatureDirectionKind DIRECTION_EDEFAULT = FeatureDirectionKind.IN;
+    protected static final FeatureDirectionKind DIRECTION_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getDirection() <em>Direction</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -93,6 +93,14 @@ public class FeatureImpl extends TypeImpl implements Feature {
      * @ordered
      */
     protected FeatureDirectionKind direction = DIRECTION_EDEFAULT;
+
+    /**
+     * This is true if the Direction attribute has been set. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    protected boolean directionESet;
 
     /**
      * The default value of the '{@link #isIsComposite() <em>Is Composite</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -294,9 +302,37 @@ public class FeatureImpl extends TypeImpl implements Feature {
     public void setDirection(FeatureDirectionKind newDirection) {
         FeatureDirectionKind oldDirection = this.direction;
         this.direction = newDirection == null ? DIRECTION_EDEFAULT : newDirection;
+        boolean oldDirectionESet = this.directionESet;
+        this.directionESet = true;
         if (this.eNotificationRequired()) {
-            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__DIRECTION, oldDirection, this.direction));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE__DIRECTION, oldDirection, this.direction, !oldDirectionESet));
         }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void unsetDirection() {
+        FeatureDirectionKind oldDirection = this.direction;
+        boolean oldDirectionESet = this.directionESet;
+        this.direction = DIRECTION_EDEFAULT;
+        this.directionESet = false;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.UNSET, SysmlPackage.FEATURE__DIRECTION, oldDirection, DIRECTION_EDEFAULT, oldDirectionESet));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isSetDirection() {
+        return this.directionESet;
     }
 
     /**
@@ -894,7 +930,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
     public void eUnset(int featureID) {
         switch (featureID) {
             case SysmlPackage.FEATURE__DIRECTION:
-                this.setDirection(DIRECTION_EDEFAULT);
+                this.unsetDirection();
                 return;
             case SysmlPackage.FEATURE__IS_COMPOSITE:
                 this.setIsComposite(IS_COMPOSITE_EDEFAULT);
@@ -972,7 +1008,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case SysmlPackage.FEATURE__DIRECTION:
-                return this.direction != DIRECTION_EDEFAULT;
+                return this.isSetDirection();
             case SysmlPackage.FEATURE__IS_COMPOSITE:
                 return this.isComposite != IS_COMPOSITE_EDEFAULT;
             case SysmlPackage.FEATURE__IS_DERIVED:
@@ -1058,7 +1094,11 @@ public class FeatureImpl extends TypeImpl implements Feature {
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (direction: ");
-        result.append(this.direction);
+        if (this.directionESet) {
+            result.append(this.direction);
+        } else {
+            result.append("<unset>");
+        }
         result.append(", isComposite: ");
         result.append(this.isComposite);
         result.append(", isDerived: ");

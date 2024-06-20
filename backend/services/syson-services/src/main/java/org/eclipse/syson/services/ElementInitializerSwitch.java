@@ -20,6 +20,7 @@ import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
@@ -54,8 +55,8 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     public Element caseAcceptActionUsage(AcceptActionUsage object) {
         this.caseUsage(object);
         // create two ParameterMembership
-        object.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage("payload"));
-        object.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage("receiver"));
+        object.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage("payload", FeatureDirectionKind.INOUT));
+        object.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage("receiver", FeatureDirectionKind.IN));
         return object;
     }
 
@@ -159,8 +160,9 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
         return object;
     }
 
-    private ParameterMembership createParameterMembershipWithReferenceUsage(String refName) {
+    private ParameterMembership createParameterMembershipWithReferenceUsage(String refName, FeatureDirectionKind direction) {
         var reference = SysmlFactory.eINSTANCE.createReferenceUsage();
+        reference.setDirection(direction);
         reference.setDeclaredName(refName);
         var pm = SysmlFactory.eINSTANCE.createParameterMembership();
         pm.getOwnedRelatedElement().add(reference);

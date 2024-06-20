@@ -68,9 +68,11 @@ public interface Feature extends Type {
      *
      * @return the value of the '<em>Direction</em>' attribute.
      * @see org.eclipse.syson.sysml.FeatureDirectionKind
+     * @see #isSetDirection()
+     * @see #unsetDirection()
      * @see #setDirection(FeatureDirectionKind)
      * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_Direction()
-     * @model ordered="false"
+     * @model unsettable="true" ordered="false"
      * @generated
      */
     FeatureDirectionKind getDirection();
@@ -86,6 +88,29 @@ public interface Feature extends Type {
      * @generated
      */
     void setDirection(FeatureDirectionKind value);
+
+    /**
+     * Unsets the value of the '{@link org.eclipse.syson.sysml.Feature#getDirection <em>Direction</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isSetDirection()
+     * @see #getDirection()
+     * @see #setDirection(FeatureDirectionKind)
+     * @generated
+     */
+    void unsetDirection();
+
+    /**
+     * Returns whether the value of the '{@link org.eclipse.syson.sysml.Feature#getDirection <em>Direction</em>}'
+     * attribute is set. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return whether the value of the '<em>Direction</em>' attribute is set.
+     * @see #unsetDirection()
+     * @see #getDirection()
+     * @see #setDirection(FeatureDirectionKind)
+     * @generated
+     */
+    boolean isSetDirection();
 
     /**
      * Returns the value of the '<em><b>End Owning Type</b></em>' reference. It is bidirectional and its opposite is
