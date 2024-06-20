@@ -42,6 +42,7 @@ import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.CollectExpression;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
@@ -57,6 +58,7 @@ import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.Import;
+import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.LiteralBoolean;
@@ -85,6 +87,7 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
+import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -812,7 +815,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendFeatureTyping(Appender builder, EList<FeatureTyping> ownedTyping) {
         List<String> types = ownedTyping.stream()
                 .filter(ft -> isNotNullAndNotAProxy(ft.getType()))
-                .map(ft -> getDeresolvableName(ft.getType(), ft))
+                .map(this::getFeatureTypingTypeName)
                 .filter(this::nameNotNullAndNotBlank)
                 .toList();
         if (!types.isEmpty()) {
@@ -823,6 +826,29 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 builder.appendSpaceIfNeeded().append(featureTypePart);
             }
         }
+    }
+
+    private String getFeatureTypingTypeName(FeatureTyping fTyping) {
+        Type type = fTyping.getType();
+        String qName = null;
+        if (type != null) {
+            if (fTyping instanceof ConjugatedPortTyping cTyping) {
+                ConjugatedPortDefinition conjugatedPortDefinition = cTyping.getConjugatedPortDefinition();
+                if (conjugatedPortDefinition != null) {
+                    PortDefinition originalPort = conjugatedPortDefinition.getOriginalPortDefinition();
+                    qName = LabelConstants.CONJUGATED + getDeresolvableName(originalPort, fTyping);
+                }
+            } else {
+                qName = getDeresolvableName(type, fTyping);
+            }
+        }
+
+        if (qName == null) {
+            qName = "";
+        }
+
+        return qName;
+
     }
 
     private void appendMultiplicityPart(Appender builder, Feature feature) {
@@ -1497,6 +1523,54 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         builder.appendSpaceIfNeeded().append(content);
 
         return builder.toString();
+    }
+
+    @Override
+    public String caseInterfaceDefinition(InterfaceDefinition interfaceDef) {
+        return this.appendDefaultDefinition(this.newAppender(), interfaceDef).toString();
+    }
+
+    @Override
+    public String casePortUsage(PortUsage portUsage) {
+        Appender builder = this.newAppender();
+        // PortUsage inside a InterfaceDefintion which are InterfaceEnd have a special rule for serialization
+        Element owner = portUsage.getOwner();
+        if (owner instanceof InterfaceDefinition def && def.getInterfaceEnd().contains(portUsage)) {
+            this.appendInterfaceEndPortUsage(builder, portUsage);
+        } else {
+            appendOccurrenceUsagePrefix(builder, portUsage);
+            
+            builder.appendWithSpaceIfNeeded("port");
+            
+            appendUsage(builder, portUsage);
+        }
+        return builder.toString();
+    }
+
+    private void appendInterfaceEndPortUsage(Appender builder, PortUsage portUsage) {
+
+        if (portUsage.getDirection() != FeatureDirectionKind.IN) {
+            builder.appendWithSpaceIfNeeded(portUsage.getDirection().toString());
+        }
+
+        if (portUsage.isIsAbstract()) {
+            builder.appendWithSpaceIfNeeded("abstract");
+        } else if (portUsage.isIsVariation()) {
+            builder.appendWithSpaceIfNeeded("variation");
+        }
+
+        if (portUsage.isIsEnd()) {
+            builder.appendWithSpaceIfNeeded("end");
+        }
+
+        appendUsage(builder, portUsage);
+
+    }
+
+    private void appendUsage(Appender builder, PortUsage portUsage) {
+        appendUsageDeclaration(builder, portUsage);
+
+        appendUsageCompletion(builder, portUsage);
     }
 
     private void appendMembershipPrefix(Membership membership, Appender builder) {

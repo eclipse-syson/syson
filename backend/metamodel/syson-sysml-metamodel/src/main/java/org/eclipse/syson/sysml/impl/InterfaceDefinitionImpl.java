@@ -19,7 +19,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -65,7 +65,11 @@ public class InterfaceDefinitionImpl extends ConnectionDefinitionImpl implements
      */
     @Override
     public EList<PortUsage> getInterfaceEnd() {
-        List<ActionUsage> data = new ArrayList<>();
+        List<PortUsage> data = this.getFeature().stream()
+                .filter(Feature::isIsEnd)
+                .filter(PortUsage.class::isInstance)
+                .map(PortUsage.class::cast)
+                .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getInterfaceDefinition_InterfaceEnd(), data.size(), data.toArray());
     }
 
