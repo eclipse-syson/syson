@@ -23,52 +23,71 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
-import org.eclipse.syson.sysml.ExhibitStateUsage;
-import org.eclipse.syson.sysml.StateDefinition;
-import org.eclipse.syson.sysml.StateUsage;
-import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Used to handle the {@link StateUsage} and {@link ExhibitStateUsage} compartment of {@link StateUsage} and
- * {@link StateDefinition}.
+ * Used to create the Exhibit States Compartment node description inside the State Transition View diagram.
  *
  * @author adieumegard
  */
 public class StatesCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public StatesCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(eClass, eReference, colorProvider, nameGenerator);
+    public static final String STATES_NAME = " states";
+
+    public static final String EXHIBIT_STATES_NAME = " exhibit" + STATES_NAME;
+
+    private final boolean showsExhibitOnly;
+
+    public StatesCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator, boolean showsExhibitOnly) {
+        super(eClass, eReference, colorProvider, descriptionNameGenerator);
+        this.showsExhibitOnly = showsExhibitOnly;
     }
 
     @Override
-    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
-        List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
-                .ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedState()))
-                .ifPresent(droppableNodes::add);
-        return droppableNodes;
-    }
-
-    @Override
-    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference)).ifPresent(nodeDescription -> {
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
-                    .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getInheritedCompartmentItemName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedState()))
-                    .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
-                    .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, SysmlPackage.eINSTANCE.getUsage_NestedState()))
-                    .ifPresent(node -> nodeDescription.getChildrenDescriptions().add(node));
-            nodeDescription.setPalette(this.createCompartmentPalette(cache));
-        });
+    public NodeDescription create() {
+        NodeDescription nd = super.create();
+        if (this.showsExhibitOnly) {
+            nd.setName(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference) + EXHIBIT_STATES_NAME);
+        } else {
+            nd.setName(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference) + STATES_NAME);
+        }
+        return nd;
     }
 
     @Override
     protected String getCustomCompartmentLabel() {
-        return "states";
+        if (this.showsExhibitOnly) {
+            return "exhibit states";
+        } else {
+            return "states";
+        }
+    }
+
+    @Override
+    protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
+        var acceptedNodeTypes = new ArrayList<NodeDescription>();
+        if (this.showsExhibitOnly) {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + EXHIBIT_STATES_NAME).ifPresent(acceptedNodeTypes::add);
+        } else {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + STATES_NAME).ifPresent(acceptedNodeTypes::add);
+        }
+        return acceptedNodeTypes;
+    }
+
+    @Override
+    public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
+        if (this.showsExhibitOnly) {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference) + EXHIBIT_STATES_NAME).ifPresent(nd -> {
+                cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + EXHIBIT_STATES_NAME).ifPresent(nd.getChildrenDescriptions()::add);
+                nd.setPalette(this.createCompartmentPalette(cache));
+            });
+        } else {
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(this.eClass, this.eReference) + STATES_NAME).ifPresent(nd -> {
+                cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference) + STATES_NAME).ifPresent(nd.getChildrenDescriptions()::add);
+                nd.setPalette(this.createCompartmentPalette(cache));
+            });
+        }
     }
 
     @Override
@@ -76,10 +95,29 @@ public class StatesCompartmentNodeDescriptionProvider extends AbstractCompartmen
         var palette = this.diagramBuilderHelper.newNodePalette().dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
 
         // Do not use getItemCreationToolProvider because the compartment contains multiple creation tools.
-        palette.toolSections(this.diagramBuilderHelper.newNodeToolSection()
-                .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, false).create(cache), new StateTransitionCompartmentNodeToolProvider(true, false).create(cache)).build());
+        if (this.showsExhibitOnly) {
+            palette.toolSections(this.diagramBuilderHelper.newNodeToolSection()
+                    .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, true).create(cache),
+                            new StateTransitionCompartmentNodeToolProvider(true, true).create(cache))
+                    .build());
+        } else {
+            palette.toolSections(this.diagramBuilderHelper.newNodeToolSection()
+                    .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, false).create(cache),
+                            new StateTransitionCompartmentNodeToolProvider(true, false).create(cache),
+                            new StateTransitionCompartmentNodeToolProvider(false, true).create(cache),
+                            new StateTransitionCompartmentNodeToolProvider(true, true).create(cache))
+                    .build());
+        }
 
         return palette.toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection()).build();
     }
 
+    @Override
+    protected String isHiddenByDefaultExpression() {
+        if (this.showsExhibitOnly) {
+            return AQLUtils.getSelfServiceCallExpression("isHiddenByDefaultExhibitStates");
+        } else {
+            return AQLUtils.getSelfServiceCallExpression("isHiddenByDefaultNonExhibitStates");
+        }
+    }
 }

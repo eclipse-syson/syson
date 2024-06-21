@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.antlr.v4.runtime.atn.Transition;
@@ -127,6 +128,54 @@ public class UtilService {
     }
 
     /**
+     * Retrieve all exhibited {@link StateUsage} directly accessible from an object.
+     *
+     * @param eObject
+     *            The {@link Element} to start from
+     * @return The list of exhibited {@link StateUsage}
+     */
+    public List<StateUsage> getAllExhibitedStates(Element eObject) {
+        List<StateUsage> result = new ArrayList<>();
+        List<StateUsage> candidates = new ArrayList<>();
+        if (eObject instanceof Usage usage) {
+            candidates = usage.getNestedState();
+        } else if (eObject instanceof Definition def) {
+            candidates = def.getOwnedState();
+        } else if (eObject instanceof ExhibitStateUsage esu) {
+            candidates.add(esu);
+        }
+        candidates.stream().filter(ExhibitStateUsage.class::isInstance)
+                .map(ExhibitStateUsage.class::cast)
+                .map(ExhibitStateUsage::getExhibitedState)
+                .filter(Objects::nonNull)
+                .forEach(result::add);
+        return result;
+    }
+
+    /**
+     * Retrieve all {@link StateUsage} elements that are not {@link ExhibitStateUsage} directly accessible from an
+     * object.
+     *
+     * @param eObject
+     *            The {@link Element} to start from
+     * @return The list of all {@link StateUsage} elements that are not {@link ExhibitStateUsage}
+     */
+    public List<StateUsage> getAllNonExhibitStates(Element eObject) {
+        List<StateUsage> result = new ArrayList<>();
+        List<StateUsage> candidates = new ArrayList<>();
+        if (eObject instanceof Usage usage) {
+            candidates = usage.getNestedState();
+        } else if (eObject instanceof Definition def) {
+            candidates = def.getOwnedState();
+        }
+        candidates.stream().filter(c -> !(c instanceof ExhibitStateUsage))
+                .map(StateUsage.class::cast)
+                .filter(Objects::nonNull)
+                .forEach(result::add);
+        return result;
+    }
+
+    /**
      * Get the AQL service expression getting all reachable {@link StateUsage} elements which are not referential
      * ExhibitStates.
      *
@@ -203,36 +252,6 @@ public class UtilService {
         this.getAllReachable(eObject, SysmlPackage.eINSTANCE.getStateUsage()).stream().forEach(su -> {
             result.add((StateUsage) su);
         });
-        return result;
-    }
-
-    /**
-     * Retrieve all exhibited {@link StateUsage} directly accessible from an object.
-     *
-     * @param eObject
-     *            The {@link Element} to start from
-     * @return
-     */
-    public List<StateUsage> getAllReachableExhibitedStates(Element eObject) {
-        List<StateUsage> result = new ArrayList<>();
-        List<StateUsage> candidates = new ArrayList<>();
-        if (eObject instanceof Usage usage) {
-            candidates = usage.getNestedState();
-        } else if (eObject instanceof Definition def) {
-            candidates = def.getOwnedState();
-        } else if (eObject instanceof ExhibitStateUsage esu) {
-            candidates.add(esu);
-        }
-        candidates.stream().filter(ExhibitStateUsage.class::isInstance)
-            .map(ExhibitStateUsage.class::cast)
-            .map(exhibit -> {
-                StateUsage exhibitedState = exhibit.getExhibitedState();
-                if (exhibitedState != null) {
-                    return exhibitedState;
-                } else {
-                    return exhibit;
-                }
-            }).forEach(result::add);
         return result;
     }
 

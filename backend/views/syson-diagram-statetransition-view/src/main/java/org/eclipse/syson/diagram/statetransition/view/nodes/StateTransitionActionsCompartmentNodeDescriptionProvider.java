@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionCompartmentToolProvider;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -78,5 +79,10 @@ public class StateTransitionActionsCompartmentNodeDescriptionProvider extends Ab
             });
         }
         return nodeToolSection;
+    }
+    
+    @Override
+    protected String isHiddenByDefaultExpression() {
+        return AQLUtils.getSelfServiceCallExpression("isHiddenByDefault", "Sequence{'entryAction', 'doAction', 'exitAction'}");
     }
 }

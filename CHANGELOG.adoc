@@ -3,15 +3,21 @@
 == v2024.9.0 (work in progress)
 
 === Breaking changes
-- https://github.com/eclipse-syson/syson/issues/554[#554] [diagrams] Moved StateTransitionCompartmentNodeDescriptionProvider from syson-diagram-statetransition-view to module syson-diagram-common-view.
+
+- https://github.com/eclipse-syson/syson/issues/554[#554] [diagrams] Move _StateTransitionCompartmentNodeDescriptionProvider_ from syson-diagram-statetransition-view to module syson-diagram-common-view.
+- https://github.com/eclipse-syson/syson/issues/393[#393] [general-view] Code refactoring:
+* Rename `ExhibitStatesCompartmentItemNodeDescriptionProvider` to `StatesCompartmentItemNodeDescriptionProvider`.
+* _StatesCompartmentNodeDescriptionProvider_ now handles both exhibit and non-exhibit states.
 
 === Dependency update
 
 === Bug fixes
 
 === Improvements
+
 - https://github.com/eclipse-syson/syson/issues/538[#538] [general-view] Add actions in PartUsage and PartDefinition
 - https://github.com/eclipse-syson/syson/issues/554[#554] [general-view] Add states in PartUsage and PartDefinition
+- https://github.com/eclipse-syson/syson/issues/393[#393] [general-view] Add exhibit states on General View diagram
 
 === New features
 

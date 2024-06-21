@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -70,6 +71,17 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
                 .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(
+                nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(
+                nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME)
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())
+                + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(
+                nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction()))
@@ -84,7 +96,10 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);
-
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+                .ifPresent(childrenNodes::add);
         return childrenNodes;
     }
 }

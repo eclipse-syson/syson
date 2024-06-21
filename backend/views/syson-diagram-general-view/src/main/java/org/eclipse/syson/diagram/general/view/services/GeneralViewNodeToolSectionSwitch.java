@@ -377,8 +377,8 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new StateTransitionCompartmentNodeToolProvider(true, true).create(null),
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(null),
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(null),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(null));
-        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(null),
+                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(null));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
@@ -391,8 +391,8 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new StateTransitionCompartmentNodeToolProvider(true, true).create(null),
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(null),
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(null),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(null));
-        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(null),
+                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(null));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new StateTransitionToggleExhibitStateToolProvider(true).create(null),
                 new StateTransitionToggleExhibitStateToolProvider(false).create(null));
