@@ -29,11 +29,12 @@ import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.nodes.ExhibitStatesCompartmentItemNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.nodes.ExhibitStatesCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergedReferencesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
@@ -134,11 +135,11 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
                 if (SysmlPackage.eINSTANCE.getStateUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedState().equals(eReference)) {
-                    diagramElementDescriptionProviders.add(new ExhibitStatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
-                    diagramElementDescriptionProviders.add(new ExhibitStatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    diagramElementDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
+                    diagramElementDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
                 } else if (SysmlPackage.eINSTANCE.getStateDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedState().equals(eReference)) {
-                    diagramElementDescriptionProviders.add(new ExhibitStatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
-                    diagramElementDescriptionProviders.add(new ExhibitStatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                    diagramElementDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
+                    diagramElementDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
                 } else {
                     diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
                     diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
@@ -149,11 +150,25 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
         diagramElementDescriptionProviders.stream().
                 map(IDiagramElementDescriptionProvider::create)
                 .forEach(cache::put);
+        
+        this.linkStatesCompartment(cache);
+        
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));
 
         diagramDescription.setPalette(this.createDiagramPalette(cache));
 
         return diagramDescription;
+    }
+
+    private void linkStatesCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription stateDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateDefinition())).get();
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(),
+                SysmlPackage.eINSTANCE.getDefinition_OwnedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                .ifPresent(stateDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+        NodeDescription stateUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).get();
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(),
+                SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                .ifPresent(stateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {

@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractFakeNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -65,6 +66,11 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         });
 
         // don't forget to add custom compartments
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())
+                + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState())
+                + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME).ifPresent(childrenNodes::add);
+
         cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState()))

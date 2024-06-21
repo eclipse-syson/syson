@@ -27,28 +27,40 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  *
  * @author adieumegard
  */
-public class ExhibitStatesCompartmentItemNodeDescriptionProvider extends CompartmentItemNodeDescriptionProvider {
+public class StatesCompartmentItemNodeDescriptionProvider extends CompartmentItemNodeDescriptionProvider {
+
+    private final boolean showsExhibitOnly;
 
     private final ToolDescriptionService toolDescriptionService;
 
-    public ExhibitStatesCompartmentItemNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(eClass, eReference, colorProvider, nameGenerator);
-        this.toolDescriptionService = new ToolDescriptionService(nameGenerator);
-    }
-
-    @Override
-    protected String getSemanticCandidateExpression() {
-        return AQLUtils.getSelfServiceCallExpression("getAllReachableExhibitedStates");
+    public StatesCompartmentItemNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator, boolean showsExhibitOnly) {
+        super(eClass, eReference, colorProvider, descriptionNameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
+        this.showsExhibitOnly = showsExhibitOnly;
     }
 
     @Override
     public NodeDescription create() {
         NodeDescription nd = super.create();
+        if (this.showsExhibitOnly) {
+            nd.setName(this.getDescriptionNameGenerator().getCompartmentItemName(this.getEClass(), this.getEReference()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME);
+        } else {
+            nd.setName(this.getDescriptionNameGenerator().getCompartmentItemName(this.getEClass(), this.getEReference()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME);
+        }
         var editSection = this.toolDescriptionService.buildEditSection(
                 new StateTransitionToggleExhibitStateToolProvider(true).create(null),
                 new StateTransitionToggleExhibitStateToolProvider(false).create(null));
         nd.getPalette().getToolSections().add(editSection);
         return nd;
+    }
+
+    @Override
+    protected String getSemanticCandidateExpression() {
+        if (this.showsExhibitOnly) {
+            return AQLUtils.getSelfServiceCallExpression("getAllExhibitedStates");
+        } else {
+            return AQLUtils.getSelfServiceCallExpression("getAllNonExhibitStates");
+        }
     }
 
 }

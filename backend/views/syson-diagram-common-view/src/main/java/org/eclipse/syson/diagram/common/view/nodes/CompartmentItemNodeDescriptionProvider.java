@@ -44,13 +44,13 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
 
     protected final EReference eReference;
 
-    private final IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public CompartmentItemNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public CompartmentItemNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
         this.eReference = Objects.requireNonNull(eReference);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
@@ -58,9 +58,9 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
         return this.diagramBuilderHelper.newNodeDescription()
                 .defaultHeightExpression(ViewConstants.DEFAULT_COMPARTMENT_NODE_ITEM_HEIGHT)
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
-                .domainType(SysMLMetamodelHelper.buildQualifiedName(this.eReference.getEType()))
+                .domainType(SysMLMetamodelHelper.buildQualifiedName(this.getEReference().getEType()))
                 .insideLabel(this.createInsideLabelDescription())
-                .name(this.nameGenerator.getCompartmentItemName(this.getEClass(), this.eReference))
+                .name(this.getDescriptionNameGenerator().getCompartmentItemName(this.getEClass(), this.getEReference()))
                 .semanticCandidatesExpression(this.getSemanticCandidateExpression())
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
@@ -70,7 +70,7 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
     }
 
     protected String getSemanticCandidateExpression() {
-        return AQLConstants.AQL_SELF + "." + this.eReference.getName();
+        return AQLConstants.AQL_SELF + "." + this.getEReference().getName();
     }
 
     protected InsideLabelDescription createInsideLabelDescription() {
@@ -95,6 +95,10 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
 
     protected EClass getEClass() {
         return this.eClass;
+    }
+
+    public EReference getEReference() {
+        return eReference;
     }
 
     private NodeStyleDescription createCompartmentItemNodeStyle() {
@@ -126,5 +130,9 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .labelEditTool(editTool.build())
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
+    }
+
+    public IDescriptionNameGenerator getDescriptionNameGenerator() {
+        return descriptionNameGenerator;
     }
 }

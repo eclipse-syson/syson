@@ -137,8 +137,8 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 3)
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), 4)
         ).map(TestNameGenerator::namedArguments);
     }
 

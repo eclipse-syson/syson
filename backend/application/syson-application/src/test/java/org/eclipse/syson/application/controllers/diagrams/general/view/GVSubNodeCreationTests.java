@@ -51,6 +51,7 @@ import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescription
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticCheckerFactory;
@@ -92,6 +93,10 @@ import reactor.test.StepVerifier.Step;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVSubNodeCreationTests extends AbstractIntegrationTests {
+
+    private static final String EXHIBIT_STATES_COMPARTMENT = "exhibit states";
+
+    private static final String STATES_COMPARTMENT = "states";
 
     private static final String ACTIONS_COMPARTMENT = "actions";
 
@@ -218,8 +223,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), ownedMember, 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), ownedMember, 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), ownedMember, 3))
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), ownedMember, 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), ownedMember, 4))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -434,6 +439,42 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
                 Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> stateUsageSiblingNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), "New Entry Action", 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), "New Do Action", 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction(), "New Exit Action", 4))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> stateUsageChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), "New Documentation"),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New State"),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Parallel State"),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit State"),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedState(), "New Exhibit Parallel State"))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> stateDefinitionSiblingNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getStateDefinition_EntryAction(), "New Entry Action", 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getStateDefinition_DoAction(), "New Do Action", 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getStateDefinition_ExitAction(), "New Exit Action", 4))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> stateDefinitionChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), "New Documentation"),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New State"),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Parallel State"),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit State"),
+                Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), EXHIBIT_STATES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedState(), "New Exhibit Parallel State"))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -1198,6 +1239,108 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
+    @MethodSource("stateUsageSiblingNodeParameters")
+    public void createStateUsageSiblingNodes(EClass childEClass, EReference containmentReference, String creationToolName, int compartmentCount) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getStateUsage();
+        String parentLabel = "state";
+
+        this.createNode(parentEClass, parentLabel, creationToolName);
+        // the action is created inside a list compartment and outside as a sibling node
+        this.checkDiagram(this.getSiblingNodeGraphicalChecker(childEClass, compartmentCount, 2));
+        this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("stateUsageChildNodeParameters")
+    public void createStateUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolName) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getStateUsage();
+        String parentLabel = "state";
+        this.createNode(parentEClass, parentLabel, creationToolName);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            int expectedNodeCount = 1;
+            if (creationToolName.contains("Exhibit")) {
+                expectedNodeCount = 2;
+            }
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(expectedNodeCount)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            if (STATES_COMPARTMENT.equals(compartmentName)) {
+                listStatesNodeDescription += StatesCompartmentNodeDescriptionProvider.STATES_NAME;
+            } else if (EXHIBIT_STATES_COMPARTMENT.equals(compartmentName)) {
+                listStatesNodeDescription += StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME;
+            }
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(listStatesNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.checkDiagram(diagramChecker);
+        // Actions are not semantically owned by parent
+        if (!SysmlPackage.eINSTANCE.getActionUsage().equals(childEClass)) {
+            this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        }
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("stateDefinitionSiblingNodeParameters")
+    public void createStateDefinitionSiblingNodes(EClass childEClass, EReference containmentReference, String creationToolName, int compartmentCount) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getStateDefinition();
+        String parentLabel = "StateDefinition";
+
+        this.createNode(parentEClass, parentLabel, creationToolName);
+        // the action is created inside a list compartment and outside as a sibling node
+        this.checkDiagram(this.getSiblingNodeGraphicalChecker(childEClass, compartmentCount, 2));
+        this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("stateDefinitionChildNodeParameters")
+    public void createStateDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolName) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getStateDefinition();
+        String parentLabel = "StateDefinition";
+        this.createNode(parentEClass, parentLabel, creationToolName);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            int expectedNodeCount = 1;
+            if (creationToolName.contains("Exhibit")) {
+                expectedNodeCount = 2;
+            }
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(expectedNodeCount)
+                    .hasNewEdgeCount(0)
+                    .check(initialDiagram, newDiagram);
+            String listStatesNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            if (STATES_COMPARTMENT.equals(compartmentName)) {
+                listStatesNodeDescription += StatesCompartmentNodeDescriptionProvider.STATES_NAME;
+            } else if (EXHIBIT_STATES_COMPARTMENT.equals(compartmentName)) {
+                listStatesNodeDescription += StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME;
+            }
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName(compartmentName)
+                    .hasNodeDescriptionName(listStatesNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.checkDiagram(diagramChecker);
+        // Actions are not semantically owned by parent
+        if (!SysmlPackage.eINSTANCE.getActionUsage().equals(childEClass)) {
+            this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+        }
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
     @MethodSource("useCaseUsageSiblingNodeParameters")
     public void createUseCaseUsageSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
@@ -1364,8 +1507,12 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     }
 
     private IDiagramChecker getSiblingNodeGraphicalChecker(EClass childEClass, int compartmentCount) {
+        return this.getSiblingNodeGraphicalChecker(childEClass, compartmentCount, 1);
+    }
+
+    private IDiagramChecker getSiblingNodeGraphicalChecker(EClass childEClass, int compartmentCount, int newNodesCount) {
         return (initialDiagram, newDiagram) -> {
-            int createdNodesExpectedCount = 1 + compartmentCount;
+            int createdNodesExpectedCount = newNodesCount + compartmentCount;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
                     .hasNewEdgeCount(1)
