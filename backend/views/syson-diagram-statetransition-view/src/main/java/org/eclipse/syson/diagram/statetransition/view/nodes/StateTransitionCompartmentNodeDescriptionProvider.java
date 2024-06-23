@@ -103,6 +103,7 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
     @Override
     protected InsideLabelStyle createInsideLabelStyle() {
         return this.diagramBuilderHelper.newInsideLabelStyle()
+                .borderSize(0)
                 .displayHeaderSeparator(false)
                 .fontSize(12)
                 .italic(true)

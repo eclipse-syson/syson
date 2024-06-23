@@ -311,7 +311,8 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
      */
     @Override
     public EList<Usage> getConnectionEnd() {
-        List<Usage> ends = this.getAssociationEnd().stream()
+        List<Usage> ends = this.getFeature().stream()
+                .filter(Feature::isIsEnd)
                 .filter(Usage.class::isInstance)
                 .map(Usage.class::cast)
                 .toList();

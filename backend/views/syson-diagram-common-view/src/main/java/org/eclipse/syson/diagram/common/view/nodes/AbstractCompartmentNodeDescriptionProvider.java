@@ -171,6 +171,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     protected InsideLabelStyle createInsideLabelStyle() {
         return this.diagramBuilderHelper.newInsideLabelStyle()
+                .borderSize(0)
                 .displayHeaderSeparator(false)
                 .fontSize(12)
                 .italic(true)

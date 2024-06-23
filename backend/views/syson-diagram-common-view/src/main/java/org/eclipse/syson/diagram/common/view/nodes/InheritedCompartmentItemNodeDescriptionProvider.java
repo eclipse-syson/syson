@@ -76,6 +76,7 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
 
     protected InsideLabelStyle createInsideLabelStyle() {
         return this.diagramBuilderHelper.newInsideLabelStyle()
+                .borderSize(0)
                 .displayHeaderSeparator(false)
                 .italic(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))

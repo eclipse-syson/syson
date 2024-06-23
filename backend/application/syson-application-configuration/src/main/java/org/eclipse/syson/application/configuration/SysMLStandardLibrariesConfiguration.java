@@ -64,8 +64,8 @@ public class SysMLStandardLibrariesConfiguration {
         this.loadResourcesFrom(this.librariesResourceSet, "sysml.libraries/", SYSML_LIBRARY_SCHEME);
         EMFUtils.resolveAllNonDerived(this.librariesResourceSet);
         Instant finish = Instant.now();
-        long timeElapsed = Duration.between(start, finish).toSeconds();
-        this.logger.info("KerML & SysML standard libraries initialization completed in {} s", timeElapsed);
+        long timeElapsed = Duration.between(start, finish).toMillis();
+        this.logger.info("KerML & SysML standard libraries initialization completed in {} ms", timeElapsed);
     }
 
     public ResourceSet getLibrariesResourceSet() {

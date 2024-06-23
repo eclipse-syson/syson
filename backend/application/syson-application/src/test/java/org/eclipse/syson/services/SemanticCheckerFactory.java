@@ -15,11 +15,12 @@ package org.eclipse.syson.services;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
-import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,14 +38,13 @@ public class SemanticCheckerFactory {
     @Autowired
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
-    public Runnable createRunnableChecker(String projectId, Function<IEditingContext, Object> function) {
+    public Runnable createRunnableChecker(String projectId, BiFunction<IEditingContext, IInput, IPayload> function) {
         return () -> {
             var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), projectId, function);
 
-            // This should be a Mono<IPayload> once https://github.com/eclipse-sirius/sirius-web/pull/3607 is merged.
-            Mono<?> result = this.executeEditingContextFunctionRunner.execute(input);
+            Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(input);
             var payload = result.block();
-            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
+            assertThat(payload).isInstanceOf(IPayload.class);
         };
     }
 

@@ -12,4 +12,5 @@
  *******************************************************************************/
 export { SysMLPackageNode } from './nodes/package/SysMLPackageNode';
 export { SysMLPackageNodeConverter } from './nodes/package/SysMLPackageNodeConverter';
+export { sysMLPackageNodeStyleDocumentTransform } from './nodes/package/SysMLPackageNodeDocumentTransform';
 export { SysMLPackageNodeLayoutHandler } from './nodes/package/SysMLPackageNodeLayoutHandler';

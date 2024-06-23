@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -1207,9 +1208,9 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
 
     private void checkEditingContext(ISemanticChecker semanticChecker) {
         Runnable runnableChecker = this.semanticCheckerFactory.createRunnableChecker(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT,
-                editingContext -> {
+                (editingContext, executeEditingContextFunctionInput) -> {
                     semanticChecker.check(editingContext);
-                    return true;
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 });
 
         this.verifier.then(runnableChecker);
