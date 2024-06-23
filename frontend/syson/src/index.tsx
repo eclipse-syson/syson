@@ -12,11 +12,13 @@
  *******************************************************************************/
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import {
+  ApolloClientOptionsConfigurer,
   DiagramRepresentationConfiguration,
   NavigationBarIconProps,
   NavigationBarMenuProps,
   NodeTypeRegistry,
   SiriusWebApplication,
+  apolloClientOptionsConfigurersExtensionPoint,
   navigationBarIconExtensionPoint,
   navigationBarMenuExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
@@ -32,6 +34,7 @@ import {
   SysMLPackageNode,
   SysMLPackageNodeConverter,
   SysMLPackageNodeLayoutHandler,
+  sysMLPackageNodeStyleDocumentTransform,
 } from '@eclipse-syson/syson-components';
 import './fonts.css';
 import './reset.css';
@@ -41,18 +44,6 @@ if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
   loadErrorMessages();
 }
-
-const nodeTypeRegistry: NodeTypeRegistry = {
-  graphQLNodeStyleFragments: [
-    {
-      type: 'SysMLPackageNodeStyle',
-      fields: `borderColor borderSize borderStyle background`,
-    },
-  ],
-  nodeLayoutHandlers: [new SysMLPackageNodeLayoutHandler()],
-  nodeConverters: [new SysMLPackageNodeConverter()],
-  nodeTypeContributions: [<NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />],
-};
 
 const SysONNavigationBarIcon = ({}: NavigationBarIconProps) => {
   return <SysONIcon />;
@@ -70,6 +61,29 @@ extensionRegistry.addComponent(navigationBarMenuExtensionPoint, {
   identifier: 'syson_navigationbar#menu',
   Component: SysONNavigationBarMenu,
 });
+const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
+  const { documentTransform } = currentOptions;
+
+  const newDocumentTransform = documentTransform
+    ? documentTransform.concat(sysMLPackageNodeStyleDocumentTransform)
+    : sysMLPackageNodeStyleDocumentTransform;
+  return {
+    ...currentOptions,
+    documentTransform: newDocumentTransform,
+  };
+};
+
+extensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
+  identifier: `siriusWeb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
+  data: [apolloClientOptionsConfigurer],
+});
+
+const nodeTypeRegistry: NodeTypeRegistry = {
+  nodeLayoutHandlers: [new SysMLPackageNodeLayoutHandler()],
+  nodeConverters: [new SysMLPackageNodeConverter()],
+  nodeTypeContributions: [<NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />],
+};
+
 ReactDOM.render(
   <SiriusWebApplication
     httpOrigin={httpOrigin}

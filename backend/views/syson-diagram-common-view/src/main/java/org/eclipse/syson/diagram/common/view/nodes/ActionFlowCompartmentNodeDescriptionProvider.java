@@ -147,6 +147,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     protected InsideLabelStyle createInsideLabelStyle() {
         return this.diagramBuilderHelper.newInsideLabelStyle()
+                .borderSize(0)
                 .displayHeaderSeparator(false)
                 .fontSize(12)
                 .italic(true)

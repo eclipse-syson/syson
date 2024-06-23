@@ -110,6 +110,7 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
 
     protected InsideLabelStyle createInsideLabelStyle() {
         return this.diagramBuilderHelper.newInsideLabelStyle()
+                .borderSize(0)
                 .displayHeaderSeparator(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(true)

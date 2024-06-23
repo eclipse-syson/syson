@@ -89,6 +89,7 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
 
     protected InsideLabelStyle createInsideLabelStyle() {
         return this.diagramBuilderHelper.newInsideLabelStyle()
+                .borderSize(0)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor("transparent"))
                 .showIcon(false)

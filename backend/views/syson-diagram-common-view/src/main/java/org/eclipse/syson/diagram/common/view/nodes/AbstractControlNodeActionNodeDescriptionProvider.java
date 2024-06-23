@@ -117,6 +117,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
 
     private OutsideLabelStyle createOutsideLabelStyle() {
         return this.diagramBuilderHelper.newOutsideLabelStyle()
+                .borderSize(0)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(false)
                 .build();

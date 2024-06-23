@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -194,14 +195,14 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         this.verifier.consumeNextWith(updatedDiagramConsumer);
 
         Runnable semanticChecker = this.semanticCheckerFactory.createRunnableChecker(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
-                editingContext -> {
+                (editingContext, executeEditingContextFunctionInput) -> {
                     Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM_OBJECT).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);
                     Element semanticRootElement = (Element) semanticRootObject;
                     assertThat(semanticRootElement.getOwnedElement()).anySatisfy(element -> {
                         assertThat(eClass.isInstance(element)).isTrue();
                     });
-                    return true;
+                    return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
                 });
 
         this.verifier.then(semanticChecker);

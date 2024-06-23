@@ -91,6 +91,7 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
     private OutsideLabelStyle createOutsideLabelStyle() {
         return this.diagramBuilderHelper.newOutsideLabelStyle()
                 .bold(false)
+                .borderSize(0)
                 .fontSize(12)
                 .italic(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))

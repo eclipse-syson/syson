@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
 
+import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
@@ -43,14 +44,13 @@ public class GivenDiagramDescription implements IGivenDiagramDescription {
 
     @Override
     public DiagramDescription getDiagramDescription(String editingContextId, String diagramDescriptionId) {
-        var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, e -> {
-            var description = (DiagramDescription) this.viewRepresentationDescriptionSearchService.findById(e, diagramDescriptionId)
+        var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, (editingContext, executeEditingContextFunctionInput) -> {
+            var description = (DiagramDescription) this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramDescriptionId)
                     .orElse(null);
-            return description;
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), description);
         });
 
-        // This should be a Mono<IPayload> once https://github.com/eclipse-sirius/sirius-web/pull/3607 is merged.
-        Mono<?> result = this.executeEditingContextFunctionRunner.execute(input);
+        Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(input);
         var payload = result.block();
         assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
         ExecuteEditingContextFunctionSuccessPayload successPayload = (ExecuteEditingContextFunctionSuccessPayload) payload;

@@ -105,11 +105,13 @@ public class CachedObjectFinder extends ObjectFinder {
 
         if (result == null) {
             result = super.findObject(mapping, jsonNode, type);
-            this.writeLock.lock();
-            try {
-                this.cache.put(hash, result);
-            } finally {
-                this.writeLock.unlock();
+            if (result != null) {
+                this.writeLock.lock();
+                try {
+                    this.cache.put(hash, result);
+                } finally {
+                    this.writeLock.unlock();
+                }
             }
         }
 

@@ -181,7 +181,7 @@ export const SysMLPackageNode = memo(({ data, id, selected, dragging }: NodeProp
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
           }}>
-          {data.insideLabel ? <Label diagramElementId={id} label={label} faded={data.faded} transform="" /> : null}
+          {data.insideLabel ? <Label diagramElementId={id} label={label} faded={data.faded} /> : null}
         </div>
         <div
           style={{
