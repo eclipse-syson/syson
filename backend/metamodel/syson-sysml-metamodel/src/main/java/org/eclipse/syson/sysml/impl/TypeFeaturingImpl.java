@@ -276,7 +276,7 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.TYPE_FEATURING__SOURCE) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -290,6 +290,10 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Feature featureOfType = this.getFeatureOfType();
@@ -326,7 +330,7 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.TYPE_FEATURING__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -340,6 +344,10 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Type featuringType = this.getFeaturingType();

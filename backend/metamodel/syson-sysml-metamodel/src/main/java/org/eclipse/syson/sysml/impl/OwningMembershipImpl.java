@@ -12,17 +12,12 @@
  */
 package org.eclipse.syson.sysml.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.TextualRepresentation;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Owning Membership</b></em>'. <!-- end-user-doc
@@ -219,17 +214,6 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
                 return this.basicGetOwnedMemberElement() != null;
         }
         return super.eIsSet(featureID);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<TextualRepresentation> getTextualRepresentation() {
-        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
     }
 
     /**

@@ -454,7 +454,7 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.MEMBERSHIP__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -468,6 +468,10 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Element memberElement = this.getMemberElement();
@@ -484,10 +488,14 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.MEMBERSHIP__SOURCE) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Namespace membershipOwningNamespace = this.getMembershipOwningNamespace();
