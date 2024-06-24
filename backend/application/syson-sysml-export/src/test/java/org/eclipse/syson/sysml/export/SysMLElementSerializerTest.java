@@ -81,6 +81,7 @@ import org.eclipse.syson.sysml.export.models.AttributeUsageWithBracketOperatorEx
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithFeatureChainExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithInvocationExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.ConditionalBinaryOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.sample.CameraModel;
 import org.eclipse.syson.sysml.export.models.sample.PictureTakingModel;
 import org.eclipse.syson.sysml.export.utils.IsImplicitTest;
@@ -762,6 +763,12 @@ public class SysMLElementSerializerTest {
     public void attributeUsageWithInvocationExpression() {
         AttributeUsageWithInvocationExpressionTestModel model = new AttributeUsageWithInvocationExpressionTestModel();
         this.assertTextualFormEquals("attribute attribute1 = fuel(front);", model.getAttributeUsage());
+    }
+
+    @Test
+    public void conditionalBinaryOperatorExpression() {
+        ConditionalBinaryOperatorExpressionTestModel model = new ConditionalBinaryOperatorExpressionTestModel();
+        this.assertTextualFormEquals("fuel == diesel and motor == cyl", model.getOperatorExpression());
     }
 
     @DisplayName("AssertConstraintUsage containing BinaryOperatorExpression and NullExpression")
