@@ -209,7 +209,7 @@ public class FeatureChainingImpl extends RelationshipImpl implements FeatureChai
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.FEATURE_CHAINING__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -223,6 +223,10 @@ public class FeatureChainingImpl extends RelationshipImpl implements FeatureChai
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Feature chainingFeature = this.getChainingFeature();
@@ -239,10 +243,14 @@ public class FeatureChainingImpl extends RelationshipImpl implements FeatureChai
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.FEATURE_CHAINING__SOURCE) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Feature featureChained = this.getFeatureChained();

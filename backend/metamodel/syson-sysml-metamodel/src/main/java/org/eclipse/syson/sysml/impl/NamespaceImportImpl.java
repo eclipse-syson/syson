@@ -12,10 +12,8 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
@@ -23,13 +21,11 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectEList;
-import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.TextualRepresentation;
 import org.eclipse.syson.sysml.helper.MembershipComputer;
 
 /**
@@ -186,24 +182,13 @@ public class NamespaceImportImpl extends ImportImpl implements NamespaceImport {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<TextualRepresentation> getTextualRepresentation() {
-        List<TextualRepresentation> textualRepresentation = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getElement_TextualRepresentation(), textualRepresentation.size(), textualRepresentation.toArray());
-    }
-
-    /**
      * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.NAMESPACE_IMPORT__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -217,6 +202,10 @@ public class NamespaceImportImpl extends ImportImpl implements NamespaceImport {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Namespace importedNamespace = this.getImportedNamespace();

@@ -390,10 +390,14 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.IMPORT__SOURCE) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Namespace importOwningNamespace = this.getImportOwningNamespace();

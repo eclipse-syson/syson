@@ -336,7 +336,7 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.ANNOTATION__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -348,6 +348,10 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Element annotatedElement = this.getAnnotatedElement();
@@ -364,7 +368,7 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.ANNOTATION__SOURCE) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -378,6 +382,10 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         AnnotatingElement annotatingElement = this.getAnnotatingElement();

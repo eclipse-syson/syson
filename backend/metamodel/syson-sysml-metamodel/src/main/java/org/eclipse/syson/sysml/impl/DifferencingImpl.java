@@ -208,7 +208,7 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.DIFFERENCING__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -222,6 +222,10 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Type differencingType = this.getDifferencingType();
@@ -238,10 +242,14 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.DIFFERENCING__SOURCE) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Type typeDifferenced = this.getTypeDifferenced();

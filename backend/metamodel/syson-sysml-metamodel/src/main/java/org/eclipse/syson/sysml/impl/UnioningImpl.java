@@ -208,10 +208,14 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.UNIONING__SOURCE) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Type typeUnioned = this.getTypeUnioned();
@@ -228,7 +232,7 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.UNIONING__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -242,6 +246,10 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Type unioningType = this.getUnioningType();

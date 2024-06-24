@@ -188,7 +188,7 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.MEMBERSHIP_IMPORT__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -202,6 +202,10 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Membership importedMembership = this.getImportedMembership();

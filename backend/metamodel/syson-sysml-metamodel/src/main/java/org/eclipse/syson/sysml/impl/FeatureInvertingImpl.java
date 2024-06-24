@@ -275,7 +275,7 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.FEATURE_INVERTING__SOURCE) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -289,6 +289,10 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Feature featureInverted = this.getFeatureInverted();
@@ -305,7 +309,7 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.FEATURE_INVERTING__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -319,6 +323,10 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Feature invertingFeature = this.getInvertingFeature();

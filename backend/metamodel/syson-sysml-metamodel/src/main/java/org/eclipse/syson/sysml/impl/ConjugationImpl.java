@@ -274,7 +274,7 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
      */
     @Override
     public EList<Element> getSource() {
-        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__SOURCE) {
+        EList<Element> sources = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.CONJUGATION__SOURCE) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -288,6 +288,10 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Type conjugatedType = this.getConjugatedType();
@@ -304,7 +308,7 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
      */
     @Override
     public EList<Element> getTarget() {
-        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.RELATIONSHIP__TARGET) {
+        EList<Element> targets = new EObjectEList.Unsettable<>(Element.class, this, SysmlPackage.CONJUGATION__TARGET) {
             @Override
             public boolean addAll(Collection<? extends Element> collection) {
                 if (collection != null) {
@@ -318,6 +322,10 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
                     }
                 }
                 return false;
+            }
+
+            @Override
+            protected void dispatchNotification(Notification notification) {
             }
         };
         Type originalType = this.getOriginalType();
