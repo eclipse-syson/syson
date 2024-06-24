@@ -19,6 +19,7 @@ import org.eclipse.syson.sysml.EventOccurrenceUsage;
 import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.UseCaseUsage;
 
@@ -70,13 +71,10 @@ public class IncludeUseCaseUsageImpl extends UseCaseUsageImpl implements Include
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public OccurrenceUsage basicGetEventOccurrence() {
-        // TODO: implement this method to return the 'Event Occurrence' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.getPerformedAction();
     }
 
     /**
@@ -116,7 +114,11 @@ public class IncludeUseCaseUsageImpl extends UseCaseUsageImpl implements Include
      * @generated NOT
      */
     public UseCaseUsage basicGetUseCaseIncluded() {
-        return this.getUseCaseIncluded();
+        ReferenceSubsetting referenceSubSetting = this.getOwnedReferenceSubsetting();
+        if (referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof UseCaseUsage useCaseUsage) {
+            return useCaseUsage;
+        }
+        return null;
     }
 
     /**
