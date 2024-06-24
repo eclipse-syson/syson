@@ -126,8 +126,10 @@ public class ObjectFinder {
 
     public void putEObjectKey(final EObject eObject, String key) {
         this.logger.debug("putEObject " + key + " " + eObject);
-        List<EObject> eObjects = this.objectList.getOrDefault(key, new LinkedList<>());
-        eObjects.add(eObject);
+        List<EObject> eObjects = this.objectList.getOrDefault(key, Collections.synchronizedList(new LinkedList<>()));
+        if (eObject != null) {
+            eObjects.add(eObject);
+        }
         this.objectList.put(key, eObjects);
     }
 
@@ -220,11 +222,6 @@ public class ObjectFinder {
         return result;
     }
 
-    /**
-     * @param searchText
-     * @param type
-     * @return
-     */
     private EObject findDeclaredShortName(String searchText, EClass type) {
         EObject result = null;
         for (EObject directResult : this.objectListShortName.getOrDefault(searchText, List.of())) {
