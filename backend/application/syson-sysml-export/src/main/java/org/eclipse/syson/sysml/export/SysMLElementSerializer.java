@@ -541,10 +541,55 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             case ",":
                 this.appendSequenceExpression(builder, op);
                 break;
+            case "??":
+            case "and":
+            case "or":
+            case "implies":
+                this.appendConditionalBinaryOperatorExpression(builder, op);
+                break;
             default:
                 break;
         }
         return builder.toString();
+    }
+
+    private void appendConditionalBinaryOperatorExpression(Appender builder, OperatorExpression op) {
+        op.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .findFirst()
+                .ifPresent(param -> this.appendArgumentMember(builder, param));
+
+        builder.appendSpaceIfNeeded().append(op.getOperator());
+
+        op.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .skip(1)
+                .findFirst()
+                .ifPresent(param -> this.appendArgumentExpressionMember(builder, param));
+    }
+
+    private void appendArgumentExpressionMember(Appender builder, ParameterMembership param) {
+        Feature ownedMemberParameter = param.getOwnedMemberParameter();
+        if (ownedMemberParameter != null) {
+            ownedMemberParameter.getOwnedRelationship()
+                    .stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .forEach(val -> this.appendOwnedExpressionReference(builder, val.getValue()));
+        }
+    }
+
+    private void appendOwnedExpressionReference(Appender builder, Expression value) {
+        if (value instanceof FeatureReferenceExpression featureReference) {
+            featureReference.getOwnedRelationship().stream()
+                    .filter(FeatureMembership.class::isInstance)
+                    .map(FeatureMembership.class::cast)
+                    .filter(feature -> feature.getOwnedMemberFeature() instanceof Expression)
+                    .findFirst()
+                    .ifPresent(feature -> this.appendOwnedExpression(builder, (Expression) feature.getOwnedMemberFeature()));
+        }
     }
 
     @Override
