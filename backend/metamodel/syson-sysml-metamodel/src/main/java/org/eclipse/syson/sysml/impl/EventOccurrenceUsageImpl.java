@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.EventOccurrenceUsage;
 import org.eclipse.syson.sysml.OccurrenceUsage;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -64,13 +65,24 @@ public class EventOccurrenceUsageImpl extends OccurrenceUsageImpl implements Eve
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public OccurrenceUsage basicGetEventOccurrence() {
-        // TODO: implement this method to return the 'Event Occurrence' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        ReferenceSubsetting referenceSubSetting = this.getOwnedReferenceSubsetting();
+        if (referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof OccurrenceUsage occurenceUsage) {
+            return occurenceUsage;
+        }
+        return this;
+    }
+
+    /**
+     * <!-- begin-user-doc --> Always true for an EventOccurrenceUsage. <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public boolean isIsReference() {
+        return true;
     }
 
     /**
@@ -82,8 +94,9 @@ public class EventOccurrenceUsageImpl extends OccurrenceUsageImpl implements Eve
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.EVENT_OCCURRENCE_USAGE__EVENT_OCCURRENCE:
-                if (resolve)
+                if (resolve) {
                     return this.getEventOccurrence();
+                }
                 return this.basicGetEventOccurrence();
         }
         return super.eGet(featureID, resolve, coreType);
