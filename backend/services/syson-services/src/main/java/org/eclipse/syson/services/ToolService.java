@@ -333,6 +333,9 @@ public class ToolService {
         String nodeId = new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId().toString(), NodeContainmentKind.CHILD_NODE, targetObjectId);
 
         var labelStyle = LabelStyle.newLabelStyle()
+                .background("")
+                .borderColor("")
+                .borderStyle(LineStyle.Solid)
                 .color("")
                 .fontSize(14)
                 .iconURL(List.of())

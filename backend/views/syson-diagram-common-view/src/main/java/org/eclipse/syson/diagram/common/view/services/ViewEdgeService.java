@@ -134,7 +134,7 @@ public class ViewEdgeService {
         Usage result = null;
         if (feature instanceof Usage usage) {
             result = usage;
-        } else {
+        } else if (feature != null) {
             // need to be resolved, retrieve the last feature chaining 's target
             Optional<FeatureChaining> lastChaining = feature.getOwnedRelationship().stream()
                     .filter(FeatureChaining.class::isInstance)
