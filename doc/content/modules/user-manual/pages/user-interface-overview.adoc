@@ -1,0 +1,6 @@
+= User interface overview
+
+This installation guide provides step-by-step instructions on how to install, configure, and manage {product} on your system.
+Whether new to {product} or experienced administrator, this guide walks you through the process of setting up {product} for optimal performance and compatibility.
+
+include::user-manual:partial$nav-ui.adoc[]

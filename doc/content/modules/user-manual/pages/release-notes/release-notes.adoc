@@ -1,0 +1,8 @@
+= Release notes
+
+:sectnums!:
+
+include::user-manual:release-notes/2024.5.0.adoc[leveloffset=+1]
+include::user-manual:release-notes/2024.3.0.adoc[leveloffset=+1]
+include::user-manual:release-notes/2024.1.0.adoc[leveloffset=+1]
+include::user-manual:release-notes/2023.12.0.adoc[leveloffset=+1]

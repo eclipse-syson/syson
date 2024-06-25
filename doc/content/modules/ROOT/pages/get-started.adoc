@@ -1,0 +1,31 @@
+= Getting started with {product}
+
+Discover essential entry points for installation procedures and a quick tour designed to familiarize you with the {product} core functionalities, ensuring a smooth and efficient introduction to its capabilities.
+
+[cols="3*^", %noheader, frame=none, grid=none]
+|===
+a|image::person_play.svg[xref=installation-guide:requirements.adoc]
+
+*Read the installation's prerequisites ?*
+
+Installation requirements to run {product}
+
+xref:installation-guide:requirements.adoc[Learn more]
+
+a|image::explore.svg[xref=installation-guide:index.adoc]
+
+*How to install {product} ?*
+
+Covers installation of {product}
+
+xref:installation-guide:index.adoc[Install {product}]
+
+a|image::sprint.svg[xref=user-manual:hands-on/tutorials/batmobile.adoc]
+
+*Follow a quick start guide for new users ?*
+
+Create your first model in 5 minutes.
+
+xref:user-manual:hands-on/tutorials/batmobile.adoc[Ready to start]
+
+|===

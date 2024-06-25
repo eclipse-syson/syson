@@ -1,0 +1,52 @@
+* xref:user-manual:index.adoc[]
++
+--
+include::user-manual:partial$nav-intro.adoc[]
+--
++
+
+* xref:installation-guide:index.adoc[]
++
+--
+include::installation-guide:partial$nav.adoc[]
+--
++
+
+* xref:user-manual:user-interface-overview.adoc[]
++
+--
+include::user-manual:partial$nav-ui.adoc[]
+--
++
+
+* xref:user-manual:features/features.adoc[]
++
+--
+include::user-manual:partial$nav-features.adoc[]
+--
++
+
+* xref:user-manual:integration.adoc[]
++
+--
+include::user-manual:partial$nav-integration.adoc[]
+--
++
+
+* xref:user-manual:help.adoc[]
++
+--
+include::user-manual:partial$nav-help.adoc[]
+--
++
+
+* xref:user-manual:updates.adoc[]
++
+--
+include::user-manual:partial$nav-updates.adoc[]
+--
++
+
+* xref:user-manual:faq/faq.adoc[]
+
+* xref:product-legal:index.adoc[]

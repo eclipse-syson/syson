@@ -1,0 +1,82 @@
+= 2024.3.0
+
+== Key highlights
+
+- *Improved User Interactivity*: New features such as direct editing allow users to change element details seamlessly, without data loss.
+This enhances the overall user experience by making it more intuitive and reducing the time required to make changes.
+- *Expanded Library and Standard Support*: All {kerml} and {sysmlv2} standard libraries are now included by default.
+This expands the tool's capabilities and ensures compatibility with industry standards, making it easier to integrate and reference standard elements in projects.
+- *Advanced Filtering*: New filters have been added to the Explorer view, allowing users to hide specific elements and libraries, which simplifies the interface and focuses on relevant data.
+- *Import Capabilities*: Additionally, {sysmlv2} textual files can now be imported directly, enhancing data integration and compatibility with other tools.
+- *Enhanced Diagram Development*: We've restructured and streamlined our diagrams implementation, including the introduction of specific modules and tools for better cross-diagram functionality.
+This ensures that all graphical representations are more cohesive and easier to maintain.
+
+== Breaking changes
+
+- Node Descriptions Providers in General View has been modified with mainly rename of these providers to match with all `Definitions` and `Usages` Node Descriptions.
+- After switch to https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.3.0[Sirius Web v2024.3.0], `GeneralViewRegistryConfigurer` has been renamed to `GeneralViewDescriptionProvider`.
+`SysMLv2ObjectService` has been renamed into `SysMLv2LabelService` as it now implements `ILabelServiceDelegate` instead of `IObjectServiceDelegate`.
+- Refactor diagrams code with creation of the diagram-common-view module to gather all cross diagram tools and there is now one name generator per diagram owning the diagram prefix used to prefix all descriptions for this diagram.
+
+== Dependencies update
+
+- `commons-io 2.11.0` dependency has been explicitly added in `syson-application-configuration`.
+- Switch to https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.3.0[Sirius Web v2024.3.0]
+
+== Improvements
+
+- By activating direct Edit, User can now change the name/type/value/range of an element without any lost.
+The direct edit of labels in diagrams now handles partial edition.
+
+image::release-notes-direct-edit.png[Direct edit]
+
+- When user wants to create new elements under a selected element, only provides candidates that will make sense are proposed among new objects candidates in Explorer view menu.
+The creation of elements with their containing `Membership` is now done in one click.
+
+image::release-notes-new-object.png[Create new Object]
+
+- A recursive version of the `Add existing elements` tool is now available to display all the cluster of objects contained in a selected node.
+
+image::release-notes-add-existing-elements.png[Add existing elements (recursive)]
+
+- `Package` node headers' width has been improved to better handle longer labels.
+
+image::release-notes-package-header.png[Package header]
+
+- It's now impossible to have Package children overlapping the `Package` node body's west border.
+- All {kerml} and {sysml} standard libraries have been added in project definition.
+These libraries aren't visible in the Explorer.
+Users can reference these libraries elements from the Details view or through the direct edit of elements in diagrams.
+- Tools names have been renamed by adding spaces between type words and removing "Usage" from tool names.
+
+image::release-notes-tools-name.png[Tools name]
+
+- User can now create elements inside list compartments via the containing node's palette and the new element is created inside the correct compartment.
+
+image::release-notes-compartment-creation.png[Creation in compartment]
+
+- General View diagram palette has been reorganized.
+New tool sections have been added to group semantically node tools by creation concept.
+
+image::release-notes-gv-tool-bar.png[Tool sections]
+
+- In the Details view, standard libraries are now displayed in Reference Widget's model browser dialog.
+
+image::release-notes-libraries-in-ref-widget.png[Standard libraries in Reference Widget]
+
+- `getAllReachable()` util service used to retrieve the elements of a given type has been improved to reduce its time execution.
+- FeatureTyping Edge creation tool has been added to set the type of a Usage.
+
+image::release-notes-feature-typing-tool.png[Feature typing tool]
+
+- Add kind property from RequirementConstraintMembership on Constraint core properties.
+
+== New features
+
+- A new filter `Hide Memberships` has been added in Explorer view toolbar to hide membership elements in the Explorer view.
+- A new filter `Hide KerML Standard Libraries` has been added in Explorer view toolbar to hide KerML/SysML libraries in the Explorer view.
+
+image::release-notes-filters.png[Explorer filters]
+- `{afv}` diagrams are now available on Package elements.
+- `Requirement view` diagrams are now available on Package elements.
+- It's now possible to import SysMLv2 textual files into {product}, through the existing document upload modal.

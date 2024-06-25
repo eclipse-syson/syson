@@ -1,0 +1,18 @@
+= {product} best practices
+
+Explore in-depth or quickly grasp best-practices and tips.
+
+== Best practices
+
+A compilation of in-depth guides to help you make the most of {product}.
+
+{product} invites contributions of best practices from users on systems engineering topics, as well as from studio makers and developers on {product} extensions.
+
+Please xref:ROOT:help.adoc[contact us] to share your best practices.
+
+
+== Tips and tricks
+
+We encourage everyone to participate and contribute its tips and tricks to this page.
+
+Please xref:ROOT:help.adoc[contact us] to share your tips and tricks.

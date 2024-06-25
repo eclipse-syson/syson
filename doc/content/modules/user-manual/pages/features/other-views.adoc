@@ -1,0 +1,16 @@
+= Other views
+
+Following views are planned to be available in {product} as soon as possible:
+
+* _Sequence View_,
+* _Geometry View_,
+* _Grid View_,
+* _Browser View_.
+
+To understand the purpose of each views, see the xref:user-manual:features/sysmlv2-overview.adoc[{sysmlv2} in practice] section in the user manual.
+
+Wait until the next release to enjoy these views.
+
+_Case view_ isn't available in {product} since its concepts and features are available inside  _General View_.
+
+Feel free to xref:ROOT:help.adoc[contact us] for more details.

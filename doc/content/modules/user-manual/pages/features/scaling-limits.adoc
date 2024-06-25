@@ -1,0 +1,79 @@
+= Scaling limits
+
+{product} is designed to handle a wide range of modeling tasks and accommodate various scales of usage.
+However, understanding the scaling limits of the system is essential for planning and optimizing your usage to ensure performance and efficiency.
+Below, we outline the primary scaling factors and limitations related to model size, semantic elements, representations, project management, and user concurrency.
+
+== Model size
+
+    * Maximum Model Size:
+    {product} is built to manage large models, but there are practical limits to its capacity.
+    The system can efficiently handle models up to about 10 MB in size.
+    Models larger than this might experience performance degradation, especially in terms of loading times and responsiveness.
+    * Impact on Performance:
+    As model size increases, users might meet longer loading times and slower response rates when performing operations such as editing or navigating the model.
+    It's recommended to break down exceptionally large models into smaller, manageable sub-models where feasible.
+
+== Number of semantic elements
+
+    * Element Capacity:
+    {product} can manage models containing up to 150,000 semantic elements.
+    These elements include elements, relationships, and attributes that define the structure and behavior of the model.
+    * Performance Considerations:
+    Exceeding this number might lead to increased memory usage and slower query responses.
+    For optimal performance, it's advisable to maintain a balance and avoid overly complex models that push the upper limit of this capacity.
+
+== Number of representations
+
+  * Representation Limits:
+    The system supports up to 2,000 distinct representations per project.
+  * Complexity and Usability:
+    While the system can handle a high number of representations, maintaining a clear and organized structure is crucial.
+    Overloading a project with too many representations can complicate navigation and reduce usability.
+
+== Number of elements on a representation
+
+  * Element Density:
+    A single representation can display up to 1,000 elements.
+    Beyond this, the representation might become cluttered, making it difficult to interpret and work with the visual data.
+  * Performance and Visualization:
+    High-density representations may slow down rendering times and interaction speed.
+    It's beneficial to segment large visualizations into smaller, more focused views to maintain clarity and performance.
+
+== Number of projects
+
+  * Project Management:
+    {product} can support up to 1,000 concurrent projects per server.
+    This allows organizations to manage multiple initiatives simultaneously without significant performance degradation.
+  * Server Load:
+    The number of projects impacts server load and resource allocation.
+    While the system can support a high number of projects, each project adds to the computational and storage demands, so server capacity should be scaled so.
+
+== Number of concurrent users
+
+  * User Capacity:
+    The system is designed to support up to 80 concurrent users on a single server.
+    This capacity ensures that people can collaborate in real-time without encountering significant slowdowns or access issues.
+  * Collaboration Dynamics:
+    The performance of collaborative features, such as live editing and real-time updates, might vary depending on the number of users and the complexity of the operations being performed.
+    For larger teams, it's important to monitor server load and possibly segment users across multiple servers if necessary.
+
+== Recommendations for optimal use
+
+    * Model Partitioning:
+    To manage large models, consider breaking them down into smaller, modular sub-models.
+    This can help maintain performance and make it easier to manage and navigate complex data.
+    * Efficient Representations:
+    Limit the number of elements displayed in each representation to avoid clutter and maintain responsiveness.
+    Use multiple, focused representations instead of one overloaded view.
+    * Scalable Infrastructure:
+    Ensure that your server infrastructure is scalable to handle increases in project load and user concurrency.
+    This might involve using cloud-based solutions that can dynamically allocate resources as needed.
+    * Regular Monitoring:
+    Implement regular monitoring of system performance and user activity to identify and address potential bottlenecks.
+    This can help maintain smooth operation even as the scale of use increases.
+    * Contact us for custom solutions:
+    If your needs exceed the outlined limits or you require specific performance optimizations, please xref:ROOT:help.adoc[contact us].
+    Our team can provide tailored solutions and advice to ensure that {product} meets your scaling requirements effectively.
+
+If you need to go upper than the detailed limits contact-us.

@@ -1,0 +1,13 @@
+= Installation Architecture
+
+Before diving into the installation process, it's crucial to understand the underlying architecture of {product}.
+This section provides a detailed overview of the system's components, their interactions, and the overall design principles.
+
+{product} is a _web application_, meaning it runs centrally on a server, and users interact with it through web browsers from any computer on the same network.
+
+There is one primary method for installing {product}, following the classical client-server model:
+
+* The server computer runs the {product} Server,
+* N client computers run the {product} Clients.
+
+image::syson-installation-architecture.drawio.svg[{product} Installation Architecture]

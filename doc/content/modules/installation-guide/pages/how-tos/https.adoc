@@ -1,0 +1,31 @@
+= Configuring HTTPS for local server deployment of {product} for testing purposes
+
+[WARNING]
+====
+Enabling HTTPS with a self-signed certificate is intended for testing purposes only and shouldn't be used in a production environment.
+Self-signed certificates don't provide the same level of security and trust as certificates issued by a trusted Certificate Authority (CA).
+For production deployments, obtain a valid certificate from a trusted CA to ensure secure and reliable communication.
+====
+
+If you intend to install {product} on a local server or machine and allow several users to access it, you must enable HTTPS.
+If you don't have a certificate, you can generate one by using https://docs.oracle.com/en/java/javase/11/tools/keytool.html[keytool] for testing purposes only.
+
+. Create a self-signed certificate:
++
+[source, bash]
+----
+keytool -genkeypair -alias myalias -keyalg RSA -keysize 2048 -validity 365 -keystore keystore.jks
+----
+. Place the certificate file next to your `{product}-application` JAR file
+. Launch your JAR (as explained in the xref:installation-guide:how-tos/install.adoc#start-app[start the application section] with the following extra properties:
++
+[source, bash]
+----
+  --server.ssl.key-store=./keystore.jks \
+  --server.ssl.key-store-password=PASSWORD_USED_IN_STEP_1 \
+  --server.ssl.key-store-type=JKS \
+  --server.ssl.key-alias=myalias \
+  --server.ssl.key-password=PASSWORD_USED_IN_STEP_1
+----
+. Every user in your local network can now access the application at:
+`https://{product}_SERVER_IP:8080`

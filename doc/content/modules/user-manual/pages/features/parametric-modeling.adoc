@@ -1,0 +1,21 @@
+= Parametric modeling and constraints
+
+In {sysmlv1}, managing block input parameters is an important aspect for modeling complex systems.
+{sysmlv1} uses blocks to represent a system's structural elements, and input parameters define the interfaces between them.
+Ports are connection points on a block, allowing you to specify the interfaces through that blocks interact with each other.
+{sysmlv1} leverages parametric diagrams to define and link input parameters.
+This enables precise modeling of interactions and behaviors between system components.
+They capture constraints and relationships between parameters within and between blocks.
+
+{sysmlv2} introduces a different approach to managing block input parameters.
+{sysmlv2} continues to use ports to define connection points on blocks.
+{sysmlv2} swaps parametric diagrams for Interconnection View diagrams in managing block input parameters.
+
+In the {iv} diagram, users can create a new part by clicking on the root node's displayed toolbar.
+Then by displaying toolbar on this new node, user can also create port ont the new part.
+To represent data flow between ports, user can create either `InterfaceUsage` or `BindingConnector as usage`.
+These data flows visually represent how parameter values relate to each other, allowing their propagation through the model.
+
+image::parametric-modeling-connected-port.png[{Connected ports}]
+
+Feel free to xref:ROOT:help.adoc[contact us] for more details.

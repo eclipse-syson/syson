@@ -1,0 +1,3 @@
+Optional; Reserved
+
+Directory that contains supplemental materials, such as PDFs or ZIP files, that readers can download via a link created in a page using the AsciiDoc link macro.

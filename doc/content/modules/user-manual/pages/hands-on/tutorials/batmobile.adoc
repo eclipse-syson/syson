@@ -1,0 +1,105 @@
+= Create Your First Model
+
+This tutorial provides a beginner-friendly guide on creating your first {sysmlv2} model with {product}, adapted from the example in the https://github.com/MBSE4U/dont-panic-batmobile[Don't Panic - The Absolute Beginner's Guide to SysML v2] book by Tim Weilkiens and Christian Muggeo.
+The focus is on representing the Batmobile system, the iconic car of Batman.
+
+== Step 1: Create a Project
+
+. Open the {homepage} and xref:hands-on/how-tos/project-management.adoc#create-template-project[create a new {sysmlv2} project] by clicking on the {sysmlv2} card.
+. The {editor} automatically opens, creating a new project named `{sysmlv2}` with a package `Package1`.
+A default `{gv}` representation associated with the package is opened in the main editor area.
+. From the project toolbar, xref:hands-on/how-tos/project-management.adoc#rename-project[rename the project] to `Batmobile`.
+. From the {explorer}, xref:hands-on/how-tos/model-management.adoc#rename-model[rename the model] to `Batmobile` and the xref:hands-on/how-tos/model-management.adoc#rename-element[package] to `User Model`.
+
+== Step 2: Create Elements from a Diagram
+
+=== Using the {diag-toolbar}
+
+. In the main editor area, click on the diagram background to open the {diag-toolbar}.
+. Click on the `New Part Definition` tool to create a new part definition.
++
+[NOTE]
+====
+The new elements created from the {diag-toolbar} are visible either from the {explorer} or the {editor} main central area.
+====
++
+. Rename the part definition to `Vehicle` using the xref:hands-on/how-tos/model-management.adoc#representation[direct-edit action] or the xref:hands-on/how-tos/model-management.adoc#update-element#details[{details} view].
+. Select the `Vehicle` part definition and click on the `New Item` tool to create an item usage.
+. Rename the item usage to `driver`.
+. Select the `Vehicle` part definition and click on the `New Part` tool to create a new part usage.
+. Rename the part usage to `engine`.
+
+=== Setting Multiplicity
+
+. Select the `Vehicle` part definition and click on the `New Part` tool in the {diag-toolbar} to create a new part usage
+. Rename the part usage to `wheels`.
+
+=== Using Drag and Drop
+
+. Select the `wheels` part usage, type "F2" and rename it `wheels[4] : Wheel`.
+. A new `Wheel` part definition is created in the model.
+. Drag and drop the `Wheel` element from the {explorer} onto the diagram background.
+. The `Wheel` part definition appears on the diagram within the `Typed By` relationship between the `Wheel` and the `wheels` part usage.
+
+== Step 3: Edit the Model Elements
+
+=== Adding Attributes
+
+. Select the `Vehicle` part definition and click on the `New Attribute` tool in the {diag-toolbar}.
+. A new attribute usage is created.
+. Select the attribute and use the direct-edit tool to rename it to `actualSpeed : SpeedUnit`
+. A new import element appears in model which refers to the library `ISQSpaceTime` that contains `SpeedUnit`
+. The attribute usage `actualSpeed` is typed with the new attribute definition.
+
+=== Creating Specialization
+
+. Click on the diagram background and click on the `New Part Definition` tool.
+. A new part definition is created.
+. Rename it `Batmobile:> Vehicle`.
+. A new `specialization` relationship is created between the `Batmobile` part definition and the `Vehicle` part definition.
+
+=== Creating Subsetting
+
+. Click on the diagram background and select the `New Part` tool.
+. A new part usage is created.
+. Rename it to `frontRightWheel :> wheels`.
+. A new `subsetting` relationship appears between the two parts usages `frontRightWheel` and `wheels`.
+. Redo same actions by creating new part `frontLeftWheel :> wheels`.
+
+=== Creating Redefinition
+
+. Click on the diagram background and click on the `New Part` tool.
+. A new part usage is created.
+. Rename it to `bulletProofWheels[4]:>>wheels`.
+. A new `redefines` relationship appears between the `bulletProofWheels` part definition and the`wheels` part usage.
+
+== Step 4: Create Relationship
+
+=== Creating specialization relationship
+
+. Click on the diagram background and click on the `New Part Definition` tool.
+. A new part definition is created.
+. Rename it `BatmobileNG`
+. Click on node `BatmobileNG`.
+. Click on arrow border and hold down until `Batmobile:> Vehicle` node.
+. Select the `Subclassification` tool.
+
+
+=== Creating containment relationships
+
+. Click on node `frontRightWheel :> wheels`.
+. Click on arrow border and hold down until `Batmobile:> Vehicle` node.
+. Select the `Become nested part` tool.
+. A new containment edge is created and element `frontRightWheel` is moved under `Batmobile` in model
+. Redo same actions with `frontLeftWheel :> wheels`.
+. Click on node `bulletProofWheels[4] :>> wheels`.
+. Click on arrow border and hold down until `BatmobileNG:> Batmobile` node.
+. Select the `Become nested part` tool.
+. A new containment edge is created and element `bulletProofWheels` is moved under `BatmobileNG` in model
+
+[NOTE]
+====
+To explore a larger Batmobile example, use the Batmobile template available on the {homepage}.
+====
+
+image::tutorial-result.png[Tutorial result]

@@ -1,0 +1,29 @@
+= 2024.1.0
+
+== Key highlights
+
+- Expanded Library Access: We now support a wider range of standard libraries.
+- User-Friendly Diagrams: We've introduced helpful background messages for empty diagrams, making it easier for users to understand and use the tool right from the start.
+
+== Breaking changes
+
+- All `findUsageByName` and `findDefinitionByName` method have been replaced by the new `findByNameAndType` in `org.eclipse.syson.services.UtilService`.
+- Delete useless fork of `UploadDocumentEventHandler` and `DocumentController` from Sirius Web.
+
+== Dependencies update
+
+- Switch to https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.1.1[Sirius Web v2024.1.1]
+- {product} SysMLv2 metamodel module now depends on `org.eclipse.emf.ecore.xmi` and `java-uuid-generator`.
+- Switch to vite 4.5.2
+
+== New features
+
+- Display help background message on empty general-view diagram.
+
+image::release-notes-help-background.png[Diagram help background]
+
+- Add support for SysMLv2 standard libraries.
+Some {kerml} libraries have been added:
+`Base`, `BooleanFunctions`, `Clocks`, `CollectionFunctions`, `Collections`, `ComplexFunctions`, `ControlFunctions`, `DataFunctions`, `IntegerFunctions`, `KerML`, `Links`, `NaturalFunctions`, `NumericalFunctions`, `RationalFunctions`, `RealFunctions`, `ScalarFunctions`, `ScalarValues`, `SequenceFunctions`, `StringFunctions`, `TrigFunctions`, `VectorFunctions`, `VectorValues`.
+Some of these libraries might have partial content.
+- Add support for automatic imports.

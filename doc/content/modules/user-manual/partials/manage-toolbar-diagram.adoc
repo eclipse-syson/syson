@@ -1,0 +1,19 @@
+== Toolbar
+
+The Diagram panel has global actions grouped in a horizontal toolbar underneath the diagram tabs.
+
+image::manage-toolbar-main.png[Main Toolbar]
+
+This toolbar has the following actions:
+
+* Display full screen,
+* Fit selection to screen,
+* Zoom group: Zoom In, Zoom Out,
+* Share the diagram link,
+* Export diagram as SVG,
+* Toggle snap to grid,
+* Show helper line to align elements,
+* Arrange all elements,
+* Reveal hidden elements,
+* Reveal faded elements,
+* Unpin all elements.

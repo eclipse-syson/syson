@@ -1,0 +1,4 @@
+Required; Reserved
+
+Directory that contains all of a module’s AsciiDoc files.
+These files are automatically enlisted by Antora and converted to standalone HTML pages.

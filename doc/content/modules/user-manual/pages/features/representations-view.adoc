@@ -1,0 +1,9 @@
+= {representations-view}
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+Explore the {representations-view} view to gain insights into the available representations associated with the  selected element.
+
+image::representations-right-sidebar-representations.png[{representations-view} view]
+
+This view provides a comprehensive list of all existing representations, offering a convenient overview of the various ways the element is visually represented within the project.

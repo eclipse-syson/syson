@@ -1,0 +1,8 @@
+---
+extends: substitution
+message: "%s."
+link: https://redhat-documentation.github.io/vale-at-red-hat/docs/main/reference-guide/userreplacedvalues/
+level: suggestion
+scope: raw
+swap:
+  '__<[a-z_\x60]+-[\x60a-z_-]+>__': Separate words by underscores in user-replaced values

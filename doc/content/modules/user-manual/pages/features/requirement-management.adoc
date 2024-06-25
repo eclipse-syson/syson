@@ -1,0 +1,28 @@
+= Requirements management and traceability
+
+== Creating and linking requirements
+
+By using {product}, requirements can be well integrated and defined  with the {gv}.
+Remember that a requirement is a kind of constraint representing the constraints given by stakeholders that a solution must satisfy.
+For example, the requirement of a maximum speed of a vehicle.
+From the {gv} diagram, user can create a new requirement **from the background** of the diagram from a click that displays toolbar.
+
+image::requirement-managment-fromBackground-creation.png[Requirement creation from Diagram Background]
+
+User can also create requirement **in other element** such as a requirement.
+
+image::requirement-managment-fromRequirement-creation.png[Requirement creation from Requirement]
+
+A Requirement Definition is represented by rectangular node style whereas a Requirement Usage is represented by rectangular node style with rounded corner.
+
+image::requirement-managment-node-representation.png[Requirement creation from Requirement]
+
+For now, {gv} diagram authorize only to create requirement Definition and Usage.
+_Satisfy_ relationship to define connection between requirements aren't available.
+Work around requirements are among the topics to be processed soon.
+
+Feel free to xref:ROOT:help.adoc[contact us] for more details.
+
+== Traceability features
+
+Feel free to xref:ROOT:help.adoc[contact us] for more details.

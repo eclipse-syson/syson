@@ -1,0 +1,21 @@
+= Welcome to {product}
+
+include::user-manual:partial$intro.adoc[]
+
+Start your learning journey with {product}.
+
+include::ROOT:introduction.adoc[leveloffset=+1]
+
+include::ROOT:get-started.adoc[leveloffset=+1]
+
+include::ROOT:user-interface-overview.adoc[leveloffset=+1]
+
+include::ROOT:features.adoc[leveloffset=+1]
+
+include::ROOT:integration.adoc[leveloffset=+1]
+
+include::ROOT:help.adoc[leveloffset=+1]
+
+include::ROOT:release-notes.adoc[leveloffset=+1]
+
+include::ROOT:faq.adoc[leveloffset=+1]

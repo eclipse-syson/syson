@@ -1,0 +1,33 @@
+= {product} development cycle
+
+{product}, as an open source project, follows a well-defined development cycle to ensure regular and structured updates.
+The cycle spans 8 weeks and includes three main phases:
+
+* Development (4 Weeks):
+  * Focus: This phase is dedicated to actively working on new features, bug fixes, and enhancements.
+  * Activities: Contributors, including community members and core developers, work together to develop new functionalities, perform code reviews, and integrate changes.
+  Collaboration and transparency are key during this phase.
+
+* Stabilization and Feature Freeze (2 Weeks):
+  * Focus: We enter a feature freeze period where no new features are introduced.
+  * Activities: During this time, the focus shifts to thorough testing and stabilization of the new features.
+  This ensures the software's quality and reliability.
+  Any remaining issues or bugs are addressed to prepare for the release.
+
+* Cool Down and Planning (2 Weeks):
+  * Focus: This phase involves wrapping up the current cycle and preparing for the next one.
+  * Activities: Contributors work on upgrading dependencies, resolving minor issues, and documenting the latest changes.
+  Additionally, the team discusses and plans the features and tasks for the next cycle, ensuring a smooth transition.
+  The General Availability (GA) release of {product} occurs on the eighteenth week of each development cycle.
+
+== Team Organization
+
+Being an open source project, {product} thrives on community participation and collaboration.
+Here's how the team is organized:
+* Core Developers: these are the primary maintainers who oversee the project's direction, manage releases, and ensure code quality.
+* Contributors: this includes anyone from the community who contributes code, documentation, or ideas.
+Contributions are reviewed and merged by core developers.
+* Community: a diverse group of users, testers, and enthusiasts who provide feedback, report bugs, and propose new features.
+
+This collaborative approach allows {product} to continuously evolve while maintaining a high standard of quality and performance.
+If you're interested in contributing or have any questions, feel free to join the xref:user-manual:forum.adoc[community discussions] or xref:user-manual:help.adoc[contact us].

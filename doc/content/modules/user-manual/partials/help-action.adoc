@@ -1,0 +1,3 @@
+= Help
+
+The _Help_ action, accessible on every page of the application, offers a convenient pathway to navigate to the online help resources for {product}.

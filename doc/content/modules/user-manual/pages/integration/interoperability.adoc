@@ -1,0 +1,66 @@
+= Interoperability
+
+The interoperability inherent in an open source tool such as {product} is a cornerstone for collaborative design of complex systems.
+In the context of {mbse} - `MBSE`, where diverse teams contribute to different facets of a project, having an open source tool becomes a unifying force.
+It allows seamless collaboration and information exchange among stakeholders, regardless of their preferred tools or methodologies.
+
+== Seamless transition between representations
+{product} empowers users to seamlessly transition between graphical and textual representations, accommodating diverse modeling preferences and the specific demands of the systems under analysis.
+This flexibility is crucial in `MBSE`, where the ability to articulate and refine models in different modalities is instrumental in capturing the complexity inherent in modern system designs.
+
+== Tailoring to domain-specific requirements
+The extensibility of {sysmlv2} within {product} is a key aspect that reinforces its adaptability to diverse industries and complex project landscapes.
+In `MBSE`, where each domain might have unique requirements and specifications, having a tool that can be tailored to meet these specific needs is invaluable.
+{product}'s extensibility ensures that it remains a dynamic and adaptable resource for system engineers working across various domains.
+
+== Evolution guided by {sysmlv2} principles
+As {product} evolves, guided by the principles of {sysmlv2}, it positions itself as more than just a tool; it evolves into a comprehensive and standardized environment for `MBSE` endeavors.
+The commitment to open source and interoperability serves as a cornerstone for future developments, ensuring that {product} continues to meet the evolving needs of the `MBSE` community.
+
+In essence, {product} stands as an open source enabler, promoting collaboration, flexibility, and adaptability—fundamental principles in the ever-evolving landscape of `MBSE`.
+
+[#import-export]
+== Import and export
+
+=== JSON format
+
+{product} extends its utility by introducing the capability to import and export projects in JSON format.
+This feature enhances interoperability, allowing users to seamlessly exchange project data and collaborate with external tools or platforms.
+
+WARNING: {product} doesn't  support the {sysmlv2} Standard JSON format for import/export.
+
+For detailed instructions on xref:hands-on/how-tos/project-management.adoc#download-project[downloading projects], xref:hands-on/how-tos/model-management.adoc#download-model[downloading models], xref:hands-on/how-tos/project-management.adoc#upload-project[uploading projects], and xref:hands-on/how-tos/model-management.adoc#upload-model[uploading models], please refer to the respective sections in the documentation.
+These sections provide step-by-step guidance on how to perform these actions within the {product} environment.
+
+=== {sysmlv2} textual format
+
+{product} support  {sysmlv2} textual specifications as an exchange format in order facilitate smooth transitions between tools.
+This intent reflects {product}'s dedication to staying aligned with evolving industry standards.
+
+Add-on has been developed to enable import/export capability to and from {sysmlv2} textual syntax.
+This feature provides users with additional flexibility in their modeling workflows.
+
+Before importing a file, you need to make sure that all the dependences of this file are also imported, and this, recursively.
+Otherwise some relationship won’t be resolved.
+
+For example if you want to import a file that uses third party libraries, you will need to import the third party libraries before the actual file, otherwise you might have unreferenced relations.
+
+Most important {sysmlv2} concepts can be translated from the imported file, some concept are still under development to enable complete import/export capability from and to {sysmlv2} textual syntax.
+Stay tuned for updates on its availability in the project.
+
+The following example shows an example of {sysmlv2} content file to import:
+
+```
+package PictureTaking {
+    part def Exposure;
+
+	action def Focus { out xrsl: Exposure; }
+	action def Shoot { in xsf: Exposure; }
+
+	action takePicture {
+		action focus: Focus[1];
+		flow focus.xrsl to shoot.xsf;
+		action shoot: Shoot[1];
+	}
+}
+```

@@ -1,0 +1,93 @@
+= Key features in {product}
+
+{product} encompasses a set of key features aimed at enhancing the modeling experience within the {sysmlv2} framework.
+The primary functionalities of {product} are centered around project management and model creation, aligning with the classical views recommended by the {sysmlv2} standard.
+
+[NOTE]
+====
+In {product}, features are categorized into two distinct levels of maturity:
+
+* **Experimental**: Features in the early stages of development or testing, subject to potential changes and improvements based on user feedback.
+* **Stable**: Features that have completed rigorous testing, are deemed reliable, and are ready for production use with a high level of confidence in their stability and capability.
+
+This dual categorization allows users to select features based on their comfort level with the maturity of each, providing flexibility and transparency in the usage of {product}.
+====
+
+== Features overview
+
+[cols="2,<",width="100%"]
+|===
+| Feature| {product}
+
+2+h|Projects Management
+
+|xref:features/homepage.adoc[Projects Browser]
+a|✅
+
+|xref:features/editor.adoc[Project Editor]
+a|✅
+
+2+h|{sysmlv2} Views
+|xref:user-manual:features/general-view.adoc[{gv}]
+a|✅ (Partial)
+
+|xref:user-manual:features/interconnection-view.adoc[{iv}]
+a|✅ (Partial)
+
+|xref:user-manual:features/sysmlv2-overview.adoc[{afv}]
+a|✅ (Partial)
+
+|xref:user-manual:features/sysmlv2-overview.adoc[{stv}]
+a|✅ (Partial)
+
+|xref:user-manual:features/sysmlv2-overview.adoc[Sequence View]
+a|❌
+
+|xref:user-manual:features/sysmlv2-overview.adoc[Geometry View]
+a|❌
+
+|xref:user-manual:features/sysmlv2-overview.adoc[Grid View]
+a|❌
+
+|xref:user-manual:features/sysmlv2-overview.adoc[Browser View]
+a|❌
+
+|xref:user-manual:features/sysmlv2-overview.adoc[{kerml}/{sysml} Libraries]
+a|❌
+
+2+h|Diagram Management
+
+|xref:user-manual:support.adoc[Contextual Palette, Direct Edit, Multi-Selection, Reconnect, Hide/Fade, Collapse/Expand, Drag &Drop, Compartments, Custom Shapes, Assisted Layout (Auto layout, Ruler, Grid, Align, Distribute...)]
+a|✅
+
+|xref:user-manual:support.adoc[Edit Graphical Properties, Undo/Redo, Copy/Paste]
+a|❌
+
+2+h|Collaboration & Interoperability
+
+|xref:features/collaboration.adoc[Share Links (Projects, Diagrams...)]
+a|✅
+
+|xref:features/collaboration.adoc[Concurrent authoring]
+a|✅
+
+|xref:integration/interoperability.adoc[Download / Upload JSON]
+a|✅
+
+|xref:integration/interoperability.adoc[Download / Upload Standard {sysmlv2} JSON]
+a|❌
+
+|xref:integration/interoperability.adoc[Download / Upload {sysmlv2} textual format]
+a|✅ (Partial)
+|===
+
+A detailed list of all {product} features is available in the xref:features/features.adoc[Features] section.
+
+== Ongoing development
+
+{product} is xref:user-manual:cycle.adoc[continually evolving], with a commitment to expanding its repertoire of views in alignment with the {sysmlv2} standard.
+Future releases will introduce additional features, ensuring {product} remains a comprehensive and adaptable tool for system engineering.
+
+== Others
+
+For other features, please xref:user-manual:support.adoc[contact us].

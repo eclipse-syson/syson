@@ -1,0 +1,3 @@
+// Reference all the files defined in the tutorials folder
+* xref:user-manual:hands-on/tutorials/tutorials.adoc[]
+** xref:user-manual:hands-on/tutorials/batmobile.adoc[]

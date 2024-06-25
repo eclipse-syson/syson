@@ -1,0 +1,6 @@
+[TIP]
+====
+This view in {product} is implemented as an *unsynchronized* diagram.
+This means that users need to manually add existing elements to the diagram to visualize them.
+It doesn't display all the information stored in the model by default.
+====

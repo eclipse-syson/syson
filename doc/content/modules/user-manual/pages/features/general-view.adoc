@@ -1,0 +1,166 @@
+= {gv}
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+The {gv} is employed to display any members of exposed model elements.
+it's the most general view, enabling presentation of any model element.
+
+// Unsynchronized
+include::user-manual:partial$view-unsynchronized.adoc[]
+
+image::gv-overview.png[{gv} Overview]
+
+== Create New General View Diagram
+
+User can create {gv} diagram on any element provided it inherits from Namespace type.
+
+image::gv-diagram-creation.png[{gv} Diagram Creation]
+
+include::user-manual:partial$manage-toolbar-diagram.adoc[]
+
+== Element representation
+
+Six categories of elements can be represented on {gv} diagram.
+
+=== _Definition_ elements
+
+The following _Definition_ elements can be displayed in the {gv} diagram:
+
+  * Action Definition,
+  * Allocation Definition,
+  * Attribute Definition,
+  * Constraint Definition,
+  * Enumeration Definition,
+  * Interface Definition,
+  * Item Definition,
+  * Metadata Definition,
+  * Occurrence Definition,
+  * Part Definition,
+  * Port Definition,
+  * Requirement Definition,
+  * UseCase Definition.
+
+_Definition_ elements are represented by rectangular node style.
+Keyword with "Def" specification is defined in the label of the node.
+
+image::gv-partDef-node.png[{gv} Part Def Node]
+
+=== _Usage_ elements
+
+The following _Usage_ elements can be displayed in the {gv} diagram:
+
+  * Accept Action usage,
+  * Action Usage,
+  * Allocation Usage,
+  * Attribute Usage,
+  * Constraint Usage,
+  * Interface Usage,
+  * Item Usage,
+  * Occurrence Usage,
+  * Part Usage,
+  * Port Usage,
+  * Requirement Usage,
+  * UseCase Usage.
+
+_Usage_ elements are represented by rectangular node style with rounded corner.
+
+image::gv-part-node.png[{gv} Part Node]
+
+=== Elements in _Definition_ elements
+
+The following element in _Definition_ compartments can be displayed in the {gv} diagram:
+
+  * Action in _Action Definition_,
+  * Attribute in _Attribute Definition_/_Interface Definition_/_Item Definition_/_Metadata Definition_/_Occurrence Definition_/_Part Definition_/_Port Definition_/_Requirement Definition_,
+  * Constraint in _Constraint Definition_,
+  * Enumerated Value in _Enumeration Definition_,
+  * Interface in _Interface Definition_,
+  * Port in _Interface Definition_/_Part Definition_,
+  * Reference in _Metadata Definition_/_Port Definition_,
+  * Occurence in _Occurrence Definition_,
+  * Assumed Constraint in _Requirement Definition_,
+  * Required Constraint in _Requirement Definition_.
+
+Each element in _Definition_ nodes are represented in dedicated compartment.
+A _Definition_ node can have several compartments if _Definition_ element can contain many kind of element.
+Each compartment is distinguished  by a specific identifier.
+
+image::gv-partDef-compartment-node.png[{gv} Part Def Compartment Node]
+
+=== Elements in _Usage_ elements
+
+The following element in _Usage_ compartments can be displayed in the {gv} diagram:
+
+  * Action in _Action Usage_,
+  * Item in _Action Usage_,
+  * Allocation in _Allocation Usage_,
+  * Attribute in _Attribute Usage_/_Interface Usage_/_Item Usage_/_Part Usage_/_Port Usage_/_Requirement Usage_,
+  * Reference in _Attribute Usage_/_Item Usage_/_Port Usage_,
+  * Constraint in _Constraint Usage_,
+  * Port in _Interface Usage_/_Part Usage_,
+  * Occurrence in _Occurrence Usage_,
+  * Assumed Constraint in _Requirement Usage_,
+  * Required constraint in _Requirement Usage_.
+
+Each element in _Definition_ nodes are represented in dedicated compartment.
+A _Definition_ node can have several compartments  if _Definition_ element can contain many kind of element.
+Each compartment is distinguished  by a specific identifier.
+
+image::gv-part-compartment-node.png[{gv} Part Compartment Node]
+
+=== _Package_ element
+
+_Package_ element can be represented on {gv} diagram.
+Its represented by a folder and its label has the keyword `package`.
+
+image::gv-package-node.png[{gv} Package Node]
+
+=== Relationship
+
+The following Relationship can be displayed in the {gv} diagram:
+
+* Dependency,
+
+image::gv-dependency-edge.png[{gv} Dependency Edge]
+
+
+* Subclassification,
+
+image::gv-subclassification-edge.png[{gv} Subclassification Edge]
+
+* Redefinition,
+
+image::gv-redefinition-edge.png[{gv} Redefinition Edge]
+
+* Subsetting,
+
+image::gv-subsetting-edge.png[{gv} Subsetting Edge]
+
+* Feature Typing,
+
+image::gv-featureTyping-edge.png[{gv} FeatureTyping Edge]
+
+* Allocation,
+
+image::gv-allocation-edge.png[{gv} Allocation Edge]
+
+* Containment relation.
+
+image::gv-containment-edge.png[{gv} Containment Edge]
+
+
+include::user-manual:partial$manage-elements-diagram.adoc[]
+
+include::user-manual:partial$manage-relationships-diagram.adoc[]
+
+include::user-manual:partial$manage-labels-diagram.adoc[]
+
+include::user-manual:partial$manage-drag-drop.adoc[]
+
+include::user-manual:partial$manage-existing-elements.adoc[]
+
+include::user-manual:partial$manage-group-elements.adoc[]
+
+
+
+

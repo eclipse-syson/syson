@@ -1,0 +1,5 @@
+= Support and resources
+
+Discover how to engage with the community, contribute to product development, access best practices, and seek professional support.
+
+include::user-manual:partial$nav-help.adoc[]

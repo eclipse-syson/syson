@@ -1,0 +1,38 @@
+name: syson
+title: SysON
+version: true
+nav:
+  - modules/ROOT/nav.adoc
+
+asciidoc:
+  attributes:
+    afv: "Action Flow View"
+    bug-url: "https://github.com/eclipse-syson/syson/issues"
+    changelog-url: "https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc"
+    details: "Details"
+    diag-toolbar: "Contextual Toolbar"
+    editor: "Project Editor"
+    explorer-filter-bar: "Project Explorer Filter Bar"
+    explorer-menu: "Element Options Menu"
+    explorer: "Project Explorer"
+    forum-url: "https://github.com/eclipse-syson/syson/discussions"
+    gv: "General view"
+    homepage: "Projects Browser"
+    iv: "Interconnection view"
+    kerml: "KerML"
+    mbse: "Model-Based Systems Engineering"
+    packages-url: "https://github.com/eclipse-syson/syson/packages/2020337/versions"
+    product: "SysON"
+    product-jar: "org.eclipse.syson.syson-application-YYYY.M.X.jar"
+    projects-list: "Projects List"
+    projects-list-menu: "Project Options Menu"
+    related-elements: "Related Elements"
+    representations-view: "Representations"
+    source-code-url: "https://github.com/eclipse-syson/syson"
+    stv: "State Transition view"
+    sysml: "SysML"
+    sysmlv1: "{sysml} v1"
+    sysmlv2: "{sysml} v2"
+    sw: "Sirius Web"
+    validation: "Validation"
+    website-url: "https://eclipse.dev/syson/"

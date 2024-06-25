@@ -1,0 +1,50 @@
+== Manage Labels
+
+=== Element Label
+
+**Keywords** on Nodes and Edges are displayed on the first separate line of the label.
+For example _Definition_ nodes will be prefixed with "part def" and _Usage_ node with "part".
+
+image::manage-labels-keywords.png[Label with keyword]
+
+After the keyword, the label can be the **simple name of the element, or more complex** in some specific cases.
+Indeed, For example, subset of the {sysmlv2} textual syntax is supported to describe some element.
+For simple _Definition_ element, the label will display the keyword "part def" and its declared name.
+For elements using _specialization_, the label will display the kind of the _specilalization_.
+For example, if a _Batmobile_ is a subclassification of _Vehicle_, its label will display the key word "part def" and then "Batmobile :> Vehicle" to show its specalization toward _Vehicle_.
+
+image::manage-labels-specialization.png[Label with specialization]
+
+If _Usage_ element is given by relationship with **multiplicity**, the multiplicity value (upper and lower bound) is specified between bracket in the label, just before the specialization.
+For example, for a _Batmobile_ which contained 4 _Wheel_ by using the _Usage_ _wheels_ then the label will be composed of the keyword "part" followed by the name _wheels[4] : Wheel_ which described the _Usage_ _wheels_ with multiplicity 4 defined by the _Definition_ _Wheel_.
+
+image::manage-labels-multiplicity.png[Label with multiplicity]
+
+For element with compartment node (with list layout), the label of compartment node will be displayed in _italic_ and it will only contained a simple name.
+
+image::manage-labels-compartment.png[Label for compartment]
+
+=== Edge Label
+
+No label is defined on edges except in two cases :
+
+* allocation edge label is specified with its keyword _allocate_,
+* edge which represent relationship with multiplicity have their multiplicity defined in their label (ex.: containment edge).
+
+[#edit-label]
+=== Edit Labels
+
+Element labels can be edited in the following ways:
+
+* Edit action of the Palette,
+* Press F2,
+* Type directly the new name.
+
+With direct edit, user can't change the keyword but user can change the name.
+If it's a simple label, he can rename the element.
+If user modify the multiplicity defined in the label then the multiplicity of the relationship is changed in the model.
+User can alos set/change the specialization of a given element.
+
+Explore further by referring to the following how-tos for xref:hands-on/how-tos/model-management.adoc#direct-edit[direct edit action]
+
+Label of edges and compartments node can't be edited.

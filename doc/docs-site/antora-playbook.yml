@@ -1,0 +1,31 @@
+site:
+  title: SysON Docs
+  start_page: syson::index.adoc
+
+output:
+  clean: true
+
+content:
+  sources:
+    - url: /usr/app
+      start_paths: doc/content
+      branches: ["main"]
+
+ui:
+  bundle:
+    url: /home/antora/ui-bundle.zip
+
+asciidoc:
+  attributes:
+    icons: font
+    icon-set: fas
+    sectanchors:
+    sectlinks:
+    sectnums: all
+    page-toclevels: 3
+
+
+antora:
+  extensions:
+  - require: '@antora/lunr-extension'
+    languages: [en, fr]

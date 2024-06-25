@@ -1,0 +1,6 @@
+Recommended; Reserved
+
+Directory that contains the ROOT module.
+This special directory does not appear in the output path.
+Instead, it becomes the parent folder of any additional, named modules that you create in a component.
+The directory name must be written in all uppercase letters.

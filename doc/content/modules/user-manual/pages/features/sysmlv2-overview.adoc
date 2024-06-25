@@ -1,0 +1,78 @@
+= Overview of {sysmlv2}
+
+Building upon the understanding of {product}, it's imperative to delve into the foundational concepts of {sysmlv2}, the modeling language that {product} operates within.
+
+== What's {sysmlv2}?
+
+{sysmlv2} is an industry-standard modeling language designed for the specification, analysis, design, verification, and validation of complex systems.
+Developed by the OMG, {sysmlv2} builds upon its predecessor, {sysmlv1}, aiming to address the evolving needs of the {mbse} - `MBSE` community.
+
+== Key aspects of {sysmlv2}
+
+* **Enhanced Flexibility**: {sysmlv2} offers enhanced flexibility in representing complex systems through refined constructs and improved semantics, accommodating a wide array of system engineering scenarios.
+* **{kerml} as the Foundation**: {sysmlv2} is uniquely based on the `Kernel Modeling Language` - {kerml}, further emphasizing its status as a DSL - Domain Specific Language tailored for systems engineering.
+{kerml} serves as the foundational layer, providing core modeling constructs and principles.
+* **Graphical and Textual Syntax**: {sysmlv2} combines both graphical and textual syntax, allowing system engineers to select the representation that best suits their modeling preferences and the intricacies of the system being analyzed.
+* **Extensibility and Modularity**: The language is designed to be extendable, enabling the incorporation of domain-specific modeling elements and the creation of modular representations that align with the structure of complex systems.
+
+== {sysmlv2} in practice
+
+{sysmlv2} serves as the foundation for {product}, empowering system engineers with a standardized and versatile language to articulate and analyze complex systems.
+Within {product}, users can use {sysmlv2} constructs to create, edit, and visualize models, aligning with the industry-standard specifications set by OMG.
+
+{sysmlv2} introduces a structured approach to system modeling through a variety of views, each tailored to capture specific aspects of complex systems.
+These views collectively form a comprehensive framework for `MBSE`, facilitating a holistic understanding of system architecture, design, and behavior.
+
+=== {gv}
+
+Serving as the foundational representation, the {gv} allows system engineers to define essential elements and the all structure of the system.
+It provides a high-level perspective, laying the groundwork for more detailed analyses within specialized views.
+
+xref:user-manual:features/general-view.adoc[Explore the {product} {gv}...]
+
+image::gv-overview.png[{gv} Overview]
+
+=== {iv}
+
+The {iv} focuses on articulating the relationships and connections between system components.
+It provides a visual representation of how different elements within the system interact, fostering clarity in understanding the intricate dependencies within a complex system.
+
+xref:user-manual:features/interconnection-view.adoc[Explore the {product} {iv}...]
+
+image::interconnection-view-overview.png[{iv} Overview]
+
+=== {afv}
+
+The {afv} provides a specialized representation focused on illustrating the connections between different actions within a system.
+This view is instrumental in capturing and visualizing the flow of actions, showcasing the sequence and relationships between various steps or processes within a system's behavior.
+
+=== {stv}
+
+The {stv} provides a concise representation of the different states a system can occupy and the transitions between these states.
+This view offers a visual depiction of the system's behavioral aspects, illustrating how it evolves and responds to various stimuli.
+
+=== Sequence view
+
+The Sequence View presents the chronological order of event occurrences on lifelines, offering a clear temporal representation of system dynamics.
+
+=== Geometry view
+
+The Geometry View is designed to present a visualization of exposed spatial items in two or three dimensions.
+This view is particularly tailored for system engineers and designers working on systems that involve spatial components, allowing them to gain insights into the spatial relationships, configurations, and layouts of elements within a model.
+
+=== Grid view
+
+The Grid View is designed to present exposed model elements and their relationships in a structured and intuitive manner, arranged within a rectangular grid.
+This view acts as the generalization of specialized views: the Tabular View, Data Value Tabular View, and Relationship Matrix View.
+
+=== Browser view
+
+The Browser View is designed to present the hierarchical membership structure of model elements, starting from an exposed root element.
+This view provides a systematic and organized representation of the relationships between various model elements, offering a navigational tool for system engineers to explore and understand the composition of their models.
+
+=== Textual syntax
+
+Future plans include the integration of a text editor into {product}, leveraging the `SysIDE` project's capabilities.
+SysIDE provides {sysmlv2} language support in Visual Studio Code.
+SysIDE includes a language server for {sysmlv2} and {kerml} specifications.
+Ongoing collaboration with the SysIDE project ensures future compatibility and seamless integration of the textual editor within {product}.

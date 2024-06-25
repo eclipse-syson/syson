@@ -1,0 +1,13 @@
+= Integrating with Capella
+
+As we look to the future, exploring the potential integration between {product} and the Capella open source modeling tool emerges as a promising avenue for enhancing the collaborative environment in {mbse} - `MBSE` projects.
+The envisioned integration aims to establish a seamless connection between {product} and Capella, allowing system engineers to consider both platforms as complementary tools for their {sysmlv2} modeling endeavors.
+
+In this envisioned scenario, {product} could potentially serve as a core component for {sysmlv2} model editing within the Capella environment.
+The goal is to facilitate synchronization and co-design of {sysmlv2} models alongside Capella projects, fostering a cohesive and interoperable approach to system engineering.
+
+Structured editors within {product}, encompassing graphical, form-based, and table editors, could harmonize with Capella's modeling environment, offering engineers a flexible and versatile toolkit.
+While this integration remains a vision for future work, the potential benefits include an improved efficiency in `MBSE` projects through a unified solution that capitalizes on the strengths of both {product} and Capella.
+
+This conceptual integration underlines {product}'s commitment to evolving in tandem with emerging needs in the `MBSE` landscape.
+As we explore these possibilities, {product} envisions contributing to a more interconnected and interoperable ecosystem for system engineers, paving the way for a collaborative future in {sysmlv2} modeling.

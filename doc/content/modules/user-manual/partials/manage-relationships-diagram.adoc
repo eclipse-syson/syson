@@ -1,0 +1,38 @@
+== Manage relationships
+
+=== Create relationship
+
+Relationship Edges can be created between Nodes whose types match the Edge’s source and target types.
+
+If no edge creation is authorized with a given target, the target node appears faded.
+
+When user try to create an edge, user clicks first on the source element to display arrow border.
+
+image::manage-relationships-createEdge-arrow.png[Arrow to create Edge]
+
+Then user clicks on one of these arrows and stay click until the target.
+User can see the feedback of the edge and the target node is highlighted.
+
+image::manage-relationships-createEdge-feedback.png[Feedback to create Edge]
+
+After releasing the click, a pop-up appears and displays all possible kind of edge to create.
+If only one kind of edge is possible, the edge is directly create without opening the pop-up.
+
+image::manage-relationships-createEdge-popup.png[Popup to create Edge]
+
+it's not possible for now to create an Edge between two Edges or between an Edge and a Node.
+
+=== Reconnect relationship
+
+Users can reconnect Edges by clicking on the source or target end of the Edge to reconnect, and drag and drop it on a new element.
+
+If the new source or the new target isn't allowed for reconnection, these one will be faded.
+
+=== Delete relationship
+
+To delete relationship from model, user should click on the edge and click on the delete button.
+
+Remember that relationship edge are always synchronized, it's not possible to only delete relationship edge from diagram.
+
+Containment relationShip isn't deletable from the diagram.
+Other relationship can be deletable from the diagram.

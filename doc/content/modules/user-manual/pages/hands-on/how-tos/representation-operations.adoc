@@ -1,0 +1,95 @@
+= Representation operations
+
+[#create-representation]
+== Create a new representation
+
+To create a representation, follow these steps:
+
+. Open the Project Editor.
+. Open the {explorer-menu} next to an element in the explorer.
+. Select the `New representation` action.
+. Complete the representation name.
+. Choose the representation type.
+. Click the `Create` button.
+
+image::hands-on-new-representation.png[Create representation]
+
+Upon creation, the new representation automatically opens and appears in the {explorer} under the element.
+
+[#delete-representation]
+== Delete a representation
+
+It's possible to delete a representation either from the {explorer} or the {representations-view}.
+
+[WARNING]
+====
+This operation is irreversible, once done there is no mean to get the representation back.
+====
+
+[NOTE]
+====
+The semantic elements visible in a representation won't be deleted.
+====
+
+=== From the {explorer}
+
+You can delete a representation from the {explorer}:
+
+. Open the {explorer-menu} next to the representation.
+. Click on `Delete`.
+
+image::hands-on-delete-representation-from-explorer.png[Delete representation from the {explorer}]
+
+=== From the {representations-view}
+
+You can delete a representation from the {representations-view}:
+
+. Open the {representations-view}.
+. Select the representation you want to delete.
+. Click the `Delete` button.
+
+image::hands-on-delete-representation-from-representation-view.png[Delete representation from the {representations-view}]
+
+
+A confirmation dialog appears when a representation is deleted.
+This behavior can be disabled by checking the "Disable this confirmation dialog" checkbox in the dialog.
+
+image::manage-elements-semantic-deletion.png[Semantic Deletion]
+
+[TIP]
+====
+This preference is stored in the local storage of the browser.
+You can reset it by deleting the {product} data in cache of your browser.
+====
+
+[#rename-representation]
+== Rename a representation
+
+You can update the representation name from the {explorer}:
+
+. Click the {explorer-menu} next to the representation in the {explorer}.
+. Select the `Rename` option.
+. Update the name in the editable field.
+. Click `Rename`.
+
+image::hands-on-rename-representation.png[Rename representation]
+
+[#share-representation]
+== Share a representation
+
+Facilitating collaboration through representation sharing within {product} is a straightforward process.
+Users can effortlessly share a representation by providing its URL to collaborators.
+Given that everything within {product} is inherently public, recipients can seamlessly access and view the representation once the URL is shared.
+This simplicity in sharing promotes efficient collaboration and simplifies the communication of representation details, eliminating the need for complex sharing procedures.
+
+=== From the {editor}
+
+To share a representation in {product}, follow these steps:
+
+. Open the a representation from the explorer.
+. Click the `Share` button in the general toolbar at the top of the representation area.
+. Copy the link to your clipboard.
+
+image::hands-on-share-representation.png[Share representation]
+
+Anyone can use the shared link to directly access this specific representation.

@@ -1,0 +1,16 @@
+== Semantic Drag&Drop
+
+Users can select elements in the Explorer view and drag and drop them into their container Nodes in the diagram.
+This drag and drop doesn’t perform any semantic modification.
+Diagrams also allow semantic drag and drop of any element from the Explorer view (in the same resourceSet as the diagram) on the background of the diagram.
+
+Note that it's not possible to Drag and drop an element represented as an Edge on the diagram.
+
+
+== Graphical Drag&Drop
+
+User can select a node on the diagram and drag and drop it in an other container node.
+Only authorized containers are revealed on the diagram, forbidden targets are faded.
+When user try to drag and drop a node, the target container node is highlighted.
+
+image::manage-drag-drop-graphical.png[Graphical Drag and Drop]

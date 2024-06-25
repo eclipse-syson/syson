@@ -1,0 +1,89 @@
+= How to install {product}?
+
+This section delves into the detailed step-by-step instructions for installing {product}.
+Detailed explanations walk you through each step.
+
+[INFO]
+====
+Before you proceed with the installation, please ensure you have the following xref:requirements.adoc[prerequisites]:
+
+* xref:requirements.adoc[Java supported version]
+* https://www.docker.com/[Docker] installed, or an existing xref:requirements.adoc[supported database] installation with a user that has administrator privileges.
+====
+
+== Get {product}
+[#download]
+
+{product} is distributed as a single _executable Java Archive_ `JAR` which contains the complete {product} application along with all its dependencies.
+This distribution simplifies the setup process, enabling convenient exploration of {product}'s features.
+
+To download the latest pre-built JAR for {product}, follow these steps:
+
+. Before you begin the installation process, navigate to the {packages-url}[download] page for `{product-jar}` to access all versions.
+. Identify the {product} latest available version for download.
++
+image::latest-version.png[Latest version]
+. Click the latest version to open its specific page.
+. In the `Assets` section, locate the JAR file named `{product-jar}`.
++
+image::download.png[Download JAR file]
+. Click the JAR file to start the download to your local machine.
+
+This process ensures that you get the most recent version of the {product} application in the form of a pre-built JAR file.
+
+== Start the database instance
+
+{product} uses PostgreSQL as its database.
+
+[TIP]
+====
+For development or local testing, the simplest approach is to initiate a PostgreSQL instance using Docker.
+====
+
+[source, bash]
+----
+docker run -p 5434:5432 --name syson-postgres \
+                            -e POSTGRES_USER=dbuser \
+                            -e POSTGRES_PASSWORD=dbpwd \
+                            -e POSTGRES_DB=syson-db \
+                            -d postgres
+----
+
+[NOTE]
+====
+This may take a while the first time you run this as Docker will first pull the PostgreSQL image.
+====
+
+If you don't have Docker or prefer to use an existing PostgreSQL installation, modify the following command-line parameters and ensure the `POSTGRES_USER` possesses administrative rights on the database.
+These rights are necessary for the automatic creation of the database schema.
+
+[#start-app]
+== Start the application
+
+To run the application, you'll need to use the Java Runtime Environment (JRE) to execute the pre-build JAR ({product-jar}) you xref:how-tos/install.adoc#download[downloaded] earlier.
+
+Go to the folder containing the {product-jar} and run the command:"
+
+[source, bash]
+----
+java -jar syson-application.jar \
+          --spring.datasource.url=jdbc:postgresql://localhost:5434/syson-db \
+          --spring.datasource.username=dbuser \
+          --spring.datasource.password=dbpwd \
+          --spring.liquibase.change-log=classpath:db/changelog/syson.db.changelog.xml
+----
+
+== Open your web browser
+
+Navigate to http://localhost:8080 to experience {product}.
+
+[TIP]
+====
+To end your local testing session, ensure you stop the running PostgreSQL Docker container using the command `docker kill syson-postgres`.
+Please note that this will erase all the data you have generated during testing.
+====
+
+If you encounter any issues during the installation process, please refer to the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.
+
+== Other resources
+xref:installation-guide:how-tos/https.adoc[]

@@ -1,0 +1,134 @@
+= Prerequisites
+
+To offer a smooth and successful installation, your system must meet the required hardware and software requirements specified following.
+It outlines the recommended hardware specifications, operating systems, and other essential prerequisites for running {product}.
+
+Before installing {product}, make sure you have the right software and infrastructure to run it.
+These system prerequisites lay the foundation for optimal performance and capability, guaranteeing that {product} operates efficiently on your environment.
+Take a moment to review and align your system with the recommended specifications outlined after to offer a smooth installation and a robust user experience.
+
+[NOTE]
+====
+If a platform and version isn't listed on this page, it implies that this platform and version isn't tested, bugs fixed, or provided help for.
+====
+
+include::installation-guide:architecture.adoc[leveloffset=+1]
+
+[#server-req]
+== Server-side installation requirements
+
+To set up the {product} Server, it's crucial to meet the specific prerequisites that lay the groundwork for a stable and reliable server environment.
+
+[%noheader]
+|===
+|*Hardware*
+a|* For a small number of projects, less or equal to 10, and about 10-30 users, 100k semantic elements and 1000 representations in total: a recent server featuring a multi-core CPU clocked at 2 GHz and equipped with 4 GB of available RAM, along with a reasonably fast hard drive, 7200 Revolutions Per Minute - `RPM` or faster, should cater for your needs.
+** Required RAM: 4 GB
+** Recommended RAM *8 GB* or more
+** Required CPU: Dual-core processor
+** Recommended CPU: *Quad-core* processor
+** Disk space: *10 GB* for installation
+** *Supplementary disk* space for application data
+
+* To enhance performance further, it's advisable to follow {product} memory usage and assign more memory as needed.
+In scenarios where your system anticipates a large volume of concurrent requests, deploying {product} applications on a multi-core CPU machine becomes helpful.
+This strategy increases the concurrency of processing requests, leading to improved response times for your users.
+Adjusting memory allocation and leveraging multi-core capabilities contribute to optimizing the all system responsiveness.
+For more information, you can also see xref:user-manual:features/scaling-limits.adoc[Scaling {product}].
+
+|*Operating system*
+a|{product} operates purely on Java and should function on any supported operating system, given that it meets the JDK / JRE requirements.
+
+* Linux 64-bit, preferable distributions include Ubuntu, CentOS, or Red Hat Enterprise Linux.
+* Windows Server 64-bit, recommended versions include Windows Server 2016 or later : xref:anti-virus.adoc[Read antivirus] in {product} applications.
+|*Database*
+a|To connect your {product} instance to an enterprise database, you must install and configure one of the following supported databases:
+
+* *PostgreSQL 15*
+
+Verify that the server has a dedicated PostgreSQL database with administrator rights.
+|*Java Runtime Environment - `JRE`*
+a|You need to install and configure a separate JRE to run {product}, you have to install a supported version of the Java runtime:
+
+* Use *Java 17* to run the {product} Server.
+
+It's recommended to use the Java runtime provided by the https://adoptium.net/fr/temurin/releases/[Eclipse Temurin] project.
+
+|*Network Connectivity*
+|Stable internet connection for updates and communication with {product} Clients.
+|===
+
+[#client-req]
+== Client-side installation requirements
+
+{product} is browser-based software, which means you can run {product} on all full desktop operating systems : `MacOS`, `Windows`, `Linux`, or `Chrome OS`.
+
+=== Supported browsers
+
+Users can interact with the central server through following web browsers:
+
+[%noheader]
+|===
+a|*Desktop browsers:*
+
+* *Chrome* latest stable version
+* *Mozilla Firefox* latest stable version
+a|*Mobile browsers:*
+
+Note that {product} isn't supported on mobile devices.
+|===
+
+WARNING: {product} doesn't support Internet Explorer.
+
+[NOTE]
+====
+{product} supports a minimal screen resolution of 1024 * 768 with maximized browsers.
+====
+
+=== Supported operating system
+
+The minimal operating system - `OS` requirements are:
+
+* Windows 10 or later
+* Apple macOS 13.x Ventura and later
+* Any Linux operating system that supports the browsers mentioned earlier
+* Any Chrome operating system that supports the browsers mentioned earlier
+
+[NOTE]
+====
+You can find out what browser and operating system version you have on https://www.whatsmybrowser.org/[What's my Browser].
+====
+
+[CAUTION]
+====
+A plugin, add-on, or extension that you have installed in your browser could cause speed, upload, download, or various interface problem with {product}.
+To see if this is the case you can try disabling all plugins, add-ons, or extensions within your browser.
+====
+
+== Deployment recommendations
+
+=== Latency
+
+You should aim to offer a network with the lowest possible latency between the client and the server.
+
+=== Server and database latency
+
+To get optimal performance, it's strongly recommend hosting both the server and database on the same physical server to reduce latency between the two components.
+
+=== Network stability
+
+Virtual Private Network - `VPN` aren't recommended.
+It's a common latency factor such as other network elements that could drop connections that are more or less inactive.
+As such wireless connection are also not recommended as any loss of connectivity might lead to instability in the product and loss of data.
+If a network element of this kind is mandatory, use an SSH tunnel as a workaround to avoid client/server disconnections.
+
+=== Server isolation
+
+{product} should be the unique way to edit the information stored in the database.
+
+== Disclaimer
+
+{product} isn't warranted to run without any error or interruption.
+We don't make any warranty about the statements that are under the section <<Deployment recommendations>>, it's for information purposes.
+
+You acknowledge and accept the risks involved by using these products that could include without limitation, downtime, loss of connectivity or data, system crashes, bad performances or performance degradation.
