@@ -70,7 +70,7 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
           echo "CI=true" >> $GITHUB_ENV
-          npm ci
+          npm ci --loglevel verbose
           npm run build
 
       - name: Copy frontend artifacts
