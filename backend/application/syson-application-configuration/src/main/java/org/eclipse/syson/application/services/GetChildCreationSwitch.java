@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
@@ -141,6 +142,21 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         List<EClass> childrenCandidates = new ArrayList<>();
         childrenCandidates.add(SysmlPackage.eINSTANCE.getReferenceUsage());
         childrenCandidates.addAll(this.caseUsage(object));
+        return childrenCandidates;
+    }
+
+    @Override
+    public List<EClass> caseNamespace(Namespace object) {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        SysmlPackage.eINSTANCE.getEClassifiers().stream()
+                .filter(EClass.class::isInstance)
+                .map(EClass.class::cast)
+                .filter(eClass -> {
+                    return !eClass.isAbstract() && !eClass.isInterface();
+                })
+                .forEach(eClass -> {
+                    childrenCandidates.add(eClass);
+                });
         return childrenCandidates;
     }
 
