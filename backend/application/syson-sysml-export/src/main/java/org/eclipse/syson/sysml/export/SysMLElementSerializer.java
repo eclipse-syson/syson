@@ -93,6 +93,7 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.SelectExpression;
@@ -775,6 +776,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.append("return");
             this.appendDefaultUsage(builder, usage);
         }
+        return builder.toString();
+    }
+
+    @Override
+    public String caseRequirementDefinition(RequirementDefinition requirement) {
+        Appender builder = this.newAppender();
+
+        this.appendDefinitionPrefix(builder, requirement);
+
+        builder.appendSpaceIfNeeded().append("requirement def");
+
+        this.appendDefinitionDeclaration(builder, requirement);
+
+        this.appendChildrenContent(builder, requirement, requirement.getOwnedMembership());
+
         return builder.toString();
     }
 

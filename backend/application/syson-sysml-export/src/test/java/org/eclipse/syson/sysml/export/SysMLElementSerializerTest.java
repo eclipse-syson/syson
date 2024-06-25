@@ -66,6 +66,7 @@ import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.SubjectMembership;
@@ -1107,6 +1108,28 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("*", literalInf);
     }
 
+    @DisplayName("RequirementDefinition containing a SubjectMembership")
+    @Test
+    public void requirementDefinition() {
+        RequirementDefinition requirementDefinition = this.builder.createWithName(RequirementDefinition.class, "reqdef_1");
+
+        this.assertTextualFormEquals("requirement def reqdef_1;", requirementDefinition);
+
+        SubjectMembership subject = this.builder.createIn(SubjectMembership.class, requirementDefinition);
+
+        ReferenceUsage referenceUsage = this.builder.createWithName(ReferenceUsage.class, "subject_1");
+        subject.getOwnedRelatedElement().add(referenceUsage);
+
+        PartDefinition partDefinition = this.builder.createWithName(PartDefinition.class, "partD_1");
+        this.builder.setType(referenceUsage, partDefinition);
+
+        this.assertTextualFormEquals("""
+                requirement def reqdef_1 {
+                    subject subject_1 : partD_1;
+                }""", requirementDefinition);
+
+    }
+
     @DisplayName("UseCaseDefinition containing an ActorMembership, a SubjectMembership and an ObjectiveMembership")
     @Test
     public void useCaseDefinition() {
@@ -1326,15 +1349,15 @@ public class SysMLElementSerializerTest {
         /**
          * <pre>
          *package pack1 {
-
+        
             port def 'port 1';
-
+        
             interface int1 {
                 end p1 : 'port 1';
                 end p2 : \u007E'port 1';
                 attribute attr1;
             }
-
+        
         }
          * </pre>
          */
