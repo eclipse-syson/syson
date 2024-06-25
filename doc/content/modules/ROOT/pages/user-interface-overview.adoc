@@ -1,0 +1,23 @@
+= User interface overview
+
+Uncover the {product}'s user interface through a guided-tour and access helpful how-tos and tutorials.
+
+[cols="2*^", %noheader, frame=none, grid=none]
+|===
+a|image::travel_explore.svg[xref=user-manual:tour.adoc]
+
+*Tour the interface*
+
+Embark on a comprehensive exploration of {product}'s interface as this guide navigates you through the key features and functionalities
+
+xref:user-manual:tour.adoc[Explore now]
+
+ a|image::footprint.svg[xref=user-manual:hands-on/hands-on.adoc]
+
+*How-Tos and Tutorials*
+
+Step-by-step guides, ensuring users can adeptly learn essential tasks and use the potential of {product}
+
+xref:user-manual:hands-on/hands-on.adoc[Delve into] 
+
+|===

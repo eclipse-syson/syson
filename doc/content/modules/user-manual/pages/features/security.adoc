@@ -1,0 +1,26 @@
+= Security and compliance
+
+== Security
+{product} does'nt inherently implement any security features or compliance measures directly within the product.
+However, we understand that security and regulatory compliance are critical concerns for our users.
+If you are interested in how these topics can be addressed or have specific security and compliance requirements, please feel free to xref:ROOT:help.adoc[contact us] for further discussion and tailored solutions.
+
+* Authentication and Authorization: While {product} does'nt include built-in mechanisms for authentication or authorization, we recognize the importance of secure user management.
+We can offer guidance on integrating {product} with external authentication systems, including Single Sign-On (SSO).
+* Data Encryption: {product} itself does'nt offer encryption for data at rest or in transit.
+We can discuss potential approaches to secure data handling, including leveraging external encryption services or tools to protect sensitive information.
+* Audit Logging and Monitoring: Although {product} does'nt feature built-in logging or monitoring capabilities, we can assist you in setting up external tools to track user activities, monitor system performance, and support logs for security audits.
+* Data Integrity and Backup: {product} does'nt offer specific mechanisms for ensuring data integrity or performing backups.
+If these are critical for your use case, we're available to help you explore and integrate appropriate third-party solutions for data integrity checks and backup processes.
+* Secure Development Practices: While {product} does'nt enforce secure coding standards or vulnerability management practices, we can offer advice and recommendations on best practices for secure software development and maintenance.
+
+== Compliance
+
+{product} is dedicated to aligning with industry standards to ensure interoperability, flexibility, and future-proofing for our users.
+A key aspect of this commitment is our focus on compliance with the {sysmlv2} standard from the Object Management Group (OMG).
+
+The Systems Modeling Language ({sysml}) is a widely recognized standard used for modeling complex systems.
+{sysmlv2} represents the next evolution of this standard, aiming to offer enhanced capabilities for systems engineering and {mbse} (MBSE).
+
+{product} is committed to being compliant with the {sysmlv2} standard as soon as it's officially defined and released by the OMG.
+Our development team is closely monitoring the progress of the {sysmlv2} standardization process.

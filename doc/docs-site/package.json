@@ -1,0 +1,12 @@
+{
+    "private": true,
+    "dependencies": {
+        "@antora/assembler": "^1.0.0-alpha.6",
+        "@antora/cli": "~3.1.4",
+        "@antora/collector-extension": "^1.0.0-alpha.3",
+        "@antora/lunr-extension": "^1.0.0-alpha.8",
+        "@antora/pdf-extension": "^1.0.0-alpha.6",
+        "@antora/site-generator-default": "~3.1.4",
+        "@antora/site-generator-with-pdf-exporter": "git+https://gitlab.com/opendevise/oss/antora-site-generator-with-pdf-exporter#v2.3.0-alpha.2"
+    }
+}

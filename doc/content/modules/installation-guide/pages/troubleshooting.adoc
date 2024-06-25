@@ -1,0 +1,6 @@
+= Troubleshooting
+
+Even the most straightforward installation process can encounter unforeseen issues.
+This section offers comprehensive troubleshooting tips and solutions to common problems encountered during installation.
+
+If you encounter any troubleshooting, please xref:ROOT:help.adoc[contact us] to have solution and to share your troubleshooting to this page.

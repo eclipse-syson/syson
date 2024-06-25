@@ -1,0 +1,53 @@
+= {explorer}
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+The {explorer} presents a hierarchical view of all models and their contents within the project, displayed as a tree structure with expandable and collapsible items.
+
+image::editor-left-sidebar-explorer.png[{editor} Left sidebar Explorer]
+
+* *Models*: Represented by the models existing in the specific project.
+* *Semantic Elements*: Located within the models, these are instances of your business domain concepts, each with its own set of children.
+* *Representations*: If a particular semantic element has an associated representation, such as a diagram, it appears as a child of the semantic element.
+
+== {explorer} Toolbar
+
+At the top of the {explorer}, a toolbar provides quick access to essential actions:
+
+* xref:hands-on/how-tos/model-management.adoc#create-model[Add a Model]: Enables the creation of a new model within the project.
+* xref:hands-on/how-tos/model-management.adoc#upload-model[Upload a Model]: Allows users to upload and integrate an external model into the project.
+* xref:hands-on/how-tos/explorer.adoc#sync-editor[Synchronize Editor] with Explorer: Ensures alignment between the explorer view and the editor, providing a seamless and up-to-date navigation experience.
+
+== Selection
+
+Users can select any item in the {explorer}:
+
+* Selecting a *Semantic Element*: Displays its properties in the xref:features/details.adoc[Details] view.
+If the element is represented on an open representation, the corresponding element (node or edge if it's a diagram) is also selected, and the chosen element is selected in the editor.
+* Selecting a *Representation*: Opens it in a new tab or focuses on an existing tab where it was already open.
+
+== {explorer-menu}
+
+The *{explorer-menu}* (three-dots More menu) offers a set of relevant actions depending on the nature of the selected item.
+This menu provides functionalities based on the selected item:
+
+* For Models (Root Elements), users can:
+** xref:hands-on/how-tos/model-management.adoc#create-model[Create a new model].
+** xref:hands-on/how-tos/model-management.adoc#create-element[Create a new child element].
+** xref:hands-on/how-tos/model-management.adoc#download-model[Download the model].
+** xref:hands-on/how-tos/explorer.adoc#expand-all[Expand all the model].
+** xref:hands-on/how-tos/model-management.adoc#rename-model[Rename the model].
+** xref:hands-on/how-tos/model-management.adoc#delete-model[Delete the model].
+* For Semantic Elements, users can:
+** xref:hands-on/how-tos/model-management.adoc#create-element[Create a new child element].
+** xref:hands-on/how-tos/representation-operations.adoc#create-representation[Create a new representation].
+** xref:hands-on/how-tos/explorer.adoc#expand-all[Expand all the children].
+** xref:hands-on/how-tos/model-management.adoc#rename-element[Rename the element].
+** xref:hands-on/how-tos/model-management.adoc#delete-element[Delete the element].
+* For Representations, users can:
+** xref:hands-on/how-tos/representation-operations.adoc#rename-representation[Rename the representation].
+** xref:hands-on/how-tos/representation-operations.adoc#delete-representation[Delete the representation].
+
+== {explorer-filter-bar}
+
+The *{explorer-filter-bar}* in the {explorer} view provides the capability to highlight and xref:hands-on/how-tos/explorer.adoc#filter-explorer[filter tree items].

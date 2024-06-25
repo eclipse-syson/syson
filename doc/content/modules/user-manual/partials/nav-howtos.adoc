@@ -1,0 +1,8 @@
+// Reference all the files defined in the how-tos folder
+* How-Tos
+** xref:user-manual:hands-on/how-tos/project-management.adoc[]
+** xref:user-manual:hands-on/how-tos/model-management.adoc[]
+** xref:user-manual:hands-on/how-tos/representation-operations.adoc[]
+** xref:user-manual:hands-on/how-tos/user-interface-navigation.adoc[]
+** xref:user-manual:hands-on/how-tos/explorer.adoc[]
+** xref:user-manual:hands-on/how-tos/representations-view.adoc[]

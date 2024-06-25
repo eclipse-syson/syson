@@ -1,0 +1,35 @@
+= Support and resources
+
+Discover how to engage with the community, contribute to product development, access best practices, and seek professional support.
+
+[cols="2*^", %noheader, frame=none, grid=none]
+|===
+
+a|image::forum.svg[xref=user-manual:forum.adoc]
+
+**Forum**
+
+Meet the {product} community.
+
+xref:user-manual:forum.adoc[Join the forum] a|image::volunteer_activism.svg[xref=user-manual:contribute.adoc]
+
+**Contribute**
+
+Report bugs or submit feature requests?
+
+xref:user-manual:contribute.adoc[Contribute to {product}]
+
+a|image::editor_choice.svg[xref=user-manual:best-practices.adoc]
+
+**Best practices guides**
+
+Make the most out of {product}.
+
+xref:user-manual:best-practices.adoc[Learn more] a|image::best.svg[xref=user-manual:support.adoc]
+
+**Contact support**
+
+Gain access to enterprise-level support.
+
+xref:user-manual:support.adoc[Find help]
+|===

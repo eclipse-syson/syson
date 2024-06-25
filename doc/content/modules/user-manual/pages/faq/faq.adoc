@@ -1,0 +1,258 @@
+= Frequently Asked Questions
+
+Here are answers to questions we're often asked.
+If you have a question not addressed here, please xref:ROOT:help.adoc[contact us].
+
+== General questions
+
+.*What's {product}?*
+[%collapsible%open]
+====
+To understand the intent of {product}, see the xref:user-manual:what-is.adoc[What's?] section in the user manual.
+====
+
+.*What's the difference between {product} and other {sysml} modeling tools?*
+[%collapsible%open]
+====
+To understand the intent of {product}, see the xref:user-manual:what-is.adoc[What's?] section in the user manual.
+====
+
+.*What are the key features of {product}?*
+[%collapsible%open]
+====
+To discover the {product} features, see the xref:user-manual:key-features.adoc[Key features] section in the user manual.
+====
+
+.*What is your licensing model for your {sysmlv2} product?*
+[%collapsible%open]
+====
+{product} is a free and open source product xref:product-legal:index.adoc[licensed under the Eclipse Public License v2].
+====
+
+.*What are the supported {sysmlv2} modeling elements?*
+[%collapsible%open]
+====
+To explore the supported {sysmlv2} elements, read the xref:user-manual:features/features.adoc[Features] section in the user manual.
+====
+
+.*What are the supported diagram types?*
+[%collapsible%open]
+====
+To explore the supported {sysmlv2} views, read the xref:user-manual:features/features.adoc[Features] section in the user manual.
+====
+
+.*To what extent will your tool comply with the {sysmlv2} specification?*
+[%collapsible%open]
+====
+{product} aims at full compliance with the {sysmlv2} specification.
+{product} already implements the OMG {sysmlv2} metamodel, including both a built-in {sysmlv2} and {kerml} implementation.
+====
+
+.*To what extent will your tool comply with the Systems Modeling API & Services specification?*
+[%collapsible%open]
+====
+{product} aims at full compliance with the Systems Modeling API & Services specification.
+====
+
+.*To what extent will your tool support collaborative modeling with configuration management?*
+[%collapsible%open]
+====
+As a web application, {product} is inherently collaborative.
+However, it doesn't include a built-in Configuration Management (CM) tool.
+We believe that organizations and users should have the freedom to choose their preferred CM tools, and {product} is designed to be flexible enough to integrate with them.
+For those requiring professional support, we recommend referring to the xref:user-manual:support.adoc[Professional support] page for information about how to .
+====
+
+.*How do I create a new model?*
+[%collapsible%open]
+====
+To create a new model, read the xref:user-manual:hands-on/how-tos/model-management.adoc#create-model[Create a new model] section in the user manual.
+====
+
+.*Will you have a beta version for customers to try? If yes, when will it be available?*
+[%collapsible%open]
+====
+{product} is free and open source, it's already available to try, see xref:installation-guide:index.adoc[installation guide].
+====
+
+.*When do you plan to have a commercial version of your {sysmlv2} tool available and what capabilities will it support?*
+[%collapsible%open]
+====
+{product} is an open source project, and as such, there is no planned commercial version directly from the project itself.
+The focus is on fostering an open and collaborative development environment.
+The project provides updates and fixes on a best-effort basis, specifically targeting the latest release.
+
+For those requiring professional support, we recommend referring to the xref:user-manual:support.adoc[Professional support] page for information about how to obtain customized solutions and services that meet your specific needs.
+====
+
+.*Will other software products be needed to use the {sysmlv2} tool?*
+[%collapsible%open]
+====
+No.
+====
+
+.*What are the best practices for modeling complex systems with {product}?*
+[%collapsible%open]
+====
+You can find and contribute to the xref:user-manual:best-practices.adoc[best-practices] page in the documentation.
+====
+
+.*How do I learn more about {sysmlv2} modeling and best practices?*
+[%collapsible%open]
+====
+To learn more about {sysmlv2} modeling and best practices, explore the official https://www.omgsysml.org/SysML-2.htm[{sysmlv2} website from the OMG], join the xref:user-manual:help.adoc[{product} online community], and consider attending webinars and industry conferences.
+For hands-on learning, check out the xref:user-manual:hands-on/hands-on.adoc[{product} tutorials] and for more detailed guidance, refer to xref:user-manual:support.adoc[professional support options].
+====
+
+== Features and capabilities
+
+.*Is there a mobile version of {product} available?*
+[%collapsible%open]
+====
+{product} is a web application that can be accessed from mobile devices; however,it's optimized for use with a minimum screen resolution of 1024 * 768 in a maximized browser window.
+See xref:installation-guide:requirements.adoc[] for more details.
+====
+
+.*How does version control work in {product}?*
+[%collapsible%open]
+====
+{product} doesn't include built-in version control, allowing users to integrate their preferred solutions.
+For more details, see xref:user-manual:features/cm.adoc[].
+====
+
+.*Is there a limit to the number of projects or models I can create in {product}?*
+[%collapsible%open]
+====
+Yes, refer to the xref:user-manual:features/scaling-limits.adoc[scaling limits] page for more details.
+====
+
+.*How do I import and export models in {product}?*
+[%collapsible%open]
+====
+Read the xref:user-manual:integration/interoperability.adoc#import-export[] section of the documentation.
+====
+
+.*What collaboration features are available in {product}?*
+[%collapsible%open]
+====
+Read the xref:user-manual:features/collaboration.adoc[] page of the documentation.
+====
+
+== Integration with other tools
+
+.*Will the {sysmlv2} tool support textual notation?*
+[%collapsible%open]
+====
+{product} supports import and export with the textual notation.
+Certain information within {product} can be edited by using the textual notation.
+The team is currently working on integrating {product} with `SysIDE`, an open source textual editor for the {sysmlv2} syntax.
+====
+
+.*How do I import and export models?*
+[%collapsible%open]
+====
+To import /export models, read the xref:user-manual:integration/interoperability.adoc[Interoperability] section in the user manual.
+====
+
+.*How do I collaborate with others on models?*
+[%collapsible%open]
+====
+Read the xref:user-manual:features/collaboration.adoc[] section to learn more about how to collaborate using {product}.
+====
+
+.*How will models developed in your tool, be shared with other vendor {sysmlv2} tools? Are there any limitations we should be aware of?*
+[%collapsible%open]
+====
+We're fully compatible with the {sysmlv2} standard.
+Models can be shared using the {sysmlv2} textual notation and the {sysmlv2} API.
+====
+
+.*How will models in {sysmlv2} and models in {sysmlv1} co-exist?*
+[%collapsible%open]
+====
+{product} is a pure {sysmlv2} player.
+Currently, {sysmlv1} models can't coexist within {product}, but coexistence might be possible within your {sysmlv1} tool.
+====
+
+.*How do I integrate {product} with other tools or systems?*
+[%collapsible%open]
+====
+{product} is a specialized tool for {sysmlv2}, focusing on the latest standards and methodologies, offering robust compatibility with {sysmlv2} through features such as textual notation support for model import/export, full compliance with the {sysmlv2} API for seamless integration with other tools, and ongoing integration efforts with Capella for enhanced model interoperability.
+====
+
+.*How's your {sysmlv2} tool integrated with other products you offer?*
+[%collapsible%open]
+====
+{product} is designed to be a specialized tool for {sysmlv2}, focusing on the latest standards and methodologies.
+Currently, as an open source product, {product} is primarily focused on ensuring robust compatibility within the {sysmlv2} ecosystem.
+This includes integration capabilities such as:
+
+* Textual Notation Support: {product} supports importing and exporting models using the {sysmlv2} textual notation.
+This facilitates sharing and integration with other {sysmlv2} compatible tools.
+* {sysmlv2} API: {product} is fully compatible with the xref:user-manual:integration/api.adoc[{sysmlv2} API], allowing seamless interaction with other tools and systems that adhere to this standard.
+* Integration with Capella: We're working on establishing xref:user-manual:integration/capella.adoc[integration pathways with Capella], a comprehensive model-based engineering solution.
+
+This will enable users to leverage {product}'s {sysmlv2} capabilities alongside Capella's powerful system architecture modeling tools, ensuring model interoperability.
+====
+
+.*Will you have a method to convert {sysmlv1} models to {sysmlv2} models?*
+[%collapsible%open]
+====
+While addressing {sysmlv1} model support is currently beyond the scope of {product}, we acknowledge its potential as a valuable extension for the tool.
+We're open to collaborations with individuals or organizations interested in contributing to such extensions.
+We invite those who share our vision and are committed to enhancing {product}'s capabilities to xref:user-manual:help.adoc[contact us] to discuss potential partnerships.
+====
+
+== Troubleshooting
+
+.*How do I access professional support for {product}?*
+[%collapsible%open]
+====
+To access professional support for {product}, refer to the xref:user-manual:support.adoc[] page in the documentation, which provides comprehensive information about how to get help and the services available.
+====
+
+* xref:installation-guide:requirements.adoc[What are the recommended system requirements for {product}?]
+* xref:installation-guide:how-tos/https.adoc[]
+* xref:user-manual:contribute.adoc#reporting-issues[How do I report bugs or submit feature requests?]
+
+== Extend {product}
+
+.*How do I customize the user interface of {product}?*
+[%collapsible%open]
+====
+{product} is an open source product, providing users with the flexibility to customize the user interface based on their specific needs.
+Users can directly change the source code by forking the project and following the instructions in the developer guide to build their customized version.
+For users seeking professional help or customization services, feel free to xref:user-manual:support.adoc[contact us] for personalized help with your customization requirements.
+====
+
+.*How do I extend {product} with custom add-ons or extensions?*
+[%collapsible%open]
+====
+You can extend {product} with custom add-ons or extensions by using its modular architecture.
+Refer to the developer documentation for guidelines on xref:developer-guide:extend.adoc[creating and integrating new modules].
+For further help, consult the xref:user-manual:forum.adoc[community forum] or consider the xref:user-manual:support.adoc[professional support] options.
+====
+
+.*Does {product} provides a method?*
+[%collapsible%open]
+====
+No, {product} doesn't include a method by default.
+However, being based on https://eclipse.dev/sirius/sirius-web.html[Sirius Web], {product} is inherently extendable.
+Refer to the xref:user-manual:integration/extend.adoc[] page or xref:user-manual:help.adoc[contact us] for help.
+====
+
+.*Is it possible to generate documentation from {product} models?*
+[%collapsible%open]
+====
+Yes, {product} can integrate with model-to-text solutions such as https://www.m2doc.org/[M2Doc].
+Refer to the xref:user-manual:integration/extend.adoc[] page or xref:user-manual:help.adoc[contact us] for help.
+====
+
+== Additional resources
+
+* xref:ROOT:index.adoc[{product} documentation]
+* xref:user-manual:help.adoc[Community forums and support channels]
+* xref:user-manual:hands-on/hands-on.adoc[Tutorials and training resources]
+* xref:user-manual:integration/capella.adoc[How to integrate {product} with Capella?]
+* xref:user-manual:support.adoc[]
+* xref:installation-guide:how-tos/install.adoc[]

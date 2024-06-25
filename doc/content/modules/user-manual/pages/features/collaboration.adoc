@@ -1,0 +1,8 @@
+= Collaborative modeling
+
+Various solutions exist for collaborating with {product}.
+Explore different collaboration methods to enhance your teamwork and communication within {product}.
+
+* *Share Projects, Models, Diagrams*: Collaborating in {product} is a breeze with the ability to  xref:hands-on/how-tos/project-management.adoc#share-project[share projects], models, and xref:hands-on/how-tos/representation-operations.adoc#share-representation[diagrams].
+Sharing projects and models is as simple as providing a link, similar to the process of sharing diagrams.
+* xref:integration/interoperability.adoc[*Exchange* Projects or Models].

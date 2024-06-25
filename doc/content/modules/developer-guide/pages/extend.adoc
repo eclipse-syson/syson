@@ -1,0 +1,6 @@
+= Customization and extensions
+
+{product} is extendable, making use of an open source low-code platform called https://eclipse.dev/sirius/sirius-web.html{sw}.
+The platform enables the contribution of new specific views and the specific methodologies implementation.
+With {sw}, users can seamlessly extend {product}'s capability to meet their specific requirements, such as creating dedicated libraries or contributing specific metadata by adding new representations.
+Extensibility is a key strength of {product}, offering organizations the potential to enhance their System Engineering `SE` processes within the tool, ensuring consistency in modeling practices throughout their SE practitioners.

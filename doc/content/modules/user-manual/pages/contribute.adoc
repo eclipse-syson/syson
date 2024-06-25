@@ -1,0 +1,61 @@
+= Contribute
+
+== Make a difference
+
+{product}, being an open source project, encourages everyone to contribute to its development.
+You can contribute to {product} in different ways, including:
+
+* Joining the active community forum,
+* Identifying and reporting bugs,
+* Proposing new features,
+* Enhancing the documentation,
+* Writing comprehensive tests,
+* Fixing existing issues.
+
+== Get involved
+
+=== Joining the forum
+
+For any questions or inquiries, don't hesitate to contribute in the xref:user-manual:forum.adoc[forum] on GitHub.
+
+=== Sharing your feedback
+
+Your feedback is crucial to the continuous improvement of {product}.
+If you believe something is missing, meet strange behavior, or want to express your satisfaction with the current state, feel free to share your thoughts.
+
+[#reporting-issues]
+=== Reporting issues
+
+Bug reports are essential, so report any issues you meet.
+When reporting bugs, offer detailed descriptions, reproducible tests, example code, or any other relevant information that can aid in resolving the issue.
+
+The issue tracker is hosted on GitHub: {bug-url}.
+
+To submit a new issue, you'll need a GitHub account.
+For guidance on searching for issues, see GitHub's help page.
+
+=== Enriching the documentation
+
+Have you found errors or inconsistencies in the documentation?
+We welcome your contributions.
+
+{product}’s documentation can be found on GitHub: {source-code-url}/tree/main/doc.
+
+Clone the repository, update the documentation, and trigger a pull request.
+The documentation is written in AsciiDoc syntax, making it straightforward to contribute.
+Refer to the developer guide's Documentation section for insights into the documentation building process.
+
+== Contributing to the code
+
+{Product} leverages GitHub for code hosting, enabling straightforward retrieval and source-code builds.
+Clone the repository, make your modifications, align them with {product} requirements, and start a pull request.
+
+Follow the xref:developer-guide:index.adoc[developer guide] to gain insights into setting up your development environment and get started with contributing to the {product} codebase.
+
+Embark on your {product} contribution journey today.
+
+== Sponsoring {product}
+
+We invite organizations to join us in supporting the ongoing development and enhancement of {product}.
+Your sponsorship can help us expand the capabilities of this open source project, ensuring it continues to meet the needs of the system engineering community.
+If you are interested in sponsoring {product}, please xref:ROOT:support.adoc[reach out to us] to discuss sponsorship opportunities and how your support can make a difference.

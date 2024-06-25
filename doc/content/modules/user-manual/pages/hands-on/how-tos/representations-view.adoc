@@ -1,0 +1,15 @@
+= {representations-view}
+
+== Navigate thanks to the {representations-view} view
+
+. Open the {representations-view} view from the right sidebar.
+. In the view, you'll find a comprehensive list of all existing representations associated with the selected semantic object.
+. To access a representation, simply click on the respective entry in the list.
+
+image::hands-on-representations-view.png[Representations view]
+
+[NOTE]
+====
+Efficiently manage your representations by deleting them directly from the list.
+Click the Delete icon next to the representation name to remove it.
+====

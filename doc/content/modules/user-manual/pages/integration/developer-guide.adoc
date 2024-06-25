@@ -1,0 +1,46 @@
+= Developer guide
+
+This developer guide provides step-by-step instructions on how to set up your developer environment, contribute to the codebase, and enhance the capability of {product}.
+
+== Retrieving the source code
+
+{product} is built upon the https://eclipse.dev/sirius/sirius-web.html[Eclipse Sirius Web] project.
+{product} is licensed under the xref:product-legal:index.adoc[(EPL v2)] Open Source license
+The source code is openly available on GitHub:{source-code-url}
+
+To get the source code, clone the repository by using either SSH:
+
+[source, bash]
+----
+git clone git@github.com:eclipse-syson/syson.git
+----
+
+or HTTPS:
+
+[source, bash]
+----
+git clone https://github.com/eclipse-syson/syson.git
+----
+
+== Setting up your development environment
+
+. Download your coding environment https://spring.io/tools[Spring Tools 4.22.0]
+. Ensure that m2e version from your environment is 2.6.0
++
+image::environment-m2e-version.png[m2e version]
++
+. Retrieve the source code or fork it if you want to make contribution
+. Import _backend_ plugins from syson repository in your workspace
+. Update _settings.xml_ file from your _.m2_ folder to give access to other repositories during the build
+  To see dependance with access to add in _settings.xml_, have a look on _backend\application\syson-application\pom.xml_
+  You need to create https://github.com/settings/tokens[access tokens] on Github to complete _settings.xml_.
++
+image::environment-settings.png[settings file]
++
+. Right click _syson-services_ module and then _Properties>JavaBuildPath>Source_
+  Add _main/generated_ folder and remove _excluded_ content and former _antlr/grammar_
+  You should retrieve the following _Java build path_
++
+image::environment-java-build-path.png[Java build path]
++
+. Update Maven project by launching "ALT+F5" shortcut on all modules of your workspace

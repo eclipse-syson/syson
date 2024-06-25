@@ -1,0 +1,47 @@
+== Manage elements
+
+=== Create element
+
+User can create element **from the background** of the diagram from a simple click that displays toolbar.
+In this toolbar, element creation tool are grouped by type in tool section according to their type.
+User can expand the tool section and then user can click on the desired creation tool
+
+image::manage-elements-fromBackground-creation.png[Creation from Diagram Background]
+
+User can also create element **in other element**.
+User just clicks on the element to display the toolbar and then click on the desired creation tool.
+
+image::manage-elements-fromElement-creation.png[Creation from Diagram Element]
+
+All created element are collapsed by default, it means that if a node with compartment is created, compartment are hidden.
+
+If node contains **compartment**, user can add element in the desired compartment by clicking in the compartment and display the toolbar.
+
+image::manage-elements-fromCompartment-creation.png[Creation from Compartment]
+
+An other way is to click on the parent node header of the compartment.
+A toolbar will be display and the user can click on the desired creation tool, new element will be created in the appropriate compartment.
+
+image::manage-elements-fromParentCompartment-creation.png[Creation from Parent Compartment]
+
+=== Delete element
+
+User can only delete a graphical element from the diagram without removing it from the model.
+User should just click on _Delete from diagram_ button in the palette.
+
+image::manage-elements-delete-from-diagram.png[Delete from diagram]
+
+User can also remove element from model (and so from diagram) by clicking on _Delete from model_ button in the palette.
+
+image::manage-elements-delete-from-model.png[Delete from model]
+
+A confirmation dialog appears when an element is deleted via the _Delete from model_ tool in the palette or via the Model Explorer.
+This behavior can be disabled by checking the "Disable this confirmation dialog" checkbox in the dialog.
+
+image::manage-elements-semantic-deletion.png[Semantic Deletion]
+
+[TIP]
+====
+This preference is stored in the local storage of the browser.
+You can reset it by deleting the SysON data in cache of your browser.
+====

@@ -1,0 +1,4 @@
+* xref:user-manual:forum.adoc[]
+* xref:user-manual:contribute.adoc[]
+* xref:user-manual:best-practices.adoc[]
+* xref:user-manual:support.adoc[]

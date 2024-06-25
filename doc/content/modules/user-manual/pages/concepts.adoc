@@ -1,0 +1,45 @@
+= Key concepts and terminology
+
+Read this to get a comprehensive exploration of the fundamental principles that shape the capability of {product} offering essential insights into its core foundations.
+
+== Project
+
+In {product}, a *Project* serves as a high-level container that organizes <<Model,models>>.
+You can use projects to group models, providing a structured and efficient way to manage your content.
+
+[NOTE]
+====
+It's important to note that creating sub-projects within a project isn't supported.
+====
+
+[NOTE]
+====
+All models exist at the same level within a project.
+====
+
+This design ensures simplicity and clarity in organizing and accessing your models, fostering a straightforward and intuitive project management experience.
+
+[IMPORTANT]
+====
+In {product}, projects are _public_.
+Public projects are visible by everyone.
+====
+
+== Model
+
+In {product}, a model represents a comprehensive and structured representation of a system, capturing its various aspects, components, and relationships.
+These models serve as fundamental building blocks for organizing and articulating the design, behavior, and structure of a system.
+Notably, all models within {product} adhere to the {sysmlv2} language metamodel, ensuring compliance with standardized specifications.
+This adherence to the {sysmlv2} metamodel enhances interoperability, consistency, and compatibility across the modeling landscape, making models integral components for effective system engineering and collaborative project development.
+
+xref:user-manual:features/sysmlv2-overview.adoc[Discover the {sysmlv2} language...]
+
+== Representation
+
+In the context of {product}, a representation serves as a visual depiction or interpretation of a system, capturing specific aspects and viewpoints.
+Essentially, it's one of the possible views within the {sysmlv2} framework.
+Representations offer a means to illustrate and communicate diverse facets of a system, aiding in the comprehensive understanding of its structure, behavior, and relationships.
+These visual depictions play a pivotal role in model-based systems engineering, offering a nuanced and graphical approach to convey complex information in a more visible manner.
+Each representation within {sysmlv2} contributes to building a holistic understanding of a system's architecture and design.
+
+xref:features/features.adoc[Explore features...]

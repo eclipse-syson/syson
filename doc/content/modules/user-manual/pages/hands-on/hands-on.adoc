@@ -1,0 +1,10 @@
+= How-Tos and Tutorials
+
+Explore a variety of how-tos to enhance your experience with {product}.
+Whether you are a new user or looking to expand your skills, these step-by-step guides cover essential tasks such as creating blank projects, utilizing project templates, uploading existing projects, and more.
+Each how-to is designed to provide clear instructions, making it easy for users to navigate through various features and functionalities within the platform.
+
+
+include::user-manual:partial$nav-howtos.adoc[leveloffset=+1]
+
+include::user-manual:partial$nav-tuto.adoc[]

@@ -1,0 +1,16 @@
+= APIs
+
+== {sysmlv2} Standard API
+
+[NOTE]
+====
+The SysML v2 API is unavailable.
+For interoperability with {product}, use the provided file exchange format.
+====
+
+{product}'s vision includes a dedicated commitment to interoperability, with a future-oriented perspective on supporting standard APIs for seamless connections with a diverse array of modeling resources.
+While the implementation of standard APIs is an aspect under consideration for future development, {product} aims to offer a foundation for fluid collaboration between different tools within the {mbse} - `MBSE` landscape.
+
+As {product} progresses, these future developments in interoperability will further solidify its role as a collaborative platform, fostering an interconnected environment for `MBSE` practitioners.
+
+The ongoing commitment to incorporating standard APIs and {sysmlv2} textual specifications underscores {product}'s dedication to providing users with a versatile and interoperable modeling solution.

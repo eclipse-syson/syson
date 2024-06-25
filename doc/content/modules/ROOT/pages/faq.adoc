@@ -1,0 +1,14 @@
+= Frequently Asked Questions
+
+Find answers to questions we're frequently asked.
+
+[cols="1*^", %noheader, frame=none, grid=none]
+|===
+a|image::travel_explore.svg[xref=user-manual:faq/faq.adoc]
+
+*FAQ*
+
+Explore answers to questions we're frequently asked.
+
+xref:user-manual:faq/faq.adoc[Explore]
+|===

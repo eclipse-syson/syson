@@ -1,0 +1,10 @@
+= MBSE capabilities
+
+== MBSE methodologies
+
+{mbse} - `MBSE` methodologies offer structured approaches for developing system models to manage complex engineering challenges.
+While {product}, doesn't come bundled with a specific methodology out-of-the-box, it offers a flexible platform for implementing various `MBSE` methodologies tailored to specific project needs.
+With its xref:developer-guide:extend.adoc[extensibility and customization capabilities], users can integrate to {product} diverse `MBSE` methodologies, ranging from traditional approaches to specific practices.
+As {product} is based on {sw}, users can design and implement `MBSE` methodologies, empowering teams to model, analyze, and manage complex systems throughout the engineering lifecycle.
+
+include::user-manual:features/collaboration.adoc[leveloffset=+1]

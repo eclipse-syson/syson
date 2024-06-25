@@ -1,0 +1,19 @@
+= Security policy
+
+{product} is an open source project maintained by a community of dedicated contributors.
+While we strive to ensure the highest security standards, our support and maintenance are provided on a best-effort basis.
+
+Here are the key points of the {product} security policy:
+
+* Supported Versions: We don't officially designate specific versions as supported or unsupported.
+The efforts are focused on maintaining and improving the latest release.
+* Issue Handling: Security fixes and updates are applied only to the latest release.
+Users are encouraged to upgrade to the latest version to benefit from the latest security enhancements and fixes.
+* Professional Support: For users with specific security needs or who require support beyond the community-driven efforts, we recommend seeking professional support.
+This can offer dedicated help and tailored solutions to meet your unique requirements.
+
+If you have specific security concerns or need more in-depth support, please consider professional services that can offer comprehensive security solutions and ongoing maintenance for your {product} deployment.
+
+== Reporting a vulnerability
+
+You can report a vulnerability by contacting us through the xref:user-manual:support.adoc[support] page.

@@ -1,0 +1,165 @@
+= 2024.5.0
+
+== Key highlights
+
+- *Expanded Diagram and Model Support*: We've significantly expanded our support for various views, including the addition of representations for use cases, occurrences, and allocations.
+This enhancement provides more comprehensive tools to visualize and manage {sysmlv2} models.
+This includes the addition of diagrams for use cases, occurrences, and allocations.
+- *Improved User Experience*: We've improved how elements are displayed, particularly in terms of ports and compartments.
+These enhancements ensure a clearer and more intuitive user interface.
+- *Increased Stability and Reliability*: We've addressed several key bugs and stability issues including fixing problems with diagrams and import capabilities.
+These improvements help maintain the integrity and accuracy of semantic data.
+- *First Export Capability*:  Our enhanced integration of SysIDE now supports better integration of the {sysmlv2} format.
+We're now able to export projects in the standard textual format, facilitating easier data sharing and compatibility with other industry-standard tools.
+This promotes better data exchange and collaboration.
+
+== Breaking changes
+
+- The `requirement-view` diagram has been introduced by error in the last release.
+This diagram isn't defined in the SysMLv2 specification.
+It has been deleted in this release.
+
+== Dependencies update
+
+- Switch to https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.5.0[Sirius Web v2024.5.0]
+- Switch to @ObeoNetwork/gantt-task-react 0.4.9
+- Add dependency to org.apache.commons.commons-text 1.10.0
+
+== Bug fixes
+
+- The "Add existing elements (recursive)" has been modified to work on `PartUsage`.
+- From {iv} diagram, attributes compartment has been added in children `PartUsage` nodes.
+
+image::release-notes-attribut-compartmen-interconnection-view.png[Attribute compartment from {iv}]
+
+- No error is raised anymore when setting a valid new value (with primitive type) in the Details view.
+- The body feature of a `Comment` remove now the "/\*" and "*/" characters while importing a model from Sysml textual format.
+- All `Memberships` are now contained in their parent through `ownedRelatedElement` instead of `ownedRelationship` reference.
+- Rename action from explorer is now renaming tree items as expected.
+- `EnumerationDefinition` is now created with a default name.
+
+image::release-notes-enumeration-definition.png[Enumeration definition node]
+
+- "Add existing element (recursive)" action has been updated to create child nodes for nested and owned usages at the root of the diagram.
+- While importing some of the standard examples, there are no more exception mainly when some of examples are linked to non resolved elements.
+- Hide capabilities have been restored and improved in the palette.
+It's now possible to hide a node but also all its content (recursive) or symply direct content (Shhow valued content action).
+
+image::release-notes-hide-capabilities.png[Restore and Improve hide capabilities]
+
+- `Namespace.getImportedMemberships` method now prevents name collisions as stated in the specification ({kerml} 7.2.5.4 Imports).
+-  Non end Usages have been removed from AllocationDefinition ends compartment.
+
+image::release-notes-ends-compartment-AllocationDefinition.png[Ends compartment from AllocationDefinition]
+
+- Circular containment of nested parts including self containment are now forbidden.
+
+image::release-notes-avoid-nestedPart-cycle.png[Avoid nested part cycle]
+
+- Time performance has been improved when using `Become nested part` edge creation tool.
+- `state transition` and `actions` compartments are now available on `StateDefinition` and `StateUsage` node.
+
+image::release-notes-state-transition-cpt.png[State transition compatment]
+
+- Inherited features in compartments don't display itself anymore.
+
+image::release-notes-inherited-feature-cpt.png[Inherited features in compartments]
+
+- `Add existing element (recursive)` behavior has been modified to be more robust and avoid potential exception, mainly the display of nested domain-based edge on State transition view diagram.
+
+== Improvements
+
+- Composite usages are now forbidden inside `PortDefinition`/`PortUsage`.
+- Composite usages are now forbidden inside `AttributeDefinition`/`AttributeUsage`.
+- Explicit usage of `node` to call SysIDE JavaScript file has been added.
+
+- `Membership`#visibility attribute has been added to `Core` properties in the Details view.
+
+image::release-notes-membership-visibility.png[Membership visibility in Details view]
+
+- `PortUsage`#direction attribute has been added to `Core` properties in the Details view.
+
+image::release-notes-port-direction.png[Port direction in Details view]
+
+- `Definition`/`Usage` node are now collapsed by default in {gv} & {afv} diagrams.
+- `Definition`/`Usage` nodes are expanded in all diagrams when a compartment item is created.
+- All elements are now represented with their icon.
+- Label is now positioned from inside to outside for `Ports` (Border Nodes).
+
+image::release-notes-port-label.png[Port label]
+
+- {gv} diagrams can now be created on any `Namespace` element.
+
+- Instead of revealing all compartments of a node when user creates a child in one compartment, only the compartment parent of the child to create is revealed.
+Other compartments visibility doesn't change.
+
+image::release-notes-reveal-compartments.png[Reveal compartment]
+
+- It's now possible to create {iv} diagrams on any `Usage`/`Definition` element.
+- A new compartment with a free-form layout inside the `ActionUsage` and `ActionDefinition` nodes is now available.
+Thanks to this compartment, user can separate `Action` nodes and connect them by using edges.
+
+image::release-notes-action-in-compartment.png[Action in compartment]
+
+- Remove button is now available on containment edges.
+
+image::release-notes-delete-containment-edge.png[Remove containment edge]
+
+- "Add existing elements" tools have been added on `State` and `StateDefinition` graphical elements.
+
+image::release-notes-add-existing-element-on-state.png[Add existing elements on state]
+
+== New features
+
+- Compartments of `RequirementDefinition` and `RequirementUsage` have been redesigned to better fit the specification and examples.
+
+image::release-notes-requirements.png[Requirements]
+
+- "Become nested" edge creation tools has been added for `AttributeUsage`, `ItemUsage`, `PartUsage` and `PortUsage` nodes.
+
+image::release-notes-become-nested-attribute.png[Become nested attribute edge tool]
+
+- Creation tools (mainly `AttributeUsage`, `PartUsage`, `PortUsage` `ItemUsage`) have been addded in `ActionUsage`, `ConstraintUsage`, `InterfaceDefinition`, `RequirementDefinition` and `PortUsage`.
+- `UseCaseDefinition` and `UseCaseUsage` elements are now handled in {gv}.
+
+image::release-notes-handle-usecase.png[Handle Usecase elements]
+
+- Composite edges between `Usage` and compartment content have been added to link nested `Actions` with its `Action`, nested `Constraints` with its `Constraints` and nested `Constraints` with its `Requirement`.
+
+image::release-notes-nested-composite-edge.png[Nested composite edge]
+
+- `OccurrenceDefinition` and `OccurrenceUsage` elements are now handled in {gv}.
+
+image::release-notes-handle-occurence.png[Handle occurrence elements]
+
+- Reconnection tools have been added for composition edges.
+- `AllocationDefinition` and `AllocationUsage` elements are now handled in {gv}.
+
+image::release-notes-handle-allocation.png[Handle allocation elements]
+
+- A service that serializes a {sysml} element to its textual representation defined by the OMG Standard is now available and used in export capability.
+
+- `ConjugatedPortDefinition` is now handled in diagrams, `Explorer` and Details View.
+
+- It's now possible to create and manipulate Interface edges in {iv} diagram.
+
+image::release-notes-interface-usage.png[Interface Usage]
+
+- {stv} diagrams are now available on `Package` elements.
+- Inherited features are now taken into account in features compartments.
+
+image::release-notes-inherited-feature.png[Inherited feature]
+
+- `AcceptAction` elements are now handled in {gv} diagram.
+
+image::release-notes-accept-action.png[Accept Action Usage]
+
+- `PortUsage` in Interconnection View are now represented with rotative image.
+Whatever its border support, the `PortUsage` node is always represented by an arrow pointing inside the parent node.
+
+image::release-notes-rotative-image.png[Rotative image]
+
+- It's now possible to represent and handle `Succession` edges between `Actions` in {gv} diagram, from background diagram but also from action flow compartment.
+
+image::release-notes-succession-edge.png[Succession]
+

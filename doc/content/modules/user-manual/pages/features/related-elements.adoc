@@ -1,0 +1,13 @@
+= {related-elements}
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+For a more focused exploration, delve into the {related-elements} view.
+
+image::relatedElements-right-sidebar-related-elements.png[{related-elements}]
+
+This feature offers a contextual perspective on the  selected element.
+
+* The view showcases elements that reference (point to) the selection in the `Incoming` category.
+* Conversely, it reveals elements to which the selection refers in the `Outgoing` category.
+* Additionally, the `Current` category provides insights into the selection's position within the model hierarchy, highlighting its parents and children.

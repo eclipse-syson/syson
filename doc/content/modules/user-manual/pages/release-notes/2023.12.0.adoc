@@ -1,0 +1,27 @@
+= 2023.12.0
+
+== Key highlights
+
+- 🏆 Initial release!
+
+== Dependencies update
+
+{product} is based on:
+
+* https://github.com/eclipse-sirius/sirius-web/releases/tag/v2023.12.4[Sirius Web v2023.12.4]
+* https://github.com/Systems-Modeling/SysML-v2-Release/blob/2023-11/doc/2a-OMG_Systems_Modeling_Language.pdf[OMG {sysmlv2} Language Specification Preliminary Revision 2023-11]
+
+== New and improved
+
+* *Key features*: Basic {sysmlv2} views ({gv}, {iv}), see the xref:user-manual:key-features.adoc[Key features] section.
+* *Installation Instructions*: Detailed xref:installation-guide:index.adoc[installation guideline] is provided in the project's documentation, guiding users through the setup process.
+* *Documentation*: Comprehensive xref:ROOT:index.adoc[documentation] is readily available, covering installation and usage of {product}.
+* *Contributing Guidelines*: Guidelines are outlined for xref:user-manual:contribute.adoc[contributing] to the project, including xref:ROOT:help.adoc[submitting bug reports and feature requests].
+* *Contact us*: The project's GitHub repository, issue tracker, and discussion serve as primary channels for communication and xref:ROOT:help.adoc[support].
+
+We warmly invite users to explore {product}, experiment with its features, and provide valuable feedback to assist us in its continuous improvement.
+
+== Know issues
+
+You can find a list of the known issues (with workaround where relevant) being investigated by our engineering team on the {bug-url}[{product} Issue Tracker].
+A detailed list of all project changes is available at: {changelog-url}.

@@ -1,0 +1,34 @@
+# Documentation best practices
+
+One sentence per line.
+Use asciidoc attributes to reference elements of the application UI.
+Use asciidoc attributes to reference URL.
+For reference to menus, key on the keyboard... use `backticks`.
+Use + on new line in table to force a new line
+
+
+Decide what you are saying and how: Define the kind of narrator, your tone and your mood
+Repeat yourself: a tutorial will have a brief introduction to what you’re going to do, then the actual procedure, and finally a way for you to verify that you’ve done the thing correctly
+Avoid using demonstrative pronouns: Instead of saying “this” or “that,” you should add a noun to spell out exactly what you’re referring to.
+Simplify: strive to get to the point as quickly as possible
+When writing instructions, anywhere you say “You/We should X” or “You/we can X,” replace it with the imperative mood of the verb.
+Instead of using constructions with “of” or “for,” rewrite the sentence to put more information before the noun.
+Break up long sentences into multiple shorter sentences.
+Eliminate passive voice
+Don’t use adverbs
+Don’t assume knowledge : Spell out acronyms on first use. Add a phrase or a sentence briefly explaining a concept when you introduce it. Link out to further reading.
+Be aware of your tone
+Avoid jargon and cliches
+Make use of whitespace
+
+# Vale
+We use vale, it is a linter for prose
+
+# Antora use
+* Ensure that docker is launch
+## on linux
+* Launch the script SysON\doc\generate.bash in a terminal
+## on Windows
+* Lunch the script SysON\doc\local-generation.ps1 in a Windows Power shell console
+## Result
+* Generation result is available in SysON\doc\docs-site\build\site

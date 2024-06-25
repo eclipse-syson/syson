@@ -1,0 +1,5 @@
+Optional; Reserved
+
+Directory that contains AsciiDoc files that can be inserted into the files stored in pages.
+These files aren’t converted to HTML by Antora directly.
+Instead, they must be referenced by an include directive in a page in the pages directory.

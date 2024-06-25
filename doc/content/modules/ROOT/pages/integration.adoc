@@ -1,0 +1,30 @@
+= Integration and APIs
+
+Explore integration possibilities and access APIs for seamless interaction with other systems.
+
+[cols="3*^", %noheader, frame=none, grid=none]
+|===
+a|image::hub.svg[xref=user-manual:what-is.adoc]
+
+**How does {product} integrate with other tools?**
+
+Integration between {product} and the {mbse} - `MBSE` ecosystem.
+
+xref:user-manual:integration/interoperability.adoc[Integrate with {product}]
+
+a|image::tap_app.svg[xref=user-manual:key-features.adoc]
+
+**What APIs exist and how do you use them?**
+
+Standard APIs support for seamless connections.
+
+xref:user-manual:integration/api.adoc[Delve into]
+
+a|image::globe.svg[xref=user-manual:what-is.adoc]
+
+**Capella and {product}?**
+
+Integration between {product} and Capella.
+
+xref:user-manual:integration/capella.adoc[Learn more]
+|===

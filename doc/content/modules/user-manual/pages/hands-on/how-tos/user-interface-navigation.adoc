@@ -1,0 +1,43 @@
+= User Interface Navigation
+
+[#switch-left-sidebar]
+== Access {explorer} / {validation} views from the left sidebar
+
+To seamlessly switch between the Explorer view and the Validation view in the left sidebar of {product}, use the following steps:
+
+. Locate the vertical bar with icons on the left side of the interface.
+. Identify the icons corresponding to the `Explorer` and `Validation` views.
+. Click on the `Explorer` icon to switch to the Explorer view or click on the `Validation` icon to switch to the Validation view.
+
+image::hands-on-switch-left-side-bar.png[Switch left side bar]
+
+[NOTE]
+====
+By clicking on the respective icons, you can easily toggle between the Explorer and Validation views, allowing you to navigate through project elements and examine validation results with convenience.
+====
+
+[NOTE]
+====
+The sidebar can be toggled by clicking on the icon of the active view.
+====
+
+[#switch-right-sidebar]
+== Access {details} / {representations-view} / {related-elements} views from the right sidebar
+
+To seamlessly switch between the Details, the Representations and the Related Elements views in the right sidebar of {product}, use the following steps:
+
+. Locate the vertical bar with icons on the right side of the interface.
+. Identify the icons corresponding to the desired view.
+. Click on the icon to switch to the view.
+
+image::hands-on-switch-right-side-bar.png[Switch right side bar]
+
+[NOTE]
+====
+By clicking on the respective icons, you can easily toggle between the views, allowing you to navigate through element properties, representations attached to the element or related semantic elements with convenience.
+====
+
+[NOTE]
+====
+The sidebar can be toggled by clicking on the icon of the active view.
+====

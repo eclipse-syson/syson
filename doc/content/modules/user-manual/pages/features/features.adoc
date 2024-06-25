@@ -1,0 +1,3 @@
+= Features and capabilities
+
+include::user-manual:partial$nav-features.adoc[]

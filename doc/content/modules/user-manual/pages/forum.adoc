@@ -1,0 +1,10 @@
+= Forum
+
+Find relevant posts or answers.
+No solution yet to your concern?
+Come and ask your question.
+
+Connect to the {product} community by participating in the forum: {forum-url}
+
+Share insights, seek help, and engage in discussions with fellow users.
+Join the forum to be a part of the growing {product} community and stay informed about the latest updates and best practices.

@@ -1,0 +1,22 @@
+= Introduction
+
+Get to know the basics of {product}.
+
+[cols="2*^", %noheader, frame=none, grid=none]
+|===
+a|image::icon_syson_black.svg[xref=user-manual:what-is.adoc]
+
+**What's {product}?**
+
+{product}'s mission to offer {sysmlv2} authoring tool for everyone.
+
+xref:user-manual:what-is.adoc[Meet {product}]
+
+a|image::key-features.svg[xref=user-manual:key-features.adoc]
+
+**Key features in {product}**
+
+Explore {product} key features and benefits.
+
+xref:user-manual:key-features.adoc[Discover more]
+|===

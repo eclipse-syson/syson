@@ -1,0 +1,6 @@
+=  Integration with other tools
+
+Within {product}, the application of {sysmlv2} extends beyond the conventional boundaries of a modeling tool, assuming a pivotal role as a catalyst for effective {mbse} - `MBSE`.
+{product} emphasizes its commitment to being an open source tool, fostering an environment of interoperability that holds profound importance in the realm of `MBSE`.
+
+include::user-manual:partial$nav-integration.adoc[]

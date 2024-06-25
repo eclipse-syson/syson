@@ -1,0 +1,79 @@
+= {editor}
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+== What's the {editor}?
+
+The **{editor}** page serves as the primary workspace for editing project content.
+
+== Find your way around
+
+For those new to {product}, the initial experience with the application might feel a bit challenging.
+To help you navigate seamlessly and Kickstart collaboration with your team, we provide a guided tour for you to familiarize yourself with the platform.
+
+The {editor} features four distinct regions: a <<Toolbar>>, a <<Left sidebar>>, a main <<Editor>>, and a <<Right sidebar>>.
+The layout has been simplified to ensure a clear understanding of the content within each section.
+
+image::editor.png[{editor}]
+
+=== Toolbar
+The toolbar houses a selection of actions categorized into three groups: _Homepage_, _Project Actions_ (with the name of the project) and _Help_.
+
+image::editor-toolbar.png[{editor} Toolbar]
+
+include::user-manual:partial$homepage-action.adoc[leveloffset=+3]
+
+[#project-actions]
+==== Projects actions
+
+Access project-level actions such as _xref:hands-on/how-tos/project-management.adoc#rename-project[rename]_, _xref:hands-on/how-tos/project-management.adoc#download-project[download]_, access project _xref:hands-on/how-tos/project-management.adoc#project-settings[settings]_, _xref:hands-on/how-tos/project-management.adoc#delete-project[delete]_.
+
+image::editor-projectActions.png[{editor} Project Actions]
+
+For further actions, see: xref:hands-on/hands-on.adoc[].
+
+include::user-manual:partial$help-action.adoc[leveloffset=+3]
+
+=== Left sidebar
+
+The left sidebar has different views such as the xref:features/explorer.adoc[{explorer}] and the xref:features/validation.adoc[{validation}] to assist you working on your project.
+
+[NOTE]
+====
+The left sidebar provides information related to the project.
+====
+
+[%noheader]
+|===
+a|image::editor-left-sidebar-explorer.png[{editor} Left sidebar Explorer] a|image::editor-left-sidebar-explorer.png[{editor} Left sidebar Validation]
+|===
+
+xref:hands-on/how-tos/user-interface-navigation.adoc#switch-left-sidebar[Explore the left sidebar...]
+
+=== Editor
+
+The main area to edit your models and representations.
+You can open as many editors as you like.
+The {editor} area has one or more editors.
+
+image::editor-editor.png[{editor} Main Editor]
+
+Discover the diverse range of representation options available and find the most suitable ones for your specific modeling needs.
+
+xref:features/features.adoc#sysmlv2-views[Explore various types of representations...]
+
+=== Right sidebar
+
+The right sidebar contains different views such as the xref:features/details.adoc[{details}], the xref:features/representations-view.adoc[{representations-view}] and the xref:features/related-elements.adoc[{related-elements}] views to ...
+
+[NOTE]
+====
+The content of the right sidebar depends on the current selection.
+====
+
+[%noheader]
+|===
+a|image::editor-right-sidebar-details.png[{editor} Right sidebar Details] a|image::editor-right-sidebar-representations.png[{editor} Right sidebar Representations] a|image::editor-right-sidebar-related-elements.png[{editor} Right sidebar Related Elements]
+|===
+
+xref:hands-on/how-tos/user-interface-navigation.adoc#switch-right-sidebar[Explore the right sidebar...]

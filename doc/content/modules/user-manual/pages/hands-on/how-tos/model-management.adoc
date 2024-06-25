@@ -1,0 +1,289 @@
+= Model management
+
+[#create-model]
+== Create a new model
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+To create a model, follow these steps from the explorer toolbar:
+
+. Open the Project Editor.
+. Click the `New model` action in the explorer toolbar.
+. Complete the model name.
+. Choose the model type.
+. Click the `Create` button.
+
+image::hands-on-new-model.png[Create New Model]
+
+Upon creation, the new model appears in the {explorer}.
+
+image::hands-on-new-model-result.png[New Model result]
+
+[#upload-model]
+== Upload a model
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+[NOTE]
+====
+Only models exported in the specific JSON format recognized by {product} can be re-uploaded by using the upload action.
+Ensure that your models are exported using the xref:hands-on/how-tos/model-management.adoc#download-model[Download Model] action to enable successful re-uploading to {product}.
+====
+
+To upload a model from a file previously exported, follow these steps:
+
+. Go to the {editor}.
+. Open the {explorer} view.
+. Click the `Upload` button at the top of the {explorer} in the toolbar.
+. It opens the `Upload Model` modal.
+. Select a model from your file system.
++
+image::hands-on-upload-model.png[Upload model]
++
+. The uploaded model is automatically created and opened.
+
+[#rename-model]
+== Rename a model
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+You can update the model name from the {explorer}:
+
+. Click the {explorer-menu} next to the model in the {explorer}.
+. Select the `Rename` option.
+. Update the name in the editable field.
+. Click `Rename`.
+
+[#delete-model]
+== Delete a model
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+[WARNING]
+====
+Deleting a model and its content is a significant action, and it's important to note that the entire model, along with its contents, is permanently removed.
+This includes all associated semantic elements, representations, and any other data within the model.
+Exercise caution when performing this operation, as it can't be reversed.
+====
+
+[NOTE]
+====
+The deletion affects everyone.
+====
+
+To delete a model, follow these steps:
+
+. Select the model in the {explorer}.
+. Open the {explorer-menu} next to the model.
+. Click `Delete`.
+
+image::hands-on-delete-model.png[Delete model]
+
+A confirmation dialog appears when the model is deleted via the Model Explorer.
+This behavior can be disabled by checking the "Disable this confirmation dialog" checkbox in the dialog.
+
+image::manage-elements-semantic-deletion.png[Semantic Deletion]
+
+[TIP]
+====
+This preference is stored in the local storage of the browser.
+You can reset it by deleting the {product} data in cache of your browser.
+====
+
+[#download-model]
+== Download a model
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+You can download a model from the {explorer}:
+
+. Click the {explorer-menu} next to the model in the {explorer}.
+. Select the `Download` option.
+
+image::hands-on-download-model.png[Download model]
+
+[NOTE]
+====
+The model is downloaded in JSON format.
+The JSON format used by {product} is specific to the tool.
+====
+
+[#create-element]
+== Create a new element
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+The process to create a new element in a model involves the following steps:
+
+. Open the {explorer-menu} next to the parent element.
+. Click `New object`.
+. Select the desired type of object to create.
+. Click `Create`.
+
+image::hands-on-new-element.png[Create New Element]
+
+Upon completion, the newly created element is automatically selected in the {explorer}.
+
+== Read an element
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+. To navigate through the details of a semantic element, use the {explorer} to navigate through the model and locate the needed element.
+. Select the element in the {explorer}.
+. On the right sidebar, access the {details} view.
+This view presents all the available properties for the selected element, providing a comprehensive overview of its characteristics.
+
+image::hands-on-read-element.png[Read element]
+
+[#rename-element]
+== Rename an element
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+It's possible to rename an element either from the {explorer}, the {details} view or a representation.
+
+=== From the {explorer}
+
+You can update the element name from the {explorer}:
+
+. Click the {explorer-menu} next to the element in the {explorer}.
+. Select the `Rename` option.
+. Update the name in the editable field.
+. Click `Rename`.
+
+image::hands-on-rename-element-from-project-editor.png[Rename element from project explorer]
+
+Alternatively, cancel the operation by pressing the `ESC` key.
+
+=== From the {details} view
+
+You can update the element properties from the {details} view:
+
+. Select the property in the {details} view.
+. Update the value in the editable field.
+. Validate the changes by pressing the `RETURN` key or clicking anywhere.
+
+image::hands-on-rename-element-from-details.png[Rename element from Details]
+
+=== From a representation
+
+You can update the element name from a representation (diagram...):
+
+. Select the element in the representation.
+. Select the `Edit` tool in the {diag-toolbar}.
+. Validate the changes by pressing the `RETURN` key or clicking anywhere.
+
+image::hands-on-rename-element-from-representation.png[Rename element from representation]
+
+Alternatively, cancel the operation by pressing the `ESC` key.
+
+[NOTE]
+====
+Instead of using the tool in the toolbar, you can press `F2` key or start typing the new value directly to efficiently update the element name.
+====
+
+[#update-element]
+== Update an element
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+It's possible to update element properties either from the {details} view or a representation.
+
+[#details]
+=== From the {details} view
+
+You can update the element properties from the {details} view:
+
+. Select the property in the {details} view.
+. Update the value in the editable field.
+. Validate the changes by pressing the `RETURN` key or clicking anywhere.
+
+[#representation]
+=== From a representation
+
+You can update the element name from a representation (diagram...):
+
+. Select the element in the representation.
+. Select the `Edit` tool in the {diag-toolbar}.
+. Validate the changes by pressing the `RETURN` key or clicking anywhere.
+
+[TIP]
+====
+Instead of using the tool in the toolbar, you can press `F2` key or start typing the new value directly to efficiently update the element name.
+====
+
+[TIP]
+====
+A powerful syntax exists for editing element properties directly through the direct edit tool; refer to xref:hands-on/how-tos/model-management.adoc#direct-edit[Direct Edit Tool and Shortcuts] for details.
+====
+
+[#delete-element]
+== Delete an element
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+[WARNING]
+====
+This operation is irreversible, once done there is no mean to get the element back.
+The element and its children - semantic element and representations - are deleted.
+====
+
+[NOTE]
+====
+The deletion affects everyone.
+====
+
+To delete an element, follow these steps:
+
+=== From the {explorer}
+
+. Open the {explorer-menu} next to the element.
+. Click `Delete`.
+
+image::hands-on-delete-element-from-explorer.png[Delete element from explorer]
+
+=== From a representation
+
+. Select the element in the representation.
+. Click the `Delete` tool in the {diag-toolbar} or press the `DEL` key on your keyboard.
+
+image::hands-on-delete-element-from-representation.png[Delete element from representation]
+
+CAUTION: Use the `DEL` key cautiously, as it's a direct shortcut for the delete operation.
+
+A confirmation dialog appears when an element is deleted via the _Delete from model_ tool in the palette or via the {explorer-menu}.
+This behavior can be disabled by checking the "Disable this confirmation dialog" checkbox in the dialog.
+
+image::manage-elements-semantic-deletion.png[Semantic Deletion]
+
+[TIP]
+====
+This preference is stored in the local storage of the browser.
+You can reset it by deleting the {product} data in cache of your browser.
+====
+
+[#direct-edit]
+== Direct edit tool and shortcuts
+
+include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+
+The {product} supports a subset of the {sysmlv2} textual syntax, which allows you to update several elements simultaneously.
+This makes it more efficient to edit models.
+
+In general, you can edit the label of a shape in a diagram, and the diagram editor tries to interpret your input and update the corresponding element properties.
+
+WARNING: If an element has a complex name such as `someElementName[x]:someTypeName:>someElement`, when editing, you must retain all the written parts; otherwise, you risk unsetting some values.
+
+Here are some shortcuts for efficiently editing {product} models:
+
+* Typing `someName` updates the name of the selected element.
+* Typing `:SomeTypeName`, sets the type of the selected element to _SomeTypeName_.
+If _SomeTypeName_ doesn't exist, it's created as an appropriate type element (for example `Item Definition`, `Part Definition`, ...) within the same parent container as the selected element.
+* Typing `[x]` on an element or a relationship sets its cardinality to _x_.
+* Typing `[1..x]` on an element or a relationship sets its cardinality to _1..x_.
+* Typing `[x..*]` on an element or a relationship sets its cardinality to _x..*_.
+* Typing `someElement:>otherElement` on a element sets _someElement_ as a `subsetting` of the _otherElement_ if both element are of the same type.
+Otherwise, it creates a `specialization` relationship between _someElement_ and _otherElement_.
+* Typing `someElement:>>otherElement` on an element sets _someElement_ as a `redefinition` of _otherElement_.
+
+These shortcuts offer a convenient way to update model elements efficiently.

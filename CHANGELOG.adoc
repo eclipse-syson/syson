@@ -49,7 +49,7 @@ A reset of the database is needed.
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/298[#298] [metamodel] Fix metamodel to manage root namespaces.
-- https://github.com/eclipse-syson/syson/issues/329[#329] [services] Ignore root namespace with no name during qualified name resolution 
+- https://github.com/eclipse-syson/syson/issues/329[#329] [services] Ignore root namespace with no name during qualified name resolution
 - https://github.com/eclipse-syson/syson/issues/337[#337] [diagrams] Fix direct edit of single digit cardinalities.
 - https://github.com/eclipse-syson/syson/issues/348[#348] [diagrams] The semantic representation of the Succession edge is not correct.
 - https://github.com/eclipse-syson/syson/issues/356[#356] [action-flow-view] The Allocate edge is not displayed in the Action Flow View diagram.
@@ -80,7 +80,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 
 === New features
 
-- https://github.com/eclipse-syson/syson/issues/315[#315] [tests] Add Cypress test infrastructure and execute the Cypress tests as part of pull request checks 
+- https://github.com/eclipse-syson/syson/issues/315[#315] [tests] Add Cypress test infrastructure and execute the Cypress tests as part of pull request checks
 - https://github.com/eclipse-syson/syson/issues/358[#358] [diagrams] Handle the JoinNode concept in actions body of diagrams
 - https://github.com/eclipse-syson/syson/issues/359[#359] [tests] Add tests to enforce a set of conventions on SysON DiagramDescriptions
 - https://github.com/eclipse-syson/syson/issues/371[#371] [diagrams] Handle the ForkNode concept in actions body of diagrams
@@ -91,6 +91,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams] Add new documentation compartment on all existing nodes in all diagrams.
 - https://github.com/eclipse-syson/syson/issues/420[#420] [diagrams] Handle AssignmentAction concept in actions body in diagrams
 - https://github.com/eclipse-syson/syson/issues/405[#405] [tests] Add integration test infrastructure
+- [doc] Initial contribution of the documentation
 
 == v2024.5.0
 
@@ -109,7 +110,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/144[#144] [diagrams] Fix an issue where the "Add existing elements (recursive)" failed on PartUsage.
 - https://github.com/eclipse-syson/syson/issues/167[#167] [interconnection-view] Add attributes compartment in children PartUsage nodes.
 - https://github.com/eclipse-syson/syson/issues/174[#174] [details] Fix an issue where an error raised when setting a valid new value (with primitive type) in the Details view.
-- https://github.com/eclipse-syson/syson/issues/192[#192] [import] Fix an issue where the /* and */ of a Comment's body were imported while importing a textual SysML file. 
+- https://github.com/eclipse-syson/syson/issues/192[#192] [import] Fix an issue where the /* and */ of a Comment's body were imported while importing a textual SysML file.
 - https://github.com/eclipse-syson/syson/issues/188[#188] [import] Fix an issue where some Memberships were contained in their parent through `ownedRelatedElement` instead of `ownedRelationship` reference.
 - https://github.com/eclipse-syson/syson/issues/184[#184] [import] Fix an issue from element imported threw an alias
 - https://github.com/eclipse-syson/syson/issues/249[#249] [import] Fix an issue to avoid Infinite Loop
@@ -151,7 +152,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/151[#151] [diagrams] Add "Become nested" edge tools for AttributeUsage, ItemUsage, PartUsage and PortUsage.
 - https://github.com/eclipse-syson/syson/issues/154[#154] [diagrams] Add creation node tools inside existing usage elements.
 - https://github.com/eclipse-syson/syson/issues/163[#163] [diagrams] Add composite edges between usage and compartment content
-- https://github.com/eclipse-syson/syson/issues/165[#165] [general-view] Handle OccurrenceDefinition and OccurrenceUsage in General View diagram 
+- https://github.com/eclipse-syson/syson/issues/165[#165] [general-view] Handle OccurrenceDefinition and OccurrenceUsage in General View diagram
 - https://github.com/eclipse-syson/syson/issues/177[#177] [diagrams] Add reconnect tools for composition edges
 - https://github.com/eclipse-syson/syson/issues/180[#180] [diagrams] Handle Allocation definition and Allocation usage
 - https://github.com/eclipse-syson/syson/issues/196[#196] [export] SysML standard serialization format
@@ -219,7 +220,7 @@ They will be only accessible through the model browser dialog.
 - https://github.com/eclipse-syson/syson/issues/97[#97] [explorer] Add a filter allowing to hide membership elements in the Explorer view.
 - https://github.com/eclipse-syson/syson/issues/98[#98] [explorer] Add filters allowing to hide KerML/SysML libraries in the Explorer view.
 - https://github.com/eclipse-syson/syson/issues/93[#93] [diagrams] Add the following new diagrams:
-  * Action Flow view 
+  * Action Flow view
   * Requirement view
 - https://github.com/eclipse-syson/syson/issues/140[#140] [import] It is now possible to import SysMLv2 textual files into SysON, through the existing document upload modal.
 

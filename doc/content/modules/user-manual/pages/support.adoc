@@ -1,0 +1,5 @@
+= Professional support
+
+https://www.obeosoft.com/en/[Obeo], co-leader of {product}, provides training, expertise, custom development, enterprise add-ons, Saas access to {product} and support plans.
+
+https://www.obeosoft.com/en/contact[Contact Us!]

@@ -1,0 +1,31 @@
+= Features and capabilities
+
+Uncover the capabilities of {product} through an exploration of its features and foundational concepts.
+
+[cols="3*^", %noheader, frame=none, grid=none]
+|===
+a|image::overview.svg[xref=user-manual:features/features.adoc]
+
+*{product} features*
+
+Explore the {product} features in details.
+
+xref:user-manual:features/features.adoc[Explore]
+
+a|image::settings_heart.svg[xref=user-manual:concepts.adoc]
+
+*Key Concepts*
+
+Addressing pivotal inquiries and offering a comprehensive understanding of the platform's fundamentals
+
+xref:user-manual:integration/interoperability.adoc[Learn essentials]
+
+a| image::hub.svg[xref=user-manual:features/sysmlv2-overview.adoc]
+
+**Overview of {sysmlv2}**
+
+Delve into the foundational concepts of {sysmlv2}.
+
+xref:user-manual:features/sysmlv2-overview.adoc[Learn more]
+
+|===

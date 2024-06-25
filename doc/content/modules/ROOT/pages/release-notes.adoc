@@ -1,0 +1,22 @@
+= Release notes and updates
+
+Stay informed about the latest enhancements, bug fixes, and updates with the comprehensive release notes.
+
+[cols="2*^", %noheader, frame=none, grid=none]
+|===
+a|image::new_releases.svg[xref=user-manual:release-notes/release-notes.adoc]
+
+**Find the details of the latest updates**
+
+Stay informed about the newest features, enhancements, and bug fixes.
+
+xref:user-manual:release-notes/release-notes.adoc[Last updates]
+
+a|image::cycle.svg[xref=user-manual:cycle.adoc]
+
+**How often does the product receive updates?**
+
+Understand the {product}'s release cycle.
+
+xref:user-manual:cycle.adoc[Learn more]
+|===

@@ -1,0 +1,9 @@
+=  Legal Information
+
+== License
+{product} is made available under the EPL v2 license.
+
+[,txt]
+----
+include::product-legal:example$eplv2-license.txt[]
+----

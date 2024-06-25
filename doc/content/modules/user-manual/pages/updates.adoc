@@ -1,0 +1,5 @@
+= Release notes and updates
+
+Stay informed about the latest enhancements, bug fixes, and updates with the comprehensive release notes.
+
+include::user-manual:partial$nav-updates.adoc[]

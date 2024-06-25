@@ -1,0 +1,10 @@
+== Manage existing elements
+
+From the diagram background or from a given node, it's possible to display all existing elements contained by the initial selection.
+
+User just need to display the palette and unfold _Existing elements_ section.
+
+image::manage-exisiting-elements-add.png[Add exisiting elements]
+
+User can click on _Add existing elements_ to display elements directly contained by the selection.
+User can also click on _Add existing elements (recursive)_ to display elements directly contained by the selection and elements contained by these elements and so on.
