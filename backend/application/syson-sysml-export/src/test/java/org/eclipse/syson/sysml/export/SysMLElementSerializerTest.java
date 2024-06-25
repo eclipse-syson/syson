@@ -46,6 +46,7 @@ import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
+import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
@@ -69,6 +70,7 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
+import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
@@ -1108,6 +1110,18 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("*", literalInf);
     }
 
+    @Test
+    public void metadataDefinition() {
+        MetadataDefinition metadata = this.builder.createWithName(MetadataDefinition.class, "mtdef");
+        metadata.setDeclaredShortName("md");
+
+        Subclassification sub = this.builder.createIn(Subclassification.class, metadata);
+        Metaclass metaclass = this.builder.createWithName(Metaclass.class, "metacl");
+        sub.setSuperclassifier(metaclass);
+
+        this.assertTextualFormEquals("metadata def <md> mtdef :> metacl;", metadata);
+    }
+
     @DisplayName("RequirementDefinition containing a SubjectMembership")
     @Test
     public void requirementDefinition() {
@@ -1349,15 +1363,15 @@ public class SysMLElementSerializerTest {
         /**
          * <pre>
          *package pack1 {
-        
+
             port def 'port 1';
-        
+
             interface int1 {
                 end p1 : 'port 1';
                 end p2 : \u007E'port 1';
                 attribute attr1;
             }
-        
+
         }
          * </pre>
          */

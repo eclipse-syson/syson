@@ -72,6 +72,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Metaclass;
 import org.eclipse.syson.sysml.MetadataAccessExpression;
+import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.Namespace;
@@ -790,6 +791,23 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendDefinitionDeclaration(builder, requirement);
 
         this.appendChildrenContent(builder, requirement, requirement.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseMetadataDefinition(MetadataDefinition metadata) {
+        Appender builder = this.newAppender();
+
+        if (metadata.isIsAbstract()) {
+            builder.append("abstract");
+        }
+
+        builder.appendSpaceIfNeeded().append("metadata def");
+
+        this.appendDefinitionDeclaration(builder, metadata);
+
+        this.appendChildrenContent(builder, metadata, metadata.getOwnedMembership());
 
         return builder.toString();
     }
