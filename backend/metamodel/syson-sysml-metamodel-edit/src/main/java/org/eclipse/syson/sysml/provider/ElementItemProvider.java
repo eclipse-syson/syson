@@ -73,7 +73,7 @@ public class ElementItemProvider
                 Collection<?> choiceOfValues = super.getChoiceOfValues(object);
                 if (object instanceof Element element) {
                     return choiceOfValues.stream().filter(candidate -> {
-                        if (candidate instanceof Element elt
+                        if (candidate instanceof Element elt && elt.eResource() != null
                                 && !(elt.eResource().getURI().toString().startsWith("kermllibrary://") || elt.eResource().getURI().toString().startsWith("sysmllibrary://"))) {
                             return true;
                         }
