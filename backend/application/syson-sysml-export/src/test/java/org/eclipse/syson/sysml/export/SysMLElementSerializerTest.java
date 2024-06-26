@@ -29,6 +29,7 @@ import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.DataType;
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
@@ -1363,15 +1364,15 @@ public class SysMLElementSerializerTest {
         /**
          * <pre>
          *package pack1 {
-
+        
             port def 'port 1';
-
+        
             interface int1 {
                 end p1 : 'port 1';
                 end p2 : \u007E'port 1';
                 attribute attr1;
             }
-
+        
         }
          * </pre>
          */
@@ -1438,5 +1439,21 @@ public class SysMLElementSerializerTest {
                     }
                 }""", root);
 
+    }
+
+    @Test
+    public void documentation() {
+
+        PartDefinition partDef = this.builder.createWithName(PartDefinition.class, "Part Def1");
+
+        PartUsage partUsage = this.builder.createWithName(PartUsage.class, "PartUsage1");
+
+        this.builder.setType(partUsage, partDef);
+
+        this.builder.createIn(Documentation.class, partUsage).setBody("A comment");
+        this.assertTextualFormEquals("""
+                ref part PartUsage1 : 'Part Def1' {
+                    doc/* A comment */
+                }""", partUsage);
     }
 }
