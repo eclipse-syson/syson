@@ -1147,6 +1147,16 @@ public class SysMLElementSerializerTest {
     }
 
     @Test
+    public void referenceUsage() {
+        ReferenceUsage ref = this.builder.createWithName(ReferenceUsage.class, "refu");
+        Subsetting subset = this.builder.createIn(Subsetting.class, ref);
+        AttributeUsage attr = this.builder.createWithName(AttributeUsage.class, "attr");
+        subset.setSubsettedFeature(attr);
+
+        this.assertTextualFormEquals("refu :> attr;", ref);
+    }
+
+    @Test
     public void requirementUsage() {
         RequirementUsage req = this.builder.createWithName(RequirementUsage.class, "requs");
 
