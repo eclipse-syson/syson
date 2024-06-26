@@ -21,6 +21,7 @@ import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.InterfaceDefinition;
@@ -62,15 +63,17 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     private static final String ENUM_KEYWORD = "enum";
 
     private static final String ATTRIBUTE_KEYWORD = "attribute";
-    
+
     private static final String ACTOR_KEYWORD = "actor";
-    
+
     private static final String SUBJECT_KEYWORD = "subject";
-    
+
     private static final String ASSERT_KEYWORD = "assert";
-    
+
     private static final String NOT_KEYWORD = "not";
-    
+
+    private static final String CONSTRAINT_KEYWORD = "constraint";
+
     @Override
     public String defaultCase(EObject object) {
         if (object != null) {
@@ -161,7 +164,7 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
         }
         return PART_KEYWORD;
     }
-    
+
     @Override
     public String caseReferenceUsage(ReferenceUsage object) {
         if (object.getOwningMembership() instanceof SubjectMembership) {
@@ -169,12 +172,17 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
         }
         return "";
     }
-    
+
     @Override
     public String caseAssertConstraintUsage(AssertConstraintUsage object) {
         if (object.isIsNegated()) {
             return ASSERT_KEYWORD + " " + NOT_KEYWORD;
         }
         return ASSERT_KEYWORD;
+    }
+
+    @Override
+    public String caseConstraintUsage(ConstraintUsage object) {
+        return CONSTRAINT_KEYWORD;
     }
 }

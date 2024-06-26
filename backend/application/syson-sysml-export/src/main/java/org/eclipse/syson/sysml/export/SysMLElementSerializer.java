@@ -44,6 +44,7 @@ import org.eclipse.syson.sysml.CollectExpression;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -731,6 +732,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.append("objective");
             this.appendObjectiveRequirementUsage(builder, ownedObjectiveRequirement);
         }
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseConstraintUsage(ConstraintUsage usage) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, usage);
+
+        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
+
+        this.appendCalculationUsageDeclaration(builder, usage);
+
+        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
 
         return builder.toString();
     }
