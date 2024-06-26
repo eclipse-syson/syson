@@ -77,6 +77,7 @@ By default, end users don't have to copy _syside-cli.js_ near the _syson-applica
 The embedded _syside-cli.js_ is copied in a system temp folder and executed from there (with node).
 But, if you encounter execution rights problem, you can still copy _syside-cli.js_ in a place where you have the appropriate rights and use the _org.eclipse.syson.syside.path_ application option.
 - https://github.com/eclipse-syson/syson/issues/433[#433] [tests] Add scripts to setup and udpate the integration testing environment
+- https://github.com/eclipse-syson/syson/issues/445[#445] [diagrams] Improve the way node descriptions are retrieved for a given semantic element
 
 === New features
 
