@@ -45,6 +45,7 @@ import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.EnumerationDefinition;
@@ -1565,6 +1566,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendIndentedContent(this.getCommentBody(comment.getBody()));
         }
 
+        return builder.toString();
+    }
+
+    @Override
+    public String caseDocumentation(Documentation doc) {
+
+        Appender builder = this.newAppender();
+
+        builder.appendSpaceIfNeeded().append("doc");
+        boolean selfNamespaceDescribingComment = this.isSelfNamespaceDescribingComment(doc);
+        if (isNullOrEmpty(doc.getLocale()) && selfNamespaceDescribingComment) {
+            builder.append(this.getCommentBody(doc.getBody()));
+        }
         return builder.toString();
     }
 
