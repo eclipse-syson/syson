@@ -86,6 +86,7 @@ import org.eclipse.syson.sysml.export.models.AttributeUsageWithFeatureChainExpre
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithInvocationExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.ConditionalBinaryOperatorExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.ConstraintUsageWithOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.sample.CameraModel;
 import org.eclipse.syson.sysml.export.models.sample.PictureTakingModel;
 import org.eclipse.syson.sysml.export.utils.IsImplicitTest;
@@ -783,6 +784,16 @@ public class SysMLElementSerializerTest {
                 assert constraint {
                     runner != null xor walker != null
                 }""", model.getAssertConstraintUsage());
+    }
+
+    @DisplayName("ConstraintUsage containing BinaryOperatorExpression and NullExpression")
+    @Test
+    public void constraintUsageWithOperatorExpression() {
+        ConstraintUsageWithOperatorExpressionTestModel model = new ConstraintUsageWithOperatorExpressionTestModel();
+        this.assertTextualFormEquals("""
+                constraint {
+                    runner != null xor walker != null
+                }""", model.getConstraintUsage());
     }
 
     @Test

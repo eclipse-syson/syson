@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.export.models;
 
-import org.eclipse.syson.sysml.AssertConstraintUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
@@ -27,40 +27,40 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.util.ModelBuilder;
 
 /**
- * Test model for AssertConstraintUsage with BinaryOperatorExpression and NullExpression.
+ * Test model for ConstraintUsage with BinaryOperatorExpression and NullExpression.
  *
  * <pre>
- * assert constraint {
+ * constraint {
                         runner != null xor walker != null
                     }
  * </pre>
  *
  * @author wbilem
  */
-public class AssertConstraintUsageWithOperatorExpressionTestModel {
+public class ConstraintUsageWithOperatorExpressionTestModel {
 
     private final ModelBuilder builder = new ModelBuilder();
 
-    private final AssertConstraintUsage assertConstraintUsage;
+    private final ConstraintUsage constraint;
 
     private final PartUsage runner;
 
     private final PartUsage walker;
 
-    public AssertConstraintUsageWithOperatorExpressionTestModel() {
-        this.assertConstraintUsage = this.builder.create(AssertConstraintUsage.class);
+    public ConstraintUsageWithOperatorExpressionTestModel() {
+        this.constraint = this.builder.create(ConstraintUsage.class);
         this.runner = this.builder.createWithName(PartUsage.class, "runner");
         this.walker = this.builder.createWithName(PartUsage.class, "walker");
 
-        this.assertConstraintUsageWithOperatorExpressionTestModel();
+        this.constraintUsageWithOperatorExpressionTestModel();
     }
 
-    public AssertConstraintUsage getAssertConstraintUsage() {
-        return this.assertConstraintUsage;
+    public ConstraintUsage getConstraintUsage() {
+        return this.constraint;
     }
 
-    private void assertConstraintUsageWithOperatorExpressionTestModel() {
-        ResultExpressionMembership resultExpressionMembership = this.builder.createIn(ResultExpressionMembership.class, this.assertConstraintUsage);
+    private void constraintUsageWithOperatorExpressionTestModel() {
+        ResultExpressionMembership resultExpressionMembership = this.builder.createIn(ResultExpressionMembership.class, this.constraint);
 
         OperatorExpression expression = this.builder.create(OperatorExpression.class);
         expression.setOperator("xor");
