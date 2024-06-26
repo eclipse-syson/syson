@@ -22,9 +22,11 @@ import static org.eclipse.syson.sysml.export.SysMLRelationPredicates.IS_METADATA
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -239,6 +241,22 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseReferenceUsage(ReferenceUsage reference) {
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+
+        if (!this.isImplicit(reference)) {
+            this.appendBasicUsagePrefix(builder, reference);
+
+            this.appendUsageDeclaration(builder, reference);
+
+            this.appendUsageCompletion(builder, reference);
+        }
+
+        return builder.toString();
+
+    }
+
+    @Override
     public String caseActionUsage(ActionUsage actionUsage) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
 
@@ -307,19 +325,30 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .map(EndFeatureMembership.class::cast)
                 .toList();
 
+        Set<Element> childrenToExclude = new HashSet<>();
+
         if (endFeatureMemberships.size() == 2) {
 
             builder.appendWithSpaceIfNeeded("first");
-            this.appendConnectorEndMember(builder, endFeatureMemberships.get(0));
+            EndFeatureMembership first = endFeatureMemberships.get(0);
+            childrenToExclude.add(first);
+            this.appendConnectorEndMember(builder, first);
 
             builder.appendWithSpaceIfNeeded("then");
-            this.appendConnectorEndMember(builder, endFeatureMemberships.get(1));
+            EndFeatureMembership second = endFeatureMemberships.get(1);
+            childrenToExclude.add(second);
+            this.appendConnectorEndMember(builder, second);
 
         } else {
             this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", sucession.getElementId()));
         }
 
-        this.appendDefinitionBody(builder, sucession);
+        List<Relationship> children = sucession.getOwnedRelationship().stream()
+                .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
+                .filter(e -> !childrenToExclude.contains(e))
+                .toList();
+
+        this.appendChildrenContent(builder, sucession, children);
 
         return builder.toString();
     }
