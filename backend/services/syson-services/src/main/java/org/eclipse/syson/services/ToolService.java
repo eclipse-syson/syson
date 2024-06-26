@@ -80,11 +80,14 @@ public class ToolService {
 
     private final DeleteService deleteService;
 
+    private final NodeDescriptionService nodeDescriptionService;
+
     public ToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.deleteService = new DeleteService();
+        this.nodeDescriptionService = new NodeDescriptionService();
     }
 
     /**
@@ -235,29 +238,47 @@ public class ToolService {
 
     protected Optional<String> getDescriptionId(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        Optional<String> result = Optional.empty();
+
         // The NodeDescription must be a child of the Parent Node/Diagram
         var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
 
-        final var childNodeDescriptions = new ArrayList<>();
+        final var childNodeDescriptions = new ArrayList<NodeDescription>();
+        final Object parentObject;
 
         if (selectedNode instanceof Node node) {
             childNodeDescriptions.addAll(convertedNodes.values().stream().filter(nodeDesc -> nodeDesc.getId().equals(node.getDescriptionId())).flatMap(nodeDesc -> Stream
                     .concat(nodeDesc.getChildNodeDescriptions().stream(), convertedNodes.values().stream().filter(convNode -> nodeDesc.getReusedChildNodeDescriptionIds().contains(convNode.getId()))))
                     .toList());
+            parentObject = this.objectService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
         } else {
             childNodeDescriptions.addAll(diagramDescription.filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::cast)
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription::getNodeDescriptions).orElse(List.of()));
+            parentObject = this.objectService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId()).orElse(null);
         }
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(element.eClass());
-
-        return convertedNodes.keySet().stream()
+        var viewNodeDescriptionsForElementType = convertedNodes.keySet().stream()
                 .filter(viewNodeDesc -> viewNodeDesc.getDomainType().equals(domainType))
-                .map(viewNodeDesc -> convertedNodes.get(viewNodeDesc))
-                .filter(nodeDesc -> childNodeDescriptions.contains(nodeDesc))
-                .map(NodeDescription::getId)
-                .findFirst();
+                .toList();
+        if (viewNodeDescriptionsForElementType.size() == 1) {
+            // easy way: only one node description for the type of the semantic element
+            result = viewNodeDescriptionsForElementType.stream()
+                    .map(viewNodeDesc -> convertedNodes.get(viewNodeDesc))
+                    .filter(nodeDesc -> childNodeDescriptions.contains(nodeDesc))
+                    .map(NodeDescription::getId)
+                    .findFirst();
+        } else if (viewNodeDescriptionsForElementType.size() > 1) {
+            // more expensive way: evaluate the candidates and the precondition expressions
+            result = viewNodeDescriptionsForElementType.stream()
+                    .map(viewNodeDesc -> convertedNodes.get(viewNodeDesc))
+                    .filter(nodeDesc -> this.nodeDescriptionService.canNodeDescritionRenderElement(nodeDesc, element, parentObject))
+                    .filter(nodeDesc -> childNodeDescriptions.contains(nodeDesc))
+                    .map(NodeDescription::getId)
+                    .findFirst();
+        }
+        return result;
     }
 
     protected void moveElement(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,

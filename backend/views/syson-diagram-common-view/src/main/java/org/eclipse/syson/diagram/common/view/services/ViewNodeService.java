@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
-import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -90,32 +90,10 @@ public class ViewNodeService {
 
         Object parentObject = this.objectService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
 
-        List<NodeDescription> compartmentCandidates = new ArrayList<>();
+        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService();
 
-        for (NodeDescription compartmentNode : allChildNodeDescriptions) {
-            List<NodeDescription> allCompartmentChildNodeDescriptions = Stream.concat(
-                    compartmentNode.getChildNodeDescriptions().stream(),
-                    convertedNodes.values().stream().filter(convNode -> compartmentNode.getReusedChildNodeDescriptionIds().contains(convNode.getId())))
-                    .toList();
-            for (NodeDescription compartmentItemNode : allCompartmentChildNodeDescriptions) {
-                // Check whether the compartmentItemNode will be used to render targetElement. This is the case if the
-                // semanticElementProvider returns targetElement when applied to its parent, and the
-                // shouldRenderPredicate (i.e. the node's precondition) returns true.
-                VariableManager semanticElementsProviderVariableManager = new VariableManager();
-                semanticElementsProviderVariableManager.put("self", parentObject);
-                List<?> candidatesList = compartmentItemNode.getSemanticElementsProvider().apply(semanticElementsProviderVariableManager);
-
-                VariableManager shouldRenderPredicateVariableManager = new VariableManager();
-                shouldRenderPredicateVariableManager.put("self", targetElement);
-                boolean shouldRender = compartmentItemNode.getShouldRenderPredicate().test(shouldRenderPredicateVariableManager);
-
-                if (candidatesList.contains(targetElement) && shouldRender) {
-                    // The compartmentItemNode will be used to render targetElement, we thus want to reveal its parent
-                    // node (the compartment).
-                    compartmentCandidates.add(compartmentNode);
-                }
-            }
-        }
+        List<NodeDescription> compartmentCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElement(targetElement, parentObject, allChildNodeDescriptions,
+                convertedNodes);
 
         if (!compartmentCandidates.isEmpty()) {
             if (compartmentCandidates.size() > 1) {
