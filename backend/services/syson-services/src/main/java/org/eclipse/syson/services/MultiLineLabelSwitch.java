@@ -689,14 +689,14 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
 
     private String featureTyping(Usage usage) {
         StringBuilder label = new StringBuilder();
-        EList<Classifier> definitions = usage.getDefinition();
-        if (!definitions.isEmpty()) {
-            Classifier definition = definitions.get(0);
+        EList<Type> types = usage.getType();
+        if (!types.isEmpty()) {
+            Type type = types.get(0);
             label
                     .append(LabelConstants.SPACE)
                     .append(LabelConstants.COLON)
                     .append(LabelConstants.SPACE)
-                    .append(definition.getDeclaredName());
+                    .append(type.getDeclaredName());
         }
         return label.toString();
     }

@@ -65,6 +65,10 @@ public class LabelService {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
+    public IFeedbackMessageService getFeedbackMessageService() {
+        return this.feedbackMessageService;
+    }
+
     /**
      * Return the container label for the given {@link Element}.
      *
@@ -320,9 +324,5 @@ public class LabelService {
             value = "*";
         }
         return value;
-    }
-
-    public IFeedbackMessageService getFeedbackMessageService() {
-        return this.feedbackMessageService;
     }
 }
