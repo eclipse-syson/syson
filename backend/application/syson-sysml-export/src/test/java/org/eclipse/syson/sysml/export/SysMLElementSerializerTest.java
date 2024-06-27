@@ -1134,6 +1134,25 @@ public class SysMLElementSerializerTest {
         this.assertTextualFormEquals("metadata def <md> mtdef :> metacl;", metadata);
     }
 
+    @Test
+    public void requirementUsage() {
+        RequirementUsage req = this.builder.createWithName(RequirementUsage.class, "requs");
+
+        SubjectMembership subject = this.builder.createIn(SubjectMembership.class, req);
+
+        ReferenceUsage referenceUsage = this.builder.createWithName(ReferenceUsage.class, "subject_1");
+        subject.getOwnedRelatedElement().add(referenceUsage);
+
+        PartDefinition partDefinition = this.builder.createWithName(PartDefinition.class, "partD_1");
+        this.builder.setType(referenceUsage, partDefinition);
+
+        this.assertTextualFormEquals("""
+                requirement requs {
+                    subject subject_1 : partD_1;
+                }""", req);
+
+    }
+
     @DisplayName("RequirementDefinition containing a SubjectMembership")
     @Test
     public void requirementDefinition() {
@@ -1375,15 +1394,15 @@ public class SysMLElementSerializerTest {
         /**
          * <pre>
          *package pack1 {
-        
+
             port def 'port 1';
-        
+
             interface int1 {
                 end p1 : 'port 1';
                 end p2 : \u007E'port 1';
                 attribute attr1;
             }
-        
+
         }
          * </pre>
          */

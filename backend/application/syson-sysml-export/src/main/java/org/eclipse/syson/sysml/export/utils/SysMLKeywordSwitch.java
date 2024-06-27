@@ -34,6 +34,7 @@ import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 import org.slf4j.Logger;
@@ -73,6 +74,8 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     private static final String NOT_KEYWORD = "not";
 
     private static final String CONSTRAINT_KEYWORD = "constraint";
+
+    private static final String REQUIREMENT_KEYWORD = "requirement";
 
     @Override
     public String defaultCase(EObject object) {
@@ -184,5 +187,10 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     @Override
     public String caseConstraintUsage(ConstraintUsage object) {
         return CONSTRAINT_KEYWORD;
+    }
+
+    @Override
+    public String caseRequirementUsage(RequirementUsage object) {
+        return REQUIREMENT_KEYWORD;
     }
 }

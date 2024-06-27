@@ -752,6 +752,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseRequirementUsage(RequirementUsage usage) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, usage);
+
+        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
+
+        this.appendCalculationUsageDeclaration(builder, usage);
+
+        this.appendChildrenContent(builder, usage, usage.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
     public String caseAssertConstraintUsage(AssertConstraintUsage usage) {
         Appender builder = this.newAppender();
 
