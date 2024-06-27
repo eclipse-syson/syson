@@ -126,34 +126,6 @@ public class ViewLabelService extends LabelService {
     }
 
     /**
-     * Return the label of the value part of the given {@link Usage}.
-     *
-     * @param usage
-     *            the given {@link Usage}.
-     * @return the label of the value part of the given {@link Usage} if there is one, an empty string otherwise.
-     */
-    private String getValueLabel(Usage usage) {
-        StringBuilder label = new StringBuilder();
-        var featureValue = usage.getOwnedRelationship().stream()
-                .filter(FeatureValue.class::isInstance)
-                .map(FeatureValue.class::cast)
-                .findFirst();
-        if (featureValue.isPresent()) {
-            var literalExpression = featureValue.get().getValue();
-            String valueAsString = null;
-            if (literalExpression != null) {
-                valueAsString = this.getValue(literalExpression);
-            }
-            label
-                    .append(LabelConstants.SPACE)
-                    .append(LabelConstants.EQUAL)
-                    .append(LabelConstants.SPACE)
-                    .append(valueAsString);
-        }
-        return label.toString();
-    }
-
-    /**
      * Get the value to display when a direct edit has been called on the given {@link Usage}.
      *
      * @param usage
@@ -276,6 +248,34 @@ public class ViewLabelService extends LabelService {
             }
         }
         return resultLabel;
+    }
+
+    /**
+     * Return the label of the value part of the given {@link Usage}.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label of the value part of the given {@link Usage} if there is one, an empty string otherwise.
+     */
+    private String getValueLabel(Usage usage) {
+        StringBuilder label = new StringBuilder();
+        var featureValue = usage.getOwnedRelationship().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst();
+        if (featureValue.isPresent()) {
+            var literalExpression = featureValue.get().getValue();
+            String valueAsString = null;
+            if (literalExpression != null) {
+                valueAsString = this.getValue(literalExpression);
+            }
+            label
+                    .append(LabelConstants.SPACE)
+                    .append(LabelConstants.EQUAL)
+                    .append(LabelConstants.SPACE)
+                    .append(valueAsString);
+        }
+        return label.toString();
     }
 
     private String getElementsDefaultInitialDirectEditLabel(EList<? extends Element> elements, BinaryOperator<String> reduceOperator) {
