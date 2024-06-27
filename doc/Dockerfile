@@ -25,7 +25,6 @@ RUN mkdir /home/antora
 WORKDIR  /home/antora
 
 COPY docs-site/package.json .
-COPY docs-site/package-lock.json .
 
 RUN npm install
 RUN gem install asciidoctor
@@ -41,4 +40,4 @@ COPY --from=UI /usr/app/ui-bundle.zip .
 
 WORKDIR /usr/app
 
-CMD ["antora", "--clean", "--stacktrace", "--log-level=all", "/usr/app/doc/docs-site/antora-playbook.yml"]
+CMD ["antora", "--clean", "--stacktrace", "--log-failure-level=warn", "--log-level=all", "/usr/app/doc/docs-site/antora-playbook.yml"]

@@ -9,7 +9,7 @@ content:
   sources:
     - url: /usr/app
       start_paths: doc/content
-      branches: ["main"]
+      branches: ["main", "v*"]
 
 ui:
   bundle:
