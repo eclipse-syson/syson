@@ -32,7 +32,7 @@ A reset of the database is needed.
 === Dependency update
 
 - [tests] Add test dependency to Cypress 12.11.0 (only required to execute integration tests)
-- [releng] Switch to EMF Json 2.3.11
+- [releng] Switch to EMF Json 2.3.12
 - [releng] Switch to Spring Boot 3.2.5
 - [releng] Switch to `@apollo/client` 3.10.4
 - [releng] Switch to `graphql` 16.8.1
@@ -43,8 +43,8 @@ A reset of the database is needed.
 - [releng] Switch to `maven-checkstyle-plugin` 3.3.1
 - [releng] Remove the dependency to `reflect-metadata`
 - [releng] Switch to `subscriptions-transport-ws` 0.11.0
-- [releng] Switch to @ObeoNetwork/gantt-task-react 0.4.14
-- [releng] Switch to Sirius Web 2024.5.2
+- [releng] Switch to @ObeoNetwork/gantt-task-react 0.4.19
+- [releng] Switch to Sirius Web 2024.5.3
 
 === Bug fixes
 
