@@ -26,9 +26,6 @@ import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
-import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
-import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
-import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -100,34 +97,6 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
         edgeDescription.setPalette(this.createEdgePalette());
     }
 
-    protected InsideLabelDescription createInsideLabelDescription() {
-        return this.diagramBuilderHelper.newInsideLabelDescription()
-                .labelExpression(AQLUtils.getSelfServiceCallExpression("getContainerLabel"))
-                .position(InsideLabelPosition.TOP_CENTER)
-                .style(this.createInsideLabelStyle())
-                .build();
-    }
-
-    protected InsideLabelStyle createInsideLabelStyle() {
-        return this.diagramBuilderHelper.newInsideLabelStyle()
-                .borderSize(0)
-                .displayHeaderSeparator(true)
-                .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
-                .withHeader(true)
-                .build();
-    }
-
-    private EdgeStyle createEdgeStyle() {
-        return this.diagramBuilderHelper.newEdgeStyle()
-                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
-                .edgeWidth(1)
-                .lineStyle(LineStyle.SOLID)
-                .sourceArrowStyle(ArrowStyle.FILL_DIAMOND)
-                .targetArrowStyle(ArrowStyle.NONE)
-                .build();
-    }
-
     @Override
     protected boolean isDeletable() {
         return true;
@@ -168,5 +137,16 @@ public abstract class AbstractDefinitionOwnedUsageEdgeDescriptionProvider extend
         var params = List.of(AQLConstants.SEMANTIC_RECONNECTION_SOURCE, AQLConstants.SEMANTIC_RECONNECTION_TARGET, AQLConstants.SEMANTIC_OTHER_END);
         return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL + AQLConstants.EDGE_SEMANTIC_ELEMENT + ".reconnnectTargetCompositionEdge(" + String.join(",", params) + ")");
+    }
+
+    private EdgeStyle createEdgeStyle() {
+        return this.diagramBuilderHelper.newEdgeStyle()
+                .borderSize(0)
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
+                .edgeWidth(1)
+                .lineStyle(LineStyle.SOLID)
+                .sourceArrowStyle(ArrowStyle.FILL_DIAMOND)
+                .targetArrowStyle(ArrowStyle.NONE)
+                .build();
     }
 }

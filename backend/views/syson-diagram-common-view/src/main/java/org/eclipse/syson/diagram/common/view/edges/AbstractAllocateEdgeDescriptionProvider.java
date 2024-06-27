@@ -99,6 +99,7 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
 
     private EdgeStyle createEdgeStyle() {
         return this.diagramBuilderHelper.newEdgeStyle()
+                .borderSize(0)
                 .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
                 .edgeWidth(1)
                 .lineStyle(LineStyle.SOLID)
