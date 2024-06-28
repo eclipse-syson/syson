@@ -109,6 +109,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.ViewpointDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.utils.Appender;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
@@ -823,6 +824,21 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendDefinitionDeclaration(builder, requirement);
 
         this.appendChildrenContent(builder, requirement, requirement.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseViewpointDefinition(ViewpointDefinition vp) {
+        Appender builder = this.newAppender();
+
+        this.appendDefinitionPrefix(builder, vp);
+
+        builder.appendSpaceIfNeeded().append("viewpoint def");
+
+        this.appendDefinitionDeclaration(builder, vp);
+
+        this.appendChildrenContent(builder, vp, vp.getOwnedMembership());
 
         return builder.toString();
     }
