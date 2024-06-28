@@ -93,7 +93,8 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> 8.3.16.14: Unless it is the PerformActionUsage itself, the ActionUsage to be performed is
+     * related to the PerformActionUsage by a ReferenceSubsetting relationship. <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -102,7 +103,7 @@ public class PerformActionUsageImpl extends ActionUsageImpl implements PerformAc
         if (referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage perfomedAction) {
             return perfomedAction;
         }
-        return null;
+        return this;
     }
 
     /**

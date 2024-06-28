@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.edges.AbstractAllocateEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -57,6 +58,8 @@ public class AllocateEdgeDescriptionProvider extends AbstractAllocateEdgeDescrip
         ActionFlowViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
             cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(usage)).ifPresent(sourcesAndTargets::add);
         });
+        // since referencing perform action is not part of regular usages, we should add it manually
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME)).ifPresent(sourcesAndTargets::add);
         return sourcesAndTargets;
     }
 

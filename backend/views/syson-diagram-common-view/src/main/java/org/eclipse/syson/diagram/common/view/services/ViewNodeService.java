@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
@@ -34,6 +35,9 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -204,4 +208,21 @@ public class ViewNodeService {
         });
         return result;
     }
+
+    public List<PerformActionUsage> getAllReferencingPerformActionUsages(Element self) {
+        List<EObject> allPerformActionUsages = this.utilService.getAllReachable(self, SysmlPackage.eINSTANCE.getPerformActionUsage());
+        return allPerformActionUsages.stream()
+                .filter(PerformActionUsage.class::isInstance)
+                .map(PerformActionUsage.class::cast)
+                .filter(this::isReferencingPerformActionUsage)
+                .toList();
+    }
+
+    private boolean isReferencingPerformActionUsage(PerformActionUsage pau) {
+        // the given PerformActionUsage is a referencing PerformActionUsage if it contains a reference subsetting
+        // pointing to an action.
+        ReferenceSubsetting referenceSubSetting = pau.getOwnedReferenceSubsetting();
+        return referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage perfomedAction;
+    }
+
 }

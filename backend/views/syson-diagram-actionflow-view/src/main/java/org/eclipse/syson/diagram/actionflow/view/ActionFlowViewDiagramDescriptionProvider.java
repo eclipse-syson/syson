@@ -42,6 +42,7 @@ import org.eclipse.syson.diagram.actionflow.view.nodes.CompartmentNodeDescriptio
 import org.eclipse.syson.diagram.actionflow.view.nodes.DefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.PackageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.actionflow.view.nodes.ReferencingPerformActionUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
@@ -135,6 +136,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
         diagramElementDescriptionProviders.add(new ForkActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new MergeActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new DecisionActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new ReferencingPerformActionUsageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         DEFINITIONS.forEach(definition -> {
             diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider));

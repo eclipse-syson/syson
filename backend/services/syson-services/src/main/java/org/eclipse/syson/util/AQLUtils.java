@@ -66,7 +66,7 @@ public class AQLUtils {
      *
      * @param serviceName
      *            The name of the service to call.
-     * @param parameter
+     * @param parameters
      *            The list of parameters.
      * @return An AQL expression (<code>String</code>) expressing the call of the given service.
      */
@@ -109,7 +109,7 @@ public class AQLUtils {
      *            The part of the expression specifying the variable on which the service should be called.
      * @param serviceName
      *            The name of the service to call.
-     * @param parameter
+     * @param parameters
      *            The list of parameters.
      * @return An AQL expression (<code>String</code>) expressing the call of the given service.
      */
