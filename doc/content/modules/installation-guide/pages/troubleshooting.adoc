@@ -1,6 +1,31 @@
 = Troubleshooting
 
-Even the most straightforward installation process can encounter unforeseen issues.
+Even the most straightforward installation process can meet unforeseen issues.
 This section offers comprehensive troubleshooting tips and solutions to common problems encountered during installation.
 
-If you encounter any troubleshooting, please xref:ROOT:help.adoc[contact us] to have solution and to share your troubleshooting to this page.
+If you meet any troubleshooting, please xref:ROOT:help.adoc[contact us] to have solution and to share your troubleshooting to this page.
+
+== Connection refused
+If the server fails to start and displays a `Connection refused` error such as:
+[source, bash]
+----
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [org/springframework/boot/autoconfigure/liquibase/LiquibaseAutoConfiguration$LiquibaseConfiguration.class]: org.postgresql.util.PSQLException: Connection to localhost:5434 refused.
+----
+
+Make sure you have a clean database running without any earlier data, and start the server.
+You should delete your existing container `docker rm syson-postgres` and even the image `docker rmi image-ID` to ensure a fresh start.
+
+== Changelog not found
+If the server fails to start and displays `changelog.xml not found` error such as:
+[source, bash]
+----
+Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [org/springframework/boot/autoconfigure/liquibase/LiquibaseAutoConfiguration$LiquibaseConfiguration.class]: ERROR: The file 'classpath:db/changelog/syson.db.changelog.xml' was not found.
+----
+
+Make sure you have included the correct argument to your `java` command according to your {product} version.
+
+TIP: Check that you are consulting the documentation version that matches the JAR version you are trying to run.
+
+Refer to the xref:installation-guide:install.adoc#start-app[] section for detailed instructions according to your version.

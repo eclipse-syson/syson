@@ -238,14 +238,14 @@ For further help, consult the xref:user-manual:forum.adoc[community forum] or co
 ====
 No, {product} doesn't include a method by default.
 However, being based on https://eclipse.dev/sirius/sirius-web.html[Sirius Web], {product} is inherently extendable.
-Refer to the xref:user-manual:integration/extend.adoc[] page or xref:user-manual:help.adoc[contact us] for help.
+Refer to the xref:developer-guide:extend.adoc[] page or xref:user-manual:help.adoc[contact us] for help.
 ====
 
 .*Is it possible to generate documentation from {product} models?*
 [%collapsible%open]
 ====
 Yes, {product} can integrate with model-to-text solutions such as https://www.m2doc.org/[M2Doc].
-Refer to the xref:user-manual:integration/extend.adoc[] page or xref:user-manual:help.adoc[contact us] for help.
+Refer to the xref:developer-guide:extend.adoc[] page or xref:user-manual:help.adoc[contact us] for help.
 ====
 
 == Additional resources
