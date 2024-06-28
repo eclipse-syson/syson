@@ -1,5 +1,5 @@
 * xref:user-manual:integration/developer-guide.adoc[]
-* xref:user-manual:integration/extend.adoc[]
+* xref:developer-guide:extend.adoc[]
 * xref:user-manual:integration/interoperability.adoc[]
 * xref:user-manual:integration/capella.adoc[]
 * xref:user-manual:integration/api.adoc[]

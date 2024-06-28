@@ -58,4 +58,4 @@ Embark on your {product} contribution journey today.
 
 We invite organizations to join us in supporting the ongoing development and enhancement of {product}.
 Your sponsorship can help us expand the capabilities of this open source project, ensuring it continues to meet the needs of the system engineering community.
-If you are interested in sponsoring {product}, please xref:ROOT:support.adoc[reach out to us] to discuss sponsorship opportunities and how your support can make a difference.
+If you are interested in sponsoring {product}, please xref:user-manual:support.adoc[reach out to us] to discuss sponsorship opportunities and how your support can make a difference.

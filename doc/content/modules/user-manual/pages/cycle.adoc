@@ -31,3 +31,19 @@ Contributions are reviewed and merged by core developers.
 
 This collaborative approach allows {product} to continuously evolve while maintaining a high standard of quality and performance.
 If you're interested in contributing or have any questions, feel free to join the xref:user-manual:forum.adoc[community discussions] or xref:user-manual:help.adoc[contact us].
+
+== Version and release policies
+
+{product} adheres to a CalVer (Calendar Versioning) strategy to communicate the timeline and stability of its releases.
+The versioning follows a `YEAR.MONTH.PATCH` format, where:
+
+* `YEAR.MONTH.0`: These are the stable releases, marking significant milestones or major updates.
+For example, a version like 2024.5.0 indicates a stable release from May 2024.
+* Intermediate Releases: Between the .0 versions, there may be multiple intermediate releases, denoted by increasing the `PATCH` number (for example 2024.5.1, 2024.5.2).
+These are intended to provide updates, fixes, and incremental improvements leading up to the next stable release.
+
+Stable versions (.0 versions) are recommended for production environments, while intermediate versions offer early access to new features and fixes but might undergo further changes before the next stable release.
+
+This strategy ensures that users can rely on a predictable and transparent update cycle, aligning with the continuous evolution and enhancement of {product}.
+
+For all details about the different versions, see the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc:`CHANGELOG`.
