@@ -62,6 +62,16 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
     }
 
     /**
+     * Implementers might provide the name of the Usage node description.<br>
+     * Default implementation returns the name based on the name of the semantic type.
+     *
+     * @return the name of the Usage node description
+     */
+    protected String getNodeDescriptionName() {
+        return this.getDescriptionNameGenerator().getNodeName(this.eClass);
+    }
+
+    /**
      * Implementers should provide the set of {@link NodeDescription} that is reused as child in that Usage node
      * description.
      *
@@ -111,7 +121,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
-                .name(this.getDescriptionNameGenerator().getNodeName(this.eClass))
+                .name(this.getNodeDescriptionName())
                 .semanticCandidatesExpression(this.getSemanticCandidatesExpression(domainType))
                 .style(this.createUsageNodeStyle())
                 .userResizable(true)
@@ -121,7 +131,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(this.eClass)).ifPresent(nodeDescription -> {
+        cache.getNodeDescription(this.getNodeDescriptionName()).ifPresent(nodeDescription -> {
             diagramDescription.getNodeDescriptions().add(nodeDescription);
             nodeDescription.getReusedChildNodeDescriptions().addAll(this.getReusedChildren(cache));
             List<NodeDescription> growableNodes = new ArrayList<>();

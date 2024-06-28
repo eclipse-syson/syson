@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -150,23 +151,23 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
     }
 
     private List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
-        var targetElementDescriptions = this.getForkTargetDescriptions(cache);
+        var targetElementDescriptions = this.getControlNodeTargetDescriptions(cache);
 
         var builder = this.diagramBuilderHelper.newEdgeTool();
         var params = List.of(EdgeDescription.SEMANTIC_EDGE_TARGET, EdgeDescription.EDGE_SOURCE, IEditingContext.EDITING_CONTEXT, IDiagramService.DIAGRAM_SERVICES);
         var body = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createSuccessionEdge", params));
 
-        var createForkEdgeTool = builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
+        var createControlNodeEdgeTool = builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSuccession()))
                 .iconURLsExpression("/icons/full/obj16/Succession.svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();
 
-        return List.of(createForkEdgeTool);
+        return List.of(createControlNodeEdgeTool);
     }
 
-    private List<NodeDescription> getForkTargetDescriptions(IViewDiagramElementFinder cache) {
+    private List<NodeDescription> getControlNodeTargetDescriptions(IViewDiagramElementFinder cache) {
         var targets = new ArrayList<NodeDescription>();
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionDefinition())).ifPresent(targets::add);
@@ -177,6 +178,7 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME)).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME)).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DoneActionNodeDescriptionProvider.DONE_ACTION_NAME)).ifPresent(targets::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME)).ifPresent(targets::add);
         return targets;
     }
 }

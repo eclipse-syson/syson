@@ -28,6 +28,7 @@ import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationUsage;
@@ -116,6 +117,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         result = result || this.nameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME).equals(nodeDesc.getName());
         result = result || this.nameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME).equals(nodeDesc.getName());
         result = result || this.nameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME).equals(nodeDesc.getName());
+        result = result || this.nameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME).equals(nodeDesc.getName());
         return result;
     }
 

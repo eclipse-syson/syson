@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.actionflow.view.AFVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.edges.AbstractFeatureTypingEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.sysml.FeatureTyping;
 
 /**
@@ -46,6 +47,8 @@ public class FeatureTypingEdgeDescriptionProvider extends AbstractFeatureTypingE
         ActionFlowViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
             cache.getNodeDescription(nameGenerator.getNodeName(usage)).ifPresent(sources::add);
         });
+        // since referencing perform action is not part of regular usages, we should add it manually
+        cache.getNodeDescription(nameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME)).ifPresent(sources::add);
         return sources;
     }
 

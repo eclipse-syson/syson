@@ -36,6 +36,7 @@ import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
@@ -103,7 +104,8 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getUsage_NestedItem(), this.descriptionNameGenerator).create(this.cache),
                 new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache),
-                new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
+                new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
+                new ReferencingPerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
@@ -119,7 +121,8 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
                 new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache),
                 new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
-                new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
+                new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
+                new ReferencingPerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 

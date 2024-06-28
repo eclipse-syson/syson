@@ -46,6 +46,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -863,5 +864,41 @@ public class ViewCreateService {
             return assignmentAction;
         }
         return ownerElement;
+    }
+
+    public Element createPerform(Element ownerElement) {
+        Feature subSettedStdElement;
+        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition) {
+            subSettedStdElement = this.utilService.findByName(ownerElement, "Performances::Performance::enclosedPerformances");
+        } else if (ownerElement instanceof PartUsage || ownerElement instanceof PartDefinition) {
+            subSettedStdElement = this.utilService.findByName(ownerElement, "Parts::Part::performedActions");
+        } else {
+            return ownerElement;
+        }
+        // create an action usage as the performed action of this perform action
+        var performedAction = SysmlFactory.eINSTANCE.createActionUsage();
+        this.elementInitializerSwitch.doSwitch(performedAction);
+        performedAction.setDeclaredName("performedAction");
+        var performedFeatureMember = this.createMembership(ownerElement);
+        performedFeatureMember.getOwnedRelatedElement().add(performedAction);
+        ownerElement.getOwnedRelationship().add(performedFeatureMember);
+
+        // create the perform action
+        var perform = SysmlFactory.eINSTANCE.createPerformActionUsage();
+        this.elementInitializerSwitch.doSwitch(perform);
+        // set the subsetting relationship depending on the owner element
+        var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
+        subsetting.setSubsettingFeature(perform);
+        subsetting.setSubsettedFeature(subSettedStdElement);
+        subsetting.setIsImplied(true);
+        perform.getOwnedRelationship().add(subsetting);
+        // set the reference subsetting relationship to the performed action
+        var referenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        referenceSubsetting.setReferencedFeature(performedAction);
+        perform.getOwnedRelationship().add(referenceSubsetting);
+        var featureMember = this.createMembership(ownerElement);
+        featureMember.getOwnedRelatedElement().add(perform);
+        ownerElement.getOwnedRelationship().add(featureMember);
+        return perform;
     }
 }

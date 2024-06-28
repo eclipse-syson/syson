@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.edges.AbstractDependencyEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.Dependency;
@@ -60,6 +61,8 @@ public class DependencyEdgeDescriptionProvider extends AbstractDependencyEdgeDes
             cache.getNodeDescription(nameGenerator.getNodeName(definition)).ifPresent(sourcesAndTargets::add);
         });
         cache.getNodeDescription(nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(sourcesAndTargets::add);
+        // since referencing perform action is not part of regular usages, we should add it manually
+        cache.getNodeDescription(nameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME)).ifPresent(sourcesAndTargets::add);
         return sourcesAndTargets;
     }
 }

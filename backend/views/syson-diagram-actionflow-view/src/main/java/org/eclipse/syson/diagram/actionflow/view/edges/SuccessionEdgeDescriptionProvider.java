@@ -27,6 +27,7 @@ import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 
 /**
  * Used to create a Succession Edge provider in Action Flow View diagram.
@@ -58,6 +59,7 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(sources::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME)).ifPresent(sources::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME)).ifPresent(sources::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME)).ifPresent(sources::add);
         return sources;
     }
 
@@ -70,6 +72,7 @@ public class SuccessionEdgeDescriptionProvider extends AbstractSuccessionEdgeDes
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ForkActionNodeDescriptionProvider.FORK_ACTION_NAME)).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME)).ifPresent(targets::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME)).ifPresent(targets::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME)).ifPresent(targets::add);
         return targets;
     }
 }

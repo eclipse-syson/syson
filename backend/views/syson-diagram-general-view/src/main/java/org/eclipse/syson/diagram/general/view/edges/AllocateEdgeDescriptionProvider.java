@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.edges.AbstractAllocateEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -30,16 +31,16 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class AllocateEdgeDescriptionProvider extends AbstractAllocateEdgeDescriptionProvider {
 
-    private final IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public AllocateEdgeDescriptionProvider(IColorProvider colorProvider) {
         super(colorProvider);
-        this.nameGenerator = new GVDescriptionNameGenerator();
+        this.descriptionNameGenerator = new GVDescriptionNameGenerator();
     }
 
     @Override
     protected String getName() {
-        return this.nameGenerator.getEdgeName("Allocate");
+        return this.descriptionNameGenerator.getEdgeName("Allocate");
     }
 
     @Override
@@ -55,9 +56,10 @@ public class AllocateEdgeDescriptionProvider extends AbstractAllocateEdgeDescrip
     private List<NodeDescription> getSourceAndTarget(IViewDiagramElementFinder cache) {
         var sourcesAndTargets = new ArrayList<NodeDescription>();
         GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> {
-            cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(sourcesAndTargets::add);
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(usage)).ifPresent(sourcesAndTargets::add);
         });
+        // since referencing perform action is not part of regular usages, we should add it manually
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME)).ifPresent(sourcesAndTargets::add);
         return sourcesAndTargets;
     }
-
 }

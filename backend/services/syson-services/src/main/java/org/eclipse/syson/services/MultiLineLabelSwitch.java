@@ -50,6 +50,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
@@ -487,6 +488,19 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.featureTyping(object))
                 .append(this.redefinition(object))
                 .append(this.subsetting(object));
+        return label.toString();
+    }
+
+    @Override
+    public String casePerformActionUsage(PerformActionUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.abstractType(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("perform")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(object.getPerformedAction().getName());
         return label.toString();
     }
 
