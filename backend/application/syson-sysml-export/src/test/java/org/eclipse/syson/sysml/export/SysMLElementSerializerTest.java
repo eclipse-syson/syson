@@ -78,6 +78,7 @@ import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.VerificationCaseUsage;
+import org.eclipse.syson.sysml.ViewpointDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.models.AssertConstraintUsageWithOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithBinaryOperatorExpressionTestModel;
@@ -1120,6 +1121,17 @@ public class SysMLElementSerializerTest {
         LiteralInfinity literalInf = SysmlFactory.eINSTANCE.createLiteralInfinity();
 
         this.assertTextualFormEquals("*", literalInf);
+    }
+
+    @Test
+    public void viewpointDefinition() {
+        ViewpointDefinition vp = this.builder.createWithName(ViewpointDefinition.class, "vpdef");
+
+        this.builder.createIn(Documentation.class, vp).setBody("A comment");
+        this.assertTextualFormEquals("""
+                viewpoint def vpdef {
+                    doc/* A comment */
+                }""", vp);
     }
 
     @Test
