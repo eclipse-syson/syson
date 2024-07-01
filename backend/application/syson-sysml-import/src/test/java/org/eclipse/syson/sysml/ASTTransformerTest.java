@@ -455,6 +455,44 @@ public class ASTTransformerTest {
     }
 
     /**
+     * Test Containement reference
+     */
+    @Test
+    void convertDocumentationTest() {
+        ASTTransformer transformer = new ASTTransformer();
+        String fileContent = """
+            {
+                "$type": "Namespace",
+                "children": [
+                    {
+                        "$type": "OwningMembership",
+                        "target": {
+                            "$type": "Documentation",
+                            "body": "/* TEST */"
+                        }
+                    }
+                ]
+            }
+            """;
+        Resource result = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
+
+        var content = result.getContents();
+        assertEquals(1, content.size());
+        EObject object = content.get(0);
+        assertInstanceOf(Namespace.class, object);
+
+        Namespace namespace = (Namespace) object;
+        assertEquals(1, namespace.getOwnedElement().size());
+        assertNotNull(namespace.getOwnedRelationship().get(0).getOwnedElement());
+        assertEquals(1, namespace.getMember().size());
+        EObject documentationObject = namespace.getMember().get(0);
+        assertInstanceOf(Documentation.class, documentationObject);
+
+        assertEquals("TEST", ((Documentation) documentationObject).getBody());
+    }
+
+
+    /**
      * Test convertAssignmentTEst
      */
     @Test

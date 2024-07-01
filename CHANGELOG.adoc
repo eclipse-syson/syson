@@ -60,6 +60,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/364[#364] [export] Fix names used during export in FeatureChainExpression
 - https://github.com/eclipse-syson/syson/issues/363[#363] [export] Fix the first part of the InvocationExpression during export
 - https://github.com/eclipse-syson/syson/issues/341[#341] [export] Fix missing element names in the expressions during export
+- https://github.com/eclipse-syson/syson/issues/459[#459] [import] Fix documentation import to remove /* */ around texts
 
 === Improvements
 

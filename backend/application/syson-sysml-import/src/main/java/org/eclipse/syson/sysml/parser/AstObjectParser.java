@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
@@ -19,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,9 +66,12 @@ public class AstObjectParser {
                             eObject.eSet(attribute, astJson.get(mappedName).asBoolean());
                             break;
                         case "EString":
-                            String name = AstConstant.asCleanedText(astJson.get(mappedName));
-                            if (!name.equals("null")) {
-                                eObject.eSet(attribute, name);
+                            String textContent = AstConstant.asCleanedText(astJson.get(mappedName));
+                            if (attribute.equals(SysmlPackage.eINSTANCE.getComment_Body())) {
+                                textContent = textContent.replaceFirst("^/\\*", "").replaceFirst("\\*/", "").trim();
+                            }
+                            if (!textContent.equals("null")) {
+                                eObject.eSet(attribute, textContent);
                             }
                             break;
                         case "FeatureDirectionKind":
