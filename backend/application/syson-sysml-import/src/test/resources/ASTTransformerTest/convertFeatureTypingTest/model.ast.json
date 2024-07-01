@@ -1,0 +1,46 @@
+{
+    "$type": "Namespace",
+    "children": [
+        {
+            "$type": "OwningMembership",
+            "target": {
+                "$type": "Package",
+                "children": [
+                    {
+                        "$type": "OwningMembership",
+                        "target": {
+                            "$type": "AttributeDefinition",
+                            "declaredName": "attributeDefinition"
+                        }
+                    },
+                    {
+                        "$type": "OwningMembership",
+                        "target": {
+                            "$type": "PortDefinition",
+                            "children": [
+                                {
+                                    "$type": "FeatureMembership",
+                                    "target": {
+                                        "$type": "ReferenceUsage",
+                                        "heritage": [
+                                            {
+                                                "$type": "FeatureTyping",
+                                                "targetRef": {
+                                                    "$type": "TypeReference",
+                                                    "reference": "package::attributeDefinition"
+                                                }
+                                            }
+                                        ],
+                                        "declaredName": "referenceUsage"
+                                    }
+                                }
+                            ],
+                            "declaredName": "portDefinition"
+                        }
+                    }
+                ],
+                "declaredName": "package"
+            }
+        }
+    ]
+}

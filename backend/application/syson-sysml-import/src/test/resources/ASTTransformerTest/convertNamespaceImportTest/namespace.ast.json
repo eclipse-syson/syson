@@ -1,0 +1,12 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "declaredName": "ScalarValues"
+      }
+    }
+  ]
+}

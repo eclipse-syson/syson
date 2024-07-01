@@ -34,6 +34,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.VisibilityKind;
+import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
 import org.eclipse.syson.sysml.helper.MembershipComputer;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
 import org.eclipse.syson.sysml.helper.NameHelper;
@@ -314,8 +315,10 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
                 .filter(m -> (m.getMemberShortName() != null && m.getMemberShortName().equals(name)) || (m.getMemberName() != null && m.getMemberName().equals(name))).findFirst();
 
         if (membership.isEmpty()) {
+            DeresolvingNamespaceProvider deresolvingNamespaceProvider = new DeresolvingNamespaceProvider();
+
             // if not resolved, try on the parent namespace
-            Namespace owningNamespace = this.getOwningNamespace();
+            Namespace owningNamespace = deresolvingNamespaceProvider.getDeresolvingNamespace(this);
 
             if (owningNamespace != null) {
                 return owningNamespace.resolveLocal(name);

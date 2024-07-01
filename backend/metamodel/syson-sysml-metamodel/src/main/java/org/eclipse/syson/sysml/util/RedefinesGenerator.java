@@ -115,7 +115,6 @@ public class RedefinesGenerator {
     }
 
     private StringBuilder updatedContentWithSubsetsRedefines(GenClass clazz, String outputDirectory, String fileName) throws IOException {
-        System.out.println(clazz.capName(clazz.getName()));
         StringBuilder body = new StringBuilder();
         if (Files.exists(Path.of(outputDirectory, fileName))) {
             body.append(Files.readString(Path.of(outputDirectory, fileName)));

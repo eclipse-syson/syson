@@ -60,6 +60,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/364[#364] [export] Fix names used during export in FeatureChainExpression
 - https://github.com/eclipse-syson/syson/issues/363[#363] [export] Fix the first part of the InvocationExpression during export
 - https://github.com/eclipse-syson/syson/issues/341[#341] [export] Fix missing element names in the expressions during export
+- https://github.com/eclipse-syson/syson/issues/459[#459] [import] Fix documentation import to remove /* */ around texts
 
 === Improvements
 
@@ -78,6 +79,7 @@ The embedded _syside-cli.js_ is copied in a system temp folder and executed from
 But, if you encounter execution rights problem, you can still copy _syside-cli.js_ in a place where you have the appropriate rights and use the _org.eclipse.syson.syside.path_ application option.
 - https://github.com/eclipse-syson/syson/issues/433[#433] [tests] Add scripts to setup and udpate the integration testing environment
 - https://github.com/eclipse-syson/syson/issues/445[#445] [diagrams] Improve the way node descriptions are retrieved for a given semantic element
+- https://github.com/eclipse-syson/syson/issues/320[#320] [import] Implement new import strategy based on ecore
 
 === New features
 

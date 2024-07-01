@@ -1,0 +1,101 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "ActionUsage",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "AttributeUsage",
+                    "value": {
+                      "$type": "FeatureValue",
+                      "isInitial": true,
+                      "target": {
+                        "$type": "LiteralNumber",
+                        "literal": 0
+                      }
+                    },
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "text": "Natural",
+                          "reference": null,
+                          "parts": [
+                            null
+                          ]
+                        }
+                      }
+                    ],
+                    "declaredName": "count"
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "AssignmentActionUsage",
+                    "targetMember": {
+                      "$type": "Membership",
+                      "targetRef": {
+                        "$type": "FeatureReference",
+                        "text": "count",
+                        "reference": "Assignment2::counter::count",
+                        "parts": [
+                          "Assignment2::counter::count"
+                        ]
+                      }
+                    },
+                    "assignedValue": {
+                      "$type": "ParameterMembership",
+                      "target": {
+                        "$type": "ReferenceUsage",
+                        "value": {
+                          "$type": "FeatureValue",
+                          "target": {
+                            "$type": "OperatorExpression",
+                            "operands": [
+                              {
+                                "$type": "FeatureReferenceExpression",
+                                "expression": {
+                                  "$type": "Membership",
+                                  "targetRef": {
+                                    "$type": "FeatureReference",
+                                    "text": "count",
+                                    "reference": "Assignment2::counter::count",
+                                    "parts": [
+                                      "Assignment2::counter::count"
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "$type": "LiteralNumber",
+                                "literal": 1
+                              }
+                            ],
+                            "operator": "+"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+               "declaredName": "counter"
+            }
+          }
+        ],
+        "declaredName": "Assignment2"
+      }
+    }
+  ]
+}
