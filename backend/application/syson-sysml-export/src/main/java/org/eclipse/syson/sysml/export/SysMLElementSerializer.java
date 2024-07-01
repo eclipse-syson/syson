@@ -68,6 +68,7 @@ import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.ItemDefinition;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.LiteralInfinity;
@@ -214,6 +215,20 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseItemDefinition(ItemDefinition itemDef) {
         return this.appendDefaultDefinition(this.newAppender(), itemDef).toString();
+    }
+
+    @Override
+    public String caseItemUsage(ItemUsage itemUsage) {
+
+        Appender builder = this.newAppender();
+
+        appendOccurrenceUsagePrefix(builder, itemUsage);
+
+        builder.appendWithSpaceIfNeeded("item");
+
+        appendUsage(builder, itemUsage);
+
+        return builder.toString();
     }
 
     @Override
@@ -1551,7 +1566,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendBasicUsagePrefix(Appender builder, Usage usage) {
 
         FeatureDirectionKind direction = usage.getDirection();
-        if (direction != null && direction != FeatureDirectionKind.IN) {
+        if (direction != null) {
             builder.appendWithSpaceIfNeeded(direction.toString());
         }
 
@@ -1800,7 +1815,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendInterfaceEndPortUsage(Appender builder, PortUsage portUsage) {
         FeatureDirectionKind direction = portUsage.getDirection();
-        if (direction != null && direction != FeatureDirectionKind.IN) {
+        if (direction != null) {
             builder.appendWithSpaceIfNeeded(direction.toString());
         }
 

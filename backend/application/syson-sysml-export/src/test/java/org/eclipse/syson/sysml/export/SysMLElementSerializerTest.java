@@ -90,6 +90,7 @@ import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressio
 import org.eclipse.syson.sysml.export.models.ConditionalBinaryOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.ConstraintUsageWithOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.sample.CameraModel;
+import org.eclipse.syson.sysml.export.models.sample.ItemTest;
 import org.eclipse.syson.sysml.export.models.sample.PictureTakingModel;
 import org.eclipse.syson.sysml.export.utils.IsImplicitTest;
 import org.eclipse.syson.sysml.export.utils.NameDeresolver;
@@ -1510,5 +1511,29 @@ public class SysMLElementSerializerTest {
                 ref part PartUsage1 : 'Part Def1' {
                     doc /* A comment */
                 }""", partUsage);
+    }
+     
+    @Test
+    public void itemUsage() {
+        var model = new ItemTest(builder);
+        
+        this.assertTextualFormEquals("""
+            package ItemTest {
+                item f : A;
+                item def A {
+                    item b : B;
+                    protected ref part c : C;
+                }
+                abstract item def B {
+                    abstract ref part a : A;
+                }
+                private part def C {
+                    private in y : A, B;
+                }
+                port def P {
+                    in item a1 : A;
+                    out item a2 : A;
+                }
+            }""", model.getItemTest());
     }
 }
