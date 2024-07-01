@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiFunction;
 
 import org.eclipse.emf.common.util.EList;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
+import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -54,6 +56,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
@@ -76,12 +79,15 @@ public class DetailsViewService {
 
     private final ImportService importService;
 
+    private final ElementInitializerSwitch elementInitializerSwitch;
+
     private final EEnumLiteral unsetEnumLiteral;
 
     public DetailsViewService(ComposedAdapterFactory composedAdapterFactory, IFeedbackMessageService feedbackMessageService) {
         this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.importService = new ImportService();
+        this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.unsetEnumLiteral = EcoreFactory.eINSTANCE.createEEnumLiteral();
         this.unsetEnumLiteral.setName("unset");
         this.unsetEnumLiteral.setLiteral("unset");
@@ -107,6 +113,11 @@ public class DetailsViewService {
     public boolean setNewValue(Element element, EStructuralFeature eStructuralFeature, Object newValue) {
         try {
             Object valueToSet = newValue;
+            if (!eStructuralFeature.isMany()) {
+                if (newValue instanceof List<?> newListValue) {
+                    valueToSet = newListValue.get(0);
+                }
+            }
             if (eStructuralFeature.getEType() instanceof EEnum eDataType && eStructuralFeature.isUnsettable() && !(valueToSet instanceof Enumerator)) {
                 element.eUnset(eStructuralFeature);
             } else {
@@ -294,6 +305,52 @@ public class DetailsViewService {
                             this.importService.handleImport(parent, elementToImport);
                         });
             }
+        }
+        return element;
+    }
+
+    /**
+     * Handle the new value (i.e. set operation) of the reference widget for the extra property "Typed by". If the real
+     * element that holds the property to set does not exist, this method should create it and attach it to the current
+     * feature.
+     *
+     * @param feature
+     *            the current {@link Feature}.
+     * @param newValue
+     *            the newValue to set.
+     * @return the real element (i.e. a FeatureTyping) that holds the property to set.
+     */
+    public Element handleFeatureTypingNewValue(Feature feature, Object newValue) {
+        EList<Relationship> ownedRelationship = feature.getOwnedRelationship();
+        FeatureTyping featureTyping = ownedRelationship.stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .findFirst()
+                .orElseGet(() -> {
+                    FeatureTyping newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+                    ownedRelationship.add(newFeatureTyping);
+                    newFeatureTyping.setTypedFeature(feature);
+                    this.elementInitializerSwitch.doSwitch(newFeatureTyping);
+                    return newFeatureTyping;
+                });
+        this.handleReferenceWidgetNewValue(featureTyping, SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName(), newValue);
+        return featureTyping;
+    }
+
+    /**
+     * Get the real owner of the reference widget for the extra property "Typed by".
+     *
+     * @param element
+     *            the current {@link Element}.
+     * @return the real element that holds the property.
+     */
+    public Element getFeatureTypingOwnerExpression(Element element) {
+        Optional<FeatureTyping> featureTyping = element.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .findFirst();
+        if (featureTyping.isPresent()) {
+            return featureTyping.get();
         }
         return element;
     }

@@ -706,11 +706,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         EList<Type> types = usage.getType();
         if (!types.isEmpty()) {
             Type type = types.get(0);
-            label
+            if (type != null) {
+                label
                     .append(LabelConstants.SPACE)
                     .append(LabelConstants.COLON)
                     .append(LabelConstants.SPACE)
                     .append(type.getDeclaredName());
+            }
         }
         return label.toString();
     }

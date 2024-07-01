@@ -298,17 +298,16 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(TYPING_PROPERTIES);
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression("aql:self.ownedRelationship->filter(sysml::FeatureTyping)");
+        group.setSemanticCandidatesExpression("aql:self->filter(sysml::Feature)");
 
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         refWidget.setName("ExtraReferenceWidget");
         refWidget.setLabelExpression("Typed by");
-        refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName());
-        refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
+        refWidget.setReferenceNameExpression(SysmlPackage.eINSTANCE.getFeature_Type().getName());
+        refWidget.setReferenceOwnerExpression(AQLUtils.getSelfServiceCallExpression("getFeatureTypingOwnerExpression"));
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
-        setRefWidget.setExpression("aql:self.handleReferenceWidgetNewValue('" + SysmlPackage.eINSTANCE.getFeatureTyping_Type().getName() + "', " + ViewFormDescriptionConverter.NEW_VALUE
-                + LabelConstants.CLOSE_PARENTHESIS);
+        setRefWidget.setExpression(AQLUtils.getSelfServiceCallExpression("handleFeatureTypingNewValue", ViewFormDescriptionConverter.NEW_VALUE));
         refWidget.getBody().add(setRefWidget);
 
         group.getChildren().add(refWidget);
