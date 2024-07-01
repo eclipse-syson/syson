@@ -79,6 +79,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/433[#433] [tests] Add scripts to setup and udpate the integration testing environment
 - https://github.com/eclipse-syson/syson/issues/445[#445] [diagrams] Improve the way node descriptions are retrieved for a given semantic element
 - https://github.com/eclipse-syson/syson/issues/439[#439] [diagrams] Handle Perform action concept in diagrams
+- https://github.com/eclipse-syson/syson/issues/460[#460] [details] Extra property "Typed by" is now always visible in the details view for _Feature_ elements, even if the _Feature_ doesn't have a type yet.
 
 === New features
 

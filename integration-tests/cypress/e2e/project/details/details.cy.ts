@@ -46,5 +46,16 @@ describe('Details View Tests', () => {
         details.getTextField('Declared Name').should('have.value', 'Vehicle');
       });
     });
+
+    context('When we select a PartUsage without type', () => {
+      it('Then the details view contains the extra property "Typed by" even if the PartUsage has no type yet.', () => {
+        explorer.createObject(batmobile.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
+
+        details.getGroup('Part Properties').should('be.visible');
+        details.getTextField('Declared Name').should('have.value', 'part');
+        details.getReferenceWidget('Typed by').should('exist');
+        details.getReferenceWidgetSelectedValue('Typed by', '').should('not.exist');
+      });
+    });
   });
 });
