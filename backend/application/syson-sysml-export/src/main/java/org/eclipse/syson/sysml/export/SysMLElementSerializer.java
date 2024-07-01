@@ -38,9 +38,11 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AnalysisCaseUsage;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.CalculationDefinition;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.CollectExpression;
 import org.eclipse.syson.sysml.Comment;
@@ -101,16 +103,20 @@ import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.ReturnParameterMembership;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.SelectExpression;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.ViewpointDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.export.utils.Appender;
@@ -1657,6 +1663,46 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             builder.appendWithSpaceIfNeeded(this.getCommentBody(doc.getBody()));
         }
         return builder.toString();
+    }
+
+    @Override
+    public String caseTransitionUsage(TransitionUsage transitionUsage) {
+        reportUnhandledType(transitionUsage);
+        return "";
+    }
+
+    @Override
+    public String caseStateUsage(StateUsage stateUsage) {
+        reportUnhandledType(stateUsage);
+        return "";
+    }
+
+    @Override
+    public String caseSatisfyRequirementUsage(SatisfyRequirementUsage satisfyRequirementUsage) {
+        reportUnhandledType(satisfyRequirementUsage);
+        return "";
+    }
+
+    @Override
+    public String caseCalculationDefinition(CalculationDefinition calculationDefinition) {
+        reportUnhandledType(calculationDefinition);
+        return "";
+    }
+
+    @Override
+    public String caseAnalysisCaseUsage(AnalysisCaseUsage analysisCaseUsage) {
+        reportUnhandledType(analysisCaseUsage);
+        return "";
+    }
+
+    @Override
+    public String caseVerificationCaseUsage(VerificationCaseUsage verificationCaseUsage) {
+        reportUnhandledType(verificationCaseUsage);
+        return "";
+    }
+
+    private void reportUnhandledType(Element e) {
+        reportConsumer.accept(Status.warning("{0} are not yet handled : {1}", e.eClass().getName(), e.getElementId()));
     }
 
     /**
