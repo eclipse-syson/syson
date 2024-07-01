@@ -57,7 +57,6 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureChaining;
-import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -1653,7 +1652,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         builder.appendSpaceIfNeeded().append("doc");
         boolean selfNamespaceDescribingComment = this.isSelfNamespaceDescribingComment(doc);
         if (isNullOrEmpty(doc.getLocale()) && selfNamespaceDescribingComment) {
-            builder.append(this.getCommentBody(doc.getBody()));
+            builder.appendWithSpaceIfNeeded(this.getCommentBody(doc.getBody()));
         }
         return builder.toString();
     }

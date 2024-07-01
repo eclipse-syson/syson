@@ -1130,7 +1130,7 @@ public class SysMLElementSerializerTest {
         this.builder.createIn(Documentation.class, vp).setBody("A comment");
         this.assertTextualFormEquals("""
                 viewpoint def vpdef {
-                    doc/* A comment */
+                    doc /* A comment */
                 }""", vp);
     }
 
@@ -1505,7 +1505,7 @@ public class SysMLElementSerializerTest {
         this.builder.createIn(Documentation.class, partUsage).setBody("A comment");
         this.assertTextualFormEquals("""
                 ref part PartUsage1 : 'Part Def1' {
-                    doc/* A comment */
+                    doc /* A comment */
                 }""", partUsage);
     }
 }
