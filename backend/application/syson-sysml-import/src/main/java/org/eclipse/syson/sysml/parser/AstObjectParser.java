@@ -38,7 +38,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class AstObjectParser {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AstObjectParser.class);
-    
+
     public void setObjectAttribute(final EObject eObject, final JsonNode astJson) {
         for (final EAttribute attribute : eObject.eClass().getEAllAttributes()) {
             if (attribute.isDerived() || attribute.isUnsettable()) {
@@ -72,9 +72,12 @@ public class AstObjectParser {
                             eObject.eSet(attribute, astJson.get(mappedName).asBoolean());
                             break;
                         case "EString":
-                            final String name = AstConstant.asCleanedText(astJson.get(mappedName));
-                            if (!name.equals("null")) {
-                                eObject.eSet(attribute, name);
+                            String textContent = AstConstant.asCleanedText(astJson.get(mappedName));
+                            if (attribute.equals(SysmlPackage.eINSTANCE.getComment_Body())) {
+                                textContent = textContent.replaceFirst("^/\\*", "").replaceFirst("\\*/", "").trim();
+                            }
+                            if (!textContent.equals("null")) {
+                                eObject.eSet(attribute, textContent);
                             }
                             break;
                         case "FeatureDirectionKind":
@@ -93,8 +96,7 @@ public class AstObjectParser {
 
     public EObject createObject(final JsonNode astJson) {
         String type = astJson.findValue(AstConstant.TYPE_CONST).textValue();
-    
-    
+
         if (type.equals("MembershipReference")) {
             type = "Membership";
         }
@@ -119,8 +121,7 @@ public class AstObjectParser {
         if (type.equals("MembershipReference")) {
             type = "Membership";
         }
-        
-    
+
         if (type.equals("NamespaceReference")) {
             type = "Namespace";
         }
@@ -136,11 +137,10 @@ public class AstObjectParser {
                 }
             }
         }
-        
-    
+
         final EClassifier classif = SysmlPackage.eINSTANCE.getEClassifier(type);
         final EClassImpl eclassImpl = (EClassImpl) classif;
-    
+
         if (classif == null) {
             return null;
         } else {
@@ -152,9 +152,7 @@ public class AstObjectParser {
         String computedAttributeName = attributeName;
         if (eObject instanceof LiteralInteger && "value".equals(attributeName)) {
             computedAttributeName = "literal";
-        }   
+        }
         return computedAttributeName;
     }
 }
-
-
