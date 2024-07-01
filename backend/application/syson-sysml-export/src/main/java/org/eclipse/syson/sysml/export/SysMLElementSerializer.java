@@ -57,6 +57,7 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureChaining;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -740,8 +741,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             if (visibility != VisibilityKind.PUBLIC) {
                 builder.append(this.getVisivilityIndicator(visibility));
             }
+            builder.appendWithSpaceIfNeeded("subject");
 
-            this.appendDefaultUsage(builder, ownedSubjectParameter);
+            this.appendUsage(builder, ownedSubjectParameter);
         }
 
         return builder.toString();
@@ -1769,7 +1771,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     }
 
-    private void appendUsage(Appender builder, PortUsage portUsage) {
+    private void appendUsage(Appender builder, Usage portUsage) {
         this.appendUsageDeclaration(builder, portUsage);
 
         this.appendUsageCompletion(builder, portUsage);

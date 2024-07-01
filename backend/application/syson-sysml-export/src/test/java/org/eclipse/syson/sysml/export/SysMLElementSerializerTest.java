@@ -34,6 +34,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -1161,9 +1162,11 @@ public class SysMLElementSerializerTest {
         RequirementUsage req = this.builder.createWithName(RequirementUsage.class, "requs");
 
         SubjectMembership subject = this.builder.createIn(SubjectMembership.class, req);
-
+        
         ReferenceUsage referenceUsage = this.builder.createWithName(ReferenceUsage.class, "subject_1");
         subject.getOwnedRelatedElement().add(referenceUsage);
+        referenceUsage.setDirection(FeatureDirectionKind.IN);
+        
 
         PartDefinition partDefinition = this.builder.createWithName(PartDefinition.class, "partD_1");
         this.builder.setType(referenceUsage, partDefinition);
@@ -1492,7 +1495,7 @@ public class SysMLElementSerializerTest {
                 }""", root);
 
     }
-
+    
     @Test
     public void documentation() {
 
