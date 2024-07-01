@@ -1,0 +1,37 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "declaredName": "'packet header'"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "heritage": [
+                {
+                  "$type": "Redefinition",
+                  "targetRef": {
+                    "$type": "FeatureReference",
+                    "reference": "Packets::packet header"
+                  }
+                }
+              ],
+              "declaredName": "'packet secondary header'"
+            }
+          }
+        ],
+        "declaredName": "Packets"
+      }
+    }
+  ]
+}

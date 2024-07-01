@@ -110,7 +110,7 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
         }
         return null;
     }
-
+    
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
