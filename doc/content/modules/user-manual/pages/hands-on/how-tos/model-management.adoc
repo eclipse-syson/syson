@@ -3,7 +3,7 @@
 [#create-model]
 == Create a new model
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 To create a model, follow these steps from the explorer toolbar:
 
@@ -22,7 +22,7 @@ image::hands-on-new-model-result.png[New Model result]
 [#upload-model]
 == Upload a model
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 [NOTE]
 ====
@@ -45,7 +45,7 @@ image::hands-on-upload-model.png[Upload model]
 [#rename-model]
 == Rename a model
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 You can update the model name from the {explorer}:
 
@@ -57,7 +57,7 @@ You can update the model name from the {explorer}:
 [#delete-model]
 == Delete a model
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 [WARNING]
 ====
@@ -93,7 +93,7 @@ You can reset it by deleting the {product} data in cache of your browser.
 [#download-model]
 == Download a model
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 You can download a model from the {explorer}:
 
@@ -111,7 +111,7 @@ The JSON format used by {product} is specific to the tool.
 [#create-element]
 == Create a new element
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 The process to create a new element in a model involves the following steps:
 
@@ -126,7 +126,7 @@ Upon completion, the newly created element is automatically selected in the {exp
 
 == Read an element
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 . To navigate through the details of a semantic element, use the {explorer} to navigate through the model and locate the needed element.
 . Select the element in the {explorer}.
@@ -138,7 +138,7 @@ image::hands-on-read-element.png[Read element]
 [#rename-element]
 == Rename an element
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 It's possible to rename an element either from the {explorer}, the {details} view or a representation.
 
@@ -185,7 +185,7 @@ Instead of using the tool in the toolbar, you can press `F2` key or start typing
 [#update-element]
 == Update an element
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 It's possible to update element properties either from the {details} view or a representation.
 
@@ -220,7 +220,7 @@ A powerful syntax exists for editing element properties directly through the dir
 [#delete-element]
 == Delete an element
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 [WARNING]
 ====
@@ -265,7 +265,7 @@ You can reset it by deleting the {product} data in cache of your browser.
 [#direct-edit]
 == Direct edit tool and shortcuts
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 The {product} supports a subset of the {sysmlv2} textual syntax, which allows you to update several elements simultaneously.
 This makes it more efficient to edit models.

@@ -1,6 +1,6 @@
 = {afv}
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 The {afv} describes input and output flows between different actions within a system.
 This type of diagram is useful for understanding and analyzing the dynamic behavior of a system, focusing on action sequences and interaction between system elements.

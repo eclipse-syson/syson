@@ -1,6 +1,6 @@
 = Keyboard shortcuts
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 == General
 
