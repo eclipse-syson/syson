@@ -113,6 +113,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getItemUsage(),
             SysmlPackage.eINSTANCE.getOccurrenceUsage(),
             SysmlPackage.eINSTANCE.getPartUsage(),
+            SysmlPackage.eINSTANCE.getPerformActionUsage(),
             SysmlPackage.eINSTANCE.getPortUsage(),
             SysmlPackage.eINSTANCE.getRequirementUsage(),
             SysmlPackage.eINSTANCE.getUseCaseUsage(),
@@ -141,6 +142,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getOccurrenceUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedOccurrence())),
             Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getPerformActionUsage(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction())),
             Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
             Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),            List.of(SysmlPackage.eINSTANCE.getElement_Documentation()))
@@ -238,6 +240,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 diagramElementDescriptionProviders.add(nodeDescriptionProviderSwitch.doSwitch(eClass));
             });
         });
+        // create nodes that are not in a section
+        diagramElementDescriptionProviders.add(nodeDescriptionProviderSwitch.doSwitch(SysmlPackage.eINSTANCE.getPerformActionUsage()));
 
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
@@ -300,6 +304,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider,
                 this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(),
+                colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(),
                 colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new StartActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new DoneActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));

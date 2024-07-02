@@ -37,6 +37,7 @@ import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
@@ -175,6 +176,11 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
     @Override
     public INodeDescriptionProvider casePartUsage(PartUsage object) {
         return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider casePerformActionUsage(PerformActionUsage object) {
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.colorProvider);
     }
 
     @Override

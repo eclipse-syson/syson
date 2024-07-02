@@ -70,7 +70,7 @@ image::gv-part-node.png[{gv} Part Node]
 
 The following element in _Definition_ compartments can be displayed in the {gv} diagram:
 
-  * Action in _Action Definition_,
+  * _Action Definition_ can contain in its body Action, Accept action, Start action, Done action, Fork action, Join action, Merge action, Decision action and Perform action,
   * Attribute in _Attribute Definition_/_Interface Definition_/_Item Definition_/_Metadata Definition_/_Occurrence Definition_/_Part Definition_/_Port Definition_/_Requirement Definition_,
   * Constraint in _Constraint Definition_,
   * Enumerated Value in _Enumeration Definition_,
@@ -91,7 +91,7 @@ image::gv-partDef-compartment-node.png[{gv} Part Def Compartment Node]
 
 The following element in _Usage_ compartments can be displayed in the {gv} diagram:
 
-  * Action in _Action Usage_,
+  * _Action Usage_ can contain in its body Action, Accept action, Start action, Done action, Fork action, Join action, Merge action, Decision action and Perform action,
   * Item in _Action Usage_,
   * Allocation in _Allocation Usage_,
   * Attribute in _Attribute Usage_/_Interface Usage_/_Item Usage_/_Part Usage_/_Port Usage_/_Requirement Usage_,
@@ -144,10 +144,13 @@ image::gv-featureTyping-edge.png[{gv} FeatureTyping Edge]
 
 image::gv-allocation-edge.png[{gv} Allocation Edge]
 
-* Containment relation.
+* Containment relation,
 
 image::gv-containment-edge.png[{gv} Containment Edge]
 
+* Succession.
+
+image::gv-succession-edge.png[{gv} Succession Edge]
 
 include::user-manual:partial$manage-elements-diagram.adoc[]
 

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import java.util.Objects;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
@@ -497,7 +499,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
-                .append("perform")
+                .append(this.getPerformActionUsageTag(object))
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
                 .append(object.getPerformedAction().getName());
@@ -836,5 +838,12 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             }
         }
         return label.toString();
+    }
+
+    private String getPerformActionUsageTag(PerformActionUsage pau) {
+        if (Objects.equals(pau.getPerformedAction(), pau)) {
+            return "perform action";
+        }
+        return "perform";
     }
 }
