@@ -1,6 +1,6 @@
 = {validation}
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 The {validation} view displays diagnostics for the entire project, organized by their kind such as `ERROR`, `WARNING`, or `INFO`.
 Users can conveniently toggle the visibility of diagnostics by using an accordion widget.

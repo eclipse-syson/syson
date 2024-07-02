@@ -3,7 +3,7 @@
 [#sync-editor]
 == Synchronize {explorer} / {editor}
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 It's possible to turn-off and turn-on the synchronization between the {explorer} and the current selection in the {editor}.
 
@@ -23,7 +23,7 @@ When synchronization is disabled, tree items that are already expanded in the {e
 [#expand-all]
 == Expand all
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 [WARNING]
 ====
@@ -43,7 +43,7 @@ This action expands the selected element and all its children recursively, offer
 [#explorer-filter]
 == Filter elements in the {explorer}
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 === Filter from name
 

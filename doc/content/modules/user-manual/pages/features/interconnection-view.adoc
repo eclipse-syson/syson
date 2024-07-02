@@ -1,6 +1,6 @@
 = {iv}
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 The {iv} is used to show encapsulated structural contents of _Usage- element: Parts, Properties, Connectors, Ports, and Interfaces.
 

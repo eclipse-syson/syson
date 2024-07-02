@@ -3,7 +3,7 @@
 [#create-blank-project]
 == Create a blank project
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 To create a new Blank project, user has to click on _Blank project_ card at the top of the homepage.
 
@@ -22,7 +22,7 @@ Refer to the xref:features/editor.adoc[{editor} page] to understand how to use i
 [#create-template-project]
 == Create a project based on a template
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 To create a new project from a `Template`:
 
@@ -57,7 +57,7 @@ Refer to the xref:features/editor.adoc[{editor} page] to understand how to use i
 [#upload-project]
 == Upload a Project
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 [NOTE]
 ====
@@ -84,7 +84,7 @@ Refer to the xref:features/editor.adoc[{editor} page] to understand how to use i
 [#delete-project]
 == Delete a project
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 It's possible to delete a project either from the {homepage} or the {editor}.
 
@@ -121,7 +121,7 @@ image::hands-on-delete-project-editor.png[Delete Project from editor]
 [#rename-project]
 == Rename a project
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 It's possible to rename a project either from the {homepage} or the {editor}.
 
@@ -162,7 +162,7 @@ image::hands-on-rename-project-editor.png[Rename Project from editor]
 [#download-project]
 == Download a project
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 It's possible to download a project either from the {homepage} or the {editor}.
 
@@ -193,7 +193,7 @@ image::hands-on-download-project-editor.png[Download Project from editor]
 [#share-project]
 == Share a project
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 Sharing a project is as straightforward as providing the project URL to someone because everything within {product} is public.
 Once the project URL is shared, the recipient can access and view the project directly.
@@ -202,7 +202,7 @@ This simplicity in sharing allows for seamless collaboration and communication o
 [#project-settings]
 == Manage project settings
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 The purpose of this page is to present the various settings manageable by the administrator of a project.
 Currently, capabilities are limited to functions such as uploading images, but additional features for project management will be introduced in future updates.

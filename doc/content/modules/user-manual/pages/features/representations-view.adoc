@@ -1,6 +1,6 @@
 = {representations-view}
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 Explore the {representations-view} view to gain insights into the available representations associated with the  selected element.
 

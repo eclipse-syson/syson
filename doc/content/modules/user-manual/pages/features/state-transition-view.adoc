@@ -1,6 +1,6 @@
 = State transition view
 
-include::user-manual:partial$before-you-start-os-experimental-all.adoc[]
+include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 The {stv} is describes the logical transition of a system through various states of a system and the transitions between those states.
 This view shows the behavior of complex system, for example how it evolves over time in response to specific events/stimuli.
