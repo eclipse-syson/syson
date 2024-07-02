@@ -901,4 +901,28 @@ public class ViewCreateService {
         ownerElement.getOwnedRelationship().add(featureMember);
         return perform;
     }
+
+    public Element createPerformAction(Element ownerElement) {
+        Feature subSettedStdElement;
+        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition) {
+            subSettedStdElement = this.utilService.findByName(ownerElement, "Performances::Performance::enclosedPerformances");
+        } else if (ownerElement instanceof PartUsage || ownerElement instanceof PartDefinition) {
+            subSettedStdElement = this.utilService.findByName(ownerElement, "Parts::Part::performedActions");
+        } else {
+            return ownerElement;
+        }
+        var perform = SysmlFactory.eINSTANCE.createPerformActionUsage();
+        this.elementInitializerSwitch.doSwitch(perform);
+        // set the subsetting relationship depending on the owner element
+        var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
+        subsetting.setSubsettingFeature(perform);
+        subsetting.setSubsettedFeature(subSettedStdElement);
+        subsetting.setIsImplied(true);
+        perform.getOwnedRelationship().add(subsetting);
+        // no subsetting relationship for the performed action since it is the same as the perform action
+        var featureMember = this.createMembership(ownerElement);
+        featureMember.getOwnedRelatedElement().add(perform);
+        ownerElement.getOwnedRelationship().add(featureMember);
+        return perform;
+    }
 }

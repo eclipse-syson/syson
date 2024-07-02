@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -28,7 +29,8 @@ import org.eclipse.syson.util.AQLUtils;
  * There are two separate node descriptions mapped to {@link PerformActionUsage}:<br>
  * - {@link ReferencingPerformActionUsageNodeDescriptionProvider}: when the performed action is a separated action
  * usage<br>
- * - {@link PerformActionUsageNodeDescriptionProvider}: when the performed action is the perform action itself.
+ * - regular {@link UsageNodeDescriptionProvider} with PerformActionUsage: when the performed action is the perform
+ * action itself.
  *
  * @author Jerome Gout
  */
@@ -51,5 +53,10 @@ public class ReferencingPerformActionUsageNodeDescriptionProvider extends UsageN
     @Override
     protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         return List.of();
+    }
+
+    @Override
+    protected Set<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
+        return Set.of();
     }
 }
