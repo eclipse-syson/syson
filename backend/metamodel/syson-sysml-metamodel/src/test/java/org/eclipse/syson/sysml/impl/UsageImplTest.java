@@ -38,7 +38,6 @@ public class UsageImplTest {
 
     @Test
     public void getNamesFromReferenceSubsetting() {
-
         Usage usage = this.builder.create(Usage.class);
 
         assertNull(usage.getName());
@@ -53,7 +52,6 @@ public class UsageImplTest {
         assertEquals("f", usage.getShortName());
 
         // define a name and short name
-
         usage.setDeclaredName("u1");
         usage.setDeclaredShortName("u");
 
@@ -63,7 +61,6 @@ public class UsageImplTest {
 
     @Test
     public void getNamesFromRedefinitionInVariant() {
-
         VariantMembership variantMembership = this.builder.create(VariantMembership.class);
         Usage usage = this.builder.create(Usage.class);
 
@@ -81,12 +78,10 @@ public class UsageImplTest {
         assertEquals("f", usage.getShortName());
 
         // define a name and short name
-
         usage.setDeclaredName("u1");
         usage.setDeclaredShortName("u");
 
         assertEquals("u1", usage.getName());
         assertEquals("u", usage.getShortName());
     }
-
 }

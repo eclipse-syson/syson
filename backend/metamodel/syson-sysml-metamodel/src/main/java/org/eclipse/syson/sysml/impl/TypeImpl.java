@@ -498,17 +498,58 @@ public class TypeImpl extends NamespaceImpl implements Type {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Return all Types related to this Type as supertypes directly or transitively by
+     * Specialization Relationships. <br/>
+     * body: ownedSpecialization -> closure(general.ownedSpecialization).general -> including(self) <br/>
+     * <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public EList<Type> allSupertypes() {
-        // TODO: implement this method
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        return this.allSupertypes(this, new ArrayList<>());
     }
 
+    /**
+     * @genereted NOT
+     */
+    private EList<Type> allSupertypes(Type currentType, List<Type> visited) {
+        EList<Type> superTypes = new BasicEList<>();
+        if (currentType.isIsConjugated()) {
+            Type originalType = currentType.getOwnedConjugator().getOriginalType();
+            if (visited.contains(originalType)) {
+                visited.add(originalType);
+                EList<Type> allSupertypes = this.allSupertypes(originalType, visited);
+                for (Type supertype : allSupertypes) {
+                    if (!superTypes.contains(supertype)) {
+                        superTypes.add(supertype);
+                    }
+                }
+            }
+        } else {
+            EList<Specialization> ownedSpecialization = currentType.getOwnedSpecialization();
+            for (Specialization specialization : ownedSpecialization) {
+                Type general = specialization.getGeneral();
+                if (general != null && !superTypes.contains(general) && !visited.contains(general)) {
+                    superTypes.add(general);
+                    visited.add(general);
+                    EList<Type> generalAllSupertypes = this.allSupertypes(general, visited);
+                    for (Type generalSupertype : generalAllSupertypes) {
+                        if (!superTypes.contains(generalSupertype)) {
+                            superTypes.add(generalSupertype);
+                        }
+                    }
+                }
+            }
+        }
+        if (!superTypes.contains(currentType)) {
+            superTypes.add(currentType);
+        }
+        if (!visited.contains(currentType)) {
+            visited.add(currentType);
+        }
+        return superTypes;
+    }
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -570,7 +611,12 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public boolean specializes(Type supertype) {
-        return false;
+        if (this.isIsConjugated()) {
+            Type originalType = this.getOwnedConjugator().getOriginalType();
+            return originalType != null && originalType.specializes(supertype);
+        } else {
+            return this.allSupertypes().contains(supertype);
+        }
     }
 
     /**
@@ -580,6 +626,13 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public boolean specializesFromLibrary(String libraryTypeName) {
+        Membership membership = this.resolve(libraryTypeName);
+        if (membership != null) {
+            Element memberElement = membership.getMemberElement();
+            if (memberElement instanceof Type type) {
+                return this.specializes(type);
+            }
+        }
         return false;
     }
 

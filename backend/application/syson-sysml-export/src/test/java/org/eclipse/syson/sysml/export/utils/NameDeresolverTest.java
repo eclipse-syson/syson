@@ -114,18 +114,18 @@ public class NameDeresolverTest {
 
         Package p1 = builder.createInWithName(Package.class, root, "p1");
         PartDefinition p1Mass = builder.createInWithName(PartDefinition.class, p1, "mass");
-        builder.addSuperType(p1Mass, massAttr);
+        builder.addSubclassification(p1Mass, massAttr);
 
         Package p2 = builder.createInWithName(Package.class, root, "p2");
         PartDefinition p2Mass = builder.createInWithName(PartDefinition.class, p2, "mass2");
-        builder.addSuperType(p2Mass, massAttr);
+        builder.addSubclassification(p2Mass, massAttr);
 
         Package p3 = builder.createInWithName(Package.class, root, "p3");
         AttributeUsage p3Mass = builder.createInWithName(AttributeUsage.class, p3, "mass");
 
         Package p3x1 = builder.createInWithName(Package.class, p3, "p3x1");
         PartDefinition p3x1Mass = builder.createInWithName(PartDefinition.class, p3x1, "mass2");
-        builder.addSuperType(p3x1Mass, massAttr);
+        builder.addSubclassification(p3x1Mass, massAttr);
 
         // Needs qualified name since the attribute p1::mass hides the imported element
         assertEquals("Lib2::mass", getDerolvedName(massAttr, p1Mass));
@@ -157,8 +157,8 @@ public class NameDeresolverTest {
         AttributeDefinition attr3 = builder.createInWithName(AttributeDefinition.class, p1, "Attr-3");
         AttributeDefinition attr4 = builder.createInWithName(AttributeDefinition.class, p1, "Attr4");
 
-        builder.addSuperType(attr2, attr1);
-        builder.addSuperType(attr4, attr3);
+        builder.addSubclassification(attr2, attr1);
+        builder.addSubclassification(attr4, attr3);
 
         assertEquals("'Attr 1'", getDerolvedName(attr1, attr2));
         assertEquals("'Attr-3'", getDerolvedName(attr3, attr4));
@@ -180,7 +180,7 @@ public class NameDeresolverTest {
 
         PartDefinition partDef3 = builder.createInWithName(PartDefinition.class, p3, "def3");
 
-        builder.addSuperType(partDef3, partDef1);
+        builder.addSubclassification(partDef3, partDef1);
         /**
          * <pre>
          * package p1 {
@@ -210,7 +210,7 @@ public class NameDeresolverTest {
 
         Package p2 = builder.createWithName(Package.class, P2);
         PartDefinition partDef2 = builder.createInWithName(PartDefinition.class, p2, PART_DEF2);
-        builder.addSuperType(partDef2, partDef1);
+        builder.addSubclassification(partDef2, partDef1);
 
         // No import
         /**
@@ -252,7 +252,7 @@ public class NameDeresolverTest {
 
         Package p2 = builder.createWithName(Package.class, P2);
         PartDefinition partDef2 = builder.createInWithName(PartDefinition.class, p2, PART_DEF2);
-        builder.addSuperType(partDef2, partDef1);
+        builder.addSubclassification(partDef2, partDef1);
         builder.createIn(NamespaceImport.class, p2).setImportedNamespace(p1);
 
         /**
@@ -282,7 +282,7 @@ public class NameDeresolverTest {
 
         Package p2 = builder.createWithName(Package.class, P2);
         PartDefinition partDef2 = builder.createInWithName(PartDefinition.class, p2, PART_DEF2);
-        builder.addSuperType(partDef2, partDef1);
+        builder.addSubclassification(partDef2, partDef1);
         NamespaceImport nmImpot = builder.createIn(NamespaceImport.class, p2);
         nmImpot.setImportedNamespace(p1);
         nmImpot.setIsRecursive(true);
@@ -323,7 +323,7 @@ public class NameDeresolverTest {
         nmImpot2.setIsRecursive(true);
 
         PartDefinition partDef3 = builder.createInWithName(PartDefinition.class, p3, "PartDef3");
-        builder.addSuperType(partDef3, partDef1);
+        builder.addSubclassification(partDef3, partDef1);
 
         /**
          * <pre>

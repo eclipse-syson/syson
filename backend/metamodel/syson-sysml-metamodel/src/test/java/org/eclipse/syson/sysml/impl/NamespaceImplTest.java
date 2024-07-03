@@ -27,7 +27,6 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ModelBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -82,7 +81,7 @@ public class NamespaceImplTest {
      *
      * @author Arthur Daussy
      */
-    private static class TestModel {
+    private class TestModel {
 
         private final ModelBuilder builder = new ModelBuilder();
 
@@ -138,6 +137,10 @@ public class NamespaceImplTest {
             this.build();
         }
 
+        public ModelBuilder getBuilder() {
+            return this.builder;
+        }
+
         private void build() {
 
             this.root = this.builder.createWithName(Namespace.class, null);
@@ -176,9 +179,9 @@ public class NamespaceImplTest {
             this.p4 = this.builder.createInWithName(Package.class, this.root2, "p9");
             this.def4 = this.builder.createInWithName(PartDefinition.class, this.p4, "def9");
 
-            this.builder.addSuperType(this.def1x1x1, this.def4);
+            this.builder.addSubclassification(this.def1x1x1, this.def4);
             this.builder.createIn(NamespaceImport.class, this.p1x1x1).setImportedNamespace(this.def4);
-            this.builder.addSuperType(this.privatedef1x1, this.def4);
+            this.builder.addSubclassification(this.privatedef1x1, this.def4);
 
             this.context = new ResourceSetImpl();
             Resource doc1 = new ResourceFactoryImpl().createResource(null);
@@ -188,13 +191,6 @@ public class NamespaceImplTest {
             this.context.getResources().add(doc1);
             this.context.getResources().add(doc2);
         }
-    }
-
-    private ModelBuilder builder;
-
-    @BeforeEach
-    public void setUp() {
-        this.builder = new ModelBuilder();
     }
 
     @DisplayName("Check membership feature")
@@ -218,7 +214,7 @@ public class NamespaceImplTest {
 
         assertContentEquals(testModel.p1.getImportedMembership());
 
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
 
         assertContentEquals(testModel.p1.getImportedMembership(), testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
@@ -229,7 +225,7 @@ public class NamespaceImplTest {
     public void importedMembershipSimpleMembershipImport() {
         var testModel = new TestModel();
 
-        MembershipImport nsImport = this.builder.createIn(MembershipImport.class, testModel.p1);
+        MembershipImport nsImport = testModel.getBuilder().createIn(MembershipImport.class, testModel.p1);
         nsImport.setImportedMembership(testModel.p2x1.getOwningMembership());
 
         assertContentEquals(testModel.p1.getImportedMembership(), testModel.p2x1.getOwningMembership());
@@ -240,7 +236,7 @@ public class NamespaceImplTest {
     public void importedMembershipSimpleNamespaceImport() {
         var testModel = new TestModel();
 
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
 
         assertContentEquals(testModel.p1.getImportedMembership(), testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership());
@@ -252,11 +248,11 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport0 = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         nmImport0.setImportedNamespace(testModel.p3);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
         nmImport.setIsRecursive(true);
 
@@ -273,11 +269,11 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p3);
+        NamespaceImport nmImport0 = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
 
         assertContentEquals(testModel.p3.getImportedMembership(),
@@ -293,11 +289,11 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p3);
+        NamespaceImport nmImport0 = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
 
         assertContentEquals(testModel.p3.getMembership(),
@@ -322,11 +318,11 @@ public class NamespaceImplTest {
         testModel.def3.setDeclaredShortName("d");
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p3);
+        NamespaceImport nmImport0 = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
 
         assertContentEquals(testModel.p3.getImportedMembership(),
@@ -350,11 +346,11 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in P2
-        NamespaceImport nmImport0 = this.builder.createIn(NamespaceImport.class, testModel.p3);
+        NamespaceImport nmImport0 = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setVisibility(VisibilityKind.PRIVATE);
 
@@ -371,7 +367,7 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p3 in p1 with recursion
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p3);
         nmImport.setIsRecursive(true);
         nmImport.setIsImportAll(true);
@@ -388,14 +384,14 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p1 in p3
-        this.builder.createIn(NamespaceImport.class, testModel.p3).setImportedNamespace(testModel.p1);
+        testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3).setImportedNamespace(testModel.p1);
 
         // Import p3 in P2
-        NamespaceImport namespaceImport = this.builder.createIn(NamespaceImport.class, testModel.p2);
+        NamespaceImport namespaceImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         namespaceImport.setImportedNamespace(testModel.p3);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
         nmImport.setIsRecursive(true);
 
@@ -420,7 +416,7 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setIsRecursive(true);
 
@@ -434,7 +430,7 @@ public class NamespaceImplTest {
         var testModel = new TestModel();
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = this.builder.createIn(NamespaceImport.class, testModel.p1x1x1);
+        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1x1x1);
         nmImport.setImportedNamespace(testModel.p1);
         nmImport.setIsRecursive(true);
 

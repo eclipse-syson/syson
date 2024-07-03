@@ -62,7 +62,7 @@ public class PartDefinitionImplTest {
         protectedAttrSuperDef.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
 
         PartDefinition subDef = builder.createInWithName(PartDefinition.class, p1, "subDef");
-        builder.addSuperType(subDef, superDef);
+        builder.addSubclassification(subDef, superDef);
 
         assertContentEquals(subDef.getInheritedMembership(), publicAttrSuperDef.getOwningMembership(), protectedAttrSuperDef.getOwningMembership());
         assertContentEquals(subDef.inheritedMemberships(new BasicEList<>()), publicAttrSuperDef.getOwningMembership(), protectedAttrSuperDef.getOwningMembership());
