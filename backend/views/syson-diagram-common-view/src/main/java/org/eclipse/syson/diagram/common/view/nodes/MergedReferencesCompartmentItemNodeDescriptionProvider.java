@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -63,7 +64,7 @@ public class MergedReferencesCompartmentItemNodeDescriptionProvider extends Abst
                         AQLUtils.getSelfServiceCallExpression("getAllContentsByReferences",
                                 "Sequence{" + this.eReferences.stream().map(ref -> "self." + ref.getName()).reduce((a, b) -> a + ',' + b).get() + "})"))
                 .style(this.createCompartmentItemNodeStyle())
-                .userResizable(false)
+                .userResizable(UserResizableDirection.NONE)
                 .palette(this.createCompartmentItemNodePalette())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();

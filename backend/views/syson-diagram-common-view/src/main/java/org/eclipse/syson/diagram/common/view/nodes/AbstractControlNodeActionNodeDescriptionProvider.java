@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -87,8 +88,8 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
         return "12";
     }
 
-    protected boolean isNodeResizable() {
-        return true;
+    protected UserResizableDirection isNodeResizable() {
+        return UserResizableDirection.BOTH;
     }
 
     @Override

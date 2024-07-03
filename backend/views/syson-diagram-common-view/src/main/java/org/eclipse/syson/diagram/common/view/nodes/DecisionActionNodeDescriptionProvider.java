@@ -14,6 +14,7 @@ package org.eclipse.syson.diagram.common.view.nodes;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -61,7 +62,7 @@ public class DecisionActionNodeDescriptionProvider extends AbstractControlNodeAc
     }
 
     @Override
-    protected boolean isNodeResizable() {
-        return false;
+    protected UserResizableDirection isNodeResizable() {
+        return UserResizableDirection.NONE;
     }
 }
