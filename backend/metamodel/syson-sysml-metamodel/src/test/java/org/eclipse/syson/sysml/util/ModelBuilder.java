@@ -15,8 +15,13 @@ package org.eclipse.syson.sysml.util;
 import static java.util.stream.Collectors.toMap;
 
 import java.util.Map;
+import java.util.UUID;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceImpl;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.Definition;
@@ -32,6 +37,7 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.LiteralInfinity;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.Redefinition;
@@ -66,7 +72,13 @@ public class ModelBuilder {
 
     private final ECrossReferenceAdapter crossReferencerAdapter = new ECrossReferenceAdapter();
 
-    public void addSuperType(Classifier child, Classifier parent) {
+    private final ResourceSet resourceSet;
+
+    public ModelBuilder() {
+        this.resourceSet = new ResourceSetImpl();
+    }
+
+    public void addSubclassification(Classifier child, Classifier parent) {
         Subclassification subClassification = this.create(Subclassification.class);
         subClassification.setSuperclassifier(parent);
         subClassification.setSubclassifier(child);
@@ -128,6 +140,14 @@ public class ModelBuilder {
 
     public <T extends Element> T create(Class<T> type) {
         return this.createIn(type, null);
+    }
+
+    public Namespace createRootNamespace() {
+        var resource = new ResourceImpl(URI.createURI(UUID.randomUUID().toString()));
+        var namespace = SysmlFactory.eINSTANCE.createNamespace();
+        resource.getContents().add(namespace);
+        this.resourceSet.getResources().add(resource);
+        return namespace;
     }
 
     public <T extends Element> T createWithName(Class<T> type, String name) {

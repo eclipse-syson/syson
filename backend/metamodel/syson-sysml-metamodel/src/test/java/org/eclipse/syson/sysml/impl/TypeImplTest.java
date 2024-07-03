@@ -13,16 +13,17 @@
 package org.eclipse.syson.sysml.impl;
 
 import static org.eclipse.syson.sysml.util.TestUtils.assertContentEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.util.ModelBuilder;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -62,7 +63,7 @@ public class TypeImplTest {
      *
      * @author Arthur Daussy
      */
-    private static class TestModel {
+    private class TestModel {
 
         private final ModelBuilder builder = new ModelBuilder();
 
@@ -92,8 +93,12 @@ public class TypeImplTest {
             this.build();
         }
 
+        public ModelBuilder getBuilder() {
+            return this.builder;
+        }
+
         private void build() {
-            this.root = this.builder.createWithName(Namespace.class, null);
+            this.root = this.builder.createRootNamespace();
 
             this.p1 = this.builder.createInWithName(Package.class, this.root, "p1");
 
@@ -115,19 +120,12 @@ public class TypeImplTest {
 
             this.megaDef = this.builder.createInWithName(PartDefinition.class, this.p1, "megaDef");
 
-            this.builder.addSuperType(this.subDef, this.superDef);
-            this.builder.addSuperType(this.superDef, this.superSuperDef);
-            this.builder.addSuperType(this.superSuperDef, this.megaDef);
-
+            this.builder.addSubclassification(this.subDef, this.superDef);
+            this.builder.addSubclassification(this.superDef, this.superSuperDef);
+            this.builder.addSubclassification(this.superSuperDef, this.megaDef);
         }
     }
 
-    private ModelBuilder builder;
-
-    @BeforeEach
-    public void setUp() {
-        this.builder = new ModelBuilder();
-    }
 
     @DisplayName("Check name collision with super type memberships")
     @Test
@@ -137,14 +135,14 @@ public class TypeImplTest {
         assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false), testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership());
 
         // Then create an attribute named attr0 in subDef to hide the super SuperSuperDef::attr0 attribute
-        AttributeUsage subDefAttr0 = this.builder.createInWithName(AttributeUsage.class, testModel.subDef, "attr0");
+        AttributeUsage subDefAttr0 = testModel.getBuilder().createInWithName(AttributeUsage.class, testModel.subDef, "attr0");
 
         // SuperSuperDef::attr0 should not be visible anymore
         assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false),
                 testModel.attr1.getOwningMembership(), subDefAttr0.getOwningMembership());
         assertContentEquals(testModel.subDef.getInheritedMembership(), testModel.attr1.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
 
-        AttributeUsage subDefAttr1 = this.builder.createInWithName(AttributeUsage.class, testModel.subDef, "attr1");
+        AttributeUsage subDefAttr1 = testModel.getBuilder().createInWithName(AttributeUsage.class, testModel.subDef, "attr1");
         // SuperDef::attr1 should not be visible anymore
         assertContentEquals(testModel.subDef.visibleMemberships(new BasicEList<>(), false, false),
                 subDefAttr1.getOwningMembership(), subDefAttr0.getOwningMembership());
@@ -170,7 +168,7 @@ public class TypeImplTest {
     public void visibleMembershipsWithLoop() {
         var testModel = new TestModel();
 
-        this.builder.addSuperType(testModel.megaDef, testModel.subDef);
+        testModel.getBuilder().addSubclassification(testModel.megaDef, testModel.subDef);
         /**
          * <pre>
          * package p1 {
@@ -191,7 +189,7 @@ public class TypeImplTest {
          *       part def SubDef :> SuperDerf;
          *
          *
-         *   }
+         * }
          * </pre>
          **/
 
@@ -241,4 +239,70 @@ public class TypeImplTest {
 
     }
 
+    @DisplayName("Check that allSupertypes do not stackoverflow.")
+    @Test
+    public void allSupertypes() {
+        var testModel = new TestModel();
+
+        assertContentEquals(testModel.subDef.allSupertypes(), testModel.subDef, testModel.superDef, testModel.superSuperDef, testModel.megaDef);
+        assertContentEquals(testModel.superDef.allSupertypes(), testModel.superDef, testModel.superSuperDef, testModel.megaDef);
+        assertContentEquals(testModel.superSuperDef.allSupertypes(), testModel.superSuperDef, testModel.megaDef);
+        assertContentEquals(testModel.megaDef.allSupertypes(), testModel.megaDef);
+
+        testModel.getBuilder().addSubclassification(testModel.megaDef, testModel.subDef);
+        /**
+         * <pre>
+         * package p1 {
+         *
+         *       part def MegaDef :> SubDef{
+         *       }
+         *
+         *       part def SuperSuperDef :> MegaDef{
+         *          attribute attr0;
+         *       }
+         *
+         *       part def SuperDerf :> SuperSuperDef{
+         *           attribute attr1;
+         *           private attribute privateAttr;
+         *           protected attribute protectedAttr;
+         *       }
+         *
+         *       part def SubDef :> SuperDerf;
+         *
+         *
+         * }
+         * </pre>
+         **/
+        assertContentEquals(testModel.subDef.allSupertypes(), testModel.subDef, testModel.superDef, testModel.superSuperDef, testModel.megaDef);
+        assertContentEquals(testModel.superDef.allSupertypes(), testModel.subDef, testModel.superDef, testModel.superSuperDef, testModel.megaDef);
+        assertContentEquals(testModel.superSuperDef.allSupertypes(), testModel.subDef, testModel.superDef, testModel.superSuperDef, testModel.megaDef);
+        assertContentEquals(testModel.megaDef.allSupertypes(), testModel.subDef, testModel.superDef, testModel.superSuperDef, testModel.megaDef);
+
+    }
+
+    @DisplayName("Check specializesFromLibrary")
+    @Test
+    public void specializesFromLibrary() {
+        var testModel = new TestModel();
+        var library = testModel.getBuilder().createRootNamespace();
+        var libraryPackage = testModel.getBuilder().createInWithName(LibraryPackage.class, library, "MyLibrary");
+        var baseAttribute = testModel.getBuilder().createInWithName(AttributeUsage.class, libraryPackage, "baseAttribute");
+
+        testModel.getBuilder().addSubsetting(testModel.attr0, baseAttribute);
+
+        /**
+         * <pre>
+         * package p1 {
+         *       part def SuperSuperDef :> MegaDef{
+         *          attribute attr0 :> baseAttribute;
+         *       }
+         * }
+         * libraryPackage MyLibrary {
+         *       attribute baseAttribute;
+         * }
+         * </pre>
+         **/
+
+        assertTrue(testModel.attr0.specializesFromLibrary("MyLibrary::baseAttribute"));
+    }
 }

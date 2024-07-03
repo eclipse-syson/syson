@@ -382,7 +382,7 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
      */
     @Override
     public EList<Membership> visibleMemberships(EList<Namespace> excluded, boolean isRecursive, boolean includeAll) {
-        return new MembershipComputer(this, excluded).visibleMemberships( isRecursive, includeAll,false);
+        return new MembershipComputer(this, excluded).visibleMemberships(isRecursive, includeAll, false);
     }
 
     /**

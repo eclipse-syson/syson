@@ -361,7 +361,7 @@ public class SysMLElementSerializerTest {
         var superDef = this.builder.createInWithName(type, p1, "SuperDef");
         var subDef = this.builder.createInWithName(type, p1, "SubDef");
         this.builder.createIn(Comment.class, subDef).setBody("A comment");
-        this.builder.addSuperType(subDef, superDef);
+        this.builder.addSubclassification(subDef, superDef);
 
         this.assertTextualFormEquals("""
                 $keyword SubDef :> SuperDef {
@@ -550,9 +550,9 @@ public class SysMLElementSerializerTest {
         PartDefinition partDef2 = this.builder.createWithName(PartDefinition.class, "PartDef2");
         PartDefinition partDef3 = this.builder.createWithName(PartDefinition.class, "PartDef 3");
 
-        this.builder.addSuperType(partDef, partDef2);
-        this.builder.addSuperType(partDef, partDef3);
-        this.builder.addSuperType(partDef2, partDef3);
+        this.builder.addSubclassification(partDef, partDef2);
+        this.builder.addSubclassification(partDef, partDef3);
+        this.builder.addSubclassification(partDef2, partDef3);
 
         this.assertTextualFormEquals("part def 'Part Def 1' :> PartDef2, 'PartDef 3';", partDef);
         this.assertTextualFormEquals("part def PartDef2 :> 'PartDef 3';", partDef2);
@@ -574,9 +574,9 @@ public class SysMLElementSerializerTest {
 
         this.builder.createIn(NamespaceImport.class, p1).setImportedNamespace(p2);
 
-        this.builder.addSuperType(partDef, partDef2);
-        this.builder.addSuperType(partDef, partDef3);
-        this.builder.addSuperType(partDef2, partDef3);
+        this.builder.addSubclassification(partDef, partDef2);
+        this.builder.addSubclassification(partDef, partDef3);
+        this.builder.addSubclassification(partDef2, partDef3);
 
         this.assertTextualFormEquals("part def 'Part Def 1' :> PartDef2, p3::'PartDef 3';", partDef);
         this.assertTextualFormEquals("part def PartDef2 :> p3::'PartDef 3';", partDef2);
@@ -637,7 +637,7 @@ public class SysMLElementSerializerTest {
 
         PartDefinition partDef2 = this.builder.createWithName(PartDefinition.class, "PartDef2");
 
-        this.builder.addSuperType(partDef, partDef2);
+        this.builder.addSubclassification(partDef, partDef2);
 
         this.addOwnedMembership(pack1, partDef, VisibilityKind.PRIVATE);
 
