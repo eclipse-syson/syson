@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -80,7 +81,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:if(editingContext <> null) then self.getDiagramEmptyCandidate(editingContext, diagramContext, previousDiagram) else Sequence{} endif")
                 .style(this.createEmptyDiagramNodeStyle())
-                .userResizable(true)
+                .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }

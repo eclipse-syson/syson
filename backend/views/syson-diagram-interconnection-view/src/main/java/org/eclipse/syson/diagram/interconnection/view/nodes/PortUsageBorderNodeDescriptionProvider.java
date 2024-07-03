@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -61,7 +62,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 // Default style if no conditional style can be applied
                 .style(this.createImageNodeStyleDescription("images/PortUsage_In.svg"))
                 .conditionalStyles(this.createPortUsageConditionalNodeStyles().toArray(ConditionalNodeStyle[]::new))
-                .userResizable(true)
+                .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }

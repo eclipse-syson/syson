@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -59,7 +60,7 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .name(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME))
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllStandardStartActions"))
                 .style(this.createImageNodeStyleDescription("images/start_action.svg"))
-                .userResizable(false)
+                .userResizable(UserResizableDirection.NONE)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .build();
     }

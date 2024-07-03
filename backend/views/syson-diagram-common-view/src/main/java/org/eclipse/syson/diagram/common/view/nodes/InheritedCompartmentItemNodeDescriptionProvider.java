@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -60,7 +61,7 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
                 .name(this.descriptionNameGenerator.getInheritedCompartmentItemName(this.eClass, this.eReference))
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getInheritedCompartmentItems", "'" + this.eReference.getName() + "'"))
                 .style(this.createCompartmentItemNodeStyle())
-                .userResizable(false)
+                .userResizable(UserResizableDirection.NONE)
                 .palette(this.createInheritedCompartmentItemNodePalette())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();

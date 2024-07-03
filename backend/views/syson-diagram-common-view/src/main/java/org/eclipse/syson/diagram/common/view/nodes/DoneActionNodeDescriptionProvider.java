@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -52,7 +53,7 @@ public class DoneActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .name(this.descriptionNameGenerator.getNodeName(DONE_ACTION_NAME))
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllStandardDoneActions"))
                 .style(this.createImageNodeStyleDescription("images/done_action.svg"))
-                .userResizable(false)
+                .userResizable(UserResizableDirection.NONE)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .build();
     }

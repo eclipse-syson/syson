@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -65,7 +66,7 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
                 .name(this.getName())
                 .semanticCandidatesExpression("")
                 .style(this.createFakeNodeStyle())
-                .userResizable(true)
+                .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .build();
     }

@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
+import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
@@ -113,7 +114,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .name(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .style(this.createPackageNodeStyle())
-                .userResizable(true)
+                .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .build();
     }
