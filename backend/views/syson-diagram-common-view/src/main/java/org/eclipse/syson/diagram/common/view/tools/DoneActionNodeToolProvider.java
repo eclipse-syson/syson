@@ -41,7 +41,7 @@ public class DoneActionNodeToolProvider extends AbstractFreeFormCompartmentNodeT
 
     @Override
     protected String getLabel() {
-        return "Add Done Action";
+        return "New Done Action";
     }
 
     @Override
