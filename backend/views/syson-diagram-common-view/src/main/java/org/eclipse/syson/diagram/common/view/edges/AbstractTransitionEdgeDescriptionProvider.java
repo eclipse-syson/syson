@@ -117,6 +117,7 @@ public abstract class AbstractTransitionEdgeDescriptionProvider extends Abstract
 
     private EdgeStyle createEdgeStyle() {
         return this.getDiagramBuilderHelper().newEdgeStyle()
+                .borderSize(0)
                 .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
                 .edgeWidth(1)
                 .lineStyle(LineStyle.SOLID)
