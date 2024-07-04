@@ -41,7 +41,7 @@ public class StartActionNodeToolProvider extends AbstractFreeFormCompartmentNode
 
     @Override
     protected String getLabel() {
-        return "Add Start Action";
+        return "New Start Action";
     }
 
     @Override
