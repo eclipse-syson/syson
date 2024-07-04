@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralInteger;
@@ -83,6 +84,14 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     }
 
     @Override
+    public List<EStructuralFeature> caseFeature(Feature object) {
+        var features = new ArrayList<EStructuralFeature>();
+        features.addAll(this.caseElement(object));
+        features.add(SysmlPackage.eINSTANCE.getFeature_Direction());
+        return features;
+    }
+
+    @Override
     public List<EStructuralFeature> caseFeatureTyping(FeatureTyping object) {
         var features = new ArrayList<EStructuralFeature>();
         features.addAll(this.caseSpecialization(object));
@@ -94,7 +103,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     @Override
     public List<EStructuralFeature> caseLiteralBoolean(LiteralBoolean object) {
         var features = new ArrayList<EStructuralFeature>();
-        features.addAll(this.caseElement(object));
+        features.addAll(this.caseFeature(object));
         features.add(SysmlPackage.eINSTANCE.getLiteralBoolean_Value());
         return features;
     }
@@ -102,7 +111,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     @Override
     public List<EStructuralFeature> caseLiteralInteger(LiteralInteger object) {
         var features = new ArrayList<EStructuralFeature>();
-        features.addAll(this.caseElement(object));
+        features.addAll(this.caseFeature(object));
         features.add(SysmlPackage.eINSTANCE.getLiteralInteger_Value());
         return features;
     }
@@ -110,7 +119,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     @Override
     public List<EStructuralFeature> caseLiteralRational(LiteralRational object) {
         var features = new ArrayList<EStructuralFeature>();
-        features.addAll(this.caseElement(object));
+        features.addAll(this.caseFeature(object));
         features.add(SysmlPackage.eINSTANCE.getLiteralRational_Value());
         return features;
     }
@@ -118,7 +127,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     @Override
     public List<EStructuralFeature> caseLiteralString(LiteralString object) {
         var features = new ArrayList<EStructuralFeature>();
-        features.addAll(this.caseElement(object));
+        features.addAll(this.caseFeature(object));
         features.add(SysmlPackage.eINSTANCE.getLiteralString_Value());
         return features;
     }
@@ -159,7 +168,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     @Override
     public List<EStructuralFeature> caseOccurrenceUsage(OccurrenceUsage object) {
         var features = new ArrayList<EStructuralFeature>();
-        features.addAll(this.caseElement(object));
+        features.addAll(this.caseFeature(object));
         features.add(SysmlPackage.eINSTANCE.getOccurrenceUsage_IsIndividual());
         return features;
     }
@@ -176,7 +185,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     @Override
     public List<EStructuralFeature> casePortUsage(PortUsage object) {
         var features = new ArrayList<EStructuralFeature>();
-        features.addAll(this.caseElement(object));
+        features.addAll(this.caseFeature(object));
         features.add(SysmlPackage.eINSTANCE.getFeature_Direction());
         return features;
     }
@@ -235,7 +244,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     @Override
     public List<EStructuralFeature> caseStateUsage(StateUsage object) {
         var features = new ArrayList<EStructuralFeature>();
-        features.addAll(this.caseElement(object));
+        features.addAll(this.caseFeature(object));
         features.add(SysmlPackage.eINSTANCE.getStateUsage_IsParallel());
         return features;
     }
