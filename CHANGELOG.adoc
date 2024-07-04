@@ -82,6 +82,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/460[#460] [details] Extra property "Typed by" is now always visible in the details view for _Feature_ elements, even if the _Feature_ doesn't have a type yet.
 - https://github.com/eclipse-syson/syson/issues/468[#468] [diagrams] Rename creation tools for Start and Done actions
 - https://github.com/eclipse-syson/syson/issues/470[#470] [diagrams] Reduce the default height of the Package node in diagrams 
+- https://github.com/eclipse-syson/syson/issues/472[#472] [properties] Move Feature#direction in Core tab of the Details view
 
 === New features
 
