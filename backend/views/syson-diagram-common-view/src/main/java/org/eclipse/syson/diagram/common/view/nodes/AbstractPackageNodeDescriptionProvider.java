@@ -105,7 +105,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         return this.diagramBuilderHelper.newNodeDescription()
                 .collapsible(true)
                 .childrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build())
-                .defaultHeightExpression("300")
+                .defaultHeightExpression("101")
                 .defaultWidthExpression("300")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
