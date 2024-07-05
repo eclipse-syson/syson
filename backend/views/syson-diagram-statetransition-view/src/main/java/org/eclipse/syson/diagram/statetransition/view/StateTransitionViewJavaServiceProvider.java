@@ -19,8 +19,8 @@ import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
+import org.eclipse.syson.diagram.common.view.services.ViewToolService;
 import org.eclipse.syson.diagram.statetransition.view.services.StateTransitionViewCreateService;
-import org.eclipse.syson.diagram.statetransition.view.services.StateTransitionViewToolService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.UtilService;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +46,7 @@ public class StateTransitionViewJavaServiceProvider implements IJavaServiceProvi
                     ViewNodeService.class,
                     ViewLabelService.class,
                     UtilService.class,
-                    StateTransitionViewToolService.class);
+                    ViewToolService.class);
         }
         return List.of();
     }

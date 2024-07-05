@@ -22,6 +22,12 @@ public final class SysMLv2Identifiers {
     // All the general view diagrams have the same description
     public static final String GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=8dcd14b0-6259-3193-ad2c-743f394c68e4&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93";
 
+    public static final String GENERAL_VIEW_ADD_EXISTING_ELEMENTS_PROJECT = "df605b26-43ec-41b4-b30d-a4466d2df609";
+
+    public static final String GENERAL_VIEW_ADD_EXISTING_ELEMENTS_DIAGRAM = "1be14f03-eb87-4361-98b6-bad0b26ff60c";
+
+    public static final String GENERAL_VIEW_ADD_EXISTING_ELEMENTS_DIAGRAM_OBJECT = "8d4123ac-3ac5-412d-90f2-49282b923003";
+
     public static final String GENERAL_VIEW_EMPTY_PROJECT = "861bc7ba-defb-400c-982f-d6563f36af48";
 
     public static final String GENERAL_VIEW_EMPTY_DIAGRAM = "53d60f79-d8dd-4613-86e9-203657f93b24";

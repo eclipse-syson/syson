@@ -83,7 +83,7 @@ public class ToolDescriptionService {
         String serviceName = "addExistingElements";
         String title = "Add existing elements";
         if (nested) {
-            serviceName = "addExistingNestedElements";
+            serviceName = "addExistingElements";
             title = "Add existing nested elements";
         }
 

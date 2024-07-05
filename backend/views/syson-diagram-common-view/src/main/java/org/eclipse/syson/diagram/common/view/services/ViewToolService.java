@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
@@ -26,16 +27,21 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
+import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
+import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -89,6 +95,8 @@ public class ViewToolService extends ToolService {
 
     private final UtilService utilService;
 
+    private final NodeDescriptionService nodeDescriptionService;
+
     public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
             IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
         super(objectService, representationDescriptionSearchService, feedbackMessageService);
@@ -96,181 +104,276 @@ public class ViewToolService extends ToolService {
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
+        this.nodeDescriptionService = new NodeDescriptionService();
     }
 
     /**
-     * Called by "Add existing elements" tool from General View diagram or General View Package node. Add nodes that are
-     * not present in the diagram or the selectedNode (i.e. a Package).
+     * Add the nodes representing {@code parentElement}'s children that are not present in the diagram or the
+     * {@code parentViewCreationRequest}.
+     * <p>
+     * This method operates on {@link ViewCreationRequest}, meaning that it can create views for elements inside nodes
+     * not yet present on the diagram. See
+     * {@link #addExistingElements(Element, IEditingContext, IDiagramContext, Node, Map, boolean)} to add elements
+     * inside existing nodes.
+     * </p>
      *
-     * @param namespace
-     *            the {@link Namespace} corresponding to the target object of the Diagram or the {@link Node} Package on
-     *            which the tool has been called.
+     * @param parentElement
+     *            the {@link Element} to add in the diagram
      * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *            the editing context
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param selectedNode
-     *            the selected node on which the tool has been called (may be null if the tool has been called from the
-     *            diagram). It corresponds to a variable accessible from the variable manager.
+     *            the diagram context
+     * @param parentViewCreationRequest
+     *            the creation request of the parent element (not yet rendered on the diagram)
      * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
+     *            the converted nodes
      * @param recursive
-     *            whether the tool should add existing elements recursively or not.
-     * @return the input {@link Package}.
+     *            whether the tool should add elements recursively or not
+     * @return the created element
      */
-    public Namespace addExistingElements(Namespace namespace, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Element addExistingElements(Element parentElement, IEditingContext editingContext, IDiagramContext diagramContext, ViewCreationRequest parentViewCreationRequest,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
-        var members = namespace.getOwnedMember();
+
+        List<? extends Element> childElementsToRender = this.getChildElementsToRender(parentElement);
+
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
         DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
 
-        members.stream()
-            .filter(member -> !this.isPresent(member, this.getChildNodes(diagramContext, selectedNode)))
-            .forEach(member -> {
-                this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes);
-                if (recursive && member instanceof Definition definition) {
-                    Node fakeNode = this.createFakeNode(definition, selectedNode, diagramContext, representationDescription, convertedNodes);
-                    if (fakeNode != null) {
-                        this.addExistingSubElements(definition, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
+
+        final org.eclipse.sirius.components.view.diagram.NodeDescription parentNodeDescription;
+        if (parentViewCreationRequest != null) {
+            parentNodeDescription = this.getViewNodeDescription(parentViewCreationRequest.getDescriptionId(), representationDescription, convertedNodes)
+                    .orElse(null);
+        } else {
+            parentNodeDescription = null;
+        }
+
+        for (Element childElement : childElementsToRender) {
+            List<ViewCreationRequest> creationRequests = new ArrayList<>();
+            boolean hasRenderedSynchronizedElement = false;
+            if (parentViewCreationRequest == null) {
+                creationRequests.add(this.createView(childElement, editingContext, diagramContext, (Node) null, convertedNodes));
+            } else {
+                if (parentNodeDescription.getChildrenLayoutStrategy() instanceof ListLayoutStrategyDescription) {
+                    // The parent node has compartments, we want to add elements inside them if possible.
+                    List<org.eclipse.sirius.components.view.diagram.NodeDescription> allChildren = Stream
+                            .concat(parentNodeDescription.getChildrenDescriptions().stream(), parentNodeDescription.getReusedChildNodeDescriptions().stream()).toList();
+                    for (org.eclipse.sirius.components.view.diagram.NodeDescription compartmentNodeDescription : allChildren) {
+                        // We can't use the method getChildNodeDescriptionIdForRendering here because we can't access
+                        // the parent node (it hasn't been created yet),
+                        // nor the parent ViewCreationRequest because the compartment is synchronized and thus it is not
+                        // created by a request.
+                        List<NodeDescription> candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(childElement,
+                                childElement.getOwner(), List.of(convertedNodes.get(compartmentNodeDescription)), convertedNodes);
+                        if (!candidates.isEmpty()) {
+                            String parentElementId = this.getParentElementId(parentViewCreationRequest,
+                                    diagramContext);
+                            String compartmentNodeId = new NodeIdProvider().getNodeId(parentElementId,
+                                    convertedNodes.get(compartmentNodeDescription).getId(),
+                                    NodeContainmentKind.CHILD_NODE,
+                                    // The compartment has the same target object as its parent.
+                                    parentViewCreationRequest.getTargetObjectId());
+                            for (NodeDescription candidate : candidates) {
+                                // Ignore synchronized nodes, this avoids unnecessary recursions that could create
+                                // rendering issues when attempting to add an element as a child of a synchronized
+                                // element. This is especially the case when creating views for synchronized elements
+                                // inside a list compartment.
+                                if (candidate.getSynchronizationPolicy().equals(SynchronizationPolicy.SYNCHRONIZED)) {
+                                    hasRenderedSynchronizedElement = true;
+                                } else {
+                                    creationRequests.add(this.createView(childElement, compartmentNodeId, candidate.getId(), diagramContext, NodeContainmentKind.CHILD_NODE));
+                                }
+                            }
+                        }
                     }
-                } else if (recursive && member instanceof Usage usage) {
-                    Node fakeNode = this.createFakeNode(usage, selectedNode, diagramContext, representationDescription, convertedNodes);
-                    if (fakeNode != null) {
-                        this.addExistingSubElements(usage, editingContext, diagramContext, fakeNode, selectedNode, representationDescription, convertedNodes);
-                    }
-                } else if (recursive && member instanceof Namespace subNs) {
-                    Node fakeNode = this.createFakeNode(subNs, selectedNode, diagramContext, representationDescription, convertedNodes);
-                    if (fakeNode != null) {
-                        this.addExistingSubElements(subNs, editingContext, diagramContext, fakeNode, representationDescription, convertedNodes);
-                    }
+                } else {
+                    // The parent doesn't have compartments, we want to add elements directly inside it if possible.
+                    // This is for example the case with Package elements.
+                    this.getChildNodeDescriptionIdForRendering(childElement, editingContext, diagramContext, parentViewCreationRequest, convertedNodes)
+                            .ifPresent(descriptionId -> {
+                                creationRequests.add(this.createView(childElement, editingContext, diagramContext, parentViewCreationRequest, convertedNodes));
+                            });
                 }
-            });
-        return namespace;
+            }
+
+            if (!creationRequests.isEmpty()) {
+                if (recursive) {
+                    creationRequests.forEach(creationRequest -> {
+                        this.addExistingElements(childElement, editingContext, diagramContext, creationRequest, convertedNodes, recursive);
+                    });
+                }
+            } else if (!hasRenderedSynchronizedElement) {
+                // No element have been created for the current child, we try to find a parent that can represent it.
+                // This is for example the case with usages semantically contained in other usages but graphically
+                // displayed next to them.
+                this.addElementInParent(childElement, parentViewCreationRequest.getParentElementId(), editingContext, diagramContext, convertedNodes, recursive);
+            }
+        }
+        return parentElement;
     }
 
     /**
-     * Called by "Add existing nested elements" tool from General View Usage node. Add nodes that are not present in
-     * selectedNode (e.g. a PartUsage).
+     * Add the nodes representing {@code parentElement}'s children that are not present in the diagram or the
+     * {@code selectedNode}.
+     * <p>
+     * This method operates on {@link Node}, meaning that it can create views for elements inside nodes already present
+     * on the diagram. See
+     * {@link #addExistingElements(Element, IEditingContext, IDiagramContext, ViewCreationRequest, Map, boolean)} to add
+     * elements on nodes that will be created by the next render.
+     * </p>
      *
-     * @param usage
-     *            the {@link Usage} corresponding to the target object of the Diagram or the {@link Node} Usage on which
-     *            the tool has been called.
+     * @param parentElement
+     *            the {@link Element} to add in the diagram
      * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *            the editing context
      * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
+     *            the diagram context
      * @param selectedNode
-     *            the selected node on which the tool has been called (may be null if the tool has been called from the
-     *            diagram). It corresponds to a variable accessible from the variable manager.
+     *            the creation request of the parent element (not yet rendered on the diagram)
      * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
+     *            the converted nodes
      * @param recursive
-     *            whether the tool should add existing elements recursively or not.
-     * @return the input {@link Usage}.
+     *            whether the tool should add elements recursively or not
+     * @return the created element
      */
-    public Usage addExistingNestedElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+    public Element addExistingElements(Element parentElement, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
-        var nestedUsages = usage.getNestedUsage();
-        DiagramDescription diagramDescription = (DiagramDescription) this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId()).get();
+        final List<? extends Element> childElementsToRender = this.getChildElementsToRender(parentElement);
+        boolean hasRenderedSynchronizedElement = false;
 
-        Object parentNode = this.getParentNode(usage, selectedNode, diagramContext);
-        for (Usage nestedUsage : nestedUsages) {
-            boolean viewCreated = false;
-            if (selectedNode.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
-                // the selected node contains compartments, we need to handle them separately
-                for (Node compartmentNode : selectedNode.getChildNodes()) {
-                    if (this.isCompliantAsChild(nestedUsage, compartmentNode, diagramDescription, convertedNodes)) {
-                        // don't need to check the existence of such element as child of this node, because createView
-                        // won't create a new one if it is already there.
-                        this.createView(nestedUsage, editingContext, diagramContext, compartmentNode, convertedNodes);
-                        viewCreated = true;
-                        this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, compartmentNode, convertedNodes);
+        for (Element childElement : childElementsToRender) {
+            List<ViewCreationRequest> creationRequests = new ArrayList<>();
+            if (selectedNode == null) {
+                creationRequests.add(this.createView(childElement, editingContext, diagramContext, selectedNode, convertedNodes));
+            } else {
+                if (selectedNode.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
+                    for (Node compartmentNode : selectedNode.getChildNodes()) {
+
+                        NodeDescription compartmentNodeDescription = convertedNodes.values().stream()
+                                .filter(nd -> Objects.equals(nd.getId(), compartmentNode.getDescriptionId()))
+                                .findFirst()
+                                .orElse(null);
+                        List<NodeDescription> candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(childElement, childElement.getOwner(), List.of(compartmentNodeDescription),
+                                convertedNodes);
+                        for (NodeDescription candidate : candidates) {
+                            // Ignore synchronized nodes, this avoids unnecessary recursions that could create
+                            // rendering issues when attempting to add an element as a child of a synchronized
+                            // element. This is especially the case when creating views for synchronized elements
+                            // inside a list compartment.
+                            if (candidate.getSynchronizationPolicy().equals(SynchronizationPolicy.SYNCHRONIZED)) {
+                                hasRenderedSynchronizedElement = true;
+                            } else {
+                                creationRequests.add(this.createView(childElement, compartmentNode.getId(), candidate.getId(), diagramContext, NodeContainmentKind.CHILD_NODE));
+                            }
+                        }
                     }
+                } else {
+                    // The parent doesn't have compartments, we want to add elements directly inside it if
+                    // possible.
+                    // This is for example the case with Package elements.
+                    this.getChildNodeDescriptionIdForRendering(childElement, editingContext, diagramContext, selectedNode, convertedNodes)
+                            .ifPresent(descriptionId -> {
+                                creationRequests.add(this.createView(childElement, editingContext, diagramContext, selectedNode, convertedNodes));
+                            });
                 }
-            } else if (this.isCompliantAsChild(nestedUsage, selectedNode, diagramDescription, convertedNodes)) {
-                this.createView(nestedUsage, editingContext, diagramContext, selectedNode, convertedNodes);
-                viewCreated = true;
-                this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, selectedNode, convertedNodes);
             }
-            // only create view at parent level when the view has not yet been created
-            if (!viewCreated) {
-                this.createView(nestedUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, parentNode, convertedNodes);
+            if (!creationRequests.isEmpty()) {
+                if (recursive) {
+                    creationRequests.forEach(creationRequest -> {
+                        this.addExistingElements(childElement, editingContext, diagramContext, creationRequest, convertedNodes, recursive);
+                    });
+                }
+            } else if (!hasRenderedSynchronizedElement) {
+                // Render in parent if the element hasn't been rendered by a creation request nor a synchronized node.
+                final String parentElementId;
+                if (selectedNode != null) {
+                    Object parentObject = new NodeFinder(diagramContext.getDiagram()).getParent(selectedNode);
+                    if (parentObject instanceof Node parentNode) {
+                        parentElementId = parentNode.getId();
+                    } else {
+                        parentElementId = null;
+                    }
+                } else {
+                    parentElementId = null;
+                }
+                this.addElementInParent(childElement, parentElementId, editingContext, diagramContext, convertedNodes, recursive);
             }
         }
-        return usage;
-    }
-
-    private void addChildrenRecursivelyIfNeeded(boolean recursive, Usage nestedUsage, IEditingContext editingContext, IDiagramContext diagramContext, DiagramDescription diagramDescription,
-            Object parentNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (recursive) {
-            Node fakeNode = this.createFakeNode(nestedUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-            if (fakeNode != null) {
-                this.addExistingSubElements(nestedUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
-            }
-        }
+        return parentElement;
     }
 
     /**
-     * Called by "Add existing nested elements" tool from General View Definition node. Add nodes that are not present
-     * in selectedNode (e.g. a PartUsage/ItemUsage).
+     * Returns the elements contained by {@code parentElement} that should be rendered.
+     * <p>
+     * This method is typically used by
+     * {@link #addExistingElements(Element, IEditingContext, IDiagramContext, Node, Map, boolean)} to navigate the model
+     * and find the elements to display.
+     * </p>
      *
-     * @param definition
-     *            the {@link Definition} corresponding to the target object of the Diagram or the {@link Node}
-     *            PartDefinition on which the tool has been called.
-     * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param selectedNode
-     *            the selected node on which the tool has been called (may be null if the tool has been called from the
-     *            diagram). It corresponds to a variable accessible from the variable manager.
-     * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
-     * @param recursive
-     *            whether the tool should add existing elements recursively or not.
-     * @return the input {@link Definition}.
+     * @param parentElement
+     *            the parent element
+     * @return the list of contained elements that should be rendered
      */
-    public Definition addExistingNestedElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
-        var nestedUsages = definition.getOwnedUsage();
-        var diagramDescription = (DiagramDescription) this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId()).get();
-
-        Object parentNode = this.getParentNode(definition, selectedNode, diagramContext);
-        for (Usage nestedUsage : nestedUsages) {
-            boolean viewCreated = false;
-            if (selectedNode.getChildrenLayoutStrategy() instanceof ListLayoutStrategy) {
-                // the selected node contains compartments, we need to handle them separately
-                for (Node compartmentNode : selectedNode.getChildNodes()) {
-                    if (this.isCompliantAsChild(nestedUsage, compartmentNode, diagramDescription, convertedNodes)) {
-                        // don't need to check the existence of such element as child of this node, because createView
-                        // won't create a new one if it is already there.
-                        this.createView(nestedUsage, editingContext, diagramContext, compartmentNode, convertedNodes);
-                        viewCreated = true;
-                        this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, compartmentNode, convertedNodes);
-                    }
-                }
-            } else if (this.isCompliantAsChild(nestedUsage, selectedNode, diagramDescription, convertedNodes)) {
-                this.createView(nestedUsage, editingContext, diagramContext, selectedNode, convertedNodes);
-                viewCreated = true;
-                this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, selectedNode, convertedNodes);
-            }
-            // only create view at parent level when the view has not yet been created
-            if (!viewCreated) {
-                this.createView(nestedUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                this.addChildrenRecursivelyIfNeeded(recursive, nestedUsage, editingContext, diagramContext, diagramDescription, parentNode, convertedNodes);
-            }
+    private List<? extends Element> getChildElementsToRender(Element parentElement) {
+        final List<? extends Element> childElements;
+        if (parentElement instanceof Usage usage) {
+            childElements = usage.getNestedUsage();
+        } else if (parentElement instanceof Definition definition) {
+            childElements = definition.getOwnedUsage();
+        } else if (parentElement instanceof Namespace np) {
+            childElements = np.getOwnedMember();
+        } else {
+            childElements = List.of();
         }
-        return definition;
+        return childElements;
+    }
+
+    /**
+     * Creates a view representing the provided {@code element} in its closest parent.
+     * <p>
+     * This method looks for the provided {@code parentElementId} in both the {@link ViewCreationRequest} and the
+     * existing nodes in the diagram. If the parent cannot be found the element is added on the diagram.
+     * </p>
+     *
+     * @param element
+     *            the element to create a view from
+     * @param parentElementId
+     *            the identifier of the parent that should contain the created view
+     * @param editingContext
+     *            the editing context
+     * @param diagramContext
+     *            the diagram context
+     * @param convertedNodes
+     *            the converted nodes
+     * @param recursive
+     *            whether the creation is recursive
+     * @return the element
+     */
+    private Element addElementInParent(Element element, String parentElementId, IEditingContext editingContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean recursive) {
+        diagramContext.getViewCreationRequests().stream()
+                .filter(vc -> Objects.equals(this.getParentElementId(vc, diagramContext), parentElementId))
+                .findFirst()
+                .ifPresentOrElse(vc -> {
+                    var req = this.createView(element, editingContext, diagramContext, vc, convertedNodes);
+                    if (recursive) {
+                        this.addExistingElements(element, editingContext, diagramContext, req, convertedNodes, recursive);
+                    }
+                }, () -> {
+                    new NodeFinder(diagramContext.getDiagram()).getOneNodeMatching(n -> Objects.equals(n.getId(), parentElementId))
+                            .ifPresentOrElse(n -> {
+                                var req = this.createView(element, editingContext, diagramContext, n, convertedNodes);
+                                if (recursive) {
+                                    this.addExistingElements(element, editingContext, diagramContext, req, convertedNodes, recursive);
+                                }
+                            }, () -> {
+                                var req = this.createView(element, editingContext, diagramContext, (Node) null, convertedNodes);
+                                if (recursive) {
+                                    this.addExistingElements(element, editingContext, diagramContext, req, convertedNodes, recursive);
+                                }
+                            });
+                });
+        return element;
     }
 
     /**
@@ -362,63 +465,6 @@ public class ViewToolService extends ToolService {
             this.deleteService.deleteFromModel(owningMembership);
         }
         return partUsage;
-    }
-
-    protected Namespace addExistingSubElements(Namespace namespace, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, DiagramDescription diagramDescription,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var members = namespace.getOwnedMember();
-
-        members.stream()
-            .forEach(member -> {
-                this.createView(member, editingContext, diagramContext, selectedNode, convertedNodes);
-                if (member instanceof Definition definition) {
-                    Node fakeNode = this.createFakeNode(definition, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                    if (fakeNode != null) {
-                        this.addExistingSubElements(definition, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
-                    }
-                } else if (member instanceof Usage usage) {
-                    Node fakeNode = this.createFakeNode(usage, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                    if (fakeNode != null) {
-                        this.addExistingSubElements(usage, editingContext, diagramContext, fakeNode, selectedNode, diagramDescription, convertedNodes);
-                    }
-                } else if (member instanceof Namespace subNs) {
-                    Node fakeNode = this.createFakeNode(subNs, selectedNode, diagramContext, diagramDescription, convertedNodes);
-                    if (fakeNode != null) {
-                        this.addExistingSubElements(subNs, editingContext, diagramContext, fakeNode, diagramDescription, convertedNodes);
-                    }
-                }
-            });
-        return namespace;
-    }
-
-    protected Usage addExistingSubElements(Usage usage, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode, DiagramDescription diagramDescription,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var nestedUsages = usage.getNestedUsage();
-
-        nestedUsages.stream()
-            .forEach(subUsage -> {
-                this.createView(subUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                Node fakeNode = this.createFakeNode(subUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                if (fakeNode != null) {
-                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
-                }
-            });
-        return usage;
-    }
-
-    protected Definition addExistingSubElements(Definition definition, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode, Object parentNode,
-            DiagramDescription diagramDescription, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var ownedUsages = definition.getOwnedUsage();
-
-        ownedUsages.stream()
-            .forEach(subUsage -> {
-                this.createView(subUsage, editingContext, diagramContext, parentNode, convertedNodes);
-                Node fakeNode = this.createFakeNode(subUsage, parentNode, diagramContext, diagramDescription, convertedNodes);
-                if (fakeNode != null) {
-                    this.addExistingSubElements(subUsage, editingContext, diagramContext, fakeNode, parentNode, diagramDescription, convertedNodes);
-                }
-            });
-        return definition;
     }
 
     public Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
