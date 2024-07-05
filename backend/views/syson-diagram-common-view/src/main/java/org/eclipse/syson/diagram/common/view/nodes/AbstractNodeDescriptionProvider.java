@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
-import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 
 /**
  * Common pieces of node descriptions shared by {@link INodeDescriptionProvider} in all diagram View.
@@ -38,8 +37,6 @@ public abstract class AbstractNodeDescriptionProvider implements INodeDescriptio
     protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
-
-    protected final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
 
     protected final IColorProvider colorProvider;
 

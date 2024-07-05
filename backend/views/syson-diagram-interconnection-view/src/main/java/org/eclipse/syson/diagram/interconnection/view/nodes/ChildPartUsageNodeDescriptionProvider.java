@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -38,10 +37,10 @@ import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvid
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.interconnection.view.tools.ChildrenPartUsageCompartmentNodeToolProvider;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
-import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -55,13 +54,14 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
 
     public static final String NAME = "IV Node ChildPartUsage";
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
+    private final ToolDescriptionService toolDescriptionService;
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public ChildPartUsageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }
 
     @Override
@@ -169,9 +169,11 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
         nodeTools.add(docTool.create(null));
         ChildrenPartUsageCompartmentNodeToolProvider childPartTool = new ChildrenPartUsageCompartmentNodeToolProvider();
         nodeTools.add(childPartTool.create(null));
-        NodeTool portBorderNodeTool = this.createNodeTool(cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get(),
-                SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE);
-        nodeTools.add(portBorderNodeTool);
+        NodeDescription portNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
+        nodeTools.add(this.toolDescriptionService.createNodeTool(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE));
+        nodeTools.add(this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN));
+        nodeTools.add(this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.INOUT));
+        nodeTools.add(this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT));
 
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
@@ -182,42 +184,6 @@ public class ChildPartUsageNodeDescriptionProvider extends AbstractNodeDescripti
 
     private List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
         return List.of();
-    }
-
-    private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
-
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(nodeKind)
-                .elementDescription(nodeDescription)
-                .parentViewExpression("aql:selectedNode")
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
-
-        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newFeatureMembership")
-                .children(createEClassInstance.build(), createView.build());
-
-        var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureMembership()))
-                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newFeatureMembership")
-                .children(changeContexMembership.build());
-
-        return builder
-                .name(new DescriptionNameGenerator("").getCreationToolName(eClass))
-                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
-                .body(createMembership.build())
-                .build();
     }
 
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {

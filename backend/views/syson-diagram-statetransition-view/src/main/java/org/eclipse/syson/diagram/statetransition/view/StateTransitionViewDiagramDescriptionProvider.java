@@ -87,9 +87,9 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
-
     private final IDescriptionNameGenerator descriptionNameGenerator = new STVDescriptionNameGenerator();
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
@@ -188,7 +188,7 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
 
         elements.forEach(definition -> {
             cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).ifPresent(nodeDescription -> 
-                nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription, definition, this.getDescriptionNameGenerator()))
+                nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription, definition))
             );
         });
 

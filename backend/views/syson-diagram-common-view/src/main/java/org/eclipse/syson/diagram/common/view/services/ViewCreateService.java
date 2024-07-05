@@ -183,6 +183,24 @@ public class ViewCreateService {
         return result;
     }
 
+    public Element createCompartmentItemWithDirection(Element element, String eReferenceName, String directionLiteral) {
+        EStructuralFeature structuralFeature = element.eClass().getEStructuralFeature(eReferenceName);
+        Element result = element;
+        if (structuralFeature.getEType() instanceof EClass itemEClass) {
+            var item = SysmlFactory.eINSTANCE.create(itemEClass);
+            if (item instanceof Element elementItem) {
+                result = elementItem;
+                if (directionLiteral != null && item instanceof Feature feature) {
+                    feature.setDirection(FeatureDirectionKind.get(directionLiteral));
+                }
+                var membership = this.createAppropriateMembership(structuralFeature);
+                membership.getOwnedRelatedElement().add(this.elementInitializer(elementItem));
+                element.getOwnedRelationship().add(membership);
+            }
+        }
+        return result;
+    }
+
     private Membership createAppropriateMembership(EStructuralFeature feature) {
         Membership result = SysmlFactory.eINSTANCE.createFeatureMembership();
         if (feature.getEType().equals(SysmlPackage.eINSTANCE.getEnumerationUsage())) {

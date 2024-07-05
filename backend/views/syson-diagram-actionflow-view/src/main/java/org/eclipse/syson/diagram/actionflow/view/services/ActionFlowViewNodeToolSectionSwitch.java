@@ -60,12 +60,13 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
 
     private final IViewDiagramElementFinder cache;
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
+    private final ToolDescriptionService toolDescriptionService;
 
     public ActionFlowViewNodeToolSectionSwitch(IViewDiagramElementFinder cache, List<NodeDescription> allNodeDescriptions) {
         super(new AFVDescriptionNameGenerator());
         this.cache = Objects.requireNonNull(cache);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
+        this.toolDescriptionService = new ToolDescriptionService(this.descriptionNameGenerator);
     }
 
     @Override

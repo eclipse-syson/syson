@@ -45,13 +45,14 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
+    private final ToolDescriptionService toolDescriptionService;
 
     private final IDescriptionNameGenerator nameGenerator;
 
     public AbstractEmptyDiagramNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(nameGenerator);
     }
 
     /**

@@ -15,7 +15,6 @@ package org.eclipse.syson.diagram.interconnection.view.nodes;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.FreeFormLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -29,11 +28,11 @@ import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
-import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -47,13 +46,14 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
+    private final ToolDescriptionService toolDescriptionService;
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
     public RootUsageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }
 
     @Override
@@ -134,51 +134,17 @@ public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
     }
 
     private NodeToolSection createNodeToolSection(IViewDiagramElementFinder cache) {
+        NodeDescription portNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).get();
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
-                .nodeTools(this.createNodeTool(cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage(), NodeContainmentKind.CHILD_NODE),
-                        this.createNodeTool(cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPortUsage(),
-                                NodeContainmentKind.BORDER_NODE))
-                .build();
-    }
-
-    private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind) {
-        var builder = this.diagramBuilderHelper.newNodeTool();
-
-        var callElementInitializerService = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.elementInitializer()");
-
-        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newInstance")
-                .children(callElementInitializerService.build());
-
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(nodeKind)
-                .elementDescription(nodeDescription)
-                .parentViewExpression("aql:selectedNode")
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
-
-        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newFeatureMembership")
-                .children(createEClassInstance.build(), createView.build());
-
-        var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureMembership()))
-                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newFeatureMembership")
-                .children(changeContexMembership.build());
-
-        return builder
-                .name(this.descriptionNameGenerator.getCreationToolName(eClass))
-                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
-                .body(createMembership.build())
+                .nodeTools(
+                        this.toolDescriptionService.createNodeTool(cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage(),
+                                NodeContainmentKind.CHILD_NODE),
+                        this.toolDescriptionService.createNodeTool(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE),
+                        this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN),
+                        this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE,
+                                FeatureDirectionKind.INOUT),
+                        this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT))
                 .build();
     }
 

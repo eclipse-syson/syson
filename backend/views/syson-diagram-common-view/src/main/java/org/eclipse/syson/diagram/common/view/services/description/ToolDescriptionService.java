@@ -13,7 +13,10 @@
 package org.eclipse.syson.diagram.common.view.services.description;
 
 import java.util.List;
+import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
@@ -24,9 +27,10 @@ import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
-import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -40,6 +44,12 @@ public class ToolDescriptionService {
     protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+
+    private final IDescriptionNameGenerator descriptionNameGenerator;
+
+    public ToolDescriptionService(IDescriptionNameGenerator descriptionNameGenerator) {
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+    }
 
     /**
      * Create a {@link DiagramToolSection} containing the {@code Add Existing Elements} tools.
@@ -156,15 +166,33 @@ public class ToolDescriptionService {
      *            THe {@link NodeDescription} used to represent the element created using the built {@link NodeTool}
      * @param eClass
      *            The {@link EClassifier} of the created semantic element
-     * @param iDescriptionNameGenerator
-     *            A {@link DescriptionNameGenerator} to generate the created {@link NodeTool} name
      * @return The created {@link NodeTool}
      */
-    public NodeTool createNodeToolFromDiagramBackground(NodeDescription nodeDescription, EClassifier eClass, IDescriptionNameGenerator iDescriptionNameGenerator) {
+    public NodeTool createNodeToolFromDiagramBackground(NodeDescription nodeDescription, EClass eClass) {
+        return this.createNodeToolFromDiagramWithDirection(nodeDescription, eClass, null);
+    }
+
+    public NodeTool createNodeToolFromDiagramWithDirection(NodeDescription nodeDescription, EClass eClass, FeatureDirectionKind direction) {
         var builder = this.diagramBuilderHelper.newNodeTool();
+
+        // make sure that the given element is a feature to avoid error at runtime.
+        if (!SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(eClass) && direction != null) {
+            return this.createNodeToolFromDiagramBackground(nodeDescription, eClass);
+        }
+
+        var setDirection = this.viewBuilderHelper.newSetValue()
+                .featureName("direction");
+
+        if (direction != null) {
+            setDirection.valueExpression(direction.getLiteral());
+        }
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
+
+        if (direction != null) {
+            changeContextNewInstance.children(setDirection.build());
+        }
 
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
@@ -183,11 +211,102 @@ public class ToolDescriptionService {
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
                 .children(createEClassInstance.build(), createView.build());
 
+        String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
+
+        if (direction != null) {
+            toolLabel += " " + StringUtils.capitalize(direction.getLiteral());
+        }
+
         return builder
-                .name(iDescriptionNameGenerator.getCreationToolName(eClass))
+                .name(toolLabel)
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(changeContexMembership.build())
                 .build();
     }
 
+    /**
+     * Returns the creation node tool description for the given Node Description to build a new node for the given
+     * EClass.
+     *
+     * @param nodeDescription
+     *            the Node Description where the returned tool is added
+     * @param eClass
+     *            the EClass that the returned tool is in charge of
+     * @param nodeKind
+     *            the kind of the node associated to the EClass that is built by the returned tool
+     */
+    public NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind) {
+        return this.createNodeToolWithDirection(nodeDescription, eClass, nodeKind, null);
+    }
+
+    /**
+     * Returns the creation node tool description for the given Node Description to build a new node for the given
+     * EClass (which must be a {@link Feature}.
+     *
+     * @param nodeDescription
+     *            the Node Description where the returned tool is added
+     * @param eClass
+     *            the EClass that the returned tool is in charge of
+     * @param nodeKind
+     *            the kind of the node associated to the EClass that is built by the returned tool
+     * @param direction
+     *            the feature direction
+     */
+    public NodeTool createNodeToolWithDirection(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind, FeatureDirectionKind direction) {
+        // make sure that the given element is a feature to avoid error at runtime.
+        if (!SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(eClass) && direction != null) {
+            return this.createNodeTool(nodeDescription, eClass, nodeKind);
+        }
+
+        var builder = this.diagramBuilderHelper.newNodeTool();
+
+        var setDirection = this.viewBuilderHelper.newSetValue()
+                .featureName("direction");
+
+        if (direction != null) {
+            setDirection.valueExpression(direction.getLiteral());
+        }
+
+        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
+
+        if (direction != null) {
+            changeContextNewInstance.children(setDirection.build());
+        }
+
+        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
+                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
+                .variableName("newInstance")
+                .children(changeContextNewInstance.build());
+
+        var createView = this.diagramBuilderHelper.newCreateView()
+                .containmentKind(nodeKind)
+                .elementDescription(nodeDescription)
+                .parentViewExpression("aql:selectedNode")
+                .semanticElementExpression("aql:newInstance")
+                .variableName("newInstanceView");
+
+        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:newFeatureMembership")
+                .children(createEClassInstance.build(), createView.build());
+
+        var createMembership = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureMembership()))
+                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
+                .variableName("newFeatureMembership")
+                .children(changeContexMembership.build());
+
+        String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
+
+        if (direction != null) {
+            toolLabel += " " + StringUtils.capitalize(direction.getLiteral());
+        }
+
+        return builder
+                .name(toolLabel)
+                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
+                .body(createMembership.build())
+                .build();
+    }
 }

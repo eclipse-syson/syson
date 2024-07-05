@@ -68,11 +68,13 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
     protected abstract List<NodeDescription> getAllNodeDescriptions();
 
     protected List<NodeTool> createToolsForCompartmentItems(Element object) {
+        return this.getElementCompartmentReferences(object).stream().flatMap(ref -> this.createToolsForCompartmentItem(ref).stream()).toList();
+    }
+
+    protected List<NodeTool> createToolsForCompartmentItem(EReference eReference) {
         List<NodeTool> compartmentNodeTools = new ArrayList<>();
-        this.getElementCompartmentReferences(object).forEach(eReference -> {
-            CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
-            compartmentNodeTools.add(provider.create(null));
-        });
+        CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
+        compartmentNodeTools.add(provider.create(null));
         return compartmentNodeTools;
     }
 
