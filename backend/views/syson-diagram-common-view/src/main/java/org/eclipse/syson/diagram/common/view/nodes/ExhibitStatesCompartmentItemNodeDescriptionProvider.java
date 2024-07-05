@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionToggleExhibitStateToolProvider;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.util.AQLUtils;
@@ -28,8 +29,11 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class ExhibitStatesCompartmentItemNodeDescriptionProvider extends CompartmentItemNodeDescriptionProvider {
 
+    private final ToolDescriptionService toolDescriptionService;
+
     public ExhibitStatesCompartmentItemNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(eClass, eReference, colorProvider, nameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(nameGenerator);
     }
 
     @Override

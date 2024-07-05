@@ -186,7 +186,6 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
     public List<EStructuralFeature> casePortUsage(PortUsage object) {
         var features = new ArrayList<EStructuralFeature>();
         features.addAll(this.caseFeature(object));
-        features.add(SysmlPackage.eINSTANCE.getFeature_Direction());
         return features;
     }
 

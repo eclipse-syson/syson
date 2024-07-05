@@ -13,6 +13,8 @@
 package org.eclipse.syson.diagram.general.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -71,6 +73,7 @@ import org.eclipse.syson.diagram.general.view.nodes.UseCaseDefinitionObjectiveRe
 import org.eclipse.syson.diagram.general.view.nodes.UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.UseCaseUsageSubjectCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -200,13 +203,19 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                     SysmlPackage.eINSTANCE.getStateUsage())
             ));
 
+    /**
+     * Following elements have additional creating tools one for each direction (in, out, and inout).
+     */
+    public static final List<EClass> DIRECTIONAL_ELEMENTS = List.of(
+            SysmlPackage.eINSTANCE.getPortUsage());
+
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
-
     private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService(this.descriptionNameGenerator);
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
@@ -475,15 +484,27 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(element -> {
-            NodeTool nodeTool = this.toolDescriptionService.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element)).get(), element,
-                    this.getDescriptionNameGenerator());
-            nodeTool.setPreconditionExpression(AQLUtils.getSelfServiceCallExpression("toolShouldBeAvailable", "'" + element.getName() + "'"));
-            nodeTools.add(nodeTool);
+            nodeTools.addAll(this.getCreationToolsForElement(element, cache));
         });
 
-        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
+        Collections.sort(nodeTools, Comparator.comparing(NodeTool::getName));
 
         return nodeTools.toArray(NodeTool[]::new);
+    }
+
+    private List<NodeTool> getCreationToolsForElement(EClass element, IViewDiagramElementFinder cache) {
+        List<NodeTool> elementCreationTools = new ArrayList<>();
+        NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element)).get();
+        NodeTool nodeTool = this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription, element);
+        nodeTool.setPreconditionExpression(AQLUtils.getSelfServiceCallExpression("toolShouldBeAvailable", "'" + element.getName() + "'"));
+        elementCreationTools.add(nodeTool);
+        if (DIRECTIONAL_ELEMENTS.contains(element)) {
+            // this element has a direction, we need to create also 3 more tools for each direction.
+            elementCreationTools.add(this.toolDescriptionService.createNodeToolFromDiagramWithDirection(nodeDescription, element, FeatureDirectionKind.IN));
+            elementCreationTools.add(this.toolDescriptionService.createNodeToolFromDiagramWithDirection(nodeDescription, element, FeatureDirectionKind.OUT));
+            elementCreationTools.add(this.toolDescriptionService.createNodeToolFromDiagramWithDirection(nodeDescription, element, FeatureDirectionKind.INOUT));
+        }
+        return elementCreationTools;
     }
 
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {

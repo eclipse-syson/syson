@@ -45,11 +45,12 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
 
     private final List<NodeDescription> allNodeDescriptions;
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
+    private final ToolDescriptionService toolDescriptionService;
 
     public StateTransitionViewNodeToolSectionSwitch(List<NodeDescription> allNodeDescriptions, IDescriptionNameGenerator descriptionNameGenerator) {
         super(descriptionNameGenerator);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
+        toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }
 
     @Override

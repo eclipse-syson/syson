@@ -55,11 +55,12 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
 
     protected final IDescriptionNameGenerator nameGenerator;
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
+    private final ToolDescriptionService toolDescriptionService;
 
     public AbstractPackageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
         super(colorProvider);
         this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(nameGenerator);
     }
 
     /**

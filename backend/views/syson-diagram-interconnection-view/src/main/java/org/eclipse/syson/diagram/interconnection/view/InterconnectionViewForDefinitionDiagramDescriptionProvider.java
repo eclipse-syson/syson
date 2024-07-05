@@ -51,9 +51,9 @@ public class InterconnectionViewForDefinitionDiagramDescriptionProvider implemen
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
-
     private final IDescriptionNameGenerator descriptionNameGenerator = new IVDescriptionNameGenerator();
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService(this.descriptionNameGenerator);
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {

@@ -98,9 +98,9 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService();
-
     private final IDescriptionNameGenerator descriptionNameGenerator = new AFVDescriptionNameGenerator();
+
+    private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService(this.descriptionNameGenerator);
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
@@ -198,8 +198,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).get(), definition,
-                    this.getDescriptionNameGenerator()));
+            nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).get(), definition));
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
