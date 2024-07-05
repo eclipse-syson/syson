@@ -1,4 +1,4 @@
-FROM alpine:latest AS BUILD
+FROM alpine:latest AS build
 
 RUN apk add npm
 
@@ -9,9 +9,9 @@ COPY doc-ui /usr/app
 RUN npm install
 RUN ./node_modules/gulp/bin/gulp.js bundle
 
-FROM alpine:latest AS UI
+FROM alpine:latest AS ui
 
-COPY --from=BUILD /usr/app/build/ui-bundle.zip /usr/app/ui-bundle.zip
+COPY --from=build /usr/app/build/ui-bundle.zip /usr/app/ui-bundle.zip
 
 
 FROM alpine:latest
@@ -36,7 +36,7 @@ RUN apk del ruby-dev gcc g++ make
 
 ENV PATH="$PATH:/home/antora/node_modules/@antora/cli/bin/"
 
-COPY --from=UI /usr/app/ui-bundle.zip .
+COPY --from=ui /usr/app/ui-bundle.zip .
 
 WORKDIR /usr/app
 
