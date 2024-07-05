@@ -48,9 +48,4 @@ public class StartActionNodeToolProvider extends AbstractFreeFormCompartmentNode
     protected String getIconPath() {
         return "/icons/start_action.svg";
     }
-
-    @Override
-    protected String getPreconditionServiceCallExpression() {
-        return AQLUtils.getSelfServiceCallExpression("canAddStartAction");
-    }
 }

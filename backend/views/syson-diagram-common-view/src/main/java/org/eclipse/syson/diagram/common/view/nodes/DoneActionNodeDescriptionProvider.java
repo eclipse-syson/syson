@@ -50,7 +50,7 @@ public class DoneActionNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .defaultWidthExpression("36")
                 .defaultHeightExpression("36")
                 .name(this.descriptionNameGenerator.getNodeName(DONE_ACTION_NAME))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getStandardDoneAction"))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllStandardDoneActions"))
                 .style(this.createImageNodeStyleDescription("images/done_action.svg"))
                 .userResizable(false)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)

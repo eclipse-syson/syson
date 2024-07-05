@@ -48,9 +48,4 @@ public class DoneActionNodeToolProvider extends AbstractFreeFormCompartmentNodeT
     protected String getIconPath() {
         return "/icons/done_action.svg";
     }
-
-    @Override
-    protected String getPreconditionServiceCallExpression() {
-        return AQLUtils.getSelfServiceCallExpression("canAddDoneAction");
-    }
 }
