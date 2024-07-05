@@ -84,6 +84,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/470[#470] [diagrams] Reduce the default height of the Package node in diagrams 
 - https://github.com/eclipse-syson/syson/issues/472[#472] [properties] Move Feature#direction in Core tab of the Details view
 - https://github.com/eclipse-syson/syson/issues/475[#475] [explorer] Sort New Object menu entries
+- https://github.com/eclipse-syson/syson/issues/477[#477] [diagrams] Add Direct Edit tool in control nodes palette
 
 === New features
 
