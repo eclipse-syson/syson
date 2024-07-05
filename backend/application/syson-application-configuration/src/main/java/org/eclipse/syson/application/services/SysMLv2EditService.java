@@ -13,6 +13,8 @@
 package org.eclipse.syson.application.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -86,6 +88,7 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     @Override
     public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String kind, String referenceKind) {
+        List<ChildCreationDescription> result;
         String ePackageName = this.emfKindService.getEPackageName(kind);
         if (SysmlPackage.eNS_PREFIX.equals(ePackageName)) {
             List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
@@ -100,9 +103,12 @@ public class SysMLv2EditService implements IEditServiceDelegate {
                     childCreationDescriptions.add(childCreationDescription);
                 });
             }
-            return childCreationDescriptions;
+            result = childCreationDescriptions;
+        } else {
+            result = this.defaultEditService.getChildCreationDescriptions(editingContext, kind, referenceKind);
         }
-        return this.defaultEditService.getChildCreationDescriptions(editingContext, kind, referenceKind);
+        Collections.sort(result, Comparator.comparing(ChildCreationDescription::getLabel, String.CASE_INSENSITIVE_ORDER));
+        return result;
     }
 
     @Override

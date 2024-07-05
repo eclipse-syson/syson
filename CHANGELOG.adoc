@@ -68,7 +68,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/307[#307] [diagrams] Fix parallel states tooling conditions
 - https://github.com/eclipse-syson/syson/issues/269[#269] [diagrams] Handle start and done actions in Action Flow View & General View diagrams
 - https://github.com/eclipse-syson/syson/issues/344[#344] [metamodel] Improve implementation of getName and getShortName
-- https://github.com/eclipse-syson/syson/issues/333[#333] [state-transition] Improve actions compartment for states
+- https://github.com/eclipse-syson/syson/issues/333[#333] [state-transition-view] Improve actions compartment for states
 - https://github.com/eclipse-syson/syson/issues/334[#334] [diagrams] Add State Transition View concepts in the General View diagram
 - https://github.com/eclipse-syson/syson/issues/388[#388] [details] Add Transition source and target to Core properties in the Details view
 - https://github.com/eclipse-syson/syson/issues/394[#394] [metamodel] All _redefines_ references have been implemented.
@@ -83,6 +83,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/468[#468] [diagrams] Rename creation tools for Start and Done actions
 - https://github.com/eclipse-syson/syson/issues/470[#470] [diagrams] Reduce the default height of the Package node in diagrams 
 - https://github.com/eclipse-syson/syson/issues/472[#472] [properties] Move Feature#direction in Core tab of the Details view
+- https://github.com/eclipse-syson/syson/issues/475[#475] [explorer] Sort New Object menu entries
 
 === New features
 
