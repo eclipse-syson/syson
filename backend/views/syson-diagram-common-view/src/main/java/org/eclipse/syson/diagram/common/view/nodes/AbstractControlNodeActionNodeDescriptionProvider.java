@@ -140,11 +140,20 @@ public abstract class AbstractControlNodeActionNodeDescriptionProvider extends A
                 .name(this.getRemoveToolLabel())
                 .body(changeContext.build());
 
+        var callEditService = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
+
+        var editTool = this.diagramBuilderHelper.newLabelEditTool()
+                .name("Edit")
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
+                .body(callEditService.build());
+
         var edgeTools = new ArrayList<EdgeTool>();
         edgeTools.addAll(this.getEdgeTools(cache));
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
+                .labelEditTool(editTool.build())
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .build();
