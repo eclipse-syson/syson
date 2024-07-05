@@ -96,7 +96,7 @@ public class ViewNodeService {
 
         NodeDescriptionService nodeDescriptionService = new NodeDescriptionService();
 
-        List<NodeDescription> compartmentCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElement(targetElement, parentObject, allChildNodeDescriptions,
+        List<NodeDescription> compartmentCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElementAsChild(targetElement, parentObject, allChildNodeDescriptions,
                 convertedNodes);
 
         if (!compartmentCandidates.isEmpty()) {

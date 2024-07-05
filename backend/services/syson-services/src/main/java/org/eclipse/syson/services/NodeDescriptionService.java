@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.syson.sysml.Element;
@@ -27,6 +28,40 @@ import org.eclipse.syson.sysml.Element;
  * @author Jerome Gout
  */
 public class NodeDescriptionService {
+
+    /**
+     * Returns the child descriptions of {@code nodeDescriptions} that can render {@code element}.
+     * <p>
+     * This method looks for child {@link NodeDescription}s in child nodes, border nodes, as well as reused nodes.
+     * </p>
+     *
+     * @param element
+     *            the element to render
+     * @param ownerObject
+     *            the semantic parent of the element to render
+     * @param nodeDescriptions
+     *            the {@link NodeDescription}s to search in
+     * @param convertedNodes
+     *            the converted nodes
+     * @return the child descriptions of {@code nodeDescriptions} that can render {@code element}
+     */
+    public List<NodeDescription> getChildNodeDescriptionsForRendering(Element element, Object ownerObject, List<NodeDescription> nodeDescriptions,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        List<NodeDescription> candidates = new ArrayList<>();
+        for (NodeDescription node : nodeDescriptions) {
+            List<NodeDescription> allChildren = new ArrayList<>();
+            allChildren.addAll(node.getChildNodeDescriptions());
+            allChildren.addAll(node.getBorderNodeDescriptions());
+            allChildren.addAll(convertedNodes.values().stream().filter(convNode -> node.getReusedChildNodeDescriptionIds().contains(convNode.getId())).toList());
+            allChildren.addAll(convertedNodes.values().stream().filter(convNode -> node.getReusedBorderNodeDescriptionIds().contains(convNode.getId())).toList());
+            for (NodeDescription child : allChildren) {
+                if (this.canNodeDescriptionRenderElement(child, element, ownerObject)) {
+                    candidates.add(child);
+                }
+            }
+        }
+        return candidates;
+    }
 
     /**
      * Returns the list of candidate node descriptions that can be used to render the given semantic element knowing its
@@ -43,7 +78,7 @@ public class NodeDescriptionService {
      *            a variable accessible from the variable manager.
      * @return the list of node descriptions that can be used to render the given semantic element.
      */
-    public List<NodeDescription> getNodeDescriptionsForRenderingElement(Element element, Object ownerObject, List<NodeDescription> nodeDescriptions,
+    public List<NodeDescription> getNodeDescriptionsForRenderingElementAsChild(Element element, Object ownerObject, List<NodeDescription> nodeDescriptions,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         List<NodeDescription> candidates = new ArrayList<>();
 
@@ -53,7 +88,7 @@ public class NodeDescriptionService {
                     convertedNodes.values().stream().filter(convNode -> node.getReusedChildNodeDescriptionIds().contains(convNode.getId())))
                     .toList();
             for (NodeDescription childNodeDescription : allChildNodeDescriptions) {
-                if (this.canNodeDescritionRenderElement(childNodeDescription, element, ownerObject)) {
+                if (this.canNodeDescriptionRenderElement(childNodeDescription, element, ownerObject)) {
                     candidates.add(node);
                 }
             }
@@ -74,13 +109,16 @@ public class NodeDescriptionService {
      * @return <code>true</code> if the given node description can be used to render the given semantic element and
      *         <code>false</code> otherwise.
      */
-    public boolean canNodeDescritionRenderElement(NodeDescription nodeDescription, Element element, Object ownerObject) {
+    public boolean canNodeDescriptionRenderElement(NodeDescription nodeDescription, Element element, Object ownerObject) {
         VariableManager semanticElementsProviderVariableManager = new VariableManager();
-        semanticElementsProviderVariableManager.put("self", ownerObject);
+        semanticElementsProviderVariableManager.put(VariableManager.SELF, ownerObject);
+        // Force the editingContext variable to null to enable editingContext null checks in AQL expressions.
+        semanticElementsProviderVariableManager.put(IEditingContext.EDITING_CONTEXT, null);
+
         List<?> candidatesList = nodeDescription.getSemanticElementsProvider().apply(semanticElementsProviderVariableManager);
 
         VariableManager shouldRenderPredicateVariableManager = new VariableManager();
-        shouldRenderPredicateVariableManager.put("self", element);
+        shouldRenderPredicateVariableManager.put(VariableManager.SELF, element);
         boolean shouldRender = nodeDescription.getShouldRenderPredicate().test(shouldRenderPredicateVariableManager);
 
         return candidatesList.contains(element) && shouldRender;

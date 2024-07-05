@@ -77,7 +77,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
-                .semanticCandidatesExpression("aql:self.getDiagramEmptyCandidate(editingContext, diagramContext, previousDiagram)")
+                .semanticCandidatesExpression("aql:if(editingContext <> null) then self.getDiagramEmptyCandidate(editingContext, diagramContext, previousDiagram) else Sequence{} endif")
                 .style(this.createEmptyDiagramNodeStyle())
                 .userResizable(true)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
