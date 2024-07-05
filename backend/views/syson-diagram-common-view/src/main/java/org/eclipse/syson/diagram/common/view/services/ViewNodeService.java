@@ -136,19 +136,7 @@ public class ViewNodeService {
         return isHiddenByDefault;
     }
 
-    /**
-     * Check if a Start Action can be added to the given element.
-     *
-     * @param self
-     *            a {@link Namespace} element
-     * @return <code>true</code> if the Start action can be added to the given element or <code>false</code> otherwise.
-     */
-    public boolean canAddStartAction(Namespace self) {
-        // Check that self is an Action usage or definition and that there is not yet the start action displayed.
-        return this.getStandardStartAction(self) == null;
-    }
-
-    public Membership getStandardStartAction(Namespace self) {
+    public List<Membership> getAllStandardStartActions(Namespace self) {
         if (self instanceof ActionUsage || self instanceof ActionDefinition) {
             return self.getOwnedRelationship().stream()
                     .filter(Membership.class::isInstance)
@@ -156,25 +144,12 @@ public class ViewNodeService {
                     .filter(m -> {
                         return m.getMemberElement() instanceof ActionUsage au && this.utilService.isStandardStartAction(au);
                     })
-                    .findFirst()
-                    .orElse(null);
+                    .toList();
         }
-        return null;
+        return List.of();
     }
 
-    /**
-     * Check if a Done Action can be added to the given element.
-     *
-     * @param self
-     *            a {@link Namespace} element
-     * @return <code>true</code> if the Done action can be added to the given element or <code>false</code> otherwise.
-     */
-    public boolean canAddDoneAction(Namespace self) {
-        // Check that self is an Action usage or definition and that there is not yet the done action displayed.
-        return this.getStandardDoneAction(self) == null;
-    }
-
-    public Membership getStandardDoneAction(Namespace self) {
+    public List<Membership> getAllStandardDoneActions(Namespace self) {
         if (self instanceof ActionUsage || self instanceof ActionDefinition) {
             return self.getOwnedRelationship().stream()
                     .filter(Membership.class::isInstance)
@@ -182,10 +157,9 @@ public class ViewNodeService {
                     .filter(m -> {
                         return m.getMemberElement() instanceof ActionUsage au && this.utilService.isStandardDoneAction(au);
                     })
-                    .findFirst()
-                    .orElse(null);
+                    .toList();
         }
-        return null;
+        return List.of();
     }
 
     /**

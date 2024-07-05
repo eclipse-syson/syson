@@ -57,7 +57,7 @@ public class StartActionNodeDescriptionProvider extends AbstractNodeDescriptionP
                 .defaultWidthExpression("28")
                 .defaultHeightExpression("28")
                 .name(this.descriptionNameGenerator.getNodeName(START_ACTION_NAME))
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getStandardStartAction"))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllStandardStartActions"))
                 .style(this.createImageNodeStyleDescription("images/start_action.svg"))
                 .userResizable(false)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
