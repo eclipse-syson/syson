@@ -260,7 +260,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 .findFirst();
         if (optFeatureTyping.isPresent()) {
             FeatureTyping featureTyping = optFeatureTyping.get();
-            featureTyping.setType(type);
+            if (!type.equals(featureTyping.getType())) {
+                featureTyping.setType(type);
+                featureTyping.setIsImplied(false);
+            }
             featureTyping.setTypedFeature(usage);
         } else {
             var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
@@ -306,13 +309,16 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
 
             if (definition != null) {
-                var optSubsetting = subclassificationDef.getOwnedRelationship().stream()
+                var optSubclassification = subclassificationDef.getOwnedRelationship().stream()
                         .filter(Subclassification.class::isInstance)
                         .map(Subclassification.class::cast)
                         .findFirst();
-                if (optSubsetting.isPresent()) {
-                    Subclassification subclassification = optSubsetting.get();
-                    subclassification.setSuperclassifier(definition);
+                if (optSubclassification.isPresent()) {
+                    Subclassification subclassification = optSubclassification.get();
+                    if (!definition.equals(subclassification.getSuperclassifier())) {
+                        subclassification.setSuperclassifier(definition);
+                        subclassification.setIsImplied(false);
+                    }
                     subclassification.setSubclassifier(subclassificationDef);
                 } else {
                     var newSubclassification = SysmlFactory.eINSTANCE.createSubclassification();
@@ -354,7 +360,10 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                         .findFirst();
                 if (optSubsetting.isPresent()) {
                     Subsetting subsetting = optSubsetting.get();
-                    subsetting.setSubsettedFeature(usage);
+                    if (!usage.equals(subsetting.getSubsettedFeature())) {
+                        subsetting.setSubsettedFeature(usage);
+                        subsetting.setIsImplied(false);
+                    }
                     subsetting.setSubsettingFeature(subsettingUsage);
                 } else {
                     var newSubsetting = SysmlFactory.eINSTANCE.createSubsetting();
@@ -373,43 +382,50 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         if (this.element instanceof Usage redefining) {
-            var identifier = ctx.qualifiedName();
-            if (identifier != null) {
-                var usageAsString = this.getFullText(identifier);
-                var usage = this.utilService.findByNameAndType(redefining, usageAsString, Feature.class);
-                if (usage == null && this.utilService.isQualifiedName(usageAsString)) {
-                    this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the redefinition does not exist", MessageLevel.ERROR));
-                    return;
-                } else if (usage == null) {
-                    var containerPackage = this.utilService.getContainerPackage(redefining);
-                    var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
-                    containerPackage.getOwnedRelationship().add(newMembership);
-                    EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(redefining.eClass().getName());
-                    if (eClassifier instanceof EClass eClass) {
-                        usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
-                        usage.setDeclaredName(usageAsString);
-                        newMembership.getOwnedRelatedElement().add(usage);
-                    }
-                } else {
-                    this.importService.handleImport(this.element, usage);
-                }
+            this.handleRedefintion(ctx, redefining);
+        }
+    }
 
-                if (usage != null) {
-                    var optRedefinition = redefining.getOwnedRelationship().stream()
-                            .filter(Redefinition.class::isInstance)
-                            .map(Redefinition.class::cast)
-                            .findFirst();
-                    if (optRedefinition.isPresent()) {
-                        Redefinition redefinition = optRedefinition.get();
+    private void handleRedefintion(RedefinitionExpressionContext ctx, Usage redefining) {
+        var identifier = ctx.qualifiedName();
+        if (identifier != null) {
+            var usageAsString = this.getFullText(identifier);
+            var usage = this.utilService.findByNameAndType(redefining, usageAsString, Feature.class);
+            if (usage == null && this.utilService.isQualifiedName(usageAsString)) {
+                this.feedbackMessageService.addFeedbackMessage(new Message("The qualified name used for the redefinition does not exist", MessageLevel.ERROR));
+                return;
+            } else if (usage == null) {
+                var containerPackage = this.utilService.getContainerPackage(redefining);
+                var newMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                containerPackage.getOwnedRelationship().add(newMembership);
+                EClassifier eClassifier = SysmlPackage.eINSTANCE.getEClassifier(redefining.eClass().getName());
+                if (eClassifier instanceof EClass eClass) {
+                    usage = (Usage) SysmlFactory.eINSTANCE.create(eClass);
+                    usage.setDeclaredName(usageAsString);
+                    newMembership.getOwnedRelatedElement().add(usage);
+                }
+            } else {
+                this.importService.handleImport(this.element, usage);
+            }
+
+            if (usage != null) {
+                var optRedefinition = redefining.getOwnedRelationship().stream()
+                        .filter(Redefinition.class::isInstance)
+                        .map(Redefinition.class::cast)
+                        .findFirst();
+                if (optRedefinition.isPresent()) {
+                    Redefinition redefinition = optRedefinition.get();
+                    if (!usage.equals(redefinition.getRedefinedFeature())) {
                         redefinition.setRedefinedFeature(usage);
-                        redefinition.setRedefiningFeature(redefining);
-                    } else {
-                        var newRedefinition = SysmlFactory.eINSTANCE.createRedefinition();
-                        redefining.getOwnedRelationship().add(newRedefinition);
-                        newRedefinition.setRedefinedFeature(usage);
-                        newRedefinition.setRedefiningFeature(redefining);
-                        this.elementInitializer.caseRedefinition(newRedefinition);
+                        redefinition.setIsImplied(false);
                     }
+                    redefinition.setRedefiningFeature(redefining);
+                } else {
+                    var newRedefinition = SysmlFactory.eINSTANCE.createRedefinition();
+                    redefining.getOwnedRelationship().add(newRedefinition);
+                    newRedefinition.setRedefinedFeature(usage);
+                    newRedefinition.setRedefiningFeature(redefining);
+                    this.elementInitializer.caseRedefinition(newRedefinition);
                 }
             }
         }
