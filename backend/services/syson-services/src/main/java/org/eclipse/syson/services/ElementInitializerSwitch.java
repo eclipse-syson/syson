@@ -33,6 +33,7 @@ import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
@@ -145,6 +146,20 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseSuccessionAsUsage(SuccessionAsUsage object) {
         object.setDeclaredName("succession");
+        return object;
+    }
+
+    @Override
+    public Element caseTransitionUsage(TransitionUsage object) {
+        StringBuilder label = new StringBuilder();
+        var source = object.getSource();
+        var target = object.getTarget();
+        if (source != null && target != null) {
+            label = label.append(source.getName()).append("_to_").append(target.getName());
+        } else {
+            label.append("transition");
+        }
+        object.setDeclaredName(label.toString());
         return object;
     }
 
