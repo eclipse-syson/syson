@@ -130,6 +130,7 @@ public class DetailsViewService {
             this.feedbackMessageService.addFeedbackMessage(new Message("Unable to update the value of the " + eStructuralFeature.getName() + " feature", MessageLevel.ERROR));
             return false;
         }
+        this.handleImplied(element);
         return true;
     }
 
@@ -606,5 +607,11 @@ public class DetailsViewService {
             }
         }
         return false;
+    }
+
+    private void handleImplied(Element element) {
+        if (element instanceof Relationship relationship) {
+            relationship.setIsImplied(false);
+        }
     }
 }

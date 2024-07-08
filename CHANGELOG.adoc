@@ -88,8 +88,9 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 - https://github.com/eclipse-syson/syson/issues/477[#477] [diagrams] Add Direct Edit tool in control nodes palette
 - https://github.com/eclipse-syson/syson/issues/479[#479] [diagrams] Allow multiple occurrences of Start and Done actions in action body
 - https://github.com/eclipse-syson/syson/issues/320[#320] [import] Implement new import strategy based on ecore
-- https://github.com/eclipse-syson/syson/issues/486[#486] [diagrams] Improve the addExistingElement tool.
+- https://github.com/eclipse-syson/syson/issues/486[#486] [diagrams] Improve the _addExistingElement_ tool.
 The tool now works correctly on packages, and doesn't render sibling elements when their semantic element has been rendered by another node (e.g. in a compartment).
+- https://github.com/eclipse-syson/syson/issues/483[#483] [diagrams] The empty/null values for subsetting/redefinition/subclassification/featureTyping are not displayed anymore in diagram node labels.
 
 === New features
 

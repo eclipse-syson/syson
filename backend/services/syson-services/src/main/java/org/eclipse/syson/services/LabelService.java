@@ -77,7 +77,7 @@ public class LabelService {
      * @return the container label for the given {@link Element}.
      */
     public String getContainerLabel(Element element) {
-        return new MultiLineLabelSwitch().doSwitch(element);
+        return new MultiLineLabelSwitch(this).doSwitch(element);
     }
 
     /**
@@ -201,21 +201,21 @@ public class LabelService {
      */
     protected String getTypingLabel(Element element) {
         StringBuilder label = new StringBuilder();
-        var featureTyping = element.getOwnedRelationship().stream()
+        var optFeatureTyping = element.getOwnedRelationship().stream()
                 .filter(FeatureTyping.class::isInstance)
                 .map(FeatureTyping.class::cast)
                 .findFirst();
-        if (featureTyping.isPresent()) {
-            var type = featureTyping.get().getType();
-            String typeName = null;
-            if (type != null) {
-                typeName = type.getDeclaredName();
+        if (optFeatureTyping.isPresent()) {
+            FeatureTyping featureTyping = optFeatureTyping.get();
+            if (!featureTyping.isIsImplied()) {
+                var type = featureTyping.getType();
+                if (type != null) {
+                    label.append(LabelConstants.SPACE);
+                    label.append(LabelConstants.COLON);
+                    label.append(LabelConstants.SPACE);
+                    label.append(type.getDeclaredName());
+                }
             }
-            label
-                .append(LabelConstants.SPACE)
-                .append(LabelConstants.COLON)
-                .append(LabelConstants.SPACE)
-                .append(typeName);
         }
         return label.toString();
     }
@@ -230,21 +230,23 @@ public class LabelService {
      */
     protected String getSubclassificationLabel(Element element) {
         StringBuilder label = new StringBuilder();
-        var subclassification = element.getOwnedRelationship().stream()
+        var optSubclassification = element.getOwnedRelationship().stream()
                 .filter(Subclassification.class::isInstance)
                 .map(Subclassification.class::cast)
                 .findFirst();
-        if (subclassification.isPresent()) {
-            var superclassifier = subclassification.get().getSuperclassifier();
-            String superclassifierName = null;
-            if (superclassifier != null) {
-                superclassifierName = superclassifier.getDeclaredName();
+        if (optSubclassification.isPresent()) {
+            Subclassification subclassification = optSubclassification.get();
+            if (!subclassification.isIsImplied()) {
+                var superclassifier = subclassification.getSuperclassifier();
+                String superclassifierName = null;
+                if (superclassifier != null) {
+                    superclassifierName = superclassifier.getDeclaredName();
+                    label.append(LabelConstants.SPACE);
+                    label.append(LabelConstants.SUBCLASSIFICATION);
+                    label.append(LabelConstants.SPACE);
+                    label.append(superclassifierName);
+                }
             }
-            label
-                .append(LabelConstants.SPACE)
-                .append(LabelConstants.SUBCLASSIFICATION)
-                .append(LabelConstants.SPACE)
-                .append(superclassifierName);
         }
         return label.toString();
     }
@@ -258,21 +260,23 @@ public class LabelService {
      */
     protected String getSubsettingLabel(Element element) {
         StringBuilder label = new StringBuilder();
-        var subsetting = element.getOwnedRelationship().stream()
+        var optSubsetting = element.getOwnedRelationship().stream()
                 .filter(r -> r instanceof Subsetting && !(r instanceof Redefinition))
                 .map(Subsetting.class::cast)
                 .findFirst();
-        if (subsetting.isPresent()) {
-            var subsettedFeature = subsetting.get().getSubsettedFeature();
-            String subsettedFeatureName = null;
-            if (subsettedFeature != null) {
-                subsettedFeatureName = subsettedFeature.getDeclaredName();
+        if (optSubsetting.isPresent()) {
+            Subsetting subsetting = optSubsetting.get();
+            if (!subsetting.isIsImplied()) {
+                var subsettedFeature = subsetting.getSubsettedFeature();
+                String subsettedFeatureName = null;
+                if (subsettedFeature != null) {
+                    subsettedFeatureName = subsettedFeature.getDeclaredName();
+                    label.append(LabelConstants.SPACE);
+                    label.append(LabelConstants.SUBSETTING);
+                    label.append(LabelConstants.SPACE);
+                    label.append(subsettedFeatureName);
+                }
             }
-            label
-                .append(LabelConstants.SPACE)
-                .append(LabelConstants.SUBSETTING)
-                .append(LabelConstants.SPACE)
-                .append(subsettedFeatureName);
         }
         return label.toString();
     }
@@ -286,18 +290,20 @@ public class LabelService {
      */
     protected String getRedefinitionLabel(Element element) {
         StringBuilder label = new StringBuilder();
-        var redefinition = element.getOwnedRelationship().stream()
+        var optRedefinition = element.getOwnedRelationship().stream()
                 .filter(Redefinition.class::isInstance)
                 .map(Redefinition.class::cast)
                 .findFirst();
-        if (redefinition.isPresent()) {
-            var redefinedFeature = redefinition.get().getRedefinedFeature();
-            if (redefinedFeature != null) {
-                label
-                    .append(LabelConstants.SPACE)
-                    .append(LabelConstants.REDEFINITION)
-                    .append(LabelConstants.SPACE)
-                    .append(redefinedFeature.getDeclaredName());
+        if (optRedefinition.isPresent()) {
+            Redefinition redefinition = optRedefinition.get();
+            if (!redefinition.isIsImplied()) {
+                var redefinedFeature = redefinition.getRedefinedFeature();
+                if (redefinedFeature != null) {
+                    label.append(LabelConstants.SPACE);
+                    label.append(LabelConstants.REDEFINITION);
+                    label.append(LabelConstants.SPACE);
+                    label.append(redefinedFeature.getDeclaredName());
+                }
             }
         }
         return label.toString();
