@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -189,12 +190,13 @@ public class ViewCreateService {
         if (structuralFeature.getEType() instanceof EClass itemEClass) {
             var item = SysmlFactory.eINSTANCE.create(itemEClass);
             if (item instanceof Element elementItem) {
-                result = elementItem;
+                result = this.elementInitializer(elementItem);
                 if (directionLiteral != null && item instanceof Feature feature) {
                     feature.setDirection(FeatureDirectionKind.get(directionLiteral));
+                    result.setDeclaredName(result.getName() + StringUtils.capitalize(directionLiteral));
                 }
                 var membership = this.createAppropriateMembership(structuralFeature);
-                membership.getOwnedRelatedElement().add(this.elementInitializer(elementItem));
+                membership.getOwnedRelatedElement().add(result);
                 element.getOwnedRelationship().add(membership);
             }
         }
