@@ -694,7 +694,6 @@ public class ViewToolService extends ToolService {
         // Create transition usage and add it to the parent element
         // sourceParentElement <>-> FeatureMembership -> RelatedElement = TransitionUsage
         TransitionUsage newTransitionUsage = SysmlFactory.eINSTANCE.createTransitionUsage();
-        this.elementInitializerSwitch.doSwitch(newTransitionUsage);
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         featureMembership.getOwnedRelatedElement().add(newTransitionUsage);
         sourceParentElement.getOwnedRelationship().add(featureMembership);
@@ -716,6 +715,7 @@ public class ViewToolService extends ToolService {
         // Set Succession Source and Target Features
         succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(sourceUsage));
         succession.getOwnedRelationship().add(this.createConnectorEndFeatureMembership(targetUsage));
+        this.elementInitializerSwitch.doSwitch(newTransitionUsage);
 
         return sourceUsage;
     }
