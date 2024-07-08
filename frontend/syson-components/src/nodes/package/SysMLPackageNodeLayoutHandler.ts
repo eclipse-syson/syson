@@ -86,7 +86,9 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
 
     const nodeIndex: number = findNodeIndex(visibleNodes, node.id);
     const labelElement: HTMLElement | null = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const headerHeightFootprint: number = labelElement ? getHeaderHeightFootprint(labelElement, null, null) : 33;
+    const headerHeightFootprint: number = labelElement
+      ? getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP')
+      : 33;
 
     const borderNodes: Node<NodeData, string>[] = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren: Node<NodeData, string>[] = directChildren.filter((child) => !child.data.isBorderNode);

@@ -105,6 +105,7 @@ const toPackageNode = (
 
   if (data.insideLabel) {
     data.insideLabel.isHeader = true;
+    data.insideLabel.headerPosition = 'TOP';
   }
 
   const node: Node<SysMLPackageNodeData> = {
