@@ -93,6 +93,7 @@ But, if you encounter execution rights problem, you can still copy _syside-cli.j
 The tool now works correctly on packages, and doesn't render sibling elements when their semantic element has been rendered by another node (e.g. in a compartment).
 - https://github.com/eclipse-syson/syson/issues/483[#483] [diagrams] The empty/null values for subsetting/redefinition/subclassification/featureTyping are not displayed anymore in diagram node labels.
 - https://github.com/eclipse-syson/syson/issues/482[#482] [diagrams] Add tools for creating Ports with direction
+- https://github.com/eclipse-syson/syson/issues/492[#492] [diagrams] Add tools for creation Items with direction
 
 === New features
 

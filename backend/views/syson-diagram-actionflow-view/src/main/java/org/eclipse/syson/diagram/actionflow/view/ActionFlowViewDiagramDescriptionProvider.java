@@ -96,6 +96,12 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
                     SysmlPackage.eINSTANCE.getPackage()))
             );
 
+    /**
+     * Following elements have additional creating tools one for each direction (in, out, and inout).
+     */
+    public static final List<EClass> DIRECTIONAL_ELEMENTS = List.of(
+                    SysmlPackage.eINSTANCE.getItemUsage());
+
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new AFVDescriptionNameGenerator();
