@@ -61,6 +61,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/363[#363] [export] Fix the first part of the InvocationExpression during export
 - https://github.com/eclipse-syson/syson/issues/341[#341] [export] Fix missing element names in the expressions during export
 - https://github.com/eclipse-syson/syson/issues/459[#459] [import] Fix documentation import to remove /* */ around texts
+- https://github.com/eclipse-syson/syson/issues/490[#490] [diagrams] Fix an issue where the _Adjust size_ tool had no effect on Packages nodes.
 
 === Improvements
 
