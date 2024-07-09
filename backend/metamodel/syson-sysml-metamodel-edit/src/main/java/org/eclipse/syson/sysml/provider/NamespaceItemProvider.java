@@ -12,12 +12,14 @@
  */
 package org.eclipse.syson.sysml.provider;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -181,6 +183,37 @@ public class NamespaceItemProvider extends ElementItemProvider {
     @Override
     public Object getImage(Object object) {
         return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Namespace.svg"));
+    }
+
+    /**
+     * {@inheritDoc}.
+     *
+     * @generated NOT
+     */
+    @Override
+    protected Object overlayImage(Object object, Object image) {
+        Object superResult = super.overlayImage(object, image);
+        if (object instanceof Namespace namespace && namespace.getOwningMembership() != null) {
+            List<Object> images = new ArrayList<>(2);
+            images.add(image);
+            if (superResult != null) {
+                images.add(superResult);
+            }
+            switch (namespace.getOwningMembership().getVisibility()) {
+                case PRIVATE:
+                    images.add(this.getResourceLocator().getImage("full/ovr16/VisibilityKind_private.svg"));
+                    break;
+                case PROTECTED:
+                    images.add(this.getResourceLocator().getImage("full/ovr16/VisibilityKind_protected.svg"));
+                    break;
+                case PUBLIC:
+                    return image;
+                default:
+                    return image;
+            }
+            image = new ComposedImage(images);
+        }
+        return image;
     }
 
     /**
