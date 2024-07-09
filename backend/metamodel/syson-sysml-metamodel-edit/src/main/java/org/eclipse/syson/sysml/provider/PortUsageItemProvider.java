@@ -15,10 +15,12 @@ package org.eclipse.syson.sysml.provider;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -79,7 +81,16 @@ public class PortUsageItemProvider extends OccurrenceUsageItemProvider {
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/PortUsage.svg"));
+        StringBuilder iconPath = new StringBuilder();
+        iconPath.append("full/obj16/PortUsage");
+        if (object instanceof PortUsage port) {
+            FeatureDirectionKind direction = port.getDirection();
+            if (direction != null) {
+                iconPath.append(StringUtils.capitalize(direction.getLiteral()));
+            }
+        }
+        iconPath.append(".svg");
+        return this.overlayImage(object, this.getResourceLocator().getImage(iconPath.toString()));
     }
 
     /**
