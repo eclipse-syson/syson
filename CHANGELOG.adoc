@@ -108,6 +108,7 @@ The tool now works correctly on packages, and doesn't render sibling elements wh
 - https://github.com/eclipse-syson/syson/issues/494[#494] [diagrams] Change the default name of the transition element
 - [syson] Provide new icons for State, Conjugation, Port (in,in/out,out) and Item (in,in/out,out).
 - https://github.com/eclipse-syson/syson/issues/519[#519] [diagrams] Add tools for creating _Items_ on _ActionDefinition_ in GeneralView and ActionFlowView.
+- https://github.com/eclipse-syson/syson/issues/504[#504] [syson] Add private and protected visibility decorators on all elements
 
 === New features
 
