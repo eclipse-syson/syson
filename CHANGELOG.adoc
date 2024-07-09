@@ -95,6 +95,7 @@ The tool now works correctly on packages, and doesn't render sibling elements wh
 - https://github.com/eclipse-syson/syson/issues/482[#482] [diagrams] Add tools for creating Ports with direction
 - https://github.com/eclipse-syson/syson/issues/492[#492] [diagrams] Add tools for creation Items with direction
 - https://github.com/eclipse-syson/syson/issues/494[#494] [diagrams] Change the default name of the transition element
+- [syson] Provide new icons for State, Conjugation, Port (in,in/out,out) and Item (in,in/out,out).
 
 === New features
 

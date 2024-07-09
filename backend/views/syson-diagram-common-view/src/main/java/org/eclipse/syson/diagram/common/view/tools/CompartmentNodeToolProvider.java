@@ -66,7 +66,14 @@ public class CompartmentNodeToolProvider extends AbstractCompartmentNodeToolProv
 
     @Override
     protected String getNodeToolIconURLsExpression() {
-        return "/icons/full/obj16/" + this.eReference.getEType().getName() + ".svg";
+        StringBuilder iconPath = new StringBuilder();
+        iconPath.append("/icons/full/obj16/");
+        iconPath.append(this.eReference.getEType().getName());
+        if (this.featureDirectionKind != null) {
+            iconPath.append(StringUtils.capitalize(this.featureDirectionKind.getLiteral()));
+        }
+        iconPath.append(".svg");
+        return iconPath.toString();
     }
 
     @Override
