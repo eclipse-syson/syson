@@ -130,7 +130,7 @@ public class DetailsViewService {
             this.feedbackMessageService.addFeedbackMessage(new Message("Unable to update the value of the " + eStructuralFeature.getName() + " feature", MessageLevel.ERROR));
             return false;
         }
-        this.handleImplied(element);
+        this.handleImplied(element, eStructuralFeature);
         return true;
     }
 
@@ -609,9 +609,17 @@ public class DetailsViewService {
         return false;
     }
 
-    private void handleImplied(Element element) {
+    private void handleImplied(Element element, EStructuralFeature eStructuralFeature) {
         if (element instanceof Relationship relationship) {
-            relationship.setIsImplied(false);
+            if (SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
+            } else if (SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
+            } else if (SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
+            } else if (SysmlPackage.eINSTANCE.getFeatureTyping_Type().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
+            }
         }
     }
 }
