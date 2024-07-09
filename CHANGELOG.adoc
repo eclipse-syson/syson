@@ -44,7 +44,7 @@ A reset of the database is needed.
 - [releng] Remove the dependency to `reflect-metadata`
 - [releng] Switch to `subscriptions-transport-ws` 0.11.0
 - [releng] Switch to @ObeoNetwork/gantt-task-react 0.4.19
-- [releng] Switch to Sirius Web 2024.5.4
+- [releng] Switch to Sirius Web 2024.5.5
 
 === Bug fixes
 
