@@ -453,17 +453,19 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 valueOwner.getOwnedRelationship().add(featureValue);
             }
             if (integerTN != null) {
-                LiteralInteger literalInteger = this.getOrCreateLiteralInteger(featureValue);
+                var literalInteger = this.getOrCreateLiteralInteger(featureValue);
                 literalInteger.setValue(Integer.parseInt(integerTN.getText()));
             } else if (realTN != null) {
-                LiteralRational literalRational = this.getOrCreateLiteralRational(featureValue);
+                var literalRational = this.getOrCreateLiteralRational(featureValue);
                 literalRational.setValue(Double.parseDouble(realTN.getText()));
             } else if (booleanTN != null) {
-                LiteralBoolean literalBoolean = this.getOrCreateLiteralBoolean(featureValue);
+                var literalBoolean = this.getOrCreateLiteralBoolean(featureValue);
                 literalBoolean.setValue(Boolean.parseBoolean(booleanTN.getText()));
             } else if (doubleQuotedStringTN != null) {
-                LiteralString literalString = this.getOrCreateLiteralString(featureValue);
-                literalString.setValue(doubleQuotedStringTN.getText());
+                var literalString = this.getOrCreateLiteralString(featureValue);
+                var doubleQuotedString = doubleQuotedStringTN.getText();
+                var stringValue = doubleQuotedString.substring(1, doubleQuotedString.length() - 1);
+                literalString.setValue(stringValue);
             }
         }
     }

@@ -34,12 +34,7 @@ import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
-import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
-import org.eclipse.syson.sysml.LiteralInfinity;
-import org.eclipse.syson.sysml.LiteralInteger;
-import org.eclipse.syson.sysml.LiteralRational;
-import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
@@ -599,10 +594,10 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                     .map(LiteralExpression.class::cast)
                     .toList();
             if (bounds.size() == 1) {
-                firstBound = this.getValue(bounds.get(0));
+                firstBound = this.labelService.getValue(bounds.get(0));
             } else if (bounds.size() == 2) {
-                firstBound = this.getValue(bounds.get(0));
-                secondBound = this.getValue(bounds.get(1));
+                firstBound = this.labelService.getValue(bounds.get(0));
+                secondBound = this.labelService.getValue(bounds.get(1));
             }
             label.append(LabelConstants.OPEN_BRACKET);
             if (firstBound != null) {
@@ -616,22 +611,6 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             label.append(LabelConstants.SPACE);
         }
         return label.toString();
-    }
-
-    private String getValue(Expression literalExpression) {
-        String value = null;
-        if (literalExpression instanceof LiteralInteger literal) {
-            value = String.valueOf(literal.getValue());
-        } else if (literalExpression instanceof LiteralRational literal) {
-            value = String.valueOf(literal.getValue());
-        } else if (literalExpression instanceof LiteralBoolean literal) {
-            value = String.valueOf(literal.isValue());
-        } else if (literalExpression instanceof LiteralString literal) {
-            value = String.valueOf(literal.getValue());
-        } else if (literalExpression instanceof LiteralInfinity) {
-            value = "*";
-        }
-        return value;
     }
 
     private String individual(OccurrenceDefinition occurrenceDefinition) {
@@ -672,7 +651,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         if (expression != null) {
             // At the moment, we do not have the service to retrieve the textual representation of an
             // expression. This code should be enhanced to cover all kind of expression.
-            var value = this.getValue(expression);
+            var value = this.labelService.getValue(expression);
             if (value != null) {
                 label.append(value);
             }

@@ -325,7 +325,7 @@ public class LabelService {
         } else if (literalExpression instanceof LiteralBoolean literal) {
             value = String.valueOf(literal.isValue());
         } else if (literalExpression instanceof LiteralString literal) {
-            value = String.valueOf(literal.getValue());
+            value = "\"" + String.valueOf(literal.getValue()) + "\"";
         } else if (literalExpression instanceof LiteralInfinity) {
             value = "*";
         }

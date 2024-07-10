@@ -64,6 +64,8 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/490[#490] [diagrams] Fix an issue where the _Adjust size_ tool had no effect on Packages nodes.
 - https://github.com/eclipse-syson/syson/issues/502[#502] [export] Fix an issue where the simple quotes were not escaped when exporting as textual files.
 - https://github.com/eclipse-syson/syson/issues/511[#511] [export] Fix an issue where models were exported with a global indentation instead of no indentation. 
+- https://github.com/eclipse-syson/syson/issues/501[#501] [diagrams] Fix an issue where the double quotes were set along with the string value in case of a direct edit of the value part.
+
 
 === Improvements
 
