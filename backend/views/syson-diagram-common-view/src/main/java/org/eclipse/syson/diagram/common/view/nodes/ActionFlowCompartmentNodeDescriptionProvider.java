@@ -164,7 +164,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
                 .italic(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIcon(false)
-                .withHeader(false)
+                .withHeader(true)
                 .build();
     }
 
