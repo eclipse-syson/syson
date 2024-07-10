@@ -35,11 +35,15 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
- * Services class for building View Description.
+ * Services class for building Tool Description.
  *
  * @author adieumegard
  */
 public class ToolDescriptionService {
+
+    private static final String SERVICE_ELEMENT_INITIALIZER = "elementInitializer";
+
+    private static final String NEW_INSTANCE = "newInstance";
 
     protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
@@ -188,7 +192,7 @@ public class ToolDescriptionService {
         }
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
+                .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
 
         if (direction != null) {
             changeContextNewInstance.children(setDirection.build());
@@ -197,7 +201,7 @@ public class ToolDescriptionService {
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
+                .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
 
         var createView = this.diagramBuilderHelper.newCreateView()
@@ -222,6 +226,19 @@ public class ToolDescriptionService {
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(changeContexMembership.build())
                 .build();
+    }
+
+    /**
+     * Returns the creation node tool description for the given Node Description to build a new child node for the given
+     * EClass.
+     *
+     * @param nodeDescription
+     *            the Node Description where the returned tool is added
+     * @param eClass
+     *            the EClass that the returned tool is in charge of
+     */
+    public NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass) {
+        return this.createNodeToolWithDirection(nodeDescription, eClass, NodeContainmentKind.CHILD_NODE, null);
     }
 
     /**
@@ -268,7 +285,7 @@ public class ToolDescriptionService {
         }
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
+                .expression(AQLUtils.getServiceCallExpression(NEW_INSTANCE, SERVICE_ELEMENT_INITIALIZER));
 
         if (direction != null) {
             changeContextNewInstance.children(setDirection.build());
@@ -277,13 +294,18 @@ public class ToolDescriptionService {
         var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
                 .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
+                .variableName(NEW_INSTANCE)
                 .children(changeContextNewInstance.build());
+
+        var parentViewExpression = "aql:selectedNode";
+        if (NodeContainmentKind.CHILD_NODE.equals(nodeKind)) {
+            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext"));
+        }
 
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(nodeKind)
                 .elementDescription(nodeDescription)
-                .parentViewExpression("aql:selectedNode")
+                .parentViewExpression(parentViewExpression)
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 

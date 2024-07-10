@@ -16,20 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
-import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.SysmlEClassSwitch;
 
 /**
@@ -76,40 +71,5 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
         CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
         compartmentNodeTools.add(provider.create(null));
         return compartmentNodeTools;
-    }
-
-    protected NodeTool createNestedUsageNodeTool(EClass eClass) {
-        NodeDescription nodeDesc = this.getAllNodeDescriptions().stream().filter(nd -> this.descriptionNameGenerator.getNodeName(eClass).equals(nd.getName())).findFirst().get();
-        var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
-
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
-
-        var createView = this.diagramBuilderHelper.newCreateView()
-                .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDesc)
-                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext")))
-                .semanticElementExpression("aql:newInstance")
-                .variableName("newInstanceView");
-
-        var changeContexMembership = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:newFeatureMembership")
-                .children(createEClassInstance.build(), createView.build());
-
-        var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureMembership()))
-                .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
-                .variableName("newFeatureMembership")
-                .children(changeContexMembership.build());
-
-        return this.diagramBuilderHelper.newNodeTool()
-                .name(this.descriptionNameGenerator.getCreationToolName("New ", eClass))
-                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
-                .body(createMembership.build())
-                .build();
     }
 }

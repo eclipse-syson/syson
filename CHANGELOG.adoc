@@ -15,7 +15,7 @@
 - https://github.com/eclipse-syson/syson/issues/349[#349] [syson] Switch to sirius-web domain driven design architecture.
 Please download your existing SysON projects before moving to this new version.
 A reset of the database is needed.
-- https://github.com/eclipse-syson/syson/issues/393[#393] [diagrams] Code refactorings
+- https://github.com/eclipse-syson/syson/issues/393[#393] [diagrams] Code refactoring:
   * Move `AbstractDiagramDescriptionProvider#createNodeToolFromDiagramBackground(NodeDescription, EClassifier)` to new `ToolDescriptionService`
   * Move `AbstractViewElementDescriptionProvider#addExistingElementsTool(boolean)` to new `ToolDescriptionService`
   * Remove `AbstractViewElementDescriptionProvider`
@@ -26,8 +26,12 @@ A reset of the database is needed.
   * Rename `StateTransitionActionToolProvider` to `StateTransitionActionCompartmentToolProvider`
   * Move `AbstractViewNodeToolSectionSwitch#buildCreateSection(NodeTool...)` to `ToolDescriptionService#buildCreateSection(NodeTool...)`
   * Merge `AbstractViewNodeToolSectionSwitch#addElementsToolSection()` and `AbstractViewNodeToolSectionSwitch#addExistingNestedElementsTool()` in `ToolDescriptionService#addElementsNodeToolSection(boolean)`
-- https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams]`ViewLabelService#getCompartmentItemUsageLabel` has been renamed to `ViewLabelService#getCompartmentItemLabel`.
-- https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams]`ViewLabelService#getUsageInitialDirectEditLabel` has been renamed to `ViewLabelService#getInitialDirectEditLabel`.
+- https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams] `ViewLabelService#getCompartmentItemUsageLabel` has been renamed to `ViewLabelService#getCompartmentItemLabel`.
+- https://github.com/eclipse-syson/syson/issues/423[#423] [diagrams] `ViewLabelService#getUsageInitialDirectEditLabel` has been renamed to `ViewLabelService#getInitialDirectEditLabel`.
+- https://github.com/eclipse-syson/syson/issues/492[#492] [diagrams] Code refactoring:
+* `AbstractViewNodeToolSectionSwitch#createNestedUsageNodeTool` has been deleted. Please use `ToolDescriptionService#createNodeTool` instead
+* `AbstractCompartmentNodeDescriptionProvider#getItemCreationToolProvider` has been renamed to `getItemCreationToolProviders` and now returns a list of `INodeToolProvider`.
+
 
 === Dependency update
 

@@ -58,7 +58,9 @@ public class UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider 
     }
 
     @Override
-    protected INodeToolProvider getItemCreationToolProvider() {
-        return new ObjectiveRequirementCompartmentNodeToolProvider();
+    protected List<INodeToolProvider> getItemCreationToolProviders() {
+        List<INodeToolProvider> creationToolProviders = new ArrayList<>();
+        creationToolProviders.add(new ObjectiveRequirementCompartmentNodeToolProvider());
+        return creationToolProviders;
     }
 }

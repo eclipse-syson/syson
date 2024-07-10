@@ -19,6 +19,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
@@ -91,21 +92,6 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     }
 
     @Override
-    protected List<EReference> getElementCompartmentReferences(Element element) {
-        List<EReference> refs = GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.get(element.eClass());
-        if (refs != null) {
-            return refs;
-        } else {
-            return List.of();
-        }
-    }
-
-    @Override
-    protected List<NodeDescription> getAllNodeDescriptions() {
-        return this.allNodeDescriptions;
-    }
-
-    @Override
     public List<NodeToolSection> caseAcceptActionUsage(AcceptActionUsage object) {
         var createSection = this.toolDescriptionService.buildCreateSection(
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getItemDefinition()),
@@ -117,6 +103,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
 
     @Override
     public List<NodeToolSection> caseActionUsage(ActionUsage object) {
+
         var createSection = this.toolDescriptionService.buildCreateSection(
                 new StartActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new DoneActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
@@ -124,9 +111,15 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new ForkActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new MergeActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new DecisionActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getAttributeUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getAttributeUsage()), SysmlPackage.eINSTANCE.getAttributeUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT),
                 new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache),
                 new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
@@ -168,10 +161,22 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     @Override
     public List<NodeToolSection> caseConstraintUsage(ConstraintUsage object) {
         var createSection = this.toolDescriptionService.buildCreateSection(
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getAttributeUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getAttributeUsage()), SysmlPackage.eINSTANCE.getAttributeUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
@@ -192,23 +197,44 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
 
     @Override
     public List<NodeToolSection> caseItemDefinition(ItemDefinition object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()));
+        var createSection = this.toolDescriptionService.buildCreateSection(
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override
     public List<NodeToolSection> caseItemUsage(ItemUsage object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
+        var createSection = this.toolDescriptionService.buildCreateSection(
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override
     public List<NodeToolSection> caseOccurrenceDefinition(OccurrenceDefinition object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()));
+        var createSection = this.toolDescriptionService
+                .buildCreateSection(this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
@@ -248,7 +274,14 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
 
     @Override
     public List<NodeToolSection> casePortUsage(PortUsage object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()));
+        var createSection = this.toolDescriptionService.buildCreateSection(
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
@@ -256,10 +289,22 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     @Override
     public List<NodeToolSection> caseRequirementUsage(RequirementUsage object) {
         var createSection = this.toolDescriptionService.buildCreateSection(
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getRequirementUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage()), SysmlPackage.eINSTANCE.getRequirementUsage()),
                 this.createPartUsageAsSubjectNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
@@ -320,14 +365,55 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     @Override
     public List<NodeToolSection> caseUseCaseUsage(UseCaseUsage object) {
         var createSection = this.toolDescriptionService.buildCreateSection(
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getAttributeUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPortUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getAttributeUsage()), SysmlPackage.eINSTANCE.getAttributeUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT),
                 this.createPartUsageAsSubjectNodeTool(),
                 this.createRequirementUsageAsObjectiveRequirementNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+    }
+
+    @Override
+    protected List<EReference> getElementCompartmentReferences(Element element) {
+        List<EReference> refs = GeneralViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.get(element.eClass());
+        if (refs != null) {
+            return refs;
+        } else {
+            return List.of();
+        }
+    }
+
+    @Override
+    protected List<NodeDescription> getAllNodeDescriptions() {
+        return this.allNodeDescriptions;
+    }
+
+    @Override
+    protected List<NodeTool> createToolsForCompartmentItem(EReference eReference) {
+        List<NodeTool> compartmentNodeTools = new ArrayList<>();
+        compartmentNodeTools.add(new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator).create(this.cache));
+        if (GeneralViewDiagramDescriptionProvider.DIRECTIONAL_ELEMENTS.contains(eReference.getEType())) {
+            // the element inside the compartment is a directional element, we need to add 3 more tools for each
+            // direction
+            compartmentNodeTools.add(new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator, FeatureDirectionKind.IN).create(this.cache));
+            compartmentNodeTools.add(new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator, FeatureDirectionKind.INOUT).create(this.cache));
+            compartmentNodeTools.add(new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator, FeatureDirectionKind.OUT).create(this.cache));
+        }
+        return compartmentNodeTools;
     }
 
     private NodeTool createPartUsageAsSubjectNodeTool() {
@@ -342,14 +428,26 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
 
     private NodeToolSection createPartDefinitionElementsToolSection() {
         return this.toolDescriptionService.buildCreateSection(
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()));
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT));
     }
 
     private NodeToolSection createPartUsageElementsToolSection() {
         return this.toolDescriptionService.buildCreateSection(
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getItemUsage()),
-                this.createNestedUsageNodeTool(SysmlPackage.eINSTANCE.getPartUsage()));
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()));
     }
 
     private NodeTool createPayloadNodeTool(EClass payloadType) {
@@ -362,16 +460,10 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         return newPortAsReceiverToolProvider.create(null);
     }
 
-    @Override
-    protected List<NodeTool> createToolsForCompartmentItem(EReference eReference) {
-        List<NodeTool> compartmentNodeTools = new ArrayList<>();
-        compartmentNodeTools.add(new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator).create(this.cache));
-        if (GeneralViewDiagramDescriptionProvider.DIRECTIONAL_ELEMENTS.contains(eReference.getEType())) {
-            // the element inside the compartment is a directional element, we need to add 3 more tools for each direction
-            compartmentNodeTools.add(new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator, FeatureDirectionKind.IN).create(this.cache));
-            compartmentNodeTools.add(new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator, FeatureDirectionKind.INOUT).create(this.cache));
-            compartmentNodeTools.add(new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator, FeatureDirectionKind.OUT).create(this.cache));
-        }
-        return compartmentNodeTools;
+    private NodeDescription getNodeDescription(EClass eClass) {
+        return this.getAllNodeDescriptions().stream()
+                .filter(nd -> this.descriptionNameGenerator.getNodeName(eClass).equals(nd.getName()))
+                .findFirst()
+                .get();
     }
 }
