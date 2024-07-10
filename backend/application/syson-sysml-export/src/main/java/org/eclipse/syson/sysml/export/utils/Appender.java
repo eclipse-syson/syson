@@ -43,7 +43,7 @@ public class Appender {
     }
     
     public static String toPrintableName(String initialName) {
-        return NameHelper.toPrintableName(initialName);
+        return NameHelper.toPrintableName(initialName, true);
     }
 
     public Appender appendPrintableName(String name) {
