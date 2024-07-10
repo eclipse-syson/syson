@@ -71,14 +71,31 @@ public class NameHelper {
      *
      * @param initialName
      *            string to set printable
-     * @return
+     * @return a String printable for SysMLv2 name
      */
     public static String toPrintableName(String initialName) {
+        return toPrintableName(initialName, false);
+    }
+
+    /**
+     * Set a String printable for SysMLv2 name
+     *
+     * @param initialName
+     *            string to set printable
+     * @param escapeSingleQuotes
+     *            whether the single quotes should be escaped or not inside the printable value
+     * @return a String printable for SysMLv2 name
+     */
+    public static String toPrintableName(String initialName, boolean escapeSingleQuotes) {
         String name;
         if (initialName == null || initialName.isEmpty()) {
             name = "";
         } else if (VALID_CHARS.matcher(initialName).find() || !isLetterOrUnderscore(initialName.charAt(0))) {
-            name = '\'' + initialName.replaceAll("'", "\\\\'") + '\'';
+            if (escapeSingleQuotes) {
+                name = '\'' + initialName.replaceAll("'", "\\\\'") + '\'';
+            } else {
+                name = '\'' + initialName + '\'';
+            }
         } else {
             name = initialName;
         }

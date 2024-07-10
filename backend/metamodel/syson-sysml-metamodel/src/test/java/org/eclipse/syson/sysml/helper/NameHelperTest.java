@@ -27,9 +27,13 @@ public class NameHelperTest {
     @DisplayName("Test that names containg simple quotes are printed with these simple quotes escpaed.")
     @Test
     void testEscapeSimpleQuotes() {
-        String printableName = NameHelper.toPrintableName("Hello what's up!");
+        String printableName = NameHelper.toPrintableName("Hello what's up!", true);
         assertEquals("'Hello what\\'s up!'", printableName);
-        printableName = NameHelper.toPrintableName("Hel'lo");
+        printableName = NameHelper.toPrintableName("Hello what's up!", false);
+        assertEquals("'Hello what's up!'", printableName);
+        printableName = NameHelper.toPrintableName("Hel'lo", true);
         assertEquals("'Hel\\'lo'", printableName);
+        printableName = NameHelper.toPrintableName("Hel'lo", false);
+        assertEquals("'Hel'lo'", printableName);
     }
 }
