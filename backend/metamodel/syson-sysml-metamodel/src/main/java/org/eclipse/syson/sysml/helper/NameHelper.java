@@ -37,7 +37,7 @@ public class NameHelper {
      * Parse a qualified name to extract list of sections
      *
      * @param qualifiedName
-     *            qualifed name to split
+     *            qualified name to split
      * @return
      */
     public static List<String> parseQualifiedName(String qualifiedName) {
@@ -56,7 +56,7 @@ public class NameHelper {
     }
 
     /**
-     * Unescpae a string
+     * Unescape a string
      *
      * @param str
      *            string to unescape
@@ -67,7 +67,7 @@ public class NameHelper {
     }
 
     /**
-     * Set a String printable for Sysml name
+     * Set a String printable for SysMLv2 name
      *
      * @param initialName
      *            string to set printable
@@ -78,7 +78,7 @@ public class NameHelper {
         if (initialName == null || initialName.isEmpty()) {
             name = "";
         } else if (VALID_CHARS.matcher(initialName).find() || !isLetterOrUnderscore(initialName.charAt(0))) {
-            name = '\'' + initialName + '\'';
+            name = '\'' + initialName.replaceAll("'", "\\\\'") + '\'';
         } else {
             name = initialName;
         }

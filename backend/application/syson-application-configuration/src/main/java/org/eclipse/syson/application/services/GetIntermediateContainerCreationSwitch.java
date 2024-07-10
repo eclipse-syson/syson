@@ -24,6 +24,7 @@ import org.eclipse.syson.sysml.EnumerationUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.util.SysmlEClassSwitch;
@@ -75,5 +76,10 @@ public class GetIntermediateContainerCreationSwitch extends SysmlEClassSwitch<Op
     @Override
     public Optional<EClass> caseLiteralExpression(LiteralExpression object) {
         return Optional.of(SysmlPackage.eINSTANCE.getFeatureValue());
+    }
+
+    @Override
+    public Optional<EClass> casePackage(Package object) {
+        return Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
     }
 }

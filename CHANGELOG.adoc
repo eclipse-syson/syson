@@ -62,6 +62,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/341[#341] [export] Fix missing element names in the expressions during export
 - https://github.com/eclipse-syson/syson/issues/459[#459] [import] Fix documentation import to remove /* */ around texts
 - https://github.com/eclipse-syson/syson/issues/490[#490] [diagrams] Fix an issue where the _Adjust size_ tool had no effect on Packages nodes.
+- https://github.com/eclipse-syson/syson/issues/502[#502] [export] Fix an issue where the simple quotes were not escaped when exporting as textual files.
 
 === Improvements
 
