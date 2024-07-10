@@ -113,12 +113,11 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     private NodeToolSection createCreationToolSection(IViewDiagramElementFinder cache) {
         NodeToolSection nodeToolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
         nodeToolSection.setName("Create Section");
-        INodeToolProvider compartmentNodeToolProvider = this.getItemCreationToolProvider();
 
+        this.getItemCreationToolProviders().forEach(toolProvider -> {
+            nodeToolSection.getNodeTools().add(toolProvider.create(cache));
+        });
         nodeToolSection.getNodeTools().add(new StartActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        if (compartmentNodeToolProvider != null) {
-            nodeToolSection.getNodeTools().add(compartmentNodeToolProvider.create(cache));
-        }
         nodeToolSection.getNodeTools().add(new AcceptActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         nodeToolSection.getNodeTools().add(new DecisionActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
         nodeToolSection.getNodeTools().add(new ForkActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
@@ -169,7 +168,9 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     }
 
     @Override
-    protected INodeToolProvider getItemCreationToolProvider() {
-        return new ActionFlowCompartmentNodeToolProvider(this.eClass, this.getDescriptionNameGenerator());
+    protected List<INodeToolProvider> getItemCreationToolProviders() {
+        List<INodeToolProvider> creationToolProviders = new ArrayList<>();
+        creationToolProviders.add(new ActionFlowCompartmentNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()));
+        return creationToolProviders;
     }
 }

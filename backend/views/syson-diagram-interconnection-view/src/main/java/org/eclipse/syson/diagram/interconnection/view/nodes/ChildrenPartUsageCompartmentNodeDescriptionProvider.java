@@ -81,8 +81,10 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     @Override
-    protected INodeToolProvider getItemCreationToolProvider() {
-        return new ChildrenPartUsageCompartmentNodeToolProvider();
+    protected List<INodeToolProvider> getItemCreationToolProviders() {
+        List<INodeToolProvider> creationToolProviders = new ArrayList<>();
+        creationToolProviders.add(new ChildrenPartUsageCompartmentNodeToolProvider());
+        return creationToolProviders;
     }
 
     @Override

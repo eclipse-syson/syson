@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +31,8 @@ import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
@@ -58,45 +61,6 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
         this.eClass = Objects.requireNonNull(eClass);
         this.eReference = Objects.requireNonNull(eReference);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
-    }
-
-    /**
-     * Implementers should provide the list of {@link NodeDescription} that can be dropped inside this compartment
-     * {@link NodeDescription}.
-     *
-     * @param cache
-     *            the cache used to retrieve node descriptions.
-     * @return the list of {@link NodeDescription} that can be dropped inside this compartment.
-     */
-    protected abstract List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache);
-
-    /**
-     * Returns the Compartment Node tool provider used to create a new item inside this compartment.
-     *
-     * @return the {@link INodeToolProvider} that handles the item creation inside this compartment.
-     */
-    protected INodeToolProvider getItemCreationToolProvider() {
-        return new CompartmentNodeToolProvider(this.eReference, this.getDescriptionNameGenerator());
-    }
-
-    /**
-     * Provide the default state of the compartment (hidden/revealed).
-     *
-     * @return An AQL expression returning <code>true</code> if the compartment should be hidden by default,
-     *         <code>false</code> otherwise.
-     */
-    protected String isHiddenByDefaultExpression() {
-        return AQLUtils.getSelfServiceCallExpression("isHiddenByDefault", "'" + this.eReference.getName() + "'");
-    }
-
-    /**
-     * Returns the AQL expression evaluated to drop an element from the diagram inside this compartment.
-     *
-     * @return
-     */
-    protected String getDropElementFromDiagramExpression() {
-        return AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
-                List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes"));
     }
 
     @Override
@@ -128,6 +92,49 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     /**
+     * Implementers should provide the list of {@link NodeDescription} that can be dropped inside this compartment
+     * {@link NodeDescription}.
+     *
+     * @param cache
+     *            the cache used to retrieve node descriptions.
+     * @return the list of {@link NodeDescription} that can be dropped inside this compartment.
+     */
+    protected abstract List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache);
+
+    /**
+     * Returns the Compartment Node tool providers used to create a new item inside this compartment. In most cases,
+     * this will return only one tool, but sometime can return several tools (e.g.: Ports with a tool for each
+     * direction)
+     *
+     * @return the {@link INodeToolProviders} that handles the item creation inside this compartment.
+     */
+    protected List<INodeToolProvider> getItemCreationToolProviders() {
+        List<INodeToolProvider> creationToolProviders = new ArrayList<>();
+        creationToolProviders.add(new CompartmentNodeToolProvider(this.eReference, this.getDescriptionNameGenerator()));
+        return creationToolProviders;
+    }
+
+    /**
+     * Provide the default state of the compartment (hidden/revealed).
+     *
+     * @return An AQL expression returning <code>true</code> if the compartment should be hidden by default,
+     *         <code>false</code> otherwise.
+     */
+    protected String isHiddenByDefaultExpression() {
+        return AQLUtils.getSelfServiceCallExpression("isHiddenByDefault", "'" + this.eReference.getName() + "'");
+    }
+
+    /**
+     * Returns the AQL expression evaluated to drop an element from the diagram inside this compartment.
+     *
+     * @return
+     */
+    protected String getDropElementFromDiagramExpression() {
+        return AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
+                List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes"));
+    }
+
+    /**
      * Implementers might override to specify a custom label for the compartment that is used instead of the default
      * label.<br>
      * Default implementation returns {@code null}.
@@ -137,28 +144,6 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     protected String getCustomCompartmentLabel() {
         // default implementation does nothing
         return null;
-    }
-
-    private String getCompartmentLabel() {
-        String customLabel = this.getCustomCompartmentLabel();
-        if (customLabel != null) {
-            return customLabel;
-        }
-        String defaultName = "";
-        EClassifier eType = this.eReference.getEType();
-        if (eType instanceof EClass eTypeClass && SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eTypeClass)) {
-            char[] charArray = eTypeClass.getName().toCharArray();
-            charArray[0] = Character.toLowerCase(charArray[0]);
-            defaultName = new String(charArray);
-            if (defaultName.endsWith("Usage")) {
-                defaultName = defaultName.substring(0, defaultName.length() - 5) + "s";
-            }
-        } else if (SysmlPackage.eINSTANCE.getDocumentation().equals(eType)) {
-            defaultName = "doc";
-        } else {
-            defaultName = eType.getName();
-        }
-        return defaultName;
     }
 
     protected InsideLabelDescription createInsideLabelDescription() {
@@ -191,16 +176,28 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
-        INodeToolProvider compartmentNodeToolProvider = this.getItemCreationToolProvider();
 
         var palette = this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
 
-        if (compartmentNodeToolProvider != null) {
-            palette.nodeTools(compartmentNodeToolProvider.create(cache));
+        List<NodeToolSection> toolSections = new ArrayList<>();
+
+        List<INodeToolProvider> itemCreationToolProviders = this.getItemCreationToolProviders();
+        if (!itemCreationToolProviders.isEmpty()) {
+            List<NodeTool> nodeTools = new ArrayList<>();
+            itemCreationToolProviders.forEach(toolProvider -> {
+                nodeTools.add(toolProvider.create(cache));
+            });
+            var nodeToolSection = this.diagramBuilderHelper.newNodeToolSection()
+                    .name("Create Section")
+                    .nodeTools(nodeTools.toArray(NodeTool[]::new))
+                    .build();
+            toolSections.add(nodeToolSection);
         }
 
-        return palette.toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+
+        return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }
 
@@ -217,5 +214,27 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {
         return this.descriptionNameGenerator;
+    }
+
+    private String getCompartmentLabel() {
+        String customLabel = this.getCustomCompartmentLabel();
+        if (customLabel != null) {
+            return customLabel;
+        }
+        String defaultName = "";
+        EClassifier eType = this.eReference.getEType();
+        if (eType instanceof EClass eTypeClass && SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eTypeClass)) {
+            char[] charArray = eTypeClass.getName().toCharArray();
+            charArray[0] = Character.toLowerCase(charArray[0]);
+            defaultName = new String(charArray);
+            if (defaultName.endsWith("Usage")) {
+                defaultName = defaultName.substring(0, defaultName.length() - 5) + "s";
+            }
+        } else if (SysmlPackage.eINSTANCE.getDocumentation().equals(eType)) {
+            defaultName = "doc";
+        } else {
+            defaultName = eType.getName();
+        }
+        return defaultName;
     }
 }

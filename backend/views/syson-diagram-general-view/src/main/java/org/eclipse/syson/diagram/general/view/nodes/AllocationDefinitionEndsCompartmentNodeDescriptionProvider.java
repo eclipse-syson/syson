@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.general.view.nodes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -45,8 +46,9 @@ public class AllocationDefinitionEndsCompartmentNodeDescriptionProvider extends 
     }
 
     @Override
-    protected INodeToolProvider getItemCreationToolProvider() {
-        return new AllocationDefinitionEndCompartmentNodeToolProvider();
+    protected List<INodeToolProvider> getItemCreationToolProviders() {
+        List<INodeToolProvider> creationToolProviders = new ArrayList<>();
+        creationToolProviders.add(new AllocationDefinitionEndCompartmentNodeToolProvider());
+        return creationToolProviders;
     }
-
 }

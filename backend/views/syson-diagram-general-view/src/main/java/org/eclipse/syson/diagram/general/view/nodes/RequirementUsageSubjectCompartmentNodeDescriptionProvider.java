@@ -62,7 +62,9 @@ public class RequirementUsageSubjectCompartmentNodeDescriptionProvider extends A
     }
 
     @Override
-    protected INodeToolProvider getItemCreationToolProvider() {
-        return new SubjectCompartmentNodeToolProvider();
+    protected List<INodeToolProvider> getItemCreationToolProviders() {
+        List<INodeToolProvider> creationToolProviders = new ArrayList<>();
+        creationToolProviders.add(new SubjectCompartmentNodeToolProvider());
+        return creationToolProviders;
     }
 }

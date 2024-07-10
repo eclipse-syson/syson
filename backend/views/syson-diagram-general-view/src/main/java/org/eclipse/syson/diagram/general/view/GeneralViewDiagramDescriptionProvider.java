@@ -204,7 +204,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             ));
 
     /**
-     * Following elements have additional creating tools one for each direction (in, out, and inout).
+     * Following elements have additional creation tools one for each direction (in, out, and inout).
      */
     public static final List<EClass> DIRECTIONAL_ELEMENTS = List.of(
             SysmlPackage.eINSTANCE.getItemUsage(),

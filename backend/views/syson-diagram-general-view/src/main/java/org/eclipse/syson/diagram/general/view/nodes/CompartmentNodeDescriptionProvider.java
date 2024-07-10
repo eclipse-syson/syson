@@ -19,10 +19,13 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 
@@ -82,5 +85,16 @@ public class CompartmentNodeDescriptionProvider extends AbstractCompartmentNodeD
                     List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes"));
         }
         return customExpression;
+    }
+
+    @Override
+    protected List<INodeToolProvider> getItemCreationToolProviders() {
+        List<INodeToolProvider> itemCreationToolProviders = super.getItemCreationToolProviders();
+        if (GeneralViewDiagramDescriptionProvider.DIRECTIONAL_ELEMENTS.contains(this.eReference.getEType())) {
+            itemCreationToolProviders.add(new CompartmentNodeToolProvider(this.eReference, this.getDescriptionNameGenerator(), FeatureDirectionKind.IN));
+            itemCreationToolProviders.add(new CompartmentNodeToolProvider(this.eReference, this.getDescriptionNameGenerator(), FeatureDirectionKind.INOUT));
+            itemCreationToolProviders.add(new CompartmentNodeToolProvider(this.eReference, this.getDescriptionNameGenerator(), FeatureDirectionKind.OUT));
+        }
+        return itemCreationToolProviders;
     }
 }

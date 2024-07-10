@@ -26,7 +26,7 @@ import org.eclipse.syson.util.AQLUtils;
  */
 public class StateTransitionActionCompartmentToolProvider extends AbstractCompartmentNodeToolProvider {
 
-    private EStructuralFeature actionStructuralFeature;
+    private final EStructuralFeature actionStructuralFeature;
 
     public StateTransitionActionCompartmentToolProvider(EStructuralFeature actionStructuralFeature) {
         super();
@@ -35,16 +35,16 @@ public class StateTransitionActionCompartmentToolProvider extends AbstractCompar
 
     @Override
     protected String getServiceCallExpression() {
-        return AQLUtils.getSelfServiceCallExpression("createOwnedAction", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "'" + getActionKindValue() + "'"));
+        return AQLUtils.getSelfServiceCallExpression("createOwnedAction", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "'" + this.getActionKindValue() + "'"));
     }
 
     private String getActionKindValue() {
         String switchValue = "";
-        if (isEntryAction()) {
-            switchValue = StateSubactionKind.ENTRY.getLiteral();   
-        } else if (isDoAction()) {
+        if (this.isEntryAction()) {
+            switchValue = StateSubactionKind.ENTRY.getLiteral();
+        } else if (this.isDoAction()) {
             switchValue = StateSubactionKind.DO.getLiteral();
-        } else if (isExitAction()) {
+        } else if (this.isExitAction()) {
             switchValue = StateSubactionKind.EXIT.getLiteral();
         }
         if (switchValue.length() > 1) {
@@ -55,7 +55,7 @@ public class StateTransitionActionCompartmentToolProvider extends AbstractCompar
 
     @Override
     protected String getNodeToolName() {
-        return "New " + getActionKindValue() + " Action";
+        return "New " + this.getActionKindValue() + " Action";
     }
 
     @Override
@@ -67,24 +67,24 @@ public class StateTransitionActionCompartmentToolProvider extends AbstractCompar
     protected boolean revealOnCreate() {
         return true;
     }
-    
+
     public boolean isHandledAction() {
-        return isEntryAction() || isDoAction() || isExitAction();
+        return this.isEntryAction() || this.isDoAction() || this.isExitAction();
     }
 
     @Override
     protected String getPreconditionExpression() {
-        return AQLUtils.getSelfServiceCallExpression("isEmptyOfActionKindCompartment", "'" + getActionKindValue() + "'");
+        return AQLUtils.getSelfServiceCallExpression("isEmptyOfActionKindCompartment", "'" + this.getActionKindValue() + "'");
     }
-    
+
     private boolean isEntryAction() {
         return SysmlPackage.eINSTANCE.getStateDefinition_EntryAction().equals(this.actionStructuralFeature) || SysmlPackage.eINSTANCE.getStateUsage_EntryAction().equals(this.actionStructuralFeature);
     }
-    
+
     private boolean isDoAction() {
         return SysmlPackage.eINSTANCE.getStateDefinition_DoAction().equals(this.actionStructuralFeature) || SysmlPackage.eINSTANCE.getStateUsage_DoAction().equals(this.actionStructuralFeature);
     }
-    
+
     private boolean isExitAction() {
         return SysmlPackage.eINSTANCE.getStateDefinition_ExitAction().equals(this.actionStructuralFeature) || SysmlPackage.eINSTANCE.getStateUsage_ExitAction().equals(this.actionStructuralFeature);
     }
