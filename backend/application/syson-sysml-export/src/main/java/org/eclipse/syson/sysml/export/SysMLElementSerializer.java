@@ -185,12 +185,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseNamespace(Namespace namespace) {
         Appender builder = this.newAppender();
-
         if (namespace.eContainer() == null && namespace.getName() == null) {
             // Root namespace are not serialized
-            String content = this.getContent(namespace.getOwnedMembership());
+            String content = this.getContent(namespace.getOwnedMembership(), "");
             if (content != null && !content.isBlank()) {
-                builder.appendIndentedContent(content);
+                builder.append(content);
             }
         } else if (namespace.eClass() == SysmlPackage.eINSTANCE.getNamespace()) {
             builder.append("namespace ");
@@ -202,13 +201,10 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String casePackage(Package pack) {
         Appender builder = this.newAppender();
-
         builder.append("package ");
         this.appendNameWithShortName(builder, pack);
-
         List<Relationship> children = pack.getOwnedRelationship().stream().filter(IS_MEMBERSHIP.and(IS_METADATA_USAGE.negate()).or(IS_IMPORT)).toList();
         this.appendChildrenContent(builder, pack, children);
-
         return builder.toString();
     }
 
@@ -219,15 +215,10 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseItemUsage(ItemUsage itemUsage) {
-
         Appender builder = this.newAppender();
-
         appendOccurrenceUsagePrefix(builder, itemUsage);
-
         builder.appendWithSpaceIfNeeded("item");
-
         appendUsage(builder, itemUsage);
-
         return builder.toString();
     }
 
@@ -264,39 +255,26 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseReferenceUsage(ReferenceUsage reference) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
-
         if (!this.isImplicit(reference)) {
             this.appendBasicUsagePrefix(builder, reference);
-
             this.appendUsageDeclaration(builder, reference);
-
             this.appendUsageCompletion(builder, reference);
         }
-
         return builder.toString();
-
     }
 
     @Override
     public String caseActionUsage(ActionUsage actionUsage) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
-
         this.appendOccurrenceUsagePrefix(builder, actionUsage);
-
         builder.appendWithSpaceIfNeeded("action");
-
         this.appendActionUsageDeclaration(builder, actionUsage);
-
         this.appendChildrenContent(builder, actionUsage, actionUsage.getOwnedMembership());
-
         return builder.toString();
-
     }
 
     private void appendActionUsageDeclaration(Appender builder, ActionUsage actionUsage) {
-
         this.appendUsageDeclaration(builder, actionUsage);
-
         this.appendValuePart(builder, actionUsage);
     }
 
@@ -1598,7 +1576,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendChildrenContent(Appender builder, Element element, List<? extends Relationship> childrenRelationships) {
 
-        String content = this.getContent(childrenRelationships);
+        String content = this.getContent(childrenRelationships, this.lineSeparator);
         if (content != null && !content.isBlank()) {
             builder.append(" {");
             builder.appendIndentedContent(content);
@@ -1608,8 +1586,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         }
     }
 
-    private String getContent(List<? extends Relationship> children) {
-        return children.stream().map(rel -> this.doSwitch(rel)).filter(NOT_NULL).collect(joining(this.lineSeparator, this.lineSeparator, ""));
+    private String getContent(List<? extends Relationship> children, String prefix) {
+        return children.stream().map(rel -> this.doSwitch(rel)).filter(NOT_NULL).collect(joining(this.lineSeparator, prefix, ""));
     }
 
     @Override
