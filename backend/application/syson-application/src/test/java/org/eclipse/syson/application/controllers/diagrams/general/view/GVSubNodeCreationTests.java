@@ -196,7 +196,7 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), ownedMember, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), ownedMember, 1),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getInterfaceDefinition(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), ownedMember, 3),
@@ -209,8 +209,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), ownedMember, 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), ownedMember, 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), ownedMember, 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), ownedMember, 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), ownedMember, 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), ownedMember, 3),
@@ -267,6 +267,12 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPart(), 3))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> allocationDefinitionChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -434,6 +440,18 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), 3))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> useCaseUsageChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> useCaseDefinitionChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -671,6 +689,18 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
         String parentLabel = "AllocationDefinition";
         this.createNode(parentEClass, parentLabel, childEClass);
         this.checkDiagram(this.getSiblingNodeGraphicalChecker(childEClass, compartmentCount));
+        this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("allocationDefinitionChildNodeParameters")
+    public void createAllocationDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getAllocationDefinition();
+        String parentLabel = "AllocationDefinition";
+        this.createNode(parentEClass, parentLabel, childEClass);
+        this.checkDiagram(this.getCompartmentNodeGraphicalChecker(parentLabel, parentEClass, containmentReference, compartmentName));
         this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
     }
 
@@ -1157,6 +1187,30 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
         String parentLabel = "useCase";
         this.createNode(parentEClass, parentLabel, childEClass);
         this.checkDiagram(this.getSiblingNodeGraphicalChecker(childEClass, compartmentCount));
+        this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("useCaseUsageChildNodeParameters")
+    public void createUseCaseUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
+        String parentLabel = "useCase";
+        this.createNode(parentEClass, parentLabel, childEClass);
+        this.checkDiagram(this.getCompartmentNodeGraphicalChecker(parentLabel, parentEClass, containmentReference, compartmentName));
+        this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("useCaseDefinitionChildNodeParameters")
+    public void createUseCaseDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseDefinition();
+        String parentLabel = "UseCaseDefinition";
+        this.createNode(parentEClass, parentLabel, childEClass);
+        this.checkDiagram(this.getCompartmentNodeGraphicalChecker(parentLabel, parentEClass, containmentReference, compartmentName));
         this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
     }
 
