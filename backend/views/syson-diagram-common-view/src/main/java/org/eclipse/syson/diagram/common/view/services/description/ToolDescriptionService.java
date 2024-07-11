@@ -238,7 +238,7 @@ public class ToolDescriptionService {
      *            the EClass that the returned tool is in charge of
      */
     public NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass) {
-        return this.createNodeToolWithDirection(nodeDescription, eClass, NodeContainmentKind.CHILD_NODE, null);
+        return this.createNodeToolWithDirection(nodeDescription, eClass, null, null);
     }
 
     /**
@@ -298,7 +298,7 @@ public class ToolDescriptionService {
                 .children(changeContextNewInstance.build());
 
         var parentViewExpression = "aql:selectedNode";
-        if (NodeContainmentKind.CHILD_NODE.equals(nodeKind)) {
+        if (nodeKind == null) {
             parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext"));
         }
 
