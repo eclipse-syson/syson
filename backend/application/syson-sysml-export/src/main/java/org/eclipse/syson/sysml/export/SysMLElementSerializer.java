@@ -529,7 +529,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseOperatorExpression(OperatorExpression op) {
         Appender builder = this.newAppender();
-        switch (op.getOperator()) {
+        String operator = op.getOperator();
+        if (operator == null) {
+            return builder.toString();
+        }
+        switch (operator) {
             case "if":
                 this.reportConsumer.accept(Status.warning("ConditionalExpression are not handled yet ({0})", op.getElementId()));
                 break;

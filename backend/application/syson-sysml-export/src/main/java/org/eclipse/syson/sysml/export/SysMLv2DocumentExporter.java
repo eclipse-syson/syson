@@ -22,6 +22,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.export.utils.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,13 +31,17 @@ import org.springframework.stereotype.Service;
  * @author gcoutable
  */
 @Service
-public class SysMLV2DocumentExporter implements IDocumentExporter {
+public class SysMLv2DocumentExporter implements IDocumentExporter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SysMLV2DocumentExporter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SysMLv2DocumentExporter.class);
 
     @Override
     public boolean canHandle(Resource resource, String mediaType) {
-        return !resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Element;
+        boolean canHandle = false;
+        if (MediaType.TEXT_HTML.equals(MediaType.valueOf(mediaType))) {
+            canHandle = !resource.getContents().isEmpty() && resource.getContents().get(0) instanceof Element;
+        }
+        return canHandle;
     }
 
     @Override
