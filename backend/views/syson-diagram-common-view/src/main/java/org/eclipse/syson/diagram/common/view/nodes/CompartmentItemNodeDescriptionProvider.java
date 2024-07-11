@@ -77,9 +77,9 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
         return this.diagramBuilderHelper.newInsideLabelDescription()
                 .labelExpression(AQLUtils.getSelfServiceCallExpression("getCompartmentItemLabel"))
                 .overflowStrategy(LabelOverflowStrategy.WRAP)
-                .position(InsideLabelPosition.TOP_CENTER)
+                .position(InsideLabelPosition.TOP_LEFT)
                 .style(this.createInsideLabelStyle())
-                .textAlign(LabelTextAlign.CENTER)
+                .textAlign(LabelTextAlign.LEFT)
                 .build();
     }
 
