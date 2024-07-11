@@ -25,6 +25,7 @@ import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.LiteralInfinity;
@@ -36,6 +37,7 @@ import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 
 /**
@@ -142,6 +144,9 @@ public class LabelService {
         builder.append(this.getRedefinitionLabel(element));
         builder.append(this.getSubsettingLabel(element));
         builder.append(this.getSubclassificationLabel(element));
+        if (element instanceof Usage usage) {
+            builder.append(this.getValueLabel(usage));
+        }
         return builder.toString();
     }
 
@@ -305,6 +310,34 @@ public class LabelService {
                     label.append(redefinedFeature.getDeclaredName());
                 }
             }
+        }
+        return label.toString();
+    }
+
+    /**
+     * Return the label of the value part of the given {@link Usage}.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label of the value part of the given {@link Usage} if there is one, an empty string otherwise.
+     */
+    protected String getValueLabel(Usage usage) {
+        StringBuilder label = new StringBuilder();
+        var featureValue = usage.getOwnedRelationship().stream()
+                .filter(FeatureValue.class::isInstance)
+                .map(FeatureValue.class::cast)
+                .findFirst();
+        if (featureValue.isPresent()) {
+            var literalExpression = featureValue.get().getValue();
+            String valueAsString = null;
+            if (literalExpression != null) {
+                valueAsString = this.getValue(literalExpression);
+            }
+            label
+                    .append(LabelConstants.SPACE)
+                    .append(LabelConstants.EQUAL)
+                    .append(LabelConstants.SPACE)
+                    .append(valueAsString);
         }
         return label.toString();
     }

@@ -30,7 +30,6 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
-import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
@@ -248,34 +247,6 @@ public class ViewLabelService extends LabelService {
             }
         }
         return resultLabel;
-    }
-
-    /**
-     * Return the label of the value part of the given {@link Usage}.
-     *
-     * @param usage
-     *            the given {@link Usage}.
-     * @return the label of the value part of the given {@link Usage} if there is one, an empty string otherwise.
-     */
-    private String getValueLabel(Usage usage) {
-        StringBuilder label = new StringBuilder();
-        var featureValue = usage.getOwnedRelationship().stream()
-                .filter(FeatureValue.class::isInstance)
-                .map(FeatureValue.class::cast)
-                .findFirst();
-        if (featureValue.isPresent()) {
-            var literalExpression = featureValue.get().getValue();
-            String valueAsString = null;
-            if (literalExpression != null) {
-                valueAsString = this.getValue(literalExpression);
-            }
-            label
-                    .append(LabelConstants.SPACE)
-                    .append(LabelConstants.EQUAL)
-                    .append(LabelConstants.SPACE)
-                    .append(valueAsString);
-        }
-        return label.toString();
     }
 
     private String getElementsDefaultInitialDirectEditLabel(EList<? extends Element> elements, BinaryOperator<String> reduceOperator) {
