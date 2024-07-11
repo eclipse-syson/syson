@@ -208,7 +208,7 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), ownedMember, 5),
-                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), ownedMember, 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementDefinition(), ownedMember, 6),
                 Arguments.of(SysmlPackage.eINSTANCE.getUseCaseUsage(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getUseCaseDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), ownedMember, 2),
