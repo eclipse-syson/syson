@@ -71,6 +71,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/501[#501] [diagrams] Fix an issue where the double quotes were set along with the string value in case of a direct edit of the value part.
 - https://github.com/eclipse-syson/syson/issues/509[#509] [general-view] Add missing doc compartment in UseCase, UseCaseDefinition, and AllocationDefinition
 - https://github.com/eclipse-syson/syson/issues/505[#505] [diagrams] Add value expression in Node label
+- https://github.com/eclipse-syson/syson/issues/507[#507] [general-view] Add missing tools to create Items and Parts in Port and PortDefinition
 
 === Improvements
 
