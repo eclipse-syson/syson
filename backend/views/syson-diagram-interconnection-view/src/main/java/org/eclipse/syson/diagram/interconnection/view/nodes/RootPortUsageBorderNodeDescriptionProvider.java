@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
+import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
@@ -32,6 +33,7 @@ import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -65,10 +67,9 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(NAME)
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + this.reference.getName())
-                // Default style if no conditional style can be applied
-                .style(this.createImageNodeStyleDescription("/images/PortUsage_In.svg"))
+                .style(this.createPortUnsetNodeStyle())
                 .conditionalStyles(this.createPortUsageConditionalNodeStyles().toArray(ConditionalNodeStyle[]::new))
-                .userResizable(UserResizableDirection.BOTH)
+                .userResizable(UserResizableDirection.NONE)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
     }
@@ -81,9 +82,17 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
         nodeDescription.setPalette(this.createNodePalette(cache, nodeDescription));
     }
 
+    private NodeStyleDescription createPortUnsetNodeStyle() {
+        return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
+                .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
+                .borderRadius(0)
+                .background(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .build();
+    }
+
     private OutsideLabelDescription createOutsideLabelDescription() {
         return this.diagramBuilderHelper.newOutsideLabelDescription()
-                .labelExpression(AQLConstants.AQL_SELF + ".getBorderNodePortUsageLabel()")
+                .labelExpression(AQLUtils.getSelfServiceCallExpression("getBorderNodePortUsageLabel"))
                 .position(OutsideLabelPosition.BOTTOM_CENTER)
                 .style(this.createOutsideLabelStyle())
                 .build();
@@ -106,33 +115,33 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
         var borderColor = this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR);
         return List.of(
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition("aql:self.isInPort()")
+                        .condition(AQLUtils.getSelfServiceCallExpression("isInPort"))
                         .style(this.createImageNodeStyleDescription("/images/PortUsage_In.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition("aql:self.isOutPort()")
+                        .condition(AQLUtils.getSelfServiceCallExpression("isOutPort"))
                         .style(this.createImageNodeStyleDescription("/images/PortUsage_Out.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition("aql:self.isInOutPort()")
+                        .condition(AQLUtils.getSelfServiceCallExpression("isInOutPort"))
                         .style(this.createImageNodeStyleDescription("/images/PortUsage_InOut.svg", borderColor, true))
                         .build());
     }
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache, NodeDescription nodeDescription) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:self.deleteFromModel()");
+                .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
 
         var deleteTool = this.diagramBuilderHelper.newDeleteTool()
                 .name("Delete from Model")
                 .body(changeContext.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
                 .body(callEditService.build());
 
         NodeDescription portBorderNode = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
@@ -151,7 +160,7 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createBindingConnectorAsUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createBindingConnectorAsUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
                 .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
@@ -165,7 +174,7 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var body = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".createInterfaceUsage(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createInterfaceUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
                 .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()))
