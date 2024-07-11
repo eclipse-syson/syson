@@ -61,6 +61,7 @@ import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
+import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
@@ -273,8 +274,31 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     }
 
     @Override
+    public List<NodeToolSection> casePortDefinition(PortDefinition object) {
+        var createSection = this.toolDescriptionService.buildCreateSection(
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
+        return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+    }
+
+    @Override
     public List<NodeToolSection> casePortUsage(PortUsage object) {
         var createSection = this.toolDescriptionService.buildCreateSection(
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                        NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT),
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPartUsage()), SysmlPackage.eINSTANCE.getPartUsage()),
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage()),
                 this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
                         NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN),
