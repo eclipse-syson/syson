@@ -129,6 +129,7 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
                 new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
                 new ReferencingPerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
                 new PerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache));
+        createSection.getNodeTools().addAll(this.createToolsForCompartmentItem(SysmlPackage.eINSTANCE.getDefinition_OwnedItem()));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
