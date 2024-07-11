@@ -72,6 +72,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/509[#509] [general-view] Add missing doc compartment in UseCase, UseCaseDefinition, and AllocationDefinition
 - https://github.com/eclipse-syson/syson/issues/505[#505] [diagrams] Add value expression in Node label
 - https://github.com/eclipse-syson/syson/issues/507[#507] [general-view] Add missing tools to create Items and Parts in Port and PortDefinition
+- https://github.com/eclipse-syson/syson/issues/508[#508] [general-view] Add missing tool to create Requirements in RequirementDefinition
 
 === Improvements
 
