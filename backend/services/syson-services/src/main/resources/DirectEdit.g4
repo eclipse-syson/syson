@@ -43,7 +43,6 @@ multiplicityExpressionMember :
 featureExpressions :
 	(subsettingExpression|redefinitionExpression)? (typingExpression)? (valueExpression)?
 	| (typingExpression)? (subsettingExpression|redefinitionExpression)? (valueExpression)?
-	| (transitionExpression)?
 ;
 
 subsettingExpression :
