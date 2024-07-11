@@ -73,6 +73,7 @@ A reset of the database is needed.
 - https://github.com/eclipse-syson/syson/issues/505[#505] [diagrams] Add value expression in Node label
 - https://github.com/eclipse-syson/syson/issues/507[#507] [general-view] Add missing tools to create Items and Parts in Port and PortDefinition
 - https://github.com/eclipse-syson/syson/issues/508[#508] [general-view] Add missing tool to create Requirements in RequirementDefinition
+- https://github.com/eclipse-syson/syson/issues/506[#506] [diagrams] Fix partial direct edit issues when deleting information
 
 === Improvements
 
