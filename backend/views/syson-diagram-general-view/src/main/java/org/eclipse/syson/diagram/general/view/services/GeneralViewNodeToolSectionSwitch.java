@@ -148,7 +148,17 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
             // StateDefinition has its own "action" creation tools
             createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(null));
         }
+
         createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(null));
+
+        createSection.getNodeTools().add(this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage()));
+        createSection.getNodeTools().add(this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.IN));
+        createSection.getNodeTools().add(this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.INOUT));
+        createSection.getNodeTools().add(this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getItemUsage()), SysmlPackage.eINSTANCE.getItemUsage(),
+                NodeContainmentKind.CHILD_NODE, FeatureDirectionKind.OUT));
+
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 

@@ -369,6 +369,12 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
+    private static Stream<Arguments> actionDefinitionSiblingNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 3))
+                .map(TestNameGenerator::namedArguments);
+    }
+
     private static Stream<Arguments> actionDefinitionListAndFreeFormNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 1),
@@ -1054,6 +1060,18 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
         };
         this.checkDiagram(diagramChecker);
+        this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("actionDefinitionSiblingNodeParameters")
+    public void createActionDefinitionSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getActionDefinition();
+        String parentLabel = "ActionDefinition";
+        this.createNode(parentEClass, parentLabel, childEClass);
+        this.checkDiagram(this.getSiblingNodeGraphicalChecker(childEClass, compartmentCount));
         this.checkEditingContext(this.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass));
     }
 
