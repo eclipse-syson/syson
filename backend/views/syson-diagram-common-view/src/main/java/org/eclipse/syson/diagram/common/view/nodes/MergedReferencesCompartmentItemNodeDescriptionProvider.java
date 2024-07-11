@@ -21,6 +21,8 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
+import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
@@ -73,8 +75,10 @@ public class MergedReferencesCompartmentItemNodeDescriptionProvider extends Abst
     protected InsideLabelDescription createInsideLabelDescription() {
         return this.diagramBuilderHelper.newInsideLabelDescription()
                 .labelExpression(AQLUtils.getSelfServiceCallExpression("getPrefixedCompartmentItemUsageLabel"))
-                .position(InsideLabelPosition.TOP_CENTER)
+                .overflowStrategy(LabelOverflowStrategy.WRAP)
+                .position(InsideLabelPosition.TOP_LEFT)
                 .style(this.createInsideLabelStyle())
+                .textAlign(LabelTextAlign.LEFT)
                 .build();
     }
 
