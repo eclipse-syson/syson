@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ const useHelpStyle = makeStyles((theme) => ({
 export const Help = () => {
   const classes = useHelpStyle();
   return (
-    <Link href="https://github.com/eclipse-syson/syson" rel="noopener noreferrer" target="_blank" color="inherit">
+    <Link href="https://eclipse-syson.github.io/syson" rel="noopener noreferrer" target="_blank" color="inherit">
       <IconButton className={classes.onDarkBackground} color="inherit">
         <HelpIcon />
       </IconButton>
