@@ -21,7 +21,6 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    env:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
 
     steps:
@@ -162,7 +161,6 @@ jobs:
         with:
           context: backend/application/syson-application
           push: true
-          sbom: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
