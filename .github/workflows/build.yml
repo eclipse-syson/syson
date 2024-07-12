@@ -19,6 +19,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
+      attestations: write
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
 
     steps:
@@ -131,7 +133,7 @@ jobs:
           working-directory: integration-tests
           record: false
         env:
-          IMAGE_TAG: ${{ steps.meta.outputs.tags }}
+          IMAGE_TAG: eclipsesyson/syson:${{ steps.meta.outputs.version }}
           GITHUB_TOKEN: ${{ github.token }}
 
       - name: Store Cypress screenshots
@@ -181,7 +183,7 @@ jobs:
       - name: Upload the Docker configuration for AWS Elastic Beanstalk
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         env:
-          IMAGE_TAG: ${{ steps.meta.outputs.tags }}
+          IMAGE_TAG: eclipsesyson/syson:${{ steps.meta.outputs.version }}
         run: |
           sed -e "s|IMAGE_NAME|$IMAGE_TAG|" Dockerrun.aws.json.template > Dockerrun.aws.json
           aws s3 cp Dockerrun.aws.json s3://syson-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
