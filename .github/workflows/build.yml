@@ -168,7 +168,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          subject-name: eclipsesyson/syson:${{ steps.meta.outputs.version }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 
