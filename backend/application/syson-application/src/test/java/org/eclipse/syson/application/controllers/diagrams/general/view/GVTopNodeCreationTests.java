@@ -116,8 +116,8 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getItemDefinition(), 2),
                 // A package doesn't have a compartment: it is handled as a custom node
                 Arguments.of(SysmlPackage.eINSTANCE.getPackage(), 0),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 3),
-                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), 5),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition(), 5),
                 Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getAllocationDefinition(), 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), 3),

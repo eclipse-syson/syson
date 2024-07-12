@@ -34,6 +34,6 @@ public class UsageNestedActionUsageEdgeDescriptionProvider extends AbstractUsage
 
     @Override
     protected List<EClass> getEdgeSources() {
-        return GeneralViewDiagramDescriptionProvider.USAGES.stream().filter(eClass -> eClass != SysmlPackage.eINSTANCE.getActionUsage()).toList();
+        return GeneralViewDiagramDescriptionProvider.USAGES;
     }
 }

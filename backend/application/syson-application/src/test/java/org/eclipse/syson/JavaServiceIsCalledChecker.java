@@ -142,6 +142,9 @@ public class JavaServiceIsCalledChecker {
         Optional.ofNullable(nodeDescription.getIsHiddenByDefaultExpression())
                 .map(expressions::add);
 
+        Optional.ofNullable(nodeDescription.getPreconditionExpression())
+                .map(expressions::add);
+
 
         List<Tool> nodeTools = Optional.ofNullable(nodeDescription.getPalette()).stream()
                 .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, Tool.class))
@@ -178,6 +181,9 @@ public class JavaServiceIsCalledChecker {
                 .map(expressions::add);
 
         Optional.ofNullable(edgeDescription.getTargetNodesExpression())
+                .map(expressions::add);
+
+        Optional.ofNullable(edgeDescription.getPreconditionExpression())
                 .map(expressions::add);
 
         List<Tool> edgeTools = Optional.ofNullable(edgeDescription.getPalette()).stream()

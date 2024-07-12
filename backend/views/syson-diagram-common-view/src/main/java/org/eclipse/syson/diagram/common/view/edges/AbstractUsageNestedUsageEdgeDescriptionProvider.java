@@ -78,6 +78,9 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
                 .style(this.createEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .targetNodesExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
+                .preconditionExpression(AQLConstants.AQL + "not " + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE + ".isAncestorOf("
+                        + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_TARGET + "," + "cache"
+                        + ")")
                 .build();
     }
 
