@@ -34,8 +34,7 @@ public class DefinitionOwnedActionUsageEdgeDescriptionProvider extends AbstractD
 
     @Override
     protected List<EClass> getEdgeSources() {
-        // edge can be created from all definitions but ActionDefinition to ActionUsage
-        return GeneralViewDiagramDescriptionProvider.DEFINITIONS.stream().filter(eClass -> eClass != SysmlPackage.eINSTANCE.getActionDefinition()).toList();
+        return GeneralViewDiagramDescriptionProvider.DEFINITIONS;
     }
 
 }

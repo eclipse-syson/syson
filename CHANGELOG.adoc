@@ -126,6 +126,7 @@ The tool now works correctly on packages, and doesn't render sibling elements wh
 - https://github.com/eclipse-syson/syson/issues/540[#540] [syson] Allow the creation of sub-Packages in the model explorer
 - https://github.com/eclipse-syson/syson/issues/542[#542] [tests] Enable Action's sub-node creation tests for free form items
 These tests were de-activated because of an issue in https://github.com/eclipse-syson/syson/issues/542[Sirius Web].
+- https://github.com/eclipse-syson/syson/issues/538[#538] [general-view] Add actions in PartUsage and PartDefinition
 
 === New features
 

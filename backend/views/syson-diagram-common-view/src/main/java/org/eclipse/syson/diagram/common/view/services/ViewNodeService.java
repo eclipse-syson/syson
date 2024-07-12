@@ -28,6 +28,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
+import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionDefinition;
@@ -35,6 +37,8 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.PartDefinition;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -137,7 +141,7 @@ public class ViewNodeService {
     }
 
     public List<Membership> getAllStandardStartActions(Namespace self) {
-        if (self instanceof ActionUsage || self instanceof ActionDefinition) {
+        if (this.isPart(self) || this.isAction(self)) {
             return self.getOwnedRelationship().stream()
                     .filter(Membership.class::isInstance)
                     .map(Membership.class::cast)
@@ -150,7 +154,7 @@ public class ViewNodeService {
     }
 
     public List<Membership> getAllStandardDoneActions(Namespace self) {
-        if (self instanceof ActionUsage || self instanceof ActionDefinition) {
+        if (this.isPart(self) || this.isAction(self)) {
             return self.getOwnedRelationship().stream()
                     .filter(Membership.class::isInstance)
                     .map(Membership.class::cast)
@@ -192,11 +196,53 @@ public class ViewNodeService {
                 .toList();
     }
 
+    /**
+     * Returns {@code true} if {@code parentNodeElement} is an ancestor of {@code childNodeElement}.
+     * <p>
+     * This method checks if {@code parentNodeElement} contains (directly or indirectly) {@code childNodeElement} in the
+     * provided {@code diagramContext}. It is typically called in edge preconditions to prevent the creation of
+     * containment edges that are not necessary because the node is graphically contained in its parent.
+     * </p>
+     *
+     * @param parentNodeElement
+     *            the element representing the parent node
+     * @param childNodeElement
+     *            the element representing the child node
+     * @param cache
+     *            the rendering cache used in the current rendering process
+     * @return {@code true} if {@code parentNodeElement} is an ancestor of {@code childNodeElement}
+     */
+    public boolean isAncestorOf(org.eclipse.sirius.components.representations.Element parentNodeElement, org.eclipse.sirius.components.representations.Element childNodeElement,
+            DiagramRenderingCache cache) {
+        boolean result = false;
+        if (parentNodeElement.getProps() instanceof NodeElementProps parentNodeProps
+                && childNodeElement.getProps() instanceof NodeElementProps childNodeProps) {
+            List<String> ancestorIds = cache.getAncestors(childNodeProps.getId()).stream()
+                    .map(org.eclipse.sirius.components.representations.Element::getProps)
+                    .filter(NodeElementProps.class::isInstance)
+                    .map(NodeElementProps.class::cast)
+                    .map(NodeElementProps::getId)
+                    .toList();
+            result = ancestorIds.contains(parentNodeProps.getId());
+        } else {
+            this.logger.warn("Cannot check graphical containment between {} and {}", parentNodeElement, childNodeElement);
+        }
+        return result;
+    }
+
     private boolean isReferencingPerformActionUsage(PerformActionUsage pau) {
         // the given PerformActionUsage is a referencing PerformActionUsage if it contains a reference subsetting
         // pointing to an action.
         ReferenceSubsetting referenceSubSetting = pau.getOwnedReferenceSubsetting();
         return referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage perfomedAction;
+    }
+
+    private boolean isPart(Element element) {
+        return element instanceof PartUsage || element instanceof PartDefinition;
+    }
+
+    private boolean isAction(Element element) {
+        return element instanceof ActionUsage || element instanceof ActionDefinition;
     }
 
 }

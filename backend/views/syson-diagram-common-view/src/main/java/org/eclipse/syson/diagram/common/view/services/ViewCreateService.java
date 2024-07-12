@@ -479,7 +479,7 @@ public class ViewCreateService {
 
     public Element createAcceptAction(Element ownerElement) {
         Feature acceptSubActionsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::acceptSubactions");
-        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && acceptSubActionsStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement) && acceptSubActionsStdAction != null) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var acceptAction = SysmlFactory.eINSTANCE.createAcceptActionUsage();
             this.elementInitializerSwitch.doSwitch(acceptAction);
@@ -770,7 +770,7 @@ public class ViewCreateService {
      */
     public Element createJoinAction(Element ownerElement) {
         Feature joinsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::joins");
-        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && joinsStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement) && joinsStdAction != null) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var join = SysmlFactory.eINSTANCE.createJoinNode();
             this.elementInitializerSwitch.doSwitch(join);
@@ -795,7 +795,7 @@ public class ViewCreateService {
      */
     public Element createForkAction(Element ownerElement) {
         Feature forksStdAction = this.utilService.findByName(ownerElement, "Actions::Action::forks");
-        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && forksStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement) && forksStdAction != null) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var fork = SysmlFactory.eINSTANCE.createForkNode();
             this.elementInitializerSwitch.doSwitch(fork);
@@ -820,7 +820,7 @@ public class ViewCreateService {
      */
     public Element createMergeAction(Element ownerElement) {
         Feature mergesStdAction = this.utilService.findByName(ownerElement, "Actions::Action::merges");
-        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && mergesStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement) && mergesStdAction != null) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var merge = SysmlFactory.eINSTANCE.createMergeNode();
             this.elementInitializerSwitch.doSwitch(merge);
@@ -845,7 +845,7 @@ public class ViewCreateService {
      */
     public Element createDecisionAction(Element ownerElement) {
         Feature decisionsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::decisions");
-        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && decisionsStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement) && decisionsStdAction != null) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var decision = SysmlFactory.eINSTANCE.createDecisionNode();
             this.elementInitializerSwitch.doSwitch(decision);
@@ -944,5 +944,13 @@ public class ViewCreateService {
         featureMember.getOwnedRelatedElement().add(perform);
         ownerElement.getOwnedRelationship().add(featureMember);
         return perform;
+    }
+
+    private boolean isPart(Element element) {
+        return element instanceof PartUsage || element instanceof PartDefinition;
+    }
+
+    private boolean isAction(Element element) {
+        return element instanceof ActionUsage || element instanceof ActionDefinition;
     }
 }
