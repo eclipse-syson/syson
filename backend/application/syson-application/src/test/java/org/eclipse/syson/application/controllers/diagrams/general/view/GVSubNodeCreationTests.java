@@ -47,6 +47,10 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramCheck
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
+import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticCheckerFactory;
@@ -356,16 +360,11 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> actionUsageListAndFreeFormNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 4))
-                // Uncomment when https://github.com/eclipse-sirius/sirius-web/issues/3650 is fixed
-                // Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), "actions",
-                // SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
-                // Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), "actions",
-                // SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
-                // Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), "actions",
-                // SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
-                // Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), "actions",
-                // SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0))
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getUsage_NestedAction(), 0))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -378,16 +377,11 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
     private static Stream<Arguments> actionDefinitionListAndFreeFormNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAcceptActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 1),
-                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 4))
-                // Uncomment when https://github.com/eclipse-sirius/sirius-web/issues/3650 is fixed
-                // Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), "actions",
-                // SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
-                // Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), "actions",
-                // SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
-                // Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), "actions",
-                // SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
-                // Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), "actions",
-                // SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0))
+                Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getDecisionNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getForkNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getJoinNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getMergeNode(), ACTIONS_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), 0))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -965,7 +959,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                     .hasNodeDescriptionName(listNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
-            String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(childEClass);
+            String nodeName = this.getActionFlowNodeName(childEClass);
+            String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(nodeName);
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .withCompartmentName("action flow")
@@ -1102,7 +1097,8 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                     .hasNodeDescriptionName(listNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
-            String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(childEClass);
+            String nodeName = this.getActionFlowNodeName(childEClass);
+            String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(nodeName);
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .withCompartmentName("action flow")
@@ -1407,5 +1403,20 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
                 .withParentLabel(parentLabel)
                 .withContainmentReference(containmentReference)
                 .hasType(childEClass);
+    }
+
+    private String getActionFlowNodeName(EClass eClass) {
+        assertThat(eClass).isNotNull();
+        String result = eClass.getName();
+        if (SysmlPackage.eINSTANCE.getDecisionNode().equals(eClass)) {
+            result = DecisionActionNodeDescriptionProvider.DECISION_ACTION_NAME;
+        } else if (SysmlPackage.eINSTANCE.getForkNode().equals(eClass)) {
+            result = ForkActionNodeDescriptionProvider.FORK_ACTION_NAME;
+        } else if (SysmlPackage.eINSTANCE.getJoinNode().equals(eClass)) {
+            result = JoinActionNodeDescriptionProvider.JOIN_ACTION_NAME;
+        } else if (SysmlPackage.eINSTANCE.getMergeNode().equals(eClass)) {
+            result = MergeActionNodeDescriptionProvider.MERGE_ACTION_NAME;
+        }
+        return result;
     }
 }
