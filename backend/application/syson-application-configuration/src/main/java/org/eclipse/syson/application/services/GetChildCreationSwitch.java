@@ -183,8 +183,10 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
                 .filter(EClass.class::isInstance)
                 .map(EClass.class::cast)
                 .filter(eClass -> {
-                    boolean authorizedClasses = SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(eClass) || SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass)
-                            || SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(eClass);
+                    boolean authorizedClasses = SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(eClass)
+                            || SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass)
+                            || SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(eClass)
+                            || SysmlPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass);
                     return !eClass.isAbstract() && !eClass.isInterface() && authorizedClasses;
                 })
                 .forEach(eClass -> {
