@@ -111,6 +111,8 @@ The tool now works correctly on packages, and doesn't render sibling elements wh
 - https://github.com/eclipse-syson/syson/issues/519[#519] [diagrams] Add tools for creating _Items_ on _ActionDefinition_ in GeneralView and ActionFlowView.
 - https://github.com/eclipse-syson/syson/issues/504[#504] [syson] Add private and protected visibility decorators on all elements
 - https://github.com/eclipse-syson/syson/issues/540[#540] [syson] Allow the creation of sub-Packages in the model explorer
+- https://github.com/eclipse-syson/syson/issues/542[#542] [tests] Enable Action's sub-node creation tests for free form items
+These tests were de-activated because of an issue in https://github.com/eclipse-syson/syson/issues/542[Sirius Web].
 
 === New features
 
