@@ -17,7 +17,7 @@ Before you proceed with the installation, please ensure you have the following x
 ====
 
 {product} is distributed as a docker container.
-To install {product}, just download the https://github.com/eclipse-syson/syson/blob/{syson_tag}/docker-compose.yml[docker-compose] file and run the following docker command in the same folder as the one where is the _docker-compose.yml_ file:
+To install {product}, just download the https://github.com/eclipse-syson/syson/blob/{syson-tag}/docker-compose.yml[docker-compose] file and run the following docker command in the same folder as the one where is the _docker-compose.yml_ file:
 [source, bash]
 ----
 docker compose up
