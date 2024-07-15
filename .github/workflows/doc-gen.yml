@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "doc/**"
+      - "docker-compose.yml"
     branches:
       - "main"
     tags:
