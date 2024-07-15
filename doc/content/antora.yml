@@ -30,7 +30,7 @@ asciidoc:
     representations-view: "Representations"
     source-code-url: "https://github.com/eclipse-syson/syson"
     stv: "State Transition view"
-    syson-tag: "v2024.5.4"
+    syson-tag: "v2024.5.5"
     sysml: "SysML"
     sysmlv1: "{sysml} v1"
     sysmlv2: "{sysml} v2"
