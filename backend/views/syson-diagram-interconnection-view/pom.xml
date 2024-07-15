@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-diagram-interconnection-view</artifactId>
-	<version>2024.5.3</version>
+	<version>2024.5.4</version>
 	<name>syson-diagram-interconnection-view</name>
 	<description>SysON Sirius Web diagram description of the SysMLv2 Interconnection View</description>
 
@@ -93,17 +93,17 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-services</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-common-view</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
@@ -119,7 +119,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-tests</artifactId>
-			<version>2024.5.3</version>
+			<version>2024.5.4</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
