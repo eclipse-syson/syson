@@ -1,6 +1,6 @@
 = Changelog
 
-== v2024.7.0 (work in progress)
+== v2024.7.0
 
 === Breaking changes
 
