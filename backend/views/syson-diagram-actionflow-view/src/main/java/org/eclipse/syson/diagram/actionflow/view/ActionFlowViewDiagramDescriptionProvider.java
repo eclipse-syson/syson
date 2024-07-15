@@ -31,12 +31,14 @@ import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.actionflow.view.edges.AllocateEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.actionflow.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.DependencyEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.FeatureTypingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.RedefinitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.SubsettingEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.edges.SuccessionEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.actionflow.view.edges.UsageNestedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.ActionFlowViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.DefinitionNodeDescriptionProvider;
@@ -147,6 +149,9 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
         diagramElementDescriptionProviders.add(new MergeActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new DecisionActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ReferencingPerformActionUsageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+
+        diagramElementDescriptionProviders.add(new UsageNestedActionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new DefinitionOwnedActionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         DEFINITIONS.forEach(definition -> {
             diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider));
