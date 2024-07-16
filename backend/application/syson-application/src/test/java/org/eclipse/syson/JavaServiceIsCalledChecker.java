@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
@@ -136,6 +137,10 @@ public class JavaServiceIsCalledChecker {
             .map(expressions::add);
 
         Optional.ofNullable(nodeDescription.getInsideLabel()).map(InsideLabelDescription::getLabelExpression)
+                .map(expressions::add);
+
+        Optional.ofNullable(nodeDescription.getInsideLabel()).map(InsideLabelDescription::getStyle)
+                .map(InsideLabelStyle::getShowIconExpression)
                 .map(expressions::add);
 
         Optional.ofNullable(nodeDescription.getOutsideLabels())

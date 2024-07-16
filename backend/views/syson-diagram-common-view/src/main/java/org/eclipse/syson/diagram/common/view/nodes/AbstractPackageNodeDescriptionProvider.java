@@ -43,6 +43,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -144,7 +145,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .borderSize(0)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression("aql:true")
+                .showIconExpression(AQLUtils.getSelfServiceCallExpression("showIcon"))
                 .withHeader(false)
                 .build();
     }

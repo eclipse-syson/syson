@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.services;
 
+import java.util.Objects;
 import java.util.function.BinaryOperator;
 
 import org.antlr.v4.runtime.CharStreams;
@@ -60,9 +61,23 @@ public class ViewLabelService extends LabelService {
 
     private final UtilService utilService;
 
-    public ViewLabelService(IFeedbackMessageService feedbackMessageService) {
+    private final ShowDiagramsIconsService showDiagramsIconsService;
+
+    public ViewLabelService(IFeedbackMessageService feedbackMessageService, ShowDiagramsIconsService showDiagramsIconsService) {
         super(feedbackMessageService);
         this.utilService = new UtilService();
+        this.showDiagramsIconsService = Objects.requireNonNull(showDiagramsIconsService);
+    }
+
+    /**
+     * Get the value of the showIcon property of the ShowDiagramsIconsService.
+     *
+     * @param object
+     *            The current object.
+     * @return the value of the showIcon property of the ShowDiagramsIconsService.
+     */
+    public boolean showIcon(Object object) {
+        return this.showDiagramsIconsService.getShowIcons();
     }
 
     /**

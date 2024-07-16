@@ -88,7 +88,7 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .borderSize(0)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression("aql:true")
+                .showIconExpression(AQLUtils.getSelfServiceCallExpression("showIcon"))
                 .withHeader(false)
                 .build();
     }
@@ -98,7 +98,7 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
     }
 
     public EReference getEReference() {
-        return eReference;
+        return this.eReference;
     }
 
     private NodeStyleDescription createCompartmentItemNodeStyle() {
@@ -133,6 +133,6 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
     }
 
     public IDescriptionNameGenerator getDescriptionNameGenerator() {
-        return descriptionNameGenerator;
+        return this.descriptionNameGenerator;
     }
 }

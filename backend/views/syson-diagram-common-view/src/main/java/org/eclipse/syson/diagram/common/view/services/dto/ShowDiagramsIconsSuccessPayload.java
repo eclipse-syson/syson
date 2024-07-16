@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export { ShowHideDiagramsIcons } from './extensions/ShowHideDiagramsIcons';
-export { SysMLPackageNode } from './nodes/package/SysMLPackageNode';
-export { SysMLPackageNodeConverter } from './nodes/package/SysMLPackageNodeConverter';
-export { sysMLPackageNodeStyleDocumentTransform } from './nodes/package/SysMLPackageNodeDocumentTransform';
-export { SysMLPackageNodeLayoutHandler } from './nodes/package/SysMLPackageNodeLayoutHandler';
+package org.eclipse.syson.diagram.common.view.services.dto;
+
+import java.util.Objects;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IPayload;
+
+/**
+ * The payload of the show diagrams icons mutation.
+ *
+ * @author arichard
+ */
+public record ShowDiagramsIconsSuccessPayload(UUID id, boolean show) implements IPayload {
+
+    public ShowDiagramsIconsSuccessPayload {
+        Objects.requireNonNull(id);
+    }
+}
