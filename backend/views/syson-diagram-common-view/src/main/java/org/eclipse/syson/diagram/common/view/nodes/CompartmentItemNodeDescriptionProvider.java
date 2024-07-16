@@ -40,9 +40,9 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    private final EClass eClass;
+    protected final EClass eClass;
 
-    private final EReference eReference;
+    protected final EReference eReference;
 
     private final IDescriptionNameGenerator nameGenerator;
 
