@@ -35,6 +35,7 @@ import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptio
 import org.eclipse.syson.diagram.common.view.nodes.ExhibitStatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ExhibitStatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergedReferencesCompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.statetransition.view.edges.TransitionEdgeDescriptionProvider;
@@ -43,7 +44,6 @@ import org.eclipse.syson.diagram.statetransition.view.nodes.DefinitionNodeDescri
 import org.eclipse.syson.diagram.statetransition.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.PackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionActionsCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;

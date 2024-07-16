@@ -256,6 +256,12 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         // Remove New Action tool, we use a custom New Action tool from ActionFlowCompartmentNodeToolProvider
         createSection.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New Action"));
         createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getPartDefinition(), this.descriptionNameGenerator).create(null));
+        // Remove New State tool, we use custom New State tools
+        createSection.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New State"));
+        createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache));
+        createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
+        createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
+        createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
@@ -266,6 +272,12 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         // Remove New Action tool, we use a custom New Action tool from ActionFlowCompartmentNodeToolProvider
         createSection.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New Action"));
         createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getPartUsage(), this.descriptionNameGenerator).create(null));
+        // Remove New State tool, we use custom New State tools
+        createSection.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New State"));
+        createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache));
+        createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
+        createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
+        createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 

@@ -806,10 +806,7 @@ public class ViewToolService extends ToolService {
     public StateUsage createChildState(Element parentState, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes, boolean isParallel, boolean isExhibit) {
         StateUsage childState = this.utilService.createChildState(parentState, isParallel, isExhibit);
-
-        if (diagramContext.getDiagram().getLabel().equals("General View")) {
-            this.createView(childState, editingContext, diagramContext, diagramContext.getDiagram(), convertedNodes);
-        } else if (selectedNode.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)) {
+        if (selectedNode.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)) {
             this.createView(childState, editingContext, diagramContext, selectedNode, convertedNodes);
         } else {
             selectedNode.getChildNodes().stream().filter(child -> child.getInsideLabel().getText().equals(STATE_TRANSITION_COMPARTMENT_NAME)).findFirst()
