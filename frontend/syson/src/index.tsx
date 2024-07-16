@@ -11,29 +11,30 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
+import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
+import { diagramPanelActionExtensionPoint, NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   ApolloClientOptionsConfigurer,
+  apolloClientOptionsConfigurersExtensionPoint,
   DiagramRepresentationConfiguration,
+  navigationBarIconExtensionPoint,
   NavigationBarIconProps,
+  navigationBarMenuHelpURLExtensionPoint,
   NodeTypeRegistry,
   SiriusWebApplication,
-  apolloClientOptionsConfigurersExtensionPoint,
-  navigationBarIconExtensionPoint,
-  navigationBarMenuHelpURLExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
-import ReactDOM from 'react-dom';
-import { SysONIcon } from './core/SysONIcon';
-import { httpOrigin, wsOrigin } from './core/URL';
-import { sysonTheme } from './theme/sysonTheme';
-
-import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
-import { NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
 import {
+  ShowHideDiagramsIcons,
   SysMLPackageNode,
   SysMLPackageNodeConverter,
   SysMLPackageNodeLayoutHandler,
   sysMLPackageNodeStyleDocumentTransform,
 } from '@eclipse-syson/syson-components';
+import ReactDOM from 'react-dom';
+import { SysONIcon } from './core/SysONIcon';
+import { httpOrigin, wsOrigin } from './core/URL';
+import { sysonTheme } from './theme/sysonTheme';
+
 import './fonts.css';
 import './reset.css';
 import './variables.css';
@@ -56,6 +57,7 @@ extensionRegistry.putData(navigationBarMenuHelpURLExtensionPoint, {
   identifier: 'syson_navigationBarMenu#helpURL',
   data: 'https://doc.mbse-syson.org',
 });
+
 const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
   const { documentTransform } = currentOptions;
 
@@ -67,10 +69,14 @@ const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOpt
     documentTransform: newDocumentTransform,
   };
 };
-
 extensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
   identifier: `siriusWeb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
   data: [apolloClientOptionsConfigurer],
+});
+
+extensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
+  identifier: `syson_${diagramPanelActionExtensionPoint.identifier}_showHideDiagramIcons`,
+  Component: ShowHideDiagramsIcons,
 });
 
 const nodeTypeRegistry: NodeTypeRegistry = {

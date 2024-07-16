@@ -54,6 +54,8 @@ The changes are:
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/553[#553] [diagrams] Add "Show/Hide Icons in Diagrams" action in Diagram Panel, allowing to show/hide icons in diagrams (icons are not part of the SysMLv2 specification).
+
 
 == v2024.7.0
 

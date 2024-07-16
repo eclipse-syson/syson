@@ -1,0 +1,119 @@
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+
+import { gql, useMutation } from '@apollo/client';
+import {
+  DiagramContext,
+  DiagramContextValue,
+  DiagramPanelActionProps,
+} from '@eclipse-sirius/sirius-components-diagrams';
+import Checkbox from '@material-ui/core/Checkbox';
+import Tooltip from '@material-ui/core/Tooltip';
+import { useContext, useEffect, useState } from 'react';
+import {
+  GQLErrorPayload,
+  GQLSetShowDiagramsIconsPayload,
+  GQLShowDiagramsIconsMutationData,
+  GQLShowDiagramsIconsMutationInput,
+  GQLShowDiagramsIconsMutationVariables,
+  ShowHideDiagramsIconsState,
+} from './ShowHideDiagramsIcons.types';
+import { useShowDiagramsIcons } from './useShowDiagramsIcons';
+
+const setShowDiagramsIconsMutation = gql`
+  mutation showDiagramsIcons($input: ShowDiagramsIconsInput!) {
+    showDiagramsIcons(input: $input) {
+      __typename
+      ... on ShowDiagramsIconsSuccessPayload {
+        show
+      }
+      ... on ErrorPayload {
+        message
+      }
+    }
+  }
+`;
+
+const isErrorPayload = (payload: GQLSetShowDiagramsIconsPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
+
+const showTooltip: string = 'Hide Icons in Diagrams';
+const hideTooltip: string = 'Show Icons in Diagrams';
+
+export const ShowHideDiagramsIcons = ({}: DiagramPanelActionProps) => {
+  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+
+  const [state, setState] = useState<ShowHideDiagramsIconsState>({
+    checked: null,
+    tooltip: 'Show/Hide Icons in Diagrams',
+    message: null,
+  });
+
+  const handleChange = (event) => {
+    const input: GQLShowDiagramsIconsMutationInput = {
+      id: crypto.randomUUID(),
+      editingContextId,
+      representationId: diagramId,
+      show: event.target.checked,
+    };
+    showDiagramsIcons({ variables: { input } });
+    setState((prevState) => {
+      const checked: boolean = event.target.checked;
+      return { ...prevState, checked, tooltip: checked ? showTooltip : hideTooltip };
+    });
+  };
+
+  const { data: queryData, loading: queryLoading } = useShowDiagramsIcons();
+  if (!queryLoading && queryData && state.checked === null) {
+    const showDiagramsIcons: boolean = queryData?.viewer.showDiagramsIconsValue;
+    if (showDiagramsIcons !== state.checked) {
+      setState((prevState) => {
+        return { ...prevState, checked: showDiagramsIcons, tooltip: showDiagramsIcons ? showTooltip : hideTooltip };
+      });
+    }
+  }
+
+  const [showDiagramsIcons, { loading, data, error }] = useMutation<
+    GQLShowDiagramsIconsMutationData,
+    GQLShowDiagramsIconsMutationVariables
+  >(setShowDiagramsIconsMutation);
+
+  useEffect(() => {
+    if (!loading) {
+      if (error) {
+        setState((prevState) => {
+          return { ...prevState, message: 'An unexpected error has occurred, please refresh the page' };
+        });
+      }
+      if (data) {
+        const { showDiagramsIcons } = data;
+        if (showDiagramsIcons.show !== null && showDiagramsIcons.show !== undefined) {
+          setState((prevState) => {
+            return { ...prevState, checked: showDiagramsIcons.show };
+          });
+        }
+        if (isErrorPayload(showDiagramsIcons)) {
+          setState((prevState) => {
+            return { ...prevState, message: showDiagramsIcons.message };
+          });
+        }
+      }
+    }
+  }, [loading, error, data]);
+
+  return (
+    <Tooltip title={state.tooltip}>
+      <Checkbox checked={state.checked !== null ? state.checked : true} onChange={handleChange} />
+    </Tooltip>
+  );
+};

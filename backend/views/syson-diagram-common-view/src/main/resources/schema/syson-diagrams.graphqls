@@ -1,0 +1,21 @@
+extend type Viewer {
+  showDiagramsIconsValue: Boolean!
+}
+
+extend type Mutation {
+  showDiagramsIcons(input: ShowDiagramsIconsInput!): ShowDiagramsIconsPayload!
+}
+
+input ShowDiagramsIconsInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  show: Boolean!
+}
+
+union ShowDiagramsIconsPayload = ErrorPayload | ShowDiagramsIconsSuccessPayload
+
+type ShowDiagramsIconsSuccessPayload {
+  id: ID!
+  show: Boolean!
+}

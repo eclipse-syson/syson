@@ -87,7 +87,7 @@ public class MergedReferencesCompartmentItemNodeDescriptionProvider extends Abst
                 .borderSize(0)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression("aql:true")
+                .showIconExpression(AQLUtils.getSelfServiceCallExpression("showIcon"))
                 .withHeader(false)
                 .build();
     }

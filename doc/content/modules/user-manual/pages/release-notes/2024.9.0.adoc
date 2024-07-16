@@ -56,3 +56,7 @@ The changes are:
 - Add action node in Interconnection View diagram
 
 == New features
+
+- Add "Show/Hide Icons in Diagrams" action in Diagram Panel, allowing to show/hide icons in the  diagrams (icons are not part of the SysMLv2 specification).
+
+image::release-notes-show-hide-icons-in-diagram.png[Show/Hide Icons in Diagram]

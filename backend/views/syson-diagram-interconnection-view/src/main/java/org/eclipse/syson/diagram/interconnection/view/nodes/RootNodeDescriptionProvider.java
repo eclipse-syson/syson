@@ -38,6 +38,7 @@ import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -109,7 +110,7 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
                 .borderSize(0)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIconExpression("aql:true")
+                .showIconExpression(AQLUtils.getSelfServiceCallExpression("showIcon"))
                 .withHeader(true)
                 .build();
     }
