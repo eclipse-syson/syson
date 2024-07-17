@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.statetransition.view.services;
 
+import java.util.List;
+
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -21,6 +24,7 @@ import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionViewEmptyDiagramNodeDescriptionProvider;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
  * Creation-related Java services used by the {@link StateTransitionViewDiagramDescriptionProvider}.
@@ -48,5 +52,15 @@ public class StateTransitionViewCreateService extends ViewCreateService {
      */
     public Element getDiagramEmptyCandidate(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Diagram previousDiagram) {
         return this.getDiagramEmptyCandidate(element, editingContext, diagramContext, previousDiagram, StateTransitionViewEmptyDiagramNodeDescriptionProvider.NAME);
+    }
+
+    public boolean canCreateDiagram(Element element) {
+        List<EClass> acceptedRootTypes = List.of(
+                SysmlPackage.eINSTANCE.getPackage(),
+                SysmlPackage.eINSTANCE.getPartUsage(),
+                SysmlPackage.eINSTANCE.getPartDefinition());
+        // Use strict equality here and not EClass#isSuperTypeOf, we want to precisely select which element
+        // types can be used as root.
+        return acceptedRootTypes.contains(element.eClass());
     }
 }
