@@ -101,6 +101,8 @@ public class JavaServiceIsCalledChecker {
     private Collection<String> collectAQLExpressionsInDiagramDescription(DiagramDescription diagramDescription) {
         Set<String> expressions = new HashSet<>();
 
+        expressions.add(diagramDescription.getPreconditionExpression());
+
         List<Tool> diagramTools = Optional.ofNullable(diagramDescription.getPalette()).stream()
                 .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, Tool.class))
                 .toList();
