@@ -58,7 +58,9 @@ public class StateTransitionViewCreateService extends ViewCreateService {
         List<EClass> acceptedRootTypes = List.of(
                 SysmlPackage.eINSTANCE.getPackage(),
                 SysmlPackage.eINSTANCE.getPartUsage(),
-                SysmlPackage.eINSTANCE.getPartDefinition());
+                SysmlPackage.eINSTANCE.getPartDefinition(), 
+                SysmlPackage.eINSTANCE.getStateUsage(), 
+                SysmlPackage.eINSTANCE.getStateDefinition());
         // Use strict equality here and not EClass#isSuperTypeOf, we want to precisely select which element
         // types can be used as root.
         return acceptedRootTypes.contains(element.eClass());

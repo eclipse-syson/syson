@@ -19,6 +19,7 @@
 - https://github.com/eclipse-syson/syson/issues/554[#554] [general-view] Add states in PartUsage and PartDefinition
 - https://github.com/eclipse-syson/syson/issues/393[#393] [general-view] Add exhibit states on General View diagram
 - https://github.com/eclipse-syson/syson/issues/557[#557] [state-transition-view] Allow the creation of a StateTransitionView diagram on a PartUsage/PartDefinition
+- https://github.com/eclipse-syson/syson/issues/558[#558] [state-transition-view] Allow the creation of a StateTransitionView diagram on a StateUsage/StateDefinition
 
 === New features
 
