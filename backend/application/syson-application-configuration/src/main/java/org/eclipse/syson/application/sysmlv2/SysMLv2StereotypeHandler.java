@@ -50,8 +50,8 @@ public class SysMLv2StereotypeHandler implements IStereotypeHandler {
     public Optional<DocumentDTO> handle(IEditingContext editingContext, String stereotypeId, String name) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             return switch (stereotypeId) {
-                case SysMLv2StereotypeProvider.EMPTY_SYSML_ID -> createEmptySysMLV2Document(emfEditingContext, name);
-                case SysMLv2StereotypeProvider.EMPTY_ID -> createEmptyDocument(emfEditingContext, name);
+                case SysMLv2StereotypeProvider.EMPTY_SYSML_ID -> this.createEmptySysMLV2Document(emfEditingContext, name);
+                case SysMLv2StereotypeProvider.EMPTY_ID -> this.createEmptyDocument(emfEditingContext, name);
                 default -> Optional.empty();
             };
         }

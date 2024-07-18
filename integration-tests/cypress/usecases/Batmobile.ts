@@ -29,7 +29,7 @@ export class Batmobile {
   }
 
   public getProjectLabel(): string {
-    return 'Batmobile';
+    return 'Batmobile.sysml';
   }
 
   public getRootNamespaceLabel(): string {

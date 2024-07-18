@@ -77,7 +77,7 @@ public class SysMLv2EditingContextActionHandler implements IEditingContextAction
     }
 
     private void createEmptySysMLResource(ResourceSet resourceSet) {
-        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2Resource(UUID.randomUUID(), SysMLv2EditingContextActionProvider.SYSMLV2_DOCUMENT_NAME);
+        var resource = this.defaultSysMLv2ResourceProvider.getDefaultSysMLv2Resource(UUID.randomUUID(), SysMLv2EditingContextActionProvider.SYSMLV2_DOCUMENT_NAME + ".sysml");
         resourceSet.getResources().add(resource);
     }
 }

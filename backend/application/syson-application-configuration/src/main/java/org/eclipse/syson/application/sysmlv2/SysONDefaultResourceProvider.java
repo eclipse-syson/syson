@@ -39,7 +39,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProvider {
 
-    private static final String BATMOBILE_DOCUMENT_NAME = "Batmobile";
+    private static final String BATMOBILE_DOCUMENT_NAME = "Batmobile.sysml";
 
     private final List<IMigrationParticipant> migrationParticipants;
 
@@ -65,7 +65,7 @@ public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProv
 
     @Override
     public Resource getDefaultSysMLv2Resource(UUID resourcePath, String name) {
-        var resource = getEmptyResource(resourcePath, name);
+        var resource = this.getEmptyResource(resourcePath, name);
 
         var rootNamespace = SysmlFactory.eINSTANCE.createNamespace();
         var rootMembership = SysmlFactory.eINSTANCE.createOwningMembership();
@@ -81,7 +81,7 @@ public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProv
 
     @Override
     public Resource getBatmobileResource() {
-        var resource = getEmptyResource(UUID.randomUUID(), BATMOBILE_DOCUMENT_NAME);
+        var resource = this.getEmptyResource(UUID.randomUUID(), BATMOBILE_DOCUMENT_NAME);
 
         try (var inputStream = new ClassPathResource("templates/Batmobile.json").getInputStream()) {
             resource.load(inputStream, null);
