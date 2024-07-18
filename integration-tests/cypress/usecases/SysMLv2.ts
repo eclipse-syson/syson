@@ -29,7 +29,7 @@ export class SysMLv2 {
   }
 
   public getProjectLabel(): string {
-    return 'SysMLv2';
+    return 'SysMLv2.sysml';
   }
 
   public getRootNamespaceLabel(): string {

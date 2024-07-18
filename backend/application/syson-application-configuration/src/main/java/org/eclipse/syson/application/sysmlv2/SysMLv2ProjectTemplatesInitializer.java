@@ -42,7 +42,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateInitializer {
 
-    private static final String SYSMLV2_DOCUMENT_NAME = "SysMLv2";
+    private static final String SYSMLV2_DOCUMENT_NAME = "SysMLv2.sysml";
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
