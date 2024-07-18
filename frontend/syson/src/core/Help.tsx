@@ -26,7 +26,7 @@ const useHelpStyle = makeStyles((theme) => ({
 export const Help = () => {
   const classes = useHelpStyle();
   return (
-    <Link href="https://eclipse-syson.github.io/syson" rel="noopener noreferrer" target="_blank" color="inherit">
+    <Link href="https://doc.mbse-syson.org" rel="noopener noreferrer" target="_blank" color="inherit">
       <IconButton className={classes.onDarkBackground} color="inherit">
         <HelpIcon />
       </IconButton>
