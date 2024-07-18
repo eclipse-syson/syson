@@ -544,11 +544,11 @@ public class UtilService {
      * @return the created {@link StateUsage}.
      */
     public StateUsage createChildState(Element parentState, boolean isParallel, boolean isExhibit) {
-        var owningMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
         StateUsage childState = SysmlFactory.eINSTANCE.createStateUsage();
         childState.setIsParallel(isParallel);
-        owningMembership.getOwnedRelatedElement().add(childState);
-        parentState.getOwnedRelationship().add(owningMembership);
+        featureMembership.getOwnedRelatedElement().add(childState);
+        parentState.getOwnedRelationship().add(featureMembership);
         this.elementInitializerSwitch.doSwitch(childState);
         if (isExhibit) {
             this.setUnsetAsExhibit(childState);
@@ -587,6 +587,7 @@ public class UtilService {
                 ExhibitStateUsage newExhibitStateUsage = SysmlFactory.eINSTANCE.createExhibitStateUsage();
                 this.elementInitializerSwitch.doSwitch(newExhibitStateUsage);
                 var refSub = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+                this.elementInitializerSwitch.doSwitch(refSub);
                 refSub.setReferencedFeature(stateUsage);
                 newExhibitStateUsage.getOwnedRelationship().add(refSub);
                 FeatureMembership fm = SysmlFactory.eINSTANCE.createFeatureMembership();
