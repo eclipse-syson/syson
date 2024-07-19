@@ -142,19 +142,16 @@ public class ExhibitStateUsageImpl extends StateUsageImpl implements ExhibitStat
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.EXHIBIT_STATE_USAGE__EVENT_OCCURRENCE:
-                if (resolve) {
+                if (resolve)
                     return this.getEventOccurrence();
-                }
                 return this.basicGetEventOccurrence();
             case SysmlPackage.EXHIBIT_STATE_USAGE__PERFORMED_ACTION:
-                if (resolve) {
+                if (resolve)
                     return this.getPerformedAction();
-                }
                 return this.basicGetPerformedAction();
             case SysmlPackage.EXHIBIT_STATE_USAGE__EXHIBITED_STATE:
-                if (resolve) {
+                if (resolve)
                     return this.getExhibitedState();
-                }
                 return this.basicGetExhibitedState();
         }
         return super.eGet(featureID, resolve, coreType);

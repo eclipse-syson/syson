@@ -45,6 +45,8 @@ import org.eclipse.syson.sysml.Usage;
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.impl.MetadataUsageImpl#getAnnotatedElement <em>Annotated Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.MetadataUsageImpl#getAnnotation <em>Annotation</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.impl.MetadataUsageImpl#getOwnedAnnotatingRelationship <em>Owned Annotating
+ * Relationship</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.MetadataUsageImpl#getMetaclass <em>Metaclass</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.MetadataUsageImpl#getMetadataDefinition <em>Metadata Definition</em>}</li>
  * </ul>
@@ -103,6 +105,17 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
             this.annotation = new EObjectWithInverseResolvingEList<>(Annotation.class, this, SysmlPackage.METADATA_USAGE__ANNOTATION, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT);
         }
         return this.annotation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public EList<Annotation> getOwnedAnnotatingRelationship() {
+        List<Usage> data = new ArrayList<>();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_OwnedAnnotatingRelationship(), data.size(), data.toArray());
     }
 
     /**
@@ -239,15 +252,15 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
                 return this.getAnnotatedElement();
             case SysmlPackage.METADATA_USAGE__ANNOTATION:
                 return this.getAnnotation();
+            case SysmlPackage.METADATA_USAGE__OWNED_ANNOTATING_RELATIONSHIP:
+                return this.getOwnedAnnotatingRelationship();
             case SysmlPackage.METADATA_USAGE__METACLASS:
-                if (resolve) {
+                if (resolve)
                     return this.getMetaclass();
-                }
                 return this.basicGetMetaclass();
             case SysmlPackage.METADATA_USAGE__METADATA_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getMetadataDefinition();
-                }
                 return this.basicGetMetadataDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -297,6 +310,8 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
                 return !this.getAnnotatedElement().isEmpty();
             case SysmlPackage.METADATA_USAGE__ANNOTATION:
                 return this.annotation != null && !this.annotation.isEmpty();
+            case SysmlPackage.METADATA_USAGE__OWNED_ANNOTATING_RELATIONSHIP:
+                return !this.getOwnedAnnotatingRelationship().isEmpty();
             case SysmlPackage.METADATA_USAGE__METACLASS:
                 return this.basicGetMetaclass() != null;
             case SysmlPackage.METADATA_USAGE__METADATA_DEFINITION:
@@ -318,6 +333,8 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
                     return SysmlPackage.ANNOTATING_ELEMENT__ANNOTATED_ELEMENT;
                 case SysmlPackage.METADATA_USAGE__ANNOTATION:
                     return SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION;
+                case SysmlPackage.METADATA_USAGE__OWNED_ANNOTATING_RELATIONSHIP:
+                    return SysmlPackage.ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP;
                 default:
                     return -1;
             }
@@ -346,6 +363,8 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
                     return SysmlPackage.METADATA_USAGE__ANNOTATED_ELEMENT;
                 case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
                     return SysmlPackage.METADATA_USAGE__ANNOTATION;
+                case SysmlPackage.ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP:
+                    return SysmlPackage.METADATA_USAGE__OWNED_ANNOTATING_RELATIONSHIP;
                 default:
                     return -1;
             }

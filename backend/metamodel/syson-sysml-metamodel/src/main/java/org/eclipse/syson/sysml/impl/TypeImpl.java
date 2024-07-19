@@ -503,7 +503,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
      * body: ownedSpecialization -> closure(general.ownedSpecialization).general -> including(self) <br/>
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public EList<Type> allSupertypes() {
@@ -550,6 +550,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
         }
         return superTypes;
     }
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -557,6 +558,18 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public FeatureDirectionKind directionOf(Feature feature) {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public FeatureDirectionKind directionOfExcluding(Feature feature, EList<Type> excluded) {
         // TODO: implement this method
         // Ensure that you remove @generated or mark it @generated NOT
         return null;
@@ -575,7 +588,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
     /**
      * @generated NOT
      */
-    private EList<Namespace> toNamespaceExclusion(EList<Type> excluded){
+    private EList<Namespace> toNamespaceExclusion(EList<Type> excluded) {
         return excluded.stream().filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .collect(toCollection(BasicEList<Namespace>::new));
@@ -589,15 +602,15 @@ public class TypeImpl extends NamespaceImpl implements Type {
         List<Element> memberships = new ArrayList<>();
         NameConflictingFilter filter = new NameConflictingFilter();
         this.getOwnedMembership().stream()
-            .filter(filter)
-            .forEach(memberships::add);
+                .filter(filter)
+                .forEach(memberships::add);
         this.importedMemberships(excluded).stream()
-            .filter(filter)
-            .forEach(memberships::add);
+                .filter(filter)
+                .forEach(memberships::add);
         this.inheritedMemberships(excluded.stream()
-                    .filter(Type.class::isInstance)
-                    .map(Type.class::cast)
-                    .collect(toCollection(UniqueEList::new)))
+                .filter(Type.class::isInstance)
+                .map(Type.class::cast)
+                .collect(toCollection(UniqueEList::new)))
                 .stream()
                 .filter(filter)
                 .forEach(memberships::add);
@@ -812,6 +825,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 return this.allSupertypes();
             case SysmlPackage.TYPE___DIRECTION_OF__FEATURE:
                 return this.directionOf((Feature) arguments.get(0));
+            case SysmlPackage.TYPE___DIRECTION_OF_EXCLUDING__FEATURE_ELIST:
+                return this.directionOfExcluding((Feature) arguments.get(0), (EList<Type>) arguments.get(1));
             case SysmlPackage.TYPE___INHERITED_MEMBERSHIPS__ELIST:
                 return this.inheritedMemberships((EList<Type>) arguments.get(0));
             case SysmlPackage.TYPE___SPECIALIZES__TYPE:

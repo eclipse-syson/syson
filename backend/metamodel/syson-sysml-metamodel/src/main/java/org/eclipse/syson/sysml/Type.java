@@ -392,6 +392,14 @@ public interface Type extends Namespace {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @model ordered="false" featureRequired="true" featureOrdered="false" excludedMany="true" excludedOrdered="false"
+     * @generated
+     */
+    FeatureDirectionKind directionOfExcluding(Feature feature, EList<Type> excluded);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @model excludedMany="true" excludedOrdered="false"
      * @generated
      */

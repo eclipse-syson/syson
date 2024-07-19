@@ -127,14 +127,12 @@ public class ConjugatedPortDefinitionImpl extends PortDefinitionImpl implements 
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__ORIGINAL_PORT_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getOriginalPortDefinition();
-                }
                 return this.basicGetOriginalPortDefinition();
             case SysmlPackage.CONJUGATED_PORT_DEFINITION__OWNED_PORT_CONJUGATOR:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedPortConjugator();
-                }
                 return this.basicGetOwnedPortConjugator();
         }
         return super.eGet(featureID, resolve, coreType);

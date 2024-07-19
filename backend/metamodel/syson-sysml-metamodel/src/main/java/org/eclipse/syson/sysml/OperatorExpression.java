@@ -12,8 +12,6 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml;
 
-import org.eclipse.emf.common.util.EList;
-
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Operator Expression</b></em>'. <!-- end-user-doc
  * -->
@@ -31,17 +29,6 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface OperatorExpression extends InvocationExpression {
-    /**
-     * Returns the value of the '<em><b>Operand</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.syson.sysml.Expression}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Operand</em>' containment reference list.
-     * @see org.eclipse.syson.sysml.SysmlPackage#getOperatorExpression_Operand()
-     * @model containment="true" transient="true" changeable="false" volatile="true" derived="true"
-     * @generated
-     */
-    EList<Expression> getOperand();
-
     /**
      * Returns the value of the '<em><b>Operator</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

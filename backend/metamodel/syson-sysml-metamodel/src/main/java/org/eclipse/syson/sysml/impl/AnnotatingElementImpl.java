@@ -12,6 +12,7 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -114,6 +115,17 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated NOT
+     */
+    @Override
+    public EList<Annotation> getOwnedAnnotatingRelationship() {
+        List<Annotation> data = new ArrayList<>();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_OwnedAnnotatingRelationship(), data.size(), data.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -152,6 +164,8 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
                 return this.getAnnotatedElement();
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
                 return this.getAnnotation();
+            case SysmlPackage.ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP:
+                return this.getOwnedAnnotatingRelationship();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -200,6 +214,8 @@ public class AnnotatingElementImpl extends ElementImpl implements AnnotatingElem
                 return !this.getAnnotatedElement().isEmpty();
             case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
                 return this.annotation != null && !this.annotation.isEmpty();
+            case SysmlPackage.ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP:
+                return !this.getOwnedAnnotatingRelationship().isEmpty();
         }
         return super.eIsSet(featureID);
     }

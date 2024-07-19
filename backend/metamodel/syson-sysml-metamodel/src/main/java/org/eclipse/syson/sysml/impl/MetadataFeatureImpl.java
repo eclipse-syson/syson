@@ -104,6 +104,17 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @generated NOT
+     */
+    @Override
+    public EList<Annotation> getOwnedAnnotatingRelationship() {
+        List<Usage> data = new ArrayList<>();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnnotatingElement_OwnedAnnotatingRelationship(), data.size(), data.toArray());
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -209,6 +220,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
                 return this.getAnnotatedElement();
             case SysmlPackage.METADATA_FEATURE__ANNOTATION:
                 return this.getAnnotation();
+            case SysmlPackage.METADATA_FEATURE__OWNED_ANNOTATING_RELATIONSHIP:
+                return this.getOwnedAnnotatingRelationship();
             case SysmlPackage.METADATA_FEATURE__METACLASS:
                 if (resolve)
                     return this.getMetaclass();
@@ -261,6 +274,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
                 return !this.getAnnotatedElement().isEmpty();
             case SysmlPackage.METADATA_FEATURE__ANNOTATION:
                 return this.annotation != null && !this.annotation.isEmpty();
+            case SysmlPackage.METADATA_FEATURE__OWNED_ANNOTATING_RELATIONSHIP:
+                return !this.getOwnedAnnotatingRelationship().isEmpty();
             case SysmlPackage.METADATA_FEATURE__METACLASS:
                 return this.basicGetMetaclass() != null;
         }
@@ -280,6 +295,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
                     return SysmlPackage.ANNOTATING_ELEMENT__ANNOTATED_ELEMENT;
                 case SysmlPackage.METADATA_FEATURE__ANNOTATION:
                     return SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION;
+                case SysmlPackage.METADATA_FEATURE__OWNED_ANNOTATING_RELATIONSHIP:
+                    return SysmlPackage.ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP;
                 default:
                     return -1;
             }
@@ -300,6 +317,8 @@ public class MetadataFeatureImpl extends FeatureImpl implements MetadataFeature 
                     return SysmlPackage.METADATA_FEATURE__ANNOTATED_ELEMENT;
                 case SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION:
                     return SysmlPackage.METADATA_FEATURE__ANNOTATION;
+                case SysmlPackage.ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP:
+                    return SysmlPackage.METADATA_FEATURE__OWNED_ANNOTATING_RELATIONSHIP;
                 default:
                     return -1;
             }

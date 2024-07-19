@@ -77,9 +77,8 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
             InternalEObject oldReferencedFeature = (InternalEObject) this.referencedFeature;
             this.referencedFeature = (Feature) this.eResolveProxy(oldReferencedFeature);
             if (this.referencedFeature != oldReferencedFeature) {
-                if (this.eNotificationRequired()) {
+                if (this.eNotificationRequired())
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE, oldReferencedFeature, this.referencedFeature));
-                }
             }
         }
         return this.referencedFeature;
@@ -103,9 +102,8 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
     public void setReferencedFeature(Feature newReferencedFeature) {
         Feature oldReferencedFeature = this.referencedFeature;
         this.referencedFeature = newReferencedFeature;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE, oldReferencedFeature, this.referencedFeature));
-        }
     }
 
     /**
@@ -137,14 +135,12 @@ public class ReferenceSubsettingImpl extends SubsettingImpl implements Reference
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.REFERENCE_SUBSETTING__REFERENCED_FEATURE:
-                if (resolve) {
+                if (resolve)
                     return this.getReferencedFeature();
-                }
                 return this.basicGetReferencedFeature();
             case SysmlPackage.REFERENCE_SUBSETTING__REFERENCING_FEATURE:
-                if (resolve) {
+                if (resolve)
                     return this.getReferencingFeature();
-                }
                 return this.basicGetReferencingFeature();
         }
         return super.eGet(featureID, resolve, coreType);

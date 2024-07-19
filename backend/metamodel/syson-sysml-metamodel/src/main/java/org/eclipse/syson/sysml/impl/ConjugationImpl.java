@@ -90,9 +90,8 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
             InternalEObject oldConjugatedType = (InternalEObject) this.conjugatedType;
             this.conjugatedType = (Type) this.eResolveProxy(oldConjugatedType);
             if (this.conjugatedType != oldConjugatedType) {
-                if (this.eNotificationRequired()) {
+                if (this.eNotificationRequired())
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.CONJUGATION__CONJUGATED_TYPE, oldConjugatedType, this.conjugatedType));
-                }
             }
         }
         return this.conjugatedType;
@@ -116,9 +115,8 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     public void setConjugatedType(Type newConjugatedType) {
         Type oldConjugatedType = this.conjugatedType;
         this.conjugatedType = newConjugatedType;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONJUGATION__CONJUGATED_TYPE, oldConjugatedType, this.conjugatedType));
-        }
     }
 
     /**
@@ -132,9 +130,8 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
             InternalEObject oldOriginalType = (InternalEObject) this.originalType;
             this.originalType = (Type) this.eResolveProxy(oldOriginalType);
             if (this.originalType != oldOriginalType) {
-                if (this.eNotificationRequired()) {
+                if (this.eNotificationRequired())
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.CONJUGATION__ORIGINAL_TYPE, oldOriginalType, this.originalType));
-                }
             }
         }
         return this.originalType;
@@ -158,9 +155,8 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     public void setOriginalType(Type newOriginalType) {
         Type oldOriginalType = this.originalType;
         this.originalType = newOriginalType;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONJUGATION__ORIGINAL_TYPE, oldOriginalType, this.originalType));
-        }
     }
 
     /**
@@ -195,19 +191,16 @@ public class ConjugationImpl extends RelationshipImpl implements Conjugation {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONJUGATION__CONJUGATED_TYPE:
-                if (resolve) {
+                if (resolve)
                     return this.getConjugatedType();
-                }
                 return this.basicGetConjugatedType();
             case SysmlPackage.CONJUGATION__ORIGINAL_TYPE:
-                if (resolve) {
+                if (resolve)
                     return this.getOriginalType();
-                }
                 return this.basicGetOriginalType();
             case SysmlPackage.CONJUGATION__OWNING_TYPE:
-                if (resolve) {
+                if (resolve)
                     return this.getOwningType();
-                }
                 return this.basicGetOwningType();
         }
         return super.eGet(featureID, resolve, coreType);

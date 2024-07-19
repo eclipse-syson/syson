@@ -40,4 +40,12 @@ public interface ParameterMembership extends FeatureMembership {
      */
     Feature getOwnedMemberParameter();
 
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model required="true" ordered="false"
+     * @generated
+     */
+    FeatureDirectionKind parameterDirection();
+
 } // ParameterMembership

@@ -17,13 +17,11 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.syson.sysml.OperatorExpression;
-import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
@@ -77,36 +75,6 @@ public class OperatorExpressionItemProvider extends InvocationExpressionItemProv
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(SysmlPackage.eINSTANCE.getOperatorExpression_Operand());
-        }
-        return this.childrenFeatures;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
-
-        return super.getChildFeature(object, child);
-    }
-
-    /**
      * This returns OperatorExpression.svg. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -142,9 +110,6 @@ public class OperatorExpressionItemProvider extends InvocationExpressionItemProv
             case SysmlPackage.OPERATOR_EXPRESSION__OPERATOR:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
-            case SysmlPackage.OPERATOR_EXPRESSION__OPERAND:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
         }
         super.notifyChanged(notification);
     }
@@ -158,96 +123,6 @@ public class OperatorExpressionItemProvider extends InvocationExpressionItemProv
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createCalculationUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createCaseUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createAnalysisCaseUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createConstraintUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createAssertConstraintUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createBooleanExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createInvocationExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createOperatorExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createCollectExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createRequirementUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createConcernUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createFeatureChainExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createFeatureReferenceExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createUseCaseUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createIncludeUseCaseUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createInvariant()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createLiteralExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createLiteralBoolean()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createLiteralInfinity()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createLiteralInteger()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createLiteralRational()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createLiteralString()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createMetadataAccessExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createNullExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createSatisfyRequirementUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createSelectExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createTriggerInvocationExpression()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createVerificationCaseUsage()));
-
-        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getOperatorExpression_Operand(),
-                SysmlFactory.eINSTANCE.createViewpointUsage()));
     }
 
 }

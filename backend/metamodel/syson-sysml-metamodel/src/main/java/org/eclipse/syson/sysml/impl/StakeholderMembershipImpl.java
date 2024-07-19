@@ -84,9 +84,8 @@ public class StakeholderMembershipImpl extends ParameterMembershipImpl implement
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.STAKEHOLDER_MEMBERSHIP__OWNED_STAKEHOLDER_PARAMETER:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedStakeholderParameter();
-                }
                 return this.basicGetOwnedStakeholderParameter();
         }
         return super.eGet(featureID, resolve, coreType);

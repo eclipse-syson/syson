@@ -83,9 +83,8 @@ public class ElementFilterMembershipImpl extends OwningMembershipImpl implements
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ELEMENT_FILTER_MEMBERSHIP__CONDITION:
-                if (resolve) {
+                if (resolve)
                     return this.getCondition();
-                }
                 return this.basicGetCondition();
         }
         return super.eGet(featureID, resolve, coreType);

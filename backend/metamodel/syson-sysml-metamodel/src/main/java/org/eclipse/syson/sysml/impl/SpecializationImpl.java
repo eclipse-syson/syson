@@ -90,9 +90,8 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
             InternalEObject oldGeneral = (InternalEObject) this.general;
             this.general = (Type) this.eResolveProxy(oldGeneral);
             if (this.general != oldGeneral) {
-                if (this.eNotificationRequired()) {
+                if (this.eNotificationRequired())
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SPECIALIZATION__GENERAL, oldGeneral, this.general));
-                }
             }
         }
         return this.general;
@@ -116,9 +115,8 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     public void setGeneral(Type newGeneral) {
         Type oldGeneral = this.general;
         this.general = newGeneral;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SPECIALIZATION__GENERAL, oldGeneral, this.general));
-        }
     }
 
     /**
@@ -155,9 +153,8 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
             InternalEObject oldSpecific = (InternalEObject) this.specific;
             this.specific = (Type) this.eResolveProxy(oldSpecific);
             if (this.specific != oldSpecific) {
-                if (this.eNotificationRequired()) {
+                if (this.eNotificationRequired())
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SPECIALIZATION__SPECIFIC, oldSpecific, this.specific));
-                }
             }
         }
         return this.specific;
@@ -181,9 +178,8 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     public void setSpecific(Type newSpecific) {
         Type oldSpecific = this.specific;
         this.specific = newSpecific;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SPECIALIZATION__SPECIFIC, oldSpecific, this.specific));
-        }
     }
 
     /**
@@ -195,19 +191,16 @@ public class SpecializationImpl extends RelationshipImpl implements Specializati
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SPECIALIZATION__GENERAL:
-                if (resolve) {
+                if (resolve)
                     return this.getGeneral();
-                }
                 return this.basicGetGeneral();
             case SysmlPackage.SPECIALIZATION__OWNING_TYPE:
-                if (resolve) {
+                if (resolve)
                     return this.getOwningType();
-                }
                 return this.basicGetOwningType();
             case SysmlPackage.SPECIALIZATION__SPECIFIC:
-                if (resolve) {
+                if (resolve)
                     return this.getSpecific();
-                }
                 return this.basicGetSpecific();
         }
         return super.eGet(featureID, resolve, coreType);

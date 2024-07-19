@@ -109,9 +109,8 @@ public class EnumerationUsageImpl extends AttributeUsageImpl implements Enumerat
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ENUMERATION_USAGE__ENUMERATION_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getEnumerationDefinition();
-                }
                 return this.basicGetEnumerationDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

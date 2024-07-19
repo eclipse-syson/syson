@@ -86,9 +86,8 @@ public class RenderingUsageImpl extends PartUsageImpl implements RenderingUsage 
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.RENDERING_USAGE__RENDERING_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getRenderingDefinition();
-                }
                 return this.basicGetRenderingDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

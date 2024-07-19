@@ -102,9 +102,8 @@ public class UseCaseUsageImpl extends CaseUsageImpl implements UseCaseUsage {
             case SysmlPackage.USE_CASE_USAGE__INCLUDED_USE_CASE:
                 return this.getIncludedUseCase();
             case SysmlPackage.USE_CASE_USAGE__USE_CASE_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getUseCaseDefinition();
-                }
                 return this.basicGetUseCaseDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

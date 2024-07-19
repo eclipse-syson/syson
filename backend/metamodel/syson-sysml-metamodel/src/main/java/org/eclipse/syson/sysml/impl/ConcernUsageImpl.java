@@ -82,9 +82,8 @@ public class ConcernUsageImpl extends RequirementUsageImpl implements ConcernUsa
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONCERN_USAGE__CONCERN_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getConcernDefinition();
-                }
                 return this.basicGetConcernDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

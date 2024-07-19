@@ -94,9 +94,8 @@ public class EventOccurrenceUsageImpl extends OccurrenceUsageImpl implements Eve
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.EVENT_OCCURRENCE_USAGE__EVENT_OCCURRENCE:
-                if (resolve) {
+                if (resolve)
                     return this.getEventOccurrence();
-                }
                 return this.basicGetEventOccurrence();
         }
         return super.eGet(featureID, resolve, coreType);

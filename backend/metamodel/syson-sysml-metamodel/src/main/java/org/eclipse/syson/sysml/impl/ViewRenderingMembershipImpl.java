@@ -108,14 +108,12 @@ public class ViewRenderingMembershipImpl extends FeatureMembershipImpl implement
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.VIEW_RENDERING_MEMBERSHIP__OWNED_RENDERING:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedRendering();
-                }
                 return this.basicGetOwnedRendering();
             case SysmlPackage.VIEW_RENDERING_MEMBERSHIP__REFERENCED_RENDERING:
-                if (resolve) {
+                if (resolve)
                     return this.getReferencedRendering();
-                }
                 return this.basicGetReferencedRendering();
         }
         return super.eGet(featureID, resolve, coreType);

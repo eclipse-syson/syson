@@ -231,9 +231,8 @@ public class UsageImpl extends FeatureImpl implements Usage {
     public void setIsVariation(boolean newIsVariation) {
         boolean oldIsVariation = this.isVariation;
         this.isVariation = newIsVariation;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.USAGE__IS_VARIATION, oldIsVariation, this.isVariation));
-        }
     }
 
     /**
@@ -894,14 +893,12 @@ public class UsageImpl extends FeatureImpl implements Usage {
             case SysmlPackage.USAGE__NESTED_VIEWPOINT:
                 return this.getNestedViewpoint();
             case SysmlPackage.USAGE__OWNING_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getOwningDefinition();
-                }
                 return this.basicGetOwningDefinition();
             case SysmlPackage.USAGE__OWNING_USAGE:
-                if (resolve) {
+                if (resolve)
                     return this.getOwningUsage();
-                }
                 return this.basicGetOwningUsage();
             case SysmlPackage.USAGE__USAGE:
                 return this.getUsage();
@@ -1035,9 +1032,8 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy()) {
+        if (this.eIsProxy())
             return super.toString();
-        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isVariation: ");

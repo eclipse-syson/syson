@@ -87,9 +87,8 @@ public class ObjectiveMembershipImpl extends FeatureMembershipImpl implements Ob
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.OBJECTIVE_MEMBERSHIP__OWNED_OBJECTIVE_REQUIREMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedObjectiveRequirement();
-                }
                 return this.basicGetOwnedObjectiveRequirement();
         }
         return super.eGet(featureID, resolve, coreType);

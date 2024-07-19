@@ -85,9 +85,8 @@ public class ActorMembershipImpl extends ParameterMembershipImpl implements Acto
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ACTOR_MEMBERSHIP__OWNED_ACTOR_PARAMETER:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedActorParameter();
-                }
                 return this.basicGetOwnedActorParameter();
         }
         return super.eGet(featureID, resolve, coreType);
