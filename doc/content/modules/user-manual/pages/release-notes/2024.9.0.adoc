@@ -1,0 +1,43 @@
+= 2024.9.0 (work in progress)
+
+== Key highlights
+
+- *Model conformance to SysMLv2 Beta 2 version*: The metamodel has been modified to conform to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML Beta 2 specification released on the 17the of February 2024(see https://www.omg.org/spec/KerML/ for more details).
+
+== Breaking changes
+
+- Move _StateTransitionCompartmentNodeDescriptionProvider_ from syson-diagram-statetransition-view to module syson-diagram-common-view.
+- Code refactoring:
+* Rename `ExhibitStatesCompartmentItemNodeDescriptionProvider` to `StatesCompartmentItemNodeDescriptionProvider`.
+* _StatesCompartmentNodeDescriptionProvider_ now handles both exhibit and non-exhibit states.
+- Align metamodel to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML Beta 2 specification released on the 17the of February 2024(see https://www.omg.org/spec/KerML/ for more details).
+You may have to fix your existing SysON models/projects by your own means to still be able to open them with SysON.
+Please download all your models/projects before upgrading to 2024.9.0.
+The changes are:
+* AnnotatingElement
+** add derived reference "ownedAnnotatingRelationship : Annotation"
+* Annotation
+** add derived reference "owningAnnotatingElement : AnnotatingElement"
+* Connector
+** remove attribute "isDirected : boolean"
+* OperatorExpression
+** remove derived reference "operand : Expression"
+* ParameterMembership
+** add operation "parameterDirection()  : FeatureDirectionKind"
+* Type
+** add operation "directionOfExcluding(Feature, Type[0..\*]) : FeatureDirectionKind"
+
+== Dependencies update
+
+== Bug fixes
+
+== Improvements
+
+- Add actions in _PartUsage_ and _PartDefinition_
+- Add states in _PartUsage_ and _PartDefinition_
+- Add _ExhibitStates_ on General View diagram
+- Allow the creation of a StateTransitionView diagram on a _PartUsage_/_PartDefinition_
+- Allow the creation of a StateTransitionView diagram on a _StateUsage_/_StateDefinition_
+- The _InterfaceUsage_ created by the New Interface edge tool in the Interconnection View diagram are now created under closest containing _Definition_/_Package_.
+
+== New features
