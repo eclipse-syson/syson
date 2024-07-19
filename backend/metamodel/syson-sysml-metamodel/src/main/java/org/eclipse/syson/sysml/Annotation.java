@@ -22,6 +22,7 @@ package org.eclipse.syson.sysml;
  * <li>{@link org.eclipse.syson.sysml.Annotation#getAnnotatedElement <em>Annotated Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Annotation#getAnnotatingElement <em>Annotating Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Annotation#getOwningAnnotatedElement <em>Owning Annotated Element</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Annotation#getOwningAnnotatingElement <em>Owning Annotating Element</em>}</li>
  * </ul>
  *
  * @see org.eclipse.syson.sysml.SysmlPackage#getAnnotation()
@@ -90,5 +91,19 @@ public interface Annotation extends Relationship {
      * @generated
      */
     Element getOwningAnnotatedElement();
+
+    /**
+     * Returns the value of the '<em><b>Owning Annotating Element</b></em>' reference. It is bidirectional and its
+     * opposite is '{@link org.eclipse.syson.sysml.AnnotatingElement#getOwnedAnnotatingRelationship <em>Owned Annotating
+     * Relationship</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Owning Annotating Element</em>' reference.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getAnnotation_OwningAnnotatingElement()
+     * @see org.eclipse.syson.sysml.AnnotatingElement#getOwnedAnnotatingRelationship
+     * @model opposite="ownedAnnotatingRelationship" transient="true" changeable="false" volatile="true" derived="true"
+     *        ordered="false" annotation="subsets"
+     * @generated
+     */
+    AnnotatingElement getOwningAnnotatingElement();
 
 } // Annotation

@@ -92,9 +92,8 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
             InternalEObject oldFeatureOfType = (InternalEObject) this.featureOfType;
             this.featureOfType = (Feature) this.eResolveProxy(oldFeatureOfType);
             if (this.featureOfType != oldFeatureOfType) {
-                if (this.eNotificationRequired()) {
+                if (this.eNotificationRequired())
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.TYPE_FEATURING__FEATURE_OF_TYPE, oldFeatureOfType, this.featureOfType));
-                }
             }
         }
         return this.featureOfType;
@@ -118,9 +117,8 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
     public void setFeatureOfType(Feature newFeatureOfType) {
         Feature oldFeatureOfType = this.featureOfType;
         this.featureOfType = newFeatureOfType;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE_FEATURING__FEATURE_OF_TYPE, oldFeatureOfType, this.featureOfType));
-        }
     }
 
     /**
@@ -134,9 +132,8 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
             InternalEObject oldFeaturingType = (InternalEObject) this.featuringType;
             this.featuringType = (Type) this.eResolveProxy(oldFeaturingType);
             if (this.featuringType != oldFeaturingType) {
-                if (this.eNotificationRequired()) {
+                if (this.eNotificationRequired())
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.TYPE_FEATURING__FEATURING_TYPE, oldFeaturingType, this.featuringType));
-                }
             }
         }
         return this.featuringType;
@@ -160,9 +157,8 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
     public void setFeaturingType(Type newFeaturingType) {
         Type oldFeaturingType = this.featuringType;
         this.featuringType = newFeaturingType;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TYPE_FEATURING__FEATURING_TYPE, oldFeaturingType, this.featuringType));
-        }
     }
 
     /**
@@ -197,19 +193,16 @@ public class TypeFeaturingImpl extends FeaturingImpl implements TypeFeaturing {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.TYPE_FEATURING__FEATURE_OF_TYPE:
-                if (resolve) {
+                if (resolve)
                     return this.getFeatureOfType();
-                }
                 return this.basicGetFeatureOfType();
             case SysmlPackage.TYPE_FEATURING__FEATURING_TYPE:
-                if (resolve) {
+                if (resolve)
                     return this.getFeaturingType();
-                }
                 return this.basicGetFeaturingType();
             case SysmlPackage.TYPE_FEATURING__OWNING_FEATURE_OF_TYPE:
-                if (resolve) {
+                if (resolve)
                     return this.getOwningFeatureOfType();
-                }
                 return this.basicGetOwningFeatureOfType();
         }
         return super.eGet(featureID, resolve, coreType);

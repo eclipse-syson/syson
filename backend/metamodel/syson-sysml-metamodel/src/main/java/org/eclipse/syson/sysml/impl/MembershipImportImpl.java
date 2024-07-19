@@ -81,9 +81,8 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
             InternalEObject oldImportedMembership = (InternalEObject) this.importedMembership;
             this.importedMembership = (Membership) this.eResolveProxy(oldImportedMembership);
             if (this.importedMembership != oldImportedMembership) {
-                if (this.eNotificationRequired()) {
+                if (this.eNotificationRequired())
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP, oldImportedMembership, this.importedMembership));
-                }
             }
         }
         return this.importedMembership;
@@ -107,9 +106,8 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
     public void setImportedMembership(Membership newImportedMembership) {
         Membership oldImportedMembership = this.importedMembership;
         this.importedMembership = newImportedMembership;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP, oldImportedMembership, this.importedMembership));
-        }
     }
 
     /**
@@ -121,9 +119,8 @@ public class MembershipImportImpl extends ImportImpl implements MembershipImport
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.MEMBERSHIP_IMPORT__IMPORTED_MEMBERSHIP:
-                if (resolve) {
+                if (resolve)
                     return this.getImportedMembership();
-                }
                 return this.basicGetImportedMembership();
         }
         return super.eGet(featureID, resolve, coreType);

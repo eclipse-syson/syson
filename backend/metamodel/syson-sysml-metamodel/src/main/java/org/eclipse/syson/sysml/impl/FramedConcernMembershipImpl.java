@@ -108,14 +108,12 @@ public class FramedConcernMembershipImpl extends RequirementConstraintMembership
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FRAMED_CONCERN_MEMBERSHIP__OWNED_CONCERN:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedConcern();
-                }
                 return this.basicGetOwnedConcern();
             case SysmlPackage.FRAMED_CONCERN_MEMBERSHIP__REFERENCED_CONCERN:
-                if (resolve) {
+                if (resolve)
                     return this.getReferencedConcern();
-                }
                 return this.basicGetReferencedConcern();
         }
         return super.eGet(featureID, resolve, coreType);

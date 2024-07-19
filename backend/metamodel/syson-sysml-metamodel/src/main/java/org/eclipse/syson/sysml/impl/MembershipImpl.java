@@ -158,9 +158,8 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
             InternalEObject oldMemberElement = (InternalEObject) this.memberElement;
             this.memberElement = (Element) this.eResolveProxy(oldMemberElement);
             if (this.memberElement != oldMemberElement) {
-                if (this.eNotificationRequired()) {
+                if (this.eNotificationRequired())
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT, oldMemberElement, this.memberElement));
-                }
             }
         }
         return this.memberElement;
@@ -184,9 +183,8 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     public void setMemberElement(Element newMemberElement) {
         Element oldMemberElement = this.memberElement;
         this.memberElement = newMemberElement;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT, oldMemberElement, this.memberElement));
-        }
     }
 
     /**
@@ -222,9 +220,8 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     public void setMemberName(String newMemberName) {
         String oldMemberName = this.memberName;
         this.memberName = newMemberName;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__MEMBER_NAME, oldMemberName, this.memberName));
-        }
     }
 
     /**
@@ -270,9 +267,8 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     public void setMemberShortName(String newMemberShortName) {
         String oldMemberShortName = this.memberShortName;
         this.memberShortName = newMemberShortName;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__MEMBER_SHORT_NAME, oldMemberShortName, this.memberShortName));
-        }
     }
 
     /**
@@ -294,9 +290,8 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     public void setVisibility(VisibilityKind newVisibility) {
         VisibilityKind oldVisibility = this.visibility;
         this.visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.MEMBERSHIP__VISIBILITY, oldVisibility, this.visibility));
-        }
     }
 
     /**
@@ -326,14 +321,12 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
             case SysmlPackage.MEMBERSHIP__VISIBILITY:
                 return this.getVisibility();
             case SysmlPackage.MEMBERSHIP__MEMBER_ELEMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getMemberElement();
-                }
                 return this.basicGetMemberElement();
             case SysmlPackage.MEMBERSHIP__MEMBERSHIP_OWNING_NAMESPACE:
-                if (resolve) {
+                if (resolve)
                     return this.getMembershipOwningNamespace();
-                }
                 return this.basicGetMembershipOwningNamespace();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -432,9 +425,8 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy()) {
+        if (this.eIsProxy())
             return super.toString();
-        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (memberName: ");

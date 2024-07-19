@@ -8,6 +8,22 @@
 - https://github.com/eclipse-syson/syson/issues/393[#393] [general-view] Code refactoring:
 * Rename `ExhibitStatesCompartmentItemNodeDescriptionProvider` to `StatesCompartmentItemNodeDescriptionProvider`.
 * _StatesCompartmentNodeDescriptionProvider_ now handles both exhibit and non-exhibit states.
+- https://github.com/eclipse-syson/syson/issues/564[#564] [metamodel] Align metamodel to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML Beta 2 specification released on the 17the of February 2024(see https://www.omg.org/spec/KerML/ for more details).
+You may have to fix your existing SysON models/projects by your own means to still be able to open them with SysON.
+Please download all your models/projects before upgrading to 2024.9.0.
+The changes are:
+* AnnotatingElement
+** add derived reference "ownedAnnotatingRelationship : Annotation"
+* Annotation
+** add derived reference "owningAnnotatingElement : AnnotatingElement"
+* Connector
+** remove attribute "isDirected : boolean"
+* OperatorExpression
+** remove derived reference "operand : Expression"
+* ParameterMembership
+** add operation "parameterDirection()  : FeatureDirectionKind"
+* Type
+** add operation "directionOfExcluding(Feature, Type[0..\*]) : FeatureDirectionKind"
 
 === Dependency update
 

@@ -81,9 +81,8 @@ public class DocumentationImpl extends CommentImpl implements Documentation {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.DOCUMENTATION__DOCUMENTED_ELEMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getDocumentedElement();
-                }
                 return this.basicGetDocumentedElement();
         }
         return super.eGet(featureID, resolve, coreType);

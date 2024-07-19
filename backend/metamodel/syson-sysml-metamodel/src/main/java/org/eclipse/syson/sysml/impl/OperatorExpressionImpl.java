@@ -12,21 +12,11 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Usage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Operator Expression</b></em>'. <!--
@@ -36,7 +26,6 @@ import org.eclipse.syson.sysml.Usage;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.impl.OperatorExpressionImpl#getOperator <em>Operator</em>}</li>
- * <li>{@link org.eclipse.syson.sysml.impl.OperatorExpressionImpl#getOperand <em>Operand</em>}</li>
  * </ul>
  *
  * @generated
@@ -84,17 +73,6 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
-     */
-    @Override
-    public EList<Expression> getOperand() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getOperatorExpression_Operand(), data.size(), data.toArray());
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
      * @generated
      */
     @Override
@@ -111,22 +89,9 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
     public void setOperator(String newOperator) {
         String oldOperator = this.operator;
         this.operator = newOperator;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OPERATOR_EXPRESSION__OPERATOR, oldOperator, this.operator));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case SysmlPackage.OPERATOR_EXPRESSION__OPERAND:
-                return ((InternalEList<?>) this.getOperand()).basicRemove(otherEnd, msgs);
         }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
@@ -139,8 +104,6 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
         switch (featureID) {
             case SysmlPackage.OPERATOR_EXPRESSION__OPERATOR:
                 return this.getOperator();
-            case SysmlPackage.OPERATOR_EXPRESSION__OPERAND:
-                return this.getOperand();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -186,8 +149,6 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
         switch (featureID) {
             case SysmlPackage.OPERATOR_EXPRESSION__OPERATOR:
                 return OPERATOR_EDEFAULT == null ? this.operator != null : !OPERATOR_EDEFAULT.equals(this.operator);
-            case SysmlPackage.OPERATOR_EXPRESSION__OPERAND:
-                return !this.getOperand().isEmpty();
         }
         return super.eIsSet(featureID);
     }
@@ -199,8 +160,9 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (operator: ");

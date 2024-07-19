@@ -187,10 +187,10 @@ public class NamespaceImpl extends ElementImpl implements Namespace {
         excludedAndSelf.addAll(excluded);
         excludedAndSelf.add(this);
         this.getOwnedImport().stream()
-            .map(imprt -> imprt.importedMemberships(excludedAndSelf))
-            .flatMap(Collection::stream)
-            .filter(nameConflictingFilter)
-            .forEach(importedMemberships::add);
+                .map(imprt -> imprt.importedMemberships(excludedAndSelf))
+                .flatMap(Collection::stream)
+                .filter(nameConflictingFilter)
+                .forEach(importedMemberships::add);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getNamespace_ImportedMembership(), importedMemberships.size(), importedMemberships.toArray());
     }
 

@@ -697,7 +697,7 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        EList<Membership> inheritedMemberships = inheritedMemberships(new BasicEList<>());
+        EList<Membership> inheritedMemberships = this.inheritedMemberships(new BasicEList<>());
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMemberships.size(), inheritedMemberships.toArray());
     }
 

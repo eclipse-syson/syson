@@ -92,6 +92,11 @@
         derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotation" upperBound="-1"
         eType="#//Annotation" eOpposite="#//Annotation/annotatingElement"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ownedAnnotatingRelationship"
+        ordered="false" upperBound="-1" eType="#//Annotation" changeable="false" volatile="true"
+        transient="true" derived="true" eOpposite="#//Annotation/owningAnnotatingElement">
+      <eAnnotations source="subsets" references="#//AnnotatingElement/annotation #//Element/ownedRelationship"/>
+    </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Annotation" eSuperTypes="#//Relationship">
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotatedElement" ordered="false"
@@ -106,6 +111,11 @@
         ordered="false" eType="#//Element" changeable="false" volatile="true" transient="true"
         derived="true" eOpposite="#//Element/ownedAnnotation">
       <eAnnotations source="subsets" references="#//Annotation/annotatedElement #//Relationship/owningRelatedElement"/>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="owningAnnotatingElement"
+        ordered="false" eType="#//AnnotatingElement" changeable="false" volatile="true"
+        transient="true" derived="true" eOpposite="#//AnnotatingElement/ownedAnnotatingRelationship">
+      <eAnnotations source="subsets" references="#//Annotation/annotatingElement #//Relationship/owningRelatedElement"/>
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AssertConstraintUsage" eSuperTypes="#//ConstraintUsage #//Invariant">
@@ -297,9 +307,6 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Connector" eSuperTypes="#//Feature #//Relationship">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDirected" ordered="false"
-        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
-        defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="association" upperBound="-1"
         eType="#//Association" changeable="false" volatile="true" transient="true"
         derived="true">
@@ -1237,9 +1244,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="OperatorExpression" eSuperTypes="#//InvocationExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" ordered="false"
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="operand" upperBound="-1"
-        eType="#//Expression" changeable="false" volatile="true" transient="true"
-        derived="true" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="OwningMembership" eSuperTypes="#//Membership">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="ownedMemberElementId" ordered="false"
@@ -1275,6 +1279,7 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParameterMembership" eSuperTypes="#//FeatureMembership">
+    <eOperations name="parameterDirection" ordered="false" lowerBound="1" eType="#//FeatureDirectionKind"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="ownedMemberParameter" ordered="false"
         lowerBound="1" eType="#//Feature" changeable="false" volatile="true" transient="true"
         derived="true">
@@ -1732,6 +1737,10 @@
     <eOperations name="allSupertypes" ordered="false" upperBound="-1" eType="#//Type"/>
     <eOperations name="directionOf" ordered="false" eType="#//FeatureDirectionKind">
       <eParameters name="feature" ordered="false" lowerBound="1" eType="#//Feature"/>
+    </eOperations>
+    <eOperations name="directionOfExcluding" ordered="false" eType="#//FeatureDirectionKind">
+      <eParameters name="feature" ordered="false" lowerBound="1" eType="#//Feature"/>
+      <eParameters name="excluded" ordered="false" upperBound="-1" eType="#//Type"/>
     </eOperations>
     <eOperations name="inheritedMemberships" upperBound="-1" eType="#//Membership">
       <eParameters name="excluded" ordered="false" upperBound="-1" eType="#//Type"/>

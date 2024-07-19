@@ -83,9 +83,8 @@ public class BooleanExpressionImpl extends ExpressionImpl implements BooleanExpr
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.BOOLEAN_EXPRESSION__PREDICATE:
-                if (resolve) {
+                if (resolve)
                     return this.getPredicate();
-                }
                 return this.basicGetPredicate();
         }
         return super.eGet(featureID, resolve, coreType);

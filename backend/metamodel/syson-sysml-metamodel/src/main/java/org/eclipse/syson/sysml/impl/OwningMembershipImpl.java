@@ -188,9 +188,8 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_SHORT_NAME:
                 return this.getOwnedMemberShortName();
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_ELEMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedMemberElement();
-                }
                 return this.basicGetOwnedMemberElement();
         }
         return super.eGet(featureID, resolve, coreType);

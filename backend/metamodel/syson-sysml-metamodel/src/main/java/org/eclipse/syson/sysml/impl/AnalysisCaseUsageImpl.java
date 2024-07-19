@@ -130,14 +130,12 @@ public class AnalysisCaseUsageImpl extends CaseUsageImpl implements AnalysisCase
             case SysmlPackage.ANALYSIS_CASE_USAGE__ANALYSIS_ACTION:
                 return this.getAnalysisAction();
             case SysmlPackage.ANALYSIS_CASE_USAGE__ANALYSIS_CASE_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getAnalysisCaseDefinition();
-                }
                 return this.basicGetAnalysisCaseDefinition();
             case SysmlPackage.ANALYSIS_CASE_USAGE__RESULT_EXPRESSION:
-                if (resolve) {
+                if (resolve)
                     return this.getResultExpression();
-                }
                 return this.basicGetResultExpression();
         }
         return super.eGet(featureID, resolve, coreType);

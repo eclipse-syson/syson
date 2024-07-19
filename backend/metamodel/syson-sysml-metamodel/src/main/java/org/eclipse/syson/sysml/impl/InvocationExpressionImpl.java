@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
-import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.SysmlPackage;
 

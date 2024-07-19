@@ -267,23 +267,20 @@ public class FlowConnectionUsageImpl extends ConnectionUsageImpl implements Flow
             case SysmlPackage.FLOW_CONNECTION_USAGE__INTERACTION:
                 return this.getInteraction();
             case SysmlPackage.FLOW_CONNECTION_USAGE__ITEM_FEATURE:
-                if (resolve) {
+                if (resolve)
                     return this.getItemFeature();
-                }
                 return this.basicGetItemFeature();
             case SysmlPackage.FLOW_CONNECTION_USAGE__ITEM_FLOW_END:
                 return this.getItemFlowEnd();
             case SysmlPackage.FLOW_CONNECTION_USAGE__ITEM_TYPE:
                 return this.getItemType();
             case SysmlPackage.FLOW_CONNECTION_USAGE__SOURCE_OUTPUT_FEATURE:
-                if (resolve) {
+                if (resolve)
                     return this.getSourceOutputFeature();
-                }
                 return this.basicGetSourceOutputFeature();
             case SysmlPackage.FLOW_CONNECTION_USAGE__TARGET_INPUT_FEATURE:
-                if (resolve) {
+                if (resolve)
                     return this.getTargetInputFeature();
-                }
                 return this.basicGetTargetInputFeature();
             case SysmlPackage.FLOW_CONNECTION_USAGE__FLOW_CONNECTION_DEFINITION:
                 return this.getFlowConnectionDefinition();

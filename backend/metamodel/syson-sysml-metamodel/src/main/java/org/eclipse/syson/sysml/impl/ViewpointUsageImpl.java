@@ -103,9 +103,8 @@ public class ViewpointUsageImpl extends RequirementUsageImpl implements Viewpoin
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.VIEWPOINT_USAGE__VIEWPOINT_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getViewpointDefinition();
-                }
                 return this.basicGetViewpointDefinition();
             case SysmlPackage.VIEWPOINT_USAGE__VIEWPOINT_STAKEHOLDER:
                 return this.getViewpointStakeholder();

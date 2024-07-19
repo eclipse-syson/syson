@@ -56,7 +56,6 @@ public class ConnectorAsUsageItemProvider extends UsageItemProvider {
             this.addRelatedElementPropertyDescriptor(object);
             this.addSourcePropertyDescriptor(object);
             this.addTargetPropertyDescriptor(object);
-            this.addIsDirectedPropertyDescriptor(object);
             this.addAssociationPropertyDescriptor(object);
             this.addConnectorEndPropertyDescriptor(object);
             this.addRelatedFeaturePropertyDescriptor(object);
@@ -181,25 +180,6 @@ public class ConnectorAsUsageItemProvider extends UsageItemProvider {
     }
 
     /**
-     * This adds a property descriptor for the Is Directed feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addIsDirectedPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_Connector_isDirected_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_Connector_isDirected_feature", "_UI_Connector_type"),
-                SysmlPackage.eINSTANCE.getConnector_IsDirected(),
-                true,
-                false,
-                false,
-                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
-                null,
-                null));
-    }
-
-    /**
      * This adds a property descriptor for the Related Feature feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -310,7 +290,6 @@ public class ConnectorAsUsageItemProvider extends UsageItemProvider {
 
         switch (notification.getFeatureID(ConnectorAsUsage.class)) {
             case SysmlPackage.CONNECTOR_AS_USAGE__IS_IMPLIED:
-            case SysmlPackage.CONNECTOR_AS_USAGE__IS_DIRECTED:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case SysmlPackage.CONNECTOR_AS_USAGE__OWNED_RELATED_ELEMENT:

@@ -170,14 +170,12 @@ public class ViewUsageImpl extends PartUsageImpl implements ViewUsage {
             case SysmlPackage.VIEW_USAGE__VIEW_CONDITION:
                 return this.getViewCondition();
             case SysmlPackage.VIEW_USAGE__VIEW_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getViewDefinition();
-                }
                 return this.basicGetViewDefinition();
             case SysmlPackage.VIEW_USAGE__VIEW_RENDERING:
-                if (resolve) {
+                if (resolve)
                     return this.getViewRendering();
-                }
                 return this.basicGetViewRendering();
         }
         return super.eGet(featureID, resolve, coreType);

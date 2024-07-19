@@ -1640,6 +1640,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
+    public EReference getAnnotatingElement_OwnedAnnotatingRelationship() {
+        return (EReference) this.annotatingElementEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getAnnotation() {
         return this.annotationEClass;
     }
@@ -1672,6 +1682,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
     @Override
     public EReference getAnnotation_OwningAnnotatedElement() {
         return (EReference) this.annotationEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getAnnotation_OwningAnnotatingElement() {
+        return (EReference) this.annotationEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -2281,7 +2301,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      */
     @Override
     public EReference getConnector_Association() {
-        return (EReference) this.connectorEClass.getEStructuralFeatures().get(1);
+        return (EReference) this.connectorEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2291,17 +2311,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      */
     @Override
     public EReference getConnector_ConnectorEnd() {
-        return (EReference) this.connectorEClass.getEStructuralFeatures().get(2);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EAttribute getConnector_IsDirected() {
-        return (EAttribute) this.connectorEClass.getEStructuralFeatures().get(0);
+        return (EReference) this.connectorEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2311,7 +2321,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      */
     @Override
     public EReference getConnector_RelatedFeature() {
-        return (EReference) this.connectorEClass.getEStructuralFeatures().get(3);
+        return (EReference) this.connectorEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -2321,7 +2331,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      */
     @Override
     public EReference getConnector_SourceFeature() {
-        return (EReference) this.connectorEClass.getEStructuralFeatures().get(4);
+        return (EReference) this.connectorEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -2331,7 +2341,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      */
     @Override
     public EReference getConnector_TargetFeature() {
-        return (EReference) this.connectorEClass.getEStructuralFeatures().get(5);
+        return (EReference) this.connectorEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -5170,16 +5180,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EReference getOperatorExpression_Operand() {
-        return (EReference) this.operatorExpressionEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EAttribute getOperatorExpression_Operator() {
         return (EAttribute) this.operatorExpressionEClass.getEStructuralFeatures().get(0);
     }
@@ -5282,6 +5282,16 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
     @Override
     public EReference getParameterMembership_OwnedMemberParameter() {
         return (EReference) this.parameterMembershipEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getParameterMembership__ParameterDirection() {
+        return this.parameterMembershipEClass.getEOperations().get(0);
     }
 
     /**
@@ -6850,7 +6860,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getType__InheritedMemberships__EList() {
+    public EOperation getType__DirectionOfExcluding__Feature_EList() {
         return this.typeEClass.getEOperations().get(2);
     }
 
@@ -6860,7 +6870,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getType__Specializes__Type() {
+    public EOperation getType__InheritedMemberships__EList() {
         return this.typeEClass.getEOperations().get(3);
     }
 
@@ -6870,8 +6880,18 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getType__SpecializesFromLibrary__String() {
+    public EOperation getType__Specializes__Type() {
         return this.typeEClass.getEOperations().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getType__SpecializesFromLibrary__String() {
+        return this.typeEClass.getEOperations().get(5);
     }
 
     /**
@@ -7800,11 +7820,13 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.annotatingElementEClass = this.createEClass(ANNOTATING_ELEMENT);
         this.createEReference(this.annotatingElementEClass, ANNOTATING_ELEMENT__ANNOTATED_ELEMENT);
         this.createEReference(this.annotatingElementEClass, ANNOTATING_ELEMENT__ANNOTATION);
+        this.createEReference(this.annotatingElementEClass, ANNOTATING_ELEMENT__OWNED_ANNOTATING_RELATIONSHIP);
 
         this.annotationEClass = this.createEClass(ANNOTATION);
         this.createEReference(this.annotationEClass, ANNOTATION__ANNOTATED_ELEMENT);
         this.createEReference(this.annotationEClass, ANNOTATION__ANNOTATING_ELEMENT);
         this.createEReference(this.annotationEClass, ANNOTATION__OWNING_ANNOTATED_ELEMENT);
+        this.createEReference(this.annotationEClass, ANNOTATION__OWNING_ANNOTATING_ELEMENT);
 
         this.assertConstraintUsageEClass = this.createEClass(ASSERT_CONSTRAINT_USAGE);
         this.createEReference(this.assertConstraintUsageEClass, ASSERT_CONSTRAINT_USAGE__ASSERTED_CONSTRAINT);
@@ -7891,7 +7913,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEReference(this.connectionUsageEClass, CONNECTION_USAGE__CONNECTION_DEFINITION);
 
         this.connectorEClass = this.createEClass(CONNECTOR);
-        this.createEAttribute(this.connectorEClass, CONNECTOR__IS_DIRECTED);
         this.createEReference(this.connectorEClass, CONNECTOR__ASSOCIATION);
         this.createEReference(this.connectorEClass, CONNECTOR__CONNECTOR_END);
         this.createEReference(this.connectorEClass, CONNECTOR__RELATED_FEATURE);
@@ -8259,7 +8280,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
 
         this.operatorExpressionEClass = this.createEClass(OPERATOR_EXPRESSION);
         this.createEAttribute(this.operatorExpressionEClass, OPERATOR_EXPRESSION__OPERATOR);
-        this.createEReference(this.operatorExpressionEClass, OPERATOR_EXPRESSION__OPERAND);
 
         this.owningMembershipEClass = this.createEClass(OWNING_MEMBERSHIP);
         this.createEAttribute(this.owningMembershipEClass, OWNING_MEMBERSHIP__OWNED_MEMBER_ELEMENT_ID);
@@ -8273,6 +8293,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
 
         this.parameterMembershipEClass = this.createEClass(PARAMETER_MEMBERSHIP);
         this.createEReference(this.parameterMembershipEClass, PARAMETER_MEMBERSHIP__OWNED_MEMBER_PARAMETER);
+        this.createEOperation(this.parameterMembershipEClass, PARAMETER_MEMBERSHIP___PARAMETER_DIRECTION);
 
         this.partDefinitionEClass = this.createEClass(PART_DEFINITION);
 
@@ -8470,6 +8491,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEReference(this.typeEClass, TYPE__UNIONING_TYPE);
         this.createEOperation(this.typeEClass, TYPE___ALL_SUPERTYPES);
         this.createEOperation(this.typeEClass, TYPE___DIRECTION_OF__FEATURE);
+        this.createEOperation(this.typeEClass, TYPE___DIRECTION_OF_EXCLUDING__FEATURE_ELIST);
         this.createEOperation(this.typeEClass, TYPE___INHERITED_MEMBERSHIPS__ELIST);
         this.createEOperation(this.typeEClass, TYPE___SPECIALIZES__TYPE);
         this.createEOperation(this.typeEClass, TYPE___SPECIALIZES_FROM_LIBRARY__STRING);
@@ -8883,6 +8905,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.initEReference(this.getAnnotatingElement_Annotation(), this.getAnnotation(), this.getAnnotation_AnnotatingElement(), "annotation", null, 0, -1, AnnotatingElement.class, !IS_TRANSIENT,
                 !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getAnnotatingElement_OwnedAnnotatingRelationship(), this.getAnnotation(), this.getAnnotation_OwningAnnotatingElement(), "ownedAnnotatingRelationship", null, 0, -1,
+                AnnotatingElement.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
         this.initEClass(this.annotationEClass, Annotation.class, "Annotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getAnnotation_AnnotatedElement(), this.getElement(), null, "annotatedElement", null, 1, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
@@ -8893,6 +8917,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.initEReference(this.getAnnotation_OwningAnnotatedElement(), this.getElement(), this.getElement_OwnedAnnotation(), "owningAnnotatedElement", null, 0, 1, Annotation.class, IS_TRANSIENT,
                 IS_VOLATILE,
                 !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+        this.initEReference(this.getAnnotation_OwningAnnotatingElement(), this.getAnnotatingElement(), this.getAnnotatingElement_OwnedAnnotatingRelationship(), "owningAnnotatingElement", null, 0, 1,
+                Annotation.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
 
         this.initEClass(this.assertConstraintUsageEClass, AssertConstraintUsage.class, "AssertConstraintUsage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getAssertConstraintUsage_AssertedConstraint(), this.getConstraintUsage(), null, "assertedConstraint", null, 1, 1, AssertConstraintUsage.class, IS_TRANSIENT,
@@ -9034,9 +9060,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.connectorEClass, Connector.class, "Connector", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getConnector_IsDirected(), this.ecorePackage.getEBoolean(), "isDirected", "false", 1, 1, Connector.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
         this.initEReference(this.getConnector_Association(), this.getAssociation(), null, "association", null, 0, -1, Connector.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getConnector_ConnectorEnd(), this.getFeature(), null, "connectorEnd", null, 0, -1, Connector.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE,
@@ -9766,8 +9789,6 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.initEAttribute(this.getOperatorExpression_Operator(), this.ecorePackage.getEString(), "operator", null, 1, 1, OperatorExpression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE,
                 !IS_ID, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
-        this.initEReference(this.getOperatorExpression_Operand(), this.getExpression(), null, "operand", null, 0, -1, OperatorExpression.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.owningMembershipEClass, OwningMembership.class, "OwningMembership", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getOwningMembership_OwnedMemberElementId(), this.ecorePackage.getEString(), "ownedMemberElementId", null, 1, 1, OwningMembership.class, IS_TRANSIENT, IS_VOLATILE,
@@ -9795,6 +9816,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.initEReference(this.getParameterMembership_OwnedMemberParameter(), this.getFeature(), null, "ownedMemberParameter", null, 1, 1, ParameterMembership.class, IS_TRANSIENT, IS_VOLATILE,
                 !IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+
+        this.initEOperation(this.getParameterMembership__ParameterDirection(), this.getFeatureDirectionKind(), "parameterDirection", 1, 1, IS_UNIQUE, !IS_ORDERED);
 
         this.initEClass(this.partDefinitionEClass, PartDefinition.class, "PartDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -10186,6 +10209,10 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         op = this.initEOperation(this.getType__DirectionOf__Feature(), this.getFeatureDirectionKind(), "directionOf", 0, 1, IS_UNIQUE, !IS_ORDERED);
         this.addEParameter(op, this.getFeature(), "feature", 1, 1, IS_UNIQUE, !IS_ORDERED);
 
+        op = this.initEOperation(this.getType__DirectionOfExcluding__Feature_EList(), this.getFeatureDirectionKind(), "directionOfExcluding", 0, 1, IS_UNIQUE, !IS_ORDERED);
+        this.addEParameter(op, this.getFeature(), "feature", 1, 1, IS_UNIQUE, !IS_ORDERED);
+        this.addEParameter(op, this.getType(), "excluded", 0, -1, IS_UNIQUE, !IS_ORDERED);
+
         op = this.initEOperation(this.getType__InheritedMemberships__EList(), this.getMembership(), "inheritedMemberships", 0, -1, IS_UNIQUE, IS_ORDERED);
         this.addEParameter(op, this.getType(), "excluded", 0, -1, IS_UNIQUE, !IS_ORDERED);
 
@@ -10493,12 +10520,28 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//Type/ownedFeature")
                 });
+        this.addAnnotation(this.getAnnotatingElement_OwnedAnnotatingRelationship(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//AnnotatingElement/annotation"),
+                        URI.createURI(eNS_URI).appendFragment("//Element/ownedRelationship")
+                });
         this.addAnnotation(this.getAnnotation_OwningAnnotatedElement(),
                 source,
                 new String[] {
                 },
                 new URI[] {
                         URI.createURI(eNS_URI).appendFragment("//Annotation/annotatedElement"),
+                        URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
+                });
+        this.addAnnotation(this.getAnnotation_OwningAnnotatingElement(),
+                source,
+                new String[] {
+                },
+                new URI[] {
+                        URI.createURI(eNS_URI).appendFragment("//Annotation/annotatingElement"),
                         URI.createURI(eNS_URI).appendFragment("//Relationship/owningRelatedElement")
                 });
         this.addAnnotation(this.getAssignmentActionUsage_Referent(),

@@ -21,7 +21,6 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.syson.sysml.Connector#isIsDirected <em>Is Directed</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Connector#getAssociation <em>Association</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Connector#getConnectorEnd <em>Connector End</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Connector#getRelatedFeature <em>Related Feature</em>}</li>
@@ -55,29 +54,6 @@ public interface Connector extends Feature, Relationship {
      * @generated
      */
     EList<Feature> getConnectorEnd();
-
-    /**
-     * Returns the value of the '<em><b>Is Directed</b></em>' attribute. The default value is <code>"false"</code>. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Is Directed</em>' attribute.
-     * @see #setIsDirected(boolean)
-     * @see org.eclipse.syson.sysml.SysmlPackage#getConnector_IsDirected()
-     * @model default="false" required="true" ordered="false"
-     * @generated
-     */
-    boolean isIsDirected();
-
-    /**
-     * Sets the value of the '{@link org.eclipse.syson.sysml.Connector#isIsDirected <em>Is Directed</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Is Directed</em>' attribute.
-     * @see #isIsDirected()
-     * @generated
-     */
-    void setIsDirected(boolean value);
 
     /**
      * Returns the value of the '<em><b>Related Feature</b></em>' reference list. The list contents are of type

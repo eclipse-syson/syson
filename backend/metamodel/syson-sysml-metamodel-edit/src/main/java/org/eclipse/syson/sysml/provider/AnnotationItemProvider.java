@@ -51,6 +51,7 @@ public class AnnotationItemProvider extends RelationshipItemProvider {
             this.addAnnotatedElementPropertyDescriptor(object);
             this.addAnnotatingElementPropertyDescriptor(object);
             this.addOwningAnnotatedElementPropertyDescriptor(object);
+            this.addOwningAnnotatingElementPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -108,6 +109,26 @@ public class AnnotationItemProvider extends RelationshipItemProvider {
                 true,
                 false,
                 true,
+                null,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Owning Annotating Element feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addOwningAnnotatingElementPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_Annotation_owningAnnotatingElement_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Annotation_owningAnnotatingElement_feature", "_UI_Annotation_type"),
+                SysmlPackage.eINSTANCE.getAnnotation_OwningAnnotatingElement(),
+                false,
+                false,
+                false,
                 null,
                 null,
                 null));

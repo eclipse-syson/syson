@@ -84,9 +84,8 @@ public class ResultExpressionMembershipImpl extends FeatureMembershipImpl implem
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.RESULT_EXPRESSION_MEMBERSHIP__OWNED_RESULT_EXPRESSION:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedResultExpression();
-                }
                 return this.basicGetOwnedResultExpression();
         }
         return super.eGet(featureID, resolve, coreType);

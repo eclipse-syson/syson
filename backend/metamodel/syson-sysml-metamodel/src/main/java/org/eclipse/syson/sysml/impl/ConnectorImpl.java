@@ -51,7 +51,6 @@ import org.eclipse.syson.sysml.Usage;
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getRelatedElement <em>Related Element</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getSource <em>Source</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getTarget <em>Target</em>}</li>
- * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#isIsDirected <em>Is Directed</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getAssociation <em>Association</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getConnectorEnd <em>Connector End</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.ConnectorImpl#getRelatedFeature <em>Related Feature</em>}</li>
@@ -113,26 +112,6 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
     protected EList<Element> target;
 
     /**
-     * The default value of the '{@link #isIsDirected() <em>Is Directed</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isIsDirected()
-     * @generated
-     * @ordered
-     */
-    protected static final boolean IS_DIRECTED_EDEFAULT = false;
-
-    /**
-     * The cached value of the '{@link #isIsDirected() <em>Is Directed</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @see #isIsDirected()
-     * @generated
-     * @ordered
-     */
-    protected boolean isDirected = IS_DIRECTED_EDEFAULT;
-
-    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -170,9 +149,8 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
     public void setIsImplied(boolean newIsImplied) {
         boolean oldIsImplied = this.isImplied;
         this.isImplied = newIsImplied;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR__IS_IMPLIED, oldIsImplied, this.isImplied));
-        }
     }
 
     /**
@@ -195,9 +173,8 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
      */
     @Override
     public Element getOwningRelatedElement() {
-        if (this.eContainerFeatureID() != SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT) {
+        if (this.eContainerFeatureID() != SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT)
             return null;
-        }
         return (Element) this.eInternalContainer();
     }
 
@@ -219,23 +196,18 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
     @Override
     public void setOwningRelatedElement(Element newOwningRelatedElement) {
         if (newOwningRelatedElement != this.eInternalContainer() || (this.eContainerFeatureID() != SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT && newOwningRelatedElement != null)) {
-            if (EcoreUtil.isAncestor(this, newOwningRelatedElement)) {
+            if (EcoreUtil.isAncestor(this, newOwningRelatedElement))
                 throw new IllegalArgumentException("Recursive containment not allowed for " + this.toString());
-            }
             NotificationChain msgs = null;
-            if (this.eInternalContainer() != null) {
+            if (this.eInternalContainer() != null)
                 msgs = this.eBasicRemoveFromContainer(msgs);
-            }
-            if (newOwningRelatedElement != null) {
+            if (newOwningRelatedElement != null)
                 msgs = ((InternalEObject) newOwningRelatedElement).eInverseAdd(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
-            }
             msgs = this.basicSetOwningRelatedElement(newOwningRelatedElement, msgs);
-            if (msgs != null) {
+            if (msgs != null)
                 msgs.dispatch();
-            }
-        } else if (this.eNotificationRequired()) {
+        } else if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT, newOwningRelatedElement, newOwningRelatedElement));
-        }
     }
 
     /**
@@ -264,30 +236,6 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
                 .flatMap(fm -> fm.getOwnedRelatedElement().stream())
                 .toList();
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getConnector_ConnectorEnd(), endFeatures.size(), endFeatures.toArray());
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public boolean isIsDirected() {
-        return this.isDirected;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void setIsDirected(boolean newIsDirected) {
-        boolean oldIsDirected = this.isDirected;
-        this.isDirected = newIsDirected;
-        if (this.eNotificationRequired()) {
-            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR__IS_DIRECTED, oldIsDirected, this.isDirected));
-        }
     }
 
     /**
@@ -371,9 +319,8 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
             case SysmlPackage.CONNECTOR__OWNED_RELATED_ELEMENT:
                 return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getOwnedRelatedElement()).basicAdd(otherEnd, msgs);
             case SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT:
-                if (this.eInternalContainer() != null) {
+                if (this.eInternalContainer() != null)
                     msgs = this.eBasicRemoveFromContainer(msgs);
-                }
                 return this.basicSetOwningRelatedElement((Element) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -429,8 +376,6 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
                 return this.getSource();
             case SysmlPackage.CONNECTOR__TARGET:
                 return this.getTarget();
-            case SysmlPackage.CONNECTOR__IS_DIRECTED:
-                return this.isIsDirected();
             case SysmlPackage.CONNECTOR__ASSOCIATION:
                 return this.getAssociation();
             case SysmlPackage.CONNECTOR__CONNECTOR_END:
@@ -438,9 +383,8 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
             case SysmlPackage.CONNECTOR__RELATED_FEATURE:
                 return this.getRelatedFeature();
             case SysmlPackage.CONNECTOR__SOURCE_FEATURE:
-                if (resolve) {
+                if (resolve)
                     return this.getSourceFeature();
-                }
                 return this.basicGetSourceFeature();
             case SysmlPackage.CONNECTOR__TARGET_FEATURE:
                 return this.getTargetFeature();
@@ -475,9 +419,6 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
                 this.getTarget().clear();
                 this.getTarget().addAll((Collection<? extends Element>) newValue);
                 return;
-            case SysmlPackage.CONNECTOR__IS_DIRECTED:
-                this.setIsDirected((Boolean) newValue);
-                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -505,9 +446,6 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
             case SysmlPackage.CONNECTOR__TARGET:
                 this.getTarget().clear();
                 return;
-            case SysmlPackage.CONNECTOR__IS_DIRECTED:
-                this.setIsDirected(IS_DIRECTED_EDEFAULT);
-                return;
         }
         super.eUnset(featureID);
     }
@@ -532,8 +470,6 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
                 return this.source != null && !this.source.isEmpty();
             case SysmlPackage.CONNECTOR__TARGET:
                 return this.target != null && !this.target.isEmpty();
-            case SysmlPackage.CONNECTOR__IS_DIRECTED:
-                return this.isDirected != IS_DIRECTED_EDEFAULT;
             case SysmlPackage.CONNECTOR__ASSOCIATION:
                 return !this.getAssociation().isEmpty();
             case SysmlPackage.CONNECTOR__CONNECTOR_END:
@@ -611,15 +547,12 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy()) {
+        if (this.eIsProxy())
             return super.toString();
-        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isImplied: ");
         result.append(this.isImplied);
-        result.append(", isDirected: ");
-        result.append(this.isDirected);
         result.append(')');
         return result.toString();
     }

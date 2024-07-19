@@ -193,19 +193,16 @@ public class CalculationUsageImpl extends ActionUsageImpl implements Calculation
             case SysmlPackage.CALCULATION_USAGE__IS_MODEL_LEVEL_EVALUABLE:
                 return this.isIsModelLevelEvaluable();
             case SysmlPackage.CALCULATION_USAGE__FUNCTION:
-                if (resolve) {
+                if (resolve)
                     return this.getFunction();
-                }
                 return this.basicGetFunction();
             case SysmlPackage.CALCULATION_USAGE__RESULT:
-                if (resolve) {
+                if (resolve)
                     return this.getResult();
-                }
                 return this.basicGetResult();
             case SysmlPackage.CALCULATION_USAGE__CALCULATION_DEFINITION:
-                if (resolve) {
+                if (resolve)
                     return this.getCalculationDefinition();
-                }
                 return this.basicGetCalculationDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

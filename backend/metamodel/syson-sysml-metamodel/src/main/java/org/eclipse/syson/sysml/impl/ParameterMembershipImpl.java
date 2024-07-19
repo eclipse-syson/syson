@@ -12,9 +12,13 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 
@@ -81,12 +85,23 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
      * @generated
      */
     @Override
+    public FeatureDirectionKind parameterDirection() {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.PARAMETER_MEMBERSHIP__OWNED_MEMBER_PARAMETER:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedMemberParameter();
-                }
                 return this.basicGetOwnedMemberParameter();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -104,6 +119,20 @@ public class ParameterMembershipImpl extends FeatureMembershipImpl implements Pa
                 return this.basicGetOwnedMemberParameter() != null;
         }
         return super.eIsSet(featureID);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+        switch (operationID) {
+            case SysmlPackage.PARAMETER_MEMBERSHIP___PARAMETER_DIRECTION:
+                return this.parameterDirection();
+        }
+        return super.eInvoke(operationID, arguments);
     }
 
     /**

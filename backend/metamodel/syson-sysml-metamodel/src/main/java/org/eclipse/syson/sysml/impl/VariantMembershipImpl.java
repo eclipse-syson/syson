@@ -89,9 +89,8 @@ public class VariantMembershipImpl extends OwningMembershipImpl implements Varia
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.VARIANT_MEMBERSHIP__OWNED_VARIANT_USAGE:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedVariantUsage();
-                }
                 return this.basicGetOwnedVariantUsage();
         }
         return super.eGet(featureID, resolve, coreType);

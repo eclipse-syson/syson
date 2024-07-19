@@ -56,7 +56,6 @@ public class ConnectorItemProvider extends FeatureItemProvider {
             this.addRelatedElementPropertyDescriptor(object);
             this.addSourcePropertyDescriptor(object);
             this.addTargetPropertyDescriptor(object);
-            this.addIsDirectedPropertyDescriptor(object);
             this.addAssociationPropertyDescriptor(object);
             this.addConnectorEndPropertyDescriptor(object);
             this.addRelatedFeaturePropertyDescriptor(object);
@@ -176,25 +175,6 @@ public class ConnectorItemProvider extends FeatureItemProvider {
                 false,
                 true,
                 null,
-                null,
-                null));
-    }
-
-    /**
-     * This adds a property descriptor for the Is Directed feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addIsDirectedPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_Connector_isDirected_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_Connector_isDirected_feature", "_UI_Connector_type"),
-                SysmlPackage.eINSTANCE.getConnector_IsDirected(),
-                true,
-                false,
-                false,
-                ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
                 null,
                 null));
     }
@@ -320,7 +300,6 @@ public class ConnectorItemProvider extends FeatureItemProvider {
 
         switch (notification.getFeatureID(Connector.class)) {
             case SysmlPackage.CONNECTOR__IS_IMPLIED:
-            case SysmlPackage.CONNECTOR__IS_DIRECTED:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case SysmlPackage.CONNECTOR__OWNED_RELATED_ELEMENT:

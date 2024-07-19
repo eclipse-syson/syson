@@ -109,14 +109,12 @@ public class RequirementVerificationMembershipImpl extends RequirementConstraint
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__OWNED_REQUIREMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getOwnedRequirement();
-                }
                 return this.basicGetOwnedRequirement();
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__VERIFIED_REQUIREMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getVerifiedRequirement();
-                }
                 return this.basicGetVerifiedRequirement();
         }
         return super.eGet(featureID, resolve, coreType);

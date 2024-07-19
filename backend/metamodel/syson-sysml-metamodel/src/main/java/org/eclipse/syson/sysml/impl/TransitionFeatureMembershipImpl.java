@@ -118,7 +118,7 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
      * @generated NOT
      */
     public Step basicGetTransitionFeature() {
-        return getOwnedRelatedElement().stream()
+        return this.getOwnedRelatedElement().stream()
                 .filter(Step.class::isInstance)
                 .map(Step.class::cast)
                 .findFirst()
@@ -209,7 +209,7 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
     /**
      * <!-- begin-user-doc --> Redefines getter generated from eAnnotation <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Feature getOwnedMemberFeature() {
