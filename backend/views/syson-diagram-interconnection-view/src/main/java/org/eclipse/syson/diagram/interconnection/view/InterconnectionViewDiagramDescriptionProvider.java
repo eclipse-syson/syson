@@ -87,6 +87,7 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
                 new FakeNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new RootNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new FirstLevelChildUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), "getPartUsages", colorProvider, this.getDescriptionNameGenerator()),
+                new FirstLevelChildUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), "getActionUsages", colorProvider, this.getDescriptionNameGenerator()),
                 new ChildUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), colorProvider, this.getDescriptionNameGenerator()),
                 new RootPortUsageBorderNodeDescriptionProvider("getPortUsages", colorProvider, this.getDescriptionNameGenerator()),
                 new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),

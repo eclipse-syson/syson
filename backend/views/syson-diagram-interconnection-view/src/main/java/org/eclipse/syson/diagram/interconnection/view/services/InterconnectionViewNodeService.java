@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
@@ -75,6 +76,25 @@ public class InterconnectionViewNodeService extends ViewNodeService {
             this.logger.warn("Cannot get {} from the provided element {}", PortUsage.class.getSimpleName(), element);
         }
         return portUsages;
+    }
+
+    /**
+     * Returns the {@link ActionUsage} instances contained in the provided {@code element}.
+     *
+     * @param element
+     *            the parent element
+     * @return the {@link ActionUsage} instances contained in the provided {@code element}
+     */
+    public List<ActionUsage> getActionUsages(Element element) {
+        List<ActionUsage> actionUsages = List.of();
+        if (element instanceof Usage usage) {
+            actionUsages = usage.getNestedAction();
+        } else if (element instanceof Definition definition) {
+            actionUsages = definition.getOwnedAction();
+        } else {
+            this.logger.warn("Cannot get {} from the provided element {}", ActionUsage.class.getSimpleName(), element);
+        }
+        return actionUsages;
     }
 
     public boolean isInPort(PortUsage portUsage) {
