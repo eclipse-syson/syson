@@ -80,11 +80,13 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optRootDefinitionNodeDescription = cache.getNodeDescription(this.getName());
         var optFirstLevelChildPartUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
+        var optFirstLevelChildActionUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getActionUsage()));
         var optRootPortUsageBorderNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME);
 
         NodeDescription nodeDescription = optRootDefinitionNodeDescription.get();
         diagramDescription.getNodeDescriptions().add(nodeDescription);
         nodeDescription.getChildrenDescriptions().add(optFirstLevelChildPartUsageNodeDescription.get());
+        nodeDescription.getChildrenDescriptions().add(optFirstLevelChildActionUsageNodeDescription.get());
         nodeDescription.getBorderNodesDescriptions().add(optRootPortUsageBorderNodeDescription.get());
         nodeDescription.setPalette(this.createNodePalette(cache));
     }
@@ -155,6 +157,9 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
                 .nodeTools(
                         this.toolDescriptionService.createNodeTool(cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage())).get(),
                                 SysmlPackage.eINSTANCE.getPartUsage(),
+                                NodeContainmentKind.CHILD_NODE),
+                        this.toolDescriptionService.createNodeTool(cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getActionUsage())).get(),
+                                SysmlPackage.eINSTANCE.getActionUsage(),
                                 NodeContainmentKind.CHILD_NODE),
                         this.toolDescriptionService.createNodeTool(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE),
                         this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN),

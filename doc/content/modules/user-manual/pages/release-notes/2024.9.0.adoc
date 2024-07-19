@@ -50,5 +50,6 @@ The changes are:
 - Allow the creation of a StateTransitionView diagram on a _StateUsage_/_StateDefinition_
 - The _InterfaceUsage_ created by the New Interface edge tool in the Interconnection View diagram are now created under closest containing _Definition_/_Package_.
 - Simplify the implementation of the Interconnection View diagram and remove duplicated code
+- Add action node in Interconnection View diagram
 
 == New features
