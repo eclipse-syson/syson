@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeService;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -34,7 +34,7 @@ import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Usage;
 
 /**
- * Edge-related Java services used by the {@link InterconnectionViewForUsageDiagramDescriptionProvider}.
+ * Edge-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
  *
  * @author arichard
  */

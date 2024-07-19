@@ -12,14 +12,19 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
@@ -28,16 +33,16 @@ import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptio
 import org.eclipse.syson.diagram.interconnection.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.InterfaceUsageEdgeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenPartUsageCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.ChildUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenUsageCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.FakeNodeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.nodes.FirstLevelChildPartUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.FirstLevelChildUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.PortUsageBorderNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.RootNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.RootPortUsageBorderNodeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.nodes.RootUsageNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -45,47 +50,65 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  *
  * @author arichard
  */
-public class InterconnectionViewForUsageDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
+public class InterconnectionViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
     public static final String DESCRIPTION_NAME = "Interconnection View";
 
+    public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
+            Map.entry(SysmlPackage.eINSTANCE.getPartUsage(), List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute())));
+
+    public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_FREE_FORM_ITEMS = Map.ofEntries(
+            Map.entry(SysmlPackage.eINSTANCE.getPartUsage(), List.of(SysmlPackage.eINSTANCE.getUsage_NestedPart())));
+
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private final IDescriptionNameGenerator nameGenerator = new IVDescriptionNameGenerator();
+    private final IVDescriptionNameGenerator nameGenerator = new IVDescriptionNameGenerator();
 
     private final ToolDescriptionService toolDescriptionService = new ToolDescriptionService(this.nameGenerator);
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getUsage());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement());
 
         var diagramDescriptionBuilder = this.diagramBuilderHelper.newDiagramDescription();
         diagramDescriptionBuilder
                 .autoLayout(false)
                 .domainType(domainType)
+                .preconditionExpression(domainType)
+                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
                 .name(DESCRIPTION_NAME)
                 .titleExpression(DESCRIPTION_NAME);
 
         var diagramDescription = diagramDescriptionBuilder.build();
 
         var cache = new ViewDiagramElementFinder();
-        var diagramElementDescriptionProviders = List.of(
+        var diagramElementDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
+        diagramElementDescriptionProviders.addAll(List.of(
                 new FakeNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
-                new RootUsageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
-                new FirstLevelChildPartUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedPart(), colorProvider, this.getDescriptionNameGenerator()),
-                new ChildPartUsageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
-                new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getDescriptionNameGenerator()),
-                new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getDescriptionNameGenerator()),
-                new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), colorProvider, this.getDescriptionNameGenerator()),
-                new ChildrenPartUsageCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
-                new RootPortUsageBorderNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.getDescriptionNameGenerator()),
+                new RootNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new FirstLevelChildUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), "getPartUsages", colorProvider, this.getDescriptionNameGenerator()),
+                new ChildUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), colorProvider, this.getDescriptionNameGenerator()),
+                new RootPortUsageBorderNodeDescriptionProvider("getPortUsages", colorProvider, this.getDescriptionNameGenerator()),
                 new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new AllocateEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
-                new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
-                new CompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getElement_Documentation(), colorProvider, this.getDescriptionNameGenerator()),
-                new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getElement_Documentation(), colorProvider, this.getDescriptionNameGenerator())
-        );
+                new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator())
+        ));
+
+        COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
+            listItems.forEach(eReference -> {
+                diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                diagramElementDescriptionProviders.add(new CompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+                diagramElementDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator()));
+            });
+        });
+
+        COMPARTMENTS_WITH_FREE_FORM_ITEMS.forEach((eClass, listItems) -> {
+            listItems.forEach(eReference -> {
+                diagramElementDescriptionProviders.add(new ChildrenUsageCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(),
+                        colorProvider, this.getDescriptionNameGenerator()));
+            });
+        });
 
         diagramElementDescriptionProviders.stream()
                 .map(IDiagramElementDescriptionProvider::create)
@@ -98,7 +121,7 @@ public class InterconnectionViewForUsageDiagramDescriptionProvider implements IR
         return diagramDescription;
     }
 
-    protected IDescriptionNameGenerator getDescriptionNameGenerator() {
+    protected IVDescriptionNameGenerator getDescriptionNameGenerator() {
         return this.nameGenerator;
     }
 

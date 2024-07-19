@@ -15,6 +15,8 @@ package org.eclipse.syson.diagram.interconnection.view.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
@@ -24,22 +26,27 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.interconnection.view.tools.ChildrenPartUsageCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the free form compartment used by the {@link FirstLevelChildPartUsageNodeDescriptionProvider}.
+ * Used to create the free form compartment used by the {@link FirstLevelChildUsageNodeDescriptionProvider}.
  *
  * @author arichard
  */
-public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class ChildrenUsageCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public ChildrenPartUsageCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), colorProvider, nameGenerator);
+    public ChildrenUsageCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IVDescriptionNameGenerator nameGenerator) {
+        super(eClass, eReference, colorProvider, nameGenerator);
+    }
+
+    @Override
+    protected IVDescriptionNameGenerator getDescriptionNameGenerator() {
+        return (IVDescriptionNameGenerator) super.getDescriptionNameGenerator();
     }
 
     @Override
@@ -62,7 +69,7 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, this.eReference));
-        var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
+        var optChildPartUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getChildNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
 
         NodeDescription compartmentFreeFormNodeDescription = optCompartmentFreeFormNodeDescription.get();
         NodeDescription childPartUsageNodeDescription = optChildPartUsageNodeDescription.get();
@@ -75,8 +82,8 @@ public class ChildrenPartUsageCompartmentNodeDescriptionProvider extends Abstrac
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME).ifPresent(droppableNodes::add);
-        cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getChildNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 

@@ -12,21 +12,69 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.services;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
+import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.Usage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Node-related Java services used by the {@link InterconnectionViewForUsageDiagramDescriptionProvider}.
+ * Node-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
  *
  * @author gdaniel
  */
 public class InterconnectionViewNodeService extends ViewNodeService {
 
+    private final Logger logger = LoggerFactory.getLogger(InterconnectionViewNodeService.class);
+
     public InterconnectionViewNodeService(IObjectService objectService) {
         super(objectService);
+    }
+
+    /**
+     * Returns the {@link PartUsage} instances contained in the provided {@code element}.
+     *
+     * @param element
+     *            the parent element
+     * @return the {@link PartUsage} instances contained in the provided {@code element}
+     */
+    public List<PartUsage> getPartUsages(Element element) {
+        List<PartUsage> partUsages = List.of();
+        if (element instanceof Usage usage) {
+            partUsages = usage.getNestedPart();
+        } else if (element instanceof Definition definition) {
+            partUsages = definition.getOwnedPart();
+        } else {
+            this.logger.warn("Cannot get {} from the provided element {}", PartUsage.class.getSimpleName(), element);
+        }
+        return partUsages;
+    }
+
+    /**
+     * Returns the {@link PortUsage} instances contained in the provided {@code element}.
+     *
+     * @param element
+     *            the parent element
+     * @return the {@link PortUsage} instances contained in the provided {@code element}
+     */
+    public List<PortUsage> getPortUsages(Element element) {
+        List<PortUsage> portUsages = List.of();
+        if (element instanceof Usage usage) {
+            portUsages = usage.getNestedPort();
+        } else if (element instanceof Definition definition) {
+            portUsages = definition.getOwnedPort();
+        } else {
+            this.logger.warn("Cannot get {} from the provided element {}", PortUsage.class.getSimpleName(), element);
+        }
+        return portUsages;
     }
 
     public boolean isInPort(PortUsage portUsage) {

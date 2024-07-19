@@ -30,8 +30,7 @@ import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptio
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewJavaServiceProvider;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.GeneralViewJavaServiceProvider;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForDefinitionDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewJavaServiceProvider;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewJavaServiceProvider;
@@ -60,8 +59,7 @@ public class JavaServiceTests {
         List<IRepresentationDescriptionProvider> representationDescriptionProviders = List.of(
                 new ActionFlowViewDiagramDescriptionProvider(),
                 new GeneralViewDiagramDescriptionProvider(),
-                new InterconnectionViewForDefinitionDiagramDescriptionProvider(),
-                new InterconnectionViewForUsageDiagramDescriptionProvider(),
+                new InterconnectionViewDiagramDescriptionProvider(),
                 new StateTransitionViewDiagramDescriptionProvider()
         );
         representationDescriptionProviders.forEach(provider -> {

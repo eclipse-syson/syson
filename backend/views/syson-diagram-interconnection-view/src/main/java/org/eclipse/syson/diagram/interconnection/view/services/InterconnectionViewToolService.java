@@ -12,8 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.services;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -24,20 +27,24 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewToolService;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.nodes.ChildPartUsageNodeDescriptionProvider;
-import org.eclipse.syson.diagram.interconnection.view.nodes.FirstLevelChildPartUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.services.ElementInitializerSwitch;
+import org.eclipse.syson.services.NodeDescriptionService;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Tool-related Java services used by the {@link InterconnectionViewForUsageDiagramDescriptionProvider}.
+ * Tool-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
  *
  * @author arichard
  */
 public class InterconnectionViewToolService extends ViewToolService {
+
+    private final Logger logger = LoggerFactory.getLogger(InterconnectionViewToolService.class);
 
     private final ElementInitializerSwitch elementInitializerSwitch;
 
@@ -73,36 +80,41 @@ public class InterconnectionViewToolService extends ViewToolService {
         PartUsage childPart = SysmlFactory.eINSTANCE.createPartUsage();
         membership.getOwnedRelatedElement().add(childPart);
         this.elementInitializerSwitch.doSwitch(childPart);
-        Node parentNode = this.getRealParentNode(selectedNode, convertedNodes);
+        Node parentNode = this.getRealParentNode(childPart, partUsage, selectedNode, convertedNodes);
         if (parentNode != null) {
             this.createView(childPart, editingContext, diagramContext, parentNode, convertedNodes);
         }
         return childPart;
     }
 
-    private Node getRealParentNode(Node selectedNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+    private Node getRealParentNode(Element childElement, Element parentElement, Node selectedNode, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         Node parentNode = null;
-        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> nodeChildPartUsage = convertedNodes.keySet().stream()
-                .filter(n -> FirstLevelChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
-        if (nodeChildPartUsage.isPresent()) {
-            NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
-            if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
-                parentNode = selectedNode.getChildNodes().get(1);
+        Optional<NodeDescription> nodeDescription = convertedNodes.values().stream()
+                .filter(description -> Objects.equals(description.getId(), selectedNode.getDescriptionId()))
+                .findFirst();
+
+        List<NodeDescription> allChildNodeDescriptions = nodeDescription.map(nodeDesc -> Stream.concat(
+                nodeDesc.getChildNodeDescriptions().stream(),
+                convertedNodes.values().stream().filter(convNode -> nodeDesc.getReusedChildNodeDescriptionIds().contains(convNode.getId())))
+                .toList())
+                .orElse(List.of());
+
+        NodeDescriptionService nodeDescriptionService = new NodeDescriptionService();
+        List<NodeDescription> compartmentCandidates = nodeDescriptionService.getNodeDescriptionsForRenderingElementAsChild(childElement, parentElement, allChildNodeDescriptions, convertedNodes);
+        if (!compartmentCandidates.isEmpty()) {
+            if (compartmentCandidates.size() > 1) {
+                this.logger.warn("Multiple compartment candidates found for {} in {}.", childElement.eClass().getName(), selectedNode.toString());
             }
+            parentNode = selectedNode.getChildNodes().stream()
+                    .filter(childNode -> Objects.equals(childNode.getDescriptionId(), compartmentCandidates.get(0).getId()))
+                    .findFirst()
+                    .orElse(null);
         }
-        if (parentNode == null) {
-            nodeChildPartUsage = convertedNodes.keySet().stream()
-                    .filter(n -> ChildPartUsageNodeDescriptionProvider.NAME.equals(n.getName())).findFirst();
-            if (nodeChildPartUsage.isPresent()) {
-                NodeDescription nodeDescription = convertedNodes.get(nodeChildPartUsage.get());
-                if (nodeDescription != null && nodeDescription.getId().equals(selectedNode.getDescriptionId())) {
-                    parentNode = selectedNode.getChildNodes().get(1);
-                }
-            }
-        }
+
         if (parentNode == null) {
             parentNode = selectedNode;
         }
+
         return parentNode;
     }
 }

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.syson.util.DescriptionNameGenerator;
 
 /**
@@ -23,5 +24,13 @@ public class IVDescriptionNameGenerator extends DescriptionNameGenerator {
 
     public IVDescriptionNameGenerator() {
         super("IV");
+    }
+
+    public String getFirstLevelNodeName(EClass eClass) {
+        return this.getName(this.getDiagramPrefix(), "FirstLevelNode", eClass.getName());
+    }
+
+    public String getChildNodeName(EClass eClass) {
+        return this.getName(this.getDiagramPrefix(), "ChildNode", eClass.getName());
     }
 }

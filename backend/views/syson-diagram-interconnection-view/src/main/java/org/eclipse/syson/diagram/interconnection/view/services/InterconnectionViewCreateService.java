@@ -12,10 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.services;
 
+import java.util.List;
+
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
@@ -28,9 +31,10 @@ import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
- * Creation-related Java services used by the {@link InterconnectionViewForUsageDiagramDescriptionProvider}.
+ * Creation-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
  *
  * @author arichard
  */
@@ -112,5 +116,14 @@ public class InterconnectionViewCreateService extends ViewCreateService {
             owner = owner.eContainer();
         }
         return (Namespace) owner;
+    }
+
+    public boolean canCreateDiagram(Element element) {
+        List<EClass> acceptedRootTypes = List.of(
+                SysmlPackage.eINSTANCE.getUsage(),
+                SysmlPackage.eINSTANCE.getDefinition());
+        // Use strict equality here and not EClass#isSuperTypeOf, we want to precisely select which element
+        // types can be used as root.
+        return acceptedRootTypes.stream().anyMatch(rootType -> rootType.isSuperTypeOf(element.eClass()));
     }
 }
