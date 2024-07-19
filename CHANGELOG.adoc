@@ -33,10 +33,10 @@ The changes are:
 
 - https://github.com/eclipse-syson/syson/issues/538[#538] [general-view] Add actions in _PartUsage_ and _PartDefinition_
 - https://github.com/eclipse-syson/syson/issues/554[#554] [general-view] Add states in _PartUsage_ and _PartDefinition_
-- https://github.com/eclipse-syson/syson/issues/393[#393] [general-view] Add exhibit states on General View diagram
+- https://github.com/eclipse-syson/syson/issues/393[#393] [general-view] Add _ExhibitStates_ on General View diagram
 - https://github.com/eclipse-syson/syson/issues/557[#557] [state-transition-view] Allow the creation of a StateTransitionView diagram on a _PartUsage_/_PartDefinition_
 - https://github.com/eclipse-syson/syson/issues/558[#558] [state-transition-view] Allow the creation of a StateTransitionView diagram on a _StateUsage_/_StateDefinition_
-- https://github.com/eclipse-syson/syson/issues/261[#261] [interconnection-view] The _InterfaceUsage_ created by the New Interface edge tool in the Interconnection View diagram are now created under closest containing Definition/Package.
+- https://github.com/eclipse-syson/syson/issues/261[#261] [interconnection-view] The _InterfaceUsage_ created by the New Interface edge tool in the Interconnection View diagram are now created under closest containing _Definition_/_Package_.
 
 === New features
 

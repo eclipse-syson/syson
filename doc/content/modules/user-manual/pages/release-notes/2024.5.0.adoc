@@ -33,7 +33,7 @@ It has been deleted in this release.
 image::release-notes-attribut-compartmen-interconnection-view.png[Attribute compartment from {iv}]
 
 - No error is raised anymore when setting a valid new value (with primitive type) in the Details view.
-- The body feature of a `Comment` remove now the "/\*" and "*/" characters while importing a model from Sysml textual format.
+- The body feature of a `Comment` remove now the "/\*" and "*/" characters while importing a model from SysML textual format.
 - All `Memberships` are now contained in their parent through `ownedRelatedElement` instead of `ownedRelationship` reference.
 - Rename action from explorer is now renaming tree items as expected.
 - `EnumerationDefinition` is now created with a default name.
@@ -43,7 +43,7 @@ image::release-notes-enumeration-definition.png[Enumeration definition node]
 - "Add existing element (recursive)" action has been updated to create child nodes for nested and owned usages at the root of the diagram.
 - While importing some of the standard examples, there are no more exception mainly when some of examples are linked to non resolved elements.
 - Hide capabilities have been restored and improved in the palette.
-It's now possible to hide a node but also all its content (recursive) or symply direct content (Shhow valued content action).
+It's now possible to hide a node but also all its content (recursive) or simply direct content (Show valued content action).
 
 image::release-notes-hide-capabilities.png[Restore and Improve hide capabilities]
 
@@ -59,7 +59,7 @@ image::release-notes-avoid-nestedPart-cycle.png[Avoid nested part cycle]
 - Time performance has been improved when using `Become nested part` edge creation tool.
 - `state transition` and `actions` compartments are now available on `StateDefinition` and `StateUsage` node.
 
-image::release-notes-state-transition-cpt.png[State transition compatment]
+image::release-notes-state-transition-cpt.png[State transition compartment]
 
 - Inherited features in compartments don't display itself anymore.
 
@@ -119,7 +119,7 @@ image::release-notes-requirements.png[Requirements]
 
 image::release-notes-become-nested-attribute.png[Become nested attribute edge tool]
 
-- Creation tools (mainly `AttributeUsage`, `PartUsage`, `PortUsage` `ItemUsage`) have been addded in `ActionUsage`, `ConstraintUsage`, `InterfaceDefinition`, `RequirementDefinition` and `PortUsage`.
+- Creation tools (mainly `AttributeUsage`, `PartUsage`, `PortUsage` `ItemUsage`) have been added in `ActionUsage`, `ConstraintUsage`, `InterfaceDefinition`, `RequirementDefinition` and `PortUsage`.
 - `UseCaseDefinition` and `UseCaseUsage` elements are now handled in {gv}.
 
 image::release-notes-handle-usecase.png[Handle Usecase elements]
