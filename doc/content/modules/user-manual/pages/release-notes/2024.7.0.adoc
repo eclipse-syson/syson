@@ -1,0 +1,145 @@
+= 2024.7.0
+
+== Key highlights
+
+- *Expanded Diagram and Model Support*: We've significantly expanded our support for various elements and tools.
+- *Increased Stability and Reliability*: We've addressed several key bugs and stability issues including fixing problems with diagrams and import capabilities.
+These improvements help maintain the integrity and accuracy of semantic data.
+
+== Breaking changes
+
+- Add standard libraries and new models now have a root Namespace to conform with KerML/SysML specifications.
+- Generalization of StateTransition descriptions.
+  * Rename `AbstractDiagramDescriptionProvider` `nameGenerator` as `descriptionNameGenerator`. Impacted concrete implementations: `ActionFlowViewDiagramDescriptionProvider`, `GeneralViewDiagramDescriptionProvider`,  `InterconnectionViewForDefinitionDiagramDescriptionProvider`, `InterconnectionViewForUsageDiagramDescriptionProvider`, `StateTransitionViewDiagramDescriptionProvider`.
+  * Rename `syson-diagram-statetransition-view` `CompartmentNodeDescriptionProvider` as `StateTransitionActionsCompartmentNodeDescriptionProvider`.
+  * `StateTransitionViewEdgeService` removed, services moved to `ViewEdgeService` and `ViewLabelService`.
+  * `StateTransitionActionToolProvider` moved to `syson-diagram-common-view`
+  * `StateTransitionCompartmentNodeToolProvider` moved to `syson-diagram-common-view`
+  * `createState` and `createOwnedAction` services moved to `ViewToolService`
+- Switch to sirius-web domain driven design architecture.
+Please download your existing SysON projects before moving to this new version.
+A reset of the database is needed.
+- Code refactoring:
+  * Move `AbstractDiagramDescriptionProvider#createNodeToolFromDiagramBackground(NodeDescription, EClassifier)` to new `ToolDescriptionService`
+  * Move `AbstractViewElementDescriptionProvider#addExistingElementsTool(boolean)` to new `ToolDescriptionService`
+  * Remove `AbstractViewElementDescriptionProvider`
+  * Move `createDropFromExplorerTool` to new `ToolDescriptionService`
+  * Move and rename `AbstractDiagramDescriptionProvider.addElementsToolSection(IViewDiagramElementFinder)` to `ToolDescriptionService#addElementsDiagramToolSection()`
+  * Move and rename `AbstractNodeDescriptionProvider#addExistingElementsTool()` to `ToolDescriptionService#addElementsNodeToolSection()`
+  * Remove `AbstractDiagramDescriptionProvider`
+  * Rename `StateTransitionActionToolProvider` to `StateTransitionActionCompartmentToolProvider`
+  * Move `AbstractViewNodeToolSectionSwitch#buildCreateSection(NodeTool...)` to `ToolDescriptionService#buildCreateSection(NodeTool...)`
+  * Merge `AbstractViewNodeToolSectionSwitch#addElementsToolSection()` and `AbstractViewNodeToolSectionSwitch#addExistingNestedElementsTool()` in `ToolDescriptionService#addElementsNodeToolSection(boolean)`
+- `ViewLabelService#getCompartmentItemUsageLabel` has been renamed to `ViewLabelService#getCompartmentItemLabel`.
+- `ViewLabelService#getUsageInitialDirectEditLabel` has been renamed to `ViewLabelService#getInitialDirectEditLabel`.
+- `AbstractViewNodeToolSectionSwitch#createNestedUsageNodeTool` has been deleted. Please use `ToolDescriptionService#createNodeTool` instead
+- `AbstractCompartmentNodeDescriptionProvider#getItemCreationToolProvider` has been renamed to `getItemCreationToolProviders` and now returns a list of `INodeToolProvider`.
+
+== Dependencies update
+
+- Switch to https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.7.0[Sirius Web v2024.7.0]
+- Switch to @ObeoNetwork/gantt-task-react 0.4.19
+- Switch to EMF Json 2.3.12
+- Switch to Spring Boot 3.2.5
+- Switch to `@apollo/client` 3.10.4
+- Switch to `graphql` 16.8.1
+- Switch to `vite` 5.2.11, `vitest` 1.6.0, `@vitest/coverage-v8` 1.6.0 and `@vitejs/plugin-react` 4.3.0
+- Switch to `typescript` 5.4.5
+- Switch to `turbo` 1.13.3
+- Switch to `jacoco` 0.8.12
+- Switch to `maven-checkstyle-plugin` 3.3.1
+- Switch to `subscriptions-transport-ws` 0.11.0
+- Remove the dependency to `reflect-metadata`
+- Add test dependency to Cypress 12.11.0 (only required to execute integration tests)
+
+== Bug fixes
+
+- Fix an issue where the direct edit of single digit cardinalities were not taken into account.
+
+image::release-notes-direct-edit-cardinality.png[Direct edit cardinality]
+
+- Fix an issue where _Allocate_ edges were not displayed in the Action Flow View diagram.
+
+image::release-notes-afv-allocate.png[Action Flow View - Allocate edges]
+
+- Fix an issue where the computation of _Succession_ was sometimes wrong.
+- Fix the owner _Membership_ of dropped elements.
+
+- Fix names used during textual export of _FeatureValue_ elements.
+- Fix names used during textual export of _MetadataDefinition_ elements.
+- Fix names used during textual export of _FeatureChainExpression_ elements.
+- Fix missing parts of _InvocationExpression_ elements during textual export.
+- Fix missing element names in the _Expression_ element during textual export.
+- Fix an issue where the simple quotes were not escaped when exporting as textual files.
+- Fix an issue where models were exported with a global indentation instead of no indentation. 
+- Fix textual import of _Documentation_ elements by removing /* */ around texts.
+- Fix an issue where the _Adjust size_ tool had no effect on Packages nodes.
+
+image::release-notes-diagrams-package-adjust-size.png[Package Adjust size tool]
+
+- Fix an issue where the double quotes were set along with the string value in case of a direct edit of the value part.
+- Allow the creation of sub-Packages in the model explorer
+
+== Improvements
+
+- Add root _Namespace_ to SysON models and libraries to conform to SysMLv2 specification.
+
+image::release-notes-root-namespace.png[Root Namespace]
+
+- Improve support for whitespace, quotes, and special characters in direct edit.
+- Handle start and done actions in Action Flow View & General View diagrams.
+- Add _State_ and _StateDefinition_ in the General View diagram.
+- Add Transition source and target to Core properties in the Details view.
+
+image::release-notes-details-view-transition.png[Details View Transition]
+
+- All _redefines_ references of the SysMLv2 metamodel have been implemented.
+- The textual import running process have been improved.
+By default, end users don't have to copy _syside-cli.js_ near the _syson-application_ jar anymore.
+The embedded _syside-cli.js_ is copied in a system temp folder and executed from there (with node).
+But, if you encounter execution rights problem, you can still copy _syside-cli.js_ in a place where you have the appropriate rights and use the _org.eclipse.syson.syside.path_ application option.
+- Property "Typed by" is now always visible in the Details view for _Feature_ elements, even if the _Feature_ doesn't have a type yet.
+
+image::release-notes-details-view-typed-by-property.png[Details View Typed by]
+
+- Rename creation tools for Start and Done actions (from Add Start/Done to New Start/Done)
+- Reduce the default height of the Package node in diagrams 
+- Move Feature#direction in Core properties tab of the Details view
+- Sort New Object menu entries
+- Add Direct Edit tool in _Control_ (_ForkNode_, _JoinNode_...) nodes palettes
+- Allow multiple occurrences of Start and Done actions in actions compartments.
+- Rewrite textual import. It is still an experimental feature but should now be faster and accurate.
+- Rewrite the _addExistingElement_ tool.
+The tool now works correctly on packages, and doesn't render sibling elements when their semantic element has been rendered by another node (e.g. in a compartment).
+- The empty/null values for _Subsetting_/_Redefinition_/_Subclassification_/_FeatureTyping_ are not displayed anymore in diagram node labels.
+- Add tools for creating Ports with direction
+- Add tools for creation Items with direction
+- Change the default name of the transition element to _source_to_target_
+- Provide new icons for State, Conjugation, Port (in,in/out,out) and Item (in,in/out,out).
+- Add tools to create Items and Parts in Port and PortDefinition
+
+image::release-notes-port-item-tool.png[Create Items and Parts in Port and PortDefinition]
+
+- Add tool to create Requirements in RequirementDefinition
+
+image::release-notes-reqdef-req-tool.png[Create Requirements in RequirementDefinition]
+
+- Add tools for creating _Items_ on _ActionDefinition_ in GeneralView and ActionFlowView.
+- AcceptAction is now available inside an Action body
+- Add private and protected visibility decorators on all elements
+
+image::release-notes-visibility-icons.png[Visibility icons]
+
+== New features
+
+- Add Cypress test infrastructure and execute the Cypress tests as part of pull request checks.
+- Add integration test infrastructure
+- Initial contribution of this documentation
+- Handle the _JoinNode_, _MergeNode_, _ForkNode_, _DecisionNode_ elements in actions compartments.
+
+image::release-notes-afv-control-nodes.png[Control nodes]
+
+- Handle the _ExhibitState_ elements in diagrams
+- Add new documentation compartment on all existing nodes in all diagrams.
+
+image::release-notes-doc-compartment.png[Doc compartment]
