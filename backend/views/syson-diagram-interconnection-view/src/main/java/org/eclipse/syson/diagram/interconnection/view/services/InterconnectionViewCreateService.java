@@ -17,11 +17,14 @@ import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptio
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
+import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -38,12 +41,12 @@ public class InterconnectionViewCreateService extends ViewCreateService {
     }
 
     public BindingConnectorAsUsage createBindingConnectorAsUsage(PortUsage sourcePort, PortUsage targetPort) {
-        Namespace owningNamespace = sourcePort.getOwningNamespace();
-        if (owningNamespace == null) {
+        Namespace bindingContainer = this.getClosestContainingDefinitionOrPackageFrom(sourcePort);
+        if (bindingContainer == null) {
             return null;
         }
         FeatureMembership featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        owningNamespace.getOwnedRelationship().add(featureMembership);
+        bindingContainer.getOwnedRelationship().add(featureMembership);
 
         BindingConnectorAsUsage bindingConnectorAsUsage = SysmlFactory.eINSTANCE.createBindingConnectorAsUsage();
         bindingConnectorAsUsage.setDeclaredName("bind");
@@ -71,12 +74,12 @@ public class InterconnectionViewCreateService extends ViewCreateService {
     }
 
     public InterfaceUsage createInterfaceUsage(PortUsage sourcePort, PortUsage targetPort) {
-        Namespace owningNamespace = sourcePort.getOwningNamespace();
-        if (owningNamespace == null) {
+        Namespace interfaceContainer = this.getClosestContainingDefinitionOrPackageFrom(sourcePort);
+        if (interfaceContainer == null) {
             return null;
         }
         FeatureMembership featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        owningNamespace.getOwnedRelationship().add(featureMembership);
+        interfaceContainer.getOwnedRelationship().add(featureMembership);
 
         InterfaceUsage interfaceUsage = SysmlFactory.eINSTANCE.createInterfaceUsage();
         interfaceUsage.setDeclaredName("connect");
@@ -101,5 +104,13 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         targetReferenceSubsetting.setReferencedFeature(targetPort);
 
         return interfaceUsage;
+    }
+
+    private Namespace getClosestContainingDefinitionOrPackageFrom(Element element) {
+        var owner = element.eContainer();
+        while (!(owner instanceof Package || owner instanceof Definition) && owner != null) {
+            owner = owner.eContainer();
+        }
+        return (Namespace) owner;
     }
 }
