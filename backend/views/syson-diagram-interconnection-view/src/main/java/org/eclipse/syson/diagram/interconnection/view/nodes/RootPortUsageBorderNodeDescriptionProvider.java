@@ -15,7 +15,6 @@ package org.eclipse.syson.diagram.interconnection.view.nodes;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -32,7 +31,6 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -49,11 +47,11 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    private final EReference reference;
+    private final String semanticCandidateService;
 
-    public RootPortUsageBorderNodeDescriptionProvider(EReference reference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public RootPortUsageBorderNodeDescriptionProvider(String semanticCandidateService, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
-        this.reference = Objects.requireNonNull(reference);
+        this.semanticCandidateService = Objects.requireNonNull(semanticCandidateService);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
@@ -66,7 +64,7 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
                 .domainType(domainType)
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(NAME)
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + this.reference.getName())
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression(this.semanticCandidateService))
                 .style(this.createPortUnsetNodeStyle())
                 .conditionalStyles(this.createPortUsageConditionalNodeStyles().toArray(ConditionalNodeStyle[]::new))
                 .userResizable(UserResizableDirection.NONE)

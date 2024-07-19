@@ -25,7 +25,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Used to create a Compartment node description inside the Interconnection View
- * {@link FirstLevelChildPartUsageNodeDescriptionProvider}.
+ * {@link FirstLevelChildUsageNodeDescriptionProvider}.
  *
  * @author arichard
  */

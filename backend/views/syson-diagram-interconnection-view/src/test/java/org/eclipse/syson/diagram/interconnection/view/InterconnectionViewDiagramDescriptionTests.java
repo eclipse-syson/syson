@@ -53,7 +53,7 @@ import org.junit.jupiter.api.Test;
  *
  * @author gdaniel
  */
-public class InterconnectionViewForUsageDiagramDescriptionTests {
+public class InterconnectionViewDiagramDescriptionTests {
 
     private List<Class<?>> diagramServices;
 
@@ -68,7 +68,7 @@ public class InterconnectionViewForUsageDiagramDescriptionTests {
         ViewBuilder viewBuilder = new ViewBuilder();
         View view = viewBuilder.build();
         IColorProvider colorProvider = new ColorProvider(view);
-        IRepresentationDescriptionProvider representationDescriptionProvider = new InterconnectionViewForUsageDiagramDescriptionProvider();
+        IRepresentationDescriptionProvider representationDescriptionProvider = new InterconnectionViewDiagramDescriptionProvider();
         this.diagramDescription = (DiagramDescription) representationDescriptionProvider.create(colorProvider);
         view.getDescriptions().add(this.diagramDescription);
         IJavaServiceProvider serviceProvider = new InterconnectionViewJavaServiceProvider();
@@ -121,7 +121,7 @@ public class InterconnectionViewForUsageDiagramDescriptionTests {
                         .and(this.diagramPredicates.isCompartmentNode().negate())
                         .and(this.diagramPredicates.isInheritedCompartmentItemNode().negate()))
                 // It isn't allowed to delete the root usage of the diagram.
-                .filter(this.diagramPredicates.hasName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getUsage())).negate())
+                .filter(this.diagramPredicates.hasName(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getElement())).negate())
                 .toList();
         new NodeDescriptionHasDeleteToolChecker().checkAll(nodeDescriptionCandidates);
     }

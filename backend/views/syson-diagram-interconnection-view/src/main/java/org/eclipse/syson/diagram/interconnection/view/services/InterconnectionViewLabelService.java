@@ -14,12 +14,12 @@ package org.eclipse.syson.diagram.interconnection.view.services;
 
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
-import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewForUsageDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.PortUsage;
 
 /**
- * Label-related Java services used by the {@link InterconnectionViewForUsageDiagramDescriptionProvider}.
+ * Label-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
  *
  * @author arichard
  */

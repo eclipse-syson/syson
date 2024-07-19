@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.FreeFormLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
@@ -33,25 +34,25 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
+import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
-import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
 /**
- * Used to create the root node description of the Interconnection View for Usage.
+ * Used to create the root node description of the Interconnection View for Definition.
  *
  * @author arichard
  */
-public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
+public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
     private final ToolDescriptionService toolDescriptionService;
 
-    private final IDescriptionNameGenerator descriptionNameGenerator;
+    private final IVDescriptionNameGenerator descriptionNameGenerator;
 
-    public RootUsageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+    public RootNodeDescriptionProvider(IColorProvider colorProvider, IVDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
         this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
@@ -59,7 +60,7 @@ public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
 
     @Override
     public NodeDescription create() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getUsage());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getElement());
         return this.diagramBuilderHelper.newNodeDescription()
                 .childrenLayoutStrategy(new FreeFormLayoutStrategyDescriptionBuilder().build())
                 .defaultHeightExpression("400")
@@ -68,7 +69,8 @@ public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .insideLabel(this.createInsideLabelDescription())
                 .name(this.getName())
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF)
-                .style(this.createPartUsageNodeStyle())
+                .style(this.createPartDefinitionNodeStyle())
+                .conditionalStyles(this.createPartUsageConditionalNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .build();
@@ -76,11 +78,11 @@ public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optRootUsageNodeDescription = cache.getNodeDescription(this.getName());
-        var optFirstLevelChildPartUsageNodeDescription = cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME);
+        var optRootDefinitionNodeDescription = cache.getNodeDescription(this.getName());
+        var optFirstLevelChildPartUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
         var optRootPortUsageBorderNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME);
 
-        NodeDescription nodeDescription = optRootUsageNodeDescription.get();
+        NodeDescription nodeDescription = optRootDefinitionNodeDescription.get();
         diagramDescription.getNodeDescriptions().add(nodeDescription);
         nodeDescription.getChildrenDescriptions().add(optFirstLevelChildPartUsageNodeDescription.get());
         nodeDescription.getBorderNodesDescriptions().add(optRootPortUsageBorderNodeDescription.get());
@@ -88,7 +90,7 @@ public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
     }
 
     public String getName() {
-        return this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getUsage());
+        return this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getElement());
     }
 
     private InsideLabelDescription createInsideLabelDescription() {
@@ -110,11 +112,23 @@ public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
                 .build();
     }
 
-    private NodeStyleDescription createPartUsageNodeStyle() {
+    private NodeStyleDescription createPartDefinitionNodeStyle() {
         return this.diagramBuilderHelper.newRectangularNodeStyleDescription()
                 .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
-                .borderRadius(10)
+                .borderRadius(0)
                 .background(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                .build();
+    }
+
+    private ConditionalNodeStyle createPartUsageConditionalNodeStyle() {
+        return this.diagramBuilderHelper.newConditionalNodeStyle()
+                .condition(AQLConstants.AQL_SELF + ".oclIsKindOf(" + SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage()) + ")")
+                .style(this.diagramBuilderHelper.newRectangularNodeStyleDescription()
+                        .borderColor(this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR))
+                        .borderRadius(10)
+                        .background(this.colorProvider.getColor(ViewConstants.DEFAULT_BACKGROUND_COLOR))
+                        .build()
+                )
                 .build();
     }
 
@@ -139,12 +153,12 @@ public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Create")
                 .nodeTools(
-                        this.toolDescriptionService.createNodeTool(cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME).get(), SysmlPackage.eINSTANCE.getPartUsage(),
+                        this.toolDescriptionService.createNodeTool(cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage())).get(),
+                                SysmlPackage.eINSTANCE.getPartUsage(),
                                 NodeContainmentKind.CHILD_NODE),
                         this.toolDescriptionService.createNodeTool(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE),
                         this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN),
-                        this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE,
-                                FeatureDirectionKind.INOUT),
+                        this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.INOUT),
                         this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT))
                 .build();
     }
@@ -153,8 +167,8 @@ public class RootUsageNodeDescriptionProvider extends AbstractNodeDescriptionPro
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME);
-        var optChildPartUsageNodeDescription = cache.getNodeDescription(ChildPartUsageNodeDescriptionProvider.NAME);
-        var optFirstLevelChildPartUsageNodeDescription = cache.getNodeDescription(FirstLevelChildPartUsageNodeDescriptionProvider.NAME);
+        var optChildPartUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getChildNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
+        var optFirstLevelChildPartUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
 
         acceptedNodeTypes.add(optPortUsageBorderNodeDescription.get());
         acceptedNodeTypes.add(optChildPartUsageNodeDescription.get());

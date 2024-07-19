@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
  * @author arichard
  */
 @Service
-public class InterconnectionViewForUsageDescriptionProvider implements IViewDescriptionProvider {
+public class InterconnectionViewDescriptionProvider implements IViewDescriptionProvider {
 
     public String getViewDiagramId() {
         return "InterconnectionViewDiagram";
@@ -30,6 +30,6 @@ public class InterconnectionViewForUsageDescriptionProvider implements IViewDesc
 
     @Override
     public IRepresentationDescriptionProvider getRepresentationDescriptionProvider() {
-        return new InterconnectionViewForUsageDiagramDescriptionProvider();
+        return new InterconnectionViewDiagramDescriptionProvider();
     }
 }
