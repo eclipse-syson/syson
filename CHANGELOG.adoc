@@ -27,6 +27,8 @@ The changes are:
 
 === Dependency update
 
+- [releng] Switch to `maven-checkstyle-plugin` 3.4.0
+
 === Bug fixes
 
 === Improvements
