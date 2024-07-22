@@ -93,7 +93,7 @@ public abstract class AbstractFakeNodeDescriptionProvider extends AbstractNodeDe
                 .borderSize(0)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor("transparent"))
-                .showIcon(false)
+                .showIconExpression("aql:false")
                 .withHeader(false)
                 .build();
     }

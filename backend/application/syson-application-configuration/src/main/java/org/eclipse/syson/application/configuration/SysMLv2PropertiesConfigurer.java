@@ -150,6 +150,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         form.setTitleExpression("SysON Details View");
 
         PageDescription pageCore = FormFactory.eINSTANCE.createPageDescription();
+        pageCore.setName("SysON-DetailsView-Core");
         pageCore.setDomainType(domainType);
         pageCore.setPreconditionExpression("");
         pageCore.setLabelExpression("Core");
@@ -166,6 +167,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createExtraTransitionSourceTargetPropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
+        pageAdvanced.setName("SysON-DetailsView-Advanced");
         pageAdvanced.setDomainType(domainType);
         pageAdvanced.setPreconditionExpression("");
         pageAdvanced.setLabelExpression("Advanced");

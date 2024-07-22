@@ -102,7 +102,7 @@ public class ChildrenUsageCompartmentNodeDescriptionProvider extends AbstractCom
                 .fontSize(12)
                 .italic(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(false)
+                .showIconExpression("aql:false")
                 .withHeader(true)
                 .build();
     }

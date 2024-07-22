@@ -103,7 +103,7 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
                 .fontSize(12)
                 .italic(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(false)
+                .showIconExpression("aql:false")
                 .strikeThrough(false)
                 .underline(false)
                 .build();

@@ -107,7 +107,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
                 .borderSize(0)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(false)
+                .showIconExpression("aql:false")
                 .withHeader(false)
                 .build();
     }

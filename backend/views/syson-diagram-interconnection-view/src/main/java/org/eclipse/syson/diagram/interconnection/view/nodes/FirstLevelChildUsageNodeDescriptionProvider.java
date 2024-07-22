@@ -137,7 +137,7 @@ public class FirstLevelChildUsageNodeDescriptionProvider extends AbstractNodeDes
                 .borderSize(0)
                 .displayHeaderSeparator(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .withHeader(true)
                 .build();
     }
