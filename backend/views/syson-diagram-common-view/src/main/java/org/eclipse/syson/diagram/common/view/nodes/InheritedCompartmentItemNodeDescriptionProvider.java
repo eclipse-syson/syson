@@ -85,7 +85,7 @@ public class InheritedCompartmentItemNodeDescriptionProvider extends AbstractNod
                 .displayHeaderSeparator(false)
                 .italic(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .withHeader(false)
                 .build();
     }

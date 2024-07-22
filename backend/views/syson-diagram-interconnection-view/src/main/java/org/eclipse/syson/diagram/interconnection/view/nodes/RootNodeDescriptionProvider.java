@@ -109,7 +109,7 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
                 .borderSize(0)
                 .displayHeaderSeparator(false)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .withHeader(true)
                 .build();
     }

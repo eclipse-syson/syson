@@ -15,15 +15,13 @@ import {
   ApolloClientOptionsConfigurer,
   DiagramRepresentationConfiguration,
   NavigationBarIconProps,
-  NavigationBarMenuProps,
   NodeTypeRegistry,
   SiriusWebApplication,
   apolloClientOptionsConfigurersExtensionPoint,
   navigationBarIconExtensionPoint,
-  navigationBarMenuExtensionPoint,
+  navigationBarMenuHelpURLExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
 import ReactDOM from 'react-dom';
-import { Help } from './core/Help';
 import { SysONIcon } from './core/SysONIcon';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { sysonTheme } from './theme/sysonTheme';
@@ -48,18 +46,15 @@ if (process.env.NODE_ENV !== 'production') {
 const SysONNavigationBarIcon = ({}: NavigationBarIconProps) => {
   return <SysONIcon />;
 };
-const SysONNavigationBarMenu = ({}: NavigationBarMenuProps) => {
-  return <Help />;
-};
 
 const extensionRegistry: ExtensionRegistry = new ExtensionRegistry();
 extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
   identifier: 'syson_navigationbar#icon',
   Component: SysONNavigationBarIcon,
 });
-extensionRegistry.addComponent(navigationBarMenuExtensionPoint, {
-  identifier: 'syson_navigationbar#menu',
-  Component: SysONNavigationBarMenu,
+extensionRegistry.putData(navigationBarMenuHelpURLExtensionPoint, {
+  identifier: 'syson_navigationBarMenu#helpURL',
+  data: 'https://doc.mbse-syson.org',
 });
 const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
   const { documentTransform } = currentOptions;

@@ -163,7 +163,7 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .displayHeaderSeparator(true)
                 .borderSize(0)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
-                .showIcon(true)
+                .showIconExpression("aql:true")
                 .withHeader(true)
                 .build();
     }

@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -62,7 +63,7 @@ public class NodeCreationTester {
                 toolId,
                 0,
                 0,
-                null);
+                List.of());
         var createElementResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(createElementInput);
         String typename = JsonPath.read(createElementResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());

@@ -33,9 +33,11 @@ The changes are:
 * Merged `RootUsageNodeDescriptionProvider` and `RootDefinitionNodeDescriptionProvider` into `RootNodeDescriptionProvider`
 * Renamed `FirstLevelChildPartUsageNodeDescriptionProvider` to `FirstLevelChildUsageNodeDescriptionProvider`
 * Renamed `ChildPartUsageNodeDescriptionProvider` to `ChildUsageNodeDescriptionProvider`
+- Switch to Sirius Web 2024.7.1: all diagrams must be deleted and created again, due to the fix of this Sirius Web https://github.com/eclipse-sirius/sirius-web/issues/1470[bug].
 
 == Dependencies update
 
+- Switch to Sirius Web 2024.7.1
 - Switch to `maven-checkstyle-plugin` 3.4.0
 - Switch to Spring Boot 3.3.1
 - Add a dependency to CycloneDX to compute the backend software bill of materials during the build

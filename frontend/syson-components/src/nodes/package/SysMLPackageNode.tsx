@@ -170,7 +170,11 @@ export const SysMLPackageNode = memo(({ data, id, selected, dragging }: NodeProp
         onDrop={handleOnDrop}
         data-testid={`SysMLPackage - ${data?.insideLabel?.text}`}>
         {selected ? (
-          <DiagramElementPalette diagramElementId={id} labelId={data.insideLabel ? data.insideLabel.id : null} />
+          <DiagramElementPalette
+            diagramElementId={id}
+            targetObjectId={data.targetObjectId}
+            labelId={data.insideLabel ? data.insideLabel.id : null}
+          />
         ) : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
