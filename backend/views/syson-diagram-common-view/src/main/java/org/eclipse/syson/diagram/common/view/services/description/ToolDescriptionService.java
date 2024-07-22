@@ -221,9 +221,17 @@ public class ToolDescriptionService {
             toolLabel += " " + StringUtils.capitalize(direction.getLiteral());
         }
 
+        StringBuilder iconPath = new StringBuilder();
+        iconPath.append("/icons/full/obj16/");
+        iconPath.append(eClass.getName());
+        if (direction != null) {
+            iconPath.append(StringUtils.capitalize(direction.getLiteral()));
+        }
+        iconPath.append(".svg");
+
         return builder
                 .name(toolLabel)
-                .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
+                .iconURLsExpression(iconPath.toString())
                 .body(changeContexMembership.build())
                 .build();
     }
