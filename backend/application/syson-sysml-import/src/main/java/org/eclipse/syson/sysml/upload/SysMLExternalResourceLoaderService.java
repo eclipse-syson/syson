@@ -12,18 +12,24 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.upload;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.SysmlToAst;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import org.eclipse.emf.common.util.URI;
 
 /**
  * Specific {@link IExternalResourceLoaderService} allowing to load SysML textual resources.
@@ -33,6 +39,8 @@ import org.eclipse.emf.common.util.URI;
 @Service
 public class SysMLExternalResourceLoaderService implements IExternalResourceLoaderService {
 
+    private final Logger logger = LoggerFactory.getLogger(SysMLExternalResourceLoaderService.class);
+
     private final SysmlToAst sysmlToAst;
 
     public SysMLExternalResourceLoaderService(SysmlToAst sysmlToAst) {
@@ -41,7 +49,23 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
 
     @Override
     public boolean canHandle(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
-        return resourceURI != null && resourceURI.toString().endsWith(".sysml");
+        boolean canHandle = true;
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        bufferedInputStream.mark(Integer.MAX_VALUE);
+        try (var reader = new BufferedReader(new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8))) {
+            String line = reader.readLine();
+            if (line != null && line.startsWith("{")) {
+                canHandle = false;
+            }
+            bufferedInputStream.reset();
+        } catch (IOException exception) {
+            this.logger.warn(exception.getMessage(), exception);
+            canHandle = false;
+        }
+        if (canHandle) {
+            canHandle = resourceURI != null && resourceURI.toString().endsWith(".sysml");
+        }
+        return canHandle;
     }
 
     @Override
