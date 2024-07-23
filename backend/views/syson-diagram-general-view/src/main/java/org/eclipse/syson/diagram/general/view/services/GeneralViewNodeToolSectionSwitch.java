@@ -126,7 +126,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new ReferencingPerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new PerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItem(SysmlPackage.eINSTANCE.getUsage_NestedItem()));
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(null));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider().create(null));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
@@ -145,7 +145,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
 
         if (!(object instanceof StateDefinition)) {
             // StateDefinition has its own "action" creation tools
-            createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(null));
+            createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider().create(null));
         }
 
         createSection.getNodeTools().add(new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(null));
@@ -255,7 +255,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         // Remove New Action tool, we use a custom New Action tool from ActionFlowCompartmentNodeToolProvider
         createSection.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New Action"));
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getPartDefinition(), this.descriptionNameGenerator).create(null));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider().create(null));
         // Remove New State tool, we use custom New State tools
         createSection.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New State"));
         createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache));
@@ -271,7 +271,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         // Remove New Action tool, we use a custom New Action tool from ActionFlowCompartmentNodeToolProvider
         createSection.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New Action"));
-        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getPartUsage(), this.descriptionNameGenerator).create(null));
+        createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider().create(null));
         // Remove New State tool, we use custom New State tools
         createSection.getNodeTools().removeIf(nodeTool -> Objects.equals(nodeTool.getName(), "New State"));
         createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache));
@@ -291,7 +291,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new MergeActionNodeToolProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new DecisionActionNodeToolProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new AcceptActionNodeToolProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.descriptionNameGenerator).create(this.cache),
-                new ActionFlowCompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.descriptionNameGenerator).create(this.cache),
+                new ActionFlowCompartmentNodeToolProvider().create(this.cache),
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache),
                 new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new ReferencingPerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.descriptionNameGenerator).create(this.cache),

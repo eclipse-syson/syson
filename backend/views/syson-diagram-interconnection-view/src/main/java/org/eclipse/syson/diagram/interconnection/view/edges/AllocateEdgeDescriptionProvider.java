@@ -56,7 +56,7 @@ public class AllocateEdgeDescriptionProvider extends AbstractAllocateEdgeDescrip
         var rootPortUsage = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).get();
         var portUsage = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
         var firstLevelChildPartUsage = cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage())).get();
-        var childPartUsage = cache.getNodeDescription(this.descriptionNameGenerator.getChildNodeName(SysmlPackage.eINSTANCE.getPartUsage())).get();
+        var childPartUsage = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).get();
 
         return List.of(firstLevelChildPartUsage, childPartUsage, rootPortUsage, portUsage);
     }

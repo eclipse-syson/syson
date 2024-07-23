@@ -54,6 +54,7 @@ The changes are:
 - The _InterfaceUsage_ created by the New Interface edge tool in the Interconnection View diagram are now created under closest containing _Definition_/_Package_.
 - Simplify the implementation of the Interconnection View diagram and remove duplicated code
 - Add action node in Interconnection View diagram
+- Add documentation and action flow compartments for action nodes in the Interconnection View diagram
 
 == New features
 

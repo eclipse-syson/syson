@@ -51,6 +51,7 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/558[#558] [state-transition-view] Allow the creation of a StateTransitionView diagram on a _StateUsage_/_StateDefinition_
 - https://github.com/eclipse-syson/syson/issues/568[#568] [interconnection-view] Simplify Interconnection View implementation and remove duplicated code
 - https://github.com/eclipse-syson/syson/issues/571[#571] [interconnection-view] Add ActionUsage node in Interconnection View
+- https://github.com/eclipse-syson/syson/issues/581[#581] [interconnection-view] Add documentation and action flow compartment in ActionUsage
 
 === New features
 

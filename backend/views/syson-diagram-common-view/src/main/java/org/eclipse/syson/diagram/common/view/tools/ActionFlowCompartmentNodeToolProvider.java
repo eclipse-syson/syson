@@ -14,16 +14,13 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
-import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Node tool provider for creating both nested and owned ActionUsage inside free-form compartment.
@@ -32,30 +29,22 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class ActionFlowCompartmentNodeToolProvider implements INodeToolProvider {
 
-    private final IDescriptionNameGenerator nameGenerator;
-
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
-    private final EClass ownerEClass;
-
-    public ActionFlowCompartmentNodeToolProvider(EClass ownerEClass, IDescriptionNameGenerator nameGenerator) {
+    public ActionFlowCompartmentNodeToolProvider() {
         super();
-        this.ownerEClass = ownerEClass;
-        this.nameGenerator = nameGenerator;
     }
 
     @Override
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
-        var parentNodeName = this.nameGenerator.getNodeName(this.ownerEClass);
 
         var params = List.of(
-                AQLUtils.aqlString(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage())),
-                AQLUtils.aqlString(parentNodeName),
                 AQLUtils.aqlString(ActionFlowCompartmentNodeDescriptionProvider.COMPARTMENT_LABEL),
                 "selectedNode",
+                "editingContext",
                 "diagramContext",
                 "convertedNodes");
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()
