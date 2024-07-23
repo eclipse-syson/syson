@@ -15,6 +15,7 @@ package org.eclipse.syson.diagram.statetransition.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
@@ -38,6 +39,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNod
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.statetransition.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.CompartmentNodeDescriptionProvider;
@@ -81,6 +83,7 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
             new ToolSectionDescription("State Transition", List.of(
+                    SysmlPackage.eINSTANCE.getExhibitStateUsage(),
                     SysmlPackage.eINSTANCE.getStateDefinition(),
                     SysmlPackage.eINSTANCE.getStateUsage(),
                     SysmlPackage.eINSTANCE.getPackage()
@@ -203,10 +206,16 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
     private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, List<EClass> elements) {
         var nodeTools = new ArrayList<NodeTool>();
 
-        elements.forEach(definition -> {
-            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(definition)).ifPresent(nodeDescription -> 
-                nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription, definition))
-            );
+        elements.forEach(element -> {
+            Optional<NodeDescription> nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element));
+            if (nodeDescription.isPresent()) {
+                nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription.get(), element));
+            } else {
+                // It's a custom tool
+                if (SysmlPackage.eINSTANCE.getExhibitStateUsage().equals(element)) {
+                    nodeTools.add(new ExhibitStateNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
+                }
+            }
         });
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
