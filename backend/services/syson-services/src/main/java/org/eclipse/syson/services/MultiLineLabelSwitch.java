@@ -371,12 +371,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     @Override
     public String casePackage(Package object) {
         StringBuilder label = new StringBuilder();
-        label
-                .append(LabelConstants.OPEN_QUOTE)
-                .append("package")
-                .append(LabelConstants.CLOSE_QUOTE)
-                .append(LabelConstants.CR)
-                .append(this.caseElement(object));
+        label.append(this.caseElement(object));
         return label.toString();
     }
 
