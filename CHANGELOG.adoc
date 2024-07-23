@@ -56,7 +56,8 @@ The changes are:
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/553[#553] [diagrams] Add "Show/Hide Icons in Diagrams" action in Diagram Panel, allowing to show/hide icons in diagrams (icons are not part of the SysMLv2 specification).
-
+- https://github.com/eclipse-syson/syson/issues/585[#585] [diagrams] Add a new tool allowing to create an _ExhibitState_ at the root of General View and StateTransition View.
+This tool shows a dialog allowing to select an existing _State_ to associate to the new _ExhibitState_.
 
 == v2024.7.0
 

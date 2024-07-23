@@ -50,6 +50,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNod
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.general.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
@@ -210,6 +211,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                     SysmlPackage.eINSTANCE.getMetadataDefinition()
                     )),
             new ToolSectionDescription("StateTransition", List.of(
+                    SysmlPackage.eINSTANCE.getExhibitStateUsage(),
                     SysmlPackage.eINSTANCE.getStateDefinition(),
                     SysmlPackage.eINSTANCE.getStateUsage())
             ));
@@ -489,8 +491,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
         GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS.forEach(sectionTool -> {
             sectionTool.elements().forEach(element -> {
-                var optNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element));
-                acceptedNodeTypes.add(optNodeDescription.get());
+                cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element)).ifPresent(acceptedNodeTypes::add);
             });
         });
 
@@ -514,7 +515,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         TOOL_SECTIONS.forEach(sectionTool -> {
             DiagramToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newDiagramToolSection()
                     .name(sectionTool.name())
-                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.elements()));
+                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.name(), sectionTool.elements()));
             sections.add(sectionBuilder.build());
         });
 
@@ -524,11 +525,11 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         return sections.toArray(DiagramToolSection[]::new);
     }
 
-    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, List<EClass> elements) {
+    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, String toolSectionName, List<EClass> elements) {
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(element -> {
-            nodeTools.addAll(this.getCreationToolsForElement(element, cache));
+            nodeTools.addAll(this.getCreationToolsForElement(element, toolSectionName, cache));
         });
 
         Collections.sort(nodeTools, Comparator.comparing(NodeTool::getName));
@@ -536,17 +537,24 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         return nodeTools.toArray(NodeTool[]::new);
     }
 
-    private List<NodeTool> getCreationToolsForElement(EClass element, IViewDiagramElementFinder cache) {
+    private List<NodeTool> getCreationToolsForElement(EClass element, String toolSectionName, IViewDiagramElementFinder cache) {
         List<NodeTool> elementCreationTools = new ArrayList<>();
-        NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element)).get();
-        NodeTool nodeTool = this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription, element);
-        nodeTool.setPreconditionExpression(AQLUtils.getSelfServiceCallExpression("toolShouldBeAvailable", "'" + element.getName() + "'"));
-        elementCreationTools.add(nodeTool);
-        if (DIRECTIONAL_ELEMENTS.contains(element)) {
-            // this element has a direction, we need to create also 3 more tools for each direction.
-            elementCreationTools.add(this.toolDescriptionService.createNodeToolFromDiagramWithDirection(nodeDescription, element, FeatureDirectionKind.IN));
-            elementCreationTools.add(this.toolDescriptionService.createNodeToolFromDiagramWithDirection(nodeDescription, element, FeatureDirectionKind.OUT));
-            elementCreationTools.add(this.toolDescriptionService.createNodeToolFromDiagramWithDirection(nodeDescription, element, FeatureDirectionKind.INOUT));
+        NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element)).orElse(null);
+        if (nodeDescription != null) {
+            NodeTool nodeTool = this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription, element);
+            nodeTool.setPreconditionExpression(AQLUtils.getSelfServiceCallExpression("toolShouldBeAvailable", "'" + element.getName() + "'"));
+            elementCreationTools.add(nodeTool);
+            if (DIRECTIONAL_ELEMENTS.contains(element)) {
+                // this element has a direction, we need to create also 3 more tools for each direction.
+                elementCreationTools.add(this.toolDescriptionService.createNodeToolFromDiagramWithDirection(nodeDescription, element, FeatureDirectionKind.IN));
+                elementCreationTools.add(this.toolDescriptionService.createNodeToolFromDiagramWithDirection(nodeDescription, element, FeatureDirectionKind.OUT));
+                elementCreationTools.add(this.toolDescriptionService.createNodeToolFromDiagramWithDirection(nodeDescription, element, FeatureDirectionKind.INOUT));
+            }
+        } else {
+            // It's a custom tool
+            if (toolSectionName.equals("StateTransition") && SysmlPackage.eINSTANCE.getExhibitStateUsage().equals(element)) {
+                elementCreationTools.add(new ExhibitStateNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
+            }
         }
         return elementCreationTools;
     }
