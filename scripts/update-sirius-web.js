@@ -18,7 +18,7 @@ const newSiriusWebVersion = process.argv[2];
 
 if (!newSiriusWebVersion) {
   console.log("Use this script like this:");
-  console.log("node scripts/update-sirius-web.js 2024.7.0");
+  console.log("node scripts/update-sirius-web.js 2024.7.1");
   process.exit(1);
 }
 
