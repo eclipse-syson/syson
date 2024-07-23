@@ -69,7 +69,7 @@ public class ChildrenUsageCompartmentNodeDescriptionProvider extends AbstractCom
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var optCompartmentFreeFormNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getFreeFormCompartmentName(this.eClass, this.eReference));
-        var optChildPartUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getChildNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
+        var optChildPartUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
 
         NodeDescription compartmentFreeFormNodeDescription = optCompartmentFreeFormNodeDescription.get();
         NodeDescription childPartUsageNodeDescription = optChildPartUsageNodeDescription.get();
@@ -83,7 +83,7 @@ public class ChildrenUsageCompartmentNodeDescriptionProvider extends AbstractCom
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getChildNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 

@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -37,11 +36,12 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewNodeToolSectionSwitch;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
@@ -55,15 +55,15 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
 
     private final IVDescriptionNameGenerator descriptionNameGenerator;
 
-    private final EReference eReference;
-
     private final EClass eClass;
 
-    public ChildUsageNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IVDescriptionNameGenerator descriptionNameGenerator) {
+    private final UtilService utilService;
+
+    public ChildUsageNodeDescriptionProvider(EClass eClass, IColorProvider colorProvider, IVDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
-        this.eReference = Objects.requireNonNull(eReference);
         this.eClass = Objects.requireNonNull(eClass);
+        this.utilService = new UtilService();
     }
 
     @Override
@@ -76,8 +76,8 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .defaultWidthExpression("150")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
-                .name(this.descriptionNameGenerator.getChildNodeName(this.eClass))
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
+                .name(this.descriptionNameGenerator.getNodeName(this.eClass))
+                .semanticCandidatesExpression(this.utilService.getAllReachableExpression(domainType))
                 .style(this.createChildUsageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -88,7 +88,7 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
         var reusedChildren = new LinkedHashSet<NodeDescription>();
 
-        var optChildUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getChildNodeName(this.eClass));
+        var optChildUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(this.eClass));
         InterconnectionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.forEach((type, listItems) -> {
             if (type.equals(this.eClass)) {
                 listItems.forEach(reference -> {
@@ -111,7 +111,7 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
         NodeDescription nodeDescription = optChildUsageNodeDescription.get();
         nodeDescription.getReusedChildNodeDescriptions().addAll(reusedChildren);
         nodeDescription.getReusedBorderNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
-        nodeDescription.setPalette(this.createNodePalette(cache));
+        nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
 
         List<NodeDescription> growableNodes = new ArrayList<>();
         nodeDescription.getReusedChildNodeDescriptions().stream()
@@ -152,7 +152,7 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .build();
     }
 
-    private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
+    private NodePalette createNodePalette(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         var changeContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("deleteFromModel"));
 
@@ -178,7 +178,7 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .labelEditTool(editTool.build())
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
-                .edgeTools(this.getEdgeTools(cache).toArray(EdgeTool[]::new))
+                .edgeTools(this.getEdgeTools(nodeDescription, cache).toArray(EdgeTool[]::new))
                 .build();
     }
 
@@ -187,15 +187,16 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
         return toolSectionSwitch.doSwitch(this.eClass);
     }
 
-    private List<EdgeTool> getEdgeTools(IViewDiagramElementFinder cache) {
-        return List.of();
+    private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
+        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, cache.getNodeDescriptions(), this.descriptionNameGenerator);
+        return edgeToolSwitch.doSwitch(this.eClass);
     }
 
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var acceptedNodeTypes = new ArrayList<NodeDescription>();
 
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
-        var optChildPartUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getChildNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
+        var optChildPartUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
         var optFirstLevelChildPartUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
 
         acceptedNodeTypes.add(optPortUsageBorderNodeDescription.get());

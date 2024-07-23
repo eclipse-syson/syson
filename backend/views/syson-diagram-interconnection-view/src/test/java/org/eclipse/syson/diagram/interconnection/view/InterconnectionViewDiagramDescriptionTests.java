@@ -86,6 +86,8 @@ public class InterconnectionViewDiagramDescriptionTests {
     @DisplayName("Each EdgeDescription with a center label expression has a direct edit tool")
     public void eachEdgeWithCenterLabelHasDirectEditTool() {
         List<EdgeDescription> edgeDescriptionCandidates = this.diagramDescription.getEdgeDescriptions().stream()
+                // SuccessionAsUsage has a label but the grammar does not support the direct edit tool yet
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getSuccessionAsUsage()).negate())
                 .filter(edgeDescription -> edgeDescription.getCenterLabelExpression() != null && !edgeDescription.getCenterLabelExpression().isBlank())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);

@@ -621,14 +621,12 @@ public class ViewToolService extends ToolService {
      *
      * @param childElement
      *            the semantic object for which the view is created.
-     * @param nodeDescriptionName
-     *            the childElement node description name.
-     * @param parentNodeDescriptionName
-     *            the name of the node description that owns the compartment in which the view should be created.
      * @param compartmentName
      *            the label of the compartment in which the view should be created.
      * @param selectedNode
      *            the {@link Node} where the tool was triggered. It can be an element or the compartment itself.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool
      * @param diagramContext
      *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
      *            manager.
@@ -636,41 +634,28 @@ public class ViewToolService extends ToolService {
      *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
      *            a variable accessible from the variable manager.
      */
-    public Element createViewInFreeFormCompartment(Element childElement, String nodeDescriptionName, String parentNodeDescriptionName, String compartmentName, Node selectedNode,
+    public Element createViewInFreeFormCompartment(Element childElement, String compartmentName, Node selectedNode,
+            IEditingContext editingContext,
             IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
 
-        var childNodeDescription = this.getNodeDescriptionFromViewName(nodeDescriptionName, convertedNodes);
-        var parentNodeDescription = this.getNodeDescriptionFromViewName(parentNodeDescriptionName, convertedNodes);
+        Node parentNode = null;
 
-        if (childNodeDescription != null && parentNodeDescription != null) {
-            // Is selectedNode the compartment owner or the compartment itself?
-            if (parentNodeDescription.getId().equals(selectedNode.getDescriptionId()) && compartmentName != null) {
-                // compartment owner => need to search the compartment
-                selectedNode.getChildNodes().stream()
-                        .filter(child -> compartmentName.equals(child.getInsideLabel().getText()))
-                        .findFirst()
-                        .ifPresent(compartmentNode -> {
-                            var parentElementId = this.getParentElementId(compartmentNode, diagramContext);
-                            this.createView(childElement, parentElementId, childNodeDescription.getId(), diagramContext, NodeContainmentKind.CHILD_NODE);
-                        });
-            } else {
-                var parentElementId = this.getParentElementId(selectedNode, diagramContext);
-                this.createView(childElement, parentElementId, childNodeDescription.getId(), diagramContext, NodeContainmentKind.CHILD_NODE);
-            }
+        if (selectedNode.getInsideLabel() != null && Objects.equals(selectedNode.getInsideLabel().getText(), compartmentName)) {
+            parentNode = selectedNode;
+        } else {
+            parentNode = selectedNode.getChildNodes().stream()
+                    .filter(child -> child.getInsideLabel() != null)
+                    .filter(child -> Objects.equals(child.getInsideLabel().getText(), compartmentName))
+                .findFirst()
+                .orElse(null);
         }
+
+        if (parentNode != null) {
+            this.createView(childElement, editingContext, diagramContext, parentNode, convertedNodes);
+        }
+
         return childElement;
-    }
-
-    private NodeDescription getNodeDescriptionFromViewName(String nodeDescriptionName, Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var viewNodeDescription = convertedNodes.keySet().stream()
-            .filter(n -> nodeDescriptionName.equals(n.getName()))
-            .findFirst()
-            .orElse(null);
-        if (viewNodeDescription != null) {
-            return convertedNodes.get(viewNodeDescription);
-        }
-        return null;
     }
 
     /**

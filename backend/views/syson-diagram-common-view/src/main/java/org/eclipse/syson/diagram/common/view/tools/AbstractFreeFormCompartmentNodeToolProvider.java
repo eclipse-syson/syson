@@ -110,10 +110,9 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
         var builder = this.diagramBuilderHelper.newNodeTool();
 
         var params = List.of(
-                AQLUtils.aqlString(this.getNodeDescriptionName()),
-                AQLUtils.aqlString(this.getDescriptionNameGenerator().getNodeName(this.ownerEClass)),
                 AQLUtils.aqlString(this.compartmentName),
                 "selectedNode",
+                "editingContext",
                 "diagramContext",
                 "convertedNodes");
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()

@@ -53,9 +53,13 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         InterconnectionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_FREE_FORM_ITEMS.forEach((type, listItems) -> {
             listItems.forEach(eReference -> cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(type, eReference)).ifPresent(childrenNodes::add));
         });
-        cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart()))
-                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAcceptActionUsage()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPerformActionUsage()))
                 .ifPresent(childrenNodes::add);
         return childrenNodes;
     }

@@ -170,7 +170,7 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
     @Override
     protected List<INodeToolProvider> getItemCreationToolProviders() {
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
-        creationToolProviders.add(new ActionFlowCompartmentNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()));
+        creationToolProviders.add(new ActionFlowCompartmentNodeToolProvider());
         return creationToolProviders;
     }
 }
