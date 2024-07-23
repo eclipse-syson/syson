@@ -8,7 +8,7 @@ on:
     branches:
       - "main"
     tags:
-      - "v*"
+      - "v*\.0"
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -43,7 +43,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: 'doc/docs-site/build/site/'
+          path: "doc/docs-site/build/site/"
 
       - name: Deploy to GitHub Pages
         id: deployment
