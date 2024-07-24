@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<sirius.web.version>2024.7.3</sirius.web.version>
+		<sirius.web.version>2024.7.5</sirius.web.version>
 		<antlr.version>4.10.1</antlr.version>
 	</properties>
 

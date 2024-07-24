@@ -77,8 +77,13 @@ describe('Node Creation Tests', () => {
     context('When we create an AttributeDefinition using the diagram palette', () => {
       beforeEach(() => {
         diagram.getDiagramElement(diagramLabel).click();
-        diagram.getPalette().should('exist').find('div > div').eq(0).findByTestId('expand').click();
-        diagram.getPalette().find('div[role=tooltip]').findByTestId('New Attribute Definition - Tool').click();
+        diagram.getPalette().should('exist').findByTestId('Structure').findByTestId('expand').click();
+        diagram
+          .getPalette()
+          .should('exist')
+          .find('div[role=tooltip]')
+          .findByTestId('New Attribute Definition - Tool')
+          .click();
       });
 
       it('Then the new AttributeDefinition is visible on the diagram and its compartments are not visible', () => {
