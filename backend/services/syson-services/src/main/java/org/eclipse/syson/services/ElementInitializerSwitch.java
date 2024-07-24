@@ -14,6 +14,7 @@ package org.eclipse.syson.services;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Dependency;
@@ -22,12 +23,14 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
@@ -62,7 +65,8 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     }
 
     @Override
-    public Element caseElement(Element object) {
+    public Element caseBindingConnectorAsUsage(BindingConnectorAsUsage object) {
+        object.setDeclaredName("bind");
         return object;
     }
 
@@ -85,6 +89,11 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     }
 
     @Override
+    public Element caseElement(Element object) {
+        return object;
+    }
+
+    @Override
     public Element caseEnumerationDefinition(EnumerationDefinition object) {
         object.setIsVariation(true);
         object.setDeclaredName(object.eClass().getName());
@@ -94,6 +103,12 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseFeatureTyping(FeatureTyping object) {
         object.setDeclaredName("typed by");
+        return object;
+    }
+
+    @Override
+    public Element caseFlowConnectionUsage(FlowConnectionUsage object) {
+        object.setDeclaredName("flow");
         return object;
     }
 
@@ -122,6 +137,12 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseRedefinition(Redefinition object) {
         object.setDeclaredName("redefines");
+        return object;
+    }
+
+    @Override
+    public Element caseReferenceSubsetting(ReferenceSubsetting object) {
+        object.setDeclaredName("references");
         return object;
     }
 

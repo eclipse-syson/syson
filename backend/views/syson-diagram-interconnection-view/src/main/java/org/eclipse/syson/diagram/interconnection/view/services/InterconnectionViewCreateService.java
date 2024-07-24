@@ -25,6 +25,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
@@ -53,24 +54,28 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         bindingContainer.getOwnedRelationship().add(featureMembership);
 
         BindingConnectorAsUsage bindingConnectorAsUsage = SysmlFactory.eINSTANCE.createBindingConnectorAsUsage();
-        bindingConnectorAsUsage.setDeclaredName("bind");
+        this.elementInitializer(bindingConnectorAsUsage);
         featureMembership.getOwnedRelatedElement().add(bindingConnectorAsUsage);
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         bindingConnectorAsUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
         Feature sourceFeature = SysmlFactory.eINSTANCE.createFeature();
+        this.elementInitializer(sourceFeature);
         sourceFeature.setIsEnd(true);
         sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
         ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        this.elementInitializer(sourceReferenceSubsetting);
         sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
         sourceReferenceSubsetting.setReferencedFeature(sourcePort);
 
         EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         bindingConnectorAsUsage.getOwnedRelationship().add(targetEndFeatureMembership);
         Feature targetFeature = SysmlFactory.eINSTANCE.createFeature();
+        this.elementInitializer(sourceFeature);
         targetFeature.setIsEnd(true);
         targetEndFeatureMembership.getOwnedRelatedElement().add(targetFeature);
         ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        this.elementInitializer(targetReferenceSubsetting);
         targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
         targetReferenceSubsetting.setReferencedFeature(targetPort);
 
@@ -86,28 +91,70 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         interfaceContainer.getOwnedRelationship().add(featureMembership);
 
         InterfaceUsage interfaceUsage = SysmlFactory.eINSTANCE.createInterfaceUsage();
+        this.elementInitializer(interfaceUsage);
         interfaceUsage.setDeclaredName("connect");
         featureMembership.getOwnedRelatedElement().add(interfaceUsage);
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         interfaceUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
         Feature sourceFeature = SysmlFactory.eINSTANCE.createFeature();
+        this.elementInitializer(sourceFeature);
         sourceFeature.setIsEnd(true);
         sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
         ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        this.elementInitializer(sourceReferenceSubsetting);
         sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
         sourceReferenceSubsetting.setReferencedFeature(sourcePort);
 
         EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         interfaceUsage.getOwnedRelationship().add(targetEndFeatureMembership);
         Feature targetFeature = SysmlFactory.eINSTANCE.createFeature();
+        this.elementInitializer(targetFeature);
         targetFeature.setIsEnd(true);
         targetEndFeatureMembership.getOwnedRelatedElement().add(targetFeature);
         ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        this.elementInitializer(targetReferenceSubsetting);
         targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
         targetReferenceSubsetting.setReferencedFeature(targetPort);
 
         return interfaceUsage;
+    }
+
+    public FlowConnectionUsage createFlowConnectionUsage(PortUsage sourcePort, PortUsage targetPort) {
+        Namespace flowContainer = this.getClosestContainingDefinitionOrPackageFrom(sourcePort);
+        if (flowContainer == null) {
+            return null;
+        }
+        FeatureMembership featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        flowContainer.getOwnedRelationship().add(featureMembership);
+
+        FlowConnectionUsage flowConnectionUsage = SysmlFactory.eINSTANCE.createFlowConnectionUsage();
+        this.elementInitializer(flowConnectionUsage);
+        featureMembership.getOwnedRelatedElement().add(flowConnectionUsage);
+
+        EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        flowConnectionUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
+        Feature sourceFeature = SysmlFactory.eINSTANCE.createFeature();
+        this.elementInitializer(sourceFeature);
+        sourceFeature.setIsEnd(true);
+        sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
+        ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        this.elementInitializer(sourceReferenceSubsetting);
+        sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
+        sourceReferenceSubsetting.setReferencedFeature(sourcePort);
+
+        EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
+        flowConnectionUsage.getOwnedRelationship().add(targetEndFeatureMembership);
+        Feature targetFeature = SysmlFactory.eINSTANCE.createFeature();
+        this.elementInitializer(targetFeature);
+        targetFeature.setIsEnd(true);
+        targetEndFeatureMembership.getOwnedRelatedElement().add(targetFeature);
+        ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        this.elementInitializer(targetReferenceSubsetting);
+        targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
+        targetReferenceSubsetting.setReferencedFeature(targetPort);
+
+        return flowConnectionUsage;
     }
 
     private Namespace getClosestContainingDefinitionOrPackageFrom(Element element) {
