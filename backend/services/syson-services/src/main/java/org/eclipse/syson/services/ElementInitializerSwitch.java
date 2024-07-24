@@ -14,6 +14,7 @@ package org.eclipse.syson.services;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Definition;
@@ -61,6 +62,14 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
         // create two ParameterMembership
         object.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage("payload", FeatureDirectionKind.INOUT));
         object.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage("receiver", FeatureDirectionKind.IN));
+        return object;
+    }
+
+    @Override
+    public Element caseAttributeUsage(AttributeUsage object) {
+        this.caseUsage(object);
+        // An AttributeUsage is always referential (isReference = true and isComposite = false).
+        object.setIsComposite(false);
         return object;
     }
 
@@ -193,6 +202,7 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
             defaultName = defaultName.substring(0, defaultName.length() - 5);
         }
         object.setDeclaredName(defaultName);
+        object.setIsComposite(true);
         return object;
     }
 

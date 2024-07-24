@@ -86,6 +86,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("accept action")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -121,6 +122,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("action")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -153,6 +155,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("allocation")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -203,6 +206,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("assign")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -230,6 +234,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("constraint")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -276,6 +281,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("interface")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -308,6 +314,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("item")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -356,6 +363,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.abstractType(object))
                 .append(this.individual(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("occurrence")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -395,6 +403,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("part")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -413,6 +422,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append(this.getPerformActionUsageTag(object))
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -440,6 +450,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("port")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -473,6 +484,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("requirement")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -505,6 +517,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
         label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("use case")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -539,6 +552,7 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.abstractType(object))
                 .append(this.getIsParallel(object.isIsParallel()))
                 .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
                 .append("state")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
@@ -619,6 +633,14 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             label.append(LabelConstants.SPACE);
         }
         return label.toString();
+    }
+
+    private String reference(Usage usage) {
+        String result = "";
+        if (usage.isIsReference()) {
+            result = "ref" + LabelConstants.SPACE;
+        }
+        return result;
     }
 
     private String individual(OccurrenceDefinition occurrenceDefinition) {
