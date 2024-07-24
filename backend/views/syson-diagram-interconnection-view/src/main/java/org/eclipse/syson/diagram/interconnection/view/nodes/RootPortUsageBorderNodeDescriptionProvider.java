@@ -150,6 +150,7 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .edgeTools(
                         this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription, portBorderNode)),
+                        this.createFlowConnectionUsageEdgeTool(List.of(nodeDescription, portBorderNode)),
                         this.createInterfaceUsageEdgeTool(List.of(nodeDescription, portBorderNode)))
                 .build();
     }
@@ -177,6 +178,20 @@ public class RootPortUsageBorderNodeDescriptionProvider extends AbstractNodeDesc
         return builder
                 .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getInterfaceUsage().getName() + ".svg")
+                .body(body.build())
+                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .build();
+    }
+
+    private EdgeTool createFlowConnectionUsageEdgeTool(List<NodeDescription> targetElementDescriptions) {
+        var builder = this.diagramBuilderHelper.newEdgeTool();
+
+        var body = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createFlowConnectionUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
+
+        return builder
+                .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowConnectionUsage()))
+                .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getFlowConnectionUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
                 .build();

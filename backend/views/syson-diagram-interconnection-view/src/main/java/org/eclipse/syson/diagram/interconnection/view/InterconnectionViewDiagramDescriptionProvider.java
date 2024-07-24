@@ -40,6 +40,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionPro
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.interconnection.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.BindingConnectorAsUsageEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.edges.FlowConnectionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.InterfaceUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.edges.SuccessionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.ChildUsageNodeDescriptionProvider;
@@ -108,6 +109,7 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
                 new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new AllocateEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new FlowConnectionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new SuccessionEdgeDescriptionProvider(colorProvider)
         ));
 
