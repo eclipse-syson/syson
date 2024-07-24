@@ -55,6 +55,10 @@ The changes are:
 - Simplify the implementation of the Interconnection View diagram and remove duplicated code
 - Add action node in Interconnection View diagram
 - Add documentation and action flow compartments for action nodes in the Interconnection View diagram
+- Add label support for referential Usages
+* Nodes that are references now correctly contain the "ref" keyword
+* Elements in lists that are references now correctly contain the "ref" keyword
+* AttributeUsage do not contain the "ref" keyword since they are always referential
 
 == New features
 
