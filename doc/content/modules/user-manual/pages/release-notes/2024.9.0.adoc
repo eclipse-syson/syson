@@ -62,6 +62,12 @@ The changes are:
 - Add support for "ref" keyword in direct edit
 * Prefixing the name of an Usage with "ref" sets it as a reference
 * Not setting the "ref" prefix of an Usage sets it as a composite (non-reference)
+- Use empty diamond source style for nested reference usage edge
+* Nested usages that are composite are connected by a filled diamond edge
+* Nested usages that are references are connected by an empty diamond edge
+
+image::release-notes-reference-nested-usages.png[Nested Usage edge for composite and reference Usage]
+
 
 == New features
 
