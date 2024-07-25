@@ -64,6 +64,7 @@ The selected _State_ will be added to the diagram, not the new _ExhibitState_.
 - https://github.com/eclipse-syson/syson/issues/587[#587] [interconnection-view] Handle _FlowConnectionUsage_ between _PortUsages_ in Interconnection View.
 A new edge tool allows to create a flow between two ports.
 - https://github.com/eclipse-syson/syson/issues/598[#598] [diagrams] Add tools to set a Feature as composite or reference.
+- https://github.com/eclipse-syson/syson/issues/596[#596] [interconnection-view] Handle _ItemUsage_ in Interconnection View and _FlowConnectionUsage_ involving items
 
 == v2024.7.0
 

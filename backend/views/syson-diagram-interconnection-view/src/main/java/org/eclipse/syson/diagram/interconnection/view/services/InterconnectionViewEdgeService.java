@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.InterfaceUsage;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -45,15 +46,15 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
     }
 
     /**
-     * Return the source {@link PortUsage} of the given {@link ConnectorAsUsage} (e.g. a
-     * {@link BindingConnectorAsUsage}, an {@link InterfaceUsage}).
+     * Return the source {@link Usage} of the given {@link ConnectorAsUsage} (e.g. a {@link BindingConnectorAsUsage}, an
+     * {@link InterfaceUsage}).
      *
      * @param bind
      *            the given {@link ConnectorAsUsage}.
-     * @return the source {@link PortUsage} if found, <code>null</code> otherwise.
+     * @return the source {@link Usage} if found, <code>null</code> otherwise.
      */
-    public PortUsage getSourcePort(ConnectorAsUsage bind) {
-        PortUsage sourcePort = null;
+    public Usage getSourcePort(ConnectorAsUsage bind) {
+        Usage sourcePort = null;
         Optional<EndFeatureMembership> endFeatureMembership = bind.getOwnedFeatureMembership().stream()
                 .filter(EndFeatureMembership.class::isInstance)
                 .map(EndFeatureMembership.class::cast)
@@ -67,14 +68,14 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
                     .map(ReferenceSubsetting::getReferencedFeature);
             if (referencedFeature.isPresent()) {
                 Feature feature = referencedFeature.get();
-                if (feature instanceof PortUsage portUsage) {
-                    sourcePort = portUsage;
+                if (feature instanceof PortUsage || feature instanceof ItemUsage) {
+                    sourcePort = (Usage) feature;
                 } else {
                     EList<FeatureChaining> ownedFeatureChaining = feature.getOwnedFeatureChaining();
                     FeatureChaining lastFeatureChaining = ownedFeatureChaining.get(Math.max(0, ownedFeatureChaining.size() - 1));
                     Feature chainingFeature = lastFeatureChaining.getChainingFeature();
-                    if (chainingFeature instanceof PortUsage portUsage) {
-                        sourcePort = portUsage;
+                    if (chainingFeature instanceof PortUsage || chainingFeature instanceof ItemUsage) {
+                        sourcePort = (Usage) chainingFeature;
                     }
                 }
             }
@@ -83,15 +84,15 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
     }
 
     /**
-     * Return the target {@link PortUsage} of the given {@link ConnectorAsUsage} (e.g. a
-     * {@link BindingConnectorAsUsage}, an {@link InterfaceUsage}).
+     * Return the target {@link Usage} of the given {@link ConnectorAsUsage} (e.g. a {@link BindingConnectorAsUsage}, an
+     * {@link InterfaceUsage}).
      *
      * @param bind
      *            the given {@link ConnectorAsUsage}.
-     * @return the target {@link PortUsage} if found, <code>null</code> otherwise.
+     * @return the target {@link Usage} if found, <code>null</code> otherwise.
      */
-    public PortUsage getTargetPort(ConnectorAsUsage bind) {
-        PortUsage targetPort = null;
+    public Usage getTargetPort(ConnectorAsUsage bind) {
+        Usage targetPort = null;
         Optional<EndFeatureMembership> endFeatureMembership = bind.getOwnedFeatureMembership().stream()
                 .filter(EndFeatureMembership.class::isInstance)
                 .map(EndFeatureMembership.class::cast)
@@ -105,14 +106,14 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
                     .map(ReferenceSubsetting::getReferencedFeature);
             if (referencedFeature.isPresent()) {
                 Feature feature = referencedFeature.get();
-                if (feature instanceof PortUsage portUsage) {
-                    targetPort = portUsage;
+                if (feature instanceof PortUsage || feature instanceof ItemUsage) {
+                    targetPort = (Usage) feature;
                 } else {
                     EList<FeatureChaining> ownedFeatureChaining = feature.getOwnedFeatureChaining();
                     FeatureChaining lastFeatureChaining = ownedFeatureChaining.get(Math.max(0, ownedFeatureChaining.size() - 1));
                     Feature chainingFeature = lastFeatureChaining.getChainingFeature();
-                    if (chainingFeature instanceof PortUsage portUsage) {
-                        targetPort = portUsage;
+                    if (chainingFeature instanceof PortUsage || chainingFeature instanceof ItemUsage) {
+                        targetPort = (Usage) feature;
                     }
                 }
             }

@@ -94,6 +94,14 @@ public class InterconnectionViewNodeToolSectionSwitch extends AbstractViewNodeTo
                 new AssignmentActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new ReferencingPerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new PerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
+
+        NodeDescription itemNodeDescription = this.cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).get();
+        createSection.getNodeTools().addAll(List.of(
+                this.toolDescriptionService.createNodeTool(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), NodeContainmentKind.BORDER_NODE),
+                this.toolDescriptionService.createNodeToolWithDirection(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN),
+                this.toolDescriptionService.createNodeToolWithDirection(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.INOUT),
+                this.toolDescriptionService.createNodeToolWithDirection(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT)));
+
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider().create(null));
         var editSection = this.toolDescriptionService.buildEditSection(

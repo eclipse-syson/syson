@@ -82,14 +82,20 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
         var optEdgeDescription = cache.getEdgeDescription(this.getName());
         var optRootPortUsageBorderNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME);
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
+        var optItemUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()));
 
-        if (optEdgeDescription.isPresent() && optRootPortUsageBorderNodeDescription.isPresent() && optPortUsageBorderNodeDescription.isPresent()) {
+        if (optEdgeDescription.isPresent()
+                && optRootPortUsageBorderNodeDescription.isPresent()
+                && optPortUsageBorderNodeDescription.isPresent()
+                && optItemUsageBorderNodeDescription.isPresent()) {
             EdgeDescription edgeDescription = optEdgeDescription.get();
             diagramDescription.getEdgeDescriptions().add(edgeDescription);
             edgeDescription.getSourceNodeDescriptions().add(optRootPortUsageBorderNodeDescription.get());
             edgeDescription.getSourceNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
+            edgeDescription.getSourceNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
             edgeDescription.getTargetNodeDescriptions().add(optRootPortUsageBorderNodeDescription.get());
             edgeDescription.getTargetNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
+            edgeDescription.getTargetNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
             edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
         }
     }

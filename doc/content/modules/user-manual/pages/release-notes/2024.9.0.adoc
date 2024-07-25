@@ -73,3 +73,4 @@ The selected _State_ will be added to the diagram, not the new _ExhibitState_.
 - Handle _FlowConnectionUsage_ between _PortUsages_ in Interconnection View.
 A new edge tool allows to create a flow between two ports.
 - Add tools to set a _Feature_ as composite or reference.
+- Handle _ItemUsage_ in Interconnection View and _FlowConnectionUsage_ using items as their source/target.

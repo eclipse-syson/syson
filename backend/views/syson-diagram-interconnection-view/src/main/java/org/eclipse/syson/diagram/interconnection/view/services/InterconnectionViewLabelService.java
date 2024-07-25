@@ -18,6 +18,7 @@ import org.eclipse.syson.diagram.common.view.services.ViewLabelService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.ConnectorAsUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.Usage;
 
 /**
  * Label-related Java services used by the {@link InterconnectionViewDiagramDescriptionProvider}.
@@ -31,19 +32,19 @@ public class InterconnectionViewLabelService extends ViewLabelService {
     }
 
     /**
-     * Return the label for the given {@link PortUsage}.
+     * Return the label for the given {@link Usage} represented as a border node.
      *
-     * @param portUsage
-     *            the given {@link PortUsage}.
-     * @return the label for the given {@link PortUsage}.
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label for the given {@link Usage}.
      */
-    public String getBorderNodePortUsageLabel(PortUsage portUsage) {
+    public String getBorderNodeUsageLabel(Usage usage) {
         StringBuilder label = new StringBuilder();
         label
-                .append(portUsage.getDeclaredName())
-                .append(this.getTypingLabel(portUsage))
-                .append(this.getRedefinitionLabel(portUsage))
-                .append(this.getSubsettingLabel(portUsage));
+                .append(usage.getDeclaredName())
+                .append(this.getTypingLabel(usage))
+                .append(this.getRedefinitionLabel(usage))
+                .append(this.getSubsettingLabel(usage));
         return label.toString();
     }
 

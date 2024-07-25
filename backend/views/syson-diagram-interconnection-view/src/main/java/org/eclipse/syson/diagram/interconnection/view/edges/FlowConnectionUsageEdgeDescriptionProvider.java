@@ -84,14 +84,17 @@ public class FlowConnectionUsageEdgeDescriptionProvider implements IEdgeDescript
         var optEdgeDescription = cache.getEdgeDescription(this.getName());
         var optRootPortUsageBorderNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME);
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
+        var optItemUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()));
 
         if (optEdgeDescription.isPresent() && optRootPortUsageBorderNodeDescription.isPresent() && optPortUsageBorderNodeDescription.isPresent()) {
             EdgeDescription edgeDescription = optEdgeDescription.get();
             diagramDescription.getEdgeDescriptions().add(edgeDescription);
             edgeDescription.getSourceNodeDescriptions().add(optRootPortUsageBorderNodeDescription.get());
             edgeDescription.getSourceNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
+            edgeDescription.getSourceNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
             edgeDescription.getTargetNodeDescriptions().add(optRootPortUsageBorderNodeDescription.get());
             edgeDescription.getTargetNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
+            edgeDescription.getTargetNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
             edgeDescription.setPalette(this.createEdgePalette(List.of(this.createSourceReconnectTool(), this.createTargetReconnectTool())));
         }
     }
@@ -107,7 +110,7 @@ public class FlowConnectionUsageEdgeDescriptionProvider implements IEdgeDescript
                 .edgeWidth(1)
                 .lineStyle(LineStyle.SOLID)
                 .sourceArrowStyle(ArrowStyle.NONE)
-                .targetArrowStyle(ArrowStyle.NONE)
+                .targetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW)
                 .build();
     }
 
