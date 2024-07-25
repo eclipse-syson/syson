@@ -13,9 +13,10 @@
 package org.eclipse.syson.diagram.statetransition.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
@@ -39,7 +40,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNod
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
-import org.eclipse.syson.diagram.common.view.tools.ExhibitStateNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.statetransition.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.CompartmentNodeDescriptionProvider;
@@ -68,17 +69,20 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
             );
 
     public static  final List<EClass> USAGES = List.of(
+            SysmlPackage.eINSTANCE.getExhibitStateUsage(),
             SysmlPackage.eINSTANCE.getStateUsage()
             );
     
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
+            Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())),
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
-            Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
+            Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
             );
     
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_MERGED_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction(), SysmlPackage.eINSTANCE.getStateDefinition_DoAction(), SysmlPackage.eINSTANCE.getStateDefinition_ExitAction())),
-            Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
+            Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction())),
+            Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
             );
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
@@ -121,6 +125,8 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
                 .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders
                 .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders
+                .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.getDescriptionNameGenerator()));
 
         DEFINITIONS.forEach(definition -> {
             diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider, this.getDescriptionNameGenerator()));
@@ -139,7 +145,10 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
 
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {
-                if (SysmlPackage.eINSTANCE.getStateUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedState().equals(eReference)) {
+                if (SysmlPackage.eINSTANCE.getExhibitStateUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedState().equals(eReference)) {
+                    diagramElementDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
+                    diagramElementDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
+                } else if (SysmlPackage.eINSTANCE.getStateUsage().equals(eClass) && SysmlPackage.eINSTANCE.getUsage_NestedState().equals(eReference)) {
                     diagramElementDescriptionProviders.add(new StatesCompartmentNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
                     diagramElementDescriptionProviders.add(new StatesCompartmentItemNodeDescriptionProvider(eClass, eReference, colorProvider, this.getDescriptionNameGenerator(), true));
                 } else if (SysmlPackage.eINSTANCE.getStateDefinition().equals(eClass) && SysmlPackage.eINSTANCE.getDefinition_OwnedState().equals(eReference)) {
@@ -174,6 +183,10 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(),
                 SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
                 .ifPresent(stateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+        NodeDescription exhibitStateUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getExhibitStateUsage())).get();
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(),
+                SysmlPackage.eINSTANCE.getUsage_NestedState()) + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME)
+                .ifPresent(exhibitStateUsageNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {
@@ -193,7 +206,7 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
         TOOL_SECTIONS.forEach(sectionTool -> {
             DiagramToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newDiagramToolSection()
                     .name(sectionTool.name())
-                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.elements()));
+                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.name(), sectionTool.elements()));
             sections.add(sectionBuilder.build());
         });
 
@@ -203,23 +216,28 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
         return sections.toArray(DiagramToolSection[]::new);
     }
 
-    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, List<EClass> elements) {
+    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, String name, List<EClass> elements) {
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(element -> {
-            Optional<NodeDescription> nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element));
+            var nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element));
             if (nodeDescription.isPresent()) {
                 nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription.get(), element));
-            } else {
-                // It's a custom tool
-                if (SysmlPackage.eINSTANCE.getExhibitStateUsage().equals(element)) {
-                    nodeTools.add(new ExhibitStateNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
-                }
             }
         });
 
-        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
+        nodeTools.addAll(this.addCustomTools(cache, name));
+
+        Collections.sort(nodeTools, Comparator.comparing(NodeTool::getName));
 
         return nodeTools.toArray(NodeTool[]::new);
+    }
+
+    private List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
+        var nodeTools = new ArrayList<NodeTool>();
+        if ("State Transition".equals(sectionName)) {
+            nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
+        }
+        return nodeTools;
     }
 }

@@ -30,7 +30,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  *
  * @author arichard
  */
-public class ExhibitStateNodeToolProvider implements INodeToolProvider {
+public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvider {
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
@@ -38,7 +38,7 @@ public class ExhibitStateNodeToolProvider implements INodeToolProvider {
 
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public ExhibitStateNodeToolProvider(IDescriptionNameGenerator descriptionNameGenerator) {
+    public ExhibitStateWithReferenceNodeToolProvider(IDescriptionNameGenerator descriptionNameGenerator) {
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
@@ -91,7 +91,7 @@ public class ExhibitStateNodeToolProvider implements INodeToolProvider {
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
                 .children(createEClassInstance.build(), createReferenceSubsettingInstance.build(), createView.build());
 
-        var toolLabel = this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getExhibitStateUsage());
+        var toolLabel = this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getExhibitStateUsage()) + " with referenced State";
 
         return builder
                 .name(toolLabel)

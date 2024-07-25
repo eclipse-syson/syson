@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
+import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
@@ -258,6 +259,26 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(LabelConstants.CR)
                 .append(this.caseElement(object))
                 .append(this.labelService.getSubclassificationLabel(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseExhibitStateUsage(ExhibitStateUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.abstractType(object))
+                .append(this.getIsParallel(object.isIsParallel()))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
+                .append("exhibit state")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.labelService.getTypingLabel(object))
+                .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getSubsettingLabel(object))
+                .append(this.labelService.getValueLabel(object));
         return label.toString();
     }
 

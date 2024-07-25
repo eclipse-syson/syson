@@ -533,7 +533,7 @@ public class UtilService {
     }
 
     /**
-     * Create a child State onto {@code stateDefinition}.
+     * Create a child State onto the given parent.
      *
      * @param parentState
      *            The parent {@link StateDefinition} or {@link StateUsage}
