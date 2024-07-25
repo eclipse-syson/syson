@@ -138,6 +138,10 @@ public class LabelService {
      */
     public String getDefaultInitialDirectEditLabel(Element element) {
         StringBuilder builder = new StringBuilder();
+        if (element instanceof Usage usage && usage.isIsReference()) {
+            builder.append(LabelConstants.REF);
+            builder.append(LabelConstants.SPACE);
+        }
         builder.append(element.getDeclaredName());
         builder.append(this.getMultiplicityLabel(element));
         builder.append(this.getTypingLabel(element));
