@@ -33,6 +33,8 @@ import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
@@ -73,7 +75,10 @@ public class InterconnectionViewNodeToolSectionSwitch extends AbstractViewNodeTo
 
         );
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
-        return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+        var editSection = this.toolDescriptionService.buildEditSection(
+                new SetAsCompositeToolProvider().create(this.cache),
+                new SetAsRefToolProvider().create(this.cache));
+        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override
@@ -91,7 +96,10 @@ public class InterconnectionViewNodeToolSectionSwitch extends AbstractViewNodeTo
                 new PerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         createSection.getNodeTools().add(new ActionFlowCompartmentNodeToolProvider().create(null));
-        return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+        var editSection = this.toolDescriptionService.buildEditSection(
+                new SetAsCompositeToolProvider().create(this.cache),
+                new SetAsRefToolProvider().create(this.cache));
+        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override

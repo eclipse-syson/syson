@@ -23,6 +23,8 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.services.AbstractViewNodeToolSectionSwitch;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionCompartmentToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionToggleExhibitStateToolProvider;
@@ -50,7 +52,7 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
     public StateTransitionViewNodeToolSectionSwitch(List<NodeDescription> allNodeDescriptions, IDescriptionNameGenerator descriptionNameGenerator) {
         super(descriptionNameGenerator);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
-        toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }
 
     @Override
@@ -116,7 +118,9 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(null));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new StateTransitionToggleExhibitStateToolProvider(true).create(null),
-                new StateTransitionToggleExhibitStateToolProvider(false).create(null));
+                new StateTransitionToggleExhibitStateToolProvider(false).create(null),
+                new SetAsCompositeToolProvider().create(null),
+                new SetAsRefToolProvider().create(null));
         return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
@@ -124,6 +128,9 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
     public List<NodeToolSection> caseUsage(Usage object) {
         var createSection = this.toolDescriptionService.buildCreateSection();
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
-        return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+        var editSection = this.toolDescriptionService.buildEditSection(
+                new SetAsCompositeToolProvider().create(null),
+                new SetAsRefToolProvider().create(null));
+        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 }

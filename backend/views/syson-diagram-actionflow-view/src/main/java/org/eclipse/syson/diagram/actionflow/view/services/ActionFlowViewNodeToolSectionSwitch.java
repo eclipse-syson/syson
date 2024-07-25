@@ -39,6 +39,8 @@ import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
@@ -93,7 +95,10 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getPartDefinition()),
                 this.createPortUsageAsReceiverNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
-        return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+        var editSection = this.toolDescriptionService.buildEditSection(
+                new SetAsCompositeToolProvider().create(this.cache),
+                new SetAsRefToolProvider().create(this.cache));
+        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override
@@ -111,7 +116,10 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
                 new ReferencingPerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new PerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItem(SysmlPackage.eINSTANCE.getUsage_NestedItem()));
-        return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+        var editSection = this.toolDescriptionService.buildEditSection(
+                new SetAsCompositeToolProvider().create(this.cache),
+                new SetAsRefToolProvider().create(this.cache));
+        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override
@@ -135,9 +143,12 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
 
     @Override
     public List<NodeToolSection> caseAssignmentActionUsage(AssignmentActionUsage object) {
+        var editSection = this.toolDescriptionService.buildEditSection(
+                new SetAsCompositeToolProvider().create(this.cache),
+                new SetAsRefToolProvider().create(this.cache));
         // Define here the set of node tools that should be added to the Assignment action palette,
         // such as "Set assigned element" and "Set value".
-        return List.of(this.toolDescriptionService.addElementsNodeToolSection(true));
+        return List.of(editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override
@@ -163,14 +174,20 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
                 new ReferencingPerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new PerformActionNodeToolProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), this.descriptionNameGenerator).create(this.cache));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItem(SysmlPackage.eINSTANCE.getUsage_NestedItem()));
-        return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+        var editSection = this.toolDescriptionService.buildEditSection(
+                new SetAsCompositeToolProvider().create(this.cache),
+                new SetAsRefToolProvider().create(this.cache));
+        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override
     public List<NodeToolSection> caseUsage(Usage object) {
         var createSection = this.toolDescriptionService.buildCreateSection();
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
-        return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+        var editSection = this.toolDescriptionService.buildEditSection(
+                new SetAsCompositeToolProvider().create(this.cache),
+                new SetAsRefToolProvider().create(this.cache));
+        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override
