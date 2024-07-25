@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
+import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -76,6 +77,7 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
                 .name(this.edgeName)
                 .sourceNodesExpression(AQLConstants.AQL_SELF)
                 .style(this.createEdgeStyle())
+                .conditionalStyles(this.createReferenceConditionalEdgeStyle())
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .targetNodesExpression(AQLConstants.AQL_SELF + "." + this.eReference.getName())
                 .preconditionExpression(AQLConstants.AQL + "not " + org.eclipse.sirius.components.diagrams.description.EdgeDescription.GRAPHICAL_EDGE_SOURCE + ".isAncestorOf("
@@ -109,6 +111,18 @@ public abstract class AbstractUsageNestedUsageEdgeDescriptionProvider extends Ab
                 .edgeWidth(1)
                 .lineStyle(LineStyle.SOLID)
                 .sourceArrowStyle(ArrowStyle.FILL_DIAMOND)
+                .targetArrowStyle(ArrowStyle.NONE)
+                .build();
+    }
+
+    private ConditionalEdgeStyle createReferenceConditionalEdgeStyle() {
+        return this.diagramBuilderHelper.newConditionalEdgeStyle()
+                .condition(AQLConstants.AQL + org.eclipse.sirius.components.diagrams.description.EdgeDescription.SEMANTIC_EDGE_TARGET + ".isReference")
+                .borderSize(0)
+                .color(this.colorProvider.getColor(ViewConstants.DEFAULT_EDGE_COLOR))
+                .edgeWidth(1)
+                .lineStyle(LineStyle.SOLID)
+                .sourceArrowStyle(ArrowStyle.DIAMOND)
                 .targetArrowStyle(ArrowStyle.NONE)
                 .build();
     }
