@@ -72,13 +72,13 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
                 .variableName("newInstance")
                 .children(changeContextNewInstance.build());
 
-        var nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).orElse(null);
+        var nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getExhibitStateUsage())).orElse(null);
 
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(nodeDescription)
-                .parentViewExpression("aql:selectedNode")
-                .semanticElementExpression("aql:selectedObject")
+                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentViewExpression", "selectedNode"))
+                .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getStateUsage());
@@ -89,7 +89,7 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
-                .children(createEClassInstance.build(), createReferenceSubsettingInstance.build(), createView.build());
+                .children(createEClassInstance.build(), createView.build(), createReferenceSubsettingInstance.build());
 
         var toolLabel = this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getExhibitStateUsage()) + " with referenced State";
 

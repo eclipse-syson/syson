@@ -54,7 +54,13 @@ public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartm
 
     @Override
     protected String getNodeToolIconURLsExpression() {
-        return "/icons/full/obj16/StateUsage.svg";
+        var iconPath = "";
+        if (this.isExhibit) {
+            iconPath = "/icons/full/obj16/ExhibitStateUsage.svg";
+        } else {
+            iconPath = "/icons/full/obj16/StateUsage.svg";
+        }
+        return iconPath;
     }
 
     @Override

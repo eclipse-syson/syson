@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
+import org.eclipse.sirius.components.view.diagram.CreateView;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
@@ -165,6 +166,8 @@ public class JavaServiceIsCalledChecker {
             for (Operation bodyOperation : nodeTool.getBody()) {
                 EMFUtils.allContainedObjectOfType(bodyOperation, ChangeContext.class)
                         .forEach(changeContext -> expressions.add(changeContext.getExpression()));
+                EMFUtils.allContainedObjectOfType(bodyOperation, CreateView.class)
+                        .forEach(changeContext -> expressions.add(changeContext.getParentViewExpression()));
             }
         }
         return expressions;
@@ -205,6 +208,8 @@ public class JavaServiceIsCalledChecker {
             for (Operation bodyOperation : edgeTool.getBody()) {
                 EMFUtils.allContainedObjectOfType(bodyOperation, ChangeContext.class)
                         .forEach(changeContext -> expressions.add(changeContext.getExpression()));
+                EMFUtils.allContainedObjectOfType(bodyOperation, CreateView.class)
+                        .forEach(changeContext -> expressions.add(changeContext.getParentViewExpression()));
             }
         }
         return expressions;

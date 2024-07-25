@@ -35,14 +35,12 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
-import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,30 +138,6 @@ public class ViewNodeService {
             }
         }
         return isHiddenByDefault;
-    }
-
-    /**
-     * Computes if the exhibited states compartment shall be displayed based on the presence of
-     * {@link ExhibitStateUsage} elements.
-     *
-     * @param eObject
-     *            The {@link Element} to start from
-     * @return false if the provided object exhibits at least one {@link StateUsage}
-     */
-    public boolean isHiddenByDefaultExhibitStates(Element eObject) {
-        return this.utilService.getAllExhibitedStates(eObject).isEmpty();
-    }
-
-    /**
-     * Computes if the exhibited states compartment shall be displayed based on the presence of
-     * {@link ExhibitStateUsage} elements.
-     *
-     * @param eObject
-     *            The {@link Element} to start from
-     * @return false if the provided object exhibits at least one {@link StateUsage}
-     */
-    public boolean isHiddenByDefaultNonExhibitStates(Element eObject) {
-        return this.utilService.getAllNonExhibitStates(eObject).isEmpty();
     }
 
     /**

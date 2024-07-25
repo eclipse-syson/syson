@@ -163,7 +163,6 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.getGroups().add(this.createExtraFeatureTypingPropertiesGroup());
         pageCore.getGroups().add(this.createExtraRequirementConstraintMembershipPropertiesGroup());
         pageCore.getGroups().add(this.createExtraAcceptActionUsagePropertiesGroup());
-        pageCore.getGroups().add(this.createExtraExhibitStateUsagePropertiesGroup());
         pageCore.getGroups().add(this.createExtraTransitionSourceTargetPropertiesGroup());
 
         PageDescription pageAdvanced = FormFactory.eINSTANCE.createPageDescription();
@@ -392,27 +391,6 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
         group.getChildren().add(payloadRefWidget);
         group.getChildren().add(receiverRefWidget);
-
-        return group;
-    }
-
-    private GroupDescription createExtraExhibitStateUsagePropertiesGroup() {
-        GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
-        group.setDisplayMode(GroupDisplayMode.LIST);
-        group.setName(EXHIBITED_STATE_USAGE_PROPERTIES);
-        group.setLabelExpression("");
-        group.setSemanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getStateUsage"));
-
-        CheckboxDescription exhibitStateCheckbox = FormFactory.eINSTANCE.createCheckboxDescription();
-        exhibitStateCheckbox.setName("ExhibitStateCheckbox");
-        exhibitStateCheckbox.setLabelExpression("is Exhibited");
-        exhibitStateCheckbox.setValueExpression(AQLUtils.getSelfServiceCallExpression("isExhibitedStateUsage"));
-        exhibitStateCheckbox.setIsEnabledExpression(AQLConstants.AQL + "self.canBeExhibitedStateUsage() or self.isExhibitedStateUsage()");
-        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression(AQLUtils.getSelfServiceCallExpression("setUnsetAsExhibit"));
-        exhibitStateCheckbox.getBody().add(setNewValueOperation);
-
-        group.getChildren().add(exhibitStateCheckbox);
 
         return group;
     }

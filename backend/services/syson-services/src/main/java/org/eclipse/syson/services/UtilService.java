@@ -35,14 +35,11 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
-import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
-import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
-import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateSubactionKind;
@@ -141,12 +138,9 @@ public class UtilService {
             candidates = usage.getNestedState();
         } else if (eObject instanceof Definition def) {
             candidates = def.getOwnedState();
-        } else if (eObject instanceof ExhibitStateUsage esu) {
-            candidates.add(esu);
         }
         candidates.stream().filter(ExhibitStateUsage.class::isInstance)
                 .map(ExhibitStateUsage.class::cast)
-                .map(ExhibitStateUsage::getExhibitedState)
                 .filter(Objects::nonNull)
                 .forEach(result::add);
         return result;
@@ -173,18 +167,6 @@ public class UtilService {
                 .filter(Objects::nonNull)
                 .forEach(result::add);
         return result;
-    }
-
-    /**
-     * Get the AQL service expression getting all reachable {@link StateUsage} elements which are not referential
-     * ExhibitStates.
-     *
-     * @param domainType
-     *            A type to be converted as an EClass name
-     * @return An AQL expression calling {@code self.getAllReachableStatesWithoutReferentialExhibit()}
-     */
-    public String getAllReachableStatesWithoutReferencialExhibitExpression() {
-        return AQLUtils.getSelfServiceCallExpression("getAllReachableStatesWithoutReferentialExhibit");
     }
 
     /**
@@ -471,37 +453,6 @@ public class UtilService {
     }
 
     /**
-     * Checks whether the provided {@link Element} can be Exhibited. Meaning that:
-     * <ul>
-     * <li>the provided element is not already exhibited == is not referenced by an {@link ExhibitStateUsage}</li>
-     * <li>the provided element can be exhibited == its parent can exhibit states</li>
-     * </ul>
-     *
-     * @param element
-     *            The {@link Element} to check
-     * @return whether the provided {@link Element} can be exhibited or unexhibited
-     */
-    public boolean canBeExhibitedStateUsage(Element element) {
-        boolean result = false;
-        if (element instanceof StateUsage su) {
-            boolean isExhibited = this.getEInverseRelatedElements(su, SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature()).stream()
-                    .map(ReferenceSubsetting.class::cast)
-                    .map(ReferenceSubsetting::getReferencingFeature)
-                    .anyMatch(ExhibitStateUsage.class::isInstance);
-            // Check whether it can be exhibited
-            if (!(su instanceof ExhibitStateUsage)) {
-                Type owningType = su.getOwningType();
-                boolean hasCorrectParent = owningType instanceof StateUsage
-                        || owningType instanceof StateDefinition
-                        || owningType instanceof PartUsage
-                        || owningType instanceof PartDefinition;
-                result = !isExhibited && hasCorrectParent;
-            }
-        }
-        return result;
-    }
-
-    /**
      * Create a child Action onto {@code stateDefinition}.
      *
      * @param parentState
@@ -545,71 +496,17 @@ public class UtilService {
      */
     public StateUsage createChildState(Element parentState, boolean isParallel, boolean isExhibit) {
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        StateUsage childState = SysmlFactory.eINSTANCE.createStateUsage();
+        StateUsage childState;
+        if (isExhibit) {
+            childState = SysmlFactory.eINSTANCE.createExhibitStateUsage();
+        } else {
+            childState = SysmlFactory.eINSTANCE.createStateUsage();
+        }
         childState.setIsParallel(isParallel);
         featureMembership.getOwnedRelatedElement().add(childState);
         parentState.getOwnedRelationship().add(featureMembership);
         this.elementInitializerSwitch.doSwitch(childState);
-        if (isExhibit) {
-            this.setUnsetAsExhibit(childState);
-        }
         return childState;
-    }
-
-    /**
-     * Set or Unset the provided {@link StateUsage} as being exhibited in its context.
-     *
-     * @param stateUsage
-     *            The provided {@link StateUsage}
-     * @return The provided {@link StateUsage}
-     */
-    public StateUsage setUnsetAsExhibit(StateUsage stateUsage) {
-        boolean done = false;
-        List<ExhibitStateUsage> exhibitingExhibitStateUsages = this.getEInverseRelatedElements(stateUsage, SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature()).stream()
-                .map(ReferenceSubsetting.class::cast)
-                .map(ReferenceSubsetting::getReferencingFeature)
-                .filter(ExhibitStateUsage.class::isInstance)
-                .map(ExhibitStateUsage.class::cast)
-                .toList();
-        if (!exhibitingExhibitStateUsages.isEmpty()) {
-            for (ExhibitStateUsage esu : exhibitingExhibitStateUsages) {
-                this.deleteService.deleteFromModel(esu);
-                done = true;
-            }
-        }
-        if (!done && !(stateUsage instanceof ExhibitStateUsage)) {
-            Type owningType = stateUsage.getOwningType();
-            // If located in the right Type then reference StateUsage with a new ExhibitStateUsage
-            if (owningType instanceof StateUsage
-                    || owningType instanceof StateDefinition
-                    || owningType instanceof PartUsage
-                    || owningType instanceof PartDefinition) {
-                ExhibitStateUsage newExhibitStateUsage = SysmlFactory.eINSTANCE.createExhibitStateUsage();
-                this.elementInitializerSwitch.doSwitch(newExhibitStateUsage);
-                var refSub = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-                this.elementInitializerSwitch.doSwitch(refSub);
-                refSub.setReferencedFeature(stateUsage);
-                newExhibitStateUsage.getOwnedRelationship().add(refSub);
-                FeatureMembership fm = SysmlFactory.eINSTANCE.createFeatureMembership();
-                fm.getOwnedRelatedElement().add(newExhibitStateUsage);
-                owningType.getOwnedRelationship().add(fm);
-            }
-        }
-        return stateUsage;
-    }
-
-    /**
-     * States if the provided {@link StateUsage} is exhibited or not.
-     *
-     * @param stateUsage
-     *            The {@link StateUsage}
-     * @return whether the provided {@link StateUsage} is exhibited or not
-     */
-    public boolean isExhibitedStateUsage(StateUsage stateUsage) {
-        return this.getEInverseRelatedElements(stateUsage, SysmlPackage.eINSTANCE.getReferenceSubsetting_ReferencedFeature()).stream()
-                .map(ReferenceSubsetting.class::cast)
-                .map(ReferenceSubsetting::getReferencingFeature)
-                .filter(ExhibitStateUsage.class::isInstance).findAny().isPresent();
     }
 
     /**

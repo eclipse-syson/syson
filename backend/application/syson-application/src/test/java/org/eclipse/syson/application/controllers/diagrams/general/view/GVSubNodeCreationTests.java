@@ -1260,9 +1260,6 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
         this.createNode(parentEClass, parentLabel, creationToolName);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             int expectedNodeCount = 1;
-            if (creationToolName.contains("Exhibit")) {
-                expectedNodeCount = 2;
-            }
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(expectedNodeCount)
                     .hasNewEdgeCount(0)
@@ -1311,9 +1308,6 @@ public class GVSubNodeCreationTests extends AbstractIntegrationTests {
         this.createNode(parentEClass, parentLabel, creationToolName);
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             int expectedNodeCount = 1;
-            if (creationToolName.contains("Exhibit")) {
-                expectedNodeCount = 2;
-            }
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(expectedNodeCount)
                     .hasNewEdgeCount(0)

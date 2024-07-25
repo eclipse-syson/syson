@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -801,5 +802,24 @@ public class ViewToolService extends ToolService {
         }
 
         return childState;
+    }
+
+    /**
+     * Return the real parent {@link Node} given the current object and the selectedNode.
+     *
+     * @param self
+     *            the current object.
+     * @param selectedNode
+     *            the selectedNode (can be a {@link Node} or null (in case of a {@link Diagram}).
+     * @return the real parent {@link Node} given the current object and the selectedNode.
+     */
+    public Object getParentViewExpression(Object self, Object selectedNode) {
+        if (self instanceof StateUsage state && selectedNode instanceof Node node) {
+            var realParentNode = node.getChildNodes().stream().filter(childNode -> childNode.getInsideLabel().getText().contains(STATE_TRANSITION_COMPARTMENT_NAME)).findFirst();
+            if (realParentNode.isPresent()) {
+                return realParentNode.get();
+            }
+        }
+        return selectedNode;
     }
 }

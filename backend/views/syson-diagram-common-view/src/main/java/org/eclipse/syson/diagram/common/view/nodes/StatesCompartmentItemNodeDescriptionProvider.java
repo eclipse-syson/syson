@@ -16,8 +16,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
-import org.eclipse.syson.diagram.common.view.tools.StateTransitionToggleExhibitStateToolProvider;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -31,11 +29,8 @@ public class StatesCompartmentItemNodeDescriptionProvider extends CompartmentIte
 
     private final boolean showsExhibitOnly;
 
-    private final ToolDescriptionService toolDescriptionService;
-
     public StatesCompartmentItemNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator, boolean showsExhibitOnly) {
         super(eClass, eReference, colorProvider, descriptionNameGenerator);
-        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
         this.showsExhibitOnly = showsExhibitOnly;
     }
 
@@ -47,10 +42,6 @@ public class StatesCompartmentItemNodeDescriptionProvider extends CompartmentIte
         } else {
             nd.setName(this.getDescriptionNameGenerator().getCompartmentItemName(this.getEClass(), this.getEReference()) + StatesCompartmentNodeDescriptionProvider.STATES_NAME);
         }
-        var editSection = this.toolDescriptionService.buildEditSection(
-                new StateTransitionToggleExhibitStateToolProvider(true).create(null),
-                new StateTransitionToggleExhibitStateToolProvider(false).create(null));
-        nd.getPalette().getToolSections().add(editSection);
         return nd;
     }
 

@@ -32,6 +32,7 @@ import org.eclipse.syson.diagram.common.view.tools.AssignmentActionNodeToolProvi
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DoneActionNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
@@ -43,7 +44,6 @@ import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionCompartmentToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
-import org.eclipse.syson.diagram.common.view.tools.StateTransitionToggleExhibitStateToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
@@ -80,9 +80,9 @@ import org.eclipse.syson.sysml.UseCaseUsage;
  */
 public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectionSwitch {
 
-    private final List<NodeDescription> allNodeDescriptions;
-
     private final IViewDiagramElementFinder cache;
+
+    private final List<NodeDescription> allNodeDescriptions;
 
     private final ToolDescriptionService toolDescriptionService;
 
@@ -403,6 +403,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(null),
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(null),
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(null),
+                new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache),
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(null));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
@@ -417,10 +418,9 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(null),
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(null),
                 new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(null),
+                new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache),
                 new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(null));
         var editSection = this.toolDescriptionService.buildEditSection(
-                new StateTransitionToggleExhibitStateToolProvider(true).create(null),
-                new StateTransitionToggleExhibitStateToolProvider(false).create(null),
                 new SetAsCompositeToolProvider().create(this.cache),
                 new SetAsRefToolProvider().create(this.cache));
         return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));

@@ -34,6 +34,15 @@ The changes are:
 * Renamed `FirstLevelChildPartUsageNodeDescriptionProvider` to `FirstLevelChildUsageNodeDescriptionProvider`
 * Renamed `ChildPartUsageNodeDescriptionProvider` to `ChildUsageNodeDescriptionProvider`
 - Switch to Sirius Web 2024.7.1: all diagrams must be deleted and created again, due to the fix of this Sirius Web https://github.com/eclipse-sirius/sirius-web/issues/1470[bug].
+- Add tool to create an ExhibitState from a StateUsage, the following classes & methods have been deleted or modified to simplify the handling of _ExhibitStates_
+* Deleted `StateTransitionToggleExhibitStateToolProvider`
+* Deleted `UtilService#canBeExhibitedStateUsage`
+* Deleted `UtilService#setUnsetAsExhibit`
+* Deleted `UtilService#isExhibitedStateUsage`
+* Deleted `UtilService#getAllReachableStatesWithoutReferencialExhibitExpression`
+* Deleted `ViewNodeService#isHiddenByDefaultExhibitStates`
+* Deleted `ViewNodeService#isHiddenByDefaultNonExhibitStates`
+* Add new `IViewDiagramElementFinder` parameter to `StateTransitionViewNodeToolSectionSwitch`
 
 == Dependencies update
 
@@ -70,6 +79,11 @@ The changes are:
 
 image::release-notes-reference-nested-usages.png[Nested Usage edge for composite and reference Usage]
 
+- Modify the creation of an _ExhibitState_ from a _StateUsage_ or _StateDefinition_.
+There is now several tools for creating an _ExhibitState_.
+The first one called "New ExhibitState" creates a simple _ExhibitState_.
+The second one called "New ExhibitState with referenced State" shows a dialog allowing to select an existing _State_ to associate to the new _ExhibitState_.
+
 
 == New features
 
@@ -78,8 +92,8 @@ image::release-notes-reference-nested-usages.png[Nested Usage edge for composite
 image::release-notes-show-hide-icons-in-diagram.png[Show/Hide Icons in Diagram]
 
 - Add new tools allowing to create an _ExhibitState_ at the root of General View and StateTransition View.
-The first one creates a simple _ExhibitState_.
-The second one shows a dialog allowing to select an existing _State_ to associate to the new _ExhibitState_.
+The first one called "New ExhibitState" creates a simple _ExhibitState_.
+The second one called "New ExhibitState with referenced State" shows a dialog allowing to select an existing _State_ to associate to the new _ExhibitState_.
 The selected _State_ will be added to the diagram, not the new _ExhibitState_.
 - Handle _FlowConnectionUsage_ between _PortUsages_ in Interconnection View.
 A new edge tool allows to create a flow between two ports.
