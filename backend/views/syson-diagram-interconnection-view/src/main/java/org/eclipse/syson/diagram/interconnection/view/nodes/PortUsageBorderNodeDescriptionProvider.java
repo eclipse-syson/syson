@@ -90,7 +90,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
 
     private OutsideLabelDescription createOutsideLabelDescription() {
         return this.diagramBuilderHelper.newOutsideLabelDescription()
-                .labelExpression(AQLUtils.getSelfServiceCallExpression("getBorderNodePortUsageLabel"))
+                .labelExpression(AQLUtils.getSelfServiceCallExpression("getBorderNodeUsageLabel"))
                 .position(OutsideLabelPosition.BOTTOM_CENTER)
                 .style(this.createOutsideLabelStyle())
                 .build();
@@ -113,16 +113,16 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
         var borderColor = this.colorProvider.getColor(ViewConstants.DEFAULT_BORDER_COLOR);
         return List.of(
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isInPort"))
-                        .style(this.createImageNodeStyleDescription("/images/PortUsage_In.svg", borderColor, true))
+                        .condition(AQLUtils.getSelfServiceCallExpression("isInFeature"))
+                        .style(this.createImageNodeStyleDescription("/images/Feature_In.svg", borderColor, true))
                 .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isOutPort"))
-                        .style(this.createImageNodeStyleDescription("/images/PortUsage_Out.svg", borderColor, true))
+                        .condition(AQLUtils.getSelfServiceCallExpression("isOutFeature"))
+                        .style(this.createImageNodeStyleDescription("/images/Feature_Out.svg", borderColor, true))
                         .build(),
                 this.diagramBuilderHelper.newConditionalNodeStyle()
-                        .condition(AQLUtils.getSelfServiceCallExpression("isInOutPort"))
-                        .style(this.createImageNodeStyleDescription("/images/PortUsage_InOut.svg", borderColor, true))
+                        .condition(AQLUtils.getSelfServiceCallExpression("isInOutFeature"))
+                        .style(this.createImageNodeStyleDescription("/images/Feature_Inout.svg", borderColor, true))
                         .build()
         );
     }
@@ -143,6 +143,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
                 .body(callEditService.build());
 
+        NodeDescription itemBorderNodeDescription = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).get();
         NodeDescription rootPortBorderNode = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).get();
 
         return this.diagramBuilderHelper.newNodePalette()
@@ -151,7 +152,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
                 .edgeTools(
                         this.createBindingConnectorAsUsageEdgeTool(List.of(nodeDescription, rootPortBorderNode)),
-                        this.createFlowConnectionUsageEdgeTool(List.of(nodeDescription, rootPortBorderNode)),
+                        this.createFlowConnectionUsageEdgeTool(List.of(nodeDescription, itemBorderNodeDescription, rootPortBorderNode)),
                         this.createInterfaceUsageEdgeTool(List.of(nodeDescription, rootPortBorderNode)))
                 .build();
     }

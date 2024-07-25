@@ -20,6 +20,7 @@ import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagram
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
@@ -97,16 +98,16 @@ public class InterconnectionViewNodeService extends ViewNodeService {
         return actionUsages;
     }
 
-    public boolean isInPort(PortUsage portUsage) {
-        return FeatureDirectionKind.IN.equals(portUsage.getDirection());
+    public boolean isInFeature(Feature feature) {
+        return FeatureDirectionKind.IN.equals(feature.getDirection());
     }
 
-    public boolean isOutPort(PortUsage portUsage) {
-        return FeatureDirectionKind.OUT.equals(portUsage.getDirection());
+    public boolean isOutFeature(Feature feature) {
+        return FeatureDirectionKind.OUT.equals(feature.getDirection());
     }
 
-    public boolean isInOutPort(PortUsage portUsage) {
-        return FeatureDirectionKind.INOUT.equals(portUsage.getDirection());
+    public boolean isInOutFeature(Feature feature) {
+        return FeatureDirectionKind.INOUT.equals(feature.getDirection());
     }
 
 }

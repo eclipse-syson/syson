@@ -45,8 +45,8 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         super(viewDiagramDescriptionSearchService, objectService);
     }
 
-    public BindingConnectorAsUsage createBindingConnectorAsUsage(PortUsage sourcePort, PortUsage targetPort) {
-        Namespace bindingContainer = this.getClosestContainingDefinitionOrPackageFrom(sourcePort);
+    public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target) {
+        Namespace bindingContainer = this.getClosestContainingDefinitionOrPackageFrom(source);
         if (bindingContainer == null) {
             return null;
         }
@@ -66,7 +66,7 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
         this.elementInitializer(sourceReferenceSubsetting);
         sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
-        sourceReferenceSubsetting.setReferencedFeature(sourcePort);
+        sourceReferenceSubsetting.setReferencedFeature(source);
 
         EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         bindingConnectorAsUsage.getOwnedRelationship().add(targetEndFeatureMembership);
@@ -77,7 +77,7 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
         this.elementInitializer(targetReferenceSubsetting);
         targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
-        targetReferenceSubsetting.setReferencedFeature(targetPort);
+        targetReferenceSubsetting.setReferencedFeature(target);
 
         return bindingConnectorAsUsage;
     }
@@ -120,8 +120,8 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         return interfaceUsage;
     }
 
-    public FlowConnectionUsage createFlowConnectionUsage(PortUsage sourcePort, PortUsage targetPort) {
-        Namespace flowContainer = this.getClosestContainingDefinitionOrPackageFrom(sourcePort);
+    public FlowConnectionUsage createFlowConnectionUsage(Feature source, Feature target) {
+        Namespace flowContainer = this.getClosestContainingDefinitionOrPackageFrom(source);
         if (flowContainer == null) {
             return null;
         }
@@ -141,7 +141,7 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
         this.elementInitializer(sourceReferenceSubsetting);
         sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
-        sourceReferenceSubsetting.setReferencedFeature(sourcePort);
+        sourceReferenceSubsetting.setReferencedFeature(source);
 
         EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         flowConnectionUsage.getOwnedRelationship().add(targetEndFeatureMembership);
@@ -152,7 +152,7 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
         this.elementInitializer(targetReferenceSubsetting);
         targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
-        targetReferenceSubsetting.setReferencedFeature(targetPort);
+        targetReferenceSubsetting.setReferencedFeature(target);
 
         return flowConnectionUsage;
     }

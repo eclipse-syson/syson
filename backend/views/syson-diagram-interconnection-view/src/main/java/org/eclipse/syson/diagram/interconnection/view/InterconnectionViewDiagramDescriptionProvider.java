@@ -48,6 +48,7 @@ import org.eclipse.syson.diagram.interconnection.view.nodes.ChildrenUsageCompart
 import org.eclipse.syson.diagram.interconnection.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.FirstLevelChildUsageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.nodes.ItemUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.PortUsageBorderNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.RootNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.nodes.RootPortUsageBorderNodeDescriptionProvider;
@@ -106,6 +107,7 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
                 new ChildUsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getPerformActionUsage(), colorProvider, this.getDescriptionNameGenerator()),
                 new RootPortUsageBorderNodeDescriptionProvider("getPortUsages", colorProvider, this.getDescriptionNameGenerator()),
                 new PortUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
+                new ItemUsageBorderNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new BindingConnectorAsUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new AllocateEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),

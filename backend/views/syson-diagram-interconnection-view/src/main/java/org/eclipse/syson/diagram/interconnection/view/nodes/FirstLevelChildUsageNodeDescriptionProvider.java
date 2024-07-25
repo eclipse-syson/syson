@@ -105,10 +105,12 @@ public class FirstLevelChildUsageNodeDescriptionProvider extends AbstractNodeDes
         });
 
         var optPortUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
+        var optItemUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()));
 
         NodeDescription nodeDescription = optChildUsageNodeDescription.get();
         nodeDescription.getReusedChildNodeDescriptions().addAll(reusedChildren);
         nodeDescription.getReusedBorderNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
+        nodeDescription.getReusedBorderNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
         nodeDescription.setPalette(this.createNodePalette(cache));
 
         List<NodeDescription> growableNodes = new ArrayList<>();
