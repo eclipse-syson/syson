@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -252,6 +253,11 @@ public class ToolDescriptionService {
     /**
      * Returns the creation node tool description for the given Node Description to build a new node for the given
      * EClass.
+     * <p>
+     * This method creates a {@link FeatureMembership}, use
+     * {@link #createNodeTool(NodeDescription, EClass, EClass, NodeContainmentKind)} to specify the membership type to
+     * create.
+     * </p>
      *
      * @param nodeDescription
      *            the Node Description where the returned tool is added
@@ -259,6 +265,7 @@ public class ToolDescriptionService {
      *            the EClass that the returned tool is in charge of
      * @param nodeKind
      *            the kind of the node associated to the EClass that is built by the returned tool
+     * @return the created node tool
      */
     public NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind) {
         return this.createNodeToolWithDirection(nodeDescription, eClass, nodeKind, null);
@@ -266,18 +273,62 @@ public class ToolDescriptionService {
 
     /**
      * Returns the creation node tool description for the given Node Description to build a new node for the given
-     * EClass (which must be a {@link Feature}.
+     * EClass.
+     *
+     * @param nodeDescription
+     *            the Node Description where the returned tool is added
+     * @param eClass
+     *            the EClass that the returned tool is in charge of
+     * @param membershipEClass
+     *            the EClass of the membership to create
+     * @param nodeKind
+     *            the kind of the node associated to the EClass that is built by the returned tool
+     * @return the created node tool
+     */
+    public NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass, EClass membershipEClass, NodeContainmentKind nodeKind) {
+        return this.createNodeToolWithDirection(nodeDescription, eClass, membershipEClass, nodeKind, null);
+    }
+
+    /**
+     * Returns the creation node tool description for the given Node Description to build a new node for the given
+     * EClass (which must be a {@link Feature}).
+     * <p>
+     * This method creates a {@link FeatureMembership}, use
+     * {@link #createNodeToolWithDirection(NodeDescription, EClass, EClass, NodeContainmentKind, FeatureDirectionKind)}
+     * to specify the membership type to create.
+     * </p>
      *
      * @param nodeDescription
      *            the Node Description where the returned tool is added
      * @param eClass
      *            the EClass that the returned tool is in charge of
      * @param nodeKind
+     *            the kind of the node associated to the EClass that is build by the returned tool
+     * @param direction
+     *            the feature direction
+     * @return the created node tool
+     */
+    public NodeTool createNodeToolWithDirection(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind, FeatureDirectionKind direction) {
+        return this.createNodeToolWithDirection(nodeDescription, eClass, SysmlPackage.eINSTANCE.getFeatureMembership(), nodeKind, direction);
+    }
+
+    /**
+     * Returns the creation node tool description for the given Node Description to build a new node for the given
+     * EClass (which must be a {@link Feature}).
+     *
+     * @param nodeDescription
+     *            the Node Description where the returned tool is added
+     * @param eClass
+     *            the EClass that the returned tool is in charge of
+     * @param membershipEClass
+     *            the EClass of the membership to create
+     * @param nodeKind
      *            the kind of the node associated to the EClass that is built by the returned tool
      * @param direction
      *            the feature direction
+     * @return the created node tool
      */
-    public NodeTool createNodeToolWithDirection(NodeDescription nodeDescription, EClass eClass, NodeContainmentKind nodeKind, FeatureDirectionKind direction) {
+    public NodeTool createNodeToolWithDirection(NodeDescription nodeDescription, EClass eClass, EClass membershipEClass, NodeContainmentKind nodeKind, FeatureDirectionKind direction) {
         // make sure that the given element is a feature to avoid error at runtime.
         if (!SysmlPackage.eINSTANCE.getFeature().isSuperTypeOf(eClass) && direction != null) {
             return this.createNodeTool(nodeDescription, eClass, nodeKind);
@@ -322,7 +373,7 @@ public class ToolDescriptionService {
                 .children(createEClassInstance.build(), createView.build());
 
         var createMembership = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getFeatureMembership()))
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(membershipEClass))
                 .referenceName(SysmlPackage.eINSTANCE.getElement_OwnedRelationship().getName())
                 .variableName("newFeatureMembership")
                 .children(changeContexMembership.build());

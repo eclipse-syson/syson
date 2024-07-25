@@ -41,6 +41,7 @@ The changes are:
 - [releng] Add a dependency to CycloneDX to compute the backend software bill of materials during the build
 
 === Bug fixes
+- https://github.com/eclipse-syson/syson/issues/606[#606] [interconnection-view] Prevent nested part to be rendered as border nodes
 
 === Improvements
 

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.interconnection.view.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -96,6 +97,21 @@ public class InterconnectionViewNodeService extends ViewNodeService {
             this.logger.warn("Cannot get {} from the provided element {}", ActionUsage.class.getSimpleName(), element);
         }
         return actionUsages;
+    }
+
+    /**
+     * Returns the parameters of the provided element.
+     *
+     * @param element
+     *            the element
+     * @return the features that are parameters of the provided {@code element}
+     */
+    public List<Feature> getParameters(Element element) {
+        List<Feature> parameters = new ArrayList<>();
+        if (element instanceof ActionUsage actionUsage) {
+            parameters = actionUsage.getParameter();
+        }
+        return parameters;
     }
 
     public boolean isInFeature(Feature feature) {

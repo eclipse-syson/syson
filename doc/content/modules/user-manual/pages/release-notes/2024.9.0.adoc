@@ -43,6 +43,8 @@ The changes are:
 - Add a dependency to CycloneDX to compute the backend software bill of materials during the build
 
 == Bug fixes
+- Prevent nested part to be rendered as border nodes in the Interconnection View diagram
+
 
 == Improvements
 
