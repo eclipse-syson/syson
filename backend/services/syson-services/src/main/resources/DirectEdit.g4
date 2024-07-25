@@ -29,7 +29,11 @@ package org.eclipse.syson.services.grammars;
 }
 
 expression :
-	name? multiplicityExpression? featureExpressions EOF
+	referenceExpression? name? multiplicityExpression? featureExpressions EOF
+;
+
+referenceExpression : 
+	'ref '
 ;
 
 multiplicityExpression :
@@ -109,7 +113,7 @@ name :
 	// We can't use ANY+ or .+ here because it conflicts with reserved keywords, which will be matched over ANY since 
 	// they are longer. Using .+ is also too greedy, and will match ':' ':>' etc, making the parser unable to properly 
 	// handle the input.
-	~(':' | ':>' | '::>' | ':>>' | '=' | '[' )+
+	~('ref ' | ':' | ':>' | '::>' | ':>>' | '=' | '[' )+
 ;
 
 

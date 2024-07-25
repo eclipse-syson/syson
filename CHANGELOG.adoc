@@ -53,6 +53,7 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/571[#571] [interconnection-view] Add ActionUsage node in Interconnection View
 - https://github.com/eclipse-syson/syson/issues/581[#581] [interconnection-view] Add documentation and action flow compartment in ActionUsage
 - https://github.com/eclipse-syson/syson/issues/590[#590] [diagrams] Add label support for referential Usages
+- https://github.com/eclipse-syson/syson/issues/599[#599] [diagrams] Add support for ref keyword in direct edit
 
 === New features
 

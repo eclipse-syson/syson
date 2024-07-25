@@ -38,6 +38,7 @@ import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsCo
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionMemberContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.ReferenceExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.SubsettingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TriggerExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TriggerExpressionNameContext;
@@ -143,12 +144,22 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 new AttributeToDirectEditSwitch(newValue).doSwitch(this.element);
             }
         }
+        this.handleMissingReferenceExpression(ctx);
         this.handleMissingMultiplicityExpression(ctx);
         this.handleMissingSubclassificationExpression(ctx);
         this.handleMissingSubsettingExpression(ctx);
         this.handleMissingRedefinitionExpression(ctx);
         this.handleMissingTypingExpression(ctx);
         this.handleMissingValueExpression(ctx);
+    }
+
+    @Override
+    public void exitReferenceExpression(ReferenceExpressionContext ctx) {
+        if (this.element instanceof Usage usage) {
+            // isComposite is defined at the Feature level, but the derived isReference is only defined at the Usage level.
+            usage.setIsComposite(false);
+        }
+        super.exitReferenceExpression(ctx);
     }
 
     @Override
@@ -630,6 +641,13 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     @Override
     public void visitErrorNode(ErrorNode node) {
         super.visitErrorNode(node);
+    }
+
+    private void handleMissingReferenceExpression(ExpressionContext ctx) {
+        ReferenceExpressionContext referenceExpression = ctx.referenceExpression();
+        if (this.element instanceof Usage usage && referenceExpression == null) {
+            usage.setIsComposite(true);
+        }
     }
 
     private void handleMissingMultiplicityExpression(ExpressionContext ctx) {

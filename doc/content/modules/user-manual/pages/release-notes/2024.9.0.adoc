@@ -59,6 +59,9 @@ The changes are:
 * Nodes that are references now correctly contain the "ref" keyword
 * Elements in lists that are references now correctly contain the "ref" keyword
 * AttributeUsage do not contain the "ref" keyword since they are always referential
+- Add support for "ref" keyword in direct edit
+* Prefixing the name of an Usage with "ref" sets it as a reference
+* Not setting the "ref" prefix of an Usage sets it as a composite (non-reference)
 
 == New features
 

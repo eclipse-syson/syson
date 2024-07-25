@@ -42,6 +42,18 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReferenceExpression(DirectEditParser.ReferenceExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReferenceExpression(DirectEditParser.ReferenceExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMultiplicityExpression(DirectEditParser.MultiplicityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
