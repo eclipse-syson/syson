@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -60,7 +59,7 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .domainType(domainType)
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(this.getName())
-                .semanticCandidatesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getUsage_NestedItem().getName())
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getParameters"))
                 .style(this.createItemUnsetNodeStyle())
                 .conditionalStyles(this.createItemUsageConditionalNodeStyles().toArray(ConditionalNodeStyle[]::new))
                 .userResizable(UserResizableDirection.NONE)
