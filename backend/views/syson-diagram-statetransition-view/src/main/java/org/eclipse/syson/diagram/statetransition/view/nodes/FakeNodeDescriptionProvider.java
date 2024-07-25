@@ -70,6 +70,8 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
                 + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME).ifPresent(childrenNodes::add);
         cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState())
                 + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME).ifPresent(childrenNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState())
+                + StatesCompartmentNodeDescriptionProvider.EXHIBIT_STATES_NAME).ifPresent(childrenNodes::add);
 
         cache.getNodeDescription(this.descriptionNameGenerator.getFreeFormCompartmentName(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState()))
                 .ifPresent(childrenNodes::add);

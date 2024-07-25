@@ -66,7 +66,9 @@ The changes are:
 
 image::release-notes-show-hide-icons-in-diagram.png[Show/Hide Icons in Diagram]
 
-- Add a new tool allowing to create an _ExhibitState_ at the root of General View and StateTransition View.
-This tool shows a dialog allowing to select an existing _State_ to associate to the new _ExhibitState_.
+- Add new tools allowing to create an _ExhibitState_ at the root of General View and StateTransition View.
+The first one creates a simple _ExhibitState_.
+The second one shows a dialog allowing to select an existing _State_ to associate to the new _ExhibitState_.
+The selected _State_ will be added to the diagram, not the new _ExhibitState_.
 - Handle _FlowConnectionUsage_ between _PortUsages_ in Interconnection View.
 A new edge tool allows to create a flow between two ports.

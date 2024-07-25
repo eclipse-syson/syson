@@ -26,6 +26,7 @@ import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
+import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
@@ -121,6 +122,11 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
     @Override
     public INodeDescriptionProvider caseEnumerationUsage(EnumerationUsage object) {
         return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getEnumerationUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseExhibitStateUsage(ExhibitStateUsage object) {
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getExhibitStateUsage(), this.colorProvider);
     }
 
     @Override
