@@ -23,7 +23,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
@@ -103,21 +102,10 @@ public class StatesCompartmentNodeDescriptionProvider extends AbstractCompartmen
         } else {
             palette.toolSections(this.diagramBuilderHelper.newNodeToolSection()
                     .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, false).create(cache),
-                            new StateTransitionCompartmentNodeToolProvider(true, false).create(cache),
-                            new StateTransitionCompartmentNodeToolProvider(false, true).create(cache),
-                            new StateTransitionCompartmentNodeToolProvider(true, true).create(cache))
+                            new StateTransitionCompartmentNodeToolProvider(true, false).create(cache))
                     .build());
         }
 
         return palette.toolSections(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection()).build();
-    }
-
-    @Override
-    protected String isHiddenByDefaultExpression() {
-        if (this.showsExhibitOnly) {
-            return AQLUtils.getSelfServiceCallExpression("isHiddenByDefaultExhibitStates");
-        } else {
-            return AQLUtils.getSelfServiceCallExpression("isHiddenByDefaultNonExhibitStates");
-        }
     }
 }

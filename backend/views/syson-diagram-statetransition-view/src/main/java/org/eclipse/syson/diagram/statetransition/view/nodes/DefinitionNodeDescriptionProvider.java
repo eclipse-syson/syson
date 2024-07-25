@@ -89,7 +89,7 @@ public class DefinitionNodeDescriptionProvider extends AbstractDefinitionNodeDes
 
     @Override
     protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch(this.getAllNodeDescriptions(cache), this.getDescriptionNameGenerator());
+        StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch(cache, this.getAllNodeDescriptions(cache), this.getDescriptionNameGenerator());
         return toolSectionSwitch.doSwitch(this.eClass);
     }
     

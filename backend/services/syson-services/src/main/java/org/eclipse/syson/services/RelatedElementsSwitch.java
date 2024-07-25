@@ -23,7 +23,6 @@ import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
-import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -98,10 +97,6 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
                 if (succ.eContainer() instanceof FeatureMembership fm && fm.eContainer() instanceof TransitionUsage tu) {
                     relatedElements.add(tu);
                 }
-            }
-
-            if (feat instanceof ExhibitStateUsage esu && esu.getExhibitedState().equals(au)) {
-                relatedElements.add(esu);
             }
         }
         return relatedElements;
