@@ -109,8 +109,12 @@ public class FirstLevelChildUsageNodeDescriptionProvider extends AbstractNodeDes
 
         NodeDescription nodeDescription = optChildUsageNodeDescription.get();
         nodeDescription.getReusedChildNodeDescriptions().addAll(reusedChildren);
-        nodeDescription.getReusedBorderNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
-        nodeDescription.getReusedBorderNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
+        if (SysmlPackage.eINSTANCE.getPartUsage().equals(this.eClass)) {
+            nodeDescription.getReusedBorderNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
+        }
+        if (SysmlPackage.eINSTANCE.getActionUsage().equals(this.eClass)) {
+            nodeDescription.getReusedBorderNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
+        }
         nodeDescription.setPalette(this.createNodePalette(cache));
 
         List<NodeDescription> growableNodes = new ArrayList<>();

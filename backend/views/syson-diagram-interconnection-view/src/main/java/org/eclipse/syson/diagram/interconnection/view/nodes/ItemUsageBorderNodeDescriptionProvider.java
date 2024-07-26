@@ -43,11 +43,11 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public class ItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    private final IDescriptionNameGenerator nameGenerator;
+    private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public ItemUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public ItemUsageBorderNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .domainType(domainType)
                 .outsideLabels(this.createOutsideLabelDescription())
                 .name(this.getName())
-                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getParameters"))
+                .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getBorderNodesItems"))
                 .style(this.createItemUnsetNodeStyle())
                 .conditionalStyles(this.createItemUsageConditionalNodeStyles().toArray(ConditionalNodeStyle[]::new))
                 .userResizable(UserResizableDirection.NONE)
@@ -76,7 +76,7 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
     }
 
     public String getName() {
-        return this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage());
+        return this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage());
     }
 
     private NodeStyleDescription createItemUnsetNodeStyle() {
@@ -142,7 +142,7 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getDefaultInitialDirectEditLabel"))
                 .body(callEditService.build());
 
-        NodeDescription portBorderNodeDescription = cache.getNodeDescription(this.nameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
+        NodeDescription portBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
         NodeDescription rootPortBorderNode = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).get();
 
         return this.diagramBuilderHelper.newNodePalette()
@@ -162,7 +162,7 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createBindingConnectorAsUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
+                .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -176,7 +176,7 @@ public class ItemUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createFlowConnectionUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowConnectionUsage()))
+                .name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowConnectionUsage()))
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getFlowConnectionUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
