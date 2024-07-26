@@ -97,13 +97,13 @@ public class InterconnectionViewNodeToolSectionSwitch extends AbstractViewNodeTo
 
         NodeDescription itemNodeDescription = this.cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage())).get();
         createSection.getNodeTools().addAll(List.of(
-                this.toolDescriptionService.createNodeTool(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getParameterMembership(),
+                this.toolDescriptionService.createNodeTool(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getFeatureMembership(),
                         NodeContainmentKind.BORDER_NODE),
-                this.toolDescriptionService.createNodeToolWithDirection(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getParameterMembership(),
+                this.toolDescriptionService.createNodeToolWithDirection(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getFeatureMembership(),
                         NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN),
-                this.toolDescriptionService.createNodeToolWithDirection(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getParameterMembership(),
+                this.toolDescriptionService.createNodeToolWithDirection(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getFeatureMembership(),
                         NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.INOUT),
-                this.toolDescriptionService.createNodeToolWithDirection(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getParameterMembership(),
+                this.toolDescriptionService.createNodeToolWithDirection(itemNodeDescription, SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getFeatureMembership(),
                         NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT)));
 
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));

@@ -110,8 +110,12 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
         var optItemUsageBorderNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getItemUsage()));
         NodeDescription nodeDescription = optChildUsageNodeDescription.get();
         nodeDescription.getReusedChildNodeDescriptions().addAll(reusedChildren);
-        nodeDescription.getReusedBorderNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
-        nodeDescription.getReusedBorderNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
+        if (SysmlPackage.eINSTANCE.getPartUsage().equals(this.eClass)) {
+            nodeDescription.getReusedBorderNodeDescriptions().add(optPortUsageBorderNodeDescription.get());
+        }
+        if (SysmlPackage.eINSTANCE.getActionUsage().equals(this.eClass)) {
+            nodeDescription.getReusedBorderNodeDescriptions().add(optItemUsageBorderNodeDescription.get());
+        }
         nodeDescription.setPalette(this.createNodePalette(nodeDescription, cache));
 
         List<NodeDescription> growableNodes = new ArrayList<>();

@@ -23,8 +23,10 @@ import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,18 +102,18 @@ public class InterconnectionViewNodeService extends ViewNodeService {
     }
 
     /**
-     * Returns the parameters of the provided element.
+     * Returns the items of the provided element. Only intended to be used by ItemUsageBorderNodeDescriptionProvider.
      *
      * @param element
      *            the element
-     * @return the features that are parameters of the provided {@code element}
+     * @return the the items of the provided element.
      */
-    public List<Feature> getParameters(Element element) {
-        List<Feature> parameters = new ArrayList<>();
+    public List<ItemUsage> getBorderNodesItems(Element element) {
+        List<ItemUsage> items = new ArrayList<>();
         if (element instanceof ActionUsage actionUsage) {
-            parameters = actionUsage.getParameter();
+            items = actionUsage.getNestedItem().stream().filter(ni -> SysmlPackage.eINSTANCE.getItemUsage().equals(ni.eClass())).toList();
         }
-        return parameters;
+        return items;
     }
 
     public boolean isInFeature(Feature feature) {
