@@ -17,6 +17,7 @@ import {
   ApolloClientOptionsConfigurer,
   apolloClientOptionsConfigurersExtensionPoint,
   DiagramRepresentationConfiguration,
+  footerExtensionPoint,
   navigationBarIconExtensionPoint,
   NavigationBarIconProps,
   navigationBarMenuHelpURLExtensionPoint,
@@ -31,11 +32,13 @@ import {
   sysMLPackageNodeStyleDocumentTransform,
 } from '@eclipse-syson/syson-components';
 import ReactDOM from 'react-dom';
+
 import { SysONIcon } from './core/SysONIcon';
 import { httpOrigin, wsOrigin } from './core/URL';
+import { referenceWidgetDocumentTransform } from './extensions/ReferenceWidgetDocumentTransform';
+import { SysONFooter } from './extensions/SysONFooter';
 import { sysonTheme } from './theme/sysonTheme';
 
-import { referenceWidgetDocumentTransform } from './extensions/ReferenceWidgetDocumentTransform';
 import './fonts.css';
 import './reset.css';
 import './variables.css';
@@ -90,6 +93,11 @@ extensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
 extensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
   identifier: `syson_${diagramPanelActionExtensionPoint.identifier}_showHideDiagramIcons`,
   Component: ShowHideDiagramsIcons,
+});
+
+extensionRegistry.addComponent(footerExtensionPoint, {
+  identifier: `syson_${footerExtensionPoint.identifier}`,
+  Component: SysONFooter,
 });
 
 const nodeTypeRegistry: NodeTypeRegistry = {
