@@ -164,7 +164,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createBindingConnectorAsUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()))
+                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()) + " (bind)")
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getBindingConnectorAsUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -178,7 +178,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createInterfaceUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()))
+                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getInterfaceUsage()) + " (connect)")
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getInterfaceUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
@@ -192,7 +192,7 @@ public class PortUsageBorderNodeDescriptionProvider extends AbstractNodeDescript
                 .expression(AQLUtils.getServiceCallExpression(EdgeDescription.SEMANTIC_EDGE_SOURCE, "createFlowConnectionUsage", EdgeDescription.SEMANTIC_EDGE_TARGET));
 
         return builder
-                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowConnectionUsage()))
+                .name(this.nameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowConnectionUsage()) + " (flow)")
                 .iconURLsExpression("/icons/full/obj16/" + SysmlPackage.eINSTANCE.getFlowConnectionUsage().getName() + ".svg")
                 .body(body.build())
                 .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
