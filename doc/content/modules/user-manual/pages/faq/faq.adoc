@@ -163,8 +163,7 @@ Read the xref:user-manual:features/collaboration.adoc[] section to learn more ab
 .*How will models developed in your tool, be shared with other vendor {sysmlv2} tools? Are there any limitations we should be aware of?*
 [%collapsible%open]
 ====
-We're fully compatible with the {sysmlv2} standard.
-Models can be shared using the {sysmlv2} textual notation and the {sysmlv2} API.
+The intent is to be fully compatible with the {sysmlv2} standard ensuring that models can be shared using the {sysmlv2} textual notation and the {sysmlv2} API.
 ====
 
 .*How will models in {sysmlv2} and models in {sysmlv1} co-exist?*
@@ -189,7 +188,7 @@ This includes integration capabilities such as:
 
 * Textual Notation Support: {product} supports importing and exporting models using the {sysmlv2} textual notation.
 This facilitates sharing and integration with other {sysmlv2} compatible tools.
-* {sysmlv2} API: {product} is fully compatible with the xref:user-manual:integration/api.adoc[{sysmlv2} API], allowing seamless interaction with other tools and systems that adhere to this standard.
+* {sysmlv2} API:  We're working on making {product} fully compatible with the xref:user-manual:integration/api.adoc[{sysmlv2} API], allowing seamless interaction with other tools and systems that adhere to this standard.
 * Integration with Capella: We're working on establishing xref:user-manual:integration/capella.adoc[integration pathways with Capella], a comprehensive model-based engineering solution.
 
 This will enable users to leverage {product}'s {sysmlv2} capabilities alongside Capella's powerful system architecture modeling tools, ensuring model interoperability.

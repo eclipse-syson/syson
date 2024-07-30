@@ -6,6 +6,15 @@ include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 To delete a given element, user can select the element and the press the `Del` key from representation editor.
 
+== Navigation
+
+In a diagram, users can press Alt and drag with the mouse to browse the diagram without moving any elements.
+This is useful for large diagrams where elements might appear in the background when the view is zoomed out.
+
+== Selection
+
+In a diagram, users can press `Alt` and click on an element to select it without displaying the contextual palette on the node.
+
 == Basic editing
 
 User can press `F2` key or start typing the new value directly to efficiently update an element name from representation editor.
