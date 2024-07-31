@@ -39,6 +39,7 @@ import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
  * Label-related Java services used by SysON representations.
@@ -222,7 +223,7 @@ public class LabelService {
                     label.append(LabelConstants.SPACE);
                     label.append(LabelConstants.COLON);
                     label.append(LabelConstants.SPACE);
-                    label.append(type.getDeclaredName());
+                    label.append(this.getDeclaredNameLabel(type));
                 }
             }
         }
@@ -247,13 +248,11 @@ public class LabelService {
             Subclassification subclassification = optSubclassification.get();
             if (!subclassification.isIsImplied()) {
                 var superclassifier = subclassification.getSuperclassifier();
-                String superclassifierName = null;
                 if (superclassifier != null) {
-                    superclassifierName = superclassifier.getDeclaredName();
                     label.append(LabelConstants.SPACE);
                     label.append(LabelConstants.SUBCLASSIFICATION);
                     label.append(LabelConstants.SPACE);
-                    label.append(superclassifierName);
+                    label.append(this.getDeclaredNameLabel(superclassifier));
                 }
             }
         }
@@ -277,13 +276,11 @@ public class LabelService {
             Subsetting subsetting = optSubsetting.get();
             if (!subsetting.isIsImplied()) {
                 var subsettedFeature = subsetting.getSubsettedFeature();
-                String subsettedFeatureName = null;
                 if (subsettedFeature != null) {
-                    subsettedFeatureName = subsettedFeature.getDeclaredName();
                     label.append(LabelConstants.SPACE);
                     label.append(LabelConstants.SUBSETTING);
                     label.append(LabelConstants.SPACE);
-                    label.append(subsettedFeatureName);
+                    label.append(this.getDeclaredNameLabel(subsettedFeature));
                 }
             }
         }
@@ -311,7 +308,7 @@ public class LabelService {
                     label.append(LabelConstants.SPACE);
                     label.append(LabelConstants.REDEFINITION);
                     label.append(LabelConstants.SPACE);
-                    label.append(redefinedFeature.getDeclaredName());
+                    label.append(this.getDeclaredNameLabel(redefinedFeature));
                 }
             }
         }
@@ -367,5 +364,14 @@ public class LabelService {
             value = "*";
         }
         return value;
+    }
+
+    protected String getDeclaredNameLabel(Element element) {
+        var label = element.getDeclaredName();
+        if (ElementUtil.isFromStandardLibrary(element)) {
+            label = element.getQualifiedName();
+        }
+        return label;
+
     }
 }
