@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionConverter;
 import org.eclipse.sirius.components.view.form.CheckboxDescription;
 import org.eclipse.sirius.components.view.form.FormDescription;
+import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.FormElementFor;
 import org.eclipse.sirius.components.view.form.FormElementIf;
 import org.eclipse.sirius.components.view.form.FormFactory;
@@ -45,6 +46,7 @@ import org.eclipse.sirius.components.view.form.GroupDisplayMode;
 import org.eclipse.sirius.components.view.form.LabelDescription;
 import org.eclipse.sirius.components.view.form.PageDescription;
 import org.eclipse.sirius.components.view.form.RadioDescription;
+import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceFactory;
@@ -87,8 +89,6 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
     private static final String REQUIREMENT_CONSTRAINT_KIND_PROPERTIES = "Kind Properties";
 
     private static final String ACCEPT_ACTION_USAGE_PROPERTIES = "Accept Action Usage Properties";
-
-    private static final String EXHIBITED_STATE_USAGE_PROPERTIES = "Exhibited State Usage Properties";
 
     private static final String AQL_NOT_SELF_IS_READ_ONLY = "aql:not(self.isReadOnly())";
 
@@ -186,6 +186,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         group.setSemanticCandidatesExpression(AQLConstants.AQL_SELF);
 
         group.getChildren().add(this.createCoreWidgets());
+        group.getChildren().add(this.createDocumentationWidget());
 
         return group;
     }
@@ -538,12 +539,29 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         ReferenceWidgetDescription refWidget = ReferenceFactory.eINSTANCE.createReferenceWidgetDescription();
         refWidget.setName("ReferenceWidget");
         refWidget.setLabelExpression(AQLUtils.getSelfServiceCallExpression("getDetailsViewLabel", E_STRUCTURAL_FEATURE));
-        refWidget.setReferenceNameExpression("aql:" + E_STRUCTURAL_FEATURE + ".name");
+        refWidget.setReferenceNameExpression(AQLConstants.AQL + E_STRUCTURAL_FEATURE + ".name");
         refWidget.setReferenceOwnerExpression(AQLConstants.AQL_SELF);
         refWidget.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY_E_STRUCTURAL_FEATURE);
         ChangeContext setRefWidget = ViewFactory.eINSTANCE.createChangeContext();
         setRefWidget.setExpression(AQLUtils.getSelfServiceCallExpression("handleReferenceWidgetNewValue", List.of(E_STRUCTURAL_FEATURE + ".name", ViewFormDescriptionConverter.NEW_VALUE)));
         refWidget.getBody().add(setRefWidget);
         return refWidget;
+    }
+
+    private FormElementDescription createDocumentationWidget() {
+        TextAreaDescription textarea = FormFactory.eINSTANCE.createTextAreaDescription();
+        textarea.setName("DocumentationWidget");
+        textarea.setLabelExpression("Documentation");
+        textarea.setValueExpression(AQLUtils.getSelfServiceCallExpression("getDocumentation"));
+        textarea.setHelpExpression("Use 'shift + enter' to add new lines");
+        textarea.setIsEnabledExpression("aql:not(self.isReadOnly())");
+        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
+        setNewValueOperation.setExpression(AQLUtils.getSelfServiceCallExpression("setNewDocumentationValue", ViewFormDescriptionConverter.NEW_VALUE));
+        textarea.getBody().add(setNewValueOperation);
+        FormElementIf precondition = FormFactory.eINSTANCE.createFormElementIf();
+        precondition.getChildren().add(textarea);
+        precondition.setName("DocumentationWidget_Precondition");
+        precondition.setPredicateExpression("aql:not(self.oclIsKindOf(sysml::Documentation))");
+        return precondition;
     }
 }

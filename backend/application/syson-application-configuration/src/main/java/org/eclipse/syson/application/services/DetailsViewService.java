@@ -97,10 +97,6 @@ public class DetailsViewService {
         return this.getLabelProvider().apply(element, eStructuralFeature);
     }
 
-    private BiFunction<Element, EStructuralFeature, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(this.composedAdapterFactory);
-    }
-
     public List<EStructuralFeature> getAdvancedFeatures(Element element) {
         List<EStructuralFeature> coreFeatures = new CoreFeaturesSwitch().doSwitch(element);
         return element.eClass().getEAllStructuralFeatures().stream().filter(feature -> !coreFeatures.contains(feature)).toList();
@@ -377,6 +373,154 @@ public class DetailsViewService {
         return null;
     }
 
+    public Element getAcceptActionUsagePayloadFeatureTyping(AcceptActionUsage acceptActionUsage) {
+        this.checkAndRepairAcceptActionUsageStructure(acceptActionUsage);
+        ReferenceUsage payloadParameter = acceptActionUsage.getPayloadParameter();
+        if (payloadParameter == null) {
+            return null;
+        }
+        return payloadParameter.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean setAcceptActionUsagePayloadParameter(AcceptActionUsage acceptActionUsage, Element newPayloadParameter) {
+        if (newPayloadParameter instanceof Type newType) {
+            var payloadParam = acceptActionUsage.getPayloadParameter();
+            if (payloadParam != null) {
+                var ft = payloadParam.getOwnedRelationship().stream()
+                        .filter(FeatureTyping.class::isInstance)
+                        .map(FeatureTyping.class::cast)
+                        .findFirst()
+                        .orElse(null);
+                ft.setType(newType);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean setTransitionSourceParameter(TransitionUsage transitionUsage, Element newSource) {
+        if (newSource instanceof ActionUsage au) {
+            // Update transition source
+            transitionUsage.getOwnedMembership().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .findFirst()
+                    .ifPresent(mem -> mem.setMemberElement(au));
+            // Update succession source
+            Succession succession = transitionUsage.getSuccession();
+            succession.getFeatureMembership().stream()
+                    .filter(EndFeatureMembership.class::isInstance)
+                    .map(EndFeatureMembership.class::cast)
+                    .findFirst()
+                    .ifPresent(endFeat -> {
+                        endFeat.getOwnedRelatedElement().stream()
+                                .findFirst()
+                                .ifPresent(feat -> feat.getOwnedRelationship().stream()
+                                        .filter(ReferenceSubsetting.class::isInstance)
+                                        .map(ReferenceSubsetting.class::cast)
+                                        .findFirst()
+                                        .ifPresent(refSub -> refSub.setReferencedFeature(au)));
+                    });
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setTransitionTargetParameter(TransitionUsage transitionUsage, Element newTarget) {
+        if (newTarget instanceof ActionUsage au) {
+            // Update succession target
+            Succession succession = transitionUsage.getSuccession();
+            List<EndFeatureMembership> succFeatMemberships = succession.getFeatureMembership().stream()
+                    .filter(EndFeatureMembership.class::isInstance)
+                    .map(EndFeatureMembership.class::cast)
+                    .toList();
+            if (succFeatMemberships.size() > 1) {
+                succFeatMemberships.get(1).getOwnedRelatedElement().stream()
+                        .findFirst()
+                        .ifPresent(feat -> feat.getOwnedRelationship().stream()
+                                .filter(ReferenceSubsetting.class::isInstance)
+                                .map(ReferenceSubsetting.class::cast)
+                                .findFirst()
+                                .ifPresent(refSub -> refSub.setReferencedFeature(au)));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public Element getAcceptActionUsageReceiverMembership(AcceptActionUsage acceptActionUsage) {
+        this.checkAndRepairAcceptActionUsageStructure(acceptActionUsage);
+        Expression receiverArgument = acceptActionUsage.getReceiverArgument();
+        if (receiverArgument == null) {
+            return null;
+        }
+        return receiverArgument.getOwnedRelationship().stream()
+                .filter(Membership.class::isInstance)
+                .map(Membership.class::cast)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean setAcceptActionUsageReceiverArgument(AcceptActionUsage acceptActionUsage, Element newReceiverArgument) {
+        var receiverArgument = acceptActionUsage.getReceiverArgument();
+        if (receiverArgument != null) {
+            var m = receiverArgument.getOwnedRelationship().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .findFirst()
+                    .orElse(null);
+            if (m != null) {
+                m.setMemberElement(newReceiverArgument);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getDocumentation(Element self) {
+        var documentations = self.getDocumentation();
+        if (documentations.isEmpty()) {
+            return "";
+        }
+        return documentations.get(0).getBody();
+    }
+
+    public Element setNewDocumentationValue(Element self, String newValue) {
+        var documentations = self.getDocumentation();
+        if (documentations.isEmpty()) {
+            var documentation = SysmlFactory.eINSTANCE.createDocumentation();
+            documentation.setBody(newValue);
+            var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+            self.getOwnedRelationship().add(owningMembership);
+            owningMembership.getOwnedRelatedElement().add(documentation);
+        } else {
+            documentations.get(0).setBody(newValue);
+        }
+        return self;
+    }
+
+    private BiFunction<Element, EStructuralFeature, String> getLabelProvider() {
+        return new EStructuralFeatureLabelProvider(this.composedAdapterFactory);
+    }
+
+    private void handleImplied(Element element, EStructuralFeature eStructuralFeature) {
+        if (element instanceof Relationship relationship) {
+            if (SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
+            } else if (SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
+            } else if (SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
+            } else if (SysmlPackage.eINSTANCE.getFeatureTyping_Type().equals(eStructuralFeature)) {
+                relationship.setIsImplied(false);
+            }
+        }
+    }
+
     /**
      * Verify that the given accept action usage contains the correct underneath structure of elements.<br>
      * An @link {@link AcceptActionUsage} should have two @link {@link ParameterMembership} relationships with a
@@ -501,125 +645,4 @@ public class DetailsViewService {
         }
     }
 
-    public Element getAcceptActionUsagePayloadFeatureTyping(AcceptActionUsage acceptActionUsage) {
-        this.checkAndRepairAcceptActionUsageStructure(acceptActionUsage);
-        ReferenceUsage payloadParameter = acceptActionUsage.getPayloadParameter();
-        if (payloadParameter == null) {
-            return null;
-        }
-        return payloadParameter.getOwnedRelationship().stream()
-                .filter(FeatureTyping.class::isInstance)
-                .map(FeatureTyping.class::cast)
-                .findFirst()
-                .orElse(null);
-    }
-
-    public boolean setAcceptActionUsagePayloadParameter(AcceptActionUsage acceptActionUsage, Element newPayloadParameter) {
-        if (newPayloadParameter instanceof Type newType) {
-            var payloadParam = acceptActionUsage.getPayloadParameter();
-            if (payloadParam != null) {
-                var ft = payloadParam.getOwnedRelationship().stream()
-                        .filter(FeatureTyping.class::isInstance)
-                        .map(FeatureTyping.class::cast)
-                        .findFirst()
-                        .orElse(null);
-                ft.setType(newType);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean setTransitionSourceParameter(TransitionUsage transitionUsage, Element newSource) {
-        if (newSource instanceof ActionUsage au) {
-            // Update transition source
-            transitionUsage.getOwnedMembership().stream()
-                    .filter(Membership.class::isInstance)
-                    .map(Membership.class::cast)
-                    .findFirst()
-                    .ifPresent(mem -> mem.setMemberElement(au));
-            // Update succession source
-            Succession succession = transitionUsage.getSuccession();
-            succession.getFeatureMembership().stream()
-                    .filter(EndFeatureMembership.class::isInstance)
-                    .map(EndFeatureMembership.class::cast)
-                    .findFirst()
-                    .ifPresent(endFeat -> {
-                        endFeat.getOwnedRelatedElement().stream()
-                                .findFirst()
-                                .ifPresent(feat -> feat.getOwnedRelationship().stream()
-                                        .filter(ReferenceSubsetting.class::isInstance)
-                                        .map(ReferenceSubsetting.class::cast)
-                                        .findFirst()
-                                        .ifPresent(refSub -> refSub.setReferencedFeature(au)));
-                    });
-            return true;
-        }
-        return false;
-    }
-
-    public boolean setTransitionTargetParameter(TransitionUsage transitionUsage, Element newTarget) {
-        if (newTarget instanceof ActionUsage au) {
-            // Update succession target
-            Succession succession = transitionUsage.getSuccession();
-            List<EndFeatureMembership> succFeatMemberships = succession.getFeatureMembership().stream()
-                    .filter(EndFeatureMembership.class::isInstance)
-                    .map(EndFeatureMembership.class::cast)
-                    .toList();
-            if (succFeatMemberships.size() > 1) {
-                succFeatMemberships.get(1).getOwnedRelatedElement().stream()
-                        .findFirst()
-                        .ifPresent(feat -> feat.getOwnedRelationship().stream()
-                                .filter(ReferenceSubsetting.class::isInstance)
-                                .map(ReferenceSubsetting.class::cast)
-                                .findFirst()
-                                .ifPresent(refSub -> refSub.setReferencedFeature(au)));
-            }
-            return true;
-        }
-        return false;
-    }
-
-    public Element getAcceptActionUsageReceiverMembership(AcceptActionUsage acceptActionUsage) {
-        this.checkAndRepairAcceptActionUsageStructure(acceptActionUsage);
-        Expression receiverArgument = acceptActionUsage.getReceiverArgument();
-        if (receiverArgument == null) {
-            return null;
-        }
-        return receiverArgument.getOwnedRelationship().stream()
-                .filter(Membership.class::isInstance)
-                .map(Membership.class::cast)
-                .findFirst()
-                .orElse(null);
-    }
-
-    public boolean setAcceptActionUsageReceiverArgument(AcceptActionUsage acceptActionUsage, Element newReceiverArgument) {
-        var receiverArgument = acceptActionUsage.getReceiverArgument();
-        if (receiverArgument != null) {
-            var m = receiverArgument.getOwnedRelationship().stream()
-                    .filter(Membership.class::isInstance)
-                    .map(Membership.class::cast)
-                    .findFirst()
-                    .orElse(null);
-            if (m != null) {
-                m.setMemberElement(newReceiverArgument);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void handleImplied(Element element, EStructuralFeature eStructuralFeature) {
-        if (element instanceof Relationship relationship) {
-            if (SysmlPackage.eINSTANCE.getRedefinition_RedefinedFeature().equals(eStructuralFeature)) {
-                relationship.setIsImplied(false);
-            } else if (SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature().equals(eStructuralFeature)) {
-                relationship.setIsImplied(false);
-            } else if (SysmlPackage.eINSTANCE.getSubclassification_Superclassifier().equals(eStructuralFeature)) {
-                relationship.setIsImplied(false);
-            } else if (SysmlPackage.eINSTANCE.getFeatureTyping_Type().equals(eStructuralFeature)) {
-                relationship.setIsImplied(false);
-            }
-        }
-    }
 }
