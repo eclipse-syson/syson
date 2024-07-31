@@ -70,6 +70,8 @@ The following classes & methods have been deleted or modified to simplify the ha
 There is now several tools for creating an _ExhibitState_.
 The first one called "New ExhibitState" creates a simple _ExhibitState_.
 The second one called "New ExhibitState with referenced State" shows a dialog allowing to select an existing _State_ to associate to the new _ExhibitState_. 
+- https://github.com/eclipse-syson/syson/issues/617[#617] [diagrams] Display qualified names in diagrams nodes' labels in case of standard libraries elements.
+
 
 === New features
 

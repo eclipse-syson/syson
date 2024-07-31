@@ -83,7 +83,9 @@ image::release-notes-reference-nested-usages.png[Nested Usage edge for composite
 There is now several tools for creating an _ExhibitState_.
 The first one called "New ExhibitState" creates a simple _ExhibitState_.
 The second one called "New ExhibitState with referenced State" shows a dialog allowing to select an existing _State_ to associate to the new _ExhibitState_.
+- Display qualified names in diagrams nodes' labels in case of standard libraries elements.
 
+image::release-notes-diagram-standard-libraries-elements-qualified-names.png[Qualified names for standard libraries elements]
 
 == New features
 
