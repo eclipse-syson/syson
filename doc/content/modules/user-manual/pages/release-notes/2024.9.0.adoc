@@ -99,3 +99,6 @@ The selected _State_ will be added to the diagram, not the new _ExhibitState_.
 A new edge tool allows to create a flow between two ports.
 - Add tools to set a _Feature_ as composite or reference.
 - Handle _ItemUsage_ in Interconnection View and _FlowConnectionUsage_ using items as their source/target.
+- Add documentation property to Core tab of the Details view, allowing to add/edit a documentation for the selected element.
+This property widget will only handle the first documentation associated to the selected element.
+If no documentation is associated to the selected element, then a new value in this widget will also create a _Documentation_ element and will associate it to the selected element.
