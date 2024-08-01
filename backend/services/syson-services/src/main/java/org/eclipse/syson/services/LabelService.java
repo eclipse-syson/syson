@@ -24,6 +24,7 @@ import org.eclipse.syson.services.grammars.DirectEditListener;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralBoolean;
@@ -33,11 +34,13 @@ import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.LiteralRational;
 import org.eclipse.syson.sysml.LiteralString;
 import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.ElementUtil;
 
@@ -329,10 +332,10 @@ public class LabelService {
                 .map(FeatureValue.class::cast)
                 .findFirst();
         if (featureValue.isPresent()) {
-            var literalExpression = featureValue.get().getValue();
+            var expression = featureValue.get().getValue();
             String valueAsString = null;
-            if (literalExpression != null) {
-                valueAsString = this.getValue(literalExpression);
+            if (expression != null) {
+                valueAsString = this.getValue(expression);
             }
             label
                     .append(LabelConstants.SPACE)
@@ -346,22 +349,55 @@ public class LabelService {
     /**
      * Get the value of the given {@link Expression} as a string.
      *
-     * @param literalExpression
+     * @param expression
      *            the given {@link Expression}.
      * @return the value of the given {@link Expression} as a string.
      */
-    protected String getValue(Expression literalExpression) {
+    protected String getValue(Expression expression) {
         String value = null;
-        if (literalExpression instanceof LiteralInteger literal) {
+        if (expression instanceof LiteralInteger literal) {
             value = String.valueOf(literal.getValue());
-        } else if (literalExpression instanceof LiteralRational literal) {
+        } else if (expression instanceof LiteralRational literal) {
             value = String.valueOf(literal.getValue());
-        } else if (literalExpression instanceof LiteralBoolean literal) {
+        } else if (expression instanceof LiteralBoolean literal) {
             value = String.valueOf(literal.isValue());
-        } else if (literalExpression instanceof LiteralString literal) {
+        } else if (expression instanceof LiteralString literal) {
             value = "\"" + String.valueOf(literal.getValue()) + "\"";
-        } else if (literalExpression instanceof LiteralInfinity) {
+        } else if (expression instanceof LiteralInfinity) {
             value = "*";
+        } else if (expression instanceof OperatorExpression operatorExpression) {
+            value = this.getValue(operatorExpression);
+        } else if (expression instanceof FeatureReferenceExpression featureReferenceExpression) {
+            value = this.getValue(featureReferenceExpression);
+        }
+        return value;
+    }
+
+    private String getValue(OperatorExpression operatorExpression) {
+        String value = null;
+        if (operatorExpression.getOperator().equals(LabelConstants.OPEN_BRACKET)) {
+            value = this.getValue(operatorExpression.getArgument().get(0))
+                    + LabelConstants.SPACE
+                    + LabelConstants.OPEN_BRACKET
+                    + this.getValue(operatorExpression.getArgument().get(1))
+                    + LabelConstants.CLOSE_BRACKET;
+        }
+        return value;
+    }
+
+    private String getValue(FeatureReferenceExpression featureReferenceExpression) {
+        String value = null;
+        boolean isInMeasurementExpression = EMFUtils.getAncestors(OperatorExpression.class, featureReferenceExpression,
+                ancestor -> ancestor instanceof OperatorExpression operatorExpression && Objects.equals(operatorExpression.getOperator(), "[")).size() > 0;
+        if (isInMeasurementExpression) {
+            // We use short name for measurements if it exists
+            value = featureReferenceExpression.getReferent().getShortName();
+            if (value == null || value.isBlank()) {
+                // If the short name is not set we use the regular name
+                value = featureReferenceExpression.getReferent().getName();
+            }
+        } else {
+            value = featureReferenceExpression.getReferent().getShortName();
         }
         return value;
     }
