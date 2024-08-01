@@ -21,12 +21,14 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.EcoreUtil.Copier;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.syson.util.SysONEContentAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +73,7 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
                     targetResourceSet.getResources().add(targetResource);
                     EList<EObject> contents = sourceResource.getContents();
                     for (EObject eObject : contents) {
-                        targetResource.getContents().add(EcoreUtil.copy(eObject));
+                        targetResource.getContents().add(this.copy(eObject, (JsonResource) targetResource));
                     }
                 }
             });
@@ -83,5 +85,49 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
 
     @Override
     public void postProcess(IEditingContext editingContext) {
+    }
+
+    private EObject copy(EObject eObject, JsonResource resource) {
+        SysONCopier copier = new SysONCopier(resource);
+        EObject result = copier.copy(eObject);
+        copier.copyReferences();
+        return result;
+    }
+
+    /**
+     * Copier that also copies the IDAdapter.
+     *
+     * @author arichard
+     */
+    private class SysONCopier extends Copier {
+
+        private static final long serialVersionUID = 1L;
+
+        private final JsonResource resource;
+
+        SysONCopier(JsonResource resource) {
+            super();
+            this.resource = resource;
+        }
+
+        @Override
+        public EObject copy(EObject eObject) {
+            EObject copy = super.copy(eObject);
+            var adapter = this.findIDAdapter(eObject);
+            if (adapter != null) {
+                var oldId = adapter.getId().toString();
+                this.resource.setID(copy, oldId);
+            }
+            return copy;
+        }
+
+        private IDAdapter findIDAdapter(EObject eObject) {
+            for (var adapter : eObject.eAdapters()) {
+                if (adapter instanceof IDAdapter idAdapter) {
+                    return idAdapter;
+                }
+            }
+            return null;
+        }
     }
 }
