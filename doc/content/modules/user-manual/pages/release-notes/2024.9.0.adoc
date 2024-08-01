@@ -99,6 +99,9 @@ The second one called "New ExhibitState with referenced State" shows a dialog al
 image::release-notes-diagram-standard-libraries-elements-qualified-names.png[Qualified names for standard libraries elements]
 - Allow to select existing Action on Perform tool.
 
+- Allow to set measurement units via direct edit.
+It is now possible to configure the measurement unit for the value of an element, e.g. `mass = 10 [kg]`.
+
 == New features
 
 - Add "Show/Hide Icons in Diagrams" action in Diagram Panel, allowing to show/hide icons in the  diagrams (icons are not part of the SysMLv2 specification).

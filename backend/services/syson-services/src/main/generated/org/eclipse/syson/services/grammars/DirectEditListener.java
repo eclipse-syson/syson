@@ -112,6 +112,16 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitValueExpression(DirectEditParser.ValueExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#measurementExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMeasurementExpression(DirectEditParser.MeasurementExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#measurementExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMeasurementExpression(DirectEditParser.MeasurementExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#transitionExpression}.
 	 * @param ctx the parse tree
 	 */

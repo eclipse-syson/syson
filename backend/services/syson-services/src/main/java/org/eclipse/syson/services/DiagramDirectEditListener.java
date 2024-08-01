@@ -27,6 +27,7 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
@@ -35,6 +36,7 @@ import org.eclipse.syson.services.grammars.DirectEditBaseListener;
 import org.eclipse.syson.services.grammars.DirectEditParser.EffectExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.MeasurementExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionMemberContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
@@ -46,6 +48,8 @@ import org.eclipse.syson.services.grammars.DirectEditParser.TypingExpressionCont
 import org.eclipse.syson.services.grammars.DirectEditParser.ValueExpressionContext;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AttributeDefinition;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
@@ -53,15 +57,17 @@ import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
+import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
-import org.eclipse.syson.sysml.LiteralBoolean;
+import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.LiteralInfinity;
 import org.eclipse.syson.sysml.LiteralInteger;
-import org.eclipse.syson.sysml.LiteralRational;
-import org.eclipse.syson.sysml.LiteralString;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
@@ -73,6 +79,8 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.helper.LabelConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The ANTLR Listener for the direct edit grammar for SysON diagrams.
@@ -80,6 +88,8 @@ import org.eclipse.syson.sysml.helper.LabelConstants;
  * @author arichard
  */
 public class DiagramDirectEditListener extends DirectEditBaseListener {
+
+    private final Logger logger = LoggerFactory.getLogger(DiagramDirectEditListener.class);
 
     private final Element element;
 
@@ -448,35 +458,62 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             return;
         }
         if (this.element instanceof Usage valueOwner) {
-            TerminalNode integerTN = ctx.Integer();
-            TerminalNode realTN = ctx.Real();
-            TerminalNode booleanTN = ctx.Boolean();
-            TerminalNode doubleQuotedStringTN = ctx.DoubleQuotedString();
             FeatureValue featureValue = null;
-            var optFeatureValue = this.element.getOwnedRelationship().stream()
+            featureValue = this.element.getOwnedRelationship().stream()
                     .filter(FeatureValue.class::isInstance)
                     .map(FeatureValue.class::cast)
-                    .findFirst();
-            if (optFeatureValue.isPresent()) {
-                featureValue = optFeatureValue.get();
+                    .findFirst()
+                    .orElseGet(() -> {
+                        var result = SysmlFactory.eINSTANCE.createFeatureValue();
+                        valueOwner.getOwnedRelationship().add(result);
+                        return result;
+                    });
+
+            LiteralExpression literalExpression = this.createLiteralExpression(ctx);
+            MeasurementExpressionContext unitExpressionContext = ctx.measurementExpression();
+            if (unitExpressionContext != null && !unitExpressionContext.getText().isBlank()) {
+                String measurementText = this.getFullText(unitExpressionContext);
+                Optional<AttributeUsage> optMeasurementAttribute = this.getMeasurementAttribute(valueOwner, measurementText);
+                if (optMeasurementAttribute.isPresent()) {
+                    this.importService.handleImport(this.element, optMeasurementAttribute.get());
+                    OperatorExpression operatorExpression = this.createOperatorExpression(LabelConstants.OPEN_BRACKET);
+                    featureValue.getOwnedRelatedElement().clear();
+                    featureValue.getOwnedRelatedElement().add(operatorExpression);
+
+                    ParameterMembership p1 = SysmlFactory.eINSTANCE.createParameterMembership();
+                    operatorExpression.getOwnedRelationship().add(p1);
+                    Feature x = SysmlFactory.eINSTANCE.createFeature();
+                    p1.getOwnedRelatedElement().add(x);
+                    x.setDeclaredName("x");
+                    x.setDirection(FeatureDirectionKind.IN);
+                    FeatureValue xValue = SysmlFactory.eINSTANCE.createFeatureValue();
+                    x.getOwnedRelationship().add(xValue);
+                    xValue.getOwnedRelatedElement().add(literalExpression);
+
+                    ParameterMembership p2 = SysmlFactory.eINSTANCE.createParameterMembership();
+                    operatorExpression.getOwnedRelationship().add(p2);
+                    Feature y = SysmlFactory.eINSTANCE.createFeature();
+                    p2.getOwnedRelatedElement().add(y);
+                    y.setDeclaredName("y");
+                    y.setDirection(FeatureDirectionKind.IN);
+                    FeatureValue yValue = SysmlFactory.eINSTANCE.createFeatureValue();
+                    y.getOwnedRelationship().add(yValue);
+                    FeatureReferenceExpression yFeatureReference = SysmlFactory.eINSTANCE.createFeatureReferenceExpression();
+                    yValue.getOwnedRelatedElement().add(yFeatureReference);
+                    Membership yFeatureReferenceMembership = SysmlFactory.eINSTANCE.createMembership();
+                    yFeatureReference.getOwnedRelationship().add(yFeatureReferenceMembership);
+                    yFeatureReferenceMembership.setMemberElement(optMeasurementAttribute.get());
+                } else {
+                    String errorMessage = "Cannot find measurement reference " + measurementText;
+                    this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+                    this.logger.warn(errorMessage);
+                    // Add the literal expression without the measurement as a fallback
+                    featureValue.getOwnedRelatedElement().clear();
+                    featureValue.getOwnedRelatedElement().add(literalExpression);
+                }
             } else {
-                featureValue = SysmlFactory.eINSTANCE.createFeatureValue();
-                valueOwner.getOwnedRelationship().add(featureValue);
-            }
-            if (integerTN != null) {
-                var literalInteger = this.getOrCreateLiteralInteger(featureValue);
-                literalInteger.setValue(Integer.parseInt(integerTN.getText()));
-            } else if (realTN != null) {
-                var literalRational = this.getOrCreateLiteralRational(featureValue);
-                literalRational.setValue(Double.parseDouble(realTN.getText()));
-            } else if (booleanTN != null) {
-                var literalBoolean = this.getOrCreateLiteralBoolean(featureValue);
-                literalBoolean.setValue(Boolean.parseBoolean(booleanTN.getText()));
-            } else if (doubleQuotedStringTN != null) {
-                var literalString = this.getOrCreateLiteralString(featureValue);
-                var doubleQuotedString = doubleQuotedStringTN.getText();
-                var stringValue = doubleQuotedString.substring(1, doubleQuotedString.length() - 1);
-                literalString.setValue(stringValue);
+                featureValue.getOwnedRelatedElement().clear();
+                featureValue.getOwnedRelatedElement().add(literalExpression);
             }
         }
     }
@@ -554,6 +591,49 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 this.addTransitionFeature(transition, TransitionFeatureKind.EFFECT, null, actionUsage);
             }
         });
+    }
+
+    /**
+     * Returns the {@link AttributeUsage} representing the provided {@code measurementName} measurement.
+     * <p>
+     * A measurement attribute should by typed by the {@code MeasurementReferences::TensorMeasurementReference}
+     * definition (directly or indirectly).
+     * </p>
+     * <p>
+     * The provided {@code context} could be any element of a SysMLv2 model. It is used as an entry point to navigate
+     * the entire resource set to search for the attribute.
+     * </p>
+     *
+     * @param context
+     *            the element used to search the attribute
+     * @param measurementName
+     *            the name of the measurement to find
+     * @return the measurement attribute if it exists, {@link Optional#empty()} otherwise
+     */
+    private Optional<AttributeUsage> getMeasurementAttribute(Element context, String measurementName) {
+        AttributeDefinition tensorMeasurementReference = this.utilService.findByNameAndType(context, "MeasurementReferences::TensorMeasurementReference", AttributeDefinition.class);
+        List<EObject> attributes = this.utilService.getAllReachable(context, SysmlPackage.eINSTANCE.getAttributeUsage());
+        Optional<AttributeUsage> optUnitAttribute = attributes.stream()
+                .map(AttributeUsage.class::cast)
+                // The short name or the regular name can be use to set units
+                .filter(attribute -> Objects.equals(attribute.getShortName(), measurementName) || Objects.equals(attribute.getName(), measurementName))
+                // The attribute needs to be a measurement (i.e. inherit from TensorMeasurementReference)
+                .filter(attribute -> attribute.allSupertypes().contains(tensorMeasurementReference))
+                .findFirst();
+        return optUnitAttribute;
+    }
+
+    /**
+     * Creates an {@link OperatorExpression} with the provided {@code operator}.
+     *
+     * @param operator
+     *            the operator of the expression
+     * @return the created {@link OperatorExpression}
+     */
+    private OperatorExpression createOperatorExpression(String operator) {
+        OperatorExpression operatorExpression = SysmlFactory.eINSTANCE.createOperatorExpression();
+        operatorExpression.setOperator(operator);
+        return operatorExpression;
     }
 
     /**
@@ -764,60 +844,32 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         return expression == null && featureExpressions.exception instanceof NoViableAltException && symbol.equals(featureExpressions.getChild(0).getText());
     }
 
-    private LiteralBoolean getOrCreateLiteralBoolean(FeatureValue featureValue) {
-        Optional<LiteralBoolean> optLiteral = featureValue.getOwnedRelatedElement().stream()
-                .filter(LiteralBoolean.class::isInstance)
-                .map(LiteralBoolean.class::cast)
-                .findFirst();
-        if (optLiteral.isPresent()) {
-            return optLiteral.get();
+    private LiteralExpression createLiteralExpression(ValueExpressionContext valueExpressionContext) {
+        TerminalNode integerTN = valueExpressionContext.Integer();
+        TerminalNode realTN = valueExpressionContext.Real();
+        TerminalNode booleanTN = valueExpressionContext.Boolean();
+        TerminalNode doubleQuotedStringTN = valueExpressionContext.DoubleQuotedString();
+        LiteralExpression result = null;
+        if (integerTN != null) {
+            var literalInteger = SysmlFactory.eINSTANCE.createLiteralInteger();
+            literalInteger.setValue(Integer.parseInt(integerTN.getText()));
+            result = literalInteger;
+        } else if (realTN != null) {
+            var literalRational = SysmlFactory.eINSTANCE.createLiteralRational();
+            literalRational.setValue(Double.parseDouble(realTN.getText()));
+            result = literalRational;
+        } else if (booleanTN != null) {
+            var literalBoolean = SysmlFactory.eINSTANCE.createLiteralBoolean();
+            literalBoolean.setValue(Boolean.parseBoolean(booleanTN.getText()));
+            result = literalBoolean;
+        } else if (doubleQuotedStringTN != null) {
+            var literalString = SysmlFactory.eINSTANCE.createLiteralString();
+            var doubleQuotedString = doubleQuotedStringTN.getText();
+            var stringValue = doubleQuotedString.substring(1, doubleQuotedString.length() - 1);
+            literalString.setValue(stringValue);
+            result = literalString;
         }
-        LiteralBoolean literal = SysmlFactory.eINSTANCE.createLiteralBoolean();
-        featureValue.getOwnedRelatedElement().clear();
-        featureValue.getOwnedRelatedElement().add(literal);
-        return literal;
-    }
-
-    private LiteralInteger getOrCreateLiteralInteger(FeatureValue featureValue) {
-        Optional<LiteralInteger> optLiteral = featureValue.getOwnedRelatedElement().stream()
-                .filter(LiteralInteger.class::isInstance)
-                .map(LiteralInteger.class::cast)
-                .findFirst();
-        if (optLiteral.isPresent()) {
-            return optLiteral.get();
-        }
-        LiteralInteger literal = SysmlFactory.eINSTANCE.createLiteralInteger();
-        featureValue.getOwnedRelatedElement().clear();
-        featureValue.getOwnedRelatedElement().add(literal);
-        return literal;
-    }
-
-    private LiteralRational getOrCreateLiteralRational(FeatureValue featureValue) {
-        Optional<LiteralRational> optLiteral = featureValue.getOwnedRelatedElement().stream()
-                .filter(LiteralRational.class::isInstance)
-                .map(LiteralRational.class::cast)
-                .findFirst();
-        if (optLiteral.isPresent()) {
-            return optLiteral.get();
-        }
-        LiteralRational literal = SysmlFactory.eINSTANCE.createLiteralRational();
-        featureValue.getOwnedRelatedElement().clear();
-        featureValue.getOwnedRelatedElement().add(literal);
-        return literal;
-    }
-
-    private LiteralString getOrCreateLiteralString(FeatureValue featureValue) {
-        Optional<LiteralString> optLiteral = featureValue.getOwnedRelatedElement().stream()
-                .filter(LiteralString.class::isInstance)
-                .map(LiteralString.class::cast)
-                .findFirst();
-        if (optLiteral.isPresent()) {
-            return optLiteral.get();
-        }
-        LiteralString literal = SysmlFactory.eINSTANCE.createLiteralString();
-        featureValue.getOwnedRelatedElement().clear();
-        featureValue.getOwnedRelatedElement().add(literal);
-        return literal;
+        return result;
     }
 
     private MultiplicityRange getOrCreateMultiplicityRange(Element elt) {

@@ -138,6 +138,18 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMeasurementExpression(DirectEditParser.MeasurementExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMeasurementExpression(DirectEditParser.MeasurementExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterTransitionExpression(DirectEditParser.TransitionExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

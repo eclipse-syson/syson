@@ -81,6 +81,13 @@ describe('Node Creation Tests', () => {
         diagram.getNodes(diagramLabel, 'p1 :> Parts::parts').should('exist');
       });
 
+      it.only('We can add a value to 10 [kg] by direct editing the existing PartUsage', () => {
+        diagram.getNodes(diagramLabel, 'part').type('p1 = 10 [kg]{enter}');
+        diagram.getNodes(diagramLabel, 'p1 = 10 [kg]').should('exist');
+        // Check that the library containing kg has been imported
+        explorer.getExplorerView().contains('import SI::*');
+      });
+
       it('We can add a subset to a new PartUsage (that will be created) by direct editing the existing PartUsage', () => {
         diagram.getNodes(diagramLabel, 'part').type('p1 :> aNewPart{enter}');
         // for standard libraries elements, the qualified name is displayed

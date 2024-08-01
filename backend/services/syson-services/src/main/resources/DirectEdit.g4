@@ -62,9 +62,13 @@ typingExpression :
 ;
 
 valueExpression :
-	'=' (Real | Boolean | Integer | DoubleQuotedString)
+	'=' (Real | Boolean | Integer | DoubleQuotedString) ('[' measurementExpression ']')?
 ;
 
+measurementExpression : 
+	~(']')+
+;
+	
 transitionExpression :
 	(triggerExpression)? (guardExpression)? (effectExpression)?
 ;
