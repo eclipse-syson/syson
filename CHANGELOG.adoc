@@ -54,6 +54,8 @@ The following classes & methods have been deleted or modified to simplify the ha
 
 - https://github.com/eclipse-syson/syson/issues/606[#606] [interconnection-view] Prevent nested part to be rendered as border nodes
 - https://github.com/eclipse-syson/syson/issues/619[#619] [diagrams] Fix an issue where a click on inherited members inside compartments was raising an error instead of displaying the palette.
+- https://github.com/eclipse-syson/syson/issues/621[#621] [syson] Fix non-containment reference issue on standard library copy.
+These references were still pointing to elements in the standard library resources, while they should point to elements in the copied resources.
 
 === Improvements
 

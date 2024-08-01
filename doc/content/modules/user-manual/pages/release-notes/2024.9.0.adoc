@@ -55,6 +55,7 @@ The changes are:
 
 - Prevent nested part to be rendered as border nodes in the Interconnection View diagram.
 - Fix an issue where a click on inherited members inside compartments was raising an error instead of displaying the palette.
+- Fix an issue where non-containment references in standard libraries weren't correctly imported into the project's editing context.
 
 
 == Improvements
