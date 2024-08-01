@@ -59,6 +59,10 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
             Instant start = Instant.now();
             ResourceSet sourceResourceSet = this.standardLibraries.getLibrariesResourceSet();
             ResourceSet targetResourceSet = siriusWebEditingContext.getDomain().getResourceSet();
+            /*
+             * Use a common copier for all the resources to make sure cross-references are correctly copied.
+             */
+            SysONCopier copier = new SysONCopier();
             sourceResourceSet.getResources().forEach(sourceResource -> {
                 Resource targetResource = targetResourceSet.getResource(sourceResource.getURI(), false);
                 if (targetResource == null) {
@@ -73,10 +77,14 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
                     targetResourceSet.getResources().add(targetResource);
                     EList<EObject> contents = sourceResource.getContents();
                     for (EObject eObject : contents) {
-                        targetResource.getContents().add(this.copy(eObject, (JsonResource) targetResource));
+                        targetResource.getContents().add(this.copy(eObject, (JsonResource) targetResource, copier));
                     }
                 }
             });
+            /*
+             * Copy all the references after the elements to make sure cross-references are correctly copied.
+             */
+            copier.copyReferences();
             Instant finish = Instant.now();
             long timeElapsed = Duration.between(start, finish).toMillis();
             this.logger.info("Copy all standard libraries in the editing context in {} ms", timeElapsed);
@@ -87,10 +95,9 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
     public void postProcess(IEditingContext editingContext) {
     }
 
-    private EObject copy(EObject eObject, JsonResource resource) {
-        SysONCopier copier = new SysONCopier(resource);
+    private EObject copy(EObject eObject, JsonResource resource, SysONCopier copier) {
+        copier.setResource(resource);
         EObject result = copier.copy(eObject);
-        copier.copyReferences();
         return result;
     }
 
@@ -99,24 +106,28 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
      *
      * @author arichard
      */
-    private class SysONCopier extends Copier {
+    private final class SysONCopier extends Copier {
 
         private static final long serialVersionUID = 1L;
 
-        private final JsonResource resource;
+        private JsonResource resource;
 
-        SysONCopier(JsonResource resource) {
-            super();
+        public void setResource(JsonResource resource) {
             this.resource = resource;
         }
 
         @Override
         public EObject copy(EObject eObject) {
-            EObject copy = super.copy(eObject);
-            var adapter = this.findIDAdapter(eObject);
-            if (adapter != null) {
-                var oldId = adapter.getId().toString();
-                this.resource.setID(copy, oldId);
+            EObject copy = null;
+            if (this.resource != null) {
+                copy = super.copy(eObject);
+                var adapter = this.findIDAdapter(eObject);
+                if (adapter != null) {
+                    var oldId = adapter.getId().toString();
+                    this.resource.setID(copy, oldId);
+                }
+            } else {
+                SysMLEditingContextProcessor.this.logger.error("SysONCopier requires a JsonResource to make a copy");
             }
             return copy;
         }
