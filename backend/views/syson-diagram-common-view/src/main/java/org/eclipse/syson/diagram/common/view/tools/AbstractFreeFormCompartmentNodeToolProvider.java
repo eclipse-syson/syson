@@ -31,18 +31,15 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INodeToolProvider {
 
-    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+    protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
+    protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
-    private final IDescriptionNameGenerator descriptionNameGenerator;
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
 
-    private final EClass ownerEClass;
-
-    private final String compartmentName;
+    protected final String compartmentName;
 
     public AbstractFreeFormCompartmentNodeToolProvider(EClass ownerEClass, String compartmentName, IDescriptionNameGenerator descriptionNameGenerator) {
-        this.ownerEClass = Objects.requireNonNull(ownerEClass);
         this.compartmentName = Objects.requireNonNull(compartmentName);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
     }
@@ -123,7 +120,7 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
                 .build();
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:selectedNode.revealCompartment(self, diagramContext, editingContext, convertedNodes)")
+                .expression(AQLUtils.getServiceCallExpression("selectedNode", "revealCompartment", List.of("self", "diagramContext", "editingContext", "convertedNodes")))
                 .build();
 
         creationServiceCall.children(createViewOperation, revealOperation);

@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
@@ -124,6 +125,12 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element casePackage(Package object) {
         object.setDeclaredName(object.eClass().getName());
+        return object;
+    }
+
+    @Override
+    public Element casePerformActionUsage(PerformActionUsage object) {
+        // no name for new perform action
         return object;
     }
 
