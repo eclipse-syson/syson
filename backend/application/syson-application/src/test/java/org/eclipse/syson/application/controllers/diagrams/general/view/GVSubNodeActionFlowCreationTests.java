@@ -16,6 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +28,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -398,10 +402,13 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         String parentLabel = "action";
         String creationToolName = "New Perfom";
         EReference containmentReference = SysmlPackage.eINSTANCE.getUsage_NestedAction();
+        List<ToolVariable> variables = new ArrayList<>();
+        variables.add(new ToolVariable("selectedObject", "e00ffabe-b4e8-40ab-b7b8-5a21dcc4c141", ToolVariableType.OBJECT_ID));
 
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName);
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName, variables);
+
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            int createdNodesExpectedCount = 3;
+            int createdNodesExpectedCount = 2;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
                     .check(initialDiagram, newDiagram);

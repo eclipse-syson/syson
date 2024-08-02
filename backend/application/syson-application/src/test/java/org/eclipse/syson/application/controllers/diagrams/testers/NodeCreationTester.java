@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -50,6 +51,10 @@ public class NodeCreationTester {
     }
 
     public void createNode(String projectId, AtomicReference<Diagram> diagram, String parentNodeTargetObjectLabel, String toolId) {
+        this.createNode(projectId, diagram, parentNodeTargetObjectLabel, toolId, List.of());
+    }
+
+    public void createNode(String projectId, AtomicReference<Diagram> diagram, String parentNodeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
         String parentId = diagram.get().getId();
         if (parentNodeTargetObjectLabel != null) {
             DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
@@ -63,10 +68,9 @@ public class NodeCreationTester {
                 toolId,
                 0,
                 0,
-                List.of());
+                variables);
         var createElementResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(createElementInput);
         String typename = JsonPath.read(createElementResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
     }
-
 }
