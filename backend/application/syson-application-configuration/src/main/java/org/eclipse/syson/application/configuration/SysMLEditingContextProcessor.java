@@ -97,7 +97,7 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
 
     private EObject copy(EObject eObject, JsonResource resource, SysONCopier copier) {
         copier.setResource(resource);
-        EObject result = copier.copy(eObject);
+        var result = copier.copy(eObject);
         return result;
     }
 
@@ -109,6 +109,8 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
     private final class SysONCopier extends Copier {
 
         private static final long serialVersionUID = 1L;
+
+        private final Logger logger = LoggerFactory.getLogger(SysONCopier.class);
 
         private JsonResource resource;
 
@@ -127,7 +129,7 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
                     this.resource.setID(copy, oldId);
                 }
             } else {
-                SysMLEditingContextProcessor.this.logger.error("SysONCopier requires a JsonResource to make a copy");
+                this.logger.error("SysONCopier requires a JsonResource to make a copy");
             }
             return copy;
         }
