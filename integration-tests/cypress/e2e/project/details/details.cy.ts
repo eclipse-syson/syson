@@ -57,5 +57,16 @@ describe('Details View Tests', () => {
         details.getReferenceWidgetSelectedValue('Typed by', '').should('not.exist');
       });
     });
+
+    context('When we select an Element', () => {
+      beforeEach(() => explorer.select('Vehicle'));
+
+      it('Then the details view contains the extra property "Documentation" even if the Element has no documentation yet.', () => {
+        details.getGroup('Part Definition Properties').should('be.visible');
+        details.getTextField('Declared Name').should('have.value', 'Vehicle');
+        details.getTextField('Documentation').should('exist');
+        details.getTextField('Documentation').should('have.value', '');
+      });
+    });
   });
 });
