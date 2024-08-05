@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -31,22 +33,18 @@ import org.junit.jupiter.api.Test;
  * @author gescande
  */
 public class ASTTransformerTest {
-  
-    /**
-     * Test null AST
-     */
+
+    @DisplayName("Test null AST")
     @Test
     void convertNullTest() {
         ASTTransformer transformer = new ASTTransformer();
 
-        Resource result = transformer.convertResource(null,  new ResourceSetImpl());
+        Resource result = transformer.convertResource(null, new ResourceSetImpl());
 
         assertEquals(false, result.getAllContents().hasNext());
     }
 
-    /**
-     * Test empty string
-     */
+    @DisplayName("Test empty string")
     @Test
     void convertEmptyStringTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -57,9 +55,7 @@ public class ASTTransformerTest {
         assertEquals(false, result.getAllContents().hasNext());
     }
 
-    /**
-     * Test Empty AST
-     */
+    @DisplayName("Test Empty AST")
     @Test
     void convertEmptyJsonTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -70,9 +66,7 @@ public class ASTTransformerTest {
         assertEquals(false, result.getAllContents().hasNext());
     }
 
-    /**
-     * Test Empty Array AST
-     */
+    @DisplayName("Test Empty Array AST")
     @Test
     void convertEmptyJsonArrayTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -83,19 +77,17 @@ public class ASTTransformerTest {
         assertEquals(false, result.getAllContents().hasNext());
     }
 
-    /**
-     * Test Root namespace
-     */
+    @DisplayName("Test Root namespace")
     @Test
     void convertEmptyNamespareTest() {
         ASTTransformer transformer = new ASTTransformer();
 
         String fileContent = """
-            {
-                "$type": "Namespace",
-                "children": []
-            }
-            """;
+                {
+                    "$type": "Namespace",
+                    "children": []
+                }
+                """;
         Resource result = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
 
         var content = result.getAllContents();
@@ -105,26 +97,24 @@ public class ASTTransformerTest {
         assertInstanceOf(Namespace.class, object);
     }
 
-    /**
-     * Test Containement reference
-     */
+    @DisplayName("Test Containement reference")
     @Test
     void convertNamespareWithPackageTest() {
         ASTTransformer transformer = new ASTTransformer();
         String fileContent = """
-            {
-                "$type": "Namespace",
-                "children": [
-                    {
-                        "$type": "OwningMembership",
-                        "target": {
-                            "$type": "Package",
-                            "declaredName": "package"
+                {
+                    "$type": "Namespace",
+                    "children": [
+                        {
+                            "$type": "OwningMembership",
+                            "target": {
+                                "$type": "Package",
+                                "declaredName": "package"
+                            }
                         }
-                    }
-                ]
-            }
-            """;
+                    ]
+                }
+                """;
         Resource result = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
 
         var content = result.getContents();
@@ -143,9 +133,7 @@ public class ASTTransformerTest {
         assertEquals("package", ((Package) packageObject).getQualifiedName());
     }
 
-    /**
-     * Test FeatureTyping
-     */
+    @DisplayName("Test FeatureTyping")
     @Test
     void convertFeatureTypingTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -153,9 +141,12 @@ public class ASTTransformerTest {
         Resource testResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertFeatureTypingTest/model.ast.json").readAllBytes());
-            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  new ResourceSetImpl());
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
         Package packageObject = (Package) namespace.getMember().get(0);
@@ -165,12 +156,12 @@ public class ASTTransformerTest {
         AttributeDefinition typedAttributeDefinition = (AttributeDefinition) attributeDefinition;
         assertEquals("attributeDefinition", typedAttributeDefinition.getDeclaredName());
         assertEquals("package::attributeDefinition", typedAttributeDefinition.getQualifiedName());
-        
+
         EObject portDefinition = packageObject.getMember().get(1);
         assertInstanceOf(PortDefinition.class, portDefinition);
         PortDefinition typedPortDefinition = (PortDefinition) portDefinition;
         assertEquals("portDefinition", typedPortDefinition.getDeclaredName());
-        
+
         assertEquals(1, typedPortDefinition.getMember().size());
         EObject referenceUsage = typedPortDefinition.getMember().get(0);
         assertInstanceOf(ReferenceUsage.class, referenceUsage);
@@ -189,9 +180,7 @@ public class ASTTransformerTest {
         assertEquals(typedAttributeDefinition, specialisation.getGeneral());
     }
 
-    /**
-     * Test Redefines
-     */
+    @DisplayName("Test Redefines")
     @Test
     void convertRedefinesTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -199,9 +188,12 @@ public class ASTTransformerTest {
         Resource testResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertRedefinesTest/model.ast.json").readAllBytes());
-            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  new ResourceSetImpl());
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
         Package packageObject = (Package) namespace.getMember().get(0);
@@ -210,7 +202,6 @@ public class ASTTransformerTest {
         assertInstanceOf(AttributeUsage.class, attributeUsage);
         AttributeUsage typedAttributeUsage = (AttributeUsage) attributeUsage;
         assertEquals("Packets::'packet header'", typedAttributeUsage.getQualifiedName());
-
 
         EObject redefinedAttributeUsage = packageObject.getMember().get(1);
         assertInstanceOf(AttributeUsage.class, redefinedAttributeUsage);
@@ -225,9 +216,7 @@ public class ASTTransformerTest {
         assertEquals(typedRedefinedAttributeUsage, redefinition.getRedefiningFeature());
     }
 
-    /**
-     * Test NamespaceImport
-     */
+    @DisplayName("Test NamespaceImport")
     @Test
     void convertNamespaceImportTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -238,16 +227,21 @@ public class ASTTransformerTest {
         Resource namespaceResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportTest/namespace.ast.json").readAllBytes());
-            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  resourceSet);
+            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), resourceSet);
         } catch (IOException e) {
+            fail(e);
         }
 
         Resource testResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportTest/model.ast.json").readAllBytes());
-            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  resourceSet);
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), resourceSet);
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(namespaceResource);
+        assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
         Package packageObject = (Package) namespace.getMember().get(0);
@@ -262,9 +256,7 @@ public class ASTTransformerTest {
         assertEquals(importedPackage, typedNamespaceImport.getImportedNamespace());
     }
 
-    /**
-     * Test Conjugated
-     */
+    @DisplayName("Test Conjugated")
     @Test
     void convertConjugatedPortTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -272,16 +264,19 @@ public class ASTTransformerTest {
         Resource testResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertConjugatedPortTest/model.ast.json").readAllBytes());
-            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  new ResourceSetImpl());
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
         Package packageObject = (Package) namespace.getMember().get(0);
 
         AttributeDefinition tempAttributeDefinition = (AttributeDefinition) packageObject.getMember().get(0);
         assertEquals("Temp", tempAttributeDefinition.getName());
-        
+
         PortDefinition tempPortPortDefinition = (PortDefinition) packageObject.getMember().get(1);
         assertEquals("TempPort", tempPortPortDefinition.getName());
         AttributeUsage temperatureAttributeUsage = (AttributeUsage) tempPortPortDefinition.getOwnedAttribute().get(0);
@@ -300,13 +295,9 @@ public class ASTTransformerTest {
         assertEquals("tempPortConj", tempPortConjPortUsage.getName());
 
         assertEquals(1, tempPortConjPortUsage.getOwnedTyping().size());
-        ConjugatedPortTyping tempPortConjConjugatedPortTyping = (ConjugatedPortTyping) tempPortConjPortUsage.getOwnedTyping().get(0);
-        
     }
 
-    /**
-     * Test Subclassification
-     */
+    @DisplayName("Test Subclassification")
     @Test
     void convertSubclassificationTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -314,13 +305,16 @@ public class ASTTransformerTest {
         Resource testResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertSubclassificationTest/model.ast.json").readAllBytes());
-            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  new ResourceSetImpl());
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
         Package packageObject = (Package) namespace.getMember().get(0);
-        
+
         PartDefinition part1Definition = (PartDefinition) packageObject.getMember().get(0);
         assertEquals("Part1", part1Definition.getName());
         AttributeUsage attribute1AttributeUsage = (AttributeUsage) part1Definition.getOwnedAttribute().get(0);
@@ -334,12 +328,10 @@ public class ASTTransformerTest {
         assertEquals(1, part2Definition.getOwnedSubclassification().size());
         assertEquals(part1Definition, part2Definition.getOwnedSubclassification().get(0).getSuperclassifier());
         assertEquals(part2Definition, part2Definition.getOwnedSubclassification().get(0).getSubclassifier());
-        
+
     }
 
-    /**
-     * Test Alias
-     */
+    @DisplayName("Test Alias")
     @Test
     void convertAliasTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -347,9 +339,12 @@ public class ASTTransformerTest {
         Resource testResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAliasTest/model.ast.json").readAllBytes());
-            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  new ResourceSetImpl());
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
         Package packageObject = (Package) namespace.getMember().get(0);
@@ -364,17 +359,16 @@ public class ASTTransformerTest {
         assertEquals(vehiculePartDefinition, carMembership.getMemberElement());
         assertEquals(definitionsPackage, carMembership.getOwningRelatedElement());
         assertEquals(definitionsPackage, carMembership.getMembershipOwningNamespace());
-        
 
         assertEquals(definitionsPackage.getOwnedMembership().get(0), namespace.resolve("AliasImport::Definitions::Vehicle"));
 
         assertEquals(vehiculePartDefinition, namespace.resolve("AliasImport::Definitions::Vehicle").getMemberElement());
         assertEquals(vehiculePartDefinition, namespace.resolve("AliasImport::Definitions::Car").getMemberElement());
 
-        // TODO a checker corriger    
-        //assertEquals("AliasImport::Definitions::Car", carMembership.getQualifiedName());
-        //assertEquals(definitionsPackage, carMembership.getOwningNamespace());
-        //assertEquals(definitionsPackage, carMembership.getOwner());
+        // To check and fix if needed
+        // assertEquals("AliasImport::Definitions::Car", carMembership.getQualifiedName());
+        // assertEquals(definitionsPackage, carMembership.getOwningNamespace());
+        // assertEquals(definitionsPackage, carMembership.getOwner());
 
         Package usagesPackage = (Package) packageObject.getMember().get(1);
         assertEquals("Usages", usagesPackage.getName());
@@ -385,10 +379,7 @@ public class ASTTransformerTest {
         assertEquals(vehiculePartDefinition, vehiculePartUsage.getOwnedSpecialization().get(0).getGeneral());
     }
 
-
-    /**
-     * Test NamespaceImportValue
-     */
+    @DisplayName("Test NamespaceImportValue")
     @Test
     void convertNamespaceImportValueTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -399,16 +390,21 @@ public class ASTTransformerTest {
         Resource namespaceResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportValueTest/namespace.ast.json").readAllBytes());
-            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  resourceSet);
+            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), resourceSet);
         } catch (IOException e) {
+            fail(e);
         }
 
         Resource testResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportValueTest/model.ast.json").readAllBytes());
-            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  resourceSet);
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), resourceSet);
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(namespaceResource);
+        assertNotNull(testResource);
 
         Namespace importedNamespace = (Namespace) namespaceResource.getContents().get(0);
         Package package1Object = (Package) importedNamespace.getMember().get(0);
@@ -429,9 +425,7 @@ public class ASTTransformerTest {
         assertEquals(part2Definition, part2Definition.getOwnedSubclassification().get(0).getSubclassifier());
     }
 
-    /**
-     * Test convertImportTest
-     */
+    @DisplayName("Test Import")
     @Test
     void convertImportTest() {
         ASTTransformer transformer = new ASTTransformer();
@@ -440,9 +434,12 @@ public class ASTTransformerTest {
         Resource namespaceResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertImportTest/model.ast.json").readAllBytes());
-            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  new ResourceSetImpl());
+            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(namespaceResource);
 
         Namespace testNamespace = (Namespace) namespaceResource.getContents().get(0);
 
@@ -454,26 +451,24 @@ public class ASTTransformerTest {
         assertEquals(p12, p211.getOwnedSubclassification().get(0).getSuperclassifier());
     }
 
-    /**
-     * Test Containement reference
-     */
+    @DisplayName("Test Documentation")
     @Test
     void convertDocumentationTest() {
         ASTTransformer transformer = new ASTTransformer();
         String fileContent = """
-            {
-                "$type": "Namespace",
-                "children": [
-                    {
-                        "$type": "OwningMembership",
-                        "target": {
-                            "$type": "Documentation",
-                            "body": "/* TEST */"
+                {
+                    "$type": "Namespace",
+                    "children": [
+                        {
+                            "$type": "OwningMembership",
+                            "target": {
+                                "$type": "Documentation",
+                                "body": "/* TEST */"
+                            }
                         }
-                    }
-                ]
-            }
-            """;
+                    ]
+                }
+                """;
         Resource result = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
 
         var content = result.getContents();
@@ -491,10 +486,7 @@ public class ASTTransformerTest {
         assertEquals("TEST", ((Documentation) documentationObject).getBody());
     }
 
-
-    /**
-     * Test convertAssignmentTEst
-     */
+    @DisplayName("Test Assignment on AssignmentActionUsage")
     @Test
     void convertAssignment1Test() {
         ASTTransformer transformer = new ASTTransformer();
@@ -503,9 +495,12 @@ public class ASTTransformerTest {
         Resource namespaceResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAssignmentTest/assignment1.ast.json").readAllBytes());
-            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  new ResourceSetImpl());
+            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(namespaceResource);
 
         Namespace namespace = (Namespace) namespaceResource.getContents().get(0);
         Package packageAssignment1 = (Package) namespace.getMember().get(0);
@@ -515,27 +510,23 @@ public class ASTTransformerTest {
         AttributeUsage attributeUsagecount = (AttributeUsage) partDefinitionCounter.getMember().get(0);
 
         assertEquals(0, ((LiteralInteger) attributeUsagecount.getValuation().getValue()).getValue());
-        
+
         ActionUsage actionUsageincr = (ActionUsage) partDefinitionCounter.getMember().get(1);
 
         AssignmentActionUsage assignmentActionUsage = (AssignmentActionUsage) actionUsageincr.getMember().get(0);
 
-        //TODO Check
         assertEquals(attributeUsagecount, assignmentActionUsage.getReferent());
 
-        //TODO Check
-        //assertEquals(1, ((LiteralInteger) assignmentActionUsage.getTargetArgument()).getValue());
+        // to check and fix if needed
+        // assertEquals(1, ((LiteralInteger) assignmentActionUsage.getTargetArgument()).getValue());
 
-        Expression expression = assignmentActionUsage.getValueExpression(); //Expression -> 1
+        Expression expression = assignmentActionUsage.getValueExpression(); // Expression -> 1
 
-        //TODO Check
         assertEquals(null, expression);
-        
+
     }
 
-    /**
-     * Test convertAssignmentTEst
-     */
+    @DisplayName("Test Assignment on OperatorExpression")
     @Test
     void convertAssignment2Test() {
         ASTTransformer transformer = new ASTTransformer();
@@ -544,9 +535,12 @@ public class ASTTransformerTest {
         Resource namespaceResource = null;
         try {
             String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAssignmentTest/assignment2.ast.json").readAllBytes());
-            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()),  new ResourceSetImpl());
+            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
+            fail(e);
         }
+
+        assertNotNull(namespaceResource);
 
         Namespace namespace = (Namespace) namespaceResource.getContents().get(0);
         Package packageAssignment1 = (Package) namespace.getMember().get(0);
@@ -555,19 +549,16 @@ public class ASTTransformerTest {
         AttributeUsage attributeUsagecount = (AttributeUsage) actionUsageCounter.getMember().get(0);
         AssignmentActionUsage assignmentActionUsage = (AssignmentActionUsage) actionUsageCounter.getMember().get(1);
 
-        //TODO Check
         assertEquals(attributeUsagecount, assignmentActionUsage.getReferent());
 
-        //TODO Check
+        // to check and fix if needed
         OperatorExpression operatorExpression = (OperatorExpression) assignmentActionUsage.getTargetArgument();
-        //assertEquals("+", operatorExpression.getOperator());
+        // assertEquals("+", operatorExpression.getOperator());
         // To implement assertEquals(1, (LiteralInteger) operatorExpression.getOperand().get(0));
 
-        Expression expression = assignmentActionUsage.getValueExpression(); //Expression -> 1
+        Expression expression = assignmentActionUsage.getValueExpression(); // Expression -> 1
 
-        //TODO Check
         assertEquals(null, expression);
 
-        
     }
 }

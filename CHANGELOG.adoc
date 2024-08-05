@@ -89,6 +89,7 @@ A new edge tool allows to create a flow between two ports.
 - https://github.com/eclipse-syson/syson/issues/598[#598] [diagrams] Add tools to set a Feature as composite or reference.
 - https://github.com/eclipse-syson/syson/issues/596[#596] [interconnection-view] Handle _ItemUsage_ in Interconnection View and _FlowConnectionUsage_ involving items
 - https://github.com/eclipse-syson/syson/issues/615[#615] [details] Add documentation property to Core tab of the Details view.
+- https://github.com/eclipse-syson/syson/issues/626[#626] [explorer] Allow to insert textual SysMLv2 from existing model elements.
 
 == v2024.7.0
 

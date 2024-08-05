@@ -13,6 +13,7 @@
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import { diagramPanelActionExtensionPoint, NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';
+import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import {
   ApolloClientOptionsConfigurer,
   apolloClientOptionsConfigurersExtensionPoint,
@@ -25,6 +26,7 @@ import {
   SiriusWebApplication,
 } from '@eclipse-sirius/sirius-web-application';
 import {
+  InsertTextualSysMLMenuContribution,
   ShowHideDiagramsIcons,
   SysMLPackageNode,
   SysMLPackageNodeConverter,
@@ -93,6 +95,11 @@ extensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
 extensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
   identifier: `syson_${diagramPanelActionExtensionPoint.identifier}_showHideDiagramIcons`,
   Component: ShowHideDiagramsIcons,
+});
+
+extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: `syson${treeItemContextMenuEntryExtensionPoint.identifier}_insertTextualSysML`,
+  Component: InsertTextualSysMLMenuContribution,
 });
 
 extensionRegistry.addComponent(footerExtensionPoint, {

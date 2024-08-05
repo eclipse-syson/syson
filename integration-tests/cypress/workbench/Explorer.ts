@@ -38,6 +38,15 @@ export class Explorer {
     this.getTreeItemByLabel(treeItemLabel).dblclick();
   }
 
+  public insertTextualSysMLv2(documentTreeItemLabel: string, textualContent: string) {
+    this.getTreeItemByLabel(documentTreeItemLabel).find('button').click();
+    cy.getByTestId('insert-textual-sysmlv2-menu').click();
+    cy.getByTestId('insert-textual-sysmlv2-submit').should('be.disabled');
+    cy.getByTestId('insert-textual-sysmlv2-modal-textarea').type(textualContent);
+    cy.getByTestId('insert-textual-sysmlv2-submit').should('not.be.disabled');
+    cy.getByTestId('insert-textual-sysmlv2-submit').click();
+  }
+
   public createRootObject(documentTreeItemLabel: string, domain: string, entity: string) {
     this.getTreeItemByLabel(documentTreeItemLabel).find('button').click();
     cy.getByTestId('new-object').click();
