@@ -40,33 +40,33 @@ public class ASTTransformer {
     private final Logger logger = LoggerFactory.getLogger(ASTTransformer.class);
 
     private final AstTreeParser astTreeParser;
-    
+
     public ASTTransformer() {
         final ProxyResolver proxyResolver = new ProxyResolver();
         final AstObjectParser astObjectParser = new AstObjectParser();
         final AstContainmentReferenceParser astContainmentReferenceParser = new AstContainmentReferenceParser();
         final AstWeakReferenceParser astWeakReferenceParser = new AstWeakReferenceParser(astObjectParser);
-        astTreeParser = new AstTreeParser(astContainmentReferenceParser, astWeakReferenceParser, proxyResolver, astObjectParser);
-        astContainmentReferenceParser.setAstTreeParser(astTreeParser);
+        this.astTreeParser = new AstTreeParser(astContainmentReferenceParser, astWeakReferenceParser, proxyResolver, astObjectParser);
+        astContainmentReferenceParser.setAstTreeParser(this.astTreeParser);
     }
 
-    public Resource convertResource(final InputStream input, final ResourceSet editingDomainResourceSet) {
+    public Resource convertResource(final InputStream input, final ResourceSet resourceSet) {
 
         final Resource result = new JSONResourceFactory().createResource(new JSONResourceFactory().createResourceURI(null));
-        editingDomainResourceSet.getResources().add(result);
         if (input != null) {
             final JsonNode astJson = readAst(input);
             if (astJson != null) {
-                logger.info("Create the Root eObject containment structure");
-                final List<EObject> rootSysmlObjects = astTreeParser.parseAst(astJson);
+                this.logger.info("Create the Root eObject containment structure");
+                final List<EObject> rootSysmlObjects = this.astTreeParser.parseAst(astJson);
+                resourceSet.getResources().add(result);
                 result.getContents().addAll(rootSysmlObjects);
-                logger.info("End of create the Root eObject containment structure");
-                logger.info("Try to resolve Imports");
-                astTreeParser.resolveAllImport(result);
-                logger.info("End of import resolving");
-                logger.info("Try to resolve all references");
-                astTreeParser.resolveAllReference(result);
-                logger.info("End of references resolving");
+                this.logger.info("End of create the Root eObject containment structure");
+                this.logger.info("Try to resolve Imports");
+                this.astTreeParser.resolveAllImport(result);
+                this.logger.info("End of import resolving");
+                this.logger.info("Try to resolve all references");
+                this.astTreeParser.resolveAllReference(result);
+                this.logger.info("End of references resolving");
             }
 
         }

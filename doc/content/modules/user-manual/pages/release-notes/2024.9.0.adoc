@@ -2,7 +2,15 @@
 
 == Key highlights
 
-- *Model conformance to SysMLv2 Beta 2 version*: The metamodel has been modified to conform to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML Beta 2 specification released on the 17the of February 2024(see https://www.omg.org/spec/KerML/ for more details).
+- *Model conformance to SysMLv2 Beta 2 version*: the metamodel has been modified to conform to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see https://www.omg.org/spec/SysML/ for more details) and KerML Beta 2 specification released on the 17the of February 2024(see https://www.omg.org/spec/KerML/ for more details).
+- *New "Insert textual SysMLv2" menu entry*: from elements in _Explorer_ view, allow to insert textual SysMLv2 under the selected element.
+The menu entry shows a dialog with a textarea allowing to write or paste textual SysMLv2.
+
+image::release-notes-insert-textual-sysmlv2-menu.png[Insert textual SysMLv2 menu]
+
+A click on the _Insert_ button converts the textual SysMLv2 into model elements and add them under the selected element.
+
+image::release-notes-insert-textual-sysmlv2-dialog.png[Insert textual SysMLv2 dialog]
 
 == Breaking changes
 
@@ -108,3 +116,11 @@ A new edge tool allows to create a flow between two ports.
 - Add documentation property to Core tab of the Details view, allowing to add/edit a documentation for the selected element.
 This property widget will only handle the first documentation associated to the selected element.
 If no documentation is associated to the selected element, then a new value in this widget will also create a _Documentation_ element and will associate it to the selected element.
+- Add new "Insert textual SysMLv2" menu entry on elements in _Explorer_ view, allowing to insert textual SysMLv2 under the selected element.
+The menu entry shows a dialog with a textarea allowing to write or paste textual SysMLv2.
+
+image::release-notes-insert-textual-sysmlv2-menu.png[Insert textual SysMLv2 menu]
+
+A click on the _Insert_ button converts the textual SysMLv2 into model elements and add them under the selected element.
+
+image::release-notes-insert-textual-sysmlv2-dialog.png[Insert textual SysMLv2 dialog]

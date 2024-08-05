@@ -1,0 +1,13 @@
+
+extend type Mutation {
+  insertTextualSysMLv2(input: InsertTextualSysMLv2Input!): InsertTextualSysMLv2Payload!
+}
+
+input InsertTextualSysMLv2Input {
+  id: ID!
+  editingContextId: ID!
+  objectId: ID!
+  textualContent: String!
+}
+
+union InsertTextualSysMLv2Payload = ErrorPayload | SuccessPayload
