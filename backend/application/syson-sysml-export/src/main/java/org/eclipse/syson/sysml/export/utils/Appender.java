@@ -19,7 +19,7 @@ import org.eclipse.syson.sysml.helper.NameHelper;
 
 /**
  * Object that concatenate string using some custom convention.
- * 
+ *
  * @author Arthur Daussy
  */
 public class Appender {
@@ -29,7 +29,7 @@ public class Appender {
     private final String indentation;
 
     private final String newLine;
-    
+
     private final Collection<Character> symbols = List.of('[', '(', '.', '@');
 
     public Appender(String newLine, String indentation) {
@@ -37,77 +37,75 @@ public class Appender {
         this.newLine = newLine;
         this.indentation = indentation;
     }
-    
+
     public boolean isEmpty() {
-        return builder.isEmpty() || builder.toString().isBlank();
+        return this.builder.isEmpty() || this.builder.toString().isBlank();
     }
-    
+
     public static String toPrintableName(String initialName) {
         return NameHelper.toPrintableName(initialName, true);
     }
 
     public Appender appendPrintableName(String name) {
-        append(toPrintableName(name));
+        this.append(toPrintableName(name));
         return this;
     }
-    
+
     public Appender appendWithSpaceIfNeeded(String content) {
-        return appendSpaceIfNeeded().append(content);
+        return this.appendSpaceIfNeeded().append(content);
     }
 
     public Appender appendSpaceIfNeeded() {
-        if (!builder.isEmpty() && !endWithSpace() && !endWithSymbol()) {
-            append(" ");
+        if (!this.builder.isEmpty() && !this.endWithSpace() && !this.endWithSymbol()) {
+            this.append(" ");
         }
         return this;
     }
 
     public Appender newLine() {
-        return append(newLine);
+        return this.append(this.newLine);
     }
 
     public Appender indent() {
-        append(indentation);
+        this.append(this.indentation);
         return this;
     }
 
     public Appender appendIndentedContent(String content) {
-        String indentedContent = indent(content);
-        return append(indentedContent);
+        String indentedContent = this.indent(content);
+        return this.append(indentedContent);
     }
 
     private String indent(String content) {
         if (content == null) {
             return "";
         }
-        return content.replaceAll(newLine, newLine + indentation);
+        return content.replaceAll(this.newLine, this.newLine + this.indentation);
     }
 
     private boolean endWithSpace() {
-        char charAt = builder.charAt(builder.length() - 1);
+        char charAt = this.builder.charAt(this.builder.length() - 1);
         return charAt == ' ' || charAt == '\t';
     }
-    
+
     private boolean endWithSymbol() {
-        char charAt = builder.charAt(builder.length() - 1);
-        return symbols.contains(charAt);
+        char charAt = this.builder.charAt(this.builder.length() - 1);
+        return this.symbols.contains(charAt);
     }
 
     public Appender append(String str) {
         if (str != null) {
-            builder.append(str);
+            this.builder.append(str);
         }
         return this;
     }
 
-    
-
     public String getNewLine() {
-        return newLine;
+        return this.newLine;
     }
 
     @Override
     public String toString() {
-        return builder.toString();
+        return this.builder.toString();
     }
 }

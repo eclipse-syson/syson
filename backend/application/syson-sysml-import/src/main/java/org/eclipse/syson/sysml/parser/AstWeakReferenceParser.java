@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +35,6 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Type;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 /**
  * AstReferenceParser.
  *
@@ -49,23 +49,17 @@ public class AstWeakReferenceParser {
     }
 
     public void proxyNonContainmentReference(final Element owner, final JsonNode astJson) {
-        final Map<String, List<JsonNode>> notOwnedJson = getNotOwnedJsonNode(astJson);
-
+        final Map<String, List<JsonNode>> notOwnedJson = this.getNotOwnedJsonNode(astJson);
         notOwnedJson.forEach((referenceType, referenceList) -> {
-
             referenceList.forEach(referenceAST -> {
                 String qualifiedNameTarget = referenceAST.get(AstConstant.REFERENCE_CONST).asText();
                 if (qualifiedNameTarget == null || qualifiedNameTarget.isBlank() || qualifiedNameTarget.equals("null")) {
                     qualifiedNameTarget = referenceAST.get(AstConstant.TEXT_CONST).asText();
                 }
-
-                final EObject reference = astObjectParser.createObject(referenceAST);
-                
-                if (reference instanceof final InternalEObject internalTarget) {
-
-                    internalTarget.eSetProxyURI(URI.createGenericURI("syson-import", "qualifiedName", qualifiedNameTarget));
-
-                    setReferenceSpecificAttributes(referenceType, reference, owner);
+                final EObject reference = this.astObjectParser.createObject(referenceAST);
+                if (reference instanceof InternalEObject internalTarget) {
+                    internalTarget.eSetProxyURI(URI.createGenericURI("syson-import", AstConstant.QUALIFIED_CONST, qualifiedNameTarget));
+                    this.setReferenceSpecificAttributes(referenceType, reference, owner);
                 }
             });
         });
@@ -78,37 +72,36 @@ public class AstWeakReferenceParser {
     private void setReferenceSpecificAttributes(final String referenceType, final EObject reference, final Element owner) {
         // This switch case allow to manage distinct type of non containing references
         switch (referenceType) {
-            case AstConstant.TARGET_REF_CONST :
-                if (reference instanceof final Type referenceAsType && owner instanceof final Featuring ownerFeaturing) {
+            case AstConstant.TARGET_REF_CONST:
+                if (reference instanceof Type referenceAsType && owner instanceof Featuring ownerFeaturing) {
                     ownerFeaturing.setType(referenceAsType);
-                } 
-                if (reference instanceof final Type referenceAsType && owner instanceof final Specialization ownerSpecialization) {
+                }
+                if (reference instanceof Type referenceAsType && owner instanceof Specialization ownerSpecialization) {
                     ownerSpecialization.setGeneral(referenceAsType);
-                } 
-                if (reference instanceof final Type referenceAsType && owner instanceof final FeatureTyping ownerFeatureTyping) {
+                }
+                if (reference instanceof Type referenceAsType && owner instanceof FeatureTyping ownerFeatureTyping) {
                     ownerFeatureTyping.setType(referenceAsType);
-                } 
-                if (reference instanceof final Feature referenceAsFeature && owner instanceof final Redefinition ownerRedefinition) {
+                }
+                if (reference instanceof Feature referenceAsFeature && owner instanceof Redefinition ownerRedefinition) {
                     ownerRedefinition.setRedefinedFeature(referenceAsFeature);
-                } 
-                if (reference instanceof final Classifier referenceAsClassifier && owner instanceof final Subclassification ownerAsSubclassification) {
+                }
+                if (reference instanceof Classifier referenceAsClassifier && owner instanceof Subclassification ownerAsSubclassification) {
                     ownerAsSubclassification.setSuperclassifier(referenceAsClassifier);
-                } 
-
-                if (reference instanceof final Namespace referenceAsNamespace && owner instanceof final NamespaceImport ownerAsNamespaceImport) {
+                }
+                if (reference instanceof Namespace referenceAsNamespace && owner instanceof NamespaceImport ownerAsNamespaceImport) {
                     ownerAsNamespaceImport.setImportedNamespace(referenceAsNamespace);
-                } 
-                if (reference instanceof final Element referenceAsElement && owner instanceof final Membership ownerMembership) {
+                }
+                if (reference instanceof Element referenceAsElement && owner instanceof Membership ownerMembership) {
                     ownerMembership.setMemberName(ownerMembership.getDeclaredName()); // To manage isAlias
                     ownerMembership.setMemberElement(referenceAsElement);
-                } 
-                if (reference instanceof final Element referenceAsElement && owner instanceof final Relationship ownerRelationship) {
+                }
+                if (reference instanceof Element referenceAsElement && owner instanceof Relationship ownerRelationship) {
                     ownerRelationship.getTarget().add(referenceAsElement);
-                } 
+                }
                 break;
             default:
                 break;
         }
     }
-    
+
 }

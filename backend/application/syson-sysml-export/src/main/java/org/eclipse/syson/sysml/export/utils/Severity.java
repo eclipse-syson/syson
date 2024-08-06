@@ -14,7 +14,7 @@ package org.eclipse.syson.sysml.export.utils;
 
 /**
  * Severity.
- * 
+ *
  * @author Arthur Daussy
  */
 public enum Severity {

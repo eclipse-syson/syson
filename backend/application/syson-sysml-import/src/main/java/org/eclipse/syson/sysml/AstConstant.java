@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.Arrays;
 import java.util.List;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Defines constants and utility methods for AST node parsing and information extraction.
@@ -98,8 +98,7 @@ public final class AstConstant {
 
     public static final List<String> NODES = Arrays.asList(AstConstant.TARGET_CONST, AstConstant.TARGET_CHAIN_CONST, AstConstant.TARGET_REF_CONST, AstConstant.VALUE_CONST, AstConstant.RESULT_CONST,
             AstConstant.SOURCE_CONST, AstConstant.THEN_CONST, AstConstant.ACCEPTER_CONST, AstConstant.GUARD_CONST, AstConstant.EFFECT_CONST, AstConstant.RECEIVER_CONST, AstConstant.PAYLOAD_CONST,
-            AstConstant.MULTIPLICITY_CONST, AstConstant.RANGE_CONST, AstConstant.ABOUT_CONST, AstConstant.SENDER_CONST, AstConstant.TRANSITION_LINK_SOURCE_CONST
-    );
+            AstConstant.MULTIPLICITY_CONST, AstConstant.RANGE_CONST, AstConstant.ABOUT_CONST, AstConstant.SENDER_CONST, AstConstant.TRANSITION_LINK_SOURCE_CONST);
 
     public static String asCleanedText(final JsonNode node) {
         String result = null;
@@ -141,8 +140,7 @@ public final class AstConstant {
         return identifier;
     }
 
-
-    public static  String getSearchText(final JsonNode jsonNode) {
+    public static String getSearchText(final JsonNode jsonNode) {
         String searchText = null;
         if (jsonNode.has(AstConstant.REFERENCE_CONST) && !jsonNode.get(AstConstant.REFERENCE_CONST).isNull() && !jsonNode.get(AstConstant.REFERENCE_CONST).asText().isBlank()) {
             searchText = AstConstant.asCleanedText(jsonNode.get(AstConstant.REFERENCE_CONST));

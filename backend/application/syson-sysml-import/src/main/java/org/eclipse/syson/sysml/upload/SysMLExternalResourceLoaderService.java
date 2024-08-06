@@ -33,7 +33,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Specific {@link IExternalResourceLoaderService} allowing to load SysML textual resources.
- * 
+ *
  * @author arichard
  */
 @Service

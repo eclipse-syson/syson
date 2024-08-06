@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.Streams;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.syson.sysml.AstConstant;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.Streams;
 
 /**
  * ReferenceHelper.
@@ -32,7 +33,8 @@ public class ReferenceHelper {
     /**
      * List of containing nodes of AST
      */
-    private static final List<String> CONTAINMENT_NODES = Arrays.asList(AstConstant.TARGET_CONST, AstConstant.CHILDREN_CONST, AstConstant.HERITAGE_CONST, AstConstant.VALUE_CONST, AstConstant.TARGET_MEMBER_CONST, AstConstant.ASSIGNED_VALUE_CONST, AstConstant.OPERANDS_CONST, AstConstant.EXPRESSION_CONST);
+    private static final List<String> CONTAINMENT_NODES = Arrays.asList(AstConstant.TARGET_CONST, AstConstant.CHILDREN_CONST, AstConstant.HERITAGE_CONST, AstConstant.VALUE_CONST,
+            AstConstant.TARGET_MEMBER_CONST, AstConstant.ASSIGNED_VALUE_CONST, AstConstant.OPERANDS_CONST, AstConstant.EXPRESSION_CONST);
 
     /**
      * List of non containing nodes of AST
@@ -41,10 +43,12 @@ public class ReferenceHelper {
 
     /**
      * Extract owned nodes.
-     * @param astJson json node to parse
+     *
+     * @param astJson
+     *            json node to parse
      * @return owned nodes of astJson
      */
-    public static List<JsonNode>  extractOwnedObject(final JsonNode astJson) {
+    public static List<JsonNode> extractOwnedObject(final JsonNode astJson) {
 
         final List<JsonNode> allElements = new ArrayList<>();
 
@@ -59,19 +63,21 @@ public class ReferenceHelper {
         });
 
         return allElements;
-    }   
+    }
 
     /**
      * Extract not owned nodes.
-     * @param astJson json node to parse
+     *
+     * @param astJson
+     *            json node to parse
      * @return not owned nodes of astJson
      */
-    public static Map<String, List<JsonNode>>  extractNotOwnedObjectByAttribute(final JsonNode astJson) {
+    public static Map<String, List<JsonNode>> extractNotOwnedObjectByAttribute(final JsonNode astJson) {
 
         final Map<String, List<JsonNode>> allElements = new HashMap<>();
 
         NON_CONTAINMENT_NODES.stream().filter(key -> astJson.has(key)).forEach(key -> {
-            final List<JsonNode> objs = allElements.getOrDefault(key, new ArrayList<JsonNode>());
+            final List<JsonNode> objs = allElements.getOrDefault(key, new ArrayList<>());
 
             final JsonNode target = astJson.get(key);
             if (target.isArray()) {
