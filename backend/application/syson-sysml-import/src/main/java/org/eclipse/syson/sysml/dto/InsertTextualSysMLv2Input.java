@@ -18,7 +18,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 
 /**
  * The input object of the InsertTextualSysMLv2 mutation.
- * 
+ *
  * @author arichard
  */
 public record InsertTextualSysMLv2Input(UUID id, String editingContextId, String objectId, String textualContent) implements IInput {

@@ -216,9 +216,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String caseItemUsage(ItemUsage itemUsage) {
         Appender builder = this.newAppender();
-        appendOccurrenceUsagePrefix(builder, itemUsage);
+        this.appendOccurrenceUsagePrefix(builder, itemUsage);
         builder.appendWithSpaceIfNeeded("item");
-        appendUsage(builder, itemUsage);
+        this.appendUsage(builder, itemUsage);
         return builder.toString();
     }
 
@@ -1665,42 +1665,42 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseTransitionUsage(TransitionUsage transitionUsage) {
-        reportUnhandledType(transitionUsage);
+        this.reportUnhandledType(transitionUsage);
         return "";
     }
 
     @Override
     public String caseStateUsage(StateUsage stateUsage) {
-        reportUnhandledType(stateUsage);
+        this.reportUnhandledType(stateUsage);
         return "";
     }
 
     @Override
     public String caseSatisfyRequirementUsage(SatisfyRequirementUsage satisfyRequirementUsage) {
-        reportUnhandledType(satisfyRequirementUsage);
+        this.reportUnhandledType(satisfyRequirementUsage);
         return "";
     }
 
     @Override
     public String caseCalculationDefinition(CalculationDefinition calculationDefinition) {
-        reportUnhandledType(calculationDefinition);
+        this.reportUnhandledType(calculationDefinition);
         return "";
     }
 
     @Override
     public String caseAnalysisCaseUsage(AnalysisCaseUsage analysisCaseUsage) {
-        reportUnhandledType(analysisCaseUsage);
+        this.reportUnhandledType(analysisCaseUsage);
         return "";
     }
 
     @Override
     public String caseVerificationCaseUsage(VerificationCaseUsage verificationCaseUsage) {
-        reportUnhandledType(verificationCaseUsage);
+        this.reportUnhandledType(verificationCaseUsage);
         return "";
     }
 
     private void reportUnhandledType(Element e) {
-        reportConsumer.accept(Status.warning("{0} are not yet handled : {1}", e.eClass().getName(), e.getElementId()));
+        this.reportConsumer.accept(Status.warning("{0} are not yet handled : {1}", e.eClass().getName(), e.getElementId()));
     }
 
     /**

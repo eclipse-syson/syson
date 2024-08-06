@@ -12,7 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
@@ -29,8 +32,6 @@ import org.eclipse.syson.sysml.Subclassification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 /**
  * AstReferenceParser.
  *
@@ -38,73 +39,72 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 public class AstContainmentReferenceParser {
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(AstContainmentReferenceParser.class);
 
     private AstTreeParser astTreeParser;
 
     public void populateContainmentReference(final EObject eObject, final JsonNode astJson) {
-        final List<JsonNode> ownedJson = getOwnedJsonNode(astJson);
+        final List<JsonNode> ownedJson = this.getOwnedJsonNode(astJson);
         final List<EObject> ownedObject = ownedJson.stream().flatMap(t -> {
-            return astTreeParser.parseJsonNode(t).stream();
+            return this.astTreeParser.parseJsonNode(t).stream();
         }).toList();
 
-        ownedObject.stream().forEach(t -> ownObject(eObject, t));
-        
+        ownedObject.stream().forEach(t -> this.ownObject(eObject, t));
+
     }
 
     public void ownObject(final EObject owner, final EObject owned) {
-        
+
         LOGGER.trace("ownObject " + owner + " " + owned);
 
-        if (owner instanceof final Relationship ownerRelationship && owned instanceof final Element ownedElement) {
+        if (owner instanceof Relationship ownerRelationship && owned instanceof Element ownedElement) {
             LOGGER.trace("ownerRelationship");
             ownedElement.setOwningRelationship(ownerRelationship);
         }
-        
-        if (owner instanceof final OwningMembership ownerOwningMembership) {
+
+        if (owner instanceof OwningMembership ownerOwningMembership) {
             LOGGER.trace("ownerOwningMembership");
             ownerOwningMembership.setMemberElement((Element) owned);
         }
 
-        if (owned instanceof final OwningMembership ownedOwningMembership) {
+        if (owned instanceof OwningMembership ownedOwningMembership) {
             LOGGER.trace("ownedOwningMembership");
-            if (owner instanceof final Element ownerElement) {
+            if (owner instanceof Element ownerElement) {
                 ownedOwningMembership.setOwningRelatedElement(ownerElement);
             }
         }
-      
-        if (owner instanceof final Featuring ownerFeatureMembership && owned instanceof final Feature ownedFeature) {
+
+        if (owner instanceof Featuring ownerFeatureMembership && owned instanceof Feature ownedFeature) {
             LOGGER.trace("ownedFeature");
             ownerFeatureMembership.setFeature(ownedFeature);
         }
-        
-        if (owner instanceof final Feature ownerFeature && owned instanceof final FeatureTyping ownedFeatureTyping) {
+
+        if (owner instanceof Feature ownerFeature && owned instanceof FeatureTyping ownedFeatureTyping) {
             LOGGER.trace("ownerFeature");
             ownedFeatureTyping.setTypedFeature(ownerFeature);
         }
 
-        if (owner instanceof final Feature ownerFeature && owned instanceof final Specialization ownedSpecialization) {
+        if (owner instanceof Feature ownerFeature && owned instanceof Specialization ownedSpecialization) {
             LOGGER.trace("ownerFeature");
             ownedSpecialization.setSpecific(ownerFeature);
         }
 
-        if (owner instanceof final Feature ownerFeature && owned instanceof final Redefinition ownedRedefinition) {
+        if (owner instanceof Feature ownerFeature && owned instanceof Redefinition ownedRedefinition) {
             LOGGER.trace("ownerFeature");
             ownedRedefinition.setRedefiningFeature(ownerFeature);
         }
-        
-        if (owner instanceof final Classifier ownerClassifier && owned instanceof final Subclassification ownedSubclassification) {
+
+        if (owner instanceof Classifier ownerClassifier && owned instanceof Subclassification ownedSubclassification) {
             LOGGER.trace("ownedSubclassification");
             ownedSubclassification.setSubclassifier(ownerClassifier);
         }
 
-        if (owner instanceof final ConjugatedPortTyping ownerConjugatedPortTyping && owned instanceof final PortDefinition ownedPortDefinition) {
+        if (owner instanceof ConjugatedPortTyping ownerConjugatedPortTyping && owned instanceof PortDefinition ownedPortDefinition) {
             LOGGER.trace("ownerConjugatedPortDefinition");
             ownerConjugatedPortTyping.setConjugatedPortDefinition(ownedPortDefinition.getConjugatedPortDefinition());
         }
 
-        if (owner instanceof final Element ownerElement && owned instanceof final Relationship ownedRelationship) {
+        if (owner instanceof Element ownerElement && owned instanceof Relationship ownedRelationship) {
             LOGGER.trace("ownerElement");
             ownerElement.getOwnedRelationship().add(ownedRelationship);
             ownedRelationship.setOwningRelatedElement(ownerElement);

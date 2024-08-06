@@ -35,12 +35,12 @@ import org.eclipse.syson.sysml.VariantMembership;
 
 /**
  * List of predicates to select Relationships.
- * 
+ *
  * @author Arthur Daussy
  */
 public class SysMLRelationPredicates {
-    
-    public static final  Predicate<Relationship> IS_NOT_USER_DEFINE_KEYWORD_MEMBER = r -> !isMemberElementA(r, MetadataUsage.class);
+
+    public static final Predicate<Relationship> IS_NOT_USER_DEFINE_KEYWORD_MEMBER = r -> !isMemberElementA(r, MetadataUsage.class);
 
     public static final Predicate<Relationship> IS_MEMBERSHIP = r -> r instanceof Membership;
 
@@ -68,10 +68,10 @@ public class SysMLRelationPredicates {
 
     public static final Predicate<Relationship> IS_DEFINITION_BODY_ITEM_MEMBER = IS_NOT_USER_DEFINE_KEYWORD_MEMBER.and(
             IS_DEFINITION_MEMBER
-            .or(IS_VARIANT_USAGE_MEMBER)
-            .or(IS_NON_OCCURENCE_USAGE_MEMBER)
-            .or(IS_OCCURRENCE_USAGE_MEMBER)
-            .or(IS_ALIAS_MEMBER).or(IS_IMPORT));
+                    .or(IS_VARIANT_USAGE_MEMBER)
+                    .or(IS_NON_OCCURENCE_USAGE_MEMBER)
+                    .or(IS_OCCURRENCE_USAGE_MEMBER)
+                    .or(IS_ALIAS_MEMBER).or(IS_IMPORT));
 
     public static boolean isMemberElementA(Relationship r, Class<?>... types) {
         if (r instanceof Membership membership) {

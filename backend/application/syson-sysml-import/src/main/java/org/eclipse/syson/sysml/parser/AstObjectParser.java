@@ -12,14 +12,15 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.math.BigDecimal;
 
 import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.EClassImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
@@ -27,8 +28,6 @@ import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * AstObjectParser.
@@ -45,17 +44,16 @@ public class AstObjectParser {
                 continue;
             }
 
-            final String mappedName = computeAttribute(eObject, attribute.getName());
+            final String mappedName = this.computeAttribute(eObject, attribute.getName());
 
-            if (!astJson.has(mappedName) || mappedName.equals("isNonunique") || mappedName.equals("isReference")) {
+            if (!astJson.has(mappedName) || "isNonunique".equals(mappedName) || "isReference".equals(mappedName)) {
                 continue;
             }
 
             try {
-                if (attribute.getEType() instanceof EEnum) {
-                    final EEnum eenum = (EEnum) attribute.getEType();
+                if (attribute.getEType() instanceof EEnum eEnum) {
                     final String value = AstConstant.asCleanedText(astJson.get(mappedName));
-                    final EEnumLiteral enumLiteral = eenum.getEEnumLiteral(value);
+                    final EEnumLiteral enumLiteral = eEnum.getEEnumLiteral(value);
                     if (enumLiteral != null) {
                         eObject.eSet(attribute, enumLiteral.getInstance());
                     }
@@ -97,35 +95,23 @@ public class AstObjectParser {
     public EObject createObject(final JsonNode astJson) {
         String type = astJson.findValue(AstConstant.TYPE_CONST).textValue();
 
-        if (type.equals("MembershipReference")) {
+        if ("MembershipReference".equals(type)) {
             type = "Membership";
-        }
-        if (type.equals("SysMLFunction")) {
+        } else if ("SysMLFunction".equals(type)) {
             type = "Function";
-        }
-        if (type.equals("TypeReference")) {
+        } else if ("TypeReference".equals(type)) {
             type = "Type";
-        }
-        if (type.equals("FeatureReference")) {
+        } else if ("FeatureReference".equals(type)) {
             type = "Feature";
-        }
-        if (type.equals("ConjugatedPortReference")) {
+        } else if ("ConjugatedPortReference".equals(type)) {
             type = "ConjugatedPortDefinition";
-        }
-        if (type.equals("ClassifierReference")) {
+        } else if ("ClassifierReference".equals(type)) {
             type = "Classifier";
-        }
-        if (type.equals("ElementReference")) {
+        } else if ("ElementReference".equals(type)) {
             type = "Type";
-        }
-        if (type.equals("MembershipReference")) {
-            type = "Membership";
-        }
-
-        if (type.equals("NamespaceReference")) {
+        } else if ("NamespaceReference".equals(type)) {
             type = "Namespace";
-        }
-        if ("LiteralNumber".equals(type)) {
+        } else if (type.equals("LiteralNumber")) {
             final String literalValue = astJson.get(AstConstant.LITERAL_CONST).asText();
             if (literalValue != null) {
                 try {
@@ -138,19 +124,17 @@ public class AstObjectParser {
             }
         }
 
-        final EClassifier classif = SysmlPackage.eINSTANCE.getEClassifier(type);
-        final EClassImpl eclassImpl = (EClassImpl) classif;
+        var classif = SysmlPackage.eINSTANCE.getEClassifier(type);
 
-        if (classif == null) {
-            return null;
-        } else {
-            return EcoreUtil.create(eclassImpl);
+        if (classif instanceof EClass eClass) {
+            return EcoreUtil.create(eClass);
         }
+        return null;
     }
 
     private String computeAttribute(final EObject eObject, final String attributeName) {
         String computedAttributeName = attributeName;
-        if (eObject instanceof LiteralInteger && "value".equals(attributeName)) {
+        if (eObject instanceof LiteralInteger && attributeName.equals("value")) {
             computedAttributeName = "literal";
         }
         return computedAttributeName;

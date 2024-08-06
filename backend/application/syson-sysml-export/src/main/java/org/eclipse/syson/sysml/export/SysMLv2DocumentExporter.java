@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Used to export SysMlv2 Resource.
- * 
+ *
  * @author gcoutable
  */
 @Service

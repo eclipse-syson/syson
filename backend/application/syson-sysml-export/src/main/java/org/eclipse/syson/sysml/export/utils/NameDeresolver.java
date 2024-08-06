@@ -74,11 +74,11 @@ public class NameDeresolver {
             return null;
         }
 
-        Namespace deresolvingNamespace = deresolvingNamespaceProvider.getDeresolvingNamespace(context);
+        Namespace deresolvingNamespace = this.deresolvingNamespaceProvider.getDeresolvingNamespace(context);
 
         final String qualifiedName;
         if (deresolvingNamespace == null) {
-            qualifiedName = getQualifiedName(element);
+            qualifiedName = this.getQualifiedName(element);
         } else {
             // An element is either reachable form its containment tree or via a reference Membership#memberElement
             Set<Membership> elementAncestors = EMFUtils.getAncestors(Membership.class, element, null).stream().collect(toSet());
@@ -94,13 +94,13 @@ public class NameDeresolver {
         if (e == null) {
             return "";
         }
-        String qn = qualifiedNameCache.get(e.getElementId());
+        String qn = this.qualifiedNameCache.get(e.getElementId());
         if (qn == null) {
             qn = e.getQualifiedName();
             if (qn == null) {
                 qn = "";
             }
-            qualifiedNameCache.put(e.getElementId(), qn);
+            this.qualifiedNameCache.put(e.getElementId(), qn);
         }
         return qn;
     }
@@ -121,10 +121,10 @@ public class NameDeresolver {
     private String deresolve(Element element, Namespace sourceNamespace, Namespace deresolvingNamespace, Set<Membership> ancestors) {
         final String qualifiedName;
         if (deresolvingNamespace == null) {
-            qualifiedName = getQualifiedName(element);
+            qualifiedName = this.getQualifiedName(element);
         } else {
             Pair<String, String> searchKey = Pair.of(deresolvingNamespace.getElementId(), element.getElementId());
-            String cacheValue = deresolvedNamesCache.get(searchKey);
+            String cacheValue = this.deresolvedNamesCache.get(searchKey);
             if (cacheValue != null) {
                 return cacheValue;
             }
@@ -150,7 +150,7 @@ public class NameDeresolver {
             }
 
             if (qualifiedName != null) {
-                deresolvedNamesCache.put(searchKey, qualifiedName);
+                this.deresolvedNamesCache.put(searchKey, qualifiedName);
             }
         }
 
@@ -174,7 +174,7 @@ public class NameDeresolver {
             memberships = this.visibleMembershipsCache.get(namespaceId);
         }
         if (memberships == null) {
-            EList<Membership> visible = new MembershipComputer<Namespace>(deresolvingNamespace, new UniqueEList<>()).visibleMemberships(false, includePrivate, true);
+            EList<Membership> visible = new MembershipComputer<>(deresolvingNamespace, new UniqueEList<>()).visibleMemberships(false, includePrivate, true);
             memberships = visible.stream()
                     .filter(m -> m.getMemberElement() != null)
                     .filter(m -> includePrivate || m.getVisibility() != VisibilityKind.PRIVATE)
@@ -185,7 +185,7 @@ public class NameDeresolver {
     }
 
     private String buildRelativeQualifiedName(Element element, Namespace owningNamespace, Membership visibleMembership, Namespace sourceNamespace) {
-        String elementQn = getQualifiedName(element);
+        String elementQn = this.getQualifiedName(element);
         if (elementQn == null || elementQn.isEmpty()) {
             LOGGER.warn("No qualified name found for " + element.getElementId());
             return "";
@@ -198,9 +198,9 @@ public class NameDeresolver {
         // If the name resolve against an element which is not the expected element it means that there is a name
         // conflict.
         // In that case keep we need a more detailed qualified name
-        if (resolvedElement != null && !match(element, resolvedElement)) {
+        if (resolvedElement != null && !this.match(element, resolvedElement)) {
             // Last try if the element is in the containment tree find the shortest qualified name
-            String qualifiedName = getQualifiedName(owningNamespace);
+            String qualifiedName = this.getQualifiedName(owningNamespace);
             if (qualifiedName != null && !qualifiedName.isBlank() && elementQn.startsWith(qualifiedName)) {
                 relativeQualifiedName = elementQn.substring(qualifiedName.length() + 2, elementQn.length());
             } else {
@@ -215,7 +215,7 @@ public class NameDeresolver {
     /**
      * Checks if the resolved element is either the resolved element member or if it implicitly matches the naming
      * feature of unamed element which name computation used the resolved element.
-     * 
+     *
      * @param element
      *            the element to compute the name from
      * @param resolvedElement
@@ -223,7 +223,7 @@ public class NameDeresolver {
      * @return <code>true</code> if the elements matche
      */
     private boolean match(Element element, Membership resolvedElement) {
-        return resolvedElement.getMemberElement() == element || matchImplicite(resolvedElement, element);
+        return resolvedElement.getMemberElement() == element || this.matchImplicite(resolvedElement, element);
     }
 
     private boolean matchImplicite(Membership resolvedMembership, Element context) {
@@ -239,7 +239,7 @@ public class NameDeresolver {
     private String getRelativeQualifiedName(String elementQn, Element element, Membership m) {
         final String qn;
         Element importedElement = m.getMemberElement();
-        String importedElementQualifiedName = getQualifiedName(importedElement);
+        String importedElementQualifiedName = this.getQualifiedName(importedElement);
         if (importedElement != element && importedElementQualifiedName != null && !importedElementQualifiedName.isEmpty()) {
             int partToRemove = importedElementQualifiedName.length() + 2;
             qn = Appender.toPrintableName(importedElement.getName()) + "::" + elementQn.substring(partToRemove, elementQn.length());

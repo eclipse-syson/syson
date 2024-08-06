@@ -76,7 +76,7 @@ public class Event {
     public String toLogMessage(final ResourceBundle messages) {
         final List<Object> finalParams = new ArrayList<>(Arrays.asList(this.params));
         final String messageTemplate = messages.getString(this.messageId);
-        if (this.eObject instanceof final Element elt && elt.getQualifiedName() != null) {
+        if (this.eObject instanceof Element elt && elt.getQualifiedName() != null) {
             String qualifiedName = elt.getQualifiedName();
             while (qualifiedName.contains("::null")) {
                 qualifiedName = qualifiedName.replace("::null", "");

@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.parser;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -42,15 +43,16 @@ public class ProxyResolver {
         for (final EReference reference : allReferences) {
             if (reference.isMany()) {
                 final Object referenceList = content.eGet(reference, false);
-                if (referenceList instanceof final Collection referenceCollection) {
+                if (referenceList instanceof Collection referenceCollection) {
                     final Collection<Object> resultCollection = new ArrayList<>();
                     boolean containProxy = false;
                     for (final Object target : referenceCollection) {
-                        if (target instanceof final InternalEObject eTarget && eTarget.eIsProxy()) {
+                        if (target instanceof InternalEObject eTarget && eTarget.eIsProxy()) {
                             containProxy = true;
-                            final Element realElement = findProxyTarget(content, eTarget);
+                            final Element realElement = this.findProxyTarget(content, eTarget);
                             resultCollection.add(realElement);
-                            LOGGER.debug("Add the reference " + reference.getName() + " of object " + content.toString() + " with the resolved proxy " + eTarget.eProxyURI().fragment() + " to target " + realElement);
+                            LOGGER.debug("Add the reference " + reference.getName() + " of object " + content.toString() + " with the resolved proxy " + eTarget.eProxyURI().fragment() + " to target "
+                                    + realElement);
                         } else {
                             resultCollection.add(target);
                         }
@@ -63,19 +65,26 @@ public class ProxyResolver {
             } else {
                 final Object target = content.eGet(reference, false);
 
-                if (target instanceof final InternalEObject eTarget) {
+                if (target instanceof InternalEObject eTarget) {
                     if (eTarget.eIsProxy()) {
-                        Element realElement = findProxyTarget(content, eTarget);
+                        Element realElement = this.findProxyTarget(content, eTarget);
                         // Manage specific case of conjugated port
-                        if (content instanceof ConjugatedPortTyping && realElement instanceof final PortDefinition elementPortDefinition) {
+                        if (content instanceof ConjugatedPortTyping && realElement instanceof PortDefinition elementPortDefinition) {
                             realElement = elementPortDefinition.getConjugatedPortDefinition();
                         }
                         content.eSet(reference, realElement);
-                        LOGGER.debug("Set the reference " + reference.getName() + " of object " + content.toString() + " with the resolved proxy " + eTarget.eProxyURI().fragment() + " to target " + realElement);
+                        if (realElement != null) {
+                            LOGGER.debug("Set the reference " + reference.getName() + " of object " + content.toString() + " with the resolved proxy " + eTarget.eProxyURI().fragment() + " to target "
+                                    + realElement);
+                        } else {
+                            LOGGER.debug("Unable to set the reference " + reference.getName() + " of object " + content.toString() + " because of the unresolved proxy "
+                                    + eTarget.eProxyURI().fragment() + " to target "
+                                    + realElement);
+                        }
                     }
                 }
             }
-        }  
+        }
     }
 
     private Element findProxyTarget(final EObject owner, final InternalEObject proxyObject) {
@@ -86,16 +95,16 @@ public class ProxyResolver {
 
         Namespace owningNamespace = null;
 
-        if (owner instanceof final Element ownerElement) {
+        if (owner instanceof Element ownerElement) {
             owningNamespace = deresolvingNamespaceProvider.getDeresolvingNamespace(ownerElement);
         }
 
-        if (owningNamespace == null && owner.eContainer() instanceof final Namespace containerNamespace) {
+        if (owningNamespace == null && owner.eContainer() instanceof Namespace containerNamespace) {
             owningNamespace = containerNamespace;
         }
 
         Element target = null;
-        
+
         if (owningNamespace == null) {
             LOGGER.error("Unable to find owning Namespace of " + owner);
         } else {

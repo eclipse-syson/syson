@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +23,6 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Import;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * AstTreeParser.
@@ -34,11 +34,15 @@ public class AstTreeParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(AstTreeParser.class);
 
     private final AstContainmentReferenceParser astContainmentReferenceParser;
+
     private final AstWeakReferenceParser astWeakReferenceParser;
+
     private final ProxyResolver proxyResolver;
+
     private final AstObjectParser astObjectParser;
-    
-    public AstTreeParser(final AstContainmentReferenceParser astContainmentReferenceParser, final AstWeakReferenceParser astWeakReferenceParser, final ProxyResolver proxyResolver, final AstObjectParser astObjectParser) {
+
+    public AstTreeParser(final AstContainmentReferenceParser astContainmentReferenceParser, final AstWeakReferenceParser astWeakReferenceParser, final ProxyResolver proxyResolver,
+            final AstObjectParser astObjectParser) {
         this.astContainmentReferenceParser = astContainmentReferenceParser;
         this.astWeakReferenceParser = astWeakReferenceParser;
         this.proxyResolver = proxyResolver;
@@ -48,7 +52,7 @@ public class AstTreeParser {
     public List<EObject> parseAst(final JsonNode astJson) {
         List<EObject> rootElements;
         if (!astJson.isEmpty()) {
-            rootElements = parseJsonNode(astJson);
+            rootElements = this.parseJsonNode(astJson);
         } else {
             rootElements = List.of();
         }
@@ -60,33 +64,31 @@ public class AstTreeParser {
         List<EObject> result = null;
         if (astJson == null) {
             result = List.of();
+        } else if (astJson.isArray()) {
+            result = this.parseJsonArray(astJson);
         } else {
-            if (astJson.isArray()) {
-                result = parseJsonArray(astJson);
-            } else {
-                result = parseJsonObject(astJson);
-            }
+            result = this.parseJsonObject(astJson);
         }
         return result;
     }
 
     public List<EObject> parseJsonArray(final JsonNode astJson) {
-        final List<EObject> result = new ArrayList<EObject>();
+        final List<EObject> result = new ArrayList<>();
         astJson.forEach(t -> {
-            result.addAll(parseJsonNode(t));
+            result.addAll(this.parseJsonNode(t));
         });
         return result;
     }
-    
-    public List<EObject> parseJsonObject(final JsonNode astJson) {
-        final List<EObject> result = new ArrayList<EObject>();
 
-        final EObject eObject = astObjectParser.createObject(astJson);
-        if (eObject != null)  {
-            astObjectParser.setObjectAttribute(eObject, astJson);
-            astContainmentReferenceParser.populateContainmentReference(eObject, astJson);
-            astWeakReferenceParser.proxyNonContainmentReference((Element) eObject, astJson);
-    
+    public List<EObject> parseJsonObject(final JsonNode astJson) {
+        final List<EObject> result = new ArrayList<>();
+
+        final EObject eObject = this.astObjectParser.createObject(astJson);
+        if (eObject != null) {
+            this.astObjectParser.setObjectAttribute(eObject, astJson);
+            this.astContainmentReferenceParser.populateContainmentReference(eObject, astJson);
+            this.astWeakReferenceParser.proxyNonContainmentReference((Element) eObject, astJson);
+
             result.add(eObject);
         } else {
             LOGGER.error("Error building the object " + astJson);
@@ -97,33 +99,33 @@ public class AstTreeParser {
 
     public void resolveAllImport(final Resource rootResource) {
         rootResource.getContents().forEach(content -> {
-            resolveAllImport(content);
+            this.resolveAllImport(content);
         });
     }
 
     public void resolveAllImport(final EObject parent) {
 
-        if (parent instanceof final Import parentImport) {
+        if (parent instanceof Import parentImport) {
             LOGGER.debug("Resolve Import " + parentImport);
-            proxyResolver.resolveAllProxy(parent);
+            this.proxyResolver.resolveAllProxy(parent);
         }
 
         parent.eContents().forEach(content -> {
-            resolveAllImport(content);
+            this.resolveAllImport(content);
         });
     }
 
     public void resolveAllReference(final Resource rootResource) {
         rootResource.getContents().forEach(content -> {
-            resolveAllReference(content);
+            this.resolveAllReference(content);
         });
     }
 
     public void resolveAllReference(final EObject parent) {
-        proxyResolver.resolveAllProxy(parent);
+        this.proxyResolver.resolveAllProxy(parent);
 
         parent.eContents().forEach(content -> {
-            resolveAllReference(content);
+            this.resolveAllReference(content);
         });
     }
 

@@ -12,9 +12,13 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -26,9 +30,6 @@ import org.eclipse.syson.sysml.parser.AstWeakReferenceParser;
 import org.eclipse.syson.sysml.parser.ProxyResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Transforms AST data using defined mappings and updates resources accordingly.
@@ -51,13 +52,13 @@ public class ASTTransformer {
     }
 
     public Resource convertResource(final InputStream input, final ResourceSet resourceSet) {
-
-        final Resource result = new JSONResourceFactory().createResource(new JSONResourceFactory().createResourceURI(null));
+        Resource result = null;
         if (input != null) {
-            final JsonNode astJson = readAst(input);
+            final JsonNode astJson = this.readAst(input);
             if (astJson != null) {
                 this.logger.info("Create the Root eObject containment structure");
                 final List<EObject> rootSysmlObjects = this.astTreeParser.parseAst(astJson);
+                result = new JSONResourceFactory().createResource(new JSONResourceFactory().createResourceURI(null));
                 resourceSet.getResources().add(result);
                 result.getContents().addAll(rootSysmlObjects);
                 this.logger.info("End of create the Root eObject containment structure");
@@ -68,18 +69,15 @@ public class ASTTransformer {
                 this.astTreeParser.resolveAllReference(result);
                 this.logger.info("End of references resolving");
             }
-
         }
         return result;
     }
 
     private JsonNode readAst(final InputStream input) {
         final ObjectMapper objectMapper = new ObjectMapper();
-
         // Read JSON file and map to JSON Object
         try {
             return objectMapper.readTree(input);
-
         } catch (final IOException e) {
             this.logger.error(e.getMessage());
             return null;

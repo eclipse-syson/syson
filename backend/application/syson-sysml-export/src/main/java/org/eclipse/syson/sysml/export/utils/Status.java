@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 
 /**
  * Report status.
- * 
+ *
  * @author Arthur Daussy
  */
 public record Status(Severity severity, String message) {
@@ -40,12 +40,12 @@ public record Status(Severity severity, String message) {
     }
 
     public void log(Logger logger) {
-        switch (severity) {
-            case DEBUG -> logger.debug(message);
-            case INFO -> logger.info(message);
-            case WARNING -> logger.warn(message);
-            case ERROR -> logger.error(message);
-            default -> logger.error(message);
+        switch (this.severity) {
+            case DEBUG -> logger.debug(this.message);
+            case INFO -> logger.info(this.message);
+            case WARNING -> logger.warn(this.message);
+            case ERROR -> logger.error(this.message);
+            default -> logger.error(this.message);
         }
     }
 }

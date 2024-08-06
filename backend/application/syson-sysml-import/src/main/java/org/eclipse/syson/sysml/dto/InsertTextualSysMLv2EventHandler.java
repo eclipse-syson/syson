@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.dto;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,7 +37,9 @@ import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.SysmlToAst;
@@ -49,7 +52,7 @@ import reactor.core.publisher.Sinks.One;
 
 /**
  * Event handler for InsertTextualSysMLv2 mutation.
- * 
+ *
  * @author arichard
  */
 @Service
@@ -95,14 +98,23 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
             var parentObjectId = insertTextualInput.objectId();
             var parentElement = this.getParentElement(parentObjectId, emfEditingContext);
             if (parentElement != null) {
-                var rootElements = this.getRootElementsFromTextualContent(insertTextualInput, emfEditingContext);
-                if (!rootElements.isEmpty()) {
-                    for (Element element : rootElements) {
-                        var membership = createMembership(parentElement);
+                var resource = this.convert(insertTextualInput, emfEditingContext);
+                if (resource != null && !resource.getContents().isEmpty()) {
+                    var rootElements = this.extractContent(resource);
+                    rootElements.forEach(element -> {
+                        var membership = this.createMembership(parentElement);
                         membership.getOwnedRelatedElement().add(element);
+                    });
+                    if (!rootElements.isEmpty()) {
+                        payload = new SuccessPayload(input.id(), this.feedbackMessageService.getFeedbackMessages());
+                        changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+                    } else {
+                        messages = List.of(new Message("Unable to convert the input into valid SysMLv2", MessageLevel.ERROR));
                     }
-                    payload = new SuccessPayload(input.id(), this.feedbackMessageService.getFeedbackMessages());
-                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
+                    // We don't want the new resource to stay in the resource set and create a new document
+                    var resourceSet = emfEditingContext.getDomain().getResourceSet();
+                    resource.getContents().clear();
+                    resourceSet.getResources().remove(resource);
                 } else {
                     messages = List.of(new Message("Unable to convert the input into valid SysMLv2", MessageLevel.ERROR));
                 }
@@ -126,18 +138,6 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
             }
         }
         return null;
-    }
-
-    private List<Element> getRootElementsFromTextualContent(InsertTextualSysMLv2Input insertTextualInput, IEMFEditingContext emfEditingContext) {
-        var resource = this.convert(insertTextualInput, emfEditingContext);
-        if (resource != null && !resource.getContents().isEmpty()) {
-            var rootElements = this.extractContent(resource);
-            // We don't want the new resource to stay in the resource set and create a new document
-            var resourceSet = emfEditingContext.getDomain().getResourceSet();
-            resourceSet.getResources().remove(resource);
-            return rootElements;
-        }
-        return List.of();
     }
 
     private Resource convert(InsertTextualSysMLv2Input insertTextualInput, IEMFEditingContext emfEditingContext) {
@@ -166,8 +166,18 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
                 .filter(Namespace.class::isInstance)
                 .map(Namespace.class::cast)
                 .flatMap(ns -> ns.getOwnedRelationship().stream())
-                .flatMap(r -> r.getOwnedRelatedElement().stream())
+                .flatMap(r -> this.getChildren(r).stream())
                 .toList();
         return roots;
+    }
+
+    private List<Element> getChildren(Relationship relationship) {
+        List<Element> children = new ArrayList<>();
+        if (relationship instanceof OwningMembership) {
+            children.addAll(relationship.getOwnedRelatedElement());
+        } else {
+            children.add(relationship);
+        }
+        return children;
     }
 }
