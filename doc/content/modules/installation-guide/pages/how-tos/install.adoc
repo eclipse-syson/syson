@@ -87,7 +87,7 @@ For development or local testing, the simplest approach is to initiate a Postgre
 
 [source, bash]
 ----
-docker run -p 5434:5432 --name syson-postgres \
+docker run -p 5433:5432 --name syson-postgres \
                             -e POSTGRES_USER=dbuser \
                             -e POSTGRES_PASSWORD=dbpwd \
                             -e POSTGRES_DB=syson-db \
@@ -122,7 +122,7 @@ Go to the folder containing the {product-jar} and run the command:"
 [source, bash]
 ----
 java -jar path\to\your\syson-application-YEAR.MONTH.0.jar \
-          --spring.datasource.url=jdbc:postgresql://localhost:5434/syson-db \
+          --spring.datasource.url=jdbc:postgresql://localhost:5433/syson-db \
           --spring.datasource.username=dbuser \
           --spring.datasource.password=dbpwd
 ----

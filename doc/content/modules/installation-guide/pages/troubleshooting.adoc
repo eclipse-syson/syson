@@ -29,3 +29,11 @@ Make sure you have included the correct argument to your `java` command accordin
 TIP: Check that you are consulting the documentation version that matches the JAR version you are trying to run.
 
 Refer to the xref:installation-guide:how-tos/install.adoc#start-app[] section for detailed instructions according to your version.
+
+== Empty page in web browser
+
+If you encounter an empty page while accessing to SysON through your web browser, it might be because you have installed {product} on a local server or machine and want to access it from another one.
+
+If you open the dev tools of your web browser, you may found the following message: `Uncaught TypeError: crypto.randomUUID is not a function`.
+
+In this case, please refer to xref:installation-guide:how-tos/https.adoc[].

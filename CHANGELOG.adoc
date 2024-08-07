@@ -45,7 +45,7 @@ The following classes & methods have been deleted or modified to simplify the ha
 
 === Dependency update
 
-- [releng] Switch to Sirius Web 2024.7.5
+- [releng] Switch to Sirius Web 2024.7.8
 - [releng] Switch to `maven-checkstyle-plugin` 3.4.0
 - [releng] Switch to Spring Boot 3.3.1
 - [releng] Add a dependency to CycloneDX to compute the backend software bill of materials during the build
