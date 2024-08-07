@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -29,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test of ASTTransformer class.
- * 
+ *
  * @author gescande
  */
 public class ASTTransformerTest {
@@ -41,7 +42,7 @@ public class ASTTransformerTest {
 
         Resource result = transformer.convertResource(null, new ResourceSetImpl());
 
-        assertEquals(false, result.getAllContents().hasNext());
+        assertNull(result);
     }
 
     @DisplayName("Test empty string")
@@ -140,7 +141,7 @@ public class ASTTransformerTest {
 
         Resource testResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertFeatureTypingTest/model.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertFeatureTypingTest/model.ast.json").readAllBytes());
             testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
             fail(e);
@@ -187,7 +188,7 @@ public class ASTTransformerTest {
 
         Resource testResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertRedefinesTest/model.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertRedefinesTest/model.ast.json").readAllBytes());
             testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
             fail(e);
@@ -226,7 +227,7 @@ public class ASTTransformerTest {
         // Import Namespace ScalarValues
         Resource namespaceResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportTest/namespace.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportTest/namespace.ast.json").readAllBytes());
             namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), resourceSet);
         } catch (IOException e) {
             fail(e);
@@ -234,7 +235,7 @@ public class ASTTransformerTest {
 
         Resource testResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportTest/model.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportTest/model.ast.json").readAllBytes());
             testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), resourceSet);
         } catch (IOException e) {
             fail(e);
@@ -263,7 +264,7 @@ public class ASTTransformerTest {
 
         Resource testResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertConjugatedPortTest/model.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertConjugatedPortTest/model.ast.json").readAllBytes());
             testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
             fail(e);
@@ -279,19 +280,19 @@ public class ASTTransformerTest {
 
         PortDefinition tempPortPortDefinition = (PortDefinition) packageObject.getMember().get(1);
         assertEquals("TempPort", tempPortPortDefinition.getName());
-        AttributeUsage temperatureAttributeUsage = (AttributeUsage) tempPortPortDefinition.getOwnedAttribute().get(0);
+        AttributeUsage temperatureAttributeUsage = tempPortPortDefinition.getOwnedAttribute().get(0);
         assertEquals("temperature", temperatureAttributeUsage.getName());
         assertEquals(tempAttributeDefinition, temperatureAttributeUsage.getOwnedSpecialization().get(0).getGeneral());
 
         PartDefinition tempPortClassicPartDefinition = (PartDefinition) packageObject.getMember().get(2);
         assertEquals("TempPortClassic", tempPortClassicPartDefinition.getName());
-        PortUsage tempPortClassicPortUsage = (PortUsage) tempPortClassicPartDefinition.getOwnedPort().get(0);
+        PortUsage tempPortClassicPortUsage = tempPortClassicPartDefinition.getOwnedPort().get(0);
         assertEquals("tempPortClassic", tempPortClassicPortUsage.getName());
         assertEquals(tempPortPortDefinition, tempPortClassicPortUsage.getOwnedSpecialization().get(0).getGeneral());
 
         PartDefinition tempPortConjPartDefinition = (PartDefinition) packageObject.getMember().get(3);
         assertEquals("TempPortConj", tempPortConjPartDefinition.getName());
-        PortUsage tempPortConjPortUsage = (PortUsage) tempPortConjPartDefinition.getOwnedPort().get(0);
+        PortUsage tempPortConjPortUsage = tempPortConjPartDefinition.getOwnedPort().get(0);
         assertEquals("tempPortConj", tempPortConjPortUsage.getName());
 
         assertEquals(1, tempPortConjPortUsage.getOwnedTyping().size());
@@ -304,7 +305,7 @@ public class ASTTransformerTest {
 
         Resource testResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertSubclassificationTest/model.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertSubclassificationTest/model.ast.json").readAllBytes());
             testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
             fail(e);
@@ -317,12 +318,12 @@ public class ASTTransformerTest {
 
         PartDefinition part1Definition = (PartDefinition) packageObject.getMember().get(0);
         assertEquals("Part1", part1Definition.getName());
-        AttributeUsage attribute1AttributeUsage = (AttributeUsage) part1Definition.getOwnedAttribute().get(0);
+        AttributeUsage attribute1AttributeUsage = part1Definition.getOwnedAttribute().get(0);
         assertEquals("attribute1", attribute1AttributeUsage.getName());
 
         PartDefinition part2Definition = (PartDefinition) packageObject.getMember().get(1);
         assertEquals("Part2", part2Definition.getName());
-        AttributeUsage attribute2AttributeUsage = (AttributeUsage) part2Definition.getOwnedAttribute().get(0);
+        AttributeUsage attribute2AttributeUsage = part2Definition.getOwnedAttribute().get(0);
         assertEquals("attribute2", attribute2AttributeUsage.getName());
 
         assertEquals(1, part2Definition.getOwnedSubclassification().size());
@@ -338,7 +339,7 @@ public class ASTTransformerTest {
 
         Resource testResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAliasTest/model.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAliasTest/model.ast.json").readAllBytes());
             testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
             fail(e);
@@ -354,7 +355,7 @@ public class ASTTransformerTest {
         PartDefinition vehiculePartDefinition = (PartDefinition) definitionsPackage.getOwnedElement().get(0);
         assertEquals("Vehicle", vehiculePartDefinition.getName());
 
-        Membership carMembership = (Membership) definitionsPackage.getOwnedMembership().get(1);
+        Membership carMembership = definitionsPackage.getOwnedMembership().get(1);
         assertEquals("Car", carMembership.getName());
         assertEquals(vehiculePartDefinition, carMembership.getMemberElement());
         assertEquals(definitionsPackage, carMembership.getOwningRelatedElement());
@@ -389,7 +390,7 @@ public class ASTTransformerTest {
         // Import Namespace ScalarValues
         Resource namespaceResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportValueTest/namespace.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportValueTest/namespace.ast.json").readAllBytes());
             namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), resourceSet);
         } catch (IOException e) {
             fail(e);
@@ -397,7 +398,7 @@ public class ASTTransformerTest {
 
         Resource testResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportValueTest/model.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertNamespaceImportValueTest/model.ast.json").readAllBytes());
             testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), resourceSet);
         } catch (IOException e) {
             fail(e);
@@ -433,7 +434,7 @@ public class ASTTransformerTest {
         // Import Namespace ScalarValues
         Resource namespaceResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertImportTest/model.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertImportTest/model.ast.json").readAllBytes());
             namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
             fail(e);
@@ -494,7 +495,7 @@ public class ASTTransformerTest {
         // Import Namespace ScalarValues
         Resource namespaceResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAssignmentTest/assignment1.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAssignmentTest/assignment1.ast.json").readAllBytes());
             namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
             fail(e);
@@ -534,7 +535,7 @@ public class ASTTransformerTest {
         // Import Namespace ScalarValues
         Resource namespaceResource = null;
         try {
-            String fileContent = new String(getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAssignmentTest/assignment2.ast.json").readAllBytes());
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAssignmentTest/assignment2.ast.json").readAllBytes());
             namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
         } catch (IOException e) {
             fail(e);
