@@ -36,6 +36,10 @@ const useInsertTextualSysMLv2ModalStyles = makeStyles((theme: Theme) => ({
   textarea: {
     flexGrow: 1,
   },
+  actions: {
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 export const InsertTextualSysMLv2Modal = ({
@@ -75,7 +79,7 @@ export const InsertTextualSysMLv2Modal = ({
         maxWidth="md"
         fullWidth
         data-testid={'insert-textual-sysmlv2-modal'}>
-        <DialogTitle id="dialog-title">Insert textual SysMLv2</DialogTitle>
+        <DialogTitle id="dialog-title">Enter or paste SysMLv2 text to create new objects in the model</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
             <TextField
@@ -87,12 +91,11 @@ export const InsertTextualSysMLv2Modal = ({
               minRows={40}
               maxRows={40}
               variant="outlined"
-              label="Write or paste textual SysMLv2 here"
               onChange={(event) => setState((prevState) => ({ ...prevState, textualContent: event.target.value }))}
             />
           </div>
         </DialogContent>
-        <DialogActions>
+        <DialogActions className={classes.actions}>
           <Button
             variant="contained"
             disabled={loading || state.textualContent.length === 0 || !!textualSysMLv2Inserted}
@@ -106,7 +109,7 @@ export const InsertTextualSysMLv2Modal = ({
                 <PublishIcon />
               )
             }>
-            Insert
+            Create Objects
           </Button>
         </DialogActions>
       </Dialog>

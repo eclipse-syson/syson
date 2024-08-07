@@ -59,7 +59,7 @@ export const InsertTextualSysMLMenuContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Insert textual SysMLv2" />
+          <ListItemText primary="New objects from text" />
         </MenuItem>
         {modalElement}
       </Fragment>
