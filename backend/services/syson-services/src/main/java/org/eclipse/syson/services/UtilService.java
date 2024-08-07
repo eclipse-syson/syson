@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -62,8 +63,6 @@ import org.eclipse.syson.util.SysONEContentAdapter;
  * @author arichard
  */
 public class UtilService {
-
-    private final DeleteService deleteService = new DeleteService();
 
     private final ElementInitializerSwitch elementInitializerSwitch = new ElementInitializerSwitch();
 
@@ -205,13 +204,48 @@ public class UtilService {
      * @return a list of reachable object
      */
     public List<EObject> getAllReachable(EObject eObject, EClass eClass) {
-        List<EObject> allReachable = null;
+        List<EObject> allReachable = new ArrayList<>();
         Adapter adapter = EcoreUtil.getAdapter(eObject.eAdapters(), SysONEContentAdapter.class);
         if (adapter instanceof SysONEContentAdapter cacheAdapter) {
-            allReachable = cacheAdapter.getCache().get(eClass);
+            List<EObject> cacheResult = cacheAdapter.getCache().get(eClass);
+            if (cacheResult != null) {
+                allReachable.addAll(cacheResult);
+            }
         }
-        if (allReachable == null) {
-            allReachable = List.of();
+        return allReachable;
+    }
+
+    /**
+     * Get all reachable elements of the type given by the {@link EClass} in the {@link ResourceSet} of the given
+     * {@link EObject}.
+     *
+     * @param eObject
+     *            the {@link EObject} stored in a {@link ResourceSet}
+     * @param eClass
+     *            the searched {@link EClass}
+     * @param withStandardLibs
+     *            include standard libraries elements into list result
+     * @return a list of reachable object
+     */
+    public List<EObject> getAllReachable(EObject eObject, EClass eClass, boolean withStandardLibs) {
+        List<EObject> allReachable = new ArrayList<>();
+        if (withStandardLibs) {
+            return this.getAllReachable(eObject, eClass);
+        }
+        var userResources = eObject.eResource().getResourceSet().getResources().stream()
+                .filter(r -> r.getURI().toString().startsWith(IEMFEditingContext.RESOURCE_SCHEME))
+                .toList();
+        for (Resource resource : userResources) {
+            var contents = resource.getContents();
+            for (EObject root : contents) {
+                TreeIterator<EObject> eAllContents = root.eAllContents();
+                while (eAllContents.hasNext()) {
+                    EObject obj = eAllContents.next();
+                    if (eClass.isInstance(obj)) {
+                        allReachable.add(obj);
+                    }
+                }
+            }
         }
         return allReachable;
     }

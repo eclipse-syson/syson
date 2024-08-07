@@ -121,6 +121,25 @@ public class ViewCreateService {
     }
 
     /**
+     * Create the appropriate {@link Membership} child according to the given {@link EClass} type.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param membershipType
+     *            the type of {@link Membership} to create.
+     * @return the newly created {@link Membership}.
+     */
+    public Membership createMembership(Element element, EClass membershipType) {
+        Membership membership = null;
+        var eObject = SysmlFactory.eINSTANCE.create(membershipType);
+        if (eObject instanceof Membership m) {
+            membership = m;
+            element.getOwnedRelationship().add(membership);
+        }
+        return membership;
+    }
+
+    /**
      * Create a {@link PartUsage} under the given {@link PartUsage}.
      *
      * @param partUsage
@@ -217,41 +236,6 @@ public class ViewCreateService {
             ((RequirementConstraintMembership) result).setKind(RequirementConstraintKind.REQUIREMENT);
         } else if (feature.equals(SysmlPackage.eINSTANCE.getElement_Documentation())) {
             result = SysmlFactory.eINSTANCE.createOwningMembership();
-        }
-        return result;
-    }
-
-    /**
-     * Create a new PartUsage and set it as the subject of the self element.
-     *
-     * @param self
-     *            the element usage to set the subject for
-     * @param subjectParent
-     *            the parent of the new part usage used as the subject.
-     * @return the ReferenceUsage created in {@code self}
-     */
-    public Element createPartUsageAsSubject(Element self, Element subjectParent) {
-        Element result = self;
-        if (self instanceof RequirementUsage
-                || self instanceof RequirementDefinition
-                || self instanceof UseCaseUsage
-                || self instanceof UseCaseDefinition) {
-            // create the part usage that is used as the subject element
-            PartUsage newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            newPartUsage.setDeclaredName(self.getDeclaredName() + "'s subject");
-            var membership = SysmlFactory.eINSTANCE.createOwningMembership();
-            membership.getOwnedRelatedElement().add(newPartUsage);
-            subjectParent.getOwnedRelationship().add(membership);
-            // create subject model tree
-            var featureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
-            featureTyping.setType(newPartUsage);
-            var referenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
-            result = referenceUsage;
-            referenceUsage.setDeclaredName("subject");
-            referenceUsage.getOwnedRelationship().add(featureTyping);
-            var subjectMembership = SysmlFactory.eINSTANCE.createSubjectMembership();
-            subjectMembership.getOwnedRelatedElement().add(referenceUsage);
-            self.getOwnedRelationship().add(subjectMembership);
         }
         return result;
     }

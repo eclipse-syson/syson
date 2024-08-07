@@ -24,7 +24,7 @@ The changes are:
 ** add operation "parameterDirection()  : FeatureDirectionKind"
 * Type
 ** add operation "directionOfExcluding(Feature, Type[0..\*]) : FeatureDirectionKind"
-- https://github.com/eclipse-syson/syson/issues/568[#568] [interconnection-view] The following classes have been deleted, renamed, or merged to simplify the Interconnection View
+- https://github.com/eclipse-syson/syson/issues/568[#568] [interconnection-view] The following classes have been deleted, renamed, or merged to simplify the Interconnection View:
 * Deleted `InterconnectionViewForDefinitionDescriptionProvider`
 * Deleted `InterconnectionViewForDefinitionDiagramDescriptionProvider`
 * Deleted `InterconnectionViewForUsageDiagramDescriptionProvider`
@@ -32,8 +32,8 @@ The changes are:
 * Renamed `FirstLevelChildPartUsageNodeDescriptionProvider` to `FirstLevelChildUsageNodeDescriptionProvider`
 * Renamed `ChildPartUsageNodeDescriptionProvider` to `ChildUsageNodeDescriptionProvider`
 - [releng] Switch to Sirius Web 2024.7.1: all diagrams must be deleted and created again, due to the fix of this Sirius Web https://github.com/eclipse-sirius/sirius-web/issues/1470[bug].
-- https://github.com/eclipse-syson/syson/issues/604[#604] [details] Add tool to create an ExhibitState from a StateUsage
-The following classes & methods have been deleted or modified to simplify the handling of _ExhibitStates_
+- https://github.com/eclipse-syson/syson/issues/604[#604] [details] Add tool to create an _ExhibitState_ from a _StateUsage_.
+The following classes & methods have been deleted or modified to simplify the handling of _ExhibitStates_:
 * Deleted `StateTransitionToggleExhibitStateToolProvider`
 * Deleted `UtilService#canBeExhibitedStateUsage`
 * Deleted `UtilService#setUnsetAsExhibit`
@@ -42,6 +42,10 @@ The following classes & methods have been deleted or modified to simplify the ha
 * Deleted `ViewNodeService#isHiddenByDefaultExhibitStates`
 * Deleted `ViewNodeService#isHiddenByDefaultNonExhibitStates`
 * Add new `IViewDiagramElementFinder` parameter to `StateTransitionViewNodeToolSectionSwitch`
+- https://github.com/eclipse-syson/syson/issues/634[#634] [diagrams] Allow to select existing Type on Subject tool.
+The following methods have been deleted or modified:
+* Deleted `ViewCreateService#createPartUsageAsSubject`
+* Add new `EClass`, 'EReference' and `IDescriptionNameGenerator` parameters to `SubjectCompartmentNodeToolProvider`
 
 === Dependency update
 
@@ -75,8 +79,9 @@ There is now several tools for creating an _ExhibitState_.
 The first one called "New ExhibitState" creates a simple _ExhibitState_.
 The second one called "New ExhibitState with referenced State" shows a dialog allowing to select an existing _State_ to associate to the new _ExhibitState_. 
 - https://github.com/eclipse-syson/syson/issues/617[#617] [diagrams] Display qualified names in diagrams nodes' labels in case of standard libraries elements.
-- https://github.com/eclipse-syson/syson/issues/624[#624] [diagrams] Allow to select existing Action on Perform tool.
+- https://github.com/eclipse-syson/syson/issues/624[#624] [diagrams] Allow to select existing _Action_ on Perform tool.
 - https://github.com/eclipse-syson/syson/issues/628[#628] [diagrams] Allow to set measurement units via direct edit.
+- https://github.com/eclipse-syson/syson/issues/634[#634] [diagrams] Allow to select existing _Type_ on Subject tool.
 
 === New features
 
