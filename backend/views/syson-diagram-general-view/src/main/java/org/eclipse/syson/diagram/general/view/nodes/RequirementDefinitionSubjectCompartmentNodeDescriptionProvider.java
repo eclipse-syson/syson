@@ -32,8 +32,8 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class RequirementDefinitionSubjectCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public RequirementDefinitionSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter(), colorProvider, nameGenerator);
+    public RequirementDefinitionSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter(), colorProvider, descriptionNameGenerator);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class RequirementDefinitionSubjectCompartmentNodeDescriptionProvider exte
     @Override
     protected List<INodeToolProvider> getItemCreationToolProviders() {
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
-        creationToolProviders.add(new SubjectCompartmentNodeToolProvider());
+        creationToolProviders.add(new SubjectCompartmentNodeToolProvider(this.eClass, this.eReference, this.getDescriptionNameGenerator()));
         return creationToolProviders;
     }
 }

@@ -12,21 +12,35 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
+import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
+import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeInCompartment;
+import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
@@ -38,10 +52,15 @@ import org.eclipse.syson.services.diagrams.NodeCreationTestsService;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -189,4 +208,51 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
                 this.diagram, this.verifier);
         this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void createNewSubjectInUseCaseUsage() {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
+        EClass childEClass = SysmlPackage.eINSTANCE.getReferenceUsage();
+        String parentLabel = "useCase";
+        String creationToolName = "New Subject";
+        EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter();
+        List<ToolVariable> variables = new ArrayList<>();
+        String existingPartId = "2c5fe5a5-18fe-40f4-ab66-a2d91ab7df6a";
+        variables.add(new ToolVariable("selectedObject", existingPartId, ToolVariableType.OBJECT_ID));
+
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName, variables);
+
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            int createdNodesExpectedCount = 1;
+            new CheckDiagramElementCount(this.diagramComparator)
+                    .hasNewNodeCount(createdNodesExpectedCount)
+                    .check(initialDiagram, newDiagram);
+            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
+                    .withParentLabel(parentLabel)
+                    .withCompartmentName("subject")
+                    .hasNodeDescriptionName(listNodeDescription)
+                    .hasCompartmentCount(0)
+                    .check(initialDiagram, newDiagram);
+        };
+        this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        ISemanticChecker semanticChecker = (editingContext) -> {
+            Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
+            assertThat(semanticRootObject).isInstanceOf(Element.class);
+            Element semanticRootElement = (Element) semanticRootObject;
+            Optional<ReferenceUsage> optParentElement = EMFUtils.allContainedObjectOfType(semanticRootElement, ReferenceUsage.class)
+                    .filter(element -> Objects.equals(element.getName(), "subject"))
+                    .findFirst();
+            assertThat(optParentElement).isPresent();
+            var referenceUsage = optParentElement.get();
+            EList<Type> subjectTypes = referenceUsage.getType();
+            assertFalse(subjectTypes.isEmpty());
+            assertThat(subjectTypes.get(0).getName()).isEqualTo("part");
+        };
+        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.creationTestsService.checkEditingContext(semanticChecker, this.verifier);
+    }
+
 }

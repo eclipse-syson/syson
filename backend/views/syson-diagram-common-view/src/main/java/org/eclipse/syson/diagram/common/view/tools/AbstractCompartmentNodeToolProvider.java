@@ -30,9 +30,9 @@ import org.eclipse.syson.util.AQLConstants;
  */
 public abstract class AbstractCompartmentNodeToolProvider implements INodeToolProvider {
 
-    private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
+    protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private final ViewBuilders viewBuilderHelper = new ViewBuilders();
+    protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     public AbstractCompartmentNodeToolProvider() {
     }

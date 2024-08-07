@@ -32,8 +32,8 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter(), colorProvider, nameGenerator);
+    public UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter(), colorProvider, descriptionNameGenerator);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider extends 
     @Override
     protected List<INodeToolProvider> getItemCreationToolProviders() {
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
-        creationToolProviders.add(new SubjectCompartmentNodeToolProvider());
+        creationToolProviders.add(new SubjectCompartmentNodeToolProvider(this.eClass, this.eReference, this.getDescriptionNameGenerator()));
         return creationToolProviders;
     }
 }

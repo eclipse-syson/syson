@@ -97,10 +97,11 @@ The second one called "New ExhibitState with referenced State" shows a dialog al
 - Display qualified names in diagrams nodes' labels in case of standard libraries elements.
 
 image::release-notes-diagram-standard-libraries-elements-qualified-names.png[Qualified names for standard libraries elements]
-- Allow to select existing Action on Perform tool.
 
+- Allow to select existing Action on Perform tool.
 - Allow to set measurement units via direct edit.
 It is now possible to configure the measurement unit for the value of an element, e.g. `mass = 10 [kg]`.
+- Allow to select existing _Type_ on Subject tool.
 
 == New features
 
