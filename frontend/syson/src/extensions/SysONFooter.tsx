@@ -32,7 +32,9 @@ export const SysONFooter = ({}: FooterProps) => {
   const { classes } = useFooterStyles();
   return (
     <footer className={classes.footer}>
-      <Typography variant="caption">&copy; {new Date().getFullYear()} Obeo. SysON v2024.7.3. Powered by </Typography>
+      <Typography variant="caption">
+        &copy; {new Date().getFullYear()} Obeo. SysON v2024.7.4. Powered by&nbsp;
+      </Typography>
       <Link variant="caption" href="https://www.eclipse.dev/sirius" rel="noopener noreferrer" target="_blank">
         Sirius Web
       </Link>

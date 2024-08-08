@@ -1,0 +1,6 @@
+#!/bin/sh
+
+VERSION="$1"
+mvn versions:set -DnewVersion="$VERSION" -DprocessAllModules
+npm --no-git-tag-version version "$VERSION" --workspaces --include-workspace-root
+cd integration-tests && npm version "$VERSION" && cd ..
