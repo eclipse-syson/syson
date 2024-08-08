@@ -66,7 +66,7 @@ export class Explorer {
     this.getTreeItemByLabel(objectTreeItemLabel).find('button').click();
     cy.getByTestId('new-object').click();
 
-    cy.getByTestId('childCreationDescription').children('[role="button"]').invoke('text').should('have.length.gt', 1);
+    cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
     cy.getByTestId('childCreationDescription').click();
     cy.getByTestId('childCreationDescription')
       .get(`[data-value="${childCreationDescriptionLabel}"]`)

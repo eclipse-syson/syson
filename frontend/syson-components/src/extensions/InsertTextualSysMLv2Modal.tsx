@@ -11,21 +11,22 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import PublishIcon from '@material-ui/icons/Publish';
+import PublishIcon from '@mui/icons-material/Publish';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Theme } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
+import { makeStyles } from 'tss-react/mui';
 
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { InsertTextualSysMLv2ModalProps, InsertTextualSysMLv2ModalState } from './InsertTextualSysMLv2Modal.types';
 import { useInsertTextualSysMLv2 } from './useInsertTextualSysMLv2';
 
-const useInsertTextualSysMLv2ModalStyles = makeStyles((theme: Theme) => ({
+const useInsertTextualSysMLv2ModalStyles = makeStyles()((theme: Theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'row',
@@ -48,7 +49,7 @@ export const InsertTextualSysMLv2Modal = ({
   onTextualSysMLv2Inserted,
   onClose,
 }: InsertTextualSysMLv2ModalProps) => {
-  const classes = useInsertTextualSysMLv2ModalStyles();
+  const { classes } = useInsertTextualSysMLv2ModalStyles();
 
   const [state, setState] = useState<InsertTextualSysMLv2ModalState>({
     insertInProgress: false,

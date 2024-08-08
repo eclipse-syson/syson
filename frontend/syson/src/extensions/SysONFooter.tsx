@@ -11,11 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { FooterProps } from '@eclipse-sirius/sirius-web-application';
-import Link from '@material-ui/core/Link';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Link from '@mui/material/Link';
+import { Theme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from 'tss-react/mui';
 
-const useFooterStyles = makeStyles((theme) => ({
+const useFooterStyles = makeStyles()((theme: Theme) => ({
   footer: {
     display: 'flex',
     justifyContent: 'center',
@@ -28,10 +29,10 @@ const useFooterStyles = makeStyles((theme) => ({
 }));
 
 export const SysONFooter = ({}: FooterProps) => {
-  const classes = useFooterStyles();
+  const { classes } = useFooterStyles();
   return (
     <footer className={classes.footer}>
-      <Typography variant="caption">&copy; {new Date().getFullYear()} Obeo. SysON v2024.7.3. Powered by</Typography>
+      <Typography variant="caption">&copy; {new Date().getFullYear()} Obeo. SysON v2024.7.3. Powered by </Typography>
       <Link variant="caption" href="https://www.eclipse.dev/sirius" rel="noopener noreferrer" target="_blank">
         Sirius Web
       </Link>
