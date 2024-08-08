@@ -17,9 +17,10 @@ import {
   DiagramContextValue,
   DiagramPanelActionProps,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import Checkbox from '@material-ui/core/Checkbox';
-import Tooltip from '@material-ui/core/Tooltip';
+import Checkbox from '@mui/material/Checkbox';
+import Tooltip from '@mui/material/Tooltip';
 import { useContext, useEffect, useState } from 'react';
+
 import {
   GQLErrorPayload,
   GQLSetShowDiagramsIconsPayload,

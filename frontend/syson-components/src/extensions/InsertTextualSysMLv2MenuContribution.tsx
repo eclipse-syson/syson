@@ -12,10 +12,10 @@
  *******************************************************************************/
 
 import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@mui/icons-material/Add';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
 import React, { forwardRef, Fragment, useState } from 'react';
 import { InsertTextualSysMLv2Modal } from './InsertTextualSysMLv2Modal';
 

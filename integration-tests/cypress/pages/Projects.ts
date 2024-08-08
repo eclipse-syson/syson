@@ -35,6 +35,6 @@ export class Projects {
   }
 
   public goBackToTheHomepage(): void {
-    cy.get('[title="Back to the homepage"]').click();
+    cy.get('[aria-label="Back to the homepage"]').click();
   }
 }

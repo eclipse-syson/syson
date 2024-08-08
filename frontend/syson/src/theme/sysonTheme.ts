@@ -12,12 +12,12 @@
  *******************************************************************************/
 
 import { theme } from '@eclipse-sirius/sirius-components-core';
-import { Theme, createTheme } from '@material-ui/core/styles';
+import { Theme, createTheme } from '@mui/material/styles';
 
 export const baseTheme: Theme = createTheme({
   ...theme,
   palette: {
-    type: 'light',
+    mode: 'light',
     primary: {
       main: '#292253',
       dark: '#64669B',
@@ -31,7 +31,6 @@ export const baseTheme: Theme = createTheme({
     text: {
       primary: '#292253',
       disabled: '#29225354',
-      hint: '#29225312',
     },
     error: {
       main: '#DE1000',
@@ -68,15 +67,17 @@ export const baseTheme: Theme = createTheme({
       selected: '#A1A4C460',
     },
   },
-  props: {
+  components: {
     MuiAppBar: {
-      color: 'secondary',
+      styleOverrides: {
+        colorPrimary: 'secondary',
+      },
     },
-  },
-  overrides: {
     MuiSnackbarContent: {
-      root: {
-        backgroundColor: '#64669B',
+      styleOverrides: {
+        root: {
+          backgroundColor: '#64669B',
+        },
       },
     },
   },
@@ -84,10 +85,29 @@ export const baseTheme: Theme = createTheme({
 
 export const sysonTheme = createTheme(
   {
-    overrides: {
+    components: {
       MuiAvatar: {
-        colorDefault: {
-          backgroundColor: baseTheme.palette.primary.main,
+        styleOverrides: {
+          colorDefault: {
+            backgroundColor: baseTheme.palette.primary.main,
+          },
+        },
+      },
+      MuiTooltip: {
+        styleOverrides: {
+          tooltip: {
+            backgroundColor: baseTheme.palette.common.black,
+          },
+        },
+      },
+      MuiTextField: {
+        defaultProps: {
+          variant: 'standard',
+        },
+      },
+      MuiSelect: {
+        defaultProps: {
+          variant: 'standard',
         },
       },
     },
