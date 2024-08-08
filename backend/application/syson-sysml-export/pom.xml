@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-export</artifactId>
-	<version>2024.7.3</version>
+	<version>2024.7.4</version>
 	<name>syson-sysml-export</name>
 	<description>SysON SysML Export</description>
 
@@ -69,13 +69,13 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2024.7.3</version>
+			<version>2024.7.4</version>
 		</dependency>
 		<!-- Import test jar to access org.eclipse.syson.sysml.util -->
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2024.7.3</version>
+			<version>2024.7.4</version>
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
