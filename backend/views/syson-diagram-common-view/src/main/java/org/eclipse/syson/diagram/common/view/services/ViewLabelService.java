@@ -29,6 +29,7 @@ import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
@@ -90,20 +91,35 @@ public class ViewLabelService extends LabelService {
      */
     public String getCompartmentItemLabel(Usage usage) {
         StringBuilder label = new StringBuilder();
-        if (usage.isIsReference() && !(usage instanceof AttributeUsage)) {
-            // AttributeUsage are always referential, so no need to add the ref keyword
-            label.append("ref" + LabelConstants.SPACE);
+        if (usage instanceof ConstraintUsage constraintUsage) {
+            label.append(this.getCompartmentItemLabel(constraintUsage));
+        } else {
+            if (usage.isIsReference() && !(usage instanceof AttributeUsage)) {
+                // AttributeUsage are always referential, so no need to add the ref keyword
+                label.append("ref" + LabelConstants.SPACE);
+            }
+            String declaredName = usage.getDeclaredName();
+            if (declaredName != null) {
+                label.append(declaredName);
+            }
+            label
+                    .append(this.getMultiplicityLabel(usage))
+                    .append(this.getTypingLabel(usage))
+                    .append(this.getRedefinitionLabel(usage))
+                    .append(this.getSubsettingLabel(usage))
+                    .append(this.getValueLabel(usage));
         }
-        String declaredName = usage.getDeclaredName();
-        if (declaredName != null) {
-            label.append(declaredName);
+        return label.toString();
+    }
+
+    public String getCompartmentItemLabel(ConstraintUsage constraintUsage) {
+        StringBuilder label = new StringBuilder();
+        if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
+            label.append(this.getValue(expression));
+        } else {
+            // The constraint doesn't have an expression, we use its name as default label.
+            label.append(constraintUsage.getDeclaredName());
         }
-        label
-                .append(this.getMultiplicityLabel(usage))
-                .append(this.getTypingLabel(usage))
-                .append(this.getRedefinitionLabel(usage))
-                .append(this.getSubsettingLabel(usage))
-                .append(this.getValueLabel(usage));
         return label.toString();
     }
 
@@ -152,7 +168,24 @@ public class ViewLabelService extends LabelService {
      * @return the value to display.
      */
     public String getInitialDirectEditLabel(Usage usage) {
-        return this.getCompartmentItemLabel(usage);
+        String result;
+        if (usage instanceof ConstraintUsage constraintUsage) {
+            result = this.getInitialDirectEditLabel(constraintUsage);
+        } else {
+            result = this.getCompartmentItemLabel(usage);
+        }
+        return result;
+    }
+
+    public String getInitialDirectEditLabel(ConstraintUsage constraintUsage) {
+        String result;
+        if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
+            result = this.getValue(expression);
+        } else {
+            // The constraint doesn't have an expression, we set an initial empty string for the direct edit.
+            result = "";
+        }
+        return result;
     }
 
     /**
