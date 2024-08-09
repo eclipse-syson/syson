@@ -32,80 +32,91 @@ public class DirectEditParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, WS=15, Boolean=16, Integer=17, 
-		Real=18, DoubleQuotedString=19, ABOUT=20, ABSTRACT=21, ALIAS=22, ALL=23, 
-		AND=24, AS=25, ASSIGN=26, ASSOC=27, BEAHVIOR=28, BINDING=29, BOOL=30, 
-		BY=31, CHAINS=32, CLASS=33, CLASSIFIER=34, COMMENT=35, COMPOSITE=36, CONJUGATE=37, 
-		CONJUGATES=38, CONJUGATION=39, CONNECTOR=40, DATATYPE=41, DEFAULT=42, 
-		DEPENDENCY=43, DERIVED=44, DIFFERENCES=45, DISJOINING=46, DISJOINT=47, 
-		DOC=48, ELSE=49, END=50, EXPR=51, FALSE=52, FEATURE=53, FEATURED=54, FEATURING=55, 
-		FILTER=56, FIRST=57, FLOW=58, FOR=59, FROM=60, FUNCTION=61, HASTYPE=62, 
-		IF=63, INTERSECTS=64, IMPLIES=65, IMPORT=66, IN=67, INPUT=68, INTERACTION=69, 
-		INV=70, INVERSE=71, INVERTING=72, ISTYPE=73, LANGUAGE=74, MEMBER=75, METACLASS=76, 
-		METADATA=77, MULTIPLICITY=78, NAMESPACE=79, NONUNIQUE=80, NOT=81, NULL=82, 
-		OF=83, OR=84, ORDERED=85, OUT=86, PACKAGE=87, PORTION=88, PREDICATE=89, 
-		PRIAVTE=90, PROTECTED=91, PUBLIC=92, READONLY=93, REDEFINES=94, REDEFINITION=95, 
-		RFERENCES=96, REP=97, RETURN=98, SPECIALIZTION=99, SPECIALIZES=100, STEP=101, 
-		STRCUT=102, SUBCLASSIFIER=103, SUBSET=104, SUBSETS=105, SUBTYPE=106, SUCCESSION=107, 
-		THEN=108, TO=109, TRUE=110, TYPE=111, TYPED=112, TYPING=113, UNIONS=114, 
-		XOR=115, ANY=116;
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
+		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, WS=23, Boolean=24, Integer=25, 
+		Real=26, DoubleQuotedString=27, ABOUT=28, ABSTRACT=29, ALIAS=30, ALL=31, 
+		AND=32, AS=33, ASSIGN=34, ASSOC=35, BEAHVIOR=36, BINDING=37, BOOL=38, 
+		BY=39, CHAINS=40, CLASS=41, CLASSIFIER=42, COMMENT=43, COMPOSITE=44, CONJUGATE=45, 
+		CONJUGATES=46, CONJUGATION=47, CONNECTOR=48, DATATYPE=49, DEFAULT=50, 
+		DEPENDENCY=51, DERIVED=52, DIFFERENCES=53, DISJOINING=54, DISJOINT=55, 
+		DOC=56, ELSE=57, END=58, EXPR=59, FALSE=60, FEATURE=61, FEATURED=62, FEATURING=63, 
+		FILTER=64, FIRST=65, FLOW=66, FOR=67, FROM=68, FUNCTION=69, HASTYPE=70, 
+		IF=71, INTERSECTS=72, IMPLIES=73, IMPORT=74, IN=75, INPUT=76, INTERACTION=77, 
+		INV=78, INVERSE=79, INVERTING=80, ISTYPE=81, LANGUAGE=82, MEMBER=83, METACLASS=84, 
+		METADATA=85, MULTIPLICITY=86, NAMESPACE=87, NONUNIQUE=88, NOT=89, NULL=90, 
+		OF=91, OR=92, ORDERED=93, OUT=94, PACKAGE=95, PORTION=96, PREDICATE=97, 
+		PRIAVTE=98, PROTECTED=99, PUBLIC=100, READONLY=101, REDEFINES=102, REDEFINITION=103, 
+		RFERENCES=104, REP=105, RETURN=106, SPECIALIZTION=107, SPECIALIZES=108, 
+		STEP=109, STRCUT=110, SUBCLASSIFIER=111, SUBSET=112, SUBSETS=113, SUBTYPE=114, 
+		SUCCESSION=115, THEN=116, TO=117, TRUE=118, TYPE=119, TYPED=120, TYPING=121, 
+		UNIONS=122, XOR=123, ANY=124;
 	public static final int
-		RULE_expression = 0, RULE_referenceExpression = 1, RULE_multiplicityExpression = 2, 
-		RULE_multiplicityExpressionMember = 3, RULE_featureExpressions = 4, RULE_subsettingExpression = 5, 
-		RULE_redefinitionExpression = 6, RULE_typingExpression = 7, RULE_valueExpression = 8, 
-		RULE_transitionExpression = 9, RULE_triggerExpression = 10, RULE_triggerExpressionName = 11, 
-		RULE_guardExpression = 12, RULE_effectExpression = 13, RULE_qualifiedName = 14, 
-		RULE_name = 15;
+		RULE_expression = 0, RULE_prefixExpression = 1, RULE_directionPrefixExpression = 2, 
+		RULE_abstractPrefixExpression = 3, RULE_variationPrefixExpression = 4, 
+		RULE_readonlyPrefixExpression = 5, RULE_derivedPrefixExpression = 6, RULE_endPrefixExpression = 7, 
+		RULE_referenceExpression = 8, RULE_multiplicityExpression = 9, RULE_multiplicityPropExpression = 10, 
+		RULE_orderedMultiplicityExpression = 11, RULE_nonuniqueMultiplicityExpression = 12, 
+		RULE_multiplicityExpressionMember = 13, RULE_featureExpressions = 14, 
+		RULE_subsettingExpression = 15, RULE_redefinitionExpression = 16, RULE_typingExpression = 17, 
+		RULE_valueExpression = 18, RULE_transitionExpression = 19, RULE_triggerExpression = 20, 
+		RULE_triggerExpressionName = 21, RULE_guardExpression = 22, RULE_effectExpression = 23, 
+		RULE_qualifiedName = 24, RULE_name = 25;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"expression", "referenceExpression", "multiplicityExpression", "multiplicityExpressionMember", 
-			"featureExpressions", "subsettingExpression", "redefinitionExpression", 
-			"typingExpression", "valueExpression", "transitionExpression", "triggerExpression", 
-			"triggerExpressionName", "guardExpression", "effectExpression", "qualifiedName", 
-			"name"
+			"expression", "prefixExpression", "directionPrefixExpression", "abstractPrefixExpression", 
+			"variationPrefixExpression", "readonlyPrefixExpression", "derivedPrefixExpression", 
+			"endPrefixExpression", "referenceExpression", "multiplicityExpression", 
+			"multiplicityPropExpression", "orderedMultiplicityExpression", "nonuniqueMultiplicityExpression", 
+			"multiplicityExpressionMember", "featureExpressions", "subsettingExpression", 
+			"redefinitionExpression", "typingExpression", "valueExpression", "transitionExpression", 
+			"triggerExpression", "triggerExpressionName", "guardExpression", "effectExpression", 
+			"qualifiedName", "name"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'ref '", "'['", "'..'", "']'", "'*'", "':>'", "':>>'", "':'", 
-			"'='", "'|'", "'/'", "','", "'::'", "'::>'", null, null, null, null, 
-			null, "'about'", "'abstract'", "'alias'", "'all'", "'and'", "'as'", "'assign'", 
-			"'assoc'", "'behavior'", "'binding'", "'bool'", "'by'", "'chains'", "'class'", 
-			"'classifier'", "'comment'", "'composite'", "'conjugate'", "'conjugates'", 
-			"'conjugation'", "'connector'", "'datatype'", "'default'", "'dependency'", 
-			"'derived'", "'differences'", "'disjoining'", "'disjoint'", "'doc'", 
-			"'else'", "'end'", "'expr'", "'false'", "'feature'", "'featured'", "'featuring'", 
-			"'filter'", "'first'", "'flow'", "'for'", "'from'", "'function'", "'hastype'", 
-			"'if'", "'intersects'", "'implies'", "'import'", "'in'", "'inout'", "'interaction'", 
-			"'inv'", "'inverse'", "'inverting'", "'istype'", "'language'", "'member'", 
-			"'metaclass'", "'metadata'", "'multiplicity'", "'namespace'", "'nonunique'", 
-			"'not'", "'null'", "'of'", "'or'", "'ordered'", "'out'", "'package'", 
-			"'portion'", "'predicate'", "'private'", "'protected'", "'public'", "'readonly'", 
-			"'redefines'", "'redefinition'", "'references'", "'rep'", "'return'", 
-			"'specialization'", "'specializes'", "'step'", "'struct'", "'subclassifier'", 
-			"'subset'", "'subsets'", "'subtype'", "'succession'", "'then'", "'to'", 
-			"'true'", "'type'", "'typed'", "'typing'", "'unions'", "'xor'"
+			null, "'in '", "'out '", "'inout '", "'abstract '", "'variation '", "'readonly '", 
+			"'derived '", "'end '", "'ref '", "'['", "'..'", "']'", "'*'", "':>'", 
+			"':>>'", "':'", "'='", "'|'", "'/'", "','", "'::'", "'::>'", null, null, 
+			null, null, null, "'about'", "'abstract'", "'alias'", "'all'", "'and'", 
+			"'as'", "'assign'", "'assoc'", "'behavior'", "'binding'", "'bool'", "'by'", 
+			"'chains'", "'class'", "'classifier'", "'comment'", "'composite'", "'conjugate'", 
+			"'conjugates'", "'conjugation'", "'connector'", "'datatype'", "'default'", 
+			"'dependency'", "'derived'", "'differences'", "'disjoining'", "'disjoint'", 
+			"'doc'", "'else'", "'end'", "'expr'", "'false'", "'feature'", "'featured'", 
+			"'featuring'", "'filter'", "'first'", "'flow'", "'for'", "'from'", "'function'", 
+			"'hastype'", "'if'", "'intersects'", "'implies'", "'import'", "'in'", 
+			"'inout'", "'interaction'", "'inv'", "'inverse'", "'inverting'", "'istype'", 
+			"'language'", "'member'", "'metaclass'", "'metadata'", "'multiplicity'", 
+			"'namespace'", "'nonunique'", "'not'", "'null'", "'of'", "'or'", "'ordered'", 
+			"'out'", "'package'", "'portion'", "'predicate'", "'private'", "'protected'", 
+			"'public'", "'readonly'", "'redefines'", "'redefinition'", "'references'", 
+			"'rep'", "'return'", "'specialization'", "'specializes'", "'step'", "'struct'", 
+			"'subclassifier'", "'subset'", "'subsets'", "'subtype'", "'succession'", 
+			"'then'", "'to'", "'true'", "'type'", "'typed'", "'typing'", "'unions'", 
+			"'xor'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, "WS", "Boolean", "Integer", "Real", "DoubleQuotedString", 
-			"ABOUT", "ABSTRACT", "ALIAS", "ALL", "AND", "AS", "ASSIGN", "ASSOC", 
-			"BEAHVIOR", "BINDING", "BOOL", "BY", "CHAINS", "CLASS", "CLASSIFIER", 
-			"COMMENT", "COMPOSITE", "CONJUGATE", "CONJUGATES", "CONJUGATION", "CONNECTOR", 
-			"DATATYPE", "DEFAULT", "DEPENDENCY", "DERIVED", "DIFFERENCES", "DISJOINING", 
-			"DISJOINT", "DOC", "ELSE", "END", "EXPR", "FALSE", "FEATURE", "FEATURED", 
-			"FEATURING", "FILTER", "FIRST", "FLOW", "FOR", "FROM", "FUNCTION", "HASTYPE", 
-			"IF", "INTERSECTS", "IMPLIES", "IMPORT", "IN", "INPUT", "INTERACTION", 
-			"INV", "INVERSE", "INVERTING", "ISTYPE", "LANGUAGE", "MEMBER", "METACLASS", 
-			"METADATA", "MULTIPLICITY", "NAMESPACE", "NONUNIQUE", "NOT", "NULL", 
-			"OF", "OR", "ORDERED", "OUT", "PACKAGE", "PORTION", "PREDICATE", "PRIAVTE", 
-			"PROTECTED", "PUBLIC", "READONLY", "REDEFINES", "REDEFINITION", "RFERENCES", 
-			"REP", "RETURN", "SPECIALIZTION", "SPECIALIZES", "STEP", "STRCUT", "SUBCLASSIFIER", 
+			null, null, null, null, null, null, null, null, null, null, null, "WS", 
+			"Boolean", "Integer", "Real", "DoubleQuotedString", "ABOUT", "ABSTRACT", 
+			"ALIAS", "ALL", "AND", "AS", "ASSIGN", "ASSOC", "BEAHVIOR", "BINDING", 
+			"BOOL", "BY", "CHAINS", "CLASS", "CLASSIFIER", "COMMENT", "COMPOSITE", 
+			"CONJUGATE", "CONJUGATES", "CONJUGATION", "CONNECTOR", "DATATYPE", "DEFAULT", 
+			"DEPENDENCY", "DERIVED", "DIFFERENCES", "DISJOINING", "DISJOINT", "DOC", 
+			"ELSE", "END", "EXPR", "FALSE", "FEATURE", "FEATURED", "FEATURING", "FILTER", 
+			"FIRST", "FLOW", "FOR", "FROM", "FUNCTION", "HASTYPE", "IF", "INTERSECTS", 
+			"IMPLIES", "IMPORT", "IN", "INPUT", "INTERACTION", "INV", "INVERSE", 
+			"INVERTING", "ISTYPE", "LANGUAGE", "MEMBER", "METACLASS", "METADATA", 
+			"MULTIPLICITY", "NAMESPACE", "NONUNIQUE", "NOT", "NULL", "OF", "OR", 
+			"ORDERED", "OUT", "PACKAGE", "PORTION", "PREDICATE", "PRIAVTE", "PROTECTED", 
+			"PUBLIC", "READONLY", "REDEFINES", "REDEFINITION", "RFERENCES", "REP", 
+			"RETURN", "SPECIALIZTION", "SPECIALIZES", "STEP", "STRCUT", "SUBCLASSIFIER", 
 			"SUBSET", "SUBSETS", "SUBTYPE", "SUCCESSION", "THEN", "TO", "TRUE", "TYPE", 
 			"TYPED", "TYPING", "UNIONS", "XOR", "ANY"
 		};
@@ -166,6 +177,9 @@ public class DirectEditParser extends Parser {
 			return getRuleContext(FeatureExpressionsContext.class,0);
 		}
 		public TerminalNode EOF() { return getToken(DirectEditParser.EOF, 0); }
+		public PrefixExpressionContext prefixExpression() {
+			return getRuleContext(PrefixExpressionContext.class,0);
+		}
 		public ReferenceExpressionContext referenceExpression() {
 			return getRuleContext(ReferenceExpressionContext.class,0);
 		}
@@ -174,6 +188,9 @@ public class DirectEditParser extends Parser {
 		}
 		public MultiplicityExpressionContext multiplicityExpression() {
 			return getRuleContext(MultiplicityExpressionContext.class,0);
+		}
+		public MultiplicityPropExpressionContext multiplicityPropExpression() {
+			return getRuleContext(MultiplicityPropExpressionContext.class,0);
 		}
 		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -196,40 +213,398 @@ public class DirectEditParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(33);
+			setState(53);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,0,_ctx) ) {
+			case 1:
+				{
+				setState(52);
+				prefixExpression();
+				}
+				break;
+			}
+			setState(56);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__0) {
+			if (_la==T__8) {
 				{
-				setState(32);
+				setState(55);
 				referenceExpression();
 				}
 			}
 
-			setState(36);
+			setState(59);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__9) | (1L << T__10) | (1L << T__11) | (1L << T__12) | (1L << WS) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << DATATYPE) | (1L << DEFAULT) | (1L << DEPENDENCY) | (1L << DERIVED) | (1L << DIFFERENCES) | (1L << DISJOINING) | (1L << DISJOINT) | (1L << DOC) | (1L << ELSE) | (1L << END) | (1L << EXPR) | (1L << FALSE) | (1L << FEATURE) | (1L << FEATURED) | (1L << FEATURING) | (1L << FILTER) | (1L << FIRST) | (1L << FLOW) | (1L << FOR) | (1L << FROM) | (1L << FUNCTION) | (1L << HASTYPE) | (1L << IF))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (INPUT - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NONUNIQUE - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (ORDERED - 64)) | (1L << (OUT - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIAVTE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (READONLY - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (RFERENCES - 64)) | (1L << (REP - 64)) | (1L << (RETURN - 64)) | (1L << (SPECIALIZTION - 64)) | (1L << (SPECIALIZES - 64)) | (1L << (STEP - 64)) | (1L << (STRCUT - 64)) | (1L << (SUBCLASSIFIER - 64)) | (1L << (SUBSET - 64)) | (1L << (SUBSETS - 64)) | (1L << (SUBTYPE - 64)) | (1L << (SUCCESSION - 64)) | (1L << (THEN - 64)) | (1L << (TO - 64)) | (1L << (TRUE - 64)) | (1L << (TYPE - 64)) | (1L << (TYPED - 64)) | (1L << (TYPING - 64)) | (1L << (UNIONS - 64)) | (1L << (XOR - 64)) | (1L << (ANY - 64)))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__10) | (1L << T__11) | (1L << T__12) | (1L << T__17) | (1L << T__18) | (1L << T__19) | (1L << T__20) | (1L << WS) | (1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString) | (1L << ABOUT) | (1L << ABSTRACT) | (1L << ALIAS) | (1L << ALL) | (1L << AND) | (1L << AS) | (1L << ASSIGN) | (1L << ASSOC) | (1L << BEAHVIOR) | (1L << BINDING) | (1L << BOOL) | (1L << BY) | (1L << CHAINS) | (1L << CLASS) | (1L << CLASSIFIER) | (1L << COMMENT) | (1L << COMPOSITE) | (1L << CONJUGATE) | (1L << CONJUGATES) | (1L << CONJUGATION) | (1L << CONNECTOR) | (1L << DATATYPE) | (1L << DEFAULT) | (1L << DEPENDENCY) | (1L << DERIVED) | (1L << DIFFERENCES) | (1L << DISJOINING) | (1L << DISJOINT) | (1L << DOC) | (1L << ELSE) | (1L << END) | (1L << EXPR) | (1L << FALSE) | (1L << FEATURE) | (1L << FEATURED) | (1L << FEATURING))) != 0) || ((((_la - 64)) & ~0x3f) == 0 && ((1L << (_la - 64)) & ((1L << (FILTER - 64)) | (1L << (FIRST - 64)) | (1L << (FLOW - 64)) | (1L << (FOR - 64)) | (1L << (FROM - 64)) | (1L << (FUNCTION - 64)) | (1L << (HASTYPE - 64)) | (1L << (IF - 64)) | (1L << (INTERSECTS - 64)) | (1L << (IMPLIES - 64)) | (1L << (IMPORT - 64)) | (1L << (IN - 64)) | (1L << (INPUT - 64)) | (1L << (INTERACTION - 64)) | (1L << (INV - 64)) | (1L << (INVERSE - 64)) | (1L << (INVERTING - 64)) | (1L << (ISTYPE - 64)) | (1L << (LANGUAGE - 64)) | (1L << (MEMBER - 64)) | (1L << (METACLASS - 64)) | (1L << (METADATA - 64)) | (1L << (MULTIPLICITY - 64)) | (1L << (NAMESPACE - 64)) | (1L << (NOT - 64)) | (1L << (NULL - 64)) | (1L << (OF - 64)) | (1L << (OR - 64)) | (1L << (OUT - 64)) | (1L << (PACKAGE - 64)) | (1L << (PORTION - 64)) | (1L << (PREDICATE - 64)) | (1L << (PRIAVTE - 64)) | (1L << (PROTECTED - 64)) | (1L << (PUBLIC - 64)) | (1L << (READONLY - 64)) | (1L << (REDEFINES - 64)) | (1L << (REDEFINITION - 64)) | (1L << (RFERENCES - 64)) | (1L << (REP - 64)) | (1L << (RETURN - 64)) | (1L << (SPECIALIZTION - 64)) | (1L << (SPECIALIZES - 64)) | (1L << (STEP - 64)) | (1L << (STRCUT - 64)) | (1L << (SUBCLASSIFIER - 64)) | (1L << (SUBSET - 64)) | (1L << (SUBSETS - 64)) | (1L << (SUBTYPE - 64)) | (1L << (SUCCESSION - 64)) | (1L << (THEN - 64)) | (1L << (TO - 64)) | (1L << (TRUE - 64)) | (1L << (TYPE - 64)) | (1L << (TYPED - 64)) | (1L << (TYPING - 64)) | (1L << (UNIONS - 64)) | (1L << (XOR - 64)) | (1L << (ANY - 64)))) != 0)) {
 				{
-				setState(35);
+				setState(58);
 				name();
 				}
 			}
 
-			setState(39);
+			setState(62);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__1) {
+			if (_la==T__9) {
 				{
-				setState(38);
+				setState(61);
 				multiplicityExpression();
 				}
 			}
 
-			setState(41);
+			setState(65);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
+			case 1:
+				{
+				setState(64);
+				multiplicityPropExpression();
+				}
+				break;
+			}
+			setState(67);
 			featureExpressions();
-			setState(42);
+			setState(68);
 			match(EOF);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class PrefixExpressionContext extends ParserRuleContext {
+		public DirectionPrefixExpressionContext directionPrefixExpression() {
+			return getRuleContext(DirectionPrefixExpressionContext.class,0);
+		}
+		public AbstractPrefixExpressionContext abstractPrefixExpression() {
+			return getRuleContext(AbstractPrefixExpressionContext.class,0);
+		}
+		public VariationPrefixExpressionContext variationPrefixExpression() {
+			return getRuleContext(VariationPrefixExpressionContext.class,0);
+		}
+		public ReadonlyPrefixExpressionContext readonlyPrefixExpression() {
+			return getRuleContext(ReadonlyPrefixExpressionContext.class,0);
+		}
+		public DerivedPrefixExpressionContext derivedPrefixExpression() {
+			return getRuleContext(DerivedPrefixExpressionContext.class,0);
+		}
+		public EndPrefixExpressionContext endPrefixExpression() {
+			return getRuleContext(EndPrefixExpressionContext.class,0);
+		}
+		public PrefixExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_prefixExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterPrefixExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitPrefixExpression(this);
+		}
+	}
+
+	public final PrefixExpressionContext prefixExpression() throws RecognitionException {
+		PrefixExpressionContext _localctx = new PrefixExpressionContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_prefixExpression);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(71);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2))) != 0)) {
+				{
+				setState(70);
+				directionPrefixExpression();
+				}
+			}
+
+			setState(74);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==T__3) {
+				{
+				setState(73);
+				abstractPrefixExpression();
+				}
+			}
+
+			setState(77);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==T__4) {
+				{
+				setState(76);
+				variationPrefixExpression();
+				}
+			}
+
+			setState(80);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==T__5) {
+				{
+				setState(79);
+				readonlyPrefixExpression();
+				}
+			}
+
+			setState(83);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==T__6) {
+				{
+				setState(82);
+				derivedPrefixExpression();
+				}
+			}
+
+			setState(86);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==T__7) {
+				{
+				setState(85);
+				endPrefixExpression();
+				}
+			}
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class DirectionPrefixExpressionContext extends ParserRuleContext {
+		public DirectionPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_directionPrefixExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterDirectionPrefixExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitDirectionPrefixExpression(this);
+		}
+	}
+
+	public final DirectionPrefixExpressionContext directionPrefixExpression() throws RecognitionException {
+		DirectionPrefixExpressionContext _localctx = new DirectionPrefixExpressionContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_directionPrefixExpression);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(88);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class AbstractPrefixExpressionContext extends ParserRuleContext {
+		public AbstractPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_abstractPrefixExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterAbstractPrefixExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitAbstractPrefixExpression(this);
+		}
+	}
+
+	public final AbstractPrefixExpressionContext abstractPrefixExpression() throws RecognitionException {
+		AbstractPrefixExpressionContext _localctx = new AbstractPrefixExpressionContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_abstractPrefixExpression);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(90);
+			match(T__3);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class VariationPrefixExpressionContext extends ParserRuleContext {
+		public VariationPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_variationPrefixExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterVariationPrefixExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitVariationPrefixExpression(this);
+		}
+	}
+
+	public final VariationPrefixExpressionContext variationPrefixExpression() throws RecognitionException {
+		VariationPrefixExpressionContext _localctx = new VariationPrefixExpressionContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_variationPrefixExpression);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(92);
+			match(T__4);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class ReadonlyPrefixExpressionContext extends ParserRuleContext {
+		public ReadonlyPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_readonlyPrefixExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterReadonlyPrefixExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitReadonlyPrefixExpression(this);
+		}
+	}
+
+	public final ReadonlyPrefixExpressionContext readonlyPrefixExpression() throws RecognitionException {
+		ReadonlyPrefixExpressionContext _localctx = new ReadonlyPrefixExpressionContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_readonlyPrefixExpression);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(94);
+			match(T__5);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class DerivedPrefixExpressionContext extends ParserRuleContext {
+		public DerivedPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_derivedPrefixExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterDerivedPrefixExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitDerivedPrefixExpression(this);
+		}
+	}
+
+	public final DerivedPrefixExpressionContext derivedPrefixExpression() throws RecognitionException {
+		DerivedPrefixExpressionContext _localctx = new DerivedPrefixExpressionContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_derivedPrefixExpression);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(96);
+			match(T__6);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class EndPrefixExpressionContext extends ParserRuleContext {
+		public EndPrefixExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_endPrefixExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterEndPrefixExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitEndPrefixExpression(this);
+		}
+	}
+
+	public final EndPrefixExpressionContext endPrefixExpression() throws RecognitionException {
+		EndPrefixExpressionContext _localctx = new EndPrefixExpressionContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_endPrefixExpression);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(98);
+			match(T__7);
 			}
 		}
 		catch (RecognitionException re) {
@@ -260,12 +635,12 @@ public class DirectEditParser extends Parser {
 
 	public final ReferenceExpressionContext referenceExpression() throws RecognitionException {
 		ReferenceExpressionContext _localctx = new ReferenceExpressionContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_referenceExpression);
+		enterRule(_localctx, 16, RULE_referenceExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(44);
-			match(T__0);
+			setState(100);
+			match(T__8);
 			}
 		}
 		catch (RecognitionException re) {
@@ -304,28 +679,163 @@ public class DirectEditParser extends Parser {
 
 	public final MultiplicityExpressionContext multiplicityExpression() throws RecognitionException {
 		MultiplicityExpressionContext _localctx = new MultiplicityExpressionContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_multiplicityExpression);
+		enterRule(_localctx, 18, RULE_multiplicityExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46);
-			match(T__1);
-			setState(50);
+			setState(102);
+			match(T__9);
+			setState(106);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
 			case 1:
 				{
-				setState(47);
+				setState(103);
 				((MultiplicityExpressionContext)_localctx).lowerBound = multiplicityExpressionMember();
-				setState(48);
-				match(T__2);
+				setState(104);
+				match(T__10);
 				}
 				break;
 			}
-			setState(52);
+			setState(108);
 			((MultiplicityExpressionContext)_localctx).upperBound = multiplicityExpressionMember();
-			setState(53);
-			match(T__3);
+			setState(109);
+			match(T__11);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class MultiplicityPropExpressionContext extends ParserRuleContext {
+		public OrderedMultiplicityExpressionContext orderedMultiplicityExpression() {
+			return getRuleContext(OrderedMultiplicityExpressionContext.class,0);
+		}
+		public NonuniqueMultiplicityExpressionContext nonuniqueMultiplicityExpression() {
+			return getRuleContext(NonuniqueMultiplicityExpressionContext.class,0);
+		}
+		public MultiplicityPropExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_multiplicityPropExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterMultiplicityPropExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitMultiplicityPropExpression(this);
+		}
+	}
+
+	public final MultiplicityPropExpressionContext multiplicityPropExpression() throws RecognitionException {
+		MultiplicityPropExpressionContext _localctx = new MultiplicityPropExpressionContext(_ctx, getState());
+		enterRule(_localctx, 20, RULE_multiplicityPropExpression);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(112);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==ORDERED) {
+				{
+				setState(111);
+				orderedMultiplicityExpression();
+				}
+			}
+
+			setState(115);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==NONUNIQUE) {
+				{
+				setState(114);
+				nonuniqueMultiplicityExpression();
+				}
+			}
+
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class OrderedMultiplicityExpressionContext extends ParserRuleContext {
+		public TerminalNode ORDERED() { return getToken(DirectEditParser.ORDERED, 0); }
+		public OrderedMultiplicityExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_orderedMultiplicityExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterOrderedMultiplicityExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitOrderedMultiplicityExpression(this);
+		}
+	}
+
+	public final OrderedMultiplicityExpressionContext orderedMultiplicityExpression() throws RecognitionException {
+		OrderedMultiplicityExpressionContext _localctx = new OrderedMultiplicityExpressionContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_orderedMultiplicityExpression);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(117);
+			match(ORDERED);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class NonuniqueMultiplicityExpressionContext extends ParserRuleContext {
+		public TerminalNode NONUNIQUE() { return getToken(DirectEditParser.NONUNIQUE, 0); }
+		public NonuniqueMultiplicityExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_nonuniqueMultiplicityExpression; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).enterNonuniqueMultiplicityExpression(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof DirectEditListener ) ((DirectEditListener)listener).exitNonuniqueMultiplicityExpression(this);
+		}
+	}
+
+	public final NonuniqueMultiplicityExpressionContext nonuniqueMultiplicityExpression() throws RecognitionException {
+		NonuniqueMultiplicityExpressionContext _localctx = new NonuniqueMultiplicityExpressionContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_nonuniqueMultiplicityExpression);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(119);
+			match(NONUNIQUE);
 			}
 		}
 		catch (RecognitionException re) {
@@ -357,14 +867,14 @@ public class DirectEditParser extends Parser {
 
 	public final MultiplicityExpressionMemberContext multiplicityExpressionMember() throws RecognitionException {
 		MultiplicityExpressionMemberContext _localctx = new MultiplicityExpressionMemberContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_multiplicityExpressionMember);
+		enterRule(_localctx, 26, RULE_multiplicityExpressionMember);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(55);
+			setState(121);
 			_la = _input.LA(1);
-			if ( !(_la==T__4 || _la==Integer) ) {
+			if ( !(_la==T__12 || _la==Integer) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -414,53 +924,53 @@ public class DirectEditParser extends Parser {
 
 	public final FeatureExpressionsContext featureExpressions() throws RecognitionException {
 		FeatureExpressionsContext _localctx = new FeatureExpressionsContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_featureExpressions);
+		enterRule(_localctx, 28, RULE_featureExpressions);
 		int _la;
 		try {
-			setState(77);
+			setState(143);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(59);
+				setState(125);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
-				case T__5:
+				case T__13:
 					{
-					setState(57);
+					setState(123);
 					subsettingExpression();
 					}
 					break;
-				case T__6:
+				case T__14:
 					{
-					setState(58);
+					setState(124);
 					redefinitionExpression();
 					}
 					break;
 				case EOF:
-				case T__7:
-				case T__8:
+				case T__15:
+				case T__16:
 					break;
 				default:
 					break;
 				}
-				setState(62);
+				setState(128);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==T__7) {
+				if (_la==T__15) {
 					{
-					setState(61);
+					setState(127);
 					typingExpression();
 					}
 				}
 
-				setState(65);
+				setState(131);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==T__8) {
+				if (_la==T__16) {
 					{
-					setState(64);
+					setState(130);
 					valueExpression();
 					}
 				}
@@ -470,43 +980,43 @@ public class DirectEditParser extends Parser {
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(68);
+				setState(134);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==T__7) {
+				if (_la==T__15) {
 					{
-					setState(67);
+					setState(133);
 					typingExpression();
 					}
 				}
 
-				setState(72);
+				setState(138);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
-				case T__5:
+				case T__13:
 					{
-					setState(70);
+					setState(136);
 					subsettingExpression();
 					}
 					break;
-				case T__6:
+				case T__14:
 					{
-					setState(71);
+					setState(137);
 					redefinitionExpression();
 					}
 					break;
 				case EOF:
-				case T__8:
+				case T__16:
 					break;
 				default:
 					break;
 				}
-				setState(75);
+				setState(141);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==T__8) {
+				if (_la==T__16) {
 					{
-					setState(74);
+					setState(140);
 					valueExpression();
 					}
 				}
@@ -546,13 +1056,13 @@ public class DirectEditParser extends Parser {
 
 	public final SubsettingExpressionContext subsettingExpression() throws RecognitionException {
 		SubsettingExpressionContext _localctx = new SubsettingExpressionContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_subsettingExpression);
+		enterRule(_localctx, 30, RULE_subsettingExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(79);
-			match(T__5);
-			setState(80);
+			setState(145);
+			match(T__13);
+			setState(146);
 			qualifiedName();
 			}
 		}
@@ -587,13 +1097,13 @@ public class DirectEditParser extends Parser {
 
 	public final RedefinitionExpressionContext redefinitionExpression() throws RecognitionException {
 		RedefinitionExpressionContext _localctx = new RedefinitionExpressionContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_redefinitionExpression);
+		enterRule(_localctx, 32, RULE_redefinitionExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(82);
-			match(T__6);
-			setState(83);
+			setState(148);
+			match(T__14);
+			setState(149);
 			qualifiedName();
 			}
 		}
@@ -628,13 +1138,13 @@ public class DirectEditParser extends Parser {
 
 	public final TypingExpressionContext typingExpression() throws RecognitionException {
 		TypingExpressionContext _localctx = new TypingExpressionContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_typingExpression);
+		enterRule(_localctx, 34, RULE_typingExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(85);
-			match(T__7);
-			setState(86);
+			setState(151);
+			match(T__15);
+			setState(152);
 			qualifiedName();
 			}
 		}
@@ -670,14 +1180,14 @@ public class DirectEditParser extends Parser {
 
 	public final ValueExpressionContext valueExpression() throws RecognitionException {
 		ValueExpressionContext _localctx = new ValueExpressionContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_valueExpression);
+		enterRule(_localctx, 36, RULE_valueExpression);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(88);
-			match(T__8);
-			setState(89);
+			setState(154);
+			match(T__16);
+			setState(155);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Boolean) | (1L << Integer) | (1L << Real) | (1L << DoubleQuotedString))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -726,37 +1236,37 @@ public class DirectEditParser extends Parser {
 
 	public final TransitionExpressionContext transitionExpression() throws RecognitionException {
 		TransitionExpressionContext _localctx = new TransitionExpressionContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_transitionExpression);
+		enterRule(_localctx, 38, RULE_transitionExpression);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(92);
+			setState(158);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
 			case 1:
 				{
-				setState(91);
+				setState(157);
 				triggerExpression();
 				}
 				break;
 			}
-			setState(95);
+			setState(161);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__1) {
+			if (_la==T__9) {
 				{
-				setState(94);
+				setState(160);
 				guardExpression();
 				}
 			}
 
-			setState(98);
+			setState(164);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__10) {
+			if (_la==T__18) {
 				{
-				setState(97);
+				setState(163);
 				effectExpression();
 				}
 			}
@@ -797,26 +1307,26 @@ public class DirectEditParser extends Parser {
 
 	public final TriggerExpressionContext triggerExpression() throws RecognitionException {
 		TriggerExpressionContext _localctx = new TriggerExpressionContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_triggerExpression);
+		enterRule(_localctx, 40, RULE_triggerExpression);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(100);
+			setState(166);
 			triggerExpressionName();
-			setState(105);
+			setState(171);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__9) {
+			while (_la==T__17) {
 				{
 				{
-				setState(101);
-				match(T__9);
-				setState(102);
+				setState(167);
+				match(T__17);
+				setState(168);
 				triggerExpressionName();
 				}
 				}
-				setState(107);
+				setState(173);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -856,19 +1366,19 @@ public class DirectEditParser extends Parser {
 
 	public final TriggerExpressionNameContext triggerExpressionName() throws RecognitionException {
 		TriggerExpressionNameContext _localctx = new TriggerExpressionNameContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_triggerExpressionName);
+		enterRule(_localctx, 42, RULE_triggerExpressionName);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(108);
+			setState(174);
 			name();
-			setState(110);
+			setState(176);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==T__7) {
+			if (_la==T__15) {
 				{
-				setState(109);
+				setState(175);
 				typingExpression();
 				}
 			}
@@ -906,16 +1416,16 @@ public class DirectEditParser extends Parser {
 
 	public final GuardExpressionContext guardExpression() throws RecognitionException {
 		GuardExpressionContext _localctx = new GuardExpressionContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_guardExpression);
+		enterRule(_localctx, 44, RULE_guardExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(112);
-			match(T__1);
-			setState(113);
+			setState(178);
+			match(T__9);
+			setState(179);
 			valueExpression();
-			setState(114);
-			match(T__3);
+			setState(180);
+			match(T__11);
 			}
 		}
 		catch (RecognitionException re) {
@@ -952,28 +1462,28 @@ public class DirectEditParser extends Parser {
 
 	public final EffectExpressionContext effectExpression() throws RecognitionException {
 		EffectExpressionContext _localctx = new EffectExpressionContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_effectExpression);
+		enterRule(_localctx, 46, RULE_effectExpression);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(116);
-			match(T__10);
-			setState(117);
+			setState(182);
+			match(T__18);
+			setState(183);
 			qualifiedName();
-			setState(122);
+			setState(188);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__11) {
+			while (_la==T__19) {
 				{
 				{
-				setState(118);
-				match(T__11);
-				setState(119);
+				setState(184);
+				match(T__19);
+				setState(185);
 				qualifiedName();
 				}
 				}
-				setState(124);
+				setState(190);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1013,26 +1523,26 @@ public class DirectEditParser extends Parser {
 
 	public final QualifiedNameContext qualifiedName() throws RecognitionException {
 		QualifiedNameContext _localctx = new QualifiedNameContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_qualifiedName);
+		enterRule(_localctx, 48, RULE_qualifiedName);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(125);
+			setState(191);
 			name();
-			setState(130);
+			setState(196);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__12) {
+			while (_la==T__20) {
 				{
 				{
-				setState(126);
-				match(T__12);
-				setState(127);
+				setState(192);
+				match(T__20);
+				setState(193);
 				name();
 				}
 				}
-				setState(132);
+				setState(198);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1050,6 +1560,14 @@ public class DirectEditParser extends Parser {
 	}
 
 	public static class NameContext extends ParserRuleContext {
+		public List<TerminalNode> ORDERED() { return getTokens(DirectEditParser.ORDERED); }
+		public TerminalNode ORDERED(int i) {
+			return getToken(DirectEditParser.ORDERED, i);
+		}
+		public List<TerminalNode> NONUNIQUE() { return getTokens(DirectEditParser.NONUNIQUE); }
+		public TerminalNode NONUNIQUE(int i) {
+			return getToken(DirectEditParser.NONUNIQUE, i);
+		}
 		public NameContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1066,13 +1584,13 @@ public class DirectEditParser extends Parser {
 
 	public final NameContext name() throws RecognitionException {
 		NameContext _localctx = new NameContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_name);
+		enterRule(_localctx, 50, RULE_name);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(134); 
+			setState(200); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -1080,9 +1598,9 @@ public class DirectEditParser extends Parser {
 				case 1:
 					{
 					{
-					setState(133);
+					setState(199);
 					_la = _input.LA(1);
-					if ( _la <= 0 || ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__13))) != 0)) ) {
+					if ( _la <= 0 || ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2) | (1L << T__3) | (1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << T__7) | (1L << T__8) | (1L << T__9) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << T__16) | (1L << T__21))) != 0) || _la==NONUNIQUE || _la==ORDERED) ) {
 					_errHandler.recoverInline(this);
 					}
 					else {
@@ -1096,9 +1614,9 @@ public class DirectEditParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(136); 
+				setState(202); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,18,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
 			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
 			}
 		}
@@ -1114,85 +1632,132 @@ public class DirectEditParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001t\u008b\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0004\u0001|\u00cd\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
 		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
 		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
 		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
 		"\f\u0007\f\u0002\r\u0007\r\u0002\u000e\u0007\u000e\u0002\u000f\u0007\u000f"+
-		"\u0001\u0000\u0003\u0000\"\b\u0000\u0001\u0000\u0003\u0000%\b\u0000\u0001"+
-		"\u0000\u0003\u0000(\b\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
-		"\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0003"+
-		"\u00023\b\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0003\u0001"+
-		"\u0003\u0001\u0004\u0001\u0004\u0003\u0004<\b\u0004\u0001\u0004\u0003"+
-		"\u0004?\b\u0004\u0001\u0004\u0003\u0004B\b\u0004\u0001\u0004\u0003\u0004"+
-		"E\b\u0004\u0001\u0004\u0001\u0004\u0003\u0004I\b\u0004\u0001\u0004\u0003"+
-		"\u0004L\b\u0004\u0003\u0004N\b\u0004\u0001\u0005\u0001\u0005\u0001\u0005"+
-		"\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007"+
-		"\u0001\b\u0001\b\u0001\b\u0001\t\u0003\t]\b\t\u0001\t\u0003\t`\b\t\u0001"+
-		"\t\u0003\tc\b\t\u0001\n\u0001\n\u0001\n\u0005\nh\b\n\n\n\f\nk\t\n\u0001"+
-		"\u000b\u0001\u000b\u0003\u000bo\b\u000b\u0001\f\u0001\f\u0001\f\u0001"+
-		"\f\u0001\r\u0001\r\u0001\r\u0001\r\u0005\ry\b\r\n\r\f\r|\t\r\u0001\u000e"+
-		"\u0001\u000e\u0001\u000e\u0005\u000e\u0081\b\u000e\n\u000e\f\u000e\u0084"+
-		"\t\u000e\u0001\u000f\u0004\u000f\u0087\b\u000f\u000b\u000f\f\u000f\u0088"+
-		"\u0001\u000f\u0000\u0000\u0010\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010"+
-		"\u0012\u0014\u0016\u0018\u001a\u001c\u001e\u0000\u0003\u0002\u0000\u0005"+
-		"\u0005\u0011\u0011\u0001\u0000\u0010\u0013\u0003\u0000\u0001\u0002\u0006"+
-		"\t\u000e\u000e\u008f\u0000!\u0001\u0000\u0000\u0000\u0002,\u0001\u0000"+
-		"\u0000\u0000\u0004.\u0001\u0000\u0000\u0000\u00067\u0001\u0000\u0000\u0000"+
-		"\bM\u0001\u0000\u0000\u0000\nO\u0001\u0000\u0000\u0000\fR\u0001\u0000"+
-		"\u0000\u0000\u000eU\u0001\u0000\u0000\u0000\u0010X\u0001\u0000\u0000\u0000"+
-		"\u0012\\\u0001\u0000\u0000\u0000\u0014d\u0001\u0000\u0000\u0000\u0016"+
-		"l\u0001\u0000\u0000\u0000\u0018p\u0001\u0000\u0000\u0000\u001at\u0001"+
-		"\u0000\u0000\u0000\u001c}\u0001\u0000\u0000\u0000\u001e\u0086\u0001\u0000"+
-		"\u0000\u0000 \"\u0003\u0002\u0001\u0000! \u0001\u0000\u0000\u0000!\"\u0001"+
-		"\u0000\u0000\u0000\"$\u0001\u0000\u0000\u0000#%\u0003\u001e\u000f\u0000"+
-		"$#\u0001\u0000\u0000\u0000$%\u0001\u0000\u0000\u0000%\'\u0001\u0000\u0000"+
-		"\u0000&(\u0003\u0004\u0002\u0000\'&\u0001\u0000\u0000\u0000\'(\u0001\u0000"+
-		"\u0000\u0000()\u0001\u0000\u0000\u0000)*\u0003\b\u0004\u0000*+\u0005\u0000"+
-		"\u0000\u0001+\u0001\u0001\u0000\u0000\u0000,-\u0005\u0001\u0000\u0000"+
-		"-\u0003\u0001\u0000\u0000\u0000.2\u0005\u0002\u0000\u0000/0\u0003\u0006"+
-		"\u0003\u000001\u0005\u0003\u0000\u000013\u0001\u0000\u0000\u00002/\u0001"+
-		"\u0000\u0000\u000023\u0001\u0000\u0000\u000034\u0001\u0000\u0000\u0000"+
-		"45\u0003\u0006\u0003\u000056\u0005\u0004\u0000\u00006\u0005\u0001\u0000"+
-		"\u0000\u000078\u0007\u0000\u0000\u00008\u0007\u0001\u0000\u0000\u0000"+
-		"9<\u0003\n\u0005\u0000:<\u0003\f\u0006\u0000;9\u0001\u0000\u0000\u0000"+
-		";:\u0001\u0000\u0000\u0000;<\u0001\u0000\u0000\u0000<>\u0001\u0000\u0000"+
-		"\u0000=?\u0003\u000e\u0007\u0000>=\u0001\u0000\u0000\u0000>?\u0001\u0000"+
-		"\u0000\u0000?A\u0001\u0000\u0000\u0000@B\u0003\u0010\b\u0000A@\u0001\u0000"+
-		"\u0000\u0000AB\u0001\u0000\u0000\u0000BN\u0001\u0000\u0000\u0000CE\u0003"+
-		"\u000e\u0007\u0000DC\u0001\u0000\u0000\u0000DE\u0001\u0000\u0000\u0000"+
-		"EH\u0001\u0000\u0000\u0000FI\u0003\n\u0005\u0000GI\u0003\f\u0006\u0000"+
-		"HF\u0001\u0000\u0000\u0000HG\u0001\u0000\u0000\u0000HI\u0001\u0000\u0000"+
-		"\u0000IK\u0001\u0000\u0000\u0000JL\u0003\u0010\b\u0000KJ\u0001\u0000\u0000"+
-		"\u0000KL\u0001\u0000\u0000\u0000LN\u0001\u0000\u0000\u0000M;\u0001\u0000"+
-		"\u0000\u0000MD\u0001\u0000\u0000\u0000N\t\u0001\u0000\u0000\u0000OP\u0005"+
-		"\u0006\u0000\u0000PQ\u0003\u001c\u000e\u0000Q\u000b\u0001\u0000\u0000"+
-		"\u0000RS\u0005\u0007\u0000\u0000ST\u0003\u001c\u000e\u0000T\r\u0001\u0000"+
-		"\u0000\u0000UV\u0005\b\u0000\u0000VW\u0003\u001c\u000e\u0000W\u000f\u0001"+
-		"\u0000\u0000\u0000XY\u0005\t\u0000\u0000YZ\u0007\u0001\u0000\u0000Z\u0011"+
-		"\u0001\u0000\u0000\u0000[]\u0003\u0014\n\u0000\\[\u0001\u0000\u0000\u0000"+
-		"\\]\u0001\u0000\u0000\u0000]_\u0001\u0000\u0000\u0000^`\u0003\u0018\f"+
-		"\u0000_^\u0001\u0000\u0000\u0000_`\u0001\u0000\u0000\u0000`b\u0001\u0000"+
-		"\u0000\u0000ac\u0003\u001a\r\u0000ba\u0001\u0000\u0000\u0000bc\u0001\u0000"+
-		"\u0000\u0000c\u0013\u0001\u0000\u0000\u0000di\u0003\u0016\u000b\u0000"+
-		"ef\u0005\n\u0000\u0000fh\u0003\u0016\u000b\u0000ge\u0001\u0000\u0000\u0000"+
-		"hk\u0001\u0000\u0000\u0000ig\u0001\u0000\u0000\u0000ij\u0001\u0000\u0000"+
-		"\u0000j\u0015\u0001\u0000\u0000\u0000ki\u0001\u0000\u0000\u0000ln\u0003"+
-		"\u001e\u000f\u0000mo\u0003\u000e\u0007\u0000nm\u0001\u0000\u0000\u0000"+
-		"no\u0001\u0000\u0000\u0000o\u0017\u0001\u0000\u0000\u0000pq\u0005\u0002"+
-		"\u0000\u0000qr\u0003\u0010\b\u0000rs\u0005\u0004\u0000\u0000s\u0019\u0001"+
-		"\u0000\u0000\u0000tu\u0005\u000b\u0000\u0000uz\u0003\u001c\u000e\u0000"+
-		"vw\u0005\f\u0000\u0000wy\u0003\u001c\u000e\u0000xv\u0001\u0000\u0000\u0000"+
-		"y|\u0001\u0000\u0000\u0000zx\u0001\u0000\u0000\u0000z{\u0001\u0000\u0000"+
-		"\u0000{\u001b\u0001\u0000\u0000\u0000|z\u0001\u0000\u0000\u0000}\u0082"+
-		"\u0003\u001e\u000f\u0000~\u007f\u0005\r\u0000\u0000\u007f\u0081\u0003"+
-		"\u001e\u000f\u0000\u0080~\u0001\u0000\u0000\u0000\u0081\u0084\u0001\u0000"+
-		"\u0000\u0000\u0082\u0080\u0001\u0000\u0000\u0000\u0082\u0083\u0001\u0000"+
-		"\u0000\u0000\u0083\u001d\u0001\u0000\u0000\u0000\u0084\u0082\u0001\u0000"+
-		"\u0000\u0000\u0085\u0087\b\u0002\u0000\u0000\u0086\u0085\u0001\u0000\u0000"+
-		"\u0000\u0087\u0088\u0001\u0000\u0000\u0000\u0088\u0086\u0001\u0000\u0000"+
-		"\u0000\u0088\u0089\u0001\u0000\u0000\u0000\u0089\u001f\u0001\u0000\u0000"+
-		"\u0000\u0013!$\'2;>ADHKM\\_binz\u0082\u0088";
+		"\u0002\u0010\u0007\u0010\u0002\u0011\u0007\u0011\u0002\u0012\u0007\u0012"+
+		"\u0002\u0013\u0007\u0013\u0002\u0014\u0007\u0014\u0002\u0015\u0007\u0015"+
+		"\u0002\u0016\u0007\u0016\u0002\u0017\u0007\u0017\u0002\u0018\u0007\u0018"+
+		"\u0002\u0019\u0007\u0019\u0001\u0000\u0003\u00006\b\u0000\u0001\u0000"+
+		"\u0003\u00009\b\u0000\u0001\u0000\u0003\u0000<\b\u0000\u0001\u0000\u0003"+
+		"\u0000?\b\u0000\u0001\u0000\u0003\u0000B\b\u0000\u0001\u0000\u0001\u0000"+
+		"\u0001\u0000\u0001\u0001\u0003\u0001H\b\u0001\u0001\u0001\u0003\u0001"+
+		"K\b\u0001\u0001\u0001\u0003\u0001N\b\u0001\u0001\u0001\u0003\u0001Q\b"+
+		"\u0001\u0001\u0001\u0003\u0001T\b\u0001\u0001\u0001\u0003\u0001W\b\u0001"+
+		"\u0001\u0002\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004"+
+		"\u0001\u0005\u0001\u0005\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007"+
+		"\u0001\b\u0001\b\u0001\t\u0001\t\u0001\t\u0001\t\u0003\tk\b\t\u0001\t"+
+		"\u0001\t\u0001\t\u0001\n\u0003\nq\b\n\u0001\n\u0003\nt\b\n\u0001\u000b"+
+		"\u0001\u000b\u0001\f\u0001\f\u0001\r\u0001\r\u0001\u000e\u0001\u000e\u0003"+
+		"\u000e~\b\u000e\u0001\u000e\u0003\u000e\u0081\b\u000e\u0001\u000e\u0003"+
+		"\u000e\u0084\b\u000e\u0001\u000e\u0003\u000e\u0087\b\u000e\u0001\u000e"+
+		"\u0001\u000e\u0003\u000e\u008b\b\u000e\u0001\u000e\u0003\u000e\u008e\b"+
+		"\u000e\u0003\u000e\u0090\b\u000e\u0001\u000f\u0001\u000f\u0001\u000f\u0001"+
+		"\u0010\u0001\u0010\u0001\u0010\u0001\u0011\u0001\u0011\u0001\u0011\u0001"+
+		"\u0012\u0001\u0012\u0001\u0012\u0001\u0013\u0003\u0013\u009f\b\u0013\u0001"+
+		"\u0013\u0003\u0013\u00a2\b\u0013\u0001\u0013\u0003\u0013\u00a5\b\u0013"+
+		"\u0001\u0014\u0001\u0014\u0001\u0014\u0005\u0014\u00aa\b\u0014\n\u0014"+
+		"\f\u0014\u00ad\t\u0014\u0001\u0015\u0001\u0015\u0003\u0015\u00b1\b\u0015"+
+		"\u0001\u0016\u0001\u0016\u0001\u0016\u0001\u0016\u0001\u0017\u0001\u0017"+
+		"\u0001\u0017\u0001\u0017\u0005\u0017\u00bb\b\u0017\n\u0017\f\u0017\u00be"+
+		"\t\u0017\u0001\u0018\u0001\u0018\u0001\u0018\u0005\u0018\u00c3\b\u0018"+
+		"\n\u0018\f\u0018\u00c6\t\u0018\u0001\u0019\u0004\u0019\u00c9\b\u0019\u000b"+
+		"\u0019\f\u0019\u00ca\u0001\u0019\u0000\u0000\u001a\u0000\u0002\u0004\u0006"+
+		"\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u001e \"$&(*,."+
+		"02\u0000\u0004\u0001\u0000\u0001\u0003\u0002\u0000\r\r\u0019\u0019\u0001"+
+		"\u0000\u0018\u001b\u0005\u0000\u0001\n\u000e\u0011\u0016\u0016XX]]\u00d1"+
+		"\u00005\u0001\u0000\u0000\u0000\u0002G\u0001\u0000\u0000\u0000\u0004X"+
+		"\u0001\u0000\u0000\u0000\u0006Z\u0001\u0000\u0000\u0000\b\\\u0001\u0000"+
+		"\u0000\u0000\n^\u0001\u0000\u0000\u0000\f`\u0001\u0000\u0000\u0000\u000e"+
+		"b\u0001\u0000\u0000\u0000\u0010d\u0001\u0000\u0000\u0000\u0012f\u0001"+
+		"\u0000\u0000\u0000\u0014p\u0001\u0000\u0000\u0000\u0016u\u0001\u0000\u0000"+
+		"\u0000\u0018w\u0001\u0000\u0000\u0000\u001ay\u0001\u0000\u0000\u0000\u001c"+
+		"\u008f\u0001\u0000\u0000\u0000\u001e\u0091\u0001\u0000\u0000\u0000 \u0094"+
+		"\u0001\u0000\u0000\u0000\"\u0097\u0001\u0000\u0000\u0000$\u009a\u0001"+
+		"\u0000\u0000\u0000&\u009e\u0001\u0000\u0000\u0000(\u00a6\u0001\u0000\u0000"+
+		"\u0000*\u00ae\u0001\u0000\u0000\u0000,\u00b2\u0001\u0000\u0000\u0000."+
+		"\u00b6\u0001\u0000\u0000\u00000\u00bf\u0001\u0000\u0000\u00002\u00c8\u0001"+
+		"\u0000\u0000\u000046\u0003\u0002\u0001\u000054\u0001\u0000\u0000\u0000"+
+		"56\u0001\u0000\u0000\u000068\u0001\u0000\u0000\u000079\u0003\u0010\b\u0000"+
+		"87\u0001\u0000\u0000\u000089\u0001\u0000\u0000\u00009;\u0001\u0000\u0000"+
+		"\u0000:<\u00032\u0019\u0000;:\u0001\u0000\u0000\u0000;<\u0001\u0000\u0000"+
+		"\u0000<>\u0001\u0000\u0000\u0000=?\u0003\u0012\t\u0000>=\u0001\u0000\u0000"+
+		"\u0000>?\u0001\u0000\u0000\u0000?A\u0001\u0000\u0000\u0000@B\u0003\u0014"+
+		"\n\u0000A@\u0001\u0000\u0000\u0000AB\u0001\u0000\u0000\u0000BC\u0001\u0000"+
+		"\u0000\u0000CD\u0003\u001c\u000e\u0000DE\u0005\u0000\u0000\u0001E\u0001"+
+		"\u0001\u0000\u0000\u0000FH\u0003\u0004\u0002\u0000GF\u0001\u0000\u0000"+
+		"\u0000GH\u0001\u0000\u0000\u0000HJ\u0001\u0000\u0000\u0000IK\u0003\u0006"+
+		"\u0003\u0000JI\u0001\u0000\u0000\u0000JK\u0001\u0000\u0000\u0000KM\u0001"+
+		"\u0000\u0000\u0000LN\u0003\b\u0004\u0000ML\u0001\u0000\u0000\u0000MN\u0001"+
+		"\u0000\u0000\u0000NP\u0001\u0000\u0000\u0000OQ\u0003\n\u0005\u0000PO\u0001"+
+		"\u0000\u0000\u0000PQ\u0001\u0000\u0000\u0000QS\u0001\u0000\u0000\u0000"+
+		"RT\u0003\f\u0006\u0000SR\u0001\u0000\u0000\u0000ST\u0001\u0000\u0000\u0000"+
+		"TV\u0001\u0000\u0000\u0000UW\u0003\u000e\u0007\u0000VU\u0001\u0000\u0000"+
+		"\u0000VW\u0001\u0000\u0000\u0000W\u0003\u0001\u0000\u0000\u0000XY\u0007"+
+		"\u0000\u0000\u0000Y\u0005\u0001\u0000\u0000\u0000Z[\u0005\u0004\u0000"+
+		"\u0000[\u0007\u0001\u0000\u0000\u0000\\]\u0005\u0005\u0000\u0000]\t\u0001"+
+		"\u0000\u0000\u0000^_\u0005\u0006\u0000\u0000_\u000b\u0001\u0000\u0000"+
+		"\u0000`a\u0005\u0007\u0000\u0000a\r\u0001\u0000\u0000\u0000bc\u0005\b"+
+		"\u0000\u0000c\u000f\u0001\u0000\u0000\u0000de\u0005\t\u0000\u0000e\u0011"+
+		"\u0001\u0000\u0000\u0000fj\u0005\n\u0000\u0000gh\u0003\u001a\r\u0000h"+
+		"i\u0005\u000b\u0000\u0000ik\u0001\u0000\u0000\u0000jg\u0001\u0000\u0000"+
+		"\u0000jk\u0001\u0000\u0000\u0000kl\u0001\u0000\u0000\u0000lm\u0003\u001a"+
+		"\r\u0000mn\u0005\f\u0000\u0000n\u0013\u0001\u0000\u0000\u0000oq\u0003"+
+		"\u0016\u000b\u0000po\u0001\u0000\u0000\u0000pq\u0001\u0000\u0000\u0000"+
+		"qs\u0001\u0000\u0000\u0000rt\u0003\u0018\f\u0000sr\u0001\u0000\u0000\u0000"+
+		"st\u0001\u0000\u0000\u0000t\u0015\u0001\u0000\u0000\u0000uv\u0005]\u0000"+
+		"\u0000v\u0017\u0001\u0000\u0000\u0000wx\u0005X\u0000\u0000x\u0019\u0001"+
+		"\u0000\u0000\u0000yz\u0007\u0001\u0000\u0000z\u001b\u0001\u0000\u0000"+
+		"\u0000{~\u0003\u001e\u000f\u0000|~\u0003 \u0010\u0000}{\u0001\u0000\u0000"+
+		"\u0000}|\u0001\u0000\u0000\u0000}~\u0001\u0000\u0000\u0000~\u0080\u0001"+
+		"\u0000\u0000\u0000\u007f\u0081\u0003\"\u0011\u0000\u0080\u007f\u0001\u0000"+
+		"\u0000\u0000\u0080\u0081\u0001\u0000\u0000\u0000\u0081\u0083\u0001\u0000"+
+		"\u0000\u0000\u0082\u0084\u0003$\u0012\u0000\u0083\u0082\u0001\u0000\u0000"+
+		"\u0000\u0083\u0084\u0001\u0000\u0000\u0000\u0084\u0090\u0001\u0000\u0000"+
+		"\u0000\u0085\u0087\u0003\"\u0011\u0000\u0086\u0085\u0001\u0000\u0000\u0000"+
+		"\u0086\u0087\u0001\u0000\u0000\u0000\u0087\u008a\u0001\u0000\u0000\u0000"+
+		"\u0088\u008b\u0003\u001e\u000f\u0000\u0089\u008b\u0003 \u0010\u0000\u008a"+
+		"\u0088\u0001\u0000\u0000\u0000\u008a\u0089\u0001\u0000\u0000\u0000\u008a"+
+		"\u008b\u0001\u0000\u0000\u0000\u008b\u008d\u0001\u0000\u0000\u0000\u008c"+
+		"\u008e\u0003$\u0012\u0000\u008d\u008c\u0001\u0000\u0000\u0000\u008d\u008e"+
+		"\u0001\u0000\u0000\u0000\u008e\u0090\u0001\u0000\u0000\u0000\u008f}\u0001"+
+		"\u0000\u0000\u0000\u008f\u0086\u0001\u0000\u0000\u0000\u0090\u001d\u0001"+
+		"\u0000\u0000\u0000\u0091\u0092\u0005\u000e\u0000\u0000\u0092\u0093\u0003"+
+		"0\u0018\u0000\u0093\u001f\u0001\u0000\u0000\u0000\u0094\u0095\u0005\u000f"+
+		"\u0000\u0000\u0095\u0096\u00030\u0018\u0000\u0096!\u0001\u0000\u0000\u0000"+
+		"\u0097\u0098\u0005\u0010\u0000\u0000\u0098\u0099\u00030\u0018\u0000\u0099"+
+		"#\u0001\u0000\u0000\u0000\u009a\u009b\u0005\u0011\u0000\u0000\u009b\u009c"+
+		"\u0007\u0002\u0000\u0000\u009c%\u0001\u0000\u0000\u0000\u009d\u009f\u0003"+
+		"(\u0014\u0000\u009e\u009d\u0001\u0000\u0000\u0000\u009e\u009f\u0001\u0000"+
+		"\u0000\u0000\u009f\u00a1\u0001\u0000\u0000\u0000\u00a0\u00a2\u0003,\u0016"+
+		"\u0000\u00a1\u00a0\u0001\u0000\u0000\u0000\u00a1\u00a2\u0001\u0000\u0000"+
+		"\u0000\u00a2\u00a4\u0001\u0000\u0000\u0000\u00a3\u00a5\u0003.\u0017\u0000"+
+		"\u00a4\u00a3\u0001\u0000\u0000\u0000\u00a4\u00a5\u0001\u0000\u0000\u0000"+
+		"\u00a5\'\u0001\u0000\u0000\u0000\u00a6\u00ab\u0003*\u0015\u0000\u00a7"+
+		"\u00a8\u0005\u0012\u0000\u0000\u00a8\u00aa\u0003*\u0015\u0000\u00a9\u00a7"+
+		"\u0001\u0000\u0000\u0000\u00aa\u00ad\u0001\u0000\u0000\u0000\u00ab\u00a9"+
+		"\u0001\u0000\u0000\u0000\u00ab\u00ac\u0001\u0000\u0000\u0000\u00ac)\u0001"+
+		"\u0000\u0000\u0000\u00ad\u00ab\u0001\u0000\u0000\u0000\u00ae\u00b0\u0003"+
+		"2\u0019\u0000\u00af\u00b1\u0003\"\u0011\u0000\u00b0\u00af\u0001\u0000"+
+		"\u0000\u0000\u00b0\u00b1\u0001\u0000\u0000\u0000\u00b1+\u0001\u0000\u0000"+
+		"\u0000\u00b2\u00b3\u0005\n\u0000\u0000\u00b3\u00b4\u0003$\u0012\u0000"+
+		"\u00b4\u00b5\u0005\f\u0000\u0000\u00b5-\u0001\u0000\u0000\u0000\u00b6"+
+		"\u00b7\u0005\u0013\u0000\u0000\u00b7\u00bc\u00030\u0018\u0000\u00b8\u00b9"+
+		"\u0005\u0014\u0000\u0000\u00b9\u00bb\u00030\u0018\u0000\u00ba\u00b8\u0001"+
+		"\u0000\u0000\u0000\u00bb\u00be\u0001\u0000\u0000\u0000\u00bc\u00ba\u0001"+
+		"\u0000\u0000\u0000\u00bc\u00bd\u0001\u0000\u0000\u0000\u00bd/\u0001\u0000"+
+		"\u0000\u0000\u00be\u00bc\u0001\u0000\u0000\u0000\u00bf\u00c4\u00032\u0019"+
+		"\u0000\u00c0\u00c1\u0005\u0015\u0000\u0000\u00c1\u00c3\u00032\u0019\u0000"+
+		"\u00c2\u00c0\u0001\u0000\u0000\u0000\u00c3\u00c6\u0001\u0000\u0000\u0000"+
+		"\u00c4\u00c2\u0001\u0000\u0000\u0000\u00c4\u00c5\u0001\u0000\u0000\u0000"+
+		"\u00c51\u0001\u0000\u0000\u0000\u00c6\u00c4\u0001\u0000\u0000\u0000\u00c7"+
+		"\u00c9\b\u0003\u0000\u0000\u00c8\u00c7\u0001\u0000\u0000\u0000\u00c9\u00ca"+
+		"\u0001\u0000\u0000\u0000\u00ca\u00c8\u0001\u0000\u0000\u0000\u00ca\u00cb"+
+		"\u0001\u0000\u0000\u0000\u00cb3\u0001\u0000\u0000\u0000\u001d58;>AGJM"+
+		"PSVjps}\u0080\u0083\u0086\u008a\u008d\u008f\u009e\u00a1\u00a4\u00ab\u00b0"+
+		"\u00bc\u00c4\u00ca";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

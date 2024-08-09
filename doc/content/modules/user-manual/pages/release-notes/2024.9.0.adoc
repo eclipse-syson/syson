@@ -87,6 +87,10 @@ The changes are:
 - Use empty diamond source style for nested reference usage edge
 * Nested usages that are composite are connected by a filled diamond edge
 * Nested usages that are references are connected by an empty diamond edge
+- Handle prefix keywords in label for attribute compartment element and support direct edit
+* Prefixing or not the name of an Usage attribute with direction or "abstract" or "variation" or "readonly" or "derived" or "end" sets its matching property with the correct value
+- Handle multiplicity suffix property keyword in label for attribute compartment element and support direct edit
+* Suffixing or not the name of an Usage attribute with "ordered" or "nonunique" sets its matching property with the correct value
 
 image::release-notes-reference-nested-usages.png[Nested Usage edge for composite and reference Usage]
 

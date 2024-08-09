@@ -19,11 +19,7 @@ package org.eclipse.syson.sysml.helper;
  */
 public class LabelConstants {
 
-    public static final String CR = "\n";
-
-    public static final String COLON = ":";
-
-    public static final String CONJUGATED = "\u007E";
+    public static final String ABSTRACT = "abstract";
 
     public static final String CLOSE_BRACKET = "]";
 
@@ -31,7 +27,25 @@ public class LabelConstants {
 
     public static final String CLOSE_QUOTE = "\u00BB";
 
+    public static final String COLON = ":";
+
+    public static final String COMMA = ",";
+
+    public static final String CONJUGATED = "\u007E";
+
+    public static final String CR = "\n";
+
+    public static final String DERIVED = "derived";
+
+    public static final String END = "end";
+
     public static final String EQUAL = "=";
+
+    public static final String IN = "in";
+
+    public static final String INOUT = "inout";
+
+    public static final String NON_UNIQUE = "nonunique";
 
     public static final String OPEN_BRACKET = "[";
 
@@ -39,9 +53,17 @@ public class LabelConstants {
 
     public static final String OPEN_QUOTE = "\u00AB";
 
+    public static final String ORDERED = "ordered";
+
+    public static final String OUT = "out";
+
+    public static final String READ_ONLY = "readonly";
+
     public static final String REDEFINITION = ":>>";
 
     public static final String REF = "ref";
+
+    public static final String REFERENCES = "::>";
 
     public static final String SPACE = " ";
 
@@ -49,7 +71,5 @@ public class LabelConstants {
 
     public static final String SUBSETTING = ":>";
 
-    public static final String REFERENCES = "::>";
-
-    public static final String COMMA = ",";
+    public static final String VARIATION = "variation";
 }

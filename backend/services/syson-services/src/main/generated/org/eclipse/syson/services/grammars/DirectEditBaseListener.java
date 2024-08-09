@@ -42,6 +42,90 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPrefixExpression(DirectEditParser.PrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrefixExpression(DirectEditParser.PrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDirectionPrefixExpression(DirectEditParser.DirectionPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDirectionPrefixExpression(DirectEditParser.DirectionPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAbstractPrefixExpression(DirectEditParser.AbstractPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAbstractPrefixExpression(DirectEditParser.AbstractPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVariationPrefixExpression(DirectEditParser.VariationPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariationPrefixExpression(DirectEditParser.VariationPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReadonlyPrefixExpression(DirectEditParser.ReadonlyPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReadonlyPrefixExpression(DirectEditParser.ReadonlyPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDerivedPrefixExpression(DirectEditParser.DerivedPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDerivedPrefixExpression(DirectEditParser.DerivedPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEndPrefixExpression(DirectEditParser.EndPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEndPrefixExpression(DirectEditParser.EndPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterReferenceExpression(DirectEditParser.ReferenceExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -61,6 +145,42 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMultiplicityExpression(DirectEditParser.MultiplicityExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMultiplicityPropExpression(DirectEditParser.MultiplicityPropExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultiplicityPropExpression(DirectEditParser.MultiplicityPropExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOrderedMultiplicityExpression(DirectEditParser.OrderedMultiplicityExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOrderedMultiplicityExpression(DirectEditParser.OrderedMultiplicityExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNonuniqueMultiplicityExpression(DirectEditParser.NonuniqueMultiplicityExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNonuniqueMultiplicityExpression(DirectEditParser.NonuniqueMultiplicityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

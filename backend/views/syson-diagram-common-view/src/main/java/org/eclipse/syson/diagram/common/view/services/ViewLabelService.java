@@ -28,7 +28,6 @@ import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
-import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
@@ -90,10 +89,7 @@ public class ViewLabelService extends LabelService {
      */
     public String getCompartmentItemLabel(Usage usage) {
         StringBuilder label = new StringBuilder();
-        if (usage.isIsReference() && !(usage instanceof AttributeUsage)) {
-            // AttributeUsage are always referential, so no need to add the ref keyword
-            label.append("ref" + LabelConstants.SPACE);
-        }
+        label.append(this.getUsagePrefix(usage));
         String declaredName = usage.getDeclaredName();
         if (declaredName != null) {
             label.append(declaredName);

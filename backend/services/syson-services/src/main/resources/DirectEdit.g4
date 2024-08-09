@@ -29,7 +29,35 @@ package org.eclipse.syson.services.grammars;
 }
 
 expression :
-	referenceExpression? name? multiplicityExpression? featureExpressions EOF
+	prefixExpression? referenceExpression? name? multiplicityExpression? multiplicityPropExpression? featureExpressions EOF
+;
+
+prefixExpression : 
+	directionPrefixExpression? abstractPrefixExpression? variationPrefixExpression? readonlyPrefixExpression? derivedPrefixExpression? endPrefixExpression?
+;
+
+directionPrefixExpression : 
+	'in ' | 'out ' | 'inout '
+;
+
+abstractPrefixExpression : 
+	'abstract '
+;
+
+variationPrefixExpression : 
+	'variation '
+;
+
+readonlyPrefixExpression : 
+	'readonly '
+;
+
+derivedPrefixExpression : 
+	'derived '
+;
+
+endPrefixExpression : 
+	'end '
 ;
 
 referenceExpression : 
@@ -38,6 +66,18 @@ referenceExpression :
 
 multiplicityExpression :
 	'[' (lowerBound=multiplicityExpressionMember '..') ? upperBound=multiplicityExpressionMember ']'
+;
+
+multiplicityPropExpression :
+	orderedMultiplicityExpression? nonuniqueMultiplicityExpression?
+;
+
+orderedMultiplicityExpression : 
+	'ordered'
+;
+
+nonuniqueMultiplicityExpression : 
+	'nonunique'
 ;
 
 multiplicityExpressionMember :
@@ -113,7 +153,7 @@ name :
 	// We can't use ANY+ or .+ here because it conflicts with reserved keywords, which will be matched over ANY since 
 	// they are longer. Using .+ is also too greedy, and will match ':' ':>' etc, making the parser unable to properly 
 	// handle the input.
-	~('ref ' | ':' | ':>' | '::>' | ':>>' | '=' | '[' )+
+	~('in ' | 'out ' | 'inout ' | 'abstract ' | 'variation ' | 'readonly ' | 'derived ' | 'end '| 'ref ' | ':' | ':>' | '::>' | ':>>' | '=' | '[' | 'ordered' | 'nonunique' )+
 ;
 
 
