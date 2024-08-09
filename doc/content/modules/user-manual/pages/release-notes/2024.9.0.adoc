@@ -104,6 +104,8 @@ image::release-notes-diagram-standard-libraries-elements-qualified-names.png[Qua
 - Allow to set measurement units via direct edit.
 It is now possible to configure the measurement unit for the value of an element, e.g. `mass = 10 [kg]`.
 - Allow to select existing _Type_ on Subject tool.
+- Display prefix keywords in label for Usage compartment element
+- Display multiplicity suffix property keywords in label for Usage element
 
 == New features
 

@@ -22,8 +22,11 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditListener;
 import org.eclipse.syson.services.grammars.DirectEditParser;
+import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
@@ -142,9 +145,8 @@ public class LabelService {
      */
     public String getDefaultInitialDirectEditLabel(Element element) {
         StringBuilder builder = new StringBuilder();
-        if (element instanceof Usage usage && usage.isIsReference()) {
-            builder.append(LabelConstants.REF);
-            builder.append(LabelConstants.SPACE);
+        if (element instanceof Usage usage) {
+            builder.append(this.getUsagePrefix(usage));
         }
         builder.append(element.getDeclaredName());
         builder.append(this.getMultiplicityLabel(element));
@@ -161,7 +163,7 @@ public class LabelService {
     /**
      * Return the label of the multiplicity part of the given {@link Element}.
      *
-     * @param usage
+     * @param element
      *            the given {@link Element}.
      * @return the label of the multiplicity part of the given {@link Element} if there is one, an empty string
      *         otherwise.
@@ -175,6 +177,7 @@ public class LabelService {
                 .filter(MultiplicityRange.class::isInstance)
                 .map(MultiplicityRange.class::cast)
                 .findFirst();
+        label.append(LabelConstants.SPACE);
         if (optMultiplicityRange.isPresent()) {
             var range = optMultiplicityRange.get();
             String firstBound = null;
@@ -200,9 +203,72 @@ public class LabelService {
                 label.append("..");
                 label.append(secondBound);
             }
-            label.append(LabelConstants.CLOSE_BRACKET);
+            label.append(LabelConstants.CLOSE_BRACKET + LabelConstants.SPACE);
         }
+        if (element instanceof Feature feature) {
+            if (feature.isIsOrdered()) {
+                label.append(LabelConstants.ORDERED + LabelConstants.SPACE);
+            }
+            if (!feature.isIsUnique()) {
+                label.append(LabelConstants.NON_UNIQUE + LabelConstants.SPACE);
+            }
+        }
+        String labelAsString = label.toString().trim();
+        if (!labelAsString.isEmpty()) {
+            return LabelConstants.SPACE + labelAsString;
+        } else {
+            return labelAsString;
+        }
+    }
+
+    /**
+     * Return the label of the prefix part of the given {@link Usage}.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label of the prefix part of the given {@link Usage} if there is one, an empty string otherwise.
+     */
+    public String getUsagePrefix(Usage usage) {
+        StringBuilder label = new StringBuilder();
+        if (usage.getDirection() == FeatureDirectionKind.IN) {
+            label.append(LabelConstants.IN + LabelConstants.SPACE);
+        } else if (usage.getDirection() == FeatureDirectionKind.OUT) {
+            label.append(LabelConstants.OUT + LabelConstants.SPACE);
+        } else if (usage.getDirection() == FeatureDirectionKind.INOUT) {
+            label.append(LabelConstants.INOUT + LabelConstants.SPACE);
+        }
+        if (usage.isIsAbstract()) {
+            label.append(LabelConstants.ABSTRACT + LabelConstants.SPACE);
+        }
+        if (usage.isIsVariation()) {
+            label.append(LabelConstants.VARIATION + LabelConstants.SPACE);
+        }
+        if (usage.isIsReadOnly()) {
+            label.append(LabelConstants.READ_ONLY + LabelConstants.SPACE);
+        }
+        if (usage.isIsDerived()) {
+            label.append(LabelConstants.DERIVED + LabelConstants.SPACE);
+        }
+        if (usage.isIsEnd()) {
+            label.append(LabelConstants.END + LabelConstants.SPACE);
+        }
+        this.getReferenceUsagePrefix(usage, label);
         return label.toString();
+    }
+
+    /**
+     * Return the label of the reference prefix part of the given {@link Usage}.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label of the reference prefix part of the given {@link Usage} if there is one, an empty string
+     *         otherwise.
+     */
+    private void getReferenceUsagePrefix(Usage usage, StringBuilder label) {
+        if (usage.isIsReference() && !(usage instanceof AttributeUsage)) {
+            // AttributeUsage are always referential, so no need to add the ref keyword
+            label.append(LabelConstants.REF + LabelConstants.SPACE);
+        }
     }
 
     /**
