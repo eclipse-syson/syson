@@ -28,6 +28,7 @@ import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
@@ -89,17 +90,39 @@ public class ViewLabelService extends LabelService {
      */
     public String getCompartmentItemLabel(Usage usage) {
         StringBuilder label = new StringBuilder();
-        label.append(this.getUsagePrefix(usage));
-        String declaredName = usage.getDeclaredName();
-        if (declaredName != null) {
-            label.append(declaredName);
+        if (usage instanceof ConstraintUsage constraintUsage) {
+            label.append(this.getCompartmentItemLabel(constraintUsage));
+        } else {
+            label.append(this.getUsagePrefix(usage));
+            String declaredName = usage.getDeclaredName();
+            if (declaredName != null) {
+                label.append(declaredName);
+            }
+            label
+                    .append(this.getMultiplicityLabel(usage))
+                    .append(this.getTypingLabel(usage))
+                    .append(this.getRedefinitionLabel(usage))
+                    .append(this.getSubsettingLabel(usage))
+                    .append(this.getValueLabel(usage));
         }
-        label
-                .append(this.getMultiplicityLabel(usage))
-                .append(this.getTypingLabel(usage))
-                .append(this.getRedefinitionLabel(usage))
-                .append(this.getSubsettingLabel(usage))
-                .append(this.getValueLabel(usage));
+        return label.toString();
+    }
+
+    /**
+     * Returns the label for the given {@link ConstraintUsage} when displayed as compartment item.
+     *
+     * @param constraintUsage
+     *            the given {@link ConstraintUsage}
+     * @return the label for the given {@link ConstraintUsage}
+     */
+    public String getCompartmentItemLabel(ConstraintUsage constraintUsage) {
+        StringBuilder label = new StringBuilder();
+        if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
+            label.append(this.getValue(expression));
+        } else {
+            // The constraint doesn't have an expression, we use its name as default label.
+            label.append(constraintUsage.getDeclaredName());
+        }
         return label.toString();
     }
 
@@ -148,7 +171,24 @@ public class ViewLabelService extends LabelService {
      * @return the value to display.
      */
     public String getInitialDirectEditLabel(Usage usage) {
-        return this.getCompartmentItemLabel(usage);
+        String result;
+        if (usage instanceof ConstraintUsage constraintUsage) {
+            result = this.getInitialDirectEditLabel(constraintUsage);
+        } else {
+            result = this.getCompartmentItemLabel(usage);
+        }
+        return result;
+    }
+
+    public String getInitialDirectEditLabel(ConstraintUsage constraintUsage) {
+        String result;
+        if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
+            result = this.getValue(expression);
+        } else {
+            // The constraint doesn't have an expression, we set an initial empty string for the direct edit.
+            result = "";
+        }
+        return result;
     }
 
     /**

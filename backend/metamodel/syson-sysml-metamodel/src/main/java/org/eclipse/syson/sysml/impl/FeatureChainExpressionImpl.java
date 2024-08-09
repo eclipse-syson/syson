@@ -13,6 +13,7 @@
 package org.eclipse.syson.sysml.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -67,13 +68,16 @@ public class FeatureChainExpressionImpl extends OperatorExpressionImpl implement
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public Feature basicGetTargetFeature() {
-        // TODO: implement this method to return the 'Target Feature' reference
-        // -> do not perform proxy resolution
-        // Ensure that you remove @generated or mark it @generated NOT
-        return null;
+        List<Feature> parameters = this.getParameter();
+        return this.getMember().stream()
+                .filter(Feature.class::isInstance)
+                .filter(element -> !parameters.contains(element))
+                .map(Feature.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -97,8 +101,9 @@ public class FeatureChainExpressionImpl extends OperatorExpressionImpl implement
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURE_CHAIN_EXPRESSION__TARGET_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getTargetFeature();
+                }
                 return this.basicGetTargetFeature();
         }
         return super.eGet(featureID, resolve, coreType);

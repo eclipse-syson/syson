@@ -258,6 +258,18 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLiteralExpression(DirectEditParser.LiteralExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLiteralExpression(DirectEditParser.LiteralExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMeasurementExpression(DirectEditParser.MeasurementExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -265,6 +277,66 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMeasurementExpression(DirectEditParser.MeasurementExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterConstraintExpression(DirectEditParser.ConstraintExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConstraintExpression(DirectEditParser.ConstraintExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOperand(DirectEditParser.OperandContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOperand(DirectEditParser.OperandContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFeatureChainExpression(DirectEditParser.FeatureChainExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFeatureChainExpression(DirectEditParser.FeatureChainExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFeatureReference(DirectEditParser.FeatureReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFeatureReference(DirectEditParser.FeatureReferenceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOperatorExpression(DirectEditParser.OperatorExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOperatorExpression(DirectEditParser.OperatorExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
