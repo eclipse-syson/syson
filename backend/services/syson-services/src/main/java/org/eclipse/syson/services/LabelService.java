@@ -137,7 +137,6 @@ public class LabelService {
         } else {
             tree = parser.expression();
         }
-        // ParseTree tree = parser.expression();
         ParseTreeWalker walker = new ParseTreeWalker();
         DirectEditListener listener = new DiagramDirectEditListener(element, this.getFeedbackMessageService(), options);
         walker.walk(listener, tree);
