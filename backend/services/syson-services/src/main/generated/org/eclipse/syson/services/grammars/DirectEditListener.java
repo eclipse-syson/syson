@@ -212,6 +212,16 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitValueExpression(DirectEditParser.ValueExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#literalExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLiteralExpression(DirectEditParser.LiteralExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#literalExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLiteralExpression(DirectEditParser.LiteralExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#measurementExpression}.
 	 * @param ctx the parse tree
 	 */
@@ -221,6 +231,56 @@ public interface DirectEditListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMeasurementExpression(DirectEditParser.MeasurementExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#constraintExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstraintExpression(DirectEditParser.ConstraintExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#constraintExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstraintExpression(DirectEditParser.ConstraintExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#operand}.
+	 * @param ctx the parse tree
+	 */
+	void enterOperand(DirectEditParser.OperandContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#operand}.
+	 * @param ctx the parse tree
+	 */
+	void exitOperand(DirectEditParser.OperandContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#featureChainExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFeatureChainExpression(DirectEditParser.FeatureChainExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#featureChainExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFeatureChainExpression(DirectEditParser.FeatureChainExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#featureReference}.
+	 * @param ctx the parse tree
+	 */
+	void enterFeatureReference(DirectEditParser.FeatureReferenceContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#featureReference}.
+	 * @param ctx the parse tree
+	 */
+	void exitFeatureReference(DirectEditParser.FeatureReferenceContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#operatorExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterOperatorExpression(DirectEditParser.OperatorExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#operatorExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitOperatorExpression(DirectEditParser.OperatorExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#transitionExpression}.
 	 * @param ctx the parse tree

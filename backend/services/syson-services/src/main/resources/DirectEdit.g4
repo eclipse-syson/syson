@@ -102,11 +102,36 @@ typingExpression :
 ;
 
 valueExpression :
-	'=' (Real | Boolean | Integer | DoubleQuotedString) ('[' measurementExpression ']')?
+	'=' literalExpression ('[' measurementExpression ']')?
+;
+
+literalExpression : 
+	Real | Boolean | Integer | DoubleQuotedString
 ;
 
 measurementExpression : 
 	~(']')+
+;
+
+// This rule is used as a top-level rule to parse constraint expressions.
+constraintExpression : 
+	operand operatorExpression operand
+;
+
+operand :
+	(literalExpression ('[' measurementExpression ']')? | featureChainExpression)
+;
+
+featureChainExpression:
+	featureReference ('.' featureChainExpression)?
+;
+
+featureReference :
+	~('<=' | '>=' | '<' | '>' | '==' | '.')+
+;
+
+operatorExpression : 
+	'<=' | '>=' | '<' | '>' | '=='
 ;
 	
 transitionExpression :

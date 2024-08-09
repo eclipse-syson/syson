@@ -109,6 +109,8 @@ It is now possible to configure the measurement unit for the value of an element
 - Allow direct edit of prefix keywords and multiplicity suffix for Usage elements
 * Prefixing or not the name of an Usage attribute with direction or "abstract" or "variation" or "readonly" or "derived" or "end" (this order counts) sets its matching property with the correct value
 * Suffixing or not the name of an Usage attribute with "ordered" or "nonunique" (this order counts) sets its matching property with the correct value
+- Add support for constraint expressions in the general view.
+Constraints with expressions such as `mass >= 10 [kg]` are now correctly parsed and the corresponding semantic objects are created in the constraint.
 
 == New features
 

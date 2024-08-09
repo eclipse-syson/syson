@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -23,9 +25,11 @@ import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditListener;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
@@ -129,7 +133,12 @@ public class LabelService {
         DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(newLabel));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         DirectEditParser parser = new DirectEditParser(tokens);
-        ParseTree tree = parser.expression();
+        ParseTree tree;
+        if (element instanceof ConstraintUsage) {
+            tree = parser.constraintExpression();
+        } else {
+            tree = parser.expression();
+        }
         ParseTreeWalker walker = new ParseTreeWalker();
         DirectEditListener listener = new DiagramDirectEditListener(element, this.getFeedbackMessageService(), options);
         walker.walk(listener, tree);
@@ -441,14 +450,41 @@ public class LabelService {
 
     private String getValue(OperatorExpression operatorExpression) {
         String value = null;
-        if (operatorExpression.getOperator().equals(LabelConstants.OPEN_BRACKET)) {
-            value = this.getValue(operatorExpression.getArgument().get(0))
-                    + LabelConstants.SPACE
-                    + LabelConstants.OPEN_BRACKET
-                    + this.getValue(operatorExpression.getArgument().get(1))
-                    + LabelConstants.CLOSE_BRACKET;
+        if (operatorExpression instanceof FeatureChainExpression featureChainExpression) {
+            value = this.getValue(featureChainExpression);
+        } else {
+            if (Objects.equals(operatorExpression.getOperator(), LabelConstants.OPEN_BRACKET)) {
+                value = this.getValue(operatorExpression.getArgument().get(0))
+                        + LabelConstants.SPACE
+                        + LabelConstants.OPEN_BRACKET
+                        + this.getValue(operatorExpression.getArgument().get(1))
+                        + LabelConstants.CLOSE_BRACKET;
+            } else if (List.of("<=", ">=", "<", ">", "==").contains(operatorExpression.getOperator())) {
+                value = this.getValue(operatorExpression.getArgument().get(0))
+                        + LabelConstants.SPACE
+                        + operatorExpression.getOperator()
+                        + LabelConstants.SPACE
+                        + this.getValue(operatorExpression.getArgument().get(1));
+            }
         }
         return value;
+    }
+
+    private String getValue(FeatureChainExpression featureChainExpression) {
+        StringBuilder value = new StringBuilder();
+        if (!featureChainExpression.getArgument().isEmpty()) {
+            value.append(this.getValue(featureChainExpression.getArgument().get(0)));
+            value.append(".");
+        }
+        Feature targetFeature = featureChainExpression.getTargetFeature();
+        if (targetFeature.getChainingFeature().isEmpty()) {
+            value.append(targetFeature.getName());
+        } else {
+            value.append(targetFeature.getChainingFeature().stream()
+                    .map(Feature::getName)
+                    .collect(Collectors.joining(".")));
+        }
+        return value.toString();
     }
 
     private String getValue(FeatureReferenceExpression featureReferenceExpression) {
@@ -463,7 +499,7 @@ public class LabelService {
                 value = featureReferenceExpression.getReferent().getName();
             }
         } else {
-            value = featureReferenceExpression.getReferent().getShortName();
+            value = featureReferenceExpression.getReferent().getName();
         }
         return value;
     }

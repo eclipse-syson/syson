@@ -23,6 +23,7 @@ import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 
 /**
@@ -75,8 +76,19 @@ public class StepImpl extends FeatureImpl implements Step {
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Usage> data = new ArrayList<>();
+        List<Feature> data = this.getOwnedFeature().stream()
+                .filter(this::isParameter)
+                .toList();
+        // The list should contain the inherited parameters, it is not the case for now.
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), data.size(), data.toArray());
+    }
+
+    /**
+     * @generated NOT
+     */
+    private boolean isParameter(Feature feature) {
+        Type owningType = feature.getOwningType();
+        return (owningType instanceof Behavior || owningType instanceof Step) && feature.getDirection() != null;
     }
 
     /**
