@@ -84,6 +84,8 @@ The second one called "New ExhibitState with referenced State" shows a dialog al
 - https://github.com/eclipse-syson/syson/issues/624[#624] [diagrams] Allow to select existing _Action_ on Perform tool.
 - https://github.com/eclipse-syson/syson/issues/628[#628] [diagrams] Allow to set measurement units via direct edit.
 - https://github.com/eclipse-syson/syson/issues/634[#634] [diagrams] Allow to select existing _Type_ on Subject tool.
+- https://github.com/eclipse-syson/syson/issues/639[#639] [diagrams] Handle properties keywords in label of Usage element.
+
 
 === New features
 
