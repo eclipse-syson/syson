@@ -28,6 +28,7 @@ import org.eclipse.syson.diagram.common.view.tools.AcceptActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPayloadNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionPortUsageReceiverToolNodeProvider;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ActorCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.AssignmentActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvider;
@@ -378,7 +379,8 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
                         null, FeatureDirectionKind.OUT),
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage()), SysmlPackage.eINSTANCE.getRequirementUsage()),
-                this.createNewSubjectNodeTool(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()));
+                this.createNewSubjectNodeTool(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()),
+                this.createNewActorNodeTool(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new SetAsCompositeToolProvider().create(this.cache),
@@ -388,8 +390,9 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
 
     @Override
     public List<NodeToolSection> caseRequirementDefinition(RequirementDefinition object) {
-        var createSection = this.toolDescriptionService
-                .buildCreateSection(this.createNewSubjectNodeTool(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()));
+        var createSection = this.toolDescriptionService.buildCreateSection(
+                this.createNewSubjectNodeTool(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()),
+                this.createNewActorNodeTool(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
@@ -441,6 +444,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     public List<NodeToolSection> caseUseCaseDefinition(UseCaseDefinition object) {
         var createSection = this.toolDescriptionService.buildCreateSection(
                 this.createNewSubjectNodeTool(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter()),
+                this.createNewActorNodeTool(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter()),
                 this.createRequirementUsageAsObjectiveRequirementNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
@@ -466,6 +470,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 this.toolDescriptionService.createNodeToolWithDirection(this.getNodeDescription(SysmlPackage.eINSTANCE.getPortUsage()), SysmlPackage.eINSTANCE.getPortUsage(),
                         null, FeatureDirectionKind.OUT),
                 this.createNewSubjectNodeTool(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter()),
+                this.createNewActorNodeTool(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter()),
                 this.createRequirementUsageAsObjectiveRequirementNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         var editSection = this.toolDescriptionService.buildEditSection(
@@ -506,6 +511,11 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     private NodeTool createNewSubjectNodeTool(EClass eClass, EReference eRefrence) {
         var subjectCompartmentNodeToolProvider = new SubjectCompartmentNodeToolProvider(eClass, eRefrence, this.descriptionNameGenerator);
         return subjectCompartmentNodeToolProvider.create(this.cache);
+    }
+
+    private NodeTool createNewActorNodeTool(EClass eClass, EReference eReference) {
+        var actorsCompartmentNodeToolProvider = new ActorCompartmentNodeToolProvider(eClass, eReference, this.descriptionNameGenerator);
+        return actorsCompartmentNodeToolProvider.create(this.cache);
     }
 
     private NodeTool createRequirementUsageAsObjectiveRequirementNodeTool() {

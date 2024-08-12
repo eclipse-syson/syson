@@ -22,6 +22,7 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -67,8 +68,14 @@ public class ActionDefinitionImpl extends OccurrenceDefinitionImpl implements Ac
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Parameter(), data.size(), data.toArray());
+        List<Feature> features = this.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .flatMap(or -> or.getOwnedRelatedElement().stream())
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Parameter(), features.size(), features.toArray());
     }
 
     /**

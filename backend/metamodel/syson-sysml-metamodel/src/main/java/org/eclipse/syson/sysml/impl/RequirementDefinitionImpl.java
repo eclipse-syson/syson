@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.PartUsage;
@@ -101,8 +102,12 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public EList<PartUsage> getActorParameter() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), data.size(), data.toArray());
+        List<PartUsage> actorParameters = this.getParameter().stream()
+                .filter(PartUsage.class::isInstance)
+                .filter(parameter -> parameter.getOwningMembership() instanceof ActorMembership)
+                .map(PartUsage.class::cast)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), actorParameters.size(), actorParameters.toArray());
     }
 
     /**
@@ -154,8 +159,9 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     public void setReqId(String newReqId) {
         String oldReqId = this.reqId;
         this.reqId = newReqId;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID, oldReqId, this.reqId));
+        }
     }
 
     /**
@@ -247,8 +253,9 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
             case SysmlPackage.REQUIREMENT_DEFINITION__STAKEHOLDER_PARAMETER:
                 return this.getStakeholderParameter();
             case SysmlPackage.REQUIREMENT_DEFINITION__SUBJECT_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getSubjectParameter();
+                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -320,8 +327,9 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (reqId: ");

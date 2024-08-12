@@ -55,7 +55,11 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         // don't forget to add custom compartments
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
+                .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter()))
                 .ifPresent(childrenNodes::add);
@@ -64,6 +68,10 @@ public class FakeNodeDescriptionProvider extends AbstractFakeNodeDescriptionProv
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter()))
+                .ifPresent(childrenNodes::add);
+        cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter()))
                 .ifPresent(childrenNodes::add);
         cache.getNodeDescription(nameGenerator.getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
                 .ifPresent(childrenNodes::add);

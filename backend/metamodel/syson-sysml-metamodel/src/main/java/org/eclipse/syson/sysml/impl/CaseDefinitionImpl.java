@@ -12,13 +12,13 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.PartUsage;
@@ -69,8 +69,12 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
      */
     @Override
     public EList<PartUsage> getActorParameter() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), data.size(), data.toArray());
+        List<PartUsage> actorParameters = this.getParameter().stream()
+                .filter(PartUsage.class::isInstance)
+                .filter(parameter -> parameter.getOwningMembership() instanceof ActorMembership)
+                .map(PartUsage.class::cast)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), actorParameters.size(), actorParameters.toArray());
     }
 
     /**
@@ -134,12 +138,14 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
             case SysmlPackage.CASE_DEFINITION__ACTOR_PARAMETER:
                 return this.getActorParameter();
             case SysmlPackage.CASE_DEFINITION__OBJECTIVE_REQUIREMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getObjectiveRequirement();
+                }
                 return this.basicGetObjectiveRequirement();
             case SysmlPackage.CASE_DEFINITION__SUBJECT_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getSubjectParameter();
+                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
