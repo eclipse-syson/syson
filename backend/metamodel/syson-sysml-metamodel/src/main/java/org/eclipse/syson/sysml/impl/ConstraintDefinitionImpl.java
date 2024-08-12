@@ -24,6 +24,7 @@ import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Function;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Predicate;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -83,8 +84,14 @@ public class ConstraintDefinitionImpl extends OccurrenceDefinitionImpl implement
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Parameter(), data.size(), data.toArray());
+        List<Feature> features = this.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .flatMap(or -> or.getOwnedRelatedElement().stream())
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getBehavior_Parameter(), features.size(), features.toArray());
     }
 
     /**
@@ -159,8 +166,9 @@ public class ConstraintDefinitionImpl extends OccurrenceDefinitionImpl implement
             case SysmlPackage.CONSTRAINT_DEFINITION__EXPRESSION:
                 return this.getExpression();
             case SysmlPackage.CONSTRAINT_DEFINITION__RESULT:
-                if (resolve)
+                if (resolve) {
                     return this.getResult();
+                }
                 return this.basicGetResult();
         }
         return super.eGet(featureID, resolve, coreType);

@@ -12,13 +12,13 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.Function;
@@ -70,8 +70,12 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
      */
     @Override
     public EList<PartUsage> getActorParameter() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), data.size(), data.toArray());
+        List<PartUsage> actorParameters = this.getParameter().stream()
+                .filter(PartUsage.class::isInstance)
+                .filter(parameter -> parameter.getOwningMembership() instanceof ActorMembership)
+                .map(PartUsage.class::cast)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), actorParameters.size(), actorParameters.toArray());
     }
 
     /**
@@ -158,16 +162,19 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
             case SysmlPackage.CASE_USAGE__ACTOR_PARAMETER:
                 return this.getActorParameter();
             case SysmlPackage.CASE_USAGE__CASE_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getCaseDefinition();
+                }
                 return this.basicGetCaseDefinition();
             case SysmlPackage.CASE_USAGE__OBJECTIVE_REQUIREMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getObjectiveRequirement();
+                }
                 return this.basicGetObjectiveRequirement();
             case SysmlPackage.CASE_USAGE__SUBJECT_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getSubjectParameter();
+                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);

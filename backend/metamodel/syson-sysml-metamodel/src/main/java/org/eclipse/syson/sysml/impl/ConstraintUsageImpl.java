@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Function;
 import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.Predicate;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Step;
@@ -102,8 +103,14 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
      */
     @Override
     public EList<Feature> getParameter() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), data.size(), data.toArray());
+        List<Feature> features = this.getOwnedRelationship().stream()
+                .filter(ParameterMembership.class::isInstance)
+                .map(ParameterMembership.class::cast)
+                .flatMap(or -> or.getOwnedRelatedElement().stream())
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getStep_Parameter(), features.size(), features.toArray());
     }
 
     /**
@@ -252,20 +259,24 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
             case SysmlPackage.CONSTRAINT_USAGE__IS_MODEL_LEVEL_EVALUABLE:
                 return this.isIsModelLevelEvaluable();
             case SysmlPackage.CONSTRAINT_USAGE__FUNCTION:
-                if (resolve)
+                if (resolve) {
                     return this.getFunction();
+                }
                 return this.basicGetFunction();
             case SysmlPackage.CONSTRAINT_USAGE__RESULT:
-                if (resolve)
+                if (resolve) {
                     return this.getResult();
+                }
                 return this.basicGetResult();
             case SysmlPackage.CONSTRAINT_USAGE__PREDICATE:
-                if (resolve)
+                if (resolve) {
                     return this.getPredicate();
+                }
                 return this.basicGetPredicate();
             case SysmlPackage.CONSTRAINT_USAGE__CONSTRAINT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getConstraintDefinition();
+                }
                 return this.basicGetConstraintDefinition();
         }
         return super.eGet(featureID, resolve, coreType);
