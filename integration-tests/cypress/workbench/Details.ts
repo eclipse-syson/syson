@@ -16,6 +16,10 @@ export class Details {
     return cy.getByTestId('view-Details');
   }
 
+  public getPage(label: string): Cypress.Chainable<JQuery<HTMLInputElement>> {
+    return cy.get(`[data-testid="page-tab-${label}"] div > div`);
+  }
+
   public getGroup(label: string): Cypress.Chainable<JQuery<HTMLInputElement>> {
     return this.getDetailsView().find(`[data-testid="group-${label}"]`);
   }
@@ -24,8 +28,8 @@ export class Details {
     return this.getDetailsView().find(`[data-testid="input-${label}"]`);
   }
 
-  public getCheckBox(label: string): Cypress.Chainable<JQuery<HTMLInputElement>> {
-    return this.getDetailsView().findByTestId(label).find('input');
+  public getCheckBoxInput(label: string): Cypress.Chainable<JQuery<HTMLInputElement>> {
+    return this.getDetailsView().find(`[data-testid="${label}"]`).get('input[type="checkbox"]');
   }
 
   public getRadioOption(label: string, option: string): Cypress.Chainable<JQuery<HTMLInputElement>> {
