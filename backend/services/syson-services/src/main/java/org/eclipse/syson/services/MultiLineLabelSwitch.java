@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
@@ -421,13 +422,18 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     @Override
     public String casePartUsage(PartUsage object) {
         StringBuilder label = new StringBuilder();
-        label
+        if (!(object.getOwningMembership() instanceof ActorMembership)) {
+            // The label shouldn't contain abstract, ref, or part if the part represents an actor.
+            label
                 .append(this.abstractType(object))
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("part")
                 .append(LabelConstants.CLOSE_QUOTE)
-                .append(LabelConstants.CR)
+                .append(LabelConstants.CR);
+        }
+        label
+
                 .append(this.caseElement(object))
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))

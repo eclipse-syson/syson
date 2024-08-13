@@ -112,6 +112,11 @@ It is now possible to configure the measurement unit for the value of an element
 - Add support for constraint expressions in the general view.
 Constraints with expressions such as `mass >= 10 [kg]` are now correctly parsed and the corresponding semantic objects are created in the constraint.
 - Add _actors_ compartment in UseCase and Requirement in the General View diagram.
+- Handle the representation of _actors_ on the General View diagram.
+Actors are represented with a stick figure image, with their label displayed below the image.
+
+image::release-notes-actor-representation.png[Actor node on the General View diagram]
+
 
 == New features
 
