@@ -32,6 +32,76 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitExpression(DirectEditParser.ExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#prefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrefixExpression(DirectEditParser.PrefixExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#prefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrefixExpression(DirectEditParser.PrefixExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#directionPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterDirectionPrefixExpression(DirectEditParser.DirectionPrefixExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#directionPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitDirectionPrefixExpression(DirectEditParser.DirectionPrefixExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#abstractPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAbstractPrefixExpression(DirectEditParser.AbstractPrefixExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#abstractPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAbstractPrefixExpression(DirectEditParser.AbstractPrefixExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#variationPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariationPrefixExpression(DirectEditParser.VariationPrefixExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#variationPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariationPrefixExpression(DirectEditParser.VariationPrefixExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#readonlyPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterReadonlyPrefixExpression(DirectEditParser.ReadonlyPrefixExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#readonlyPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitReadonlyPrefixExpression(DirectEditParser.ReadonlyPrefixExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#derivedPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterDerivedPrefixExpression(DirectEditParser.DerivedPrefixExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#derivedPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitDerivedPrefixExpression(DirectEditParser.DerivedPrefixExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#endPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterEndPrefixExpression(DirectEditParser.EndPrefixExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#endPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitEndPrefixExpression(DirectEditParser.EndPrefixExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#referenceExpression}.
 	 * @param ctx the parse tree
 	 */
@@ -51,6 +121,36 @@ public interface DirectEditListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMultiplicityExpression(DirectEditParser.MultiplicityExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#multiplicityPropExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiplicityPropExpression(DirectEditParser.MultiplicityPropExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#multiplicityPropExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiplicityPropExpression(DirectEditParser.MultiplicityPropExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#orderedMultiplicityExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterOrderedMultiplicityExpression(DirectEditParser.OrderedMultiplicityExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#orderedMultiplicityExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitOrderedMultiplicityExpression(DirectEditParser.OrderedMultiplicityExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#nonuniqueMultiplicityExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNonuniqueMultiplicityExpression(DirectEditParser.NonuniqueMultiplicityExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#nonuniqueMultiplicityExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNonuniqueMultiplicityExpression(DirectEditParser.NonuniqueMultiplicityExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#multiplicityExpressionMember}.
 	 * @param ctx the parse tree

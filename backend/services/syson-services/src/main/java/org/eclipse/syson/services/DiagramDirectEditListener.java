@@ -33,12 +33,19 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.services.grammars.DirectEditBaseListener;
+import org.eclipse.syson.services.grammars.DirectEditParser.AbstractPrefixExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.DerivedPrefixExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.DirectionPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.EffectExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.EndPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MeasurementExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionMemberContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.NonuniqueMultiplicityExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.OrderedMultiplicityExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.ReadonlyPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ReferenceExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.SubsettingExpressionContext;
@@ -46,6 +53,7 @@ import org.eclipse.syson.services.grammars.DirectEditParser.TriggerExpressionCon
 import org.eclipse.syson.services.grammars.DirectEditParser.TriggerExpressionNameContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TypingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ValueExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.VariationPrefixExpressionContext;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
@@ -154,13 +162,99 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 new AttributeToDirectEditSwitch(newValue).doSwitch(this.element);
             }
         }
+        this.handleMissingDirectionPrefixExpression(ctx);
+        this.handleMissingAbstractPrefixExpression(ctx);
+        this.handleMissingDerivedPrefixExpression(ctx);
+        this.handleMissingEndPrefixExpression(ctx);
+        this.handleMissingVariationPrefixExpression(ctx);
+        this.handleMissingReadonlyPrefixExpression(ctx);
         this.handleMissingReferenceExpression(ctx);
         this.handleMissingMultiplicityExpression(ctx);
+        this.handleMissingOrderedMultiplicityExpression(ctx);
+        this.handleMissingNonuniqueMultiplicityExpression(ctx);
         this.handleMissingSubclassificationExpression(ctx);
         this.handleMissingSubsettingExpression(ctx);
         this.handleMissingRedefinitionExpression(ctx);
         this.handleMissingTypingExpression(ctx);
         this.handleMissingValueExpression(ctx);
+    }
+
+    @Override
+    public void exitDirectionPrefixExpression(DirectionPrefixExpressionContext ctx) {
+        if (this.element instanceof Usage usage) {
+            if (ctx != null) {
+                if (ctx.getText().equals(LabelConstants.IN + LabelConstants.SPACE)) {
+                    usage.setDirection(FeatureDirectionKind.IN);
+                } else if (ctx.getText().equals(LabelConstants.OUT + LabelConstants.SPACE)) {
+                    usage.setDirection(FeatureDirectionKind.OUT);
+                } else if (ctx.getText().equals(LabelConstants.INOUT + LabelConstants.SPACE)) {
+                    usage.setDirection(FeatureDirectionKind.INOUT);
+                }
+            } else {
+                usage.setDirection(null);
+            }
+        }
+        super.exitDirectionPrefixExpression(ctx);
+    }
+
+    @Override
+    public void exitAbstractPrefixExpression(AbstractPrefixExpressionContext ctx) {
+        if (this.element instanceof Usage usage) {
+            if (ctx != null) {
+                usage.setIsAbstract(true);
+            } else {
+                usage.setIsAbstract(false);
+            }
+        }
+        super.exitAbstractPrefixExpression(ctx);
+    }
+
+    @Override
+    public void exitDerivedPrefixExpression(DerivedPrefixExpressionContext ctx) {
+        if (this.element instanceof Usage usage) {
+            if (ctx != null) {
+                usage.setIsDerived(true);
+            } else {
+                usage.setIsDerived(false);
+            }
+        }
+        super.exitDerivedPrefixExpression(ctx);
+    }
+
+    @Override
+    public void exitEndPrefixExpression(EndPrefixExpressionContext ctx) {
+        if (this.element instanceof Usage usage) {
+            if (ctx != null) {
+                usage.setIsEnd(true);
+            } else {
+                usage.setIsEnd(false);
+            }
+        }
+        super.exitEndPrefixExpression(ctx);
+    }
+
+    @Override
+    public void exitReadonlyPrefixExpression(ReadonlyPrefixExpressionContext ctx) {
+        if (this.element instanceof Usage usage) {
+            if (ctx != null) {
+                usage.setIsReadOnly(true);
+            } else {
+                usage.setIsReadOnly(false);
+            }
+        }
+        super.exitReadonlyPrefixExpression(ctx);
+    }
+
+    @Override
+    public void exitVariationPrefixExpression(VariationPrefixExpressionContext ctx) {
+        if (this.element instanceof Usage usage) {
+            if (ctx != null) {
+                usage.setIsVariation(true);
+            } else {
+                usage.setIsVariation(false);
+            }
+        }
+        super.exitVariationPrefixExpression(ctx);
     }
 
     @Override
@@ -202,6 +296,30 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 multiplicityRange.getOwnedRelationship().remove(1);
             }
         }
+    }
+
+    @Override
+    public void exitOrderedMultiplicityExpression(OrderedMultiplicityExpressionContext ctx) {
+        if (this.element instanceof Usage usage) {
+            if (ctx != null) {
+                usage.setIsOrdered(true);
+            } else {
+                usage.setIsOrdered(false);
+            }
+        }
+        super.exitOrderedMultiplicityExpression(ctx);
+    }
+
+    @Override
+    public void exitNonuniqueMultiplicityExpression(NonuniqueMultiplicityExpressionContext ctx) {
+        if (this.element instanceof Usage usage) {
+            if (ctx != null) {
+                usage.setIsUnique(false);
+            } else {
+                usage.setIsUnique(true);
+            }
+        }
+        super.exitNonuniqueMultiplicityExpression(ctx);
     }
 
     @Override
@@ -723,6 +841,48 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         super.visitErrorNode(node);
     }
 
+    private void handleMissingDirectionPrefixExpression(ExpressionContext ctx) {
+        DirectionPrefixExpressionContext directionPrefixExpression = ctx.prefixExpression().directionPrefixExpression();
+        if (this.element instanceof Usage usage && directionPrefixExpression == null) {
+            usage.setDirection(null);
+        }
+    }
+
+    private void handleMissingAbstractPrefixExpression(ExpressionContext ctx) {
+        AbstractPrefixExpressionContext abstractPrefixExpression = ctx.prefixExpression().abstractPrefixExpression();
+        if (this.element instanceof Usage usage && abstractPrefixExpression == null) {
+            usage.setIsAbstract(false);
+        }
+    }
+
+    private void handleMissingDerivedPrefixExpression(ExpressionContext ctx) {
+        DerivedPrefixExpressionContext derivedPrefixExpression = ctx.prefixExpression().derivedPrefixExpression();
+        if (this.element instanceof Usage usage && derivedPrefixExpression == null) {
+            usage.setIsDerived(false);
+        }
+    }
+
+    private void handleMissingEndPrefixExpression(ExpressionContext ctx) {
+        EndPrefixExpressionContext endPrefixExpression = ctx.prefixExpression().endPrefixExpression();
+        if (this.element instanceof Usage usage && endPrefixExpression == null) {
+            usage.setIsEnd(false);
+        }
+    }
+
+    private void handleMissingReadonlyPrefixExpression(ExpressionContext ctx) {
+        ReadonlyPrefixExpressionContext readonlyPrefixExpression = ctx.prefixExpression().readonlyPrefixExpression();
+        if (this.element instanceof Usage usage && readonlyPrefixExpression == null) {
+            usage.setIsReadOnly(false);
+        }
+    }
+
+    private void handleMissingVariationPrefixExpression(ExpressionContext ctx) {
+        VariationPrefixExpressionContext variationPrefixExpression = ctx.prefixExpression().variationPrefixExpression();
+        if (this.element instanceof Usage usage && variationPrefixExpression == null) {
+            usage.setIsVariation(false);
+        }
+    }
+
     private void handleMissingReferenceExpression(ExpressionContext ctx) {
         ReferenceExpressionContext referenceExpression = ctx.referenceExpression();
         if (this.element instanceof Usage usage && referenceExpression == null) {
@@ -755,6 +915,20 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 && multiplicityExpression.getChildCount() == 2
                 && LabelConstants.OPEN_BRACKET.equals(multiplicityExpression.getChild(0).getText())
                 && LabelConstants.CLOSE_BRACKET.equals(multiplicityExpression.getChild(1).getText());
+    }
+
+    private void handleMissingOrderedMultiplicityExpression(ExpressionContext ctx) {
+        OrderedMultiplicityExpressionContext orderedMultiplicityExpression = ctx.multiplicityPropExpression().orderedMultiplicityExpression();
+        if (this.element instanceof Usage usage && orderedMultiplicityExpression == null) {
+            usage.setIsOrdered(false);
+        }
+    }
+
+    private void handleMissingNonuniqueMultiplicityExpression(ExpressionContext ctx) {
+        NonuniqueMultiplicityExpressionContext nonuniqueMultiplicityExpression = ctx.multiplicityPropExpression().nonuniqueMultiplicityExpression();
+        if (this.element instanceof Usage usage && nonuniqueMultiplicityExpression == null) {
+            usage.setIsUnique(true);
+        }
     }
 
     private void handleMissingSubclassificationExpression(ExpressionContext ctx) {

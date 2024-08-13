@@ -15,10 +15,12 @@ import { Project } from '../../../../pages/Project';
 import { SysMLv2 } from '../../../../usecases/SysMLv2';
 import { Diagram } from '../../../../workbench/Diagram';
 import { Explorer } from '../../../../workbench/Explorer';
+import { Details } from '../../../../workbench/Details';
 
 describe('Node Creation Tests', () => {
   const sysmlv2 = new SysMLv2();
   const diagramLabel = 'General View';
+  const details = new Details();
 
   context('Given a SysMLv2 project with a General View diagram', () => {
     const explorer = new Explorer();
@@ -81,7 +83,7 @@ describe('Node Creation Tests', () => {
         diagram.getNodes(diagramLabel, 'p1 :> Parts::parts').should('exist');
       });
 
-      it.only('We can add a value to 10 [kg] by direct editing the existing PartUsage', () => {
+      it('We can add a value to 10 [kg] by direct editing the existing PartUsage', () => {
         diagram.getNodes(diagramLabel, 'part').type('p1 = 10 [kg]{enter}');
         diagram.getNodes(diagramLabel, 'p1 = 10 [kg]').should('exist');
         // Check that the library containing kg has been imported
@@ -93,6 +95,92 @@ describe('Node Creation Tests', () => {
         // for standard libraries elements, the qualified name is displayed
         diagram.getNodes(diagramLabel, 'p1 :> aNewPart').should('exist');
         explorer.getExplorerView().contains('aNewPart');
+      });
+
+      it('We can rename a part with a name containing a properties keyword', () => {
+        diagram.getNodes(diagramLabel, 'part').type('abstractPart{enter}');
+        diagram.getNodes(diagramLabel, 'abstractPart').should('exist');
+        explorer.getExplorerView().contains('abstractPart');
+      });
+
+      it('We can add properties to a new compartment item by direct editing the existing compartment item', () => {
+        diagram.getNodes(diagramLabel, 'part').click();
+        diagram
+          .getNodes(diagramLabel, 'part')
+          .getByTestId('Palette')
+          .should('exist')
+          .findByTestId('Create')
+          .findByTestId('expand')
+          .click();
+        diagram
+          .getNodes(diagramLabel, 'part')
+          .getByTestId('Palette')
+          .should('exist')
+          .find('div[role=tooltip]')
+          .findByTestId('New Attribute - Tool')
+          .click();
+
+        diagram.getNodes(diagramLabel, 'attribute').should('exist');
+
+        // direct edit attribute
+        cy.getByTestId('IconLabel - attribute').type('abstract variation end myAttribute ordered nonunique{enter}');
+        diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
+
+        // check attribute properties
+        details.getPage('Advanced').click();
+        details.getGroup('Attribute Properties').should('be.visible');
+        details.getDetailsView().find(`[data-testid="Is Abstract"]`).should('have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Variation"]`).should('have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is End"]`).should('have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Ordered"]`).should('have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Unique"]`).should('not.have.class', 'Mui-checked');
+
+        // reset attribute to default properties
+        diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
+        cy.getByTestId('IconLabel - abstract variation end myAttribute ordered nonunique').type('myAttribute{enter}');
+
+        // check attribute properties
+        details.getPage('Advanced').click();
+        details.getGroup('Attribute Properties').should('be.visible');
+        details.getDetailsView().find(`[data-testid="Is Abstract"]`).should('not.have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Variation"]`).should('not.have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is End"]`).should('not.have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Ordered"]`).should('not.have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Unique"]`).should('have.class', 'Mui-checked');
+      });
+
+      it('We can add direction to a new compartment item by direct editing the existing compartment item', () => {
+        diagram.getNodes(diagramLabel, 'part').click();
+        diagram
+          .getNodes(diagramLabel, 'part')
+          .getByTestId('Palette')
+          .should('exist')
+          .findByTestId('Create')
+          .findByTestId('expand')
+          .click();
+        diagram
+          .getNodes(diagramLabel, 'part')
+          .getByTestId('Palette')
+          .should('exist')
+          .find('div[role=tooltip]')
+          .findByTestId('New Attribute - Tool')
+          .click();
+
+        diagram.getNodes(diagramLabel, 'attribute').should('exist');
+
+        // direct edit attribute
+        cy.getByTestId('IconLabel - attribute').type('inout myAttribute{enter}');
+        diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
+
+        // check direction attribute
+        details.getRadioOption('Direction', 'inout').should('be.checked');
+
+        // reset attribute to default properties
+        diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
+        cy.getByTestId('IconLabel - inout myAttribute').type('myAttribute{enter}');
+
+        // check direction attribute
+        details.getRadioOption('Direction', 'inout').should('not.be.checked');
       });
     });
   });
