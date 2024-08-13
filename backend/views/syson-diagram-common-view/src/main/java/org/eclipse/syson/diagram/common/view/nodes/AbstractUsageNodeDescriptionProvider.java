@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.ToolSection;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
@@ -122,8 +123,10 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .defaultWidthExpression(ViewConstants.DEFAULT_NODE_WIDTH)
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
+                .outsideLabels(this.createOutsideLabelDescriptions().toArray(OutsideLabelDescription[]::new))
                 .name(this.getNodeDescriptionName())
                 .semanticCandidatesExpression(this.getSemanticCandidatesExpression(domainType))
+                .preconditionExpression(this.createPreconditionExpression())
                 .style(this.createUsageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
@@ -166,6 +169,14 @@ public abstract class AbstractUsageNodeDescriptionProvider extends AbstractNodeD
                 .showIconExpression(AQLUtils.getSelfServiceCallExpression("showIcon"))
                 .withHeader(true)
                 .build();
+    }
+
+    protected List<OutsideLabelDescription> createOutsideLabelDescriptions() {
+        return List.of();
+    }
+
+    protected String createPreconditionExpression() {
+        return null;
     }
 
     protected IDescriptionNameGenerator getDescriptionNameGenerator() {

@@ -89,6 +89,7 @@ The second one called "New ExhibitState with referenced State" shows a dialog al
 The supported properties are `in`, `out`, `inout`, `abstract`, `variation`, `readonly`, `derived`, `end`, `ordered`, and `nonunique`.
 - https://github.com/eclipse-syson/syson/issues/641[#641] [general-view] Add support for expressions in constraints.
 - https://github.com/eclipse-syson/syson/issues/644[#644] [general-view] Add _actors_ compartment in UseCase and Requirement.
+- https://github.com/eclipse-syson/syson/issues/646[#646] [general-view] Handle the representation of actors on the General View diagram.
 
 === New features
 

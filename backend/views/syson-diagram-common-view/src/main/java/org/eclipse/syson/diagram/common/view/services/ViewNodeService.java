@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
@@ -34,6 +35,7 @@ import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
@@ -42,6 +44,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -241,6 +244,37 @@ public class ViewNodeService {
             this.logger.warn("Cannot check graphical containment between {} and {}", parentNodeElement, childNodeElement);
         }
         return result;
+    }
+
+    /**
+     * Get all the actor {@link PartUsage} in {@code eObject}'s {@link ResourceSet}.
+     *
+     * @param eObject
+     *            the contextual eObject
+     * @return the list of actor {@link PartUsage} in {@code eObject}'s {@link ResourceSet}
+     */
+    public List<PartUsage> getAllReachableActors(EObject eObject) {
+        String type = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPartUsage());
+        var allPartUsage = this.utilService.getAllReachable(eObject, type);
+        return allPartUsage.stream()
+                .filter(PartUsage.class::isInstance)
+                .map(PartUsage.class::cast)
+                .filter(this::isActor)
+                .toList();
+    }
+
+    /**
+     * Returns {@code true} if the provided {@code element} is an actor, {@code false} otherwise.
+     * <p>
+     * An actor (typically of a UseCase or Requirement) is a kind of parameter stored in an {@link ActorMembership}.
+     * </p>
+     *
+     * @param element
+     *            the element to check
+     * @return {@code true} if the provided {@code element} is an actor, {@code false} otherwise
+     */
+    public boolean isActor(Element element) {
+        return element instanceof PartUsage && element.getOwningMembership() instanceof ActorMembership;
     }
 
     private boolean isReferencingPerformActionUsage(PerformActionUsage pau) {

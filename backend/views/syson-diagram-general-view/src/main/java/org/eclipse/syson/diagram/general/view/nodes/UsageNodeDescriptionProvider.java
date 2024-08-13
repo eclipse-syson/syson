@@ -34,6 +34,7 @@ import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewNodeToolSectionSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLConstants;
 
 /**
  * Node description provider for all SysMLv2 Usage elements in the General View diagram.
@@ -49,6 +50,12 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     @Override
     protected String getSemanticCandidatesExpression(String domainType) {
         return this.utilServices.getAllReachableExpression(domainType);
+    }
+
+    @Override
+    protected String createPreconditionExpression() {
+        // Actors are handled with a different NodeDescription, see ActorNodeDescriptionProvider.
+        return AQLConstants.AQL + "not self.isActor()";
     }
 
     @Override
