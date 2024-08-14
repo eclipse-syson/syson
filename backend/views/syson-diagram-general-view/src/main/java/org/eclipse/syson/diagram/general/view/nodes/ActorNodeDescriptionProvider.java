@@ -42,6 +42,8 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
 
+    public static final String NAME = "GV Node Actor";
+
     public ActorNodeDescriptionProvider(IColorProvider colorProvider) {
         super(SysmlPackage.eINSTANCE.getPartUsage(), colorProvider);
     }
@@ -53,7 +55,7 @@ public class ActorNodeDescriptionProvider extends UsageNodeDescriptionProvider {
 
     @Override
     protected String getNodeDescriptionName() {
-        return super.getNodeDescriptionName() + "_Actor";
+        return NAME;
     }
 
     @Override

@@ -90,6 +90,8 @@ The supported properties are `in`, `out`, `inout`, `abstract`, `variation`, `rea
 - https://github.com/eclipse-syson/syson/issues/641[#641] [general-view] Add support for expressions in constraints.
 - https://github.com/eclipse-syson/syson/issues/644[#644] [general-view] Add _actors_ compartment in UseCase and Requirement.
 - https://github.com/eclipse-syson/syson/issues/646[#646] [general-view] Handle the representation of actors on the General View diagram.
+- https://github.com/eclipse-syson/syson/issues/648[#648] [general-view] Add support for edges between actors and their containing UseCase/Requirement.
+The source of the edge (the UseCase or Requirement) can be reconnected to another UseCase or Requirement, but the target (Actor) cannot be reconnected.
 
 === New features
 
