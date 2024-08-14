@@ -46,6 +46,7 @@ import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -546,6 +547,40 @@ public class ViewToolService extends ToolService {
             }
         }
         return droppedElement;
+    }
+
+    /**
+     * Reconnects the source of a nested actor edge.
+     * <p>
+     * The source of this edge is either an UseCase or a Requirement, and can only be reconnected to UseCase or
+     * Requirements.
+     * </p>
+     *
+     * @param self
+     *            the current UseCase or Requirement
+     * @param newSource
+     *            the new UseCase or Requirement
+     * @param otherEnd
+     *            the Actor connected to the UseCase or Requirement
+     * @return the Actor
+     */
+    public Element reconnectSourceNestedActorEdge(Element self, Element newSource, Element otherEnd) {
+        if (newSource instanceof UseCaseUsage || newSource instanceof UseCaseDefinition
+                || newSource instanceof RequirementUsage || newSource instanceof RequirementDefinition) {
+            if (otherEnd.getOwningMembership() instanceof ActorMembership actorMembership) {
+                newSource.getOwnedRelationship().add(actorMembership);
+            } else {
+                // This is an error, an Actor should always be contained in an ActorMembership.
+                String errorMessage = "Cannot reconnect the Actor, it is not owned by an " + ActorMembership.class.getSimpleName();
+                this.logger.error(errorMessage);
+                this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.ERROR));
+            }
+        } else {
+            String errorMessage = "Cannot reconnect an Actor to a non-UseCase, non-Requirement element";
+            this.logger.warn(errorMessage);
+            this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+        }
+        return otherEnd;
     }
 
     public Element reconnnectSourceCompositionEdge(Element self, Element newSource, Element otherEnd) {

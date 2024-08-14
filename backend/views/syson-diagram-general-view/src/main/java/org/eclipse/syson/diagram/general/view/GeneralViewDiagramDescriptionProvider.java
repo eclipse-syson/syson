@@ -52,6 +52,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescript
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
+import org.eclipse.syson.diagram.general.view.edges.NestedActorEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DefinitionOwnedUsageEdgeDescriptionProvider;
@@ -453,6 +454,18 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(
                 new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedUsage(), colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider,
+                        this.getDescriptionNameGenerator()));
     }
 
     private void linkRequirementSubjectCompartment(IViewDiagramElementFinder cache) {

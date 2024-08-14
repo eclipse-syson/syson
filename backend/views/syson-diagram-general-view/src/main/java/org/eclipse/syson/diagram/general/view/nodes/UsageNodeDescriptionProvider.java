@@ -54,7 +54,10 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
 
     @Override
     protected String createPreconditionExpression() {
-        // Actors are handled with a different NodeDescription, see ActorNodeDescriptionProvider.
+        // Actors are handled with a different NodeDescription: ActorNodeDescriptionProvider.
+        // We can't represent actors with conditional styles because they require to remove inside labels and add
+        // outside labels, and set the keepAspectRatio property, which are all defined in the NodeDescription and not in
+        // the style.
         return AQLConstants.AQL + "not self.isActor()";
     }
 
