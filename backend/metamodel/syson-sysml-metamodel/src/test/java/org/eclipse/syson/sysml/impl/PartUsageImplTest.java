@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import static org.eclipse.syson.sysml.util.TestUtils.testInheritedFeature;
 
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.VisibilityKind;
@@ -119,14 +120,8 @@ public class PartUsageImplTest {
 
         testInheritedFeature(testModel.typeDef);
         testInheritedFeature(testModel.superPart, testModel.publicTypeDefAttribute, testModel.protectedTypeDefAttribute);
-        testInheritedFeature(testModel.containedPart,
-                // Visible from typeDef
-                testModel.publicTypeDefAttribute, testModel.protectedTypeDefAttribute,
-                // Visible from owning part
-                testModel.publicSuperPartAttribute, testModel.protectedSuperPartAttribute,
-                // Itself since it's a feature of its parent
-                testModel.containedPart);
-
+        // Composite parts do not inherit memberships from their container.
+        testInheritedFeature(testModel.containedPart, new Feature[] {});
         testInheritedFeature(testModel.subPart,
                 // Visible from typeDef
                 testModel.publicTypeDefAttribute, testModel.protectedTypeDefAttribute,

@@ -62,6 +62,7 @@ The following methods have been deleted or modified:
 - https://github.com/eclipse-syson/syson/issues/619[#619] [diagrams] Fix an issue where a click on inherited members inside compartments was raising an error instead of displaying the palette.
 - https://github.com/eclipse-syson/syson/issues/621[#621] [syson] Fix non-containment reference issue on standard library copy.
 These references were still pointing to elements in the standard library resources, while they should point to elements in the copied resources.
+- https://github.com/eclipse-syson/syson/issues/651[#651] [metamodel] Remove owning Usage memberships from inherited memberships of Usages.
 
 === Improvements
 
