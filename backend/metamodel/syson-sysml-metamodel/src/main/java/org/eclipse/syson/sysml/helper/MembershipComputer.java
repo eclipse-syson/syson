@@ -33,7 +33,6 @@ import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
-import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
@@ -141,15 +140,6 @@ public class MembershipComputer<T extends Element> {
             if (general != null && !this.visited.contains(general)) {
                 this.visibleMemberships(general, false, true, true).stream()
                         .filter(namefilter)
-                        .forEach(generalMemberships::add);
-            }
-        }
-        if (self instanceof Usage usage) {
-            Usage owningUsage = usage.getOwningUsage();
-            if (owningUsage != null) {
-                generalMemberships.addAll(this.inheritedMemberships(owningUsage));
-                owningUsage.getOwnedFeatureMembership().stream()
-                        .filter(m -> m.getVisibility() != VisibilityKind.PRIVATE)
                         .forEach(generalMemberships::add);
             }
         }
