@@ -100,16 +100,6 @@ export const sysonTheme = createTheme(
           },
         },
       },
-      MuiTextField: {
-        defaultProps: {
-          variant: 'standard',
-        },
-      },
-      MuiSelect: {
-        defaultProps: {
-          variant: 'standard',
-        },
-      },
     },
   },
   baseTheme
