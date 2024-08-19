@@ -68,6 +68,8 @@ The changes are:
 - Fix an issue where non-containment references in standard libraries weren't correctly imported into the project's editing context.
 - Remove owning Usage memberships from inherited memberships of Usages.
 Memberships of a Type are inherited via _Specialization_ or _Conjugation_, not by composition.
+- Fix an issue that allowed to drop an element from the explorer or the diagram on one of its children.
+Doing so deleted both the dropped element and its children from the diagram, and could delete the representation if one of the element was the root element of the representation. 
 
 
 == Improvements

@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -38,6 +41,8 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tool-related Java services used by SysON representations.
@@ -51,6 +56,8 @@ public class ToolService {
     protected final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     protected final IFeedbackMessageService feedbackMessageService;
+
+    private final Logger logger = LoggerFactory.getLogger(ToolService.class);
 
     private final DeleteService deleteService;
 
@@ -82,12 +89,28 @@ public class ToolService {
      */
     public Element dropElementFromExplorer(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        var elementToDrop = Optional.ofNullable(element);
-        if (element instanceof Membership membership) {
-            elementToDrop = membership.getOwnedRelatedElement().stream().findFirst();
+        Optional<Object> optTargetElement;
+        if (selectedNode != null) {
+            optTargetElement = this.objectService.getObject(editingContext, selectedNode.getTargetObjectId());
+        } else {
+            optTargetElement = this.objectService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
         }
-        if (elementToDrop.isPresent()) {
-            this.createView(elementToDrop.get(), editingContext, diagramContext, selectedNode, convertedNodes);
+        if (optTargetElement.isPresent() && optTargetElement.get() instanceof Element targetElement) {
+            // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we
+            // want to prevent the drop.
+            if (EMFUtils.isAncestor(element, targetElement)) {
+                String errorMessage = MessageFormat.format("Cannot drop {0} in {1}: {0} is a parent of {1}", element.getName(), targetElement.getName());
+                this.logger.warn(errorMessage);
+                this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+            } else {
+                var elementToDrop = Optional.ofNullable(element);
+                if (element instanceof Membership membership) {
+                    elementToDrop = membership.getOwnedRelatedElement().stream().findFirst();
+                }
+                if (elementToDrop.isPresent()) {
+                    this.createView(elementToDrop.get(), editingContext, diagramContext, selectedNode, convertedNodes);
+                }
+            }
         }
         return element;
     }
@@ -116,8 +139,20 @@ public class ToolService {
      */
     public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
-        return droppedElement;
+        final Element result;
+        // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we want
+        // to prevent the drop.
+        if (EMFUtils.isAncestor(droppedElement, targetElement)) {
+            String errorMessage = MessageFormat.format("Cannot drop {0} in {1}: {0} is a parent of {1}", droppedElement.getName(), targetElement.getName());
+            this.logger.warn(errorMessage);
+            this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+            // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
+            result = null;
+        } else {
+            this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+            result = droppedElement;
+        }
+        return result;
     }
 
     /**

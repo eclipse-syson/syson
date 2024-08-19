@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Predicate;
@@ -177,6 +178,23 @@ public class EMFUtils {
             result = Stream.empty();
         }
         return result;
+    }
+
+    /**
+     * Returns {@code true} if {@code parent} is an ancestor of {@code eObject}.
+     * <p>
+     * This method doesn't include {@code eObject} as an ancestor of itself. This means that this method will always
+     * return {@code false} if {@code parent == eObject}.
+     * </p>
+     *
+     * @param parent
+     *            the parent EObject to check
+     * @param eObject
+     *            the EObject to check
+     * @return {@code true} if {@code parent} is an ancestor of {@code eObject}
+     */
+    public static boolean isAncestor(EObject parent, EObject eObject) {
+        return parent != eObject && !getAncestors(EObject.class, eObject, ancestor -> Objects.equals(ancestor, parent)).isEmpty();
     }
 
     /**
