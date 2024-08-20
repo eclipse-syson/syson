@@ -14,8 +14,16 @@ package org.eclipse.syson.sysml.util;
 
 import com.fasterxml.uuid.Generators;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.sysml.Element;
@@ -25,10 +33,11 @@ import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.VisibilityKind;
 
 /**
  * Util class for SysML elements.
- * 
+ *
  * @author arichard
  */
 public class ElementUtil {
@@ -50,7 +59,7 @@ public class ElementUtil {
 
     /**
      * Check if the given {@link Element} comes from a library (i.e. a {@link LibraryPackage}) or not.
-     * 
+     *
      * @param element
      *            the given {@link Element}.
      * @param standardOnly
@@ -78,7 +87,7 @@ public class ElementUtil {
     /**
      * Check if the given {@link Element} comes from a standard library (i.e. a {@link LibraryPackage} with its standard
      * attribute set to true) or not.
-     * 
+     *
      * @param element
      *            the given {@link Element}.
      * @return <code>true</code> if the given element is contained in a standard library, <code>false</code> otherwise.
@@ -89,7 +98,7 @@ public class ElementUtil {
 
     /**
      * Generate a UUID (a v5 for standard library elements a a random v4 random for others).
-     * 
+     *
      * @return a UUID.
      */
     public static UUID generateUUID(Element element) {
@@ -117,7 +126,7 @@ public class ElementUtil {
 
     /**
      * Generate a UUID v5 from a given namespace and a value.
-     * 
+     *
      * @param namespaceUUID
      *            the namespace to use to generate the UUID.
      * @param value
@@ -126,5 +135,183 @@ public class ElementUtil {
      */
     public static UUID generateUUIDv5(UUID namespaceUUID, String value) {
         return Generators.nameBasedGenerator(namespaceUUID, null).generate(value);
+    }
+
+    /**
+     * Find an {@link Element} that match the given name and type in the ResourceSet of the given element.
+     *
+     * @param object
+     *            the object for which to find a corresponding type.
+     * @param elementName
+     *            the element name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
+     */
+    public <T extends Element> T findByNameAndType(EObject object, String elementName, Class<T> elementType) {
+        final T result = this.findByNameAndType(this.getAllRootsInResourceSet(object), elementName, elementType);
+        return result;
+    }
+
+    /**
+     * Iterate over the given {@link Collection} of root elements to find a element with the given name and type.
+     *
+     * @param roots
+     *            the elements to inspect.
+     * @param elementName
+     *            the name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
+     */
+    public <T extends Element> T findByNameAndType(Collection<EObject> roots, String elementName, Class<T> elementType) {
+        String[] splitElementName = elementName.split("::");
+        List<String> qualifiedName = Arrays.asList(splitElementName);
+        for (final EObject root : roots) {
+            final T result;
+            if (qualifiedName.size() > 1) {
+                result = this.findInRootByQualifiedNameAndTypeFrom(root, qualifiedName, elementType);
+            } else {
+                result = this.findByNameAndTypeFrom(root, elementName, elementType);
+            }
+            if (result != null) {
+                return result;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Iterate over the children of the given root {@link EObject} to find an {@link Element} with the given qualified
+     * name and type.
+     *
+     * @param root
+     *            the root object to iterate.
+     * @param qualifiedName
+     *            the qualified name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
+     */
+    private <T extends Element> T findInRootByQualifiedNameAndTypeFrom(EObject root, List<String> qualifiedName, Class<T> elementType) {
+        T element = null;
+        if (root instanceof Namespace namespace && namespace.eContainer() == null && namespace.getName() == null) {
+            // Ignore top-level namespaces with no name, they aren't part of the qualified name
+            element = this.findByQualifiedNameAndTypeFrom(namespace, qualifiedName, elementType);
+        } else if (root instanceof Element rootElt && this.nameMatches(rootElt, qualifiedName.get(0))) {
+            element = this.findByQualifiedNameAndTypeFrom(rootElt, qualifiedName.subList(1, qualifiedName.size()), elementType);
+        }
+        return element;
+    }
+
+    /**
+     * Iterate over the children of the given parent {@link EObject} to find an {@link Element} with the given qualified
+     * name and type.
+     *
+     * @param parent
+     *            the parent object to iterate.
+     * @param qualifiedName
+     *            the qualified name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
+     */
+    private <T extends Element> T findByQualifiedNameAndTypeFrom(Element parent, List<String> qualifiedName, Class<T> elementType) {
+        T element = null;
+
+        Optional<Element> child = parent.getOwnedElement().stream()
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .filter(elt -> this.nameMatches(elt, qualifiedName.get(0)))
+                .findFirst();
+        if (child.isEmpty() && parent instanceof Namespace parentNamespace) {
+            // If the element is not owned by the parent it can be visible through a public import.
+            child = parentNamespace.getImportedMembership().stream()
+                    .filter(membership -> Objects.equals(membership.getVisibility(), VisibilityKind.PUBLIC))
+                    .flatMap(membership -> membership.getRelatedElement().stream())
+                    .filter(elt -> this.nameMatches(elt, qualifiedName.get(0)))
+                    .findFirst();
+        }
+        if (child.isPresent() && qualifiedName.size() > 1) {
+            element = this.findByQualifiedNameAndTypeFrom(child.get(), qualifiedName.subList(1, qualifiedName.size()), elementType);
+        } else if (child.isPresent() && elementType.isInstance(child.get())) {
+            element = elementType.cast(child.get());
+        }
+        return element;
+    }
+
+    /**
+     * Iterate over the children of the given root {@link EObject} to find an {@link Element} with the given name and
+     * type.
+     *
+     * @param root
+     *            the root object to iterate.
+     * @param elementName
+     *            the name to match.
+     * @param elementType
+     *            the type to match.
+     * @return the found element or <code>null</code>.
+     */
+    private <T extends Element> T findByNameAndTypeFrom(EObject root, String elementName, Class<T> elementType) {
+        T element = null;
+
+        if (elementType.isInstance(root) && this.nameMatches(elementType.cast(root), elementName)) {
+            return elementType.cast(root);
+        }
+
+        TreeIterator<EObject> eAllContents = root.eAllContents();
+        while (eAllContents.hasNext()) {
+            EObject obj = eAllContents.next();
+            if (elementType.isInstance(obj) && this.nameMatches(elementType.cast(obj), elementName)) {
+                element = elementType.cast(obj);
+                break;
+            }
+        }
+
+        return element;
+    }
+
+    /**
+     * Retrieves all the root elements of the resource in the resource set of the given context object.
+     *
+     * @param context
+     *            the context object on which to execute this service.
+     * @return a {@link Collection} of all the root element of the current resource set.
+     */
+    private Collection<EObject> getAllRootsInResourceSet(EObject context) {
+        final Resource res = context.eResource();
+        if (res != null && res.getResourceSet() != null) {
+            final Collection<EObject> roots = new ArrayList<>();
+            for (final Resource childRes : res.getResourceSet().getResources()) {
+                roots.addAll(childRes.getContents());
+            }
+            return roots;
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Check if the given element's name match the given String.
+     *
+     * @param element
+     *            the {@link Element} to check.
+     * @param name
+     *            the name to match.
+     * @return <code>true</code> if the name match, <code>false</code> otherwise.
+     */
+    private boolean nameMatches(Element element, String name) {
+        boolean matches = false;
+        if (element != null && name != null) {
+            String elementName = element.getName();
+            if (elementName != null) {
+                matches = elementName.strip().equals(name.strip());
+                if (!matches && name.startsWith("'") && name.endsWith("'")) {
+                    // We give the option to quote names, but the quotes aren't part of the model.
+                    elementName = "'" + elementName + "'";
+                    matches = elementName.strip().equals(name.strip());
+                }
+            }
+        }
+        return matches;
     }
 }

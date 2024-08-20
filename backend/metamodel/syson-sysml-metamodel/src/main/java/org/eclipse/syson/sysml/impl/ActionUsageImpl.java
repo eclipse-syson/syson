@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.util.EcoreEList;
+import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Behavior;
 import org.eclipse.syson.sysml.Expression;
@@ -27,6 +28,8 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.StateSubactionKind;
+import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Step;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -145,6 +148,11 @@ public class ActionUsageImpl extends OccurrenceUsageImpl implements ActionUsage 
      */
     @Override
     public boolean isSubactionUsage() {
+        var owningType = this.getOwningType();
+        var owningFeatureMemberhip = this.getOwningFeatureMembership();
+        if (this.isIsComposite() && (owningType instanceof ActionDefinition || owningType instanceof ActionUsage) && owningFeatureMemberhip instanceof StateSubactionMembership ssm) {
+            return StateSubactionKind.DO == ssm.getKind();
+        }
         return false;
     }
 
