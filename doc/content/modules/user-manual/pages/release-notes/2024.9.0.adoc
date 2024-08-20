@@ -149,3 +149,6 @@ image::release-notes-insert-textual-sysmlv2-menu.png[New objects from text menu]
 A click on the _Insert_ button converts the textual SysMLv2 into model elements and add them under the selected element.
 
 image::release-notes-insert-textual-sysmlv2-dialog.png[New objects from text dialog]
+
+- Improve the drag and drop of container elements to move their content
+
