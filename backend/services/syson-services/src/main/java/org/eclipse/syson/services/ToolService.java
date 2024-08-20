@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -29,9 +30,11 @@ import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -333,8 +336,61 @@ public class ToolService {
         } else {
             return;
         }
-        this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
+        ViewCreationRequest droppedElementViewCreationRequest = this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
+        this.moveSubNodes(droppedElementViewCreationRequest, droppedNode, diagramContext);
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+    }
+
+    /**
+     * Moves the sub-nodes of the provided {@code parentNode} inside the graphical element created by
+     * {@code parentViewCreationRequest}.
+     * <p>
+     * This method moves both child nodes and border nodes, but doesn't move edges, which are synchronized. This method
+     * preserves the visibility of existing nodes: a hidden node in {@code parentNode} will still be hidden when
+     * rendered in {@code parentViewCreationRequest}.
+     * </p>
+     * <p>
+     * This method is typically used as part of graphical drag & drop, to ensure that the content of the dropped element
+     * are re-rendered in their new container.
+     * </p>
+     *
+     * @param parentViewCreationRequest
+     *            the creation request for the new parent of the nodes
+     * @param parentNode
+     *            the existing node to move the content from
+     * @param diagramContext
+     *            the diagram context
+     */
+    private void moveSubNodes(ViewCreationRequest parentViewCreationRequest, Node parentNode, IDiagramContext diagramContext) {
+        for (Node childNode : parentNode.getChildNodes()) {
+            ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+                    .containmentKind(NodeContainmentKind.CHILD_NODE)
+                    .descriptionId(childNode.getDescriptionId())
+                    .parentElementId(this.getParentElementId(parentViewCreationRequest, diagramContext))
+                    .targetObjectId(childNode.getTargetObjectId())
+                    .build();
+            diagramContext.getViewCreationRequests().add(childViewCreationRequest);
+            this.moveSubNodes(childViewCreationRequest, childNode, diagramContext);
+            if (childNode.getModifiers().contains(ViewModifier.Hidden)) {
+                // Hide the new element if it was hidden before the drop, we want the new elements to look like the
+                // dropped ones. We can't use DiagramServices here because we don't have access to the elements to hide
+                // (only their IDs, they haven't been rendered yet).
+                diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(Set.of(this.getParentElementId(childViewCreationRequest, diagramContext)), true));
+            }
+        }
+        for (Node borderNode : parentNode.getBorderNodes()) {
+            ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+                    .containmentKind(NodeContainmentKind.BORDER_NODE)
+                    .descriptionId(borderNode.getDescriptionId())
+                    .parentElementId(this.getParentElementId(parentViewCreationRequest, diagramContext))
+                    .targetObjectId(borderNode.getTargetObjectId())
+                    .build();
+            diagramContext.getViewCreationRequests().add(childViewCreationRequest);
+            this.moveSubNodes(childViewCreationRequest, borderNode, diagramContext);
+            if (borderNode.getModifiers().contains(ViewModifier.Hidden)) {
+                diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(Set.of(this.getParentElementId(childViewCreationRequest, diagramContext)), true));
+            }
+        }
     }
 
     /**
