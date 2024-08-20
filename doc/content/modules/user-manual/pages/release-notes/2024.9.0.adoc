@@ -156,5 +156,5 @@ A click on the _Insert_ button converts the textual SysMLv2 into model elements 
 
 image::release-notes-insert-textual-sysmlv2-dialog.png[New objects from text dialog]
 
-- Improve the drag and drop of container elements to move their content
-
+- Improve the drag and drop of container elements to move their content.
+- Handle implicit specializations from standard libraries for Usages/Definitions.

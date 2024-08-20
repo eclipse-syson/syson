@@ -510,16 +510,10 @@ public class ViewCreateService {
     }
 
     public Element createAcceptAction(Element ownerElement) {
-        Feature acceptSubActionsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::acceptSubactions");
-        if (this.isPart(ownerElement) || this.isAction(ownerElement) && acceptSubActionsStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var acceptAction = SysmlFactory.eINSTANCE.createAcceptActionUsage();
             this.elementInitializerSwitch.doSwitch(acceptAction);
-            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
-            subsetting.setSubsettingFeature(acceptAction);
-            subsetting.setSubsettedFeature(acceptSubActionsStdAction);
-            subsetting.setIsImplied(true);
-            acceptAction.getOwnedRelationship().add(subsetting);
             featureMember.getOwnedRelatedElement().add(acceptAction);
             ownerElement.getOwnedRelationship().add(featureMember);
             return acceptAction;
@@ -801,16 +795,10 @@ public class ViewCreateService {
      * @return the new Join action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createJoinAction(Element ownerElement) {
-        Feature joinsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::joins");
-        if (this.isPart(ownerElement) || this.isAction(ownerElement) && joinsStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var join = SysmlFactory.eINSTANCE.createJoinNode();
             this.elementInitializerSwitch.doSwitch(join);
-            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
-            subsetting.setSubsettingFeature(join);
-            subsetting.setSubsettedFeature(joinsStdAction);
-            subsetting.setIsImplied(true);
-            join.getOwnedRelationship().add(subsetting);
             featureMember.getOwnedRelatedElement().add(join);
             ownerElement.getOwnedRelationship().add(featureMember);
             return join;
@@ -826,16 +814,10 @@ public class ViewCreateService {
      * @return the new Fork action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createForkAction(Element ownerElement) {
-        Feature forksStdAction = this.utilService.findByName(ownerElement, "Actions::Action::forks");
-        if (this.isPart(ownerElement) || this.isAction(ownerElement) && forksStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var fork = SysmlFactory.eINSTANCE.createForkNode();
             this.elementInitializerSwitch.doSwitch(fork);
-            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
-            subsetting.setSubsettingFeature(fork);
-            subsetting.setSubsettedFeature(forksStdAction);
-            subsetting.setIsImplied(true);
-            fork.getOwnedRelationship().add(subsetting);
             featureMember.getOwnedRelatedElement().add(fork);
             ownerElement.getOwnedRelationship().add(featureMember);
             return fork;
@@ -851,16 +833,10 @@ public class ViewCreateService {
      * @return the new Merge action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createMergeAction(Element ownerElement) {
-        Feature mergesStdAction = this.utilService.findByName(ownerElement, "Actions::Action::merges");
-        if (this.isPart(ownerElement) || this.isAction(ownerElement) && mergesStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var merge = SysmlFactory.eINSTANCE.createMergeNode();
             this.elementInitializerSwitch.doSwitch(merge);
-            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
-            subsetting.setSubsettingFeature(merge);
-            subsetting.setSubsettedFeature(mergesStdAction);
-            subsetting.setIsImplied(true);
-            merge.getOwnedRelationship().add(subsetting);
             featureMember.getOwnedRelatedElement().add(merge);
             ownerElement.getOwnedRelationship().add(featureMember);
             return merge;
@@ -876,16 +852,10 @@ public class ViewCreateService {
      * @return the new Decision action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createDecisionAction(Element ownerElement) {
-        Feature decisionsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::decisions");
-        if (this.isPart(ownerElement) || this.isAction(ownerElement) && decisionsStdAction != null) {
+        if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var decision = SysmlFactory.eINSTANCE.createDecisionNode();
             this.elementInitializerSwitch.doSwitch(decision);
-            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
-            subsetting.setSubsettingFeature(decision);
-            subsetting.setSubsettedFeature(decisionsStdAction);
-            subsetting.setIsImplied(true);
-            decision.getOwnedRelationship().add(subsetting);
             featureMember.getOwnedRelatedElement().add(decision);
             ownerElement.getOwnedRelationship().add(featureMember);
             return decision;
@@ -901,16 +871,10 @@ public class ViewCreateService {
      * @return the new Assignment action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createAssignmentAction(Element ownerElement) {
-        Feature assignmentSubActionsStdAction = this.utilService.findByName(ownerElement, "Actions::Action::assignments");
-        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition && assignmentSubActionsStdAction != null) {
+        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
             var assignmentAction = SysmlFactory.eINSTANCE.createAssignmentActionUsage();
             this.elementInitializerSwitch.doSwitch(assignmentAction);
-            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
-            subsetting.setSubsettingFeature(assignmentAction);
-            subsetting.setSubsettedFeature(assignmentSubActionsStdAction);
-            subsetting.setIsImplied(true);
-            assignmentAction.getOwnedRelationship().add(subsetting);
             featureMember.getOwnedRelatedElement().add(assignmentAction);
             ownerElement.getOwnedRelationship().add(featureMember);
             return assignmentAction;
@@ -919,14 +883,6 @@ public class ViewCreateService {
     }
 
     public Element createPerform(Element ownerElement) {
-        Feature subSettedStdElement;
-        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition) {
-            subSettedStdElement = this.utilService.findByName(ownerElement, "Performances::Performance::enclosedPerformances");
-        } else if (ownerElement instanceof PartUsage || ownerElement instanceof PartDefinition) {
-            subSettedStdElement = this.utilService.findByName(ownerElement, "Parts::Part::performedActions");
-        } else {
-            return ownerElement;
-        }
         // create an action usage as the performed action of this perform action
         var performedAction = SysmlFactory.eINSTANCE.createActionUsage();
         this.elementInitializerSwitch.doSwitch(performedAction);
@@ -934,16 +890,9 @@ public class ViewCreateService {
         var performedFeatureMember = this.createMembership(ownerElement);
         performedFeatureMember.getOwnedRelatedElement().add(performedAction);
         ownerElement.getOwnedRelationship().add(performedFeatureMember);
-
         // create the perform action
         var perform = SysmlFactory.eINSTANCE.createPerformActionUsage();
         this.elementInitializerSwitch.doSwitch(perform);
-        // set the subsetting relationship depending on the owner element
-        var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
-        subsetting.setSubsettingFeature(perform);
-        subsetting.setSubsettedFeature(subSettedStdElement);
-        subsetting.setIsImplied(true);
-        perform.getOwnedRelationship().add(subsetting);
         // set the reference subsetting relationship to the performed action
         var referenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
         referenceSubsetting.setReferencedFeature(performedAction);
@@ -955,22 +904,8 @@ public class ViewCreateService {
     }
 
     public Element createPerformAction(Element ownerElement) {
-        Feature subSettedStdElement;
-        if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition) {
-            subSettedStdElement = this.utilService.findByName(ownerElement, "Performances::Performance::enclosedPerformances");
-        } else if (ownerElement instanceof PartUsage || ownerElement instanceof PartDefinition) {
-            subSettedStdElement = this.utilService.findByName(ownerElement, "Parts::Part::performedActions");
-        } else {
-            return ownerElement;
-        }
         var perform = SysmlFactory.eINSTANCE.createPerformActionUsage();
         this.elementInitializerSwitch.doSwitch(perform);
-        // set the subsetting relationship depending on the owner element
-        var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
-        subsetting.setSubsettingFeature(perform);
-        subsetting.setSubsettedFeature(subSettedStdElement);
-        subsetting.setIsImplied(true);
-        perform.getOwnedRelationship().add(subsetting);
         // no subsetting relationship for the performed action since it is the same as the perform action
         var featureMember = this.createMembership(ownerElement);
         featureMember.getOwnedRelatedElement().add(perform);

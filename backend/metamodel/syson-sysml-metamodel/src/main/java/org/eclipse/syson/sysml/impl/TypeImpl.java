@@ -43,6 +43,7 @@ import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Unioning;
+import org.eclipse.syson.sysml.helper.ImplicitSpecializationSwitch;
 import org.eclipse.syson.sysml.helper.MembershipComputer;
 import org.eclipse.syson.sysml.helper.NameConflictingFilter;
 
@@ -472,6 +473,10 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 .map(Specialization.class::cast)
                 .filter(spec -> this.equals(spec.getSpecific()))
                 .forEach(ownedSpecializations::add);
+        var implicitSpecializations = new ImplicitSpecializationSwitch(ownedSpecializations).doSwitch(this);
+        for (var specialization : implicitSpecializations) {
+            ownedSpecializations.add(specialization);
+        }
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_OwnedSpecialization(), ownedSpecializations.size(), ownedSpecializations.toArray());
     }
 

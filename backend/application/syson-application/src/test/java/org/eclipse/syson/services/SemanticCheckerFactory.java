@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IExecuteEditingContextFunctionRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class SemanticCheckerFactory {
 
             Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(input);
             var payload = result.block();
-            assertThat(payload).isInstanceOf(IPayload.class);
+            assertThat(payload).isInstanceOf(ExecuteEditingContextFunctionSuccessPayload.class);
         };
     }
 
