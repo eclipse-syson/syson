@@ -32,6 +32,7 @@ import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.ResultExpressionMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.Usage;
@@ -110,6 +111,9 @@ public class ViewLabelServiceTest {
     public void testGetCompartmentItemLabelOfConstraintWithNoExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
         constraintUsage.setDeclaredName(CONSTRAINT_USAGE_NAME);
+        // Constraints have a special label when they are inside a RequirementConstraintMembership
+        RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+        requirementConstraintMembership.getOwnedRelatedElement().add(constraintUsage);
         assertThat(this.viewLabelService.getCompartmentItemLabel(constraintUsage)).isEqualTo(CONSTRAINT_USAGE_NAME);
     }
 
@@ -118,6 +122,9 @@ public class ViewLabelServiceTest {
     public void testGetCompartmentItemLabelOfConstraintWithBooleanExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
         constraintUsage.setDeclaredName(CONSTRAINT_USAGE_NAME);
+        // Constraints have a special label when they are inside a RequirementConstraintMembership
+        RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+        requirementConstraintMembership.getOwnedRelatedElement().add(constraintUsage);
 
         OperatorExpression operatorExpression = this.createOperatorExpression(constraintUsage, ">=");
         this.createIntegerLiteralForXParameter(operatorExpression);
@@ -134,6 +141,9 @@ public class ViewLabelServiceTest {
     public void testGetCompartmentItemLabelOfConstraintWithSubjectReferenceExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
         constraintUsage.setDeclaredName(CONSTRAINT_USAGE_NAME);
+        // Constraints have a special label when they are inside a RequirementConstraintMembership
+        RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+        requirementConstraintMembership.getOwnedRelatedElement().add(constraintUsage);
         ReferenceUsage subjectReference = SysmlFactory.eINSTANCE.createReferenceUsage();
         subjectReference.setDeclaredName("mySubject");
 
@@ -155,6 +165,10 @@ public class ViewLabelServiceTest {
     public void testGetCompartmentItemLabelOfConstraintWithAttributeReferenceExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
         constraintUsage.setDeclaredName(CONSTRAINT_USAGE_NAME);
+        // Constraints have a special label when they are inside a RequirementConstraintMembership
+        RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+        requirementConstraintMembership.getOwnedRelatedElement().add(constraintUsage);
+
         AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
         attributeUsage.setDeclaredName("myAttribute");
 
@@ -175,6 +189,10 @@ public class ViewLabelServiceTest {
     public void testGetCompartmentItemLabelOfConstraintWithSingleFeatureChainingExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
         constraintUsage.setDeclaredName(CONSTRAINT_USAGE_NAME);
+        // Constraints have a special label when they are inside a RequirementConstraintMembership
+        RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+        requirementConstraintMembership.getOwnedRelatedElement().add(constraintUsage);
+
         AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
         attributeUsage.setDeclaredName("myAttribute");
         AttributeUsage subAttributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
@@ -196,6 +214,10 @@ public class ViewLabelServiceTest {
     public void testGetCompartmentItemLabelOfConstraintWithMultipleFeatureChainingExpression() {
         ConstraintUsage constraintUsage = SysmlFactory.eINSTANCE.createConstraintUsage();
         constraintUsage.setDeclaredName(CONSTRAINT_USAGE_NAME);
+        // Constraints have a special label when they are inside a RequirementConstraintMembership
+        RequirementConstraintMembership requirementConstraintMembership = SysmlFactory.eINSTANCE.createRequirementConstraintMembership();
+        requirementConstraintMembership.getOwnedRelatedElement().add(constraintUsage);
+
         AttributeUsage xAttributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
         xAttributeUsage.setDeclaredName("x");
         AttributeUsage yAttributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();

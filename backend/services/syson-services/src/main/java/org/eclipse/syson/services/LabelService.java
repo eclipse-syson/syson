@@ -44,6 +44,7 @@ import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Usage;
@@ -134,7 +135,9 @@ public class LabelService {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         DirectEditParser parser = new DirectEditParser(tokens);
         ParseTree tree;
-        if (element instanceof ConstraintUsage) {
+        if (element instanceof ConstraintUsage && element.getOwningMembership() instanceof RequirementConstraintMembership) {
+            // Use the constraint expression parser only if the element is a constraint owned by a requirement, other
+            // constraints (including requirements) are parsed as regular elements.
             tree = parser.constraintExpression();
         } else {
             tree = parser.expression();

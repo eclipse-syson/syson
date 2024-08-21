@@ -32,6 +32,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
+import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
@@ -90,7 +91,10 @@ public class ViewLabelService extends LabelService {
      */
     public String getCompartmentItemLabel(Usage usage) {
         StringBuilder label = new StringBuilder();
-        if (usage instanceof ConstraintUsage constraintUsage) {
+        if (usage instanceof ConstraintUsage constraintUsage
+                && usage.getOwningMembership() instanceof RequirementConstraintMembership) {
+            // Use the constraint-specific rendering only if the element is a constraint owned by a requirement. Other
+            // constraints (including requirements) are rendered as regular elements.
             label.append(this.getCompartmentItemLabel(constraintUsage));
         } else {
             label.append(this.getUsagePrefix(usage));
@@ -115,7 +119,7 @@ public class ViewLabelService extends LabelService {
      *            the given {@link ConstraintUsage}
      * @return the label for the given {@link ConstraintUsage}
      */
-    public String getCompartmentItemLabel(ConstraintUsage constraintUsage) {
+    private String getCompartmentItemLabel(ConstraintUsage constraintUsage) {
         StringBuilder label = new StringBuilder();
         if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
             label.append(this.getValue(expression));
@@ -172,7 +176,8 @@ public class ViewLabelService extends LabelService {
      */
     public String getInitialDirectEditLabel(Usage usage) {
         String result;
-        if (usage instanceof ConstraintUsage constraintUsage) {
+        if (usage instanceof ConstraintUsage constraintUsage &&
+                usage.getOwningMembership() instanceof RequirementConstraintMembership) {
             result = this.getInitialDirectEditLabel(constraintUsage);
         } else {
             result = this.getCompartmentItemLabel(usage);
@@ -180,7 +185,7 @@ public class ViewLabelService extends LabelService {
         return result;
     }
 
-    public String getInitialDirectEditLabel(ConstraintUsage constraintUsage) {
+    private String getInitialDirectEditLabel(ConstraintUsage constraintUsage) {
         String result;
         if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
             result = this.getValue(expression);
