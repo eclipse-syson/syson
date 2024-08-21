@@ -70,6 +70,7 @@ The changes are:
 Memberships of a Type are inherited via _Specialization_ or _Conjugation_, not by composition.
 - Fix an issue that allowed to drop an element from the explorer or the diagram on one of its children.
 Doing so deleted both the dropped element and its children from the diagram, and could delete the representation if one of the element was the root element of the representation. 
+- Fix an issue that made the direct edit not working on Constraint and Requirement elements.
 
 
 == Improvements
