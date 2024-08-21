@@ -65,7 +65,7 @@ public class RequirementDefinitionActorsCompartmentNodeDescriptionProvider exten
     @Override
     protected List<INodeToolProvider> getItemCreationToolProviders() {
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
-        creationToolProviders.add(new ActorCompartmentNodeToolProvider(this.eClass, this.eReference, this.getDescriptionNameGenerator()));
+        creationToolProviders.add(new ActorCompartmentNodeToolProvider());
         return creationToolProviders;
     }
 }

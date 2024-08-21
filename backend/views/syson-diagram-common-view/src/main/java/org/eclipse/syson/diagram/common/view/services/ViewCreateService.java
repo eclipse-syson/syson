@@ -37,18 +37,22 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.ItemDefinition;
+import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementDefinition;
@@ -247,16 +251,60 @@ public class ViewCreateService {
      *            the element usage to set the objective for
      * @return the created RequirementUsage
      */
-    public Element createRequirementUsageAsObjectiveRequirement(Element self) {
+    public Element createRequirementUsageAsObjectiveRequirement(Element self, Element selectedObject) {
         Element result = self;
         if (self instanceof UseCaseUsage
                 || self instanceof UseCaseDefinition) {
             RequirementUsage newRequirementUsage = SysmlFactory.eINSTANCE.createRequirementUsage();
             result = newRequirementUsage;
-            newRequirementUsage.setDeclaredName(self.getDeclaredName() + "'s objective");
-            var objectiveMembership = SysmlFactory.eINSTANCE.createObjectiveMembership();
+            var objectiveMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getObjectiveMembership());
             objectiveMembership.getOwnedRelatedElement().add(newRequirementUsage);
-            self.getOwnedRelationship().add(objectiveMembership);
+            this.elementInitializerSwitch.doSwitch(newRequirementUsage);
+            if (selectedObject instanceof RequirementUsage requirementUsage) {
+                this.utilService.setSubsetting(newRequirementUsage, requirementUsage);
+            } else if (selectedObject instanceof RequirementDefinition requirementDefinition) {
+                this.utilService.setFeatureTyping(newRequirementUsage, requirementDefinition);
+            }
+        }
+        return result;
+    }
+
+    public Element createReferenceUsageAsSubject(Element self, Element selectedObject) {
+        Element result = self;
+        if (self instanceof UseCaseUsage
+                || self instanceof UseCaseDefinition
+                || self instanceof RequirementUsage
+                || self instanceof RequirementDefinition) {
+            ReferenceUsage newReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+            result = newReferenceUsage;
+            var subjectMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getSubjectMembership());
+            subjectMembership.getOwnedRelatedElement().add(newReferenceUsage);
+            this.elementInitializerSwitch.doSwitch(newReferenceUsage);
+            if (selectedObject instanceof Usage usage) {
+                this.utilService.setSubsetting(newReferenceUsage, usage);
+            } else if (selectedObject instanceof Definition definition) {
+                this.utilService.setFeatureTyping(newReferenceUsage, definition);
+            }
+        }
+        return result;
+    }
+
+    public Element createPartUsageAsActor(Element self, Element selectedObject) {
+        Element result = self;
+        if (self instanceof UseCaseUsage
+                || self instanceof UseCaseDefinition
+                || self instanceof RequirementUsage
+                || self instanceof RequirementDefinition) {
+            PartUsage newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+            result = newPartUsage;
+            var actorMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getActorMembership());
+            actorMembership.getOwnedRelatedElement().add(newPartUsage);
+            this.elementInitializerSwitch.doSwitch(newPartUsage);
+            if (selectedObject instanceof ItemUsage usage) {
+                this.utilService.setSubsetting(newPartUsage, usage);
+            } else if (selectedObject instanceof ItemDefinition definition) {
+                this.utilService.setFeatureTyping(newPartUsage, definition);
+            }
         }
         return result;
     }

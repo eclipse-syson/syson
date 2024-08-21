@@ -38,6 +38,7 @@ import org.eclipse.syson.diagram.common.view.tools.ForkActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
@@ -445,7 +446,8 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         var createSection = this.toolDescriptionService.buildCreateSection(
                 this.createNewSubjectNodeTool(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter()),
                 this.createNewActorNodeTool(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter()),
-                this.createRequirementUsageAsObjectiveRequirementNodeTool());
+                this.createRequirementUsageAsObjectiveRequirementNodeTool(),
+                this.creatRequirementUsageAsObjectiveWithBaseRequirementNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
@@ -471,7 +473,8 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                         null, FeatureDirectionKind.OUT),
                 this.createNewSubjectNodeTool(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter()),
                 this.createNewActorNodeTool(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter()),
-                this.createRequirementUsageAsObjectiveRequirementNodeTool());
+                this.createRequirementUsageAsObjectiveRequirementNodeTool(),
+                this.creatRequirementUsageAsObjectiveWithBaseRequirementNodeTool());
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new SetAsCompositeToolProvider().create(this.cache),
@@ -509,18 +512,23 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     }
 
     private NodeTool createNewSubjectNodeTool(EClass eClass, EReference eRefrence) {
-        var subjectCompartmentNodeToolProvider = new SubjectCompartmentNodeToolProvider(eClass, eRefrence, this.descriptionNameGenerator);
+        var subjectCompartmentNodeToolProvider = new SubjectCompartmentNodeToolProvider();
         return subjectCompartmentNodeToolProvider.create(this.cache);
     }
 
     private NodeTool createNewActorNodeTool(EClass eClass, EReference eReference) {
-        var actorsCompartmentNodeToolProvider = new ActorCompartmentNodeToolProvider(eClass, eReference, this.descriptionNameGenerator);
+        var actorsCompartmentNodeToolProvider = new ActorCompartmentNodeToolProvider();
         return actorsCompartmentNodeToolProvider.create(this.cache);
     }
 
     private NodeTool createRequirementUsageAsObjectiveRequirementNodeTool() {
         var objectiveRequirementCompartmentNodeToolProvider = new ObjectiveRequirementCompartmentNodeToolProvider();
         return objectiveRequirementCompartmentNodeToolProvider.create(this.cache);
+    }
+
+    private NodeTool creatRequirementUsageAsObjectiveWithBaseRequirementNodeTool() {
+        var objectiveRequirementWithBaseRequirementCompartmentNodeToolProvider = new ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider();
+        return objectiveRequirementWithBaseRequirementCompartmentNodeToolProvider.create(this.cache);
     }
 
     private NodeToolSection createPartDefinitionElementsToolSection() {

@@ -263,6 +263,24 @@ public class ViewNodeService {
                 .toList();
     }
 
+    public List<Element> getAllReachableRequirements(EObject eObject) {
+        List<EObject> allRequirementUsages = this.utilService.getAllReachable(eObject, SysmlPackage.eINSTANCE.getRequirementUsage(), false);
+        List<EObject> allRequirementDefinitions = this.utilService.getAllReachable(eObject, SysmlPackage.eINSTANCE.getRequirementDefinition(), false);
+        return Stream.concat(allRequirementUsages.stream(), allRequirementDefinitions.stream())
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .toList();
+    }
+
+    public List<Element> getAllReachableItems(EObject eObject) {
+        List<EObject> allItemUsage = this.utilService.getAllReachable(eObject, SysmlPackage.eINSTANCE.getItemUsage(), false);
+        List<EObject> allItemDefinition = this.utilService.getAllReachable(eObject, SysmlPackage.eINSTANCE.getItemDefinition(), false);
+        return Stream.concat(allItemUsage.stream(), allItemDefinition.stream())
+                .filter(Element.class::isInstance)
+                .map(Element.class::cast)
+                .toList();
+    }
+
     /**
      * Returns {@code true} if the provided {@code element} is an actor, {@code false} otherwise.
      * <p>

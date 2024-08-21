@@ -364,7 +364,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 if (type instanceof ConjugatedPortDefinition conjugatedPortDef) {
                     this.handleConjugatedPortTyping(usage, conjugatedPortDef);
                 } else if (type != null) {
-                    this.handleFeatureTyping(usage, type);
+                    this.utilService.setFeatureTyping(usage, type);
                 }
             }
         }
@@ -597,34 +597,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    private void handleFeatureTyping(Usage usage, Type type) {
-        var optConjugatedPortTyping = this.element.getOwnedRelationship().stream()
-                .filter(ConjugatedPortTyping.class::isInstance)
-                .map(ConjugatedPortTyping.class::cast)
-                .findFirst();
-        if (optConjugatedPortTyping.isPresent()) {
-            EcoreUtil.remove(optConjugatedPortTyping.get());
-        }
-        var optFeatureTyping = this.element.getOwnedRelationship().stream()
-                .filter(FeatureTyping.class::isInstance)
-                .map(FeatureTyping.class::cast)
-                .findFirst();
-        if (optFeatureTyping.isPresent()) {
-            FeatureTyping featureTyping = optFeatureTyping.get();
-            if (!type.equals(featureTyping.getType())) {
-                featureTyping.setType(type);
-                featureTyping.setIsImplied(false);
-            }
-            featureTyping.setTypedFeature(usage);
-        } else {
-            var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
-            this.element.getOwnedRelationship().add(newFeatureTyping);
-            newFeatureTyping.setType(type);
-            newFeatureTyping.setTypedFeature(usage);
-            this.elementInitializer.doSwitch(newFeatureTyping);
-        }
-    }
-
     @Override
     public void exitSubsettingExpression(SubsettingExpressionContext ctx) {
         if (this.options.contains(LabelService.SUBSETTING_OFF)) {
@@ -660,24 +632,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
 
             if (definition != null) {
-                var optSubclassification = subclassificationDef.getOwnedRelationship().stream()
-                        .filter(Subclassification.class::isInstance)
-                        .map(Subclassification.class::cast)
-                        .findFirst();
-                if (optSubclassification.isPresent()) {
-                    Subclassification subclassification = optSubclassification.get();
-                    if (!definition.equals(subclassification.getSuperclassifier())) {
-                        subclassification.setSuperclassifier(definition);
-                        subclassification.setIsImplied(false);
-                    }
-                    subclassification.setSubclassifier(subclassificationDef);
-                } else {
-                    var newSubclassification = SysmlFactory.eINSTANCE.createSubclassification();
-                    subclassificationDef.getOwnedRelationship().add(newSubclassification);
-                    newSubclassification.setSuperclassifier(definition);
-                    newSubclassification.setSubclassifier(subclassificationDef);
-                    this.elementInitializer.caseSubclassification(newSubclassification);
-                }
+                this.utilService.setSubclassification(subclassificationDef, definition);
             }
         }
     }
@@ -705,24 +660,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
 
             if (usage != null) {
-                var optSubsetting = subsettingUsage.getOwnedRelationship().stream()
-                        .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
-                        .map(Subsetting.class::cast)
-                        .findFirst();
-                if (optSubsetting.isPresent()) {
-                    Subsetting subsetting = optSubsetting.get();
-                    if (!usage.equals(subsetting.getSubsettedFeature())) {
-                        subsetting.setSubsettedFeature(usage);
-                        subsetting.setIsImplied(false);
-                    }
-                    subsetting.setSubsettingFeature(subsettingUsage);
-                } else {
-                    var newSubsetting = SysmlFactory.eINSTANCE.createSubsetting();
-                    subsettingUsage.getOwnedRelationship().add(newSubsetting);
-                    newSubsetting.setSubsettedFeature(usage);
-                    newSubsetting.setSubsettingFeature(subsettingUsage);
-                    this.elementInitializer.caseSubsetting(newSubsetting);
-                }
+                this.utilService.setSubsetting(subsettingUsage, usage);
             }
         }
     }
@@ -760,24 +698,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
 
             if (usage != null) {
-                var optRedefinition = redefining.getOwnedRelationship().stream()
-                        .filter(Redefinition.class::isInstance)
-                        .map(Redefinition.class::cast)
-                        .findFirst();
-                if (optRedefinition.isPresent()) {
-                    Redefinition redefinition = optRedefinition.get();
-                    if (!usage.equals(redefinition.getRedefinedFeature())) {
-                        redefinition.setRedefinedFeature(usage);
-                        redefinition.setIsImplied(false);
-                    }
-                    redefinition.setRedefiningFeature(redefining);
-                } else {
-                    var newRedefinition = SysmlFactory.eINSTANCE.createRedefinition();
-                    redefining.getOwnedRelationship().add(newRedefinition);
-                    newRedefinition.setRedefinedFeature(usage);
-                    newRedefinition.setRedefiningFeature(redefining);
-                    this.elementInitializer.caseRedefinition(newRedefinition);
-                }
+                this.utilService.setRedefinition(redefining, usage);
             }
         }
     }

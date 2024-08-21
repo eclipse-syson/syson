@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -61,6 +62,7 @@ public class UseCaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProv
     protected List<INodeToolProvider> getItemCreationToolProviders() {
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
         creationToolProviders.add(new ObjectiveRequirementCompartmentNodeToolProvider());
+        creationToolProviders.add(new ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider());
         return creationToolProviders;
     }
 }

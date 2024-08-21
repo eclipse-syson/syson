@@ -41,7 +41,9 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.AQLConstants;
@@ -162,6 +164,11 @@ public class JavaServiceIsCalledChecker {
             expressions.add(nodeTool.getPreconditionExpression());
             if (nodeTool instanceof LabelEditTool labelEditTool) {
                 expressions.add(labelEditTool.getInitialDirectEditLabelExpression());
+            }
+            if (nodeTool instanceof NodeTool createNodeTool) {
+                if (createNodeTool.getDialogDescription() instanceof SelectionDialogDescription selectionDialogDescription) {
+                    expressions.add(selectionDialogDescription.getSelectionCandidatesExpression());
+                }
             }
             for (Operation bodyOperation : nodeTool.getBody()) {
                 EMFUtils.allContainedObjectOfType(bodyOperation, ChangeContext.class)
