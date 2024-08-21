@@ -12,47 +12,52 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.List;
-
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
-import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.util.AQLUtils;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
- * Node tool provider for Subject compartment in the element that need such compartment.
+ * Node tool provider for objective compartment in the element that need such compartment.
+ * <p>
+ * This tool opens a selection dialog to select the existing requirement to use as the objective. The selected
+ * requirement isn't used as is, but is set as the type/subsetted feature of a new {@link RequirementUsage} representing
+ * the objective.
+ * </p>
  *
- * @author Jerome Gout
+ * @author gdaniel
  */
-public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
+public class ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
+
+    public ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider() {
+        super();
+    }
 
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createReferenceUsageAsSubject(selectedObject)";
+        return "aql:self.createRequirementUsageAsObjectiveRequirement(selectedObject)";
     }
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getType());
         return this.diagramBuilderHelper.newSelectionDialogDescription()
-                .selectionCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", List.of(domainType, "false")))
-                .selectionMessage("Select an existing Type as subject:")
+                .selectionCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachableRequirements"))
+                .selectionMessage("Select an existing Requirement as objective:")
                 .build();
     }
 
     @Override
     protected String getNodeToolName() {
-        return "New Subject";
+        return "New Objective from existing Requirement";
     }
 
     @Override
     protected String getNodeToolIconURLsExpression() {
-        return "/icons/full/obj16/Subject.svg";
+        return "/icons/full/obj16/Objective.svg";
     }
 
     @Override
     protected String getPreconditionExpression() {
-        return "aql:self.isEmptySubjectCompartment()";
+        return "aql:self.isEmptyObjectiveRequirementCompartment()";
     }
 
     @Override

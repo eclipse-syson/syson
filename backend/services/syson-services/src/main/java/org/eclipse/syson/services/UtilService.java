@@ -33,18 +33,25 @@ import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAd
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Classifier;
+import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
+import org.eclipse.syson.sysml.Feature;
+import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateUsage;
+import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
@@ -642,5 +649,136 @@ public class UtilService {
             return "0cdc3cd3-b06c-5c32-beda-0cf4ba164a64".equals(au.getElementId());
         }
         return false;
+    }
+
+    /**
+     * Configures {@code usage} to be typed by {@code type}.
+     *
+     * @param usage
+     *            the usage that is typed by the given type
+     * @param type
+     *            the type
+     * @return the configured {@code usage}
+     */
+    public Usage setFeatureTyping(Usage usage, Type type) {
+        var optConjugatedPortTyping = usage.getOwnedRelationship().stream()
+                .filter(ConjugatedPortTyping.class::isInstance)
+                .map(ConjugatedPortTyping.class::cast)
+                .findFirst();
+        if (optConjugatedPortTyping.isPresent()) {
+            EcoreUtil.remove(optConjugatedPortTyping.get());
+        }
+        var optFeatureTyping = usage.getOwnedRelationship().stream()
+                .filter(FeatureTyping.class::isInstance)
+                .map(FeatureTyping.class::cast)
+                .findFirst();
+        if (optFeatureTyping.isPresent()) {
+            FeatureTyping featureTyping = optFeatureTyping.get();
+            if (!type.equals(featureTyping.getType())) {
+                featureTyping.setType(type);
+                featureTyping.setIsImplied(false);
+            }
+            featureTyping.setTypedFeature(usage);
+        } else {
+            var newFeatureTyping = SysmlFactory.eINSTANCE.createFeatureTyping();
+            usage.getOwnedRelationship().add(newFeatureTyping);
+            newFeatureTyping.setType(type);
+            newFeatureTyping.setTypedFeature(usage);
+            this.elementInitializerSwitch.doSwitch(newFeatureTyping);
+        }
+        return usage;
+    }
+
+    /**
+     * Configures {@code subsettingUsage} to subset {@code feature}.
+     *
+     * @param subsettingUsage
+     *            the usage that sub-classify the classifier
+     * @param feature
+     *            the subsetted feature
+     * @return the configured {@code subsettingUsage}
+     */
+    public Usage setSubsetting(Usage subsettingUsage, Feature feature) {
+        var optSubsetting = subsettingUsage.getOwnedRelationship().stream()
+                .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
+                .map(Subsetting.class::cast)
+                .findFirst();
+        if (optSubsetting.isPresent()) {
+            Subsetting subsetting = optSubsetting.get();
+            if (!feature.equals(subsetting.getSubsettedFeature())) {
+                subsetting.setSubsettedFeature(feature);
+                subsetting.setIsImplied(false);
+            }
+            subsetting.setSubsettingFeature(subsettingUsage);
+        } else {
+            var newSubsetting = SysmlFactory.eINSTANCE.createSubsetting();
+            subsettingUsage.getOwnedRelationship().add(newSubsetting);
+            newSubsetting.setSubsettedFeature(feature);
+            newSubsetting.setSubsettingFeature(subsettingUsage);
+            this.elementInitializerSwitch.caseSubsetting(newSubsetting);
+        }
+        return subsettingUsage;
+    }
+
+    /**
+     * Configures {@code subclassifyingDefinition} to sub-classify {@code classifier}.
+     *
+     * @param subclassifyingDefinition
+     *            the definition that sub-classify the classifier
+     * @param classifier
+     *            the sub-classified classifier
+     * @return the configured {@code subclassifyingDefinition}
+     */
+    public Definition setSubclassification(Definition subclassifyingDefinition, Classifier classifier) {
+        var optSubclassification = subclassifyingDefinition.getOwnedRelationship().stream()
+                .filter(Subclassification.class::isInstance)
+                .map(Subclassification.class::cast)
+                .findFirst();
+        if (optSubclassification.isPresent()) {
+            Subclassification subclassification = optSubclassification.get();
+            if (!classifier.equals(subclassification.getSuperclassifier())) {
+                subclassification.setSuperclassifier(classifier);
+                subclassification.setIsImplied(false);
+            }
+            subclassification.setSubclassifier(subclassifyingDefinition);
+        } else {
+            var newSubclassification = SysmlFactory.eINSTANCE.createSubclassification();
+            subclassifyingDefinition.getOwnedRelationship().add(newSubclassification);
+            newSubclassification.setSuperclassifier(classifier);
+            newSubclassification.setSubclassifier(subclassifyingDefinition);
+            this.elementInitializerSwitch.caseSubclassification(newSubclassification);
+        }
+        return subclassifyingDefinition;
+    }
+
+    /**
+     * Configures {@code redefiningUsage} to redefine {@code feature}.
+     *
+     * @param redefiningUsage
+     *            the usage that redefines the feature
+     * @param feature
+     *            the redefined feature
+     * @return the configured {@code redefiningUsage}
+     */
+    public Usage setRedefinition(Usage redefiningUsage, Feature feature) {
+        var optRedefinition = redefiningUsage.getOwnedRelationship().stream()
+                .filter(Redefinition.class::isInstance)
+                .map(Redefinition.class::cast)
+                .findFirst();
+        if (optRedefinition.isPresent()) {
+            Redefinition redefinition = optRedefinition.get();
+            if (!feature.equals(redefinition.getRedefinedFeature())) {
+                redefinition.setRedefinedFeature(feature);
+                redefinition.setIsImplied(false);
+            }
+            redefinition.setRedefiningFeature(redefiningUsage);
+        } else {
+            var newRedefinition = SysmlFactory.eINSTANCE.createRedefinition();
+            redefiningUsage.getOwnedRelationship().add(newRedefinition);
+            newRedefinition.setRedefinedFeature(feature);
+            newRedefinition.setRedefiningFeature(redefiningUsage);
+            this.elementInitializerSwitch.caseRedefinition(newRedefinition);
+        }
+        return redefiningUsage;
     }
 }

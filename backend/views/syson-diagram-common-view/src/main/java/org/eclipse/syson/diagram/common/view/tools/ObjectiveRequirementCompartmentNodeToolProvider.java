@@ -12,20 +12,21 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
+import org.eclipse.syson.sysml.RequirementUsage;
+
 /**
- * Node tool provider for Objective Requirement compartment in the element that need such compartment.
+ * Node tool provider for objective compartment in the element that need such compartment.
+ * <p>
+ * This tool creates a new {@link RequirementUsage} and sets it as the objective of the containing element.
+ * </p>
  *
  * @author Jerome Gout
  */
 public class ObjectiveRequirementCompartmentNodeToolProvider extends AbstractCompartmentNodeToolProvider {
 
-    public ObjectiveRequirementCompartmentNodeToolProvider() {
-        super();
-    }
-
     @Override
     protected String getServiceCallExpression() {
-        return "aql:self.createRequirementUsageAsObjectiveRequirement()";
+        return "aql:self.createRequirementUsageAsObjectiveRequirement(null)";
     }
 
     @Override

@@ -124,6 +124,7 @@ image::release-notes-actor-representation.png[Actor node on the General View dia
 
 - Add support for edges between actors and their containing UseCase/Requirement in the General View diagram.
 The source of the edge (the UseCase or Requirement) can be reconnected to another UseCase or Requirement, but the target (Actor) cannot be reconnected.
+- Allow to select existing _RequirementUsage_ and _RequirementDefinition_ on Objective tool. 
 
 == New features
 

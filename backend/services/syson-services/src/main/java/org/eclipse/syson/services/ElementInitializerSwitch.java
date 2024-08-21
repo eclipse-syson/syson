@@ -14,6 +14,7 @@ package org.eclipse.syson.services;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
@@ -25,21 +26,28 @@ import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
@@ -129,6 +137,15 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     }
 
     @Override
+    public Element casePartUsage(PartUsage object) {
+        this.caseUsage(object);
+        if (object.getOwningMembership() instanceof ActorMembership) {
+            object.setDeclaredName("actor");
+        }
+        return object;
+    }
+
+    @Override
     public Element casePerformActionUsage(PerformActionUsage object) {
         // no name for new perform action
         return object;
@@ -159,6 +176,26 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseReferenceSubsetting(ReferenceSubsetting object) {
         object.setDeclaredName("references");
+        return object;
+    }
+
+    @Override
+    public Element caseReferenceUsage(ReferenceUsage object) {
+        this.caseUsage(object);
+        if (object.getOwningMembership() instanceof SubjectMembership) {
+            object.setDeclaredName("subject");
+        }
+        return object;
+    }
+
+    @Override
+    public Element caseRequirementUsage(RequirementUsage object) {
+        this.caseUsage(object);
+        if (object.getOwningMembership() instanceof ObjectiveMembership) {
+            if (object.getOwner() instanceof UseCaseUsage || object.getOwner() instanceof UseCaseDefinition) {
+                object.setDeclaredName(object.getOwner().getName() + "'s objective");
+            }
+        }
         return object;
     }
 

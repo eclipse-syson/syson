@@ -64,7 +64,7 @@ public class UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider extends 
     @Override
     protected List<INodeToolProvider> getItemCreationToolProviders() {
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
-        creationToolProviders.add(new SubjectCompartmentNodeToolProvider(this.eClass, this.eReference, this.getDescriptionNameGenerator()));
+        creationToolProviders.add(new SubjectCompartmentNodeToolProvider());
         return creationToolProviders;
     }
 }

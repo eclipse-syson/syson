@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.syson.util.AQLConstants;
 
 /**
@@ -43,6 +44,19 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
      * @return the AQL expression associated to this node tool.
      */
     protected abstract String getServiceCallExpression();
+
+    /**
+     * Returns the selection dialog to display as part of the tool's execution.
+     * <p>
+     * No selection dialog will be displayed if this method returns {@code null}.
+     * </p>
+     *
+     * @return the selection dialog to display as part of the tool's execution
+     */
+    protected SelectionDialogDescription getSelectionDialogDescription() {
+        // No selection dialog by default.
+        return null;
+    }
 
     /**
      * Return the node tool label visible in the compartment palette.
@@ -79,6 +93,7 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
     @Override
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
+        builder.dialogDescription(this.getSelectionDialogDescription());
 
         List<Operation> allOperations = new ArrayList<>();
 
