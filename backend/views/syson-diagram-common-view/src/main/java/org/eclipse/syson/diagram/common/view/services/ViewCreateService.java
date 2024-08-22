@@ -80,15 +80,19 @@ public class ViewCreateService {
 
     private final IObjectService objectService;
 
+    private final ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService;
+
     private final ElementInitializerSwitch elementInitializerSwitch;
 
     private final DeleteService deleteService;
 
     private final UtilService utilService;
 
-    public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
+    public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService,
+            ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService) {
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.objectService = Objects.requireNonNull(objectService);
+        this.showDiagramsInheritedMembersService = Objects.requireNonNull(showDiagramsInheritedMembersService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
@@ -456,6 +460,10 @@ public class ViewCreateService {
     }
 
     public List<Feature> getInheritedCompartmentItems(Type type, String eReferenceName) {
+        if (!this.showDiagramsInheritedMembersService.getShowInheritedMembers()) {
+            return List.of();
+        }
+
         List<Feature> inheritedElements = new ArrayList<>();
         EStructuralFeature eStructuralFeature = type.eClass().getEStructuralFeature(eReferenceName);
         if (eStructuralFeature instanceof EReference eReference) {

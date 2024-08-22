@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.ActionFlowViewEmptyDiagramNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembersService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.sysml.Element;
 
@@ -29,8 +30,9 @@ import org.eclipse.syson.sysml.Element;
  */
 public class ActionFlowViewCreateService extends ViewCreateService {
 
-    public ActionFlowViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
-        super(viewDiagramDescriptionSearchService, objectService);
+    public ActionFlowViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService,
+            ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService) {
+        super(viewDiagramDescriptionSearchService, objectService, showDiagramsInheritedMembersService);
     }
 
     /**

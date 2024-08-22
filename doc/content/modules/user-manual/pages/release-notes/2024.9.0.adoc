@@ -12,6 +12,15 @@ A click on the _Insert_ button converts the textual SysMLv2 into model elements 
 
 image::release-notes-insert-textual-sysmlv2-dialog.png[New objects from text dialog]
 
+- *New "Show/Hide Icons in Diagrams" diagram panel entry*: from panel in _Diagrams_, allow to show or hide the icons of diagrams elements.
+
+image::release-notes-show-hide-icons-in-diagram.png[Show/Hide Icons in Diagram]
+
+- *New "Show/Hide Inherited Members in Diagrams" diagram panel entry*: from panel in _Diagrams_, allow to show or hide the inherited members of elements in diagrams.
+
+image::release-notes-show-hide-inherited-members-in-diagram.png[Show/Hide Inherited Members in Diagram]
+
+
 == Breaking changes
 
 - Move _StateTransitionCompartmentNodeDescriptionProvider_ from syson-diagram-statetransition-view to module syson-diagram-common-view.
@@ -158,3 +167,7 @@ image::release-notes-insert-textual-sysmlv2-dialog.png[New objects from text dia
 
 - Improve the drag and drop of container elements to move their content.
 - Handle implicit specializations from standard libraries for Usages/Definitions.
+- Add "Show/Hide Inherited Members in Diagrams" action in Diagram Panel, allowing to show/hide inherited members in diagrams.
+
+image::release-notes-show-hide-inherited-members-in-diagram.png[Show/Hide Inherited Members in Diagram]
+
