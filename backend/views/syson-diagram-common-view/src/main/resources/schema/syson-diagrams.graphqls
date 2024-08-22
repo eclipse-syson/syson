@@ -1,9 +1,11 @@
 extend type Viewer {
   showDiagramsIconsValue: Boolean!
+  showDiagramsInheritedMembersValue: Boolean!
 }
 
 extend type Mutation {
   showDiagramsIcons(input: ShowDiagramsIconsInput!): ShowDiagramsIconsPayload!
+  showDiagramsInheritedMembers(input: ShowDiagramsInheritedMembersInput!): ShowDiagramsInheritedMembersPayload!
 }
 
 input ShowDiagramsIconsInput {
@@ -16,6 +18,20 @@ input ShowDiagramsIconsInput {
 union ShowDiagramsIconsPayload = ErrorPayload | ShowDiagramsIconsSuccessPayload
 
 type ShowDiagramsIconsSuccessPayload {
+  id: ID!
+  show: Boolean!
+}
+
+input ShowDiagramsInheritedMembersInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  show: Boolean!
+}
+
+union ShowDiagramsInheritedMembersPayload = ErrorPayload | ShowDiagramsInheritedMembersSuccessPayload
+
+type ShowDiagramsInheritedMembersSuccessPayload {
   id: ID!
   show: Boolean!
 }

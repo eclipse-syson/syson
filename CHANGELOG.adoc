@@ -116,6 +116,7 @@ A new edge tool allows to create a flow between two ports.
 - https://github.com/eclipse-syson/syson/issues/615[#615] [details] Add documentation property to Core tab of the Details view.
 - https://github.com/eclipse-syson/syson/issues/626[#626] [explorer] Allow to insert textual SysMLv2 from existing model elements.
 - https://github.com/eclipse-syson/syson/issues/466[#466] [syson] Handle implicit specializations from standard libraries for Usages/Definitions.
+- https://github.com/eclipse-syson/syson/issues/667[#667] [diagrams] Add "Show/Hide Inherited Members in Diagrams" action in Diagram Panel, allowing to show/hide inherited members in diagrams.
 
 == v2024.7.0
 

@@ -17,6 +17,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembersService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
@@ -29,8 +30,9 @@ import org.eclipse.syson.sysml.Element;
  */
 public class GeneralViewCreateService extends ViewCreateService {
 
-    public GeneralViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
-        super(viewDiagramDescriptionSearchService, objectService);
+    public GeneralViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService,
+            ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService) {
+        super(viewDiagramDescriptionSearchService, objectService, showDiagramsInheritedMembersService);
     }
 
     /**

@@ -13,6 +13,8 @@
 export { InsertTextualSysMLMenuContribution } from './extensions/InsertTextualSysMLv2MenuContribution';
 export { InsertTextualSysMLv2Modal } from './extensions/InsertTextualSysMLv2Modal';
 export { ShowHideDiagramsIcons } from './extensions/ShowHideDiagramsIcons';
+export { ShowHideDiagramsInheritedMembers } from './extensions/ShowHideDiagramsInheritedMembers';
+export { SysONDiagramPanelMenu } from './extensions/SysONDiagramPanelMenu';
 export { useInsertTextualSysMLv2 } from './extensions/useInsertTextualSysMLv2';
 export { SysMLPackageNode } from './nodes/package/SysMLPackageNode';
 export { SysMLPackageNodeConverter } from './nodes/package/SysMLPackageNodeConverter';

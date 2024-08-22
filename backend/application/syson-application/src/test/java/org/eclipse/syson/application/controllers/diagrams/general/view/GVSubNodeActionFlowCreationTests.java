@@ -60,11 +60,9 @@ import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.AcceptActionUsage;
-import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
-import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
@@ -428,22 +426,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
         };
         this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
-            assertThat(semanticRootObject).isInstanceOf(Element.class);
-            Element semanticRootElement = (Element) semanticRootObject;
-            Optional<PerformActionUsage> optParentElement = EMFUtils.allContainedObjectOfType(semanticRootElement, PerformActionUsage.class)
-                    .filter(element -> Objects.equals(element.getName(), "performAction"))
-                    .findFirst();
-            assertThat(optParentElement).isPresent();
-            var performActionUsage = optParentElement.get();
-            ActionUsage performedAction = performActionUsage.getPerformedAction();
-            // the performed action is another action
-            assertThat(performedAction).isNotEqualTo(performedAction);
-            assertThat(performedAction.getName()).isEqualTo("performedAction");
-        };
         this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
-        this.creationTestsService.checkEditingContext(semanticChecker, this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)

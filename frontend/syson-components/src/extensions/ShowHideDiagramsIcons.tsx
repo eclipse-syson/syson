@@ -12,14 +12,10 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
-import {
-  DiagramContext,
-  DiagramContextValue,
-  DiagramPanelActionProps,
-} from '@eclipse-sirius/sirius-components-diagrams';
+import { DiagramPanelActionProps } from '@eclipse-sirius/sirius-components-diagrams';
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   GQLErrorPayload,
@@ -51,9 +47,7 @@ const isErrorPayload = (payload: GQLSetShowDiagramsIconsPayload): payload is GQL
 const showTooltip: string = 'Hide Icons in Diagrams';
 const hideTooltip: string = 'Show Icons in Diagrams';
 
-export const ShowHideDiagramsIcons = ({}: DiagramPanelActionProps) => {
-  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
-
+export const ShowHideDiagramsIcons = ({ editingContextId, diagramId }: DiagramPanelActionProps) => {
   const [state, setState] = useState<ShowHideDiagramsIconsState>({
     checked: null,
     tooltip: 'Show/Hide Icons in Diagrams',
@@ -113,7 +107,7 @@ export const ShowHideDiagramsIcons = ({}: DiagramPanelActionProps) => {
   }, [loading, error, data]);
 
   return (
-    <Tooltip title={state.tooltip}>
+    <Tooltip title={state.tooltip} placement="left">
       <Checkbox checked={state.checked !== null ? state.checked : true} onChange={handleChange} />
     </Tooltip>
   );

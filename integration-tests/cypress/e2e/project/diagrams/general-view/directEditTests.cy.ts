@@ -13,9 +13,9 @@
 
 import { Project } from '../../../../pages/Project';
 import { SysMLv2 } from '../../../../usecases/SysMLv2';
+import { Details } from '../../../../workbench/Details';
 import { Diagram } from '../../../../workbench/Diagram';
 import { Explorer } from '../../../../workbench/Explorer';
-import { Details } from '../../../../workbench/Details';
 
 describe('Node Creation Tests', () => {
   const sysmlv2 = new SysMLv2();
@@ -52,18 +52,28 @@ describe('Node Creation Tests', () => {
         diagram.getPalette().should('exist').find('div[role=tooltip]').findByTestId('New Part - Tool').click();
       });
 
-      it('The inherited members are visible in compartments', () => {
-        diagram.getNodes(diagramLabel, 'part').type('p1 :> parts{enter}');
-        diagram.getNodes(diagramLabel, 'p1 :> Parts::parts').click();
+      it('The inherited members are visible in compartments (only if the option "inherited members" is enabled)', () => {
+        cy.getByTestId('syson-diagram-panel-menu-icon').click();
+        // wait for the GraphQL query to retrieve the value of the checkbox
+        cy.wait(500);
+        cy.getByTestId('ShowHideDiagramInheritedMembersCheckbox').then(($cb) => {
+          const check = $cb.attr('aria-label');
+          if (check === 'Show Inherited Members in Diagrams') {
+            $cb.trigger('click');
+          }
+        });
+
+        diagram.getNodes(diagramLabel, 'part').type('p1{enter}');
+        diagram.getNodes(diagramLabel, 'p1').click();
         diagram
-          .getNodes(diagramLabel, 'p1 :> Parts::parts')
+          .getNodes(diagramLabel, 'p1')
           .getByTestId('Palette')
           .should('exist')
           .findByTestId('Create')
           .findByTestId('expand')
           .click();
         diagram
-          .getNodes(diagramLabel, 'p1 :> Parts::parts')
+          .getNodes(diagramLabel, 'p1')
           .getByTestId('Palette')
           .should('exist')
           .find('div[role=tooltip]')

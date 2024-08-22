@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembersService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
@@ -41,8 +42,9 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class InterconnectionViewCreateService extends ViewCreateService {
 
-    public InterconnectionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
-        super(viewDiagramDescriptionSearchService, objectService);
+    public InterconnectionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService,
+            ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService) {
+        super(viewDiagramDescriptionSearchService, objectService, showDiagramsInheritedMembersService);
     }
 
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target) {

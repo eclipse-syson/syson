@@ -27,11 +27,11 @@ import {
 } from '@eclipse-sirius/sirius-web-application';
 import {
   InsertTextualSysMLMenuContribution,
-  ShowHideDiagramsIcons,
   SysMLPackageNode,
   SysMLPackageNodeConverter,
   SysMLPackageNodeLayoutHandler,
   sysMLPackageNodeStyleDocumentTransform,
+  SysONDiagramPanelMenu,
 } from '@eclipse-syson/syson-components';
 import ReactDOM from 'react-dom';
 
@@ -93,8 +93,8 @@ extensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
 });
 
 extensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
-  identifier: `syson_${diagramPanelActionExtensionPoint.identifier}_showHideDiagramIcons`,
-  Component: ShowHideDiagramsIcons,
+  identifier: `syson_${diagramPanelActionExtensionPoint.identifier}_CustomPanelEntriesMenu`,
+  Component: SysONDiagramPanelMenu,
 });
 
 extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {

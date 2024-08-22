@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
+import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembersService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.StateTransitionViewEmptyDiagramNodeDescriptionProvider;
@@ -33,8 +34,9 @@ import org.eclipse.syson.sysml.SysmlPackage;
  */
 public class StateTransitionViewCreateService extends ViewCreateService {
 
-    public StateTransitionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService) {
-        super(viewDiagramDescriptionSearchService, objectService);
+    public StateTransitionViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService,
+            ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService) {
+        super(viewDiagramDescriptionSearchService, objectService, showDiagramsInheritedMembersService);
     }
 
     /**
@@ -58,8 +60,8 @@ public class StateTransitionViewCreateService extends ViewCreateService {
         List<EClass> acceptedRootTypes = List.of(
                 SysmlPackage.eINSTANCE.getPackage(),
                 SysmlPackage.eINSTANCE.getPartUsage(),
-                SysmlPackage.eINSTANCE.getPartDefinition(), 
-                SysmlPackage.eINSTANCE.getStateUsage(), 
+                SysmlPackage.eINSTANCE.getPartDefinition(),
+                SysmlPackage.eINSTANCE.getStateUsage(),
                 SysmlPackage.eINSTANCE.getStateDefinition());
         // Use strict equality here and not EClass#isSuperTypeOf, we want to precisely select which element
         // types can be used as root.
