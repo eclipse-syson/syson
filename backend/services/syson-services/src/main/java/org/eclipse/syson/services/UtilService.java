@@ -59,6 +59,7 @@ import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.NameHelper;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -404,12 +405,20 @@ public class UtilService {
      */
     private <T extends Element> T findByQualifiedNameAndTypeFrom(Element parent, List<String> qualifiedName, Class<T> elementType) {
         T element = null;
-
         Optional<Element> child = parent.getOwnedElement().stream()
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast)
                 .filter(elt -> this.nameMatches(elt, qualifiedName.get(0)))
                 .findFirst();
+        if (child.isEmpty() && parent instanceof Namespace parentNamespace) {
+            // If the element is not owned by the parent it can be visible through a public import.
+            child = parentNamespace.getImportedMembership().stream()
+                    .filter(membership -> Objects.equals(membership.getVisibility(), VisibilityKind.PUBLIC))
+                    .flatMap(membership -> membership.getRelatedElement().stream())
+                    .filter(elt -> this.nameMatches(elt, qualifiedName.get(0)))
+                    .findFirst();
+        }
+
         if (child.isPresent() && qualifiedName.size() > 1) {
             element = this.findByQualifiedNameAndTypeFrom(child.get(), qualifiedName.subList(1, qualifiedName.size()), elementType);
         } else if (child.isPresent() && elementType.isInstance(child.get())) {

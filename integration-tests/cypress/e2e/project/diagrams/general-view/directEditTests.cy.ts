@@ -103,6 +103,36 @@ describe('Node Creation Tests', () => {
         explorer.getExplorerView().contains('abstractPart');
       });
 
+      it('We can type the PartUsage with an element from a standard library', () => {
+        diagram.getNodes(diagramLabel, 'part').type('part : ISQBase::MassValue{enter}');
+        diagram.getNodes(diagramLabel, 'part : ISQBase::MassValue').should('exist');
+        // The import is added in the explorer
+        explorer.getTreeItemByLabel('import ISQBase::*').should('exist');
+        // There are only 2 elements next to the part in the explorer (the import and the diagram).
+        // No PartDefinition has been created.
+        explorer.getTreeItemByLabel('part').parents('li').first().siblings().should('have.length', 2);
+      });
+
+      it('We can type the PartUsage with an element from an aliased standard library', () => {
+        diagram.getNodes(diagramLabel, 'part').type('part : ISQ::MassValue{enter}');
+        diagram.getNodes(diagramLabel, 'part : ISQBase::MassValue').should('exist');
+        // The import is added in the explorer
+        explorer.getTreeItemByLabel('import ISQBase::*').should('exist');
+        // There are only 2 elements next to the part in the explorer (the import and the diagram).
+        // No PartDefinition has been created.
+        explorer.getTreeItemByLabel('part').parents('li').first().siblings().should('have.length', 2);
+      });
+
+      it('We can type the PartUsage with an element from a standard library by using its name with no qualifier', () => {
+        diagram.getNodes(diagramLabel, 'part').type('part : MassValue{enter}');
+        diagram.getNodes(diagramLabel, 'part : ISQBase::MassValue').should('exist');
+        // The import is added in the explorer
+        explorer.getTreeItemByLabel('import ISQBase::*').should('exist');
+        // There are only 2 elements next to the part in the explorer (the import and the diagram).
+        // No PartDefinition has been created.
+        explorer.getTreeItemByLabel('part').parents('li').first().siblings().should('have.length', 2);
+      });
+
       it('We can add properties to a new compartment item by direct editing the existing compartment item', () => {
         diagram.getNodes(diagramLabel, 'part').click();
         diagram
