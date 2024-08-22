@@ -126,6 +126,9 @@ image::release-notes-actor-representation.png[Actor node on the General View dia
 The source of the edge (the UseCase or Requirement) can be reconnected to another UseCase or Requirement, but the target (Actor) cannot be reconnected.
 - Allow to select existing _RequirementUsage_ and _RequirementDefinition_ on Objective tool. 
 - Add a check to make the build fail if a Cypress test contains `it.only`.
+- Add support for public import in direct edit specializations.
+It is now possible to specialize an element with a qualified name containing namespaces importing the required features.
+For example, `myAttribute : ISQ::MassValue` now correctly types the attribute with `ISQBase::MassValue`.
 
 == New features
 
