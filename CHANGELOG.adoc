@@ -97,6 +97,7 @@ The supported properties are `in`, `out`, `inout`, `abstract`, `variation`, `rea
 The source of the edge (the UseCase or Requirement) can be reconnected to another UseCase or Requirement, but the target (Actor) cannot be reconnected.
 - https://github.com/eclipse-syson/syson/issues/656[#656] [services] Improve the drag and drop of containers elements to move their content
 - https://github.com/eclipse-syson/syson/issues/660[#660] [general-view] Allow to select existing _RequirementUsage_ and _RequirementDefinition_ on Objective tool. 
+- https://github.com/eclipse-syson/syson/issues/662[#662] [tests] Make the build fail when a Cypress test contains it.only.
 
 === New features
 
