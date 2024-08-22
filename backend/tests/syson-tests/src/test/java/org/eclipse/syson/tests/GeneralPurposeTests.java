@@ -93,6 +93,8 @@ public class GeneralPurposeTests {
 
     private static final String INVALID_MATERIALUI_IMPORT = "from '@material-ui/core';";
 
+    private static final String IT_ONLY = "it.only(";
+
     private static final List<Pattern> COPYRIGHT_HEADER = List.of(
             Pattern.compile(Pattern.quote("/*******************************************************************************")),
             Pattern.compile(" \\* Copyright \\(c\\) [0-9]{4}(, [0-9]{4})* (.*)\\.$"),
@@ -257,23 +259,34 @@ public class GeneralPurposeTests {
         Path frontendFolderPath = Paths.get(rootFolder.getAbsolutePath(), FRONTEND_SRC_FOLDER_PATH);
         List<Path> typescriptFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_FILE_EXTENSION, true);
         List<Path> typescriptJsxFilePaths = this.findFilePaths(frontendFolderPath, TYPESCRIPT_JSX_FILE_EXTENSION, true);
+        Path integrationTestFolderPath = Paths.get(rootFolder.getAbsolutePath(), "integration-tests");
+        List<Path> integrationTestTypescriptFilePaths = this.findFilePaths(integrationTestFolderPath, TYPESCRIPT_FILE_EXTENSION, true);
 
         List<Path> filePaths = new ArrayList<>();
         filePaths.addAll(typescriptFilePaths);
         filePaths.addAll(typescriptJsxFilePaths);
+        filePaths.addAll(integrationTestTypescriptFilePaths);
 
         for (Path javascriptFilePath : filePaths) {
             try {
                 List<String> lines = Files.readAllLines(javascriptFilePath);
                 for (int index = 0; index < lines.size(); index++) {
                     String line = lines.get(index);
-                    this.testNoESLintDisable(index, line, javascriptFilePath);
+                    if (javascriptFilePath.toAbsolutePath().startsWith(frontendFolderPath.toAbsolutePath())) {
+                        // Do not check ESLintDisable for cypress tests, we use them to ignore errors related to wait()
+                        // calls.
+                        this.testNoESLintDisable(index, line, javascriptFilePath);
+                    }
                     this.testNoDebugger(index, line, javascriptFilePath);
                     this.testNoConsoleLog(index, line, javascriptFilePath);
                     this.testNoAlert(index, line, javascriptFilePath);
                     this.testNoConfirm(index, line, javascriptFilePath);
                     this.testNoPrompt(index, line, javascriptFilePath);
                     this.testNoInvalidMaterialUIImport(index, line, javascriptFilePath);
+                    if (javascriptFilePath.toAbsolutePath().startsWith(integrationTestFolderPath.toAbsolutePath())) {
+                        // Additional checks for cypress tests
+                        this.testNoItOnly(index, line, javascriptFilePath);
+                    }
                 }
                 this.testCopyrightHeader(javascriptFilePath, lines);
             } catch (IOException exception) {
@@ -321,6 +334,12 @@ public class GeneralPurposeTests {
     private void testNoInvalidMaterialUIImport(int index, String line, Path javascriptFilePath) {
         if (line.contains(INVALID_MATERIALUI_IMPORT)) {
             fail(this.createErrorMessage(INVALID_MATERIALUI_IMPORT, javascriptFilePath, index));
+        }
+    }
+
+    private void testNoItOnly(int index, String line, Path javascriptFilePath) {
+        if (line.contains(IT_ONLY)) {
+            fail(this.createErrorMessage(IT_ONLY, javascriptFilePath, index));
         }
     }
 
