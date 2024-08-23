@@ -47,6 +47,10 @@ The following methods have been deleted or modified:
 * Deleted `ViewCreateService#createPartUsageAsSubject`
 * Add new `EClass`, 'EReference' and `IDescriptionNameGenerator` parameters to `SubjectCompartmentNodeToolProvider`
 - [core] Migrate frontend to MUI 5, if you contributed React components that use MUI, you should upgrade them to use MUI 5.
+- https://github.com/eclipse-syson/syson/issues/674[#674] [diagrams] Ensure that dropped nodes are always collapsed.
+Moved `ToolService#dropElementFromExplorer` and `ToolService#dropElementFromDiagram` into `ViewToolService`.
+* The method `dropElementFromExplorer` now requires view-related imports that motivated this refactoring.
+* The method `dropElementFromDiagram` has been moved for the sake of consistency.
 
 === Dependency update
 
@@ -107,6 +111,7 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
   * A new filter is available to hide root Namespaces and is enabled by default.
   * It is no longer possible to create Namespace from the explorer.
   * It is no longer possible to create a representation on a root Namespace.
+- https://github.com/eclipse-syson/syson/issues/674[#674] [diagrams] Ensure that dropped nodes are always collapsed.
 
 === New features
 

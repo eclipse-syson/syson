@@ -61,6 +61,10 @@ The changes are:
 * Deleted `ViewNodeService#isHiddenByDefaultNonExhibitStates`
 * Add new `IViewDiagramElementFinder` parameter to `StateTransitionViewNodeToolSectionSwitch`
 - Migrate frontend to MUI 5, if you contributed React components that use MUI, you should upgrade them to use MUI 5.
+- Ensure that dropped nodes are always collapsed, the following methods have been moved to support this feature
+* The method `ToolService#dropElementFromExplorer` has been moved to `ViewToolService` since it now requires view-related imports that motivated this refactoring.
+* The method `ToolService#dropElementFromDiagram` has been moved to `ViewToolService` for the sake of consistency.
+
 
 == Dependencies update
 
@@ -144,6 +148,7 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
 * A new filter is available to hide root Namespaces and is enabled by default.
 * It is no longer possible to create Namespace from the explorer.
 * It is no longer possible to create a representation on a root Namespace.
+- Improve the drop from the explorer to ensure that dropped nodes are always collapsed.
 
 == New features
 
