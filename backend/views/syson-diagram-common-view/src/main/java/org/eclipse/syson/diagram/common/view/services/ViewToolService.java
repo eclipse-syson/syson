@@ -14,9 +14,12 @@ package org.eclipse.syson.diagram.common.view.services;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
@@ -34,6 +37,7 @@ import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
+import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -54,6 +58,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -74,6 +79,7 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -302,6 +308,116 @@ public class ViewToolService extends ToolService {
             }
         }
         return parentElement;
+    }
+
+    /**
+     * Called by "Drop tool" from General View diagram.
+     *
+     * @param element
+     *            the {@link Element} to drop to a General View diagram.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param selectedNode
+     *            the selected node on which the element has been dropped (may be null if the tool has been called from
+     *            the diagram). It corresponds to a variable accessible from the variable manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @return the input {@link Element}.
+     */
+    public Element dropElementFromExplorer(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        Optional<Object> optTargetElement;
+        if (selectedNode != null) {
+            optTargetElement = this.objectService.getObject(editingContext, selectedNode.getTargetObjectId());
+        } else {
+            optTargetElement = this.objectService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
+        }
+        if (optTargetElement.isPresent() && optTargetElement.get() instanceof Element targetElement) {
+            // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we
+            // want to prevent the drop.
+            if (EMFUtils.isAncestor(element, targetElement)) {
+                String errorMessage = MessageFormat.format("Cannot drop {0} in {1}: {0} is a parent of {1}", element.getName(), targetElement.getName());
+                this.logger.warn(errorMessage);
+                this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+            } else {
+                var optElementToDrop = Optional.ofNullable(element);
+                if (element instanceof Membership membership) {
+                    optElementToDrop = membership.getOwnedRelatedElement().stream().findFirst();
+                }
+                if (optElementToDrop.isPresent()) {
+                    final Element elementToDrop = optElementToDrop.get();
+                    ViewCreationRequest parentViewCreationRequest = this.createView(elementToDrop, editingContext, diagramContext, selectedNode, convertedNodes);
+                    var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
+                    if (diagramDescription.isPresent()) {
+                        DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
+                        String parentId = this.getParentElementId(parentViewCreationRequest, diagramContext);
+                        this.getViewNodeDescription(parentViewCreationRequest.getDescriptionId(), representationDescription, convertedNodes).ifPresent(parentNodeDescription -> {
+                            List<org.eclipse.sirius.components.view.diagram.NodeDescription> allChildren = Stream
+                                    .concat(parentNodeDescription.getChildrenDescriptions().stream(), parentNodeDescription.getReusedChildNodeDescriptions().stream()).toList();
+                            Set<String> childrenIdsToHide = new HashSet<>();
+                            for (org.eclipse.sirius.components.view.diagram.NodeDescription childNodeDescription : allChildren) {
+                                // Create a dummy ViewCreationRequest to find out which ID will be given to the
+                                // compartment of the dropped node.
+                                ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+                                        .parentElementId(parentId)
+                                        .containmentKind(NodeContainmentKind.CHILD_NODE)
+                                        .descriptionId(convertedNodes.get(childNodeDescription).getId())
+                                        .targetObjectId(this.objectService.getId(elementToDrop))
+                                        .build();
+                                childrenIdsToHide.add(this.getParentElementId(childViewCreationRequest, diagramContext));
+                            }
+                            diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(childrenIdsToHide, true));
+                        });
+                    }
+                }
+            }
+        }
+        return element;
+    }
+
+    /**
+     * Called by "Drop Node tool" from General View diagram.
+     *
+     * @param droppedElement
+     *            the dropped {@link Element}.
+     * @param droppedNode
+     *            the dropped {@link Node}.
+     * @param targetElement
+     *            the new semantic container.
+     * @param targetElement
+     *            the new graphical container.
+     * @param editingContext
+     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param diagramContext
+     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
+     *            manager.
+     * @param convertedNodes
+     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
+     *            a variable accessible from the variable manager.
+     * @return the input {@link Element}.
+     */
+    public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        final Element result;
+        // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we want
+        // to prevent the drop.
+        if (EMFUtils.isAncestor(droppedElement, targetElement)) {
+            String errorMessage = MessageFormat.format("Cannot drop {0} in {1}: {0} is a parent of {1}", droppedElement.getName(), targetElement.getName());
+            this.logger.warn(errorMessage);
+            this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+            // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
+            result = null;
+        } else {
+            this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
+            result = droppedElement;
+        }
+        return result;
     }
 
     /**

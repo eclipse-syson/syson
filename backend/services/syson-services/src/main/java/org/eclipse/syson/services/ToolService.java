@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +34,6 @@ import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
-import org.eclipse.sirius.components.representations.Message;
-import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
@@ -69,93 +66,6 @@ public class ToolService {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.deleteService = new DeleteService();
-    }
-
-    /**
-     * Called by "Drop tool" from General View diagram.
-     *
-     * @param element
-     *            the {@link Element} to drop to a General View diagram.
-     * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param selectedNode
-     *            the selected node on which the element has been dropped (may be null if the tool has been called from
-     *            the diagram). It corresponds to a variable accessible from the variable manager.
-     * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
-     * @return the input {@link Element}.
-     */
-    public Element dropElementFromExplorer(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        Optional<Object> optTargetElement;
-        if (selectedNode != null) {
-            optTargetElement = this.objectService.getObject(editingContext, selectedNode.getTargetObjectId());
-        } else {
-            optTargetElement = this.objectService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
-        }
-        if (optTargetElement.isPresent() && optTargetElement.get() instanceof Element targetElement) {
-            // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we
-            // want to prevent the drop.
-            if (EMFUtils.isAncestor(element, targetElement)) {
-                String errorMessage = MessageFormat.format("Cannot drop {0} in {1}: {0} is a parent of {1}", element.getName(), targetElement.getName());
-                this.logger.warn(errorMessage);
-                this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
-            } else {
-                var elementToDrop = Optional.ofNullable(element);
-                if (element instanceof Membership membership) {
-                    elementToDrop = membership.getOwnedRelatedElement().stream().findFirst();
-                }
-                if (elementToDrop.isPresent()) {
-                    this.createView(elementToDrop.get(), editingContext, diagramContext, selectedNode, convertedNodes);
-                }
-            }
-        }
-        return element;
-    }
-
-    /**
-     * Called by "Drop Node tool" from General View diagram.
-     *
-     * @param droppedElement
-     *            the dropped {@link Element}.
-     * @param droppedNode
-     *            the dropped {@link Node}.
-     * @param targetElement
-     *            the new semantic container.
-     * @param targetElement
-     *            the new graphical container.
-     * @param editingContext
-     *            the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param diagramContext
-     *            the {@link IDiagramContext} of the tool. It corresponds to a variable accessible from the variable
-     *            manager.
-     * @param convertedNodes
-     *            the map of all existing node descriptions in the DiagramDescription of this Diagram. It corresponds to
-     *            a variable accessible from the variable manager.
-     * @return the input {@link Element}.
-     */
-    public Element dropElementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        final Element result;
-        // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we want
-        // to prevent the drop.
-        if (EMFUtils.isAncestor(droppedElement, targetElement)) {
-            String errorMessage = MessageFormat.format("Cannot drop {0} in {1}: {0} is a parent of {1}", droppedElement.getName(), targetElement.getName());
-            this.logger.warn(errorMessage);
-            this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
-            // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
-            result = null;
-        } else {
-            this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
-            result = droppedElement;
-        }
-        return result;
     }
 
     /**
