@@ -56,6 +56,7 @@ public class StateTransitionViewCreateService extends ViewCreateService {
         return this.getDiagramEmptyCandidate(element, editingContext, diagramContext, previousDiagram, StateTransitionViewEmptyDiagramNodeDescriptionProvider.NAME);
     }
 
+    @Override
     public boolean canCreateDiagram(Element element) {
         List<EClass> acceptedRootTypes = List.of(
                 SysmlPackage.eINSTANCE.getPackage(),
@@ -65,6 +66,6 @@ public class StateTransitionViewCreateService extends ViewCreateService {
                 SysmlPackage.eINSTANCE.getStateDefinition());
         // Use strict equality here and not EClass#isSuperTypeOf, we want to precisely select which element
         // types can be used as root.
-        return acceptedRootTypes.contains(element.eClass());
+        return super.canCreateDiagram(element) && acceptedRootTypes.contains(element.eClass());
     }
 }

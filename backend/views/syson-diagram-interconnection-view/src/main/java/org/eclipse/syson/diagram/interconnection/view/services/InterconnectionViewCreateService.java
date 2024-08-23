@@ -167,12 +167,11 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         return (Namespace) owner;
     }
 
+    @Override
     public boolean canCreateDiagram(Element element) {
         List<EClass> acceptedRootTypes = List.of(
                 SysmlPackage.eINSTANCE.getUsage(),
                 SysmlPackage.eINSTANCE.getDefinition());
-        // Use strict equality here and not EClass#isSuperTypeOf, we want to precisely select which element
-        // types can be used as root.
-        return acceptedRootTypes.stream().anyMatch(rootType -> rootType.isSuperTypeOf(element.eClass()));
+        return super.canCreateDiagram(element) && acceptedRootTypes.stream().anyMatch(rootType -> rootType.isSuperTypeOf(element.eClass()));
     }
 }

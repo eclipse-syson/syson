@@ -23,16 +23,20 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IDefaultEditService;
 import org.eclipse.sirius.components.core.api.IEditServiceDelegate;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.syson.services.DeleteService;
 import org.eclipse.syson.services.ElementInitializerSwitch;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -57,11 +61,14 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     private final DeleteService deleteService;
 
+    private final UtilService utilService;
+
     public SysMLv2EditService(IDefaultEditService defaultEditService, IObjectService objectService, IEMFKindService emfKindService) {
         this.defaultEditService = Objects.requireNonNull(defaultEditService);
         this.objectService = Objects.requireNonNull(objectService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.deleteService = new DeleteService();
+        this.utilService = new UtilService();
     }
 
     @Override
@@ -76,14 +83,26 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     @Override
     public List<ChildCreationDescription> getRootCreationDescriptions(IEditingContext editingContext, String domainId, boolean suggested, String referenceKind) {
-        if (suggested && SysmlPackage.eNS_URI.equals(domainId)) {
-            List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
-            List<String> iconURL = this.objectService.getImagePath(EcoreUtil.create(SysmlPackage.eINSTANCE.getPackage()));
-            rootObjectCreationDescription.add(new ChildCreationDescription(SysmlPackage.eINSTANCE.getPackage().getName(), SysmlPackage.eINSTANCE.getPackage().getName(), iconURL));
-            return rootObjectCreationDescription;
+        final List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
+        if (SysmlPackage.eNS_URI.equals(domainId)) {
+            if (suggested) {
+                List<String> iconURL = this.objectService.getImagePath(EcoreUtil.create(SysmlPackage.eINSTANCE.getPackage()));
+                String label = this.objectService.getLabel(SysmlPackage.eINSTANCE.getPackage());
+                rootObjectCreationDescription.add(new ChildCreationDescription(ID_PREFIX + SysmlPackage.eINSTANCE.getPackage().getName(), label, iconURL));
+            } else {
+                List<EClass> childrenCandidates = new GetChildCreationSwitch().doSwitch(SysmlPackage.eINSTANCE.getNamespace());
+                childrenCandidates.forEach(candidate -> {
+                    List<String> iconURL = this.objectService.getImagePath(EcoreUtil.create(candidate));
+                    String label = this.objectService.getLabel(candidate);
+                    ChildCreationDescription childCreationDescription = new ChildCreationDescription(ID_PREFIX + candidate.getName(), label, iconURL);
+                    rootObjectCreationDescription.add(childCreationDescription);
+                });
+            }
+        } else {
+            rootObjectCreationDescription.addAll(this.defaultEditService.getRootCreationDescriptions(editingContext, domainId, suggested, referenceKind));
         }
-        return this.defaultEditService.getRootCreationDescriptions(editingContext, domainId, suggested, referenceKind);
-
+        Collections.sort(rootObjectCreationDescription, Comparator.comparing(ChildCreationDescription::getLabel, String.CASE_INSENSITIVE_ORDER));
+        return rootObjectCreationDescription;
     }
 
     @Override
@@ -136,7 +155,36 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     @Override
     public Optional<Object> createRootObject(IEditingContext editingContext, UUID documentId, String domainId, String rootObjectCreationDescriptionId) {
-        return this.defaultEditService.createRootObject(editingContext, documentId, domainId, rootObjectCreationDescriptionId);
+        Optional<Object> createdObjectOptional = Optional.empty();
+
+        var optionalEditingDomain = Optional.of(editingContext)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain);
+
+        if (optionalEditingDomain.isPresent()) {
+            AdapterFactoryEditingDomain editingDomain = optionalEditingDomain.get();
+
+            var optionalResource = editingDomain.getResourceSet().getResources().stream()
+                    .filter(resource -> documentId.toString().equals(resource.getURI().path().substring(1)))
+                    .findFirst();
+
+            if (optionalResource.isPresent()) {
+                var resource = optionalResource.get();
+                var rootNamespace = resource.getContents().stream()
+                        .filter(Element.class::isInstance)
+                        .map(Element.class::cast)
+                        .filter(this.utilService::isRootNamespace)
+                        .findFirst()
+                        .orElseGet(() -> {
+                            Namespace namespace = (Namespace) EcoreUtil.create(SysmlPackage.eINSTANCE.getNamespace());
+                            resource.getContents().add(namespace);
+                            return namespace;
+                        });
+                createdObjectOptional = this.createChild(editingContext, rootNamespace, rootObjectCreationDescriptionId);
+            }
+        }
+        return createdObjectOptional;
     }
 
     @Override

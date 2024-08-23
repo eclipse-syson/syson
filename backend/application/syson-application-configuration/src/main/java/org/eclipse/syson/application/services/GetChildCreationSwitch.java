@@ -147,17 +147,9 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
 
     @Override
     public List<EClass> caseNamespace(Namespace object) {
-        List<EClass> childrenCandidates = new ArrayList<>();
-        SysmlPackage.eINSTANCE.getEClassifiers().stream()
-                .filter(EClass.class::isInstance)
-                .map(EClass.class::cast)
-                .filter(eClass -> {
-                    return !eClass.isAbstract() && !eClass.isInterface();
-                })
-                .forEach(eClass -> {
-                    childrenCandidates.add(eClass);
-                });
-        return childrenCandidates;
+        // Namespace can contain the same elements as packages.
+        // Note that in the SysML specification a Namespace can only exist as the root of a model.
+        return this.getPackageChildren();
     }
 
     @Override
@@ -178,23 +170,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
 
     @Override
     public List<EClass> casePackage(Package object) {
-        List<EClass> childrenCandidates = new ArrayList<>();
-        SysmlPackage.eINSTANCE.getEClassifiers().stream()
-                .filter(EClass.class::isInstance)
-                .map(EClass.class::cast)
-                .filter(eClass -> {
-                    boolean authorizedClasses = SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(eClass)
-                            || SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass)
-                            || SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(eClass)
-                            || SysmlPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass);
-                    return !eClass.isAbstract() && !eClass.isInterface() && authorizedClasses;
-                })
-                .forEach(eClass -> {
-                    childrenCandidates.add(eClass);
-                });
-        childrenCandidates.add(SysmlPackage.eINSTANCE.getOwningMembership());
-        childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
-        return childrenCandidates;
+        return this.getPackageChildren();
     }
 
     @Override
@@ -265,6 +241,26 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralRational());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralString());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
+        return childrenCandidates;
+    }
+
+    private List<EClass> getPackageChildren() {
+        List<EClass> childrenCandidates = new ArrayList<>();
+        SysmlPackage.eINSTANCE.getEClassifiers().stream()
+                .filter(EClass.class::isInstance)
+                .map(EClass.class::cast)
+                .filter(eClass -> {
+                    boolean authorizedClasses = SysmlPackage.eINSTANCE.getDefinition().isSuperTypeOf(eClass)
+                            || SysmlPackage.eINSTANCE.getUsage().isSuperTypeOf(eClass)
+                            || SysmlPackage.eINSTANCE.getImport().isSuperTypeOf(eClass)
+                            || SysmlPackage.eINSTANCE.getPackage().isSuperTypeOf(eClass);
+                    return !eClass.isAbstract() && !eClass.isInterface() && authorizedClasses;
+                })
+                .forEach(eClass -> {
+                    childrenCandidates.add(eClass);
+                });
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getOwningMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
         return childrenCandidates;
     }

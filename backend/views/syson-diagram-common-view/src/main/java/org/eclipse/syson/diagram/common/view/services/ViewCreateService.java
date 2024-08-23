@@ -99,6 +99,17 @@ public class ViewCreateService {
     }
 
     /**
+     * Returns {@code true} if the diagram can be created on the provided {@code element}.
+     *
+     * @param element
+     *            the element to check
+     * @return {@code true} if the diagram can be created on the provided {@code element}
+     */
+    public boolean canCreateDiagram(Element element) {
+        return !this.utilService.isRootNamespace(element);
+    }
+
+    /**
      * Call the {@link ElementInitializerSwitch} on the given {@link Element}. Allows to set various
      * attributes/references.
      *

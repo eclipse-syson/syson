@@ -30,8 +30,6 @@ describe('Node Creation Tests', () => {
         const explorer = new Explorer();
         explorer.getExplorerView().contains(sysmlv2.getProjectLabel());
         explorer.expand(sysmlv2.getProjectLabel());
-        explorer.getExplorerView().contains(sysmlv2.getRootNamespaceLabel());
-        explorer.expand(sysmlv2.getRootNamespaceLabel());
         explorer.getExplorerView().contains(sysmlv2.getRootElementLabel());
         explorer.expand(sysmlv2.getRootElementLabel());
         explorer.select(diagramLabel);

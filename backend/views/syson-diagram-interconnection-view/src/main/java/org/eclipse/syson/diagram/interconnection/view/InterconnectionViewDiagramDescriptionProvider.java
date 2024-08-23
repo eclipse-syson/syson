@@ -87,7 +87,6 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
         diagramDescriptionBuilder
                 .autoLayout(false)
                 .domainType(domainType)
-                .preconditionExpression(domainType)
                 .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
                 .name(DESCRIPTION_NAME)
                 .titleExpression(DESCRIPTION_NAME);
