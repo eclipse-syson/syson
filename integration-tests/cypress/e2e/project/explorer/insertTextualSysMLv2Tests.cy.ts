@@ -29,8 +29,6 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
         new Project().visit(projectId);
         explorer.getExplorerView().contains(sysmlv2.getProjectLabel());
         explorer.expand(sysmlv2.getProjectLabel());
-        explorer.getExplorerView().contains(sysmlv2.getRootNamespaceLabel());
-        explorer.expand(sysmlv2.getRootNamespaceLabel());
       })
     );
 

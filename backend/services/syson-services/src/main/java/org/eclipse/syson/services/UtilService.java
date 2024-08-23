@@ -351,7 +351,23 @@ public class UtilService {
      */
     public <T extends Element> T findByNameAndType(Collection<EObject> roots, String elementName, Class<T> elementType) {
         return this.elementUtil.findByNameAndType(roots, elementName, elementType);
+    }
 
+    /**
+     * Returns {@code true} if the provided {@code element} is a root {@link Namespace}.
+     * <p>
+     * A root namespace is a strict instance of {@link Namespace}, with no owner and no name. These namespace are
+     * implicit and at the root of each SysON project.
+     * </p>
+     *
+     * @param element
+     *            the element to check
+     * @return {@code true} if the provided {@code element} is a root {@link Namespace}
+     */
+    public boolean isRootNamespace(Element element) {
+        return element.eClass() == SysmlPackage.eINSTANCE.getNamespace()
+                && element.getOwner() == null
+                && element.getName() == null;
     }
 
     /**

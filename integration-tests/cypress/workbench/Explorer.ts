@@ -47,19 +47,25 @@ export class Explorer {
     cy.getByTestId('insert-textual-sysmlv2-submit').click();
   }
 
-  public createRootObject(documentTreeItemLabel: string, domain: string, entity: string) {
+  public getFilter(filterLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
+    cy.getByTestId('tree-filter-menu-icon').click();
+    cy.getByTestId('tree-filter-menu').should('be.visible');
+    return cy.getByTestId(`tree-filter-menu-checkbox-${filterLabel}`);
+  }
+
+  public createRootObject(documentTreeItemLabel: string, childCreationDescriptionLabel: string) {
     this.getTreeItemByLabel(documentTreeItemLabel).find('button').click();
     cy.getByTestId('new-object').click();
 
     cy.getByTestId('create-object').should('not.be.disabled');
 
-    cy.getByTestId('domain').click();
-    cy.getByTestId('domain').get(`[data-value="domain://${domain}"]`).click();
-
+    // Use get because Sirius Web doesn't provide a usable data-testid
+    cy.get('input[name="suggested"]').should('exist').click();
     cy.getByTestId('type').click();
-    cy.getByTestId('type').get(`[data-value="${entity}`).should('exist').click();
-
+    // Use get because Sirius Web doesn't provide a usable data-testid
+    cy.get(`li[data-value="${childCreationDescriptionLabel}"`).should('exist').click();
     cy.getByTestId('create-object').click();
+    cy.getByTestId('create-object').should('not.exist');
   }
 
   public createObject(objectTreeItemLabel: string, childCreationDescriptionLabel: string) {

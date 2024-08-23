@@ -52,12 +52,12 @@ import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescript
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
-import org.eclipse.syson.diagram.general.view.edges.NestedActorEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DefinitionOwnedUsageEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DependencyEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.FeatureTypingEdgeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.edges.NestedActorEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.RedefinitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.SubclassificationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.SubsettingEdgeDescriptionProvider;
@@ -246,6 +246,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
                 .autoLayout(false)
                 .domainType(domainType)
+                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
                 .name(DESCRIPTION_NAME)
                 .titleExpression(DESCRIPTION_NAME);
 

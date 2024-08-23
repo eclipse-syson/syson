@@ -29,8 +29,6 @@ describe('Details View Tests', () => {
         new Project().visit(projectId);
         explorer.getExplorerView().contains(batmobile.getProjectLabel());
         explorer.expand(batmobile.getProjectLabel());
-        explorer.getExplorerView().contains(batmobile.getRootNamespaceLabel());
-        explorer.expand(batmobile.getRootNamespaceLabel());
         explorer.getExplorerView().contains(batmobile.getRootElementLabel());
         explorer.expand(batmobile.getRootElementLabel());
       })
