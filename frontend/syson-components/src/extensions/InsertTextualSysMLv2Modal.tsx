@@ -89,8 +89,8 @@ export const InsertTextualSysMLv2Modal = ({
               className={classes.textarea}
               autoFocus
               multiline
-              minRows={40}
-              maxRows={40}
+              minRows={35}
+              maxRows={35}
               variant="outlined"
               onChange={(event) => setState((prevState) => ({ ...prevState, textualContent: event.target.value }))}
             />
