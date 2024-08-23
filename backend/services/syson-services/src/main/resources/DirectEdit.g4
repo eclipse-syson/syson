@@ -33,7 +33,7 @@ expression :
 ;
 
 prefixExpression : 
-	directionPrefixExpression? abstractPrefixExpression? variationPrefixExpression? readonlyPrefixExpression? derivedPrefixExpression? endPrefixExpression?
+	directionPrefixExpression? (abstractPrefixExpression | variationPrefixExpression)? readonlyPrefixExpression? derivedPrefixExpression? endPrefixExpression?
 ;
 
 directionPrefixExpression : 

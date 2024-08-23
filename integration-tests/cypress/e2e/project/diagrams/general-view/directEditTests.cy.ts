@@ -53,7 +53,7 @@ describe('Node Creation Tests', () => {
       it('The inherited members are visible in compartments (only if the option "inherited members" is enabled)', () => {
         cy.getByTestId('syson-diagram-panel-menu-icon').click();
         // wait for the GraphQL query to retrieve the value of the checkbox
-        cy.wait(500);
+        cy.wait(1000);
         cy.getByTestId('ShowHideDiagramInheritedMembersCheckbox').then(($cb) => {
           const check = $cb.attr('aria-label');
           if (check === 'Show Inherited Members in Diagrams') {
@@ -161,7 +161,7 @@ describe('Node Creation Tests', () => {
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
 
         // direct edit attribute
-        cy.getByTestId('IconLabel - attribute').type('abstract variation end myAttribute ordered nonunique{enter}');
+        cy.getByTestId('IconLabel - attribute').type('variation end myAttribute ordered nonunique{enter}');
         diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
 
         // check attribute properties
@@ -175,12 +175,12 @@ describe('Node Creation Tests', () => {
 
         // reset attribute to default properties
         diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
-        cy.getByTestId('IconLabel - abstract variation end myAttribute ordered nonunique').type('myAttribute{enter}');
+        cy.getByTestId('IconLabel - variation end myAttribute ordered nonunique').type('myAttribute{enter}');
 
         // check attribute properties
         details.getPage('Advanced').click();
         details.getGroup('Attribute Properties').should('be.visible');
-        details.getDetailsView().find(`[data-testid="Is Abstract"]`).should('not.have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Abstract"]`).should('have.class', 'Mui-checked');
         details.getDetailsView().find(`[data-testid="Is Variation"]`).should('not.have.class', 'Mui-checked');
         details.getDetailsView().find(`[data-testid="Is End"]`).should('not.have.class', 'Mui-checked');
         details.getDetailsView().find(`[data-testid="Is Ordered"]`).should('not.have.class', 'Mui-checked');

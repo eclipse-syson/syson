@@ -216,6 +216,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 usage.setIsAbstract(true);
             } else {
                 usage.setIsAbstract(false);
+                // A variation is always abstract
+                usage.setIsVariation(false);
             }
         }
         super.exitAbstractPrefixExpression(ctx);
@@ -262,6 +264,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.element instanceof Usage usage) {
             if (ctx != null) {
                 usage.setIsVariation(true);
+                // A variation is always abstract
+                usage.setIsAbstract(true);
             } else {
                 usage.setIsVariation(false);
             }
@@ -948,7 +952,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     private void handleMissingAbstractPrefixExpression(ExpressionContext ctx) {
         AbstractPrefixExpressionContext abstractPrefixExpression = ctx.prefixExpression().abstractPrefixExpression();
-        if (this.element instanceof Usage usage && abstractPrefixExpression == null) {
+        if (this.element instanceof Usage usage && abstractPrefixExpression == null && !usage.isIsVariation()) {
+            // A variation is always abstract
             usage.setIsAbstract(false);
         }
     }

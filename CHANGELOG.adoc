@@ -112,6 +112,7 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
   * It is no longer possible to create Namespace from the explorer.
   * It is no longer possible to create a representation on a root Namespace.
 - https://github.com/eclipse-syson/syson/issues/674[#674] [diagrams] Ensure that dropped nodes are always collapsed.
+- https://github.com/eclipse-syson/syson/issues/669[#669] [diagrams] Handle properties keywords in labels of Definition and Usage graphical nodes.
 
 === New features
 

@@ -149,6 +149,7 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
 * It is no longer possible to create Namespace from the explorer.
 * It is no longer possible to create a representation on a root Namespace.
 - Improve the drop from the explorer to ensure that dropped nodes are always collapsed.
+- Display prefix keywords in labels of Definition and Usage graphical nodes.
 
 == New features
 
