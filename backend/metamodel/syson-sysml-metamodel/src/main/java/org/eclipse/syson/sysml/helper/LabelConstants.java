@@ -71,5 +71,7 @@ public class LabelConstants {
 
     public static final String SUBSETTING = ":>";
 
+    public static final String VARIANT = "variant";
+
     public static final String VARIATION = "variation";
 }

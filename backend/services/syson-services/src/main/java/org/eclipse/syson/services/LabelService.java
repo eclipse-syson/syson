@@ -249,7 +249,7 @@ public class LabelService {
         } else if (usage.getDirection() == FeatureDirectionKind.INOUT) {
             label.append(LabelConstants.INOUT + LabelConstants.SPACE);
         }
-        if (usage.isIsAbstract()) {
+        if (usage.isIsAbstract() && !usage.isIsVariation()) {
             label.append(LabelConstants.ABSTRACT + LabelConstants.SPACE);
         }
         if (usage.isIsVariation()) {

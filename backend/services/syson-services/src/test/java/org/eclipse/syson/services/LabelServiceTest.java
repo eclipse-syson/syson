@@ -101,7 +101,7 @@ public class LabelServiceTest extends AbstractServiceTest {
         usageWithNoDirection.setIsReadOnly(true);
         usageWithNoDirection.setIsVariation(true);
 
-        assertEquals(LabelConstants.ABSTRACT + LabelConstants.SPACE + LabelConstants.VARIATION + LabelConstants.SPACE + LabelConstants.READ_ONLY + LabelConstants.SPACE
+        assertEquals(LabelConstants.VARIATION + LabelConstants.SPACE + LabelConstants.READ_ONLY + LabelConstants.SPACE
                 + LabelConstants.DERIVED + LabelConstants.SPACE
                 + LabelConstants.END
                 + LabelConstants.SPACE + LabelConstants.REF + LabelConstants.SPACE, this.labelService.getUsagePrefix(usageWithNoDirection));
