@@ -47,8 +47,8 @@ export class Diagram {
     return cy.getByTestId('Palette');
   }
 
-  public getPaletteToolSection(index: number): Cypress.Chainable<JQuery<HTMLElement>> {
-    return this.getPalette().should('exist').find('div > div').eq(index);
+  public getPaletteToolSection(index: number): Cypress.Chainable<JQuery<HTMLDivElement>> {
+    return this.getPalette().should('exist').children('div').eq(index).children('div');
   }
 
   public getGroupPalette(): Cypress.Chainable<JQuery<HTMLElement>> {

@@ -34,4 +34,8 @@ export class Workbench {
   public closeTab(label: string): void {
     cy.getByTestId(`close-representation-tab-${label}`).click();
   }
+
+  public getSnackbar(): Cypress.Chainable<JQuery<HTMLElement>> {
+    return cy.get('#notistack-snackbar');
+  }
 }

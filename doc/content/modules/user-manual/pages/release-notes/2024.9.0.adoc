@@ -150,6 +150,8 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
 * It is no longer possible to create a representation on a root Namespace.
 - Improve the drop from the explorer to ensure that dropped nodes are always collapsed.
 - Display prefix keywords in labels of Definition and Usage graphical nodes.
+- Ensure that dropping an element from the explorer on the diagram reveals the corresponding node if it is already on the diagram and hidden.
+A warning message is now displayed when attempting to drop an element which is already displayed and visible in the target container.
 
 == New features
 

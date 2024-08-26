@@ -23,7 +23,10 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -33,6 +36,7 @@ import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
+import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.components.NodeContainmentKind;
 import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -349,32 +353,29 @@ public class ViewToolService extends ToolService {
                 if (element instanceof Membership membership) {
                     optElementToDrop = membership.getOwnedRelatedElement().stream().findFirst();
                 }
-                if (optElementToDrop.isPresent()) {
-                    final Element elementToDrop = optElementToDrop.get();
+                optElementToDrop.ifPresent(elementToDrop -> {
                     ViewCreationRequest parentViewCreationRequest = this.createView(elementToDrop, editingContext, diagramContext, selectedNode, convertedNodes);
-                    var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
-                    if (diagramDescription.isPresent()) {
-                        DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
-                        String parentId = this.getParentElementId(parentViewCreationRequest, diagramContext);
-                        this.getViewNodeDescription(parentViewCreationRequest.getDescriptionId(), representationDescription, convertedNodes).ifPresent(parentNodeDescription -> {
-                            List<org.eclipse.sirius.components.view.diagram.NodeDescription> allChildren = Stream
-                                    .concat(parentNodeDescription.getChildrenDescriptions().stream(), parentNodeDescription.getReusedChildNodeDescriptions().stream()).toList();
-                            Set<String> childrenIdsToHide = new HashSet<>();
-                            for (org.eclipse.sirius.components.view.diagram.NodeDescription childNodeDescription : allChildren) {
-                                // Create a dummy ViewCreationRequest to find out which ID will be given to the
-                                // compartment of the dropped node.
-                                ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
-                                        .parentElementId(parentId)
-                                        .containmentKind(NodeContainmentKind.CHILD_NODE)
-                                        .descriptionId(convertedNodes.get(childNodeDescription).getId())
-                                        .targetObjectId(this.objectService.getId(elementToDrop))
-                                        .build();
-                                childrenIdsToHide.add(this.getParentElementId(childViewCreationRequest, diagramContext));
-                            }
-                            diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(childrenIdsToHide, true));
-                        });
+                    Optional<Node> parentNodeOnDiagram = new NodeFinder(diagramContext.getDiagram())
+                            .getOneNodeMatching(diagramNode -> Objects.equals(diagramNode.getId(), this.getParentElementId(parentViewCreationRequest, diagramContext)));
+                    if (parentNodeOnDiagram.isPresent()) {
+                        // The node already exist on the diagram, we don't need to create it.
+                        // It is easier to check it in this order (first create the ViewCreationRequest then remove it)
+                        // because we need the ViewCreationRequest anyways to check if the node is on the diagram.
+                        diagramContext.getViewCreationRequests().remove(parentViewCreationRequest);
+                        if (parentNodeOnDiagram.get().getModifiers().contains(ViewModifier.Hidden)) {
+                            // The node exists on the diagram but is hidden, we can't create a new view representing it,
+                            // but we reveal it.
+                            IDiagramService diagramService = new DiagramService(diagramContext);
+                            new DiagramServices().reveal(diagramService, List.of(parentNodeOnDiagram.get()));
+                        } else {
+                            String errorMessage = MessageFormat.format("The element {0} is already visible in its parent {1}", element.getName(), targetElement.getName());
+                            this.logger.warn(errorMessage);
+                            this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+                        }
+                    } else {
+                        this.hideCompartments(parentViewCreationRequest, editingContext, diagramContext, convertedNodes);
                     }
-                }
+                });
             }
         }
         return element;
@@ -419,6 +420,52 @@ public class ViewToolService extends ToolService {
         }
         return result;
     }
+
+    /**
+     * Hides the compartments of the {@link Node} that will be created by the provided
+     * {@code parentViewCreationRequest}.
+     * <p>
+     * This method is typically called as part of drag & drop operations, where compartments may need to be hidden after
+     * a drop action is performed.
+     * </p>
+     *
+     * @param parentViewCreationRequest
+     *            the creation request for the Node to hide the compartment from
+     * @param editingContext
+     *            the editing context
+     * @param diagramContext
+     *            the diagram context
+     * @param convertedNodes
+     *            the converted nodes
+     */
+    private void hideCompartments(ViewCreationRequest parentViewCreationRequest, IEditingContext editingContext, IDiagramContext diagramContext,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
+        if (diagramDescription.isPresent()) {
+            DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
+            String parentId = this.getParentElementId(parentViewCreationRequest, diagramContext);
+            this.getViewNodeDescription(parentViewCreationRequest.getDescriptionId(), representationDescription, convertedNodes).ifPresent(parentNodeDescription -> {
+                List<org.eclipse.sirius.components.view.diagram.NodeDescription> allChildren = Stream
+                        .concat(parentNodeDescription.getChildrenDescriptions().stream(), parentNodeDescription.getReusedChildNodeDescriptions().stream()).toList();
+                Set<String> childrenIdsToHide = new HashSet<>();
+                for (org.eclipse.sirius.components.view.diagram.NodeDescription childNodeDescription : allChildren) {
+                    // Create a dummy ViewCreationRequest to find out which ID will be given to the
+                    // compartment of the dropped node.
+                    ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
+                            .parentElementId(parentId)
+                            .containmentKind(NodeContainmentKind.CHILD_NODE)
+                            .descriptionId(convertedNodes.get(childNodeDescription).getId())
+                            .targetObjectId(parentViewCreationRequest.getTargetObjectId())
+                            .build();
+                    childrenIdsToHide.add(this.getParentElementId(childViewCreationRequest, diagramContext));
+                }
+                // We can't use DiagramService here because the elements to hide aren't yet on the
+                // diagram.
+                diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(childrenIdsToHide, true));
+            });
+        }
+    }
+
 
     /**
      * Returns the elements contained by {@code parentElement} that should be rendered.

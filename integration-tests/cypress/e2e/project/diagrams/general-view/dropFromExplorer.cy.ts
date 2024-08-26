@@ -15,6 +15,7 @@ import { Project } from '../../../../pages/Project';
 import { SysMLv2 } from '../../../../usecases/SysMLv2';
 import { Diagram } from '../../../../workbench/Diagram';
 import { Explorer } from '../../../../workbench/Explorer';
+import { Workbench } from '../../../../workbench/Workbench';
 
 describe('Drop From Explorer Tests', () => {
   const sysmlv2 = new SysMLv2();
@@ -23,6 +24,7 @@ describe('Drop From Explorer Tests', () => {
   context('Given a SysMLv2 project with a General View diagram', () => {
     const diagram = new Diagram();
     const explorer = new Explorer();
+    const workbench = new Workbench();
     let projectId: string = '';
     beforeEach(() =>
       sysmlv2.createSysMLv2Project().then((createdProjectData) => {
@@ -64,6 +66,29 @@ describe('Drop From Explorer Tests', () => {
 
         diagram.getNodes(diagramLabel, 'part').should('exist');
         // Check that the compartments of the node aren't visible
+        diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
+      });
+
+      it('Then when we drop the PartUsage on the diagram twice, it is only represented once', () => {
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('part', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
+        diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
+        workbench.getSnackbar().should('exist').contains('The element part is already visible in its parent Package 1');
+      });
+
+      it('Then when we drop the PartUsage on the diagram, hide it, and drop it again, the PartUsage is visible on the diagram', () => {
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('part', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1).click();
+        diagram.getPaletteToolSection(3).click();
+        diagram.getNodes(diagramLabel, 'part').should('not.exist');
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
         diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
       });
     });

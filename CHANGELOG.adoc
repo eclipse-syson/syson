@@ -113,6 +113,10 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
   * It is no longer possible to create a representation on a root Namespace.
 - https://github.com/eclipse-syson/syson/issues/674[#674] [diagrams] Ensure that dropped nodes are always collapsed.
 - https://github.com/eclipse-syson/syson/issues/669[#669] [diagrams] Handle properties keywords in labels of Definition and Usage graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/678[#678] [diagrams] Ensure that dropping an element reveals the corresponding node if it exists.
+  * Dropping an element from the explorer on the diagram reveals the corresponding node if it is already on the diagram and hidden.
+  * A warning message is now displayed when attempting to drop an element which is already displayed and visible in the target container.
+
 
 === New features
 
