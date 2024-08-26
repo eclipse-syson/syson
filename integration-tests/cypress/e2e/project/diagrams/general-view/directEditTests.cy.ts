@@ -62,9 +62,10 @@ describe('Node Creation Tests', () => {
         });
 
         diagram.getNodes(diagramLabel, 'part').type('p1{enter}');
-        diagram.getNodes(diagramLabel, 'p1').click();
+        diagram.getNodes(diagramLabel, 'p1').should('exist');
         diagram
           .getNodes(diagramLabel, 'p1')
+          .click()
           .getByTestId('Palette')
           .should('exist')
           .findByTestId('Create')
