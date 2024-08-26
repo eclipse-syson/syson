@@ -114,18 +114,18 @@ The source of the edge (the UseCase or Requirement) can be reconnected to anothe
 - https://github.com/eclipse-syson/syson/issues/665[#665] [services] Support public import in direct edit specializations.
 It is now possible to specialize an element with a qualified name containing namespaces importing the required features.
 For example, `myAttribute : ISQ::MassValue` now correctly types the attribute with `ISQBase::MassValue`.
-- https://github.com/eclipse-syson/syson/issues/671[#671] [syson] Improve the support of root Namespaces.
-  * Root Namespaces are now implicitly created at the root of SysON documents.
-  * Creating an element at the root of a SysON document now creates it in its root Namespace.
-  * A new filter is available to hide root Namespaces and is enabled by default.
-  * It is no longer possible to create Namespace from the explorer.
-  * It is no longer possible to create a representation on a root Namespace.
+- https://github.com/eclipse-syson/syson/issues/671[#671] [syson] Improve the support of root `Namespaces`.
+  * Root `Namespaces` are now implicitly created at the root of SysON documents.
+  * Creating an element at the root of a SysON document now creates it in its root `Namespace`.
+  * A new filter is available to hide root `Namespaces` and is enabled by default.
+  * It is no longer possible to create `Namespace` from the explorer.
+  * It is no longer possible to create a representation on a root `Namespace`.
 - https://github.com/eclipse-syson/syson/issues/674[#674] [diagrams] Ensure that dropped nodes are always collapsed.
-- https://github.com/eclipse-syson/syson/issues/669[#669] [diagrams] Handle properties keywords in labels of Definition and Usage graphical nodes.
+- https://github.com/eclipse-syson/syson/issues/669[#669] [diagrams] Handle properties keywords in labels of `Definitions` and `Usages` graphical nodes.
 - https://github.com/eclipse-syson/syson/issues/678[#678] [diagrams] Ensure that dropping an element reveals the corresponding node if it exists.
   * Dropping an element from the explorer on the diagram reveals the corresponding node if it is already on the diagram and hidden.
   * A warning message is now displayed when attempting to drop an element which is already displayed and visible in the target container.
-
+- https://github.com/eclipse-syson/syson/issues/670[#670] [diagrams] Ignore keywords order during direct edit of prefixes label of `Definitions` and `Usages` graphical elements.
 
 === New features
 

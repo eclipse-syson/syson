@@ -942,14 +942,14 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     private void handleMissingDirectionPrefixExpression(ExpressionContext ctx) {
-        DirectionPrefixExpressionContext directionPrefixExpression = ctx.prefixExpression().directionPrefixExpression();
+        DirectionPrefixExpressionContext directionPrefixExpression = ctx.prefixExpression().directionPrefixExpression(0);
         if (this.element instanceof Usage usage && directionPrefixExpression == null) {
             usage.setDirection(null);
         }
     }
 
     private void handleMissingAbstractPrefixExpression(ExpressionContext ctx) {
-        AbstractPrefixExpressionContext abstractPrefixExpression = ctx.prefixExpression().abstractPrefixExpression();
+        AbstractPrefixExpressionContext abstractPrefixExpression = ctx.prefixExpression().abstractPrefixExpression(0);
         if (this.element instanceof Usage usage && abstractPrefixExpression == null && !usage.isIsVariation()) {
             // A variation is always abstract
             usage.setIsAbstract(false);
@@ -957,28 +957,28 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     private void handleMissingDerivedPrefixExpression(ExpressionContext ctx) {
-        DerivedPrefixExpressionContext derivedPrefixExpression = ctx.prefixExpression().derivedPrefixExpression();
+        DerivedPrefixExpressionContext derivedPrefixExpression = ctx.prefixExpression().derivedPrefixExpression(0);
         if (this.element instanceof Usage usage && derivedPrefixExpression == null) {
             usage.setIsDerived(false);
         }
     }
 
     private void handleMissingEndPrefixExpression(ExpressionContext ctx) {
-        EndPrefixExpressionContext endPrefixExpression = ctx.prefixExpression().endPrefixExpression();
+        EndPrefixExpressionContext endPrefixExpression = ctx.prefixExpression().endPrefixExpression(0);
         if (this.element instanceof Usage usage && endPrefixExpression == null) {
             usage.setIsEnd(false);
         }
     }
 
     private void handleMissingReadonlyPrefixExpression(ExpressionContext ctx) {
-        ReadonlyPrefixExpressionContext readonlyPrefixExpression = ctx.prefixExpression().readonlyPrefixExpression();
+        ReadonlyPrefixExpressionContext readonlyPrefixExpression = ctx.prefixExpression().readonlyPrefixExpression(0);
         if (this.element instanceof Usage usage && readonlyPrefixExpression == null) {
             usage.setIsReadOnly(false);
         }
     }
 
     private void handleMissingVariationPrefixExpression(ExpressionContext ctx) {
-        VariationPrefixExpressionContext variationPrefixExpression = ctx.prefixExpression().variationPrefixExpression();
+        VariationPrefixExpressionContext variationPrefixExpression = ctx.prefixExpression().variationPrefixExpression(0);
         if (this.element instanceof Usage usage && variationPrefixExpression == null) {
             usage.setIsVariation(false);
         }
