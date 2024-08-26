@@ -15,6 +15,7 @@ Always use the stable `.0` releases for any production environments to ensure re
 For more details see xref:user-manual:cycle.adoc[].
 ====
 
+[#docker-install]
 === Installing {product} with Docker Compose
 
 The easiest and most straightforward method to install {product} using Docker Compose, which automatically installs Java and PostgreSQL.
