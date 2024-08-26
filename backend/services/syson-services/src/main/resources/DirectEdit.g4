@@ -29,11 +29,11 @@ package org.eclipse.syson.services.grammars;
 }
 
 expression :
-	prefixExpression? referenceExpression? name? multiplicityExpression? multiplicityPropExpression? featureExpressions EOF
+	prefixExpression referenceExpression? name? multiplicityExpression? multiplicityPropExpression? featureExpressions EOF
 ;
 
 prefixExpression : 
-	directionPrefixExpression? (abstractPrefixExpression | variationPrefixExpression)? readonlyPrefixExpression? derivedPrefixExpression? endPrefixExpression?
+	(directionPrefixExpression | abstractPrefixExpression | variationPrefixExpression | readonlyPrefixExpression | derivedPrefixExpression | endPrefixExpression)*
 ;
 
 directionPrefixExpression : 

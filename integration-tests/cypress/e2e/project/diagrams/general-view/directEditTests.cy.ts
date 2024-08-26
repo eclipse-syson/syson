@@ -185,6 +185,38 @@ describe('Node Creation Tests', () => {
         // check direction attribute
         details.getRadioOption('Direction', 'inout').should('not.be.checked');
       });
+
+      it('We can add properties to a new compartment item by direct editing the existing compartment item without taking into account keywords order', () => {
+        diagram.getNodes(diagramLabel, 'part').click();
+        diagram
+          .getNodes(diagramLabel, 'part')
+          .getByTestId('Palette')
+          .should('exist')
+          .findByTestId('Create')
+          .findByTestId('expand')
+          .click();
+        diagram
+          .getNodes(diagramLabel, 'part')
+          .getByTestId('Palette')
+          .should('exist')
+          .find('div[role=tooltip]')
+          .findByTestId('New Attribute - Tool')
+          .click();
+
+        diagram.getNodes(diagramLabel, 'attribute').should('exist');
+
+        // direct edit attribute
+        cy.getByTestId('IconLabel - attribute').type('end variation derived myAttribute');
+        diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
+
+        // check attribute properties
+        details.getPage('Advanced').click();
+        details.getGroup('Attribute Properties').should('be.visible');
+        details.getDetailsView().find(`[data-testid="Is Abstract"]`).should('have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Variation"]`).should('have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is End"]`).should('have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Derived"]`).should('have.class', 'Mui-checked');
+      });
     });
   });
 });
