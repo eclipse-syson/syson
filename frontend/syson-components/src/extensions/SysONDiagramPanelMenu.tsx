@@ -20,12 +20,13 @@ import FormGroup from '@mui/material/FormGroup';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
+import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
-import { Tooltip } from '@mui/material';
 import { ShowHideDiagramsIcons } from './ShowHideDiagramsIcons';
 import { ShowHideDiagramsInheritedMembers } from './ShowHideDiagramsInheritedMembers';
+import { ShowHideDiagramsInheritedMembersFromStandardLibraries } from './ShowHideDiagramsInheritedMembersFromStandardLibraries';
 
 const useMenuStyles = makeStyles()((_) => ({
   menuEntry: {
@@ -96,6 +97,17 @@ export const SysONDiagramPanelMenu = ({ editingContextId, diagramId }: DiagramPa
                       <ShowHideDiagramsInheritedMembers editingContextId={editingContextId} diagramId={diagramId} />
                     }
                     label={'Show Inherited Members'}
+                  />
+                  <FormControlLabel
+                    key={'Show Inherited Members from Standard Libraries - Menu Entry'}
+                    className={classes.menuEntry}
+                    control={
+                      <ShowHideDiagramsInheritedMembersFromStandardLibraries
+                        editingContextId={editingContextId}
+                        diagramId={diagramId}
+                      />
+                    }
+                    label={'Show Inherited Members from Standard Libraries'}
                   />
                 </FormGroup>
               </ClickAwayListener>
