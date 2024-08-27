@@ -64,7 +64,11 @@ The changes are:
 - Ensure that dropped nodes are always collapsed, the following methods have been moved to support this feature
 * The method `ToolService#dropElementFromExplorer` has been moved to `ViewToolService` since it now requires view-related imports that motivated this refactoring.
 * The method `ToolService#dropElementFromDiagram` has been moved to `ViewToolService` for the sake of consistency.
-
+- Fix _Add Existing Elements_ tool for start and done actions, the following methods have been moved to `UtilService` to make them reusable by different services (they are now used by `ViewNodeService` and `ViewToolService`):
+* `ViewNodeService#getAllStandardStartActions`
+* `ViewNodeService#getAllStandardDoneActions`
+* `ViewNodeService#isAction`
+* `ViewNodeService#isPart`
 
 == Dependencies update
 
@@ -84,7 +88,7 @@ Memberships of a Type are inherited via _Specialization_ or _Conjugation_, not b
 - Fix an issue that allowed to drop an element from the explorer or the diagram on one of its children.
 Doing so deleted both the dropped element and its children from the diagram, and could delete the representation if one of the element was the root element of the representation. 
 - Fix an issue that made the direct edit not working on Constraint and Requirement elements.
-
+- Fix an issue that made the _addExistingElements_ not work properly for _start_ and _done_ actions inside actions and parts.
 
 == Improvements
 

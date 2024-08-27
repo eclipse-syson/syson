@@ -53,6 +53,7 @@ import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.ConstraintDefinition;
@@ -175,8 +176,9 @@ public class ViewToolService extends ToolService {
                         // the parent node (it hasn't been created yet),
                         // nor the parent ViewCreationRequest because the compartment is synchronized and thus it is not
                         // created by a request.
+                        Element owner = this.utilService.getOwningElement(childElement);
                         List<NodeDescription> candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(childElement,
-                                childElement.getOwner(), List.of(convertedNodes.get(compartmentNodeDescription)), convertedNodes);
+                                owner, List.of(convertedNodes.get(compartmentNodeDescription)), convertedNodes);
                         if (!candidates.isEmpty()) {
                             String parentElementId = this.getParentElementId(parentViewCreationRequest,
                                     diagramContext);
@@ -265,7 +267,9 @@ public class ViewToolService extends ToolService {
                                 .filter(nd -> Objects.equals(nd.getId(), compartmentNode.getDescriptionId()))
                                 .findFirst()
                                 .orElse(null);
-                        List<NodeDescription> candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(childElement, childElement.getOwner(), List.of(compartmentNodeDescription),
+
+                        Element owner = this.utilService.getOwningElement(childElement);
+                        List<NodeDescription> candidates = this.nodeDescriptionService.getChildNodeDescriptionsForRendering(childElement, owner, List.of(compartmentNodeDescription),
                                 convertedNodes);
                         for (NodeDescription candidate : candidates) {
                             // Ignore synchronized nodes, this avoids unnecessary recursions that could create
@@ -481,7 +485,24 @@ public class ViewToolService extends ToolService {
      */
     private List<? extends Element> getChildElementsToRender(Element parentElement) {
         final List<? extends Element> childElements;
-        if (parentElement instanceof Usage usage) {
+        if (parentElement instanceof ActionUsage || parentElement instanceof PartUsage) {
+            // ActionUsage and PartUsage can contain Membership referencing actions from the standard library (start and
+            // done). We want to retrieve these membership as part of the child elements to render (e.g. to display them
+            // as part of an addExistingElement service).
+            Usage usage = (Usage) parentElement;
+            List<Element> children = new ArrayList<>();
+            children.addAll(usage.getNestedUsage());
+            children.addAll(this.utilService.getAllStandardStartActions(usage));
+            children.addAll(this.utilService.getAllStandardDoneActions(usage));
+            childElements = children;
+        } else if (parentElement instanceof ActionDefinition || parentElement instanceof PartDefinition) {
+            Definition definition = (Definition) parentElement;
+            List<Element> children = new ArrayList<>();
+            children.addAll(definition.getOwnedUsage());
+            children.addAll(this.utilService.getAllStandardStartActions(definition));
+            children.addAll(this.utilService.getAllStandardDoneActions(definition));
+            childElements = children;
+        } else if (parentElement instanceof Usage usage) {
             childElements = usage.getNestedUsage();
         } else if (parentElement instanceof Definition definition) {
             childElements = definition.getOwnedUsage();
