@@ -33,13 +33,9 @@ import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
-import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Membership;
-import org.eclipse.syson.sysml.Namespace;
-import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -154,32 +150,6 @@ public class ViewNodeService {
      */
     public boolean isHiddenByDefault(Element self, List<String> referenceNames) {
         return referenceNames.stream().allMatch(referenceName -> this.isHiddenByDefault(self, referenceName));
-    }
-
-    public List<Membership> getAllStandardStartActions(Namespace self) {
-        if (this.isPart(self) || this.isAction(self)) {
-            return self.getOwnedRelationship().stream()
-                    .filter(Membership.class::isInstance)
-                    .map(Membership.class::cast)
-                    .filter(m -> {
-                        return m.getMemberElement() instanceof ActionUsage au && this.utilService.isStandardStartAction(au);
-                    })
-                    .toList();
-        }
-        return List.of();
-    }
-
-    public List<Membership> getAllStandardDoneActions(Namespace self) {
-        if (this.isPart(self) || this.isAction(self)) {
-            return self.getOwnedRelationship().stream()
-                    .filter(Membership.class::isInstance)
-                    .map(Membership.class::cast)
-                    .filter(m -> {
-                        return m.getMemberElement() instanceof ActionUsage au && this.utilService.isStandardDoneAction(au);
-                    })
-                    .toList();
-        }
-        return List.of();
     }
 
     /**
@@ -301,13 +271,4 @@ public class ViewNodeService {
         ReferenceSubsetting referenceSubSetting = pau.getOwnedReferenceSubsetting();
         return referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage perfomedAction;
     }
-
-    private boolean isPart(Element element) {
-        return element instanceof PartUsage || element instanceof PartDefinition;
-    }
-
-    private boolean isAction(Element element) {
-        return element instanceof ActionUsage || element instanceof ActionDefinition;
-    }
-
 }

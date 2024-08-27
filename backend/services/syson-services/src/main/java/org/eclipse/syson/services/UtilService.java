@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.services.EditingContextCrossReferenceAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
@@ -40,6 +41,7 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
@@ -104,6 +106,26 @@ public class UtilService {
             containerPart = partUsage;
         }
         return containerPart;
+    }
+
+    /**
+     * Returns the element owning the provided {@code element}.
+     * <p>
+     * The owner of an element can be accessed through various methods, depending on the type of the element (e.g.
+     * {@code getOwner} by default, but {@code getOwningRelatedElement} for relationships). This method provides a
+     * single entry point to retrieve the owner of any element.
+     * </p>
+     *
+     * @param element
+     *            the element to get the owner from
+     * @return the owning element, or {@code null} if {@code element} doesn't have an owner
+     */
+    public Element getOwningElement(Element element) {
+        Element owner = element.getOwner();
+        if (owner == null && element instanceof Relationship relationship) {
+            owner = relationship.getOwningRelatedElement();
+        }
+        return owner;
     }
 
     /**
@@ -276,6 +298,32 @@ public class UtilService {
             result.add((StateUsage) su);
         });
         return result;
+    }
+
+    public List<Membership> getAllStandardStartActions(Namespace self) {
+        if (this.isPart(self) || this.isAction(self)) {
+            return self.getOwnedRelationship().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .filter(m -> {
+                        return m.getMemberElement() instanceof ActionUsage au && this.isStandardStartAction(au);
+                    })
+                    .toList();
+        }
+        return List.of();
+    }
+
+    public List<Membership> getAllStandardDoneActions(Namespace self) {
+        if (this.isPart(self) || this.isAction(self)) {
+            return self.getOwnedRelationship().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .filter(m -> {
+                        return m.getMemberElement() instanceof ActionUsage au && this.isStandardDoneAction(au);
+                    })
+                    .toList();
+        }
+        return List.of();
     }
 
     /**
@@ -657,5 +705,13 @@ public class UtilService {
             this.elementInitializerSwitch.caseRedefinition(newRedefinition);
         }
         return redefiningUsage;
+    }
+
+    private boolean isPart(Element element) {
+        return element instanceof PartUsage || element instanceof PartDefinition;
+    }
+
+    private boolean isAction(Element element) {
+        return element instanceof ActionUsage || element instanceof ActionDefinition;
     }
 }

@@ -26,6 +26,7 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -199,10 +200,13 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
                             .as(ACTION1 + " should contain an action flow compartment")
                             .isPresent();
                     assertThat(action1ActionFlowCompartment.get().getChildNodes())
-                            .as(ACTION1 + " action flow compartment should contain 1 child")
-                            .hasSize(1)
+                            .as(ACTION1 + " action flow compartment should contain 2 child")
+                            .hasSize(2)
                             .as(ACTION1 + " action flow compartment should contain " + ACTION2)
-                            .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), ACTION2));
+                            .anyMatch(n -> Objects.equals(n.getTargetObjectLabel(), ACTION2))
+                            .as(ACTION1 + " action flow compartment should contain a start node")
+                            .anyMatch(n -> n.getStyle() instanceof ImageNodeStyle imageStyle && Objects.equals(imageStyle.getImageURL(), "images/start_action.svg")
+                                    && Objects.equals("", n.getTargetObjectLabel()));
 
                     var optAction2Node = action1ActionFlowCompartment.get().getChildNodes().stream()
                             .filter(n -> Objects.equals(n.getTargetObjectLabel(), ACTION2))
