@@ -25,45 +25,45 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembersService;
-import org.eclipse.syson.diagram.common.view.services.dto.ShowDiagramsInheritedMembersInput;
-import org.eclipse.syson.diagram.common.view.services.dto.ShowDiagramsInheritedMembersSuccessPayload;
+import org.eclipse.syson.diagram.common.view.services.dto.ShowDiagramsInheritedMembersFromStandardLibrariesInput;
+import org.eclipse.syson.diagram.common.view.services.dto.ShowDiagramsInheritedMembersFromStandardLibrariesSuccessPayload;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
 /**
- * Handle show diagrams inherited members event.
+ * Handle show diagrams inherited members from standard libraries event.
  *
  * @author arichard
  */
 @Service
-public class ShowDiagramsInheritedMembersEventHandler implements IDiagramEventHandler {
+public class ShowDiagramsInheritedMembersFromStandardLibrariesEventHandler implements IDiagramEventHandler {
 
     private final ICollaborativeDiagramMessageService messageService;
 
     private final ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService;
 
-    public ShowDiagramsInheritedMembersEventHandler(ICollaborativeDiagramMessageService messageService, ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService) {
+    public ShowDiagramsInheritedMembersFromStandardLibrariesEventHandler(ICollaborativeDiagramMessageService messageService, ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService) {
         this.messageService = Objects.requireNonNull(messageService);
         this.showDiagramsInheritedMembersService = Objects.requireNonNull(showDiagramsInheritedMembersService);
     }
 
     @Override
     public boolean canHandle(IDiagramInput diagramInput) {
-        return diagramInput instanceof ShowDiagramsInheritedMembersInput;
+        return diagramInput instanceof ShowDiagramsInheritedMembersFromStandardLibrariesInput;
     }
 
     @Override
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDiagramContext diagramContext, IDiagramInput diagramInput) {
-        if (diagramInput instanceof ShowDiagramsInheritedMembersInput showDiagramsInheritedMembersInput) {
-            this.showDiagramsInheritedMembersService.setShowInheritedMembers(showDiagramsInheritedMembersInput.show());
-            IPayload payload = new ShowDiagramsInheritedMembersSuccessPayload(diagramInput.id(), showDiagramsInheritedMembersInput.show());
+        if (diagramInput instanceof ShowDiagramsInheritedMembersFromStandardLibrariesInput showDiagramsInheritedMembersFromStandardLibrariesInput) {
+            this.showDiagramsInheritedMembersService.setShowInheritedMembersFromStandardLibraries(showDiagramsInheritedMembersFromStandardLibrariesInput.show());
+            IPayload payload = new ShowDiagramsInheritedMembersFromStandardLibrariesSuccessPayload(diagramInput.id(), showDiagramsInheritedMembersFromStandardLibrariesInput.show());
             ChangeDescription changeDescription = new ChangeDescription(DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE, diagramInput.representationId(), diagramInput);
             payloadSink.tryEmitValue(payload);
             changeDescriptionSink.tryEmitNext(changeDescription);
         } else {
-            String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), ShowDiagramsInheritedMembersInput.class.getSimpleName());
+            String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), ShowDiagramsInheritedMembersFromStandardLibrariesInput.class.getSimpleName());
             IPayload payload = new ErrorPayload(diagramInput.id(), message);
             ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
             payloadSink.tryEmitValue(payload);

@@ -14,6 +14,7 @@ export { InsertTextualSysMLMenuContribution } from './extensions/InsertTextualSy
 export { InsertTextualSysMLv2Modal } from './extensions/InsertTextualSysMLv2Modal';
 export { ShowHideDiagramsIcons } from './extensions/ShowHideDiagramsIcons';
 export { ShowHideDiagramsInheritedMembers } from './extensions/ShowHideDiagramsInheritedMembers';
+export { ShowHideDiagramsInheritedMembersFromStandardLibraries } from './extensions/ShowHideDiagramsInheritedMembersFromStandardLibraries';
 export { SysONDiagramPanelMenu } from './extensions/SysONDiagramPanelMenu';
 export { useInsertTextualSysMLv2 } from './extensions/useInsertTextualSysMLv2';
 export { SysMLPackageNode } from './nodes/package/SysMLPackageNode';

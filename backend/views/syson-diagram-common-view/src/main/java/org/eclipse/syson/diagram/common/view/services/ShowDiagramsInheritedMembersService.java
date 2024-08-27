@@ -16,21 +16,32 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * Service class for ShowDiagramsInheritedMembers option.
+ * Service class for ShowDiagramsInheritedMembers options.
  *
  * @author arichard
  */
 @Service
 public class ShowDiagramsInheritedMembersService {
 
-    @Value("${org.eclipse.syson.show.diagrams.inherited.members:false}")
+    @Value("${org.eclipse.syson.show.diagrams.inherited.members:true}")
     private boolean showInheritedMembers;
+
+    @Value("${org.eclipse.syson.show.diagrams.inherited.members.from.standard.libraries:false}")
+    private boolean showInheritedMembersFromStandardLibraries;
+
+    public boolean getShowInheritedMembers() {
+        return this.showInheritedMembers;
+    }
 
     public void setShowInheritedMembers(boolean showInheritedMembers) {
         this.showInheritedMembers = showInheritedMembers;
     }
 
-    public boolean getShowInheritedMembers() {
-        return this.showInheritedMembers;
+    public boolean getShowInheritedMembersFromStandardLibraries() {
+        return this.showInheritedMembersFromStandardLibraries;
+    }
+
+    public void setShowInheritedMembersFromStandardLibraries(boolean showInheritedMembersFromStandardLibraries) {
+        this.showInheritedMembersFromStandardLibraries = showInheritedMembersFromStandardLibraries;
     }
 }

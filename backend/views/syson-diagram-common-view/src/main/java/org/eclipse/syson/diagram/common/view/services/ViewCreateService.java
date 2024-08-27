@@ -68,6 +68,7 @@ import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
+import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
  * Creation-related Java shared services used by several diagrams.
@@ -471,7 +472,10 @@ public class ViewCreateService {
     }
 
     public List<Feature> getInheritedCompartmentItems(Type type, String eReferenceName) {
-        if (!this.showDiagramsInheritedMembersService.getShowInheritedMembers()) {
+        boolean showInheritedMembers = this.showDiagramsInheritedMembersService.getShowInheritedMembers();
+        boolean showInheritedMembersFromStandardLibraries = this.showDiagramsInheritedMembersService.getShowInheritedMembersFromStandardLibraries();
+
+        if (!showInheritedMembers && !showInheritedMembersFromStandardLibraries) {
             return List.of();
         }
 
@@ -494,6 +498,12 @@ public class ViewCreateService {
                 .forEach(alreadySpecializedFeatures::add);
         inheritedElements.removeAll(alreadySpecializedFeatures);
         inheritedElements.remove(type);
+
+        if (showInheritedMembers && !showInheritedMembersFromStandardLibraries) {
+            inheritedElements.removeIf(elt -> ElementUtil.isFromStandardLibrary(elt));
+        } else if (showInheritedMembersFromStandardLibraries && !showInheritedMembers) {
+            inheritedElements.removeIf(elt -> !ElementUtil.isFromStandardLibrary(elt));
+        }
         return inheritedElements;
     }
 

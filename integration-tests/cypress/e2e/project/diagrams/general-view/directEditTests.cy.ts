@@ -50,42 +50,6 @@ describe('Node Creation Tests', () => {
         diagram.getPalette().should('exist').find('div[role=tooltip]').findByTestId('New Part - Tool').click();
       });
 
-      it('The inherited members are visible in compartments (only if the option "inherited members" is enabled)', () => {
-        cy.getByTestId('syson-diagram-panel-menu-icon').click();
-        // wait for the GraphQL query to retrieve the value of the checkbox
-        cy.wait(1000);
-        cy.getByTestId('ShowHideDiagramInheritedMembersCheckbox').then(($cb) => {
-          const check = $cb.attr('aria-label');
-          if (check === 'Show Inherited Members in Diagrams') {
-            $cb.trigger('click');
-          }
-        });
-
-        diagram.getNodes(diagramLabel, 'part').type('p1{enter}');
-        diagram.getNodes(diagramLabel, 'p1').should('exist');
-        diagram
-          .getNodes(diagramLabel, 'p1')
-          .click()
-          .getByTestId('Palette')
-          .should('exist')
-          .findByTestId('Create')
-          .findByTestId('expand')
-          .click();
-        diagram
-          .getNodes(diagramLabel, 'p1')
-          .getByTestId('Palette')
-          .should('exist')
-          .find('div[role=tooltip]')
-          .findByTestId('New Attribute - Tool')
-          .click();
-        diagram.getNodes(diagramLabel, 'attributes').should('exist');
-        diagram.getNodes(diagramLabel, '^isSolid = null').should('exist');
-        diagram.getNodes(diagramLabel, 'attribute').should('exist');
-
-        // palette is also available on inherited members
-        diagram.getNodes(diagramLabel, '^isSolid = null').click().getByTestId('Palette').should('exist');
-      });
-
       it('We can add a subset to Parts::parts by direct editing the existing PartUsage', () => {
         diagram.getNodes(diagramLabel, 'part').type('p1 :> parts{enter}');
         // for standard libraries elements, the qualified name is displayed
