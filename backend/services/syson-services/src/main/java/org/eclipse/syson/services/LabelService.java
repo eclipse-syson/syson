@@ -20,12 +20,14 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditListener;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
@@ -47,7 +49,9 @@ import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.VariantMembership;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.ElementUtil;
@@ -108,6 +112,32 @@ public class LabelService {
     }
 
     /**
+     * Apply the direct edit result (i.e. the newLabel) to the given graphical node {@link Element}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param newLabel
+     *            the new value to apply.
+     * @return the given {@link Element}.
+     */
+    public Element directEditNode(Element element, String newLabel) {
+        return this.directEdit(element, newLabel, false, (String[]) null);
+    }
+
+    /**
+     * Apply the direct edit result (i.e. the newLabel) to the given graphical list item {@link Element}.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @param newLabel
+     *            the new value to apply.
+     * @return the given {@link Element}.
+     */
+    public Element directEditListItem(Element element, String newLabel) {
+        return this.directEdit(element, newLabel, true, (String[]) null);
+    }
+
+    /**
      * Apply the direct edit result (i.e. the newLabel) to the given {@link Element} without changing the name of the
      * element itself.
      *
@@ -121,6 +151,10 @@ public class LabelService {
         return this.directEdit(element, newLabel, LabelService.NAME_OFF);
     }
 
+    public Element directEdit(Element element, String newLabel, String... options) {
+        return this.directEdit(element, newLabel, false, LabelService.NAME_OFF);
+    }
+
     /**
      * Apply the direct edit result (i.e. the newLabel) to the given {@link Element}.
      *
@@ -130,17 +164,19 @@ public class LabelService {
      *            the new value to apply.
      * @return the given {@link Element}.
      */
-    public Element directEdit(Element element, String newLabel, String... options) {
+    public Element directEdit(Element element, String newLabel, boolean isCompartmentItem, String... options) {
         DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(newLabel));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         DirectEditParser parser = new DirectEditParser(tokens);
         ParseTree tree;
-        if (element instanceof ConstraintUsage && element.getOwningMembership() instanceof RequirementConstraintMembership) {
+        if (element instanceof ConstraintUsage && element.getOwningMembership() instanceof RequirementConstraintMembership && isCompartmentItem) {
             // Use the constraint expression parser only if the element is a constraint owned by a requirement, other
             // constraints (including requirements) are parsed as regular elements.
             tree = parser.constraintExpression();
+        } else if (isCompartmentItem) {
+            tree = parser.listItemExpression();
         } else {
-            tree = parser.expression();
+            tree = parser.nodeExpression();
         }
         ParseTreeWalker walker = new ParseTreeWalker();
         DirectEditListener listener = new DiagramDirectEditListener(element, this.getFeedbackMessageService(), options);
@@ -158,7 +194,7 @@ public class LabelService {
     public String getDefaultInitialDirectEditLabel(Element element) {
         StringBuilder builder = new StringBuilder();
         if (element instanceof Usage usage) {
-            builder.append(this.getUsagePrefix(usage));
+            builder.append(this.getBasicNamePrefix(usage));
         }
         builder.append(element.getDeclaredName());
         builder.append(this.getMultiplicityLabel(element));
@@ -240,7 +276,42 @@ public class LabelService {
      *            the given {@link Usage}.
      * @return the label of the prefix part of the given {@link Usage} if there is one, an empty string otherwise.
      */
-    public String getUsagePrefix(Usage usage) {
+    public String getBasicNamePrefix(Element element) {
+        StringBuilder label = new StringBuilder();
+        if (element instanceof Usage usage) {
+            if (usage.isIsVariation()) {
+                label.append(LabelConstants.VARIATION + LabelConstants.SPACE);
+            }
+        } else if (element instanceof Definition definition) {
+            if (definition.isIsVariation()) {
+                label.append(LabelConstants.VARIATION + LabelConstants.SPACE);
+            }
+        }
+        EObject membership = element.getOwningMembership();
+        if (membership != null) {
+            EObject parent = membership.eContainer();
+            boolean hasVariationParent = (parent instanceof Definition && ((Definition) parent).isIsVariation()) | (parent instanceof Usage && ((Usage) parent).isIsVariation());
+            if (membership instanceof VariantMembership | hasVariationParent) {
+                label.append(LabelConstants.VARIANT);
+            }
+        }
+        if (element instanceof Type type && type.isIsAbstract()) {
+            label.append(LabelConstants.ABSTRACT + LabelConstants.SPACE);
+        }
+        if (element instanceof Usage usage) {
+            this.getReferenceUsagePrefix(usage, label);
+        }
+        return label.toString();
+    }
+
+    /**
+     * Return the label of the prefix part of the given {@link Usage}.
+     *
+     * @param usage
+     *            the given {@link Usage}.
+     * @return the label of the prefix part of the given {@link Usage} if there is one, an empty string otherwise.
+     */
+    public String getUsageListItemPrefix(Usage usage) {
         StringBuilder label = new StringBuilder();
         if (usage.getDirection() == FeatureDirectionKind.IN) {
             label.append(LabelConstants.IN + LabelConstants.SPACE);

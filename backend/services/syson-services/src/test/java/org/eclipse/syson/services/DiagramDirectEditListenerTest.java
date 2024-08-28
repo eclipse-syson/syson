@@ -290,7 +290,7 @@ public class DiagramDirectEditListenerTest {
         if (element instanceof ConstraintUsage) {
             tree = parser.constraintExpression();
         } else {
-            tree = parser.expression();
+            tree = parser.listItemExpression();
         }
         ParseTreeWalker walker = new ParseTreeWalker();
         DirectEditListener listener = new DiagramDirectEditListener(element, new IFeedbackMessageService.NoOp());

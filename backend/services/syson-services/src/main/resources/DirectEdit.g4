@@ -28,11 +28,19 @@ grammar DirectEdit;
 package org.eclipse.syson.services.grammars;
 }
 
-expression :
-	prefixExpression referenceExpression? name? multiplicityExpression? multiplicityPropExpression? featureExpressions EOF
+nodeExpression :
+	prefixNodeExpression referenceExpression? name? featureExpressions EOF
 ;
 
-prefixExpression : 
+listItemExpression :
+	prefixListItemExpression referenceExpression? name? multiplicityExpression? multiplicityPropExpression? featureExpressions EOF
+;
+
+prefixNodeExpression : 
+	(abstractPrefixExpression | variationPrefixExpression | variantPrefixExpression)*
+;
+
+prefixListItemExpression : 
 	(directionPrefixExpression | abstractPrefixExpression | variationPrefixExpression | readonlyPrefixExpression | derivedPrefixExpression | endPrefixExpression)*
 ;
 
@@ -46,6 +54,10 @@ abstractPrefixExpression :
 
 variationPrefixExpression : 
 	VARIATION_PREFIX
+;
+
+variantPrefixExpression : 
+	VARIANT_PREFIX
 ;
 
 readonlyPrefixExpression : 
@@ -296,6 +308,8 @@ TYPING : 'typing';
 UNIONS : 'unions';
 VARIATION : 'variation';
 VARIATION_PREFIX : VARIATION WS;
+VARIANT : 'variant';
+VARIANT_PREFIX : VARIANT WS;
 XOR: 'xor';
 
 // This rule is required to make sure the parser rule "name" can match any input (since it is defined as a negation we 

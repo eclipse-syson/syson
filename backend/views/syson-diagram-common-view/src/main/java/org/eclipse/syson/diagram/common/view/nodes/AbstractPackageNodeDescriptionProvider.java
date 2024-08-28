@@ -167,7 +167,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .body(changeContext.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+                .expression(AQLConstants.AQL_SELF + ".directEditNode(newLabel)");
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")

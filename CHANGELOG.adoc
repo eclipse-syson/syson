@@ -57,6 +57,7 @@ The following methods have been moved to `UtilService` to make them reusable by 
 * `ViewNodeService#getAllStandardDoneActions`
 * `ViewNodeService#isAction`
 * `ViewNodeService#isPart`
+- https://github.com/eclipse-syson/syson/issues/552[#552] [diagrams] Rename `ViewLabelService#getInitialDirectEditLabel` service into `getInitialDirectEditListItemLabel` to specify the computation of the initial label on list item elements.
 
 === Dependency update
 
@@ -127,6 +128,7 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
   * Dropping an element from the explorer on the diagram reveals the corresponding node if it is already on the diagram and hidden.
   * A warning message is now displayed when attempting to drop an element which is already displayed and visible in the target container.
 - https://github.com/eclipse-syson/syson/issues/670[#670] [diagrams] Ignore keywords order during direct edit of prefixes label of `Definitions` and `Usages` graphical elements.
+- https://github.com/eclipse-syson/syson/issues/689[#689] [diagrams] Ensure coherence between Direct Edit capabilities and the displayed label
 
 === New features
 

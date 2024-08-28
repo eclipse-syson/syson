@@ -41,13 +41,14 @@ import org.eclipse.syson.services.grammars.DirectEditParser.DerivedPrefixExpress
 import org.eclipse.syson.services.grammars.DirectEditParser.DirectionPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.EffectExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.EndPrefixExpressionContext;
-import org.eclipse.syson.services.grammars.DirectEditParser.ExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureChainExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.ListItemExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.LiteralExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MeasurementExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MultiplicityExpressionMemberContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.NodeExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.NonuniqueMultiplicityExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.OperandContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.OrderedMultiplicityExpressionContext;
@@ -163,7 +164,29 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     @Override
-    public void exitExpression(ExpressionContext ctx) {
+    public void exitNodeExpression(NodeExpressionContext ctx) {
+        if (!this.options.contains(LabelService.NAME_OFF)) {
+            var identifier = ctx.name();
+            if (identifier != null) {
+                String newValue = null;
+                if (!identifier.getText().isBlank()) {
+                    newValue = this.getFullText(identifier);
+                }
+                new AttributeToDirectEditSwitch(newValue).doSwitch(this.element);
+            }
+        }
+        this.handleMissingAbstractPrefixExpression(ctx);
+        this.handleMissingVariationPrefixExpression(ctx);
+        this.handleMissingReferenceExpression(ctx);
+        this.handleMissingSubclassificationExpression(ctx);
+        this.handleMissingSubsettingExpression(ctx);
+        this.handleMissingRedefinitionExpression(ctx);
+        this.handleMissingTypingExpression(ctx);
+        this.handleMissingValueExpression(ctx);
+    }
+
+    @Override
+    public void exitListItemExpression(ListItemExpressionContext ctx) {
         if (!this.options.contains(LabelService.NAME_OFF)) {
             var identifier = ctx.name();
             if (identifier != null) {
@@ -753,7 +776,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
             return;
         }
-        if (this.element instanceof TransitionUsage transition) {
+        if (this.element instanceof TransitionUsage) {
             this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
         }
         super.exitTriggerExpression(ctx);
@@ -941,62 +964,77 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         super.visitErrorNode(node);
     }
 
-    private void handleMissingDirectionPrefixExpression(ExpressionContext ctx) {
-        DirectionPrefixExpressionContext directionPrefixExpression = ctx.prefixExpression().directionPrefixExpression(0);
+    private void handleMissingDirectionPrefixExpression(ListItemExpressionContext ctx) {
+        DirectionPrefixExpressionContext directionPrefixExpression = ctx.prefixListItemExpression().directionPrefixExpression(0);
         if (this.element instanceof Usage usage && directionPrefixExpression == null) {
             usage.setDirection(null);
         }
     }
 
-    private void handleMissingAbstractPrefixExpression(ExpressionContext ctx) {
-        AbstractPrefixExpressionContext abstractPrefixExpression = ctx.prefixExpression().abstractPrefixExpression(0);
+    private void handleMissingAbstractPrefixExpression(ParserRuleContext ctx) {
+        AbstractPrefixExpressionContext abstractPrefixExpression = null;
+        if (ctx instanceof ListItemExpressionContext listCtx) {
+            abstractPrefixExpression = listCtx.prefixListItemExpression().abstractPrefixExpression(0);
+        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
+            abstractPrefixExpression = nodeCtx.prefixNodeExpression().abstractPrefixExpression(0);
+        }
         if (this.element instanceof Usage usage && abstractPrefixExpression == null && !usage.isIsVariation()) {
             // A variation is always abstract
             usage.setIsAbstract(false);
         }
     }
 
-    private void handleMissingDerivedPrefixExpression(ExpressionContext ctx) {
-        DerivedPrefixExpressionContext derivedPrefixExpression = ctx.prefixExpression().derivedPrefixExpression(0);
+    private void handleMissingDerivedPrefixExpression(ListItemExpressionContext ctx) {
+        DerivedPrefixExpressionContext derivedPrefixExpression = ctx.prefixListItemExpression().derivedPrefixExpression(0);
         if (this.element instanceof Usage usage && derivedPrefixExpression == null) {
             usage.setIsDerived(false);
         }
     }
 
-    private void handleMissingEndPrefixExpression(ExpressionContext ctx) {
-        EndPrefixExpressionContext endPrefixExpression = ctx.prefixExpression().endPrefixExpression(0);
+    private void handleMissingEndPrefixExpression(ListItemExpressionContext ctx) {
+        EndPrefixExpressionContext endPrefixExpression = ctx.prefixListItemExpression().endPrefixExpression(0);
         if (this.element instanceof Usage usage && endPrefixExpression == null) {
             usage.setIsEnd(false);
         }
     }
 
-    private void handleMissingReadonlyPrefixExpression(ExpressionContext ctx) {
-        ReadonlyPrefixExpressionContext readonlyPrefixExpression = ctx.prefixExpression().readonlyPrefixExpression(0);
+    private void handleMissingReadonlyPrefixExpression(ListItemExpressionContext ctx) {
+        ReadonlyPrefixExpressionContext readonlyPrefixExpression = ctx.prefixListItemExpression().readonlyPrefixExpression(0);
         if (this.element instanceof Usage usage && readonlyPrefixExpression == null) {
             usage.setIsReadOnly(false);
         }
     }
 
-    private void handleMissingVariationPrefixExpression(ExpressionContext ctx) {
-        VariationPrefixExpressionContext variationPrefixExpression = ctx.prefixExpression().variationPrefixExpression(0);
+    private void handleMissingVariationPrefixExpression(ParserRuleContext ctx) {
+        VariationPrefixExpressionContext variationPrefixExpression = null;
+        if (ctx instanceof ListItemExpressionContext listCtx) {
+            variationPrefixExpression = listCtx.prefixListItemExpression().variationPrefixExpression(0);
+        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
+            variationPrefixExpression = nodeCtx.prefixNodeExpression().variationPrefixExpression(0);
+        }
         if (this.element instanceof Usage usage && variationPrefixExpression == null) {
             usage.setIsVariation(false);
         }
     }
 
-    private void handleMissingReferenceExpression(ExpressionContext ctx) {
-        ReferenceExpressionContext referenceExpression = ctx.referenceExpression();
+    private void handleMissingReferenceExpression(ParserRuleContext ctx) {
+        ReferenceExpressionContext referenceExpression = null;
+        if (ctx instanceof ListItemExpressionContext listCtx) {
+            referenceExpression = listCtx.referenceExpression();
+        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
+            referenceExpression = nodeCtx.referenceExpression();
+        }
         if (this.element instanceof Usage usage && referenceExpression == null) {
             usage.setIsComposite(true);
         }
     }
 
-    private void handleMissingMultiplicityExpression(ExpressionContext ctx) {
+    private void handleMissingMultiplicityExpression(ListItemExpressionContext ctx) {
         if (this.options.contains(LabelService.MULTIPLICITY_OFF)) {
             return;
         }
         MultiplicityExpressionContext multiplicityExpression = ctx.multiplicityExpression();
-        if (this.element instanceof Usage usage && multiplicityExpression != null && this.isDeleteMultiplicityExpression(multiplicityExpression)) {
+        if (this.element instanceof Usage && multiplicityExpression != null && this.isDeleteMultiplicityExpression(multiplicityExpression)) {
             var optMultiplicityRange = this.element.getOwnedRelationship().stream()
                     .filter(OwningMembership.class::isInstance)
                     .map(OwningMembership.class::cast)
@@ -1018,26 +1056,31 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
                 && LabelConstants.CLOSE_BRACKET.equals(multiplicityExpression.getChild(1).getText());
     }
 
-    private void handleMissingOrderedMultiplicityExpression(ExpressionContext ctx) {
+    private void handleMissingOrderedMultiplicityExpression(ListItemExpressionContext ctx) {
         OrderedMultiplicityExpressionContext orderedMultiplicityExpression = ctx.multiplicityPropExpression().orderedMultiplicityExpression();
         if (this.element instanceof Usage usage && orderedMultiplicityExpression == null) {
             usage.setIsOrdered(false);
         }
     }
 
-    private void handleMissingNonuniqueMultiplicityExpression(ExpressionContext ctx) {
+    private void handleMissingNonuniqueMultiplicityExpression(ListItemExpressionContext ctx) {
         NonuniqueMultiplicityExpressionContext nonuniqueMultiplicityExpression = ctx.multiplicityPropExpression().nonuniqueMultiplicityExpression();
         if (this.element instanceof Usage usage && nonuniqueMultiplicityExpression == null) {
             usage.setIsUnique(true);
         }
     }
 
-    private void handleMissingSubclassificationExpression(ExpressionContext ctx) {
+    private void handleMissingSubclassificationExpression(ParserRuleContext ctx) {
         if (this.options.contains(LabelService.SUBSETTING_OFF)) {
             return;
         }
-        FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Definition definition && featureExpressions != null
+        FeatureExpressionsContext featureExpressions = null;
+        if (ctx instanceof ListItemExpressionContext listCtx) {
+            featureExpressions = listCtx.featureExpressions();
+        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
+            featureExpressions = nodeCtx.featureExpressions();
+        }
+        if (this.element instanceof Definition && featureExpressions != null
                 && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBCLASSIFICATION)) {
             var subclassification = this.element.getOwnedRelationship().stream()
                     .filter(Subclassification.class::isInstance)
@@ -1049,12 +1092,17 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    private void handleMissingSubsettingExpression(ExpressionContext ctx) {
+    private void handleMissingSubsettingExpression(ParserRuleContext ctx) {
         if (this.options.contains(LabelService.SUBSETTING_OFF)) {
             return;
         }
-        FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null
+        FeatureExpressionsContext featureExpressions = null;
+        if (ctx instanceof ListItemExpressionContext listCtx) {
+            featureExpressions = listCtx.featureExpressions();
+        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
+            featureExpressions = nodeCtx.featureExpressions();
+        }
+        if (this.element instanceof Usage && featureExpressions != null
                 && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.subsettingExpression(), LabelConstants.SUBSETTING)) {
             var subsetting = this.element.getOwnedRelationship().stream()
                     .filter(elt -> elt instanceof Subsetting && !(elt instanceof Redefinition))
@@ -1066,12 +1114,17 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    private void handleMissingRedefinitionExpression(ExpressionContext ctx) {
+    private void handleMissingRedefinitionExpression(ParserRuleContext ctx) {
         if (this.options.contains(LabelService.REDEFINITION_OFF)) {
             return;
         }
-        FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null
+        FeatureExpressionsContext featureExpressions = null;
+        if (ctx instanceof ListItemExpressionContext listCtx) {
+            featureExpressions = listCtx.featureExpressions();
+        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
+            featureExpressions = nodeCtx.featureExpressions();
+        }
+        if (this.element instanceof Usage && featureExpressions != null
                 && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.redefinitionExpression(), LabelConstants.REDEFINITION)) {
             var redefinition = this.element.getOwnedRelationship().stream()
                     .filter(Redefinition.class::isInstance)
@@ -1083,12 +1136,17 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    private void handleMissingTypingExpression(ExpressionContext ctx) {
+    private void handleMissingTypingExpression(ParserRuleContext ctx) {
         if (this.options.contains(LabelService.TYPING_OFF)) {
             return;
         }
-        FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.typingExpression(), LabelConstants.COLON)) {
+        FeatureExpressionsContext featureExpressions = null;
+        if (ctx instanceof ListItemExpressionContext listCtx) {
+            featureExpressions = listCtx.featureExpressions();
+        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
+            featureExpressions = nodeCtx.featureExpressions();
+        }
+        if (this.element instanceof Usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.typingExpression(), LabelConstants.COLON)) {
             var featureTyping = this.element.getOwnedRelationship().stream()
                     .filter(FeatureTyping.class::isInstance)
                     .map(FeatureTyping.class::cast)
@@ -1099,12 +1157,17 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    private void handleMissingValueExpression(ExpressionContext ctx) {
+    private void handleMissingValueExpression(ParserRuleContext ctx) {
         if (this.options.contains(LabelService.VALUE_OFF)) {
             return;
         }
-        FeatureExpressionsContext featureExpressions = ctx.featureExpressions();
-        if (this.element instanceof Usage usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.valueExpression(), LabelConstants.EQUAL)) {
+        FeatureExpressionsContext featureExpressions = null;
+        if (ctx instanceof ListItemExpressionContext listCtx) {
+            featureExpressions = listCtx.featureExpressions();
+        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
+            featureExpressions = nodeCtx.featureExpressions();
+        }
+        if (this.element instanceof Usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.valueExpression(), LabelConstants.EQUAL)) {
             var featureValue = this.element.getOwnedRelationship().stream()
                     .filter(FeatureValue.class::isInstance)
                     .map(FeatureValue.class::cast)
