@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.helper.EMFUtils;
@@ -240,12 +241,7 @@ public class ToolService {
 
     protected void moveElement(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        Optional<Membership> membership = this.getMembership(droppedElement, targetElement);
-        if (membership.isPresent()) {
-            targetElement.getOwnedRelationship().add(membership.get());
-        } else {
-            return;
-        }
+        this.moveMembership(droppedElement, targetElement);
         ViewCreationRequest droppedElementViewCreationRequest = this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
         this.moveSubNodes(droppedElementViewCreationRequest, droppedNode, diagramContext);
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
@@ -304,40 +300,45 @@ public class ToolService {
     }
 
     /**
-     * Returns the correct membership to store the droppedElement inside the targetElement one.
+     * Moves the owning membership of {@code droppedElement} to {@code targetElement}.
+     * <p>
+     * This method may create a new membership in {@code targetElement}, potentially with a different type than
+     * {@code droppedElement.getOwningMembership()}. For example, an element moved into a package will have an
+     * {@link OwningMembership} instance as its parent, regardless of its original containing membership.
+     * </p>
      *
      * @param droppedElement
      *            the element that has been dropped
      * @param targetElement
      *            the element inside which the drop has been performed
-     * @return
      */
-    private Optional<Membership> getMembership(Element droppedElement, Element targetElement) {
-        Optional<Membership> result = Optional.empty();
+    private void moveMembership(Element droppedElement, Element targetElement) {
         if (droppedElement.eContainer() instanceof Membership currentMembership) {
             if (targetElement instanceof Package) {
                 // the expected membership should be an OwningMembership
                 if (currentMembership instanceof FeatureMembership) {
-                    var owningMemberhip = SysmlFactory.eINSTANCE.createOwningMembership();
-                    owningMemberhip.getOwnedRelatedElement().add(droppedElement);
+                    var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+                    // Add the new membership to its container first to make sure its content stays in the same
+                    // resource. Otherwise the cross-referencer will delete all the references pointing to its related
+                    // element, which will have unexpected results on the model.
+                    targetElement.getOwnedRelationship().add(owningMembership);
+                    owningMembership.getOwnedRelatedElement().add(droppedElement);
                     this.deleteService.deleteFromModel(currentMembership);
-                    result = Optional.of(owningMemberhip);
                 } else {
-                    result = Optional.of(currentMembership);
+                    targetElement.getOwnedRelationship().add(currentMembership);
                 }
             } else {
                 // the expected membership should be a FeatureMembership
                 if (currentMembership instanceof FeatureMembership) {
-                    result = Optional.of(currentMembership);
+                    targetElement.getOwnedRelationship().add(currentMembership);
                 } else {
                     var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+                    targetElement.getOwnedRelationship().add(featureMembership);
                     featureMembership.getOwnedRelatedElement().add(droppedElement);
                     this.deleteService.deleteFromModel(currentMembership);
-                    result = Optional.of(featureMembership);
                 }
             }
         }
-        return result;
     }
 
     protected Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescription(String descriptionId, DiagramDescription diagramDescription,
