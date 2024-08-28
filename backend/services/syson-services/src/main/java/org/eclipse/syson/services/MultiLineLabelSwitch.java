@@ -619,7 +619,6 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
             label.append(this.variationUsage(usage));
         } else if (object instanceof Definition definition) {
             label.append(this.variationDefinition(definition));
-
         }
         label.append(this.variantElement(object))
                 .append(this.abstractType(object));

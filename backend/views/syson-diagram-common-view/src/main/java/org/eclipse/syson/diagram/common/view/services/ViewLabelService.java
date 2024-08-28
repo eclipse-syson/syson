@@ -97,7 +97,7 @@ public class ViewLabelService extends LabelService {
             // constraints (including requirements) are rendered as regular elements.
             label.append(this.getCompartmentItemLabel(constraintUsage));
         } else {
-            label.append(this.getUsagePrefix(usage));
+            label.append(this.getUsageListItemPrefix(usage));
             String declaredName = usage.getDeclaredName();
             if (declaredName != null) {
                 label.append(declaredName);
@@ -168,24 +168,24 @@ public class ViewLabelService extends LabelService {
     }
 
     /**
-     * Get the value to display when a direct edit has been called on the given {@link Usage}.
+     * Get the value to display when a direct edit has been called on the given item list {@link Usage}.
      *
      * @param usage
      *            the given {@link Usage}.
      * @return the value to display.
      */
-    public String getInitialDirectEditLabel(Usage usage) {
+    public String getInitialDirectEditListItemLabel(Usage usage) {
         String result;
         if (usage instanceof ConstraintUsage constraintUsage &&
                 usage.getOwningMembership() instanceof RequirementConstraintMembership) {
-            result = this.getInitialDirectEditLabel(constraintUsage);
+            result = this.getInitialDirectEditListItemLabel(constraintUsage);
         } else {
             result = this.getCompartmentItemLabel(usage);
         }
         return result;
     }
 
-    private String getInitialDirectEditLabel(ConstraintUsage constraintUsage) {
+    private String getInitialDirectEditListItemLabel(ConstraintUsage constraintUsage) {
         String result;
         if (!constraintUsage.getOwnedMember().isEmpty() && constraintUsage.getOwnedMember().get(0) instanceof Expression expression) {
             result = this.getValue(expression);
@@ -203,7 +203,7 @@ public class ViewLabelService extends LabelService {
      *            the given {@link Documentation}.
      * @return the value to display.
      */
-    public String getInitialDirectEditLabel(Documentation documentation) {
+    public String getInitialDirectEditListItemLabel(Documentation documentation) {
         return documentation.getBody();
     }
 

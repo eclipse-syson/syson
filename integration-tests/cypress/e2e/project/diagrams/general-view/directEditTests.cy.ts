@@ -206,7 +206,7 @@ describe('Node Creation Tests', () => {
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
 
         // direct edit attribute
-        cy.getByTestId('IconLabel - attribute').type('end variation derived myAttribute');
+        cy.getByTestId('IconLabel - attribute').type('end variation derived myAttribute{enter}');
         diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
 
         // check attribute properties
@@ -216,6 +216,28 @@ describe('Node Creation Tests', () => {
         details.getDetailsView().find(`[data-testid="Is Variation"]`).should('have.class', 'Mui-checked');
         details.getDetailsView().find(`[data-testid="Is End"]`).should('have.class', 'Mui-checked');
         details.getDetailsView().find(`[data-testid="Is Derived"]`).should('have.class', 'Mui-checked');
+      });
+
+      it('Direct edit a usage graphical node', () => {
+        diagram.getNodes(diagramLabel, 'part').click();
+
+        diagram.getNodes(diagramLabel, 'part').should('exist');
+
+        // direct edit attribute
+        cy.getByTestId('Label - «part»\\a part').type('abstract myPart{enter}');
+        diagram.getNodes(diagramLabel, 'myPart').should('exist');
+
+        // check attribute properties
+        details.getPage('Advanced').click();
+        details.getGroup('Part Properties').should('be.visible');
+        details.getDetailsView().find(`[data-testid="Is Abstract"]`).should('have.class', 'Mui-checked');
+        details.getDetailsView().find(`[data-testid="Is Derived"]`).click();
+
+        cy.getByTestId('Label - «abstract»\\a «part»\\a myPart').type('myPart{enter}');
+        diagram.getNodes(diagramLabel, 'myPart').should('exist');
+        details.getDetailsView().find(`[data-testid="Is Abstract"]`).should('not.have.class', 'Mui-checked');
+        // even if derived keyword has not been typed, it is still derived because DirectEdit on graphical node does not take into account his keyword
+        details.getDetailsView().find(`[data-testid="Is Derived"]`).click();
       });
     });
   });

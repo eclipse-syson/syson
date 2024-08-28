@@ -22,25 +22,45 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface DirectEditListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link DirectEditParser#expression}.
+	 * Enter a parse tree produced by {@link DirectEditParser#nodeExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(DirectEditParser.ExpressionContext ctx);
+	void enterNodeExpression(DirectEditParser.NodeExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DirectEditParser#expression}.
+	 * Exit a parse tree produced by {@link DirectEditParser#nodeExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(DirectEditParser.ExpressionContext ctx);
+	void exitNodeExpression(DirectEditParser.NodeExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DirectEditParser#prefixExpression}.
+	 * Enter a parse tree produced by {@link DirectEditParser#listItemExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrefixExpression(DirectEditParser.PrefixExpressionContext ctx);
+	void enterListItemExpression(DirectEditParser.ListItemExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DirectEditParser#prefixExpression}.
+	 * Exit a parse tree produced by {@link DirectEditParser#listItemExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrefixExpression(DirectEditParser.PrefixExpressionContext ctx);
+	void exitListItemExpression(DirectEditParser.ListItemExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#prefixNodeExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrefixNodeExpression(DirectEditParser.PrefixNodeExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#prefixNodeExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrefixNodeExpression(DirectEditParser.PrefixNodeExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#prefixListItemExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrefixListItemExpression(DirectEditParser.PrefixListItemExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#prefixListItemExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrefixListItemExpression(DirectEditParser.PrefixListItemExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#directionPrefixExpression}.
 	 * @param ctx the parse tree
@@ -71,6 +91,16 @@ public interface DirectEditListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariationPrefixExpression(DirectEditParser.VariationPrefixExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#variantPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariantPrefixExpression(DirectEditParser.VariantPrefixExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#variantPrefixExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariantPrefixExpression(DirectEditParser.VariantPrefixExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#readonlyPrefixExpression}.
 	 * @param ctx the parse tree

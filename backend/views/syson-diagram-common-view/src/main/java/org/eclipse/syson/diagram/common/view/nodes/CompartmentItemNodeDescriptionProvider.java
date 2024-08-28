@@ -118,11 +118,11 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
                 .body(callDeleteService.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
+                .expression(AQLUtils.getSelfServiceCallExpression("directEditListItem", "newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
-                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getInitialDirectEditLabel"))
+                .initialDirectEditLabelExpression(AQLUtils.getSelfServiceCallExpression("getInitialDirectEditListItemLabel"))
                 .body(callEditService.build());
 
         return this.diagramBuilderHelper.newNodePalette()

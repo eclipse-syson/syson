@@ -73,6 +73,10 @@ The changes are:
 * `ViewNodeService#getAllStandardDoneActions`
 * `ViewNodeService#isAction`
 * `ViewNodeService#isPart`
+* Split `DiagramDirectEditListener#exitExpression` directEdit service into two services : `exitNodeExpression` and `exitListItemExpression` to specify the grahical context of use .
+* Add new boolean parameter `isCompartmentItem` to the `LabelService#directEdit` service to clarify the graphical element type to edit.
+* Rename `LabelService#getUsagePrefix` into `getUsageListItemPrefix` to specify the computation of this prefix on list item elements.
+* Rename `ViewLabelService#getInitialDirectEditLabel` service into `getInitialDirectEditListItemLabel` to specify the computation of the initial label on list item elements.
 
 == Dependencies update
 
@@ -165,6 +169,7 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
 - Ensure that dropping an element from the explorer on the diagram reveals the corresponding node if it is already on the diagram and hidden.
 A warning message is now displayed when attempting to drop an element which is already displayed and visible in the target container.
 - Ignore keywords order during direct edit of prefixes labels of `Definitions` and `Usages` graphical elements.
+- DirectEdit on graphical node or list item authorized only to modify keywords which can be displayed in each label.
 
 == New features
 

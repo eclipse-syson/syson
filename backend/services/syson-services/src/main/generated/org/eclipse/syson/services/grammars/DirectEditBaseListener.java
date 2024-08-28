@@ -30,25 +30,49 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression(DirectEditParser.ExpressionContext ctx) { }
+	@Override public void enterNodeExpression(DirectEditParser.NodeExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpression(DirectEditParser.ExpressionContext ctx) { }
+	@Override public void exitNodeExpression(DirectEditParser.NodeExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrefixExpression(DirectEditParser.PrefixExpressionContext ctx) { }
+	@Override public void enterListItemExpression(DirectEditParser.ListItemExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrefixExpression(DirectEditParser.PrefixExpressionContext ctx) { }
+	@Override public void exitListItemExpression(DirectEditParser.ListItemExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrefixNodeExpression(DirectEditParser.PrefixNodeExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrefixNodeExpression(DirectEditParser.PrefixNodeExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrefixListItemExpression(DirectEditParser.PrefixListItemExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrefixListItemExpression(DirectEditParser.PrefixListItemExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -85,6 +109,18 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariationPrefixExpression(DirectEditParser.VariationPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVariantPrefixExpression(DirectEditParser.VariantPrefixExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariantPrefixExpression(DirectEditParser.VariantPrefixExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
