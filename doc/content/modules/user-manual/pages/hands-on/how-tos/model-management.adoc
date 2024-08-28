@@ -24,9 +24,17 @@ image::hands-on-new-model-result.png[New Model result]
 
 include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
+{product} is able to upload {sysmlv2} textual files and JSON files.
+
+====
 [NOTE]
 ====
-Only models exported in the specific JSON format recognized by {product} can be re-uploaded by using the upload action.
+For {sysmlv2} textual files, only files with ".sysml" extension will be processed as {sysmlv2} textual files and uploaded successfully.
+====
+====
+[NOTE]
+====
+For JSON models, only models exported in the specific JSON format recognized by {product} can be re-uploaded by using the upload action.
 Ensure that your models are exported using the xref:hands-on/how-tos/model-management.adoc#download-model[Download Model] action to enable successful re-uploading to {product}.
 ====
 
@@ -106,6 +114,7 @@ image::hands-on-download-model.png[Download model]
 ====
 The model is downloaded in JSON format.
 The JSON format used by {product} is specific to the tool.
+If you want the model to be exported as a {sysmlv2} textual file, you just have to suffix your model with ".sysml". (e.g. `myNewModel.sysml` instead of `myNewModel` in th example above.)
 ====
 
 [#create-element]
