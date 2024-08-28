@@ -90,6 +90,7 @@ It is now possible to reference an element in any of the containing namespaces o
 The drop doesn't reveal the _documentation_ compartment anymore, and a warning message is displayed to indicate that the drop is not possible.
 - https://github.com/eclipse-syson/syson/issues/711[#711] [diagrams] Prevent feature typing from disappearing when nesting a PartUsage in a PartDefinition.
 * The tool _Add Part as nested Part_ now correctly keeps the existing relationships of the PartUsage after its owner is changed.
+- https://github.com/eclipse-syson/syson/issues/717[#717] [import] Correcting namespace visibility when handling 'package' elements.
 
 === Improvements
 

@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Type;
@@ -92,6 +93,11 @@ public class MembershipComputer<T extends Element> {
                     .filter(nameConflictingFilter)
                     .forEach(directMemberships::add);
 
+        } else if (self instanceof Package p) {
+            p.getOwnedMember().stream()
+                    .map(Element::getOwningMembership)
+                    .filter(nameConflictingFilter)
+                    .forEach(directMemberships::add);
         }
 
         BasicEList<Membership> visibleMemberships = new BasicEList<>(directMemberships);

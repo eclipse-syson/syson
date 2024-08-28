@@ -260,7 +260,8 @@ public class NamespaceImplTest {
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content
-                testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership());
+                testModel.privateDef3.getOwningMembership(), testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(),
+                testModel.privateDef3x1.getOwningMembership(), testModel.def3x1.getOwningMembership());
     }
 
     @DisplayName("Check imported memberships with transitive import")
@@ -399,15 +400,17 @@ public class NamespaceImplTest {
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content
-                testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership());
+                testModel.privateDef3.getOwningMembership(), testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(),
+                testModel.privateDef3x1.getOwningMembership(), testModel.def3x1.getOwningMembership());
 
         assertContentEquals(testModel.p1.getMembership(), //
+                // All P1 content
+                testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership(),
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content
-                testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership(),
-                // And no infinite loop
-                testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership());
+                testModel.privateDef3.getOwningMembership(), testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(),
+                testModel.privateDef3x1.getOwningMembership(), testModel.def3x1.getOwningMembership());
     }
 
     @DisplayName("Check imported membershits with a simple recursive NamespaceImport with a loop to itself")
@@ -437,7 +440,7 @@ public class NamespaceImplTest {
         assertContentEquals(testModel.p1x1x1.getImportedMembership(),
                 testModel.def1.getOwningMembership(), testModel.p1x1.getOwningMembership(), testModel.p1x2.getOwningMembership(),
                 testModel.def1x1.getOwningMembership(), testModel.p1x1x1.getOwningMembership(),
-                testModel.def1x2.getOwningMembership());
+                testModel.privatedef1x1.getOwningMembership(), testModel.def1x2.getOwningMembership());
     }
 
     @DisplayName("Test resolve Visible self qualified Name")
@@ -506,7 +509,7 @@ public class NamespaceImplTest {
         assertEquals(testModel.def1x1, testModel.p1x1.resolveVisible(testModel.def1x1.getName()).getMemberElement());
 
         // Direct resolve (level n-1) private - null
-        assertNull(testModel.p1x1.resolveVisible(testModel.privatedef1x1.getName()));
+        assertEquals(testModel.privatedef1x1, testModel.p1x1.resolveVisible(testModel.privatedef1x1.getName()).getMemberElement());
 
     }
 

@@ -487,6 +487,48 @@ public class ASTTransformerTest {
         assertEquals("TEST", ((Documentation) documentationObject).getBody());
     }
 
+    @DisplayName("Test Visibility")
+    @Test
+    void convertVisibilityTest() {
+        ASTTransformer transformer = new ASTTransformer();
+
+        Resource testResource = null;
+        try {
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertVisibilityTest/model.ast.json").readAllBytes());
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
+        } catch (IOException e) {
+            fail(e);
+        }
+
+        assertNotNull(testResource);
+
+        Namespace namespace = (Namespace) testResource.getContents().get(0);
+        Package packageObject = (Package) namespace.getMember().get(0);
+        assertEquals(3, packageObject.getMember().size());
+
+        assertInstanceOf(ItemDefinition.class, packageObject.getMember().get(1));
+        ItemDefinition alphonse = (ItemDefinition) packageObject.getMember().get(1);
+        assertEquals("A", alphonse.getName());
+        assertEquals(VisibilityKind.PUBLIC, packageObject.getMembership().get(1).getVisibility());
+
+        assertInstanceOf(ItemDefinition.class, packageObject.getMember().get(2));
+        ItemDefinition charlie = (ItemDefinition) packageObject.getMember().get(2);
+        assertEquals("C", charlie.getName());
+        assertEquals(VisibilityKind.PRIVATE, packageObject.getMembership().get(2).getVisibility());
+
+        assertEquals(1, alphonse.getMember().size());
+        assertInstanceOf(PartUsage.class, alphonse.getMember().get(0));
+        PartUsage delta = (PartUsage) alphonse.getMember().get(0);
+        assertEquals("c", delta.getName());
+
+        assertEquals(1, delta.getOwnedRelationship().size());
+        assertInstanceOf(FeatureTyping.class, delta.getOwnedRelationship().get(0));
+        FeatureTyping deltaFeatureTyping = (FeatureTyping) delta.getOwnedRelationship().get(0);
+        assertNotNull(deltaFeatureTyping.getGeneral());
+        assertNotNull(deltaFeatureTyping.getSpecific());
+
+    }
+
     @DisplayName("Test Assignment on AssignmentActionUsage")
     @Test
     void convertAssignment1Test() {

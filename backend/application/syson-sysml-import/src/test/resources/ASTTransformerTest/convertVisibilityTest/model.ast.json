@@ -1,0 +1,153 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "ItemUsage",
+              "heritage": [
+                {
+                  "$type": "FeatureTyping",
+                  "targetRef": {
+                    "$type": "TypeReference",
+                    "text": "A",
+                    "reference": "VisibilityTest::A",
+                    "parts": [
+                      "VisibilityTest::A"
+                    ]
+                  },
+                  "elements": []
+                }
+              ],
+              "declaredName": "f",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": []
+            },
+            "isAlias": false,
+            "elements": []
+          },
+          {
+            "$type": "OwningMembership",
+            "visibility": "public",
+            "isAlias": false,
+            "elements": [],
+            "target": {
+              "$type": "ItemDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "visibility": "protected",
+                  "isAlias": false,
+                  "elements": [],
+                  "target": {
+                    "$type": "PartUsage",
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "text": "C",
+                          "reference": "VisibilityTest::C",
+                          "parts": [
+                            "VisibilityTest::C"
+                          ]
+                        },
+                        "elements": []
+                      }
+                    ],
+                    "declaredName": "c",
+                    "isReference": true,
+                    "isIndividual": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": []
+                  }
+                }
+              ],
+              "declaredName": "A",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "prefixes": []
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "visibility": "private",
+            "isAlias": false,
+            "elements": [],
+            "target": {
+              "$type": "PartDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "visibility": "private",
+                  "isAlias": false,
+                  "elements": [],
+                  "target": {
+                    "$type": "ReferenceUsage",
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "text": "A",
+                          "reference": "VisibilityTest::A",
+                          "parts": [
+                            "VisibilityTest::A"
+                          ]
+                        },
+                        "elements": []
+                      }
+                    ],
+                    "declaredName": "y",
+                    "direction": "in",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": []
+                  }
+                }
+              ],
+              "declaredName": "C",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "prefixes": []
+            }
+          }
+        ],
+        "declaredName": "VisibilityTest",
+        "prefixes": []
+      },
+      "isAlias": false,
+      "elements": []
+    }
+  ],
+  "prefixes": []
+}
