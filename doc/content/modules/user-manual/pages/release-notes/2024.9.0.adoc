@@ -93,6 +93,9 @@ Memberships of a Type are inherited via _Specialization_ or _Conjugation_, not b
 Doing so deleted both the dropped element and its children from the diagram, and could delete the representation if one of the element was the root element of the representation. 
 - Fix an issue that made the direct edit not working on Constraint and Requirement elements.
 - Fix an issue that made the _addExistingElements_ not work properly for _start_ and _done_ actions inside actions and parts.
+- Fix an issue on constraint expression name resolution that prevented from referencing elements in other containing namespaces than the direct owner of the constraint.
+It is now possible to reference an element in any of the containing namespaces of the constraint.
+
 
 == Improvements
 
