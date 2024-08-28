@@ -35,6 +35,8 @@ import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.OperatorExpression;
+import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
@@ -52,16 +54,20 @@ import org.junit.jupiter.api.Test;
  */
 public class DiagramDirectEditListenerTest {
 
+    private static final String GREATER_OR_EQUAL = ">=";
+
+    private static final String CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE = "The constraint should have 1 owned OperatorExpression";
+
     @DisplayName("Given a ConstraintUsage, when it is edited with '1 >= 2', then its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithBooleanExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
         this.doDirectEdit(constraint, "1 >= 2");
-        assertThat(constraint.getOwnedMember()).as("The constraint should have 1 owned OperatorExpression")
+        assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
         OperatorExpression operatorExpression = (OperatorExpression) constraint.getOwnedMember().get(0);
-        assertThat(operatorExpression.getOperator()).isEqualTo(">=");
+        assertThat(operatorExpression.getOperator()).isEqualTo(GREATER_OR_EQUAL);
         assertThat(operatorExpression.getArgument()).hasSize(2);
         assertThat(operatorExpression.getArgument().get(0)).isInstanceOf(LiteralInteger.class);
         LiteralInteger literalInteger1 = (LiteralInteger) operatorExpression.getArgument().get(0);
@@ -71,16 +77,16 @@ public class DiagramDirectEditListenerTest {
         assertThat(literalInteger2.getValue()).isEqualTo(2);
     }
 
-    @DisplayName("Given a ConstraintUsage, when it is edited with 'attribute >= 1', then its expression is set")
+    @DisplayName("Given a ConstraintUsage, when it is edited with 'myAttribute >= 1', then its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithAttributeReferenceExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
         this.doDirectEdit(constraint, "myAttribute >= 1");
-        assertThat(constraint.getOwnedMember()).as("The constraint should have 1 owned OperatorExpression")
+        assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
         OperatorExpression operatorExpression = (OperatorExpression) constraint.getOwnedMember().get(0);
-        assertThat(operatorExpression.getOperator()).isEqualTo(">=");
+        assertThat(operatorExpression.getOperator()).isEqualTo(GREATER_OR_EQUAL);
         assertThat(operatorExpression.getArgument()).hasSize(2);
         assertThat(operatorExpression.getArgument().get(0)).isInstanceOf(FeatureReferenceExpression.class);
         FeatureReferenceExpression featureReferenceExpression = (FeatureReferenceExpression) operatorExpression.getArgument().get(0);
@@ -91,16 +97,45 @@ public class DiagramDirectEditListenerTest {
         assertThat(literalInteger.getValue()).isEqualTo(1);
     }
 
+    @DisplayName("Given a ConstraintUsage and an AttributeUsage in a Namespace, when the ConstraintUsage is edited with 'externalAttribute >= 1', then its expression is set")
+    @Test
+    public void testDirectEditConstraintUsageWithExternalAttributeReferenceExpression() {
+        Package pack = SysmlFactory.eINSTANCE.createPackage();
+        ConstraintUsage constraint = this.createConstraintUsageWithContext();
+        OwningMembership requirementMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        requirementMembership.getOwnedRelatedElement().add(constraint.getOwner());
+        pack.getOwnedRelationship().add(requirementMembership);
+        AttributeUsage externalAttribute = SysmlFactory.eINSTANCE.createAttributeUsage();
+        externalAttribute.setDeclaredName("externalAttribute");
+        OwningMembership attributeMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+        attributeMembership.getOwnedRelatedElement().add(externalAttribute);
+        pack.getOwnedRelationship().add(attributeMembership);
+        this.doDirectEdit(constraint, "externalAttribute >= 1");
+        assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
+                .hasSize(1)
+                .allMatch(OperatorExpression.class::isInstance);
+        OperatorExpression operatorExpression = (OperatorExpression) constraint.getOwnedMember().get(0);
+        assertThat(operatorExpression.getOperator()).isEqualTo(GREATER_OR_EQUAL);
+        assertThat(operatorExpression.getArgument()).hasSize(2);
+        assertThat(operatorExpression.getArgument().get(0)).isInstanceOf(FeatureReferenceExpression.class);
+        FeatureReferenceExpression featureReferenceExpression = (FeatureReferenceExpression) operatorExpression.getArgument().get(0);
+        assertThat(featureReferenceExpression.getReferent()).isInstanceOf(AttributeUsage.class);
+        assertThat(featureReferenceExpression.getReferent().getName()).isEqualTo("externalAttribute");
+        assertThat(operatorExpression.getArgument().get(1)).isInstanceOf(LiteralInteger.class);
+        LiteralInteger literalInteger = (LiteralInteger) operatorExpression.getArgument().get(1);
+        assertThat(literalInteger.getValue()).isEqualTo(1);
+    }
+
     @DisplayName("Given a ConstraintUsage, when it is edited with 'subject >= 1', then its expression is set")
     @Test
     public void testDirectEditConstraintUsageWithSubjectReferenceExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
         this.doDirectEdit(constraint, "mySubject >= 1");
-        assertThat(constraint.getOwnedMember()).as("The constraint should have 1 owned OperatorExpression")
+        assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
         OperatorExpression operatorExpression = (OperatorExpression) constraint.getOwnedMember().get(0);
-        assertThat(operatorExpression.getOperator()).isEqualTo(">=");
+        assertThat(operatorExpression.getOperator()).isEqualTo(GREATER_OR_EQUAL);
         assertThat(operatorExpression.getArgument()).hasSize(2);
         assertThat(operatorExpression.getArgument().get(0)).isInstanceOf(FeatureReferenceExpression.class);
         FeatureReferenceExpression featureReferenceExpression = (FeatureReferenceExpression) operatorExpression.getArgument().get(0);
@@ -117,11 +152,11 @@ public class DiagramDirectEditListenerTest {
     public void testDirectEditConstraintUsageWithSingleFeatureChainingExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
         this.doDirectEdit(constraint, "mySubject.actualWeight >= 1");
-        assertThat(constraint.getOwnedMember()).as("The constraint should have 1 owned OperatorExpression")
+        assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
         OperatorExpression operatorExpression = (OperatorExpression) constraint.getOwnedMember().get(0);
-        assertThat(operatorExpression.getOperator()).isEqualTo(">=");
+        assertThat(operatorExpression.getOperator()).isEqualTo(GREATER_OR_EQUAL);
         assertThat(operatorExpression.getArgument()).hasSize(2);
         assertThat(operatorExpression.getArgument().get(0)).isInstanceOf(FeatureChainExpression.class);
         FeatureChainExpression featureChainExpression = (FeatureChainExpression) operatorExpression.getArgument().get(0);
@@ -146,11 +181,11 @@ public class DiagramDirectEditListenerTest {
     public void testDirectEditConstraintUsageWithMultipleFeatureChainingExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
         this.doDirectEdit(constraint, "mySubject.actualWeight.num >= 1");
-        assertThat(constraint.getOwnedMember()).as("The constraint should have 1 owned OperatorExpression")
+        assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
         OperatorExpression operatorExpression = (OperatorExpression) constraint.getOwnedMember().get(0);
-        assertThat(operatorExpression.getOperator()).isEqualTo(">=");
+        assertThat(operatorExpression.getOperator()).isEqualTo(GREATER_OR_EQUAL);
         assertThat(operatorExpression.getArgument()).hasSize(2);
         assertThat(operatorExpression.getArgument().get(0)).isInstanceOf(FeatureChainExpression.class);
         FeatureChainExpression featureChainExpression = (FeatureChainExpression) operatorExpression.getArgument().get(0);

@@ -76,6 +76,8 @@ These references were still pointing to elements in the standard library resourc
 - https://github.com/eclipse-syson/syson/issues/654[#654] [services] Prevent the drop of an element (from the explorer or from the diagram) on one of its children.
 - https://github.com/eclipse-syson/syson/issues/658[#658] [services] Fix direct edit for Requirement and Constraint
 - https://github.com/eclipse-syson/syson/issues/552[#552] [diagrams] Fix _Add Existing Elements_ tool for start and done actions. 
+- https://github.com/eclipse-syson/syson/issues/685[#685] [services] Fix name resolution in constraint expressions.
+It is now possible to reference an element in any of the containing namespaces of the constraint.
 
 === Improvements
 

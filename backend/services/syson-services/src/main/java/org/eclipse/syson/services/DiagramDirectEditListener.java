@@ -415,7 +415,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    private Element handleOperandExpression(OperandContext operandContext, Element context) {
+    private Element handleOperandExpression(OperandContext operandContext, Namespace context) {
         Element result = null;
         if (operandContext.featureChainExpression() != null && !operandContext.featureChainExpression().getText().isBlank()) {
             result = this.handleFeatureChainExpression(operandContext.featureChainExpression(), context);
@@ -433,13 +433,11 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
 
     }
 
-    private Element handleFeatureChainExpression(FeatureChainExpressionContext featureChainExpressionContext, Element context) {
+    private Element handleFeatureChainExpression(FeatureChainExpressionContext featureChainExpressionContext, Namespace context) {
         Element result = null;
-        Element baseElement = context.getOwningNamespace().getOwnedElement().stream()
-                .filter(e -> Objects.equals(e.getName(), featureChainExpressionContext.featureReference().getText()))
-                .findFirst()
+        Element baseElement = Optional.ofNullable(context.resolve(featureChainExpressionContext.featureReference().getText()))
+                .map(Membership::getMemberElement)
                 .orElse(null);
-
         if (baseElement == null) {
             this.logMissingFeatureReference(this.getFullText(featureChainExpressionContext.featureReference()), context.getOwningNamespace());
         } else {
