@@ -15,8 +15,8 @@ package org.eclipse.syson.diagram.common.view.tools;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.DiagramBuilders;
-import org.eclipse.sirius.components.view.builder.generated.ViewBuilders;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -83,8 +83,12 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getStateUsage());
 
+        var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
+                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .build();
+
         var selectExistingStateUsage = this.diagramBuilderHelper.newSelectionDialogDescription()
-                .selectionCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing State to associate to the ExhibitState you want to create:");
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()

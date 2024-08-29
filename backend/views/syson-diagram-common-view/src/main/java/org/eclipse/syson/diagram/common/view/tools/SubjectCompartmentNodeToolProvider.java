@@ -34,8 +34,11 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getType());
+        var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
+                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", List.of(domainType, "false")))
+                .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
-                .selectionCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", List.of(domainType, "false")))
+                .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing Type as subject:")
                 .build();
     }

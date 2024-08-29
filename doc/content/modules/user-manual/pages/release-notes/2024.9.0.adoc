@@ -80,11 +80,12 @@ The changes are:
 
 == Dependencies update
 
-- Switch to Sirius Web 2024.7.10
+- Switch to Sirius Web 2024.7.11
 - Migrate frontend to MUI 5
 - Switch to `maven-checkstyle-plugin` 3.4.0
 - Switch to Spring Boot 3.3.1
-- Add a dependency to CycloneDX to compute the backend software bill of materials during the build
+- Add a dependency to `CycloneDX` to compute the backend software bill of materials during the build
+- Add a dependency to `pathfinding`
 
 == Bug fixes
 

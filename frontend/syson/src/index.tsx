@@ -10,6 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+// It should be the first import
+// Otherwise the following error will be thrown: styled_default is not a function
+// https://github.com/vitejs/vite/issues/12423#issuecomment-2080351394
+import '@mui/material/styles/styled';
+
 import { loadDevMessages, loadErrorMessages } from '@apollo/client/dev';
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import { diagramPanelActionExtensionPoint, NodeTypeContribution } from '@eclipse-sirius/sirius-components-diagrams';

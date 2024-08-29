@@ -103,8 +103,12 @@ public class ReferencingPerformActionNodeToolProvider extends AbstractFreeFormCo
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getActionUsage());
 
+        var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
+                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .build();
+
         var selectExistingStateUsage = this.diagramBuilderHelper.newSelectionDialogDescription()
-                .selectionCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
+                .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing Action to perform:");
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()

@@ -29,8 +29,11 @@ public class ActorCompartmentNodeToolProvider extends AbstractCompartmentNodeToo
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
+        var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
+                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachableItems"))
+                .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
-                .selectionCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachableItems"))
+                .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing Item as actor:")
                 .build();
     }
