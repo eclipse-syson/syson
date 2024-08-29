@@ -24,6 +24,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.IDefaultLabelService;
 import org.eclipse.sirius.components.core.api.ILabelServiceDelegate;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -69,6 +70,11 @@ public class SysMLv2LabelService implements ILabelServiceDelegate {
             label = this.defaultLabelService.getLabel(object);
         }
         return label;
+    }
+
+    @Override
+    public StyledString getStyledLabel(Object object) {
+        return StyledString.of(this.getLabel(object));
     }
 
     @Override

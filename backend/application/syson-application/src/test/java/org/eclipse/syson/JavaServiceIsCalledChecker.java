@@ -167,7 +167,7 @@ public class JavaServiceIsCalledChecker {
             }
             if (nodeTool instanceof NodeTool createNodeTool) {
                 if (createNodeTool.getDialogDescription() instanceof SelectionDialogDescription selectionDialogDescription) {
-                    expressions.add(selectionDialogDescription.getSelectionCandidatesExpression());
+                    expressions.add(selectionDialogDescription.getSelectionDialogTreeDescription().getElementsExpression());
                 }
             }
             for (Operation bodyOperation : nodeTool.getBody()) {

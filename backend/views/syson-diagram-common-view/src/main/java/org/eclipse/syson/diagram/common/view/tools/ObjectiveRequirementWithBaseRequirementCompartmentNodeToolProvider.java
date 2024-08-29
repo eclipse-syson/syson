@@ -39,8 +39,11 @@ public class ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider 
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
+        var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
+                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachableRequirements"))
+                .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
-                .selectionCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachableRequirements"))
+                .selectionDialogTreeDescription(selectionDialogTree)
                 .selectionMessage("Select an existing Requirement as objective:")
                 .build();
     }
