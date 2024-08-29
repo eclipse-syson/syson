@@ -123,6 +123,27 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
 
+    private static Stream<Arguments> caseUsageSiblingNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), 3),
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPart(), 7),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), 3))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> caseUsageChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                .map(TestNameGenerator::namedArguments);
+    }
+
+    private static Stream<Arguments> caseDefinitionChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
+                .map(TestNameGenerator::namedArguments);
+    }
+
     private static Stream<Arguments> useCaseUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), 3),
@@ -171,6 +192,47 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
+    @MethodSource("caseUsageSiblingNodeParameters")
+    public void createCaseUsageSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getCaseUsage();
+        String parentLabel = "case";
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
+        this.creationTestsService.checkDiagram(this.creationTestsService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount), this.diagram,
+                this.verifier);
+        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("caseUsageChildNodeParameters")
+    public void createCaseUsageChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getCaseUsage();
+        String parentLabel = "case";
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
+        this.creationTestsService.checkDiagram(
+                this.creationTestsService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
+                this.diagram, this.verifier);
+        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("caseDefinitionChildNodeParameters")
+    public void createCaseDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getCaseDefinition();
+        String parentLabel = "CaseDefinition";
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
+        this.creationTestsService.checkDiagram(
+                this.creationTestsService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
+                this.diagram, this.verifier);
+        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
     @MethodSource("useCaseUsageSiblingNodeParameters")
     public void createUseCaseUsageSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
@@ -212,24 +274,33 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
+    public void createNewSubjectInCaseUsage() {
+        this.createNewSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getCaseUsage(), "case");
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
     public void createNewSubjectInUseCaseUsage() {
-        EClass parentEClass = SysmlPackage.eINSTANCE.getUseCaseUsage();
+        this.createNewSubjectInCaseUsageSubclass(SysmlPackage.eINSTANCE.getUseCaseUsage(), "useCase");
+    }
+
+    private void createNewSubjectInCaseUsageSubclass(EClass caseUsageSubclass, String parentLabel) {
         EClass childEClass = SysmlPackage.eINSTANCE.getReferenceUsage();
-        String parentLabel = "useCase";
         String creationToolName = "New Subject";
         EReference containmentReference = SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter();
         List<ToolVariable> variables = new ArrayList<>();
         String existingPartId = "2c5fe5a5-18fe-40f4-ab66-a2d91ab7df6a";
         variables.add(new ToolVariable("selectedObject", existingPartId, ToolVariableType.OBJECT_ID));
 
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName, variables);
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, caseUsageSubclass, parentLabel, creationToolName, variables);
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
             int createdNodesExpectedCount = 1;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
                     .check(initialDiagram, newDiagram);
-            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(parentEClass, containmentReference);
+            String listNodeDescription = this.descriptionNameGenerator.getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseUsage(), containmentReference);
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .withCompartmentName("subject")

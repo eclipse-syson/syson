@@ -4,11 +4,21 @@
 
 == Breaking changes
 
+- Add CaseUsage and CaseDefinition in General View diagram, the following classes have been renamed to reflect their new usage:
+* Rename `UseCaseDefinitionActorsCompartmentNodeDescriptionProvider` to `CaseDefinitionActorsCompartmentNodeDescriptionProvider`
+* Rename `UseCaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider` to `CaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider`
+* Rename `UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider` to `CaseDefinitionSubjectCompartmentNodeDescriptionProvider`
+* Rename `UseCaseUsageActorsCompartmentNodeDescriptionProvider` to `CaseUsageActorsCompartmentNodeDescriptionProvider`
+* Rename `UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider` to `CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider`
+* Rename `UseCaseUsageSubjectCompartmentNodeDescriptionProvider` to `CaseUsageSubjectCompartmentNodeDescriptionProvider`
+
 == Dependencies update
 
 == Bug fixes
 
 == Improvements
+
+- Add CaseUsage and CaseDefinition representations in the General View diagram.
 
 == New features
 

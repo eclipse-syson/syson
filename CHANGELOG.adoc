@@ -4,11 +4,22 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/699[#699] [general-view] Add CaseUsage and CaseDefinition in General View diagram.
+The following classes have been renamed to reflect their new usage:
+* Rename `UseCaseDefinitionActorsCompartmentNodeDescriptionProvider` to `CaseDefinitionActorsCompartmentNodeDescriptionProvider`
+* Rename `UseCaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider` to `CaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider`
+* Rename `UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider` to `CaseDefinitionSubjectCompartmentNodeDescriptionProvider`
+* Rename `UseCaseUsageActorsCompartmentNodeDescriptionProvider` to `CaseUsageActorsCompartmentNodeDescriptionProvider`
+* Rename `UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider` to `CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider`
+* Rename `UseCaseUsageSubjectCompartmentNodeDescriptionProvider` to `CaseUsageSubjectCompartmentNodeDescriptionProvider`
+
 === Dependency update
 
 === Bug fixes
 
 === Improvements
+
+- https://github.com/eclipse-syson/syson/issues/699[#699] [general-view] Add CaseUsage and CaseDefinition in General View diagram.
 
 === New features
 
