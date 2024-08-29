@@ -24,6 +24,8 @@ import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.CaseDefinition;
+import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
@@ -218,6 +220,38 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
                 .append(this.assignmentActionUsageDetails(object));
+        return label.toString();
+    }
+    @Override
+    public String caseCaseDefinition(CaseDefinition object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.getBasicNamePrefix(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("case def")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.labelService.getSubclassificationLabel(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseCaseUsage(CaseUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.getBasicNamePrefix(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
+                .append("case")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.labelService.getTypingLabel(object))
+                .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getSubsettingLabel(object))
+                .append(this.labelService.getValueLabel(object));
         return label.toString();
     }
 

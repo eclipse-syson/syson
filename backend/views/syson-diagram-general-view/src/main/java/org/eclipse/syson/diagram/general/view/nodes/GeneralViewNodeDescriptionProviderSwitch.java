@@ -22,6 +22,8 @@ import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.CaseDefinition;
+import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.EnumerationDefinition;
@@ -102,6 +104,16 @@ public class GeneralViewNodeDescriptionProviderSwitch extends SysmlEClassSwitch<
     @Override
     public INodeDescriptionProvider caseAssignmentActionUsage(AssignmentActionUsage object) {
         return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseCaseDefinition(CaseDefinition object) {
+        return new DefinitionNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), this.colorProvider);
+    }
+
+    @Override
+    public INodeDescriptionProvider caseCaseUsage(CaseUsage object) {
+        return new UsageNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), this.colorProvider);
     }
 
     @Override

@@ -37,6 +37,8 @@ import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AllocationDefinition;
 import org.eclipse.syson.sysml.AllocationUsage;
+import org.eclipse.syson.sysml.CaseDefinition;
+import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
@@ -269,8 +271,8 @@ public class ViewCreateService {
      */
     public Element createRequirementUsageAsObjectiveRequirement(Element self, Element selectedObject) {
         Element result = self;
-        if (self instanceof UseCaseUsage
-                || self instanceof UseCaseDefinition) {
+        if (self instanceof CaseUsage
+                || self instanceof CaseDefinition) {
             RequirementUsage newRequirementUsage = SysmlFactory.eINSTANCE.createRequirementUsage();
             result = newRequirementUsage;
             var objectiveMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getObjectiveMembership());
@@ -287,8 +289,8 @@ public class ViewCreateService {
 
     public Element createReferenceUsageAsSubject(Element self, Element selectedObject) {
         Element result = self;
-        if (self instanceof UseCaseUsage
-                || self instanceof UseCaseDefinition
+        if (self instanceof CaseUsage
+                || self instanceof CaseDefinition
                 || self instanceof RequirementUsage
                 || self instanceof RequirementDefinition) {
             ReferenceUsage newReferenceUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
@@ -307,8 +309,8 @@ public class ViewCreateService {
 
     public Element createPartUsageAsActor(Element self, Element selectedObject) {
         Element result = self;
-        if (self instanceof UseCaseUsage
-                || self instanceof UseCaseDefinition
+        if (self instanceof CaseUsage
+                || self instanceof CaseDefinition
                 || self instanceof RequirementUsage
                 || self instanceof RequirementDefinition) {
             PartUsage newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();

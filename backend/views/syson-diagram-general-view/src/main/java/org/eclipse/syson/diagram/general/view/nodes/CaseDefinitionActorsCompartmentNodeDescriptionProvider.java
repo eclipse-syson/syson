@@ -20,49 +20,45 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
-import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.ActorCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * UseCase usage Objective Requirement Compartment node description.
+ * UseCase definition actor Compartment node description.
  *
- * @author Jerome Gout
+ * @author gdaniel
  */
-public class UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
+public class CaseDefinitionActorsCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
-    public UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
-        super(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement(), colorProvider, nameGenerator);
+    public CaseDefinitionActorsCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), colorProvider, descriptionNameGenerator);
     }
 
     @Override
     protected String getCustomCompartmentLabel() {
-        return "objective";
+        return "actors";
     }
 
     @Override
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()))
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter()))
                 .ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()))
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter()))
+                .ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
+                .ifPresent(droppableNodes::add);
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
                 .ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
     @Override
-    protected String getDropElementFromDiagramExpression() {
-        return AQLUtils.getServiceCallExpression("droppedElement", "dropObjectiveRequirementFromDiagram",
-                List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes"));
-    }
-
-    @Override
     protected List<INodeToolProvider> getItemCreationToolProviders() {
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
-        creationToolProviders.add(new ObjectiveRequirementCompartmentNodeToolProvider());
-        creationToolProviders.add(new ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider());
+        creationToolProviders.add(new ActorCompartmentNodeToolProvider());
         return creationToolProviders;
     }
 }

@@ -71,6 +71,12 @@ import org.eclipse.syson.diagram.general.view.nodes.ActionItemNodeDescriptionPro
 import org.eclipse.syson.diagram.general.view.nodes.ActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ActorNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.AllocationDefinitionEndsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.CaseDefinitionActorsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.CaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.CaseDefinitionSubjectCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.CaseUsageActorsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.CaseUsageSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.FakeNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeDescriptionProvider;
@@ -80,12 +86,6 @@ import org.eclipse.syson.diagram.general.view.nodes.RequirementDefinitionActorsC
 import org.eclipse.syson.diagram.general.view.nodes.RequirementDefinitionSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageActorsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageSubjectCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UseCaseDefinitionActorsCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UseCaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UseCaseUsageActorsCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider;
-import org.eclipse.syson.diagram.general.view.nodes.UseCaseUsageSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -105,6 +105,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getActionDefinition(),
             SysmlPackage.eINSTANCE.getAllocationDefinition(),
             SysmlPackage.eINSTANCE.getAttributeDefinition(),
+            SysmlPackage.eINSTANCE.getCaseDefinition(),
             SysmlPackage.eINSTANCE.getConstraintDefinition(),
             SysmlPackage.eINSTANCE.getEnumerationDefinition(),
             SysmlPackage.eINSTANCE.getInterfaceDefinition(),
@@ -124,6 +125,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getAssignmentActionUsage(),
             SysmlPackage.eINSTANCE.getAllocationUsage(),
             SysmlPackage.eINSTANCE.getAttributeUsage(),
+            SysmlPackage.eINSTANCE.getCaseUsage(),
             SysmlPackage.eINSTANCE.getConstraintUsage(),
             SysmlPackage.eINSTANCE.getExhibitStateUsage(),
             SysmlPackage.eINSTANCE.getInterfaceUsage(),
@@ -144,6 +146,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
             Map.entry(SysmlPackage.eINSTANCE.getAllocationDefinition(),  List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
             Map.entry(SysmlPackage.eINSTANCE.getAttributeDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
+            Map.entry(SysmlPackage.eINSTANCE.getCaseDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
             Map.entry(SysmlPackage.eINSTANCE.getConstraintDefinition(),  List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getEnumerationDefinition(), List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue())),
             Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
@@ -160,6 +163,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),           List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction())),
             Map.entry(SysmlPackage.eINSTANCE.getAllocationUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAllocation())),
             Map.entry(SysmlPackage.eINSTANCE.getAttributeUsage(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getCaseUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
             Map.entry(SysmlPackage.eINSTANCE.getConstraintUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getInterfaceUsage(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
             Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
@@ -214,6 +218,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             ));
 
     public static final ToolSectionDescription ANALYSIS_TOOL_SECTIONS = new ToolSectionDescription("Analysis", List.of(
+            SysmlPackage.eINSTANCE.getCaseUsage(),
+            SysmlPackage.eINSTANCE.getCaseDefinition(),
             SysmlPackage.eINSTANCE.getUseCaseUsage(),
             SysmlPackage.eINSTANCE.getUseCaseDefinition()
             ));
@@ -346,9 +352,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         // defined after regular ones.
         this.linkRequirementSubjectCompartment(cache);
         this.linkRequirementActorsCompartment(cache);
-        this.linkUseCaseSubjectCompartment(cache);
-        this.linkUseCaseActorsCompartment(cache);
-        this.linkUseCaseObjectiveRequirementCompartment(cache);
+        this.linkCaseSubjectCompartment(cache);
+        this.linkCaseActorsCompartment(cache);
+        this.linkCaseObjectiveRequirementCompartment(cache);
         this.linkAllocationDefinitionEndsCompartment(cache);
         this.linkStatesCompartment(cache);
 
@@ -376,24 +382,24 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
                 SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new UseCaseUsageSubjectCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter(),
+        diagramElementDescriptionProviders.add(new CaseUsageSubjectCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new CaseDefinitionSubjectCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter(),
                 colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter(),
+        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter(),
                 colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new UseCaseUsageActorsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new UseCaseDefinitionActorsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), colorProvider,
+        diagramElementDescriptionProviders.add(new CaseUsageActorsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new CaseDefinitionActorsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), colorProvider,
                 this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders
-                .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), colorProvider,
+                .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), colorProvider,
                         this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new UseCaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement(),
+        diagramElementDescriptionProviders.add(new CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new CaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement(),
                 colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseDefinition(),
+        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(),
                 SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new AllocationDefinitionEndsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationDefinition(),
@@ -481,7 +487,12 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         diagramElementDescriptionProviders.add(
                 new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedUsage(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(
                 new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), colorProvider,
                         this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(
                 new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter(), colorProvider,
@@ -514,33 +525,57 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
-    private void linkUseCaseSubjectCompartment(IViewDiagramElementFinder cache) {
+    private void linkCaseSubjectCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription caseUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getCaseUsage())).get();
         NodeDescription useCaseUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getUseCaseUsage())).get();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter()))
-            .ifPresent(useCaseUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_SubjectParameter()))
+                .ifPresent(compartment -> {
+                    caseUsageNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                    useCaseUsageNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                });
+        NodeDescription caseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getCaseDefinition())).get();
         NodeDescription useCaseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getUseCaseDefinition())).get();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseDefinition(),
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(),
                 SysmlPackage.eINSTANCE.getCaseDefinition_SubjectParameter()))
-            .ifPresent(useCaseDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+                .ifPresent(compartment -> {
+                    caseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                    useCaseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                });
     }
 
-    private void linkUseCaseActorsCompartment(IViewDiagramElementFinder cache) {
+    private void linkCaseActorsCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription caseUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getCaseUsage())).get();
         NodeDescription useCaseUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getUseCaseUsage())).get();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter()))
-                .ifPresent(useCaseUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ActorParameter()))
+                .ifPresent(compartment -> {
+                    caseUsageNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                    useCaseUsageNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                });
+        NodeDescription caseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getCaseDefinition())).get();
         NodeDescription useCaseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getUseCaseDefinition())).get();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter()))
-                .ifPresent(useCaseDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(), SysmlPackage.eINSTANCE.getCaseDefinition_ActorParameter()))
+                .ifPresent(compartment -> {
+                    caseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                    useCaseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                });
     }
 
-    private void linkUseCaseObjectiveRequirementCompartment(IViewDiagramElementFinder cache) {
+    private void linkCaseObjectiveRequirementCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription caseUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getCaseUsage())).get();
         NodeDescription useCaseUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getUseCaseUsage())).get();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()))
-            .ifPresent(useCaseUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getCaseUsage(), SysmlPackage.eINSTANCE.getCaseUsage_ObjectiveRequirement()))
+                .ifPresent(compartment -> {
+                    caseUsageNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                    useCaseUsageNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                });
+        NodeDescription caseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getCaseDefinition())).get();
         NodeDescription useCaseDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getUseCaseDefinition())).get();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getUseCaseDefinition(),
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getCaseDefinition(),
                 SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement()))
-            .ifPresent(useCaseDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+                .ifPresent(compartment -> {
+                    caseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                    useCaseDefinitionNodeDescription.getReusedChildNodeDescriptions().add(compartment);
+                });
     }
 
     private void linkAllocationDefinitionEndsCompartment(IViewDiagramElementFinder cache) {

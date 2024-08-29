@@ -56,6 +56,8 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.CaseDefinition;
+import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
@@ -685,8 +687,8 @@ public class ViewToolService extends ToolService {
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (targetElement instanceof RequirementUsage
                 || targetElement instanceof RequirementDefinition
-                || targetElement instanceof UseCaseUsage
-                || targetElement instanceof UseCaseDefinition) {
+                || targetElement instanceof CaseUsage
+                || targetElement instanceof CaseDefinition) {
             boolean noExistingSubject = targetElement.getOwnedRelationship().stream()
                     .filter(SubjectMembership.class::isInstance)
                     .map(SubjectMembership.class::cast)
@@ -700,8 +702,8 @@ public class ViewToolService extends ToolService {
 
     public Element dropObjectiveRequirementFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        if (targetElement instanceof UseCaseUsage
-                || targetElement instanceof UseCaseDefinition) {
+        if (targetElement instanceof CaseUsage
+                || targetElement instanceof CaseDefinition) {
             if (ViewCreateService.isEmptyObjectiveRequirement(targetElement)) {
                 this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
             }
