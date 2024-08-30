@@ -83,6 +83,7 @@ It is now possible to reference an element in any of the containing namespaces o
 - https://github.com/eclipse-syson/syson/issues/687[#687] [services] Fix the drop of an action from the diagram to an action flow compartment.
 - https://github.com/eclipse-syson/syson/issues/703[#703] [services] Fix an issue where it was impossible anymore to set the cardinality of an `Element` as graphical node through direct edit.
 - https://github.com/eclipse-syson/syson/issues/705[#705] [services] Fix ConjugatedPortDefinition label.
+- https://github.com/eclipse-syson/syson/issues/704[#704] [interconnection-view] Fix name direct edit for Interconnection View nodes.
 
 === Improvements
 
