@@ -172,6 +172,7 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
 A warning message is now displayed when attempting to drop an element which is already displayed and visible in the target container.
 - Ignore keywords order during direct edit of prefixes labels of `Definitions` and `Usages` graphical elements.
 - DirectEdit on graphical node or list item authorized only to modify keywords which can be displayed in each label.
+- Allow to drop a Definition from the explorer on an Usage on a diagram or in a list compartment to type it.
 
 == New features
 
