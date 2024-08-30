@@ -137,8 +137,9 @@ export class Diagram {
     cy.getByTestId('share').click();
   }
 
-  public dropOnDiagram(diagramLabel: string, dataTransfer: DataTransfer): void {
-    this.getDiagram(diagramLabel).getByTestId('rf__wrapper').trigger('drop', 'bottomRight', { dataTransfer });
+  public dropOnDiagram(diagramLabel: string, dataTransfer: DataTransfer, position?: Cypress.PositionType): void {
+    const dropPosition = position ? position : 'bottomRight';
+    this.getDiagram(diagramLabel).getByTestId('rf__wrapper').trigger('drop', dropPosition, { dataTransfer });
   }
 
   public roundSvgPathData(pathData: string): string {

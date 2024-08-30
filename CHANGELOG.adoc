@@ -133,6 +133,7 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
   * A warning message is now displayed when attempting to drop an element which is already displayed and visible in the target container.
 - https://github.com/eclipse-syson/syson/issues/670[#670] [diagrams] Ignore keywords order during direct edit of prefixes label of `Definitions` and `Usages` graphical elements.
 - https://github.com/eclipse-syson/syson/issues/689[#689] [diagrams] Ensure coherence between Direct Edit capabilities and the displayed label
+- https://github.com/eclipse-syson/syson/issues/709[#709] [diagrams] Allow to drop a Definition from the explorer on an Usage on a diagram or in a list compartment to type it.
 
 === New features
 

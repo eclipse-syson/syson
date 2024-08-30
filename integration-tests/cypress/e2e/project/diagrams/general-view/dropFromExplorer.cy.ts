@@ -92,5 +92,42 @@ describe('Drop From Explorer Tests', () => {
         diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
       });
     });
+    context('When we create a PartUsage and a PartDefinition in the root Package in the explorer', () => {
+      beforeEach(() => {
+        explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
+        explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartDefinition');
+        explorer.getTreeItemByLabel('part').should('exist');
+        explorer.getTreeItemByLabel('PartDefinition').should('exist');
+      });
+
+      it('Then when we drop the PartUsage on the diagram, and drop the PartDefinition on the PartUsage, the PartUsage is typed with the PartDefinition', () => {
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('part', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
+        explorer.dragTreeItem('PartDefinition', dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').trigger('drop', { dataTransfer });
+        diagram.getNodes(diagramLabel, 'part : PartDefinition').should('exist').should('have.length', 1);
+      });
+
+      it('Then when we drop the PartUsage and PartDefinition on the diagram, and drop the PartDefinition on the PartUsage, the PartUsage is typed with the PartDefinition and an edge is visible between the PartUsage and PartDefinition', () => {
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('part', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
+        explorer.dragTreeItem('PartDefinition', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer, 'center');
+        diagram.getNodes(diagramLabel, 'PartDefinition').should('exist').should('have.length', 1);
+        explorer.dragTreeItem('PartDefinition', dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').trigger('drop', { dataTransfer });
+        diagram.getNodes(diagramLabel, 'part : PartDefinition').should('exist').should('have.length', 1);
+        // Check that an edge has been created and that its end is a closed arrow with dots (i.e. a feature typing).
+        diagram
+          .getEdgePaths(diagramLabel)
+          .should('have.length', 1)
+          .invoke('attr', 'marker-end')
+          .should('contain', '#ClosedArrowWithDots');
+      });
+    });
   });
 });

@@ -357,32 +357,71 @@ public class ViewToolService extends ToolService {
                 if (element instanceof Membership membership) {
                     optElementToDrop = membership.getOwnedRelatedElement().stream().findFirst();
                 }
-                optElementToDrop.ifPresent(elementToDrop -> {
-                    ViewCreationRequest parentViewCreationRequest = this.createView(elementToDrop, editingContext, diagramContext, selectedNode, convertedNodes);
-                    Optional<Node> parentNodeOnDiagram = new NodeFinder(diagramContext.getDiagram())
-                            .getOneNodeMatching(diagramNode -> Objects.equals(diagramNode.getId(), this.getParentElementId(parentViewCreationRequest, diagramContext)));
-                    if (parentNodeOnDiagram.isPresent()) {
-                        // The node already exist on the diagram, we don't need to create it.
-                        // It is easier to check it in this order (first create the ViewCreationRequest then remove it)
-                        // because we need the ViewCreationRequest anyways to check if the node is on the diagram.
-                        diagramContext.getViewCreationRequests().remove(parentViewCreationRequest);
-                        if (parentNodeOnDiagram.get().getModifiers().contains(ViewModifier.Hidden)) {
-                            // The node exists on the diagram but is hidden, we can't create a new view representing it,
-                            // but we reveal it.
-                            IDiagramService diagramService = new DiagramService(diagramContext);
-                            new DiagramServices().reveal(diagramService, List.of(parentNodeOnDiagram.get()));
-                        } else {
-                            String errorMessage = MessageFormat.format("The element {0} is already visible in its parent {1}", element.getName(), targetElement.getName());
-                            this.logger.warn(errorMessage);
-                            this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
-                        }
-                    } else {
-                        this.hideCompartments(parentViewCreationRequest, editingContext, diagramContext, convertedNodes);
-                    }
-                });
+                if (optElementToDrop.isPresent()) {
+                    this.dropElementFromExplorerInTarget(optElementToDrop.get(), targetElement, editingContext, diagramContext, selectedNode, convertedNodes);
+                }
             }
         }
         return element;
+    }
+
+    /**
+     * Drops the provided {@code sourceElement} from the explorer on the given {@code selectedNode} on the diagram.
+     * <p>
+     * This method may perform graphical actions (e.g. create a view to represent the dropped element) as well as
+     * semantic actions (e.g. set a feature typing). Note that the provided {@code targetElement} should be the semantic
+     * element represented by {@code selectedNode}.
+     * </p>
+     * <p>
+     * This method doesn't perform a drop of an element on the diagram to another element on the diagram. See
+     * {@link #dropElementFromDiagram(Element, Node, Element, Node, IEditingContext, IDiagramContext, Map)} for
+     * in-diagram drag and drop.
+     * </p>
+     *
+     * @param sourceElement
+     *            the source element to drop
+     * @param targetElement
+     *            the target of the drop
+     * @param editingContext
+     *            the editing context
+     * @param diagramContext
+     *            the diagram context
+     * @param selectedNode
+     *            the selected node
+     * @param convertedNodes
+     *            the converted nodes
+     */
+    private void dropElementFromExplorerInTarget(Element sourceElement, Element targetElement, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        if (sourceElement instanceof Definition definition && targetElement instanceof Usage usage) {
+            // Dropping a definition on a usage types the usage with the definition. It doesn't create a new node on the
+            // diagram.
+            this.utilService.setFeatureTyping(usage, definition);
+        } else {
+            ViewCreationRequest parentViewCreationRequest = this.createView(sourceElement, editingContext, diagramContext, selectedNode, convertedNodes);
+            Optional<Node> parentNodeOnDiagram = new NodeFinder(diagramContext.getDiagram())
+                    .getOneNodeMatching(diagramNode -> Objects.equals(diagramNode.getId(), this.getParentElementId(parentViewCreationRequest, diagramContext)));
+            if (parentNodeOnDiagram.isPresent()) {
+                // The node already exist on the diagram, we don't need to create it.
+                // It is easier to check it in this order (first create the ViewCreationRequest then remove
+                // it) because we need the ViewCreationRequest anyways to check if the node is on the diagram.
+                diagramContext.getViewCreationRequests().remove(parentViewCreationRequest);
+                if (parentNodeOnDiagram.get().getModifiers().contains(ViewModifier.Hidden)) {
+                    // The node exists on the diagram but is hidden, we can't create a new view representing
+                    // it, but we reveal it.
+                    IDiagramService diagramService = new DiagramService(diagramContext);
+                    new DiagramServices().reveal(diagramService, List.of(parentNodeOnDiagram.get()));
+                } else {
+                    String errorMessage = MessageFormat.format("The element {0} is already visible in its parent {1}", sourceElement.getName(), targetElement.getName());
+                    this.logger.warn(errorMessage);
+                    this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+                }
+            } else {
+                // The node doesn't exist on the diagram, it will be created with the ViewCreationRequest, we want to
+                // make sure its compartment won't be visible after the drop.
+                this.hideCompartments(parentViewCreationRequest, editingContext, diagramContext, convertedNodes);
+            }
+        }
     }
 
     /**
