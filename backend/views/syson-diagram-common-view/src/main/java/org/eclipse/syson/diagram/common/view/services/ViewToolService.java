@@ -640,25 +640,10 @@ public class ViewToolService extends ToolService {
             this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
             this.logger.warn(message);
         } else {
-            this.changeOwner(usage, newContainer);
+            this.utilService.moveMembership(usage, newContainer);
             usage.setIsComposite(true);
         }
         return usage;
-    }
-
-    private Element changeOwner(Element element, Element newContainer) {
-        var eContainer = element.eContainer();
-        if (eContainer instanceof FeatureMembership featureMembership) {
-            newContainer.getOwnedRelationship().add(featureMembership);
-        } else if (eContainer instanceof OwningMembership owningMembership) {
-            var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            // Set the container of newFeatureMembership first to make sure features owned by
-            // element aren't lost when changing its container.
-            newContainer.getOwnedRelationship().add(newFeatureMembership);
-            newFeatureMembership.getOwnedRelatedElement().add(element);
-            this.deleteService.deleteFromModel(owningMembership);
-        }
-        return element;
     }
 
     private List<Element> getOwnerHierarchy(Element element) {
@@ -690,15 +675,7 @@ public class ViewToolService extends ToolService {
     }
 
     public PartUsage addAsNestedPart(PartDefinition partDefinition, PartUsage partUsage) {
-        var eContainer = partUsage.eContainer();
-        if (eContainer instanceof FeatureMembership featureMembership) {
-            partDefinition.getOwnedRelationship().add(featureMembership);
-        } else if (eContainer instanceof OwningMembership owningMembership) {
-            var newFeatureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-            newFeatureMembership.getOwnedRelatedElement().add(partUsage);
-            partDefinition.getOwnedRelationship().add(newFeatureMembership);
-            this.deleteService.deleteFromModel(owningMembership);
-        }
+        this.utilService.moveMembership(partUsage, partDefinition);
         return partUsage;
     }
 
@@ -823,7 +800,7 @@ public class ViewToolService extends ToolService {
             this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
             this.logger.warn(message);
         } else {
-            result = this.changeOwner(otherEnd, newSource);
+            result = this.utilService.moveMembership(otherEnd, newSource);
         }
         return result;
     }

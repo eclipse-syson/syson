@@ -108,6 +108,8 @@ It is now possible to reference an element in any of the containing namespaces o
 - Fix an issue that made direct edit of names not working on nodes in the Interconnection View diagram.
 - Fix an issue that revealed the _documentation_ compartment when dropping an element on itself.
 The drop isn't allowed anymore, and a warning message is displayed.
+- Fix an issue that deleted feature typing specialization when nesting a PartUsage in a PartDefinition.
+* The tool _Add Part as nested Part_ now correctly keeps the existing relationships of the PartUsage after its owner is changed.
 
 == Improvements
 
