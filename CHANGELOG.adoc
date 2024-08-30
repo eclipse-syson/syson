@@ -88,6 +88,8 @@ It is now possible to reference an element in any of the containing namespaces o
 - https://github.com/eclipse-syson/syson/issues/704[#704] [interconnection-view] Fix name direct edit for Interconnection View nodes.
 - https://github.com/eclipse-syson/syson/issues/715[#715] [services] Fix the drop of an element on itself.
 The drop doesn't reveal the _documentation_ compartment anymore, and a warning message is displayed to indicate that the drop is not possible.
+- https://github.com/eclipse-syson/syson/issues/711[#711] [diagrams] Prevent feature typing from disappearing when nesting a PartUsage in a PartDefinition.
+* The tool _Add Part as nested Part_ now correctly keeps the existing relationships of the PartUsage after its owner is changed.
 
 === Improvements
 
