@@ -165,7 +165,7 @@ public class FirstLevelChildUsageNodeDescriptionProvider extends AbstractNodeDes
                 .body(changeContext.build());
 
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"));
+                .expression(AQLUtils.getSelfServiceCallExpression("directEditNode", "newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")

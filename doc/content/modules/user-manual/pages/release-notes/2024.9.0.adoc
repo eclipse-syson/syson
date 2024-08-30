@@ -103,6 +103,7 @@ It is now possible to reference an element in any of the containing namespaces o
 - Fix an issue that deleted the content of an action when it was dropped from the diagram to an action flow compartment.
 - Fix an issue where it was impossible anymore to set the cardinality of an `Element` as graphical node through direct edit.
 - Fix an issue where ConjugatedPortDefinition labels were rendered as `null` instead of their actual name.
+- Fix an issue that made direct edit of names not working on nodes in the Interconnection View diagram.
 
 == Improvements
 

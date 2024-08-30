@@ -137,7 +137,7 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
         var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEdit(newLabel)");
+                .expression(AQLUtils.getSelfServiceCallExpression("directEditNode", "newLabel"));
 
         var editTool = this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")

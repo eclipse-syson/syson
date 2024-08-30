@@ -112,6 +112,26 @@ public class LabelService {
     }
 
     /**
+     * Apply the direct edit result (i.e. the newLabel) to the given {@link Element}, with the provided {@code options}.
+     * <p>
+     * This method is typically used to enable direct edit with some restrictions (e.g. de-activate the ability to edit
+     * the name of an element via direct edit). See {@link #directEdit(Element, String)} to perform a direct edit with
+     * default options.
+     * </p>
+     *
+     * @param element
+     *            the given {@link Element}
+     * @param newLabel
+     *            the new value to apply
+     * @param options
+     *            the options of the direct edit
+     * @return the given {@link Element}
+     */
+    public Element directEdit(Element element, String newLabel, String... options) {
+        return this.directEdit(element, newLabel, false, options);
+    }
+
+    /**
      * Apply the direct edit result (i.e. the newLabel) to the given graphical node {@link Element}.
      *
      * @param element
@@ -149,10 +169,6 @@ public class LabelService {
      */
     public Element directEditNameOff(Element element, String newLabel) {
         return this.directEdit(element, newLabel, LabelService.NAME_OFF);
-    }
-
-    public Element directEdit(Element element, String newLabel, String... options) {
-        return this.directEdit(element, newLabel, false, LabelService.NAME_OFF);
     }
 
     /**
