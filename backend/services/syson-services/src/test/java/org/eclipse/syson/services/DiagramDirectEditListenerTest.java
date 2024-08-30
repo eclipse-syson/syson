@@ -13,6 +13,8 @@
 package org.eclipse.syson.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
@@ -28,12 +30,14 @@ import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.LiteralInteger;
+import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
@@ -62,7 +66,7 @@ public class DiagramDirectEditListenerTest {
     @Test
     public void testDirectEditConstraintUsageWithBooleanExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
-        this.doDirectEdit(constraint, "1 >= 2");
+        this.doDirectEditOnConstraint(constraint, "1 >= 2");
         assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
@@ -81,7 +85,7 @@ public class DiagramDirectEditListenerTest {
     @Test
     public void testDirectEditConstraintUsageWithAttributeReferenceExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
-        this.doDirectEdit(constraint, "myAttribute >= 1");
+        this.doDirectEditOnConstraint(constraint, "myAttribute >= 1");
         assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
@@ -110,7 +114,7 @@ public class DiagramDirectEditListenerTest {
         OwningMembership attributeMembership = SysmlFactory.eINSTANCE.createOwningMembership();
         attributeMembership.getOwnedRelatedElement().add(externalAttribute);
         pack.getOwnedRelationship().add(attributeMembership);
-        this.doDirectEdit(constraint, "externalAttribute >= 1");
+        this.doDirectEditOnConstraint(constraint, "externalAttribute >= 1");
         assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
@@ -130,7 +134,7 @@ public class DiagramDirectEditListenerTest {
     @Test
     public void testDirectEditConstraintUsageWithSubjectReferenceExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
-        this.doDirectEdit(constraint, "mySubject >= 1");
+        this.doDirectEditOnConstraint(constraint, "mySubject >= 1");
         assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
@@ -151,7 +155,7 @@ public class DiagramDirectEditListenerTest {
     @Test
     public void testDirectEditConstraintUsageWithSingleFeatureChainingExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
-        this.doDirectEdit(constraint, "mySubject.actualWeight >= 1");
+        this.doDirectEditOnConstraint(constraint, "mySubject.actualWeight >= 1");
         assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
@@ -180,7 +184,7 @@ public class DiagramDirectEditListenerTest {
     @Test
     public void testDirectEditConstraintUsageWithMultipleFeatureChainingExpression() {
         ConstraintUsage constraint = this.createConstraintUsageWithContext();
-        this.doDirectEdit(constraint, "mySubject.actualWeight.num >= 1");
+        this.doDirectEditOnConstraint(constraint, "mySubject.actualWeight.num >= 1");
         assertThat(constraint.getOwnedMember()).as(CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE)
                 .hasSize(1)
                 .allMatch(OperatorExpression.class::isInstance);
@@ -207,6 +211,46 @@ public class DiagramDirectEditListenerTest {
         assertThat(operatorExpression.getArgument().get(1)).isInstanceOf(LiteralInteger.class);
         LiteralInteger literalInteger = (LiteralInteger) operatorExpression.getArgument().get(1);
         assertThat(literalInteger.getValue()).isEqualTo(1);
+    }
+
+    @DisplayName("Given a PartUsage as graphical node, when it is edited with '[4]', then its multiplicity is set")
+    @Test
+    public void testDirectEditPartUsageNodeWithMultiplicity() {
+        PartUsage partUsage = this.createFlashlight();
+        this.doDirectEditOnNode(partUsage, "[4]");
+        var optMultiplicityRange = partUsage.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .filter(MultiplicityRange.class::isInstance)
+                .map(MultiplicityRange.class::cast)
+                .findFirst();
+        assertTrue(optMultiplicityRange.isPresent());
+        MultiplicityRange multiplicityRange = optMultiplicityRange.get();
+        Expression lowerBound = multiplicityRange.getLowerBound();
+        assertTrue(lowerBound instanceof LiteralInteger);
+        LiteralInteger lowerBoundLiteral = (LiteralInteger) lowerBound;
+        assertEquals(4, lowerBoundLiteral.getValue());
+    }
+
+    @DisplayName("Given a PartUsage as graphical compartment list item, when it is edited with '[4]', then its multiplicity is set")
+    @Test
+    public void testDirectEditPartUsageListItemWithMultiplicity() {
+        PartUsage partUsage = this.createFlashlight();
+        this.doDirectEditOnCompartmentListItem(partUsage, "[4]");
+        var optMultiplicityRange = partUsage.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .filter(MultiplicityRange.class::isInstance)
+                .map(MultiplicityRange.class::cast)
+                .findFirst();
+        assertTrue(optMultiplicityRange.isPresent());
+        MultiplicityRange multiplicityRange = optMultiplicityRange.get();
+        Expression lowerBound = multiplicityRange.getLowerBound();
+        assertTrue(lowerBound instanceof LiteralInteger);
+        LiteralInteger lowerBoundLiteral = (LiteralInteger) lowerBound;
+        assertEquals(4, lowerBoundLiteral.getValue());
     }
 
     /**
@@ -282,16 +326,31 @@ public class DiagramDirectEditListenerTest {
         return flashlight;
     }
 
-    private void doDirectEdit(Element element, String input) {
+    private void doDirectEditOnNode(Element element, String input) {
         DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(input));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         DirectEditParser parser = new DirectEditParser(tokens);
-        ParseTree tree;
-        if (element instanceof ConstraintUsage) {
-            tree = parser.constraintExpression();
-        } else {
-            tree = parser.listItemExpression();
-        }
+        ParseTree tree = parser.nodeExpression();
+        this.doDirectEdit(element, tree);
+    }
+
+    private void doDirectEditOnCompartmentListItem(Element element, String input) {
+        DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(input));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        DirectEditParser parser = new DirectEditParser(tokens);
+        ParseTree tree = parser.listItemExpression();
+        this.doDirectEdit(element, tree);
+    }
+
+    private void doDirectEditOnConstraint(ConstraintUsage element, String input) {
+        DirectEditLexer lexer = new DirectEditLexer(CharStreams.fromString(input));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        DirectEditParser parser = new DirectEditParser(tokens);
+        ParseTree tree = parser.constraintExpression();
+        this.doDirectEdit(element, tree);
+    }
+
+    private void doDirectEdit(Element element, ParseTree tree) {
         ParseTreeWalker walker = new ParseTreeWalker();
         DirectEditListener listener = new DiagramDirectEditListener(element, new IFeedbackMessageService.NoOp());
         walker.walk(listener, tree);
