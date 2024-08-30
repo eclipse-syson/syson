@@ -81,6 +81,7 @@ These references were still pointing to elements in the standard library resourc
 - https://github.com/eclipse-syson/syson/issues/685[#685] [services] Fix name resolution in constraint expressions.
 It is now possible to reference an element in any of the containing namespaces of the constraint.
 - https://github.com/eclipse-syson/syson/issues/687[#687] [services] Fix the drop of an action from the diagram to an action flow compartment.
+- https://github.com/eclipse-syson/syson/issues/703[#703] [services] Fix an issue where it was impossible anymore to set the cardinality of an `Element` as graphical node through direct edit.
 
 === Improvements
 
