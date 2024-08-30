@@ -579,7 +579,7 @@ public class LabelService {
     }
 
     protected String getDeclaredNameLabel(Element element) {
-        var label = element.getDeclaredName();
+        var label = element.getName();
         if (ElementUtil.isFromStandardLibrary(element)) {
             label = element.getQualifiedName();
         }
