@@ -457,6 +457,9 @@ public class ViewToolService extends ToolService {
             this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
             // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
             result = null;
+        } else if (droppedElement instanceof Definition definition && targetElement instanceof Usage usage) {
+            this.utilService.setFeatureTyping(usage, definition);
+            result = null;
         } else {
             this.moveElement(droppedElement, droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes);
             result = droppedElement;
