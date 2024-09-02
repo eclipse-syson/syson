@@ -183,8 +183,8 @@ public class EMFUtils {
     /**
      * Returns {@code true} if {@code parent} is an ancestor of {@code eObject}.
      * <p>
-     * This method doesn't include {@code eObject} as an ancestor of itself. This means that this method will always
-     * return {@code false} if {@code parent == eObject}.
+     * This method includes {@code eObject} as an ancestor of itself. This means that this method will always return
+     * {@code true} if {@code parent == eObject}.
      * </p>
      *
      * @param parent
@@ -194,7 +194,7 @@ public class EMFUtils {
      * @return {@code true} if {@code parent} is an ancestor of {@code eObject}
      */
     public static boolean isAncestor(EObject parent, EObject eObject) {
-        return parent != eObject && !getAncestors(EObject.class, eObject, ancestor -> Objects.equals(ancestor, parent)).isEmpty();
+        return !getAncestors(EObject.class, eObject, ancestor -> Objects.equals(ancestor, parent)).isEmpty();
     }
 
     /**

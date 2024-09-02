@@ -77,6 +77,8 @@ The changes are:
 * Add new boolean parameter `isCompartmentItem` to the `LabelService#directEdit` service to clarify the graphical element type to edit.
 * Rename `LabelService#getUsagePrefix` into `getUsageListItemPrefix` to specify the computation of this prefix on list item elements.
 * Rename `ViewLabelService#getInitialDirectEditLabel` service into `getInitialDirectEditListItemLabel` to specify the computation of the initial label on list item elements.
+- Fix an issue that revealed the _documentation_ compartment when dropping an element on itself, the following method's contract has been updated as part of the fix:
+* `EMFUtils#isAncestor(parent, eObject)` now returns `true` if `parent == eObject`.
 
 == Dependencies update
 
@@ -104,6 +106,8 @@ It is now possible to reference an element in any of the containing namespaces o
 - Fix an issue where it was impossible anymore to set the cardinality of an `Element` as graphical node through direct edit.
 - Fix an issue where ConjugatedPortDefinition labels were rendered as `null` instead of their actual name.
 - Fix an issue that made direct edit of names not working on nodes in the Interconnection View diagram.
+- Fix an issue that revealed the _documentation_ compartment when dropping an element on itself.
+The drop isn't allowed anymore, and a warning message is displayed.
 
 == Improvements
 
