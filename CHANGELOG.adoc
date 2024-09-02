@@ -58,6 +58,8 @@ The following methods have been moved to `UtilService` to make them reusable by 
 * `ViewNodeService#isAction`
 * `ViewNodeService#isPart`
 - https://github.com/eclipse-syson/syson/issues/552[#552] [diagrams] Rename `ViewLabelService#getInitialDirectEditLabel` service into `getInitialDirectEditListItemLabel` to specify the computation of the initial label on list item elements.
+- https://github.com/eclipse-syson/syson/issues/715[#715] [services] Fix the drop of an element on itself.
+`EMFUtils#isAncestor(parent, eObject)` now returns `true` if `parent == eObject`.
 
 === Dependency update
 
@@ -84,6 +86,8 @@ It is now possible to reference an element in any of the containing namespaces o
 - https://github.com/eclipse-syson/syson/issues/703[#703] [services] Fix an issue where it was impossible anymore to set the cardinality of an `Element` as graphical node through direct edit.
 - https://github.com/eclipse-syson/syson/issues/705[#705] [services] Fix ConjugatedPortDefinition label.
 - https://github.com/eclipse-syson/syson/issues/704[#704] [interconnection-view] Fix name direct edit for Interconnection View nodes.
+- https://github.com/eclipse-syson/syson/issues/715[#715] [services] Fix the drop of an element on itself.
+The drop doesn't reveal the _documentation_ compartment anymore, and a warning message is displayed to indicate that the drop is not possible.
 
 === Improvements
 

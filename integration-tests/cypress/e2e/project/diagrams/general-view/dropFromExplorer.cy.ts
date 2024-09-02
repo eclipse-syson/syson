@@ -80,6 +80,16 @@ describe('Drop From Explorer Tests', () => {
         workbench.getSnackbar().should('exist').contains('The element part is already visible in its parent Package 1');
       });
 
+      it('Then when we drop the PartUsage on the diagram and on itself, it is only represented once, and a warning message is displayed', () => {
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('part', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').trigger('drop', { dataTransfer });
+
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
+        workbench.getSnackbar().should('exist').contains('Cannot drop part on itself');
+      });
+
       it('Then when we drop the PartUsage on the diagram, hide it, and drop it again, the PartUsage is visible on the diagram', () => {
         const dataTransfer = new DataTransfer();
         explorer.dragTreeItem('part', dataTransfer);

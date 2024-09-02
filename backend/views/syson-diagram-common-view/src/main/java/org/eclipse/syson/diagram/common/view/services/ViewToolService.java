@@ -349,7 +349,12 @@ public class ViewToolService extends ToolService {
             // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we
             // want to prevent the drop.
             if (EMFUtils.isAncestor(element, targetElement)) {
-                String errorMessage = MessageFormat.format("Cannot drop {0} in {1}: {0} is a parent of {1}", element.getName(), targetElement.getName());
+                final String errorMessage;
+                if (element == targetElement) {
+                    errorMessage = MessageFormat.format("Cannot drop {0} on itself", element.getName());
+                } else {
+                    errorMessage = MessageFormat.format("Cannot drop {0} on {1}: {0} is a parent of {1}", element.getName(), targetElement.getName());
+                }
                 this.logger.warn(errorMessage);
                 this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
             } else {
@@ -416,7 +421,7 @@ public class ViewToolService extends ToolService {
                     this.logger.warn(errorMessage);
                     this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
                 }
-            } else {
+            } else if (parentViewCreationRequest != null) {
                 // The node doesn't exist on the diagram, it will be created with the ViewCreationRequest, we want to
                 // make sure its compartment won't be visible after the drop.
                 this.hideCompartments(parentViewCreationRequest, editingContext, diagramContext, convertedNodes);
@@ -452,7 +457,12 @@ public class ViewToolService extends ToolService {
         // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we want
         // to prevent the drop.
         if (EMFUtils.isAncestor(droppedElement, targetElement)) {
-            String errorMessage = MessageFormat.format("Cannot drop {0} in {1}: {0} is a parent of {1}", droppedElement.getName(), targetElement.getName());
+            final String errorMessage;
+            if (droppedElement == targetElement) {
+                errorMessage = MessageFormat.format("Cannot drop {0} on itself", droppedElement.getName());
+            } else {
+                errorMessage = MessageFormat.format("Cannot drop {0} on {1}: {0} is a parent of {1}", droppedElement.getName(), targetElement.getName());
+            }
             this.logger.warn(errorMessage);
             this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
             // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
@@ -484,7 +494,7 @@ public class ViewToolService extends ToolService {
     private void hideCompartments(ViewCreationRequest parentViewCreationRequest, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         var diagramDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
-        if (diagramDescription.isPresent()) {
+        if (diagramDescription.isPresent() && parentViewCreationRequest != null) {
             DiagramDescription representationDescription = (DiagramDescription) diagramDescription.get();
             String parentId = this.getParentElementId(parentViewCreationRequest, diagramContext);
             this.getViewNodeDescription(parentViewCreationRequest.getDescriptionId(), representationDescription, convertedNodes).ifPresent(parentNodeDescription -> {
