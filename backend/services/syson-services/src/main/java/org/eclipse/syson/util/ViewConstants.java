@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,4 +36,8 @@ public class ViewConstants {
     public static final String DEFAULT_LABEL_COLOR = "black";
 
     public static final String DEFAULT_EDGE_COLOR = "black";
+
+    public static final String DEFAULT_NOTE_WIDTH = "200";
+
+    public static final String DEFAULT_NOTE_HEIGHT = "70";
 }

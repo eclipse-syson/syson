@@ -13,6 +13,7 @@
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/694[#694] [diagrams] Add a new custom node note among possible node style descriptions.
+- https://github.com/eclipse-syson/syson/issues/695[#695] [diagrams] Add Documentation element as graphical node
 
 
 == v2024.9.0

@@ -27,6 +27,7 @@ import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
@@ -253,6 +254,29 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseDocumentation(Documentation object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("doc")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR);
+        String declaredName = object.getDeclaredName();
+        if (declaredName != null && !declaredName.isEmpty()) {
+            label
+                    .append(this.caseElement(object))
+                    .append(LabelConstants.CR);
+        }
+        String body = object.getBody();
+        if (body != null) {
+            label
+                    .append(LabelConstants.CR)
+                    .append(object.getBody());
+        }
+        return label.toString();
+    }
+
+    @Override
     public String caseEnumerationDefinition(EnumerationDefinition object) {
         StringBuilder label = new StringBuilder();
         label
@@ -455,8 +479,12 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.reference(object))
                 .append(this.getPerformActionUsageTag(object))
                 .append(LabelConstants.CLOSE_QUOTE)
-                .append(LabelConstants.CR)
-                .append(object.getPerformedAction().getName());
+                .append(LabelConstants.CR);
+        String name = object.getPerformedAction().getName();
+        if (name == null) {
+            name = "";
+        }
+        label.append(name);
         return label.toString();
     }
 

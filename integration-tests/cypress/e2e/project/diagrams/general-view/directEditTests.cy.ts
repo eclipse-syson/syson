@@ -239,6 +239,29 @@ describe('Node Creation Tests', () => {
         // even if derived keyword has not been typed, it is still derived because DirectEdit on graphical node does not take into account his keyword
         details.getDetailsView().find(`[data-testid="Is Derived"]`).click();
       });
+
+      it('we can modify body of Documenation with direct edit on Documentation graphical node', () => {
+        explorer.createObject('part', 'SysMLv2EditService-Documentation');
+        explorer
+          .getTreeItemByLabel('Documentation')
+          .should('exist')
+          .parents('ul')
+          .first()
+          .siblings()
+          .contains('part')
+          .should('exist');
+
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('part', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
+        explorer.dragTreeItem('Documentation', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'add doc here').should('exist').should('have.length', 1);
+        cy.getByTestId('Label\\ -\\ «doc»\\a \\a add\\ doc\\ here').type('body of my doc{enter}');
+        diagram.getNodes(diagramLabel, 'body of my doc').should('exist');
+        details.getTextField('Body').should('have.value', 'body of my doc');
+      });
     });
   });
 });

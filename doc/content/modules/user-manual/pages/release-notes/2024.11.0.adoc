@@ -14,3 +14,9 @@
 
 - Add a new Custom node representing à _Note_ among possible node style descriptions available. 
 The custom node is resizable and the text content is wraped (back to the line) if it is too long compare to the node size.
+- Represent `Documentation` as _Note_ graphical node. 
+The `Documentation` graphical node can appear when user drag and drop `Documentation` element from explorer on the diagram.
+The `Documentation` graphical node is linked to its documented element by an edge and the node can only appear if the documented element is represented on the diagram.
+- Display prefix keywords in labels of `Documentation` graphical nodes.
+
+image::release-notes-documentation-note.png[Documentation note node]
