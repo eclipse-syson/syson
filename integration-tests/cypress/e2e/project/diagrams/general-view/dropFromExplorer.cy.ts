@@ -147,5 +147,32 @@ describe('Drop From Explorer Tests', () => {
           .should('contain', '#ClosedArrowWithDots');
       });
     });
+
+    context('When we create a PartUsagein the root Package in the explorer', () => {
+      beforeEach(() => {
+        explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
+        explorer.getTreeItemByLabel('part').should('exist');
+      });
+
+      it('Then when we create a Documentation inside the Part and we drop the Documentation on the diagram, the Documentation is visible on the diagram', () => {
+        explorer.createObject('part', 'SysMLv2EditService-Documentation');
+        explorer
+          .getTreeItemByLabel('Documentation')
+          .should('exist')
+          .parents('ul')
+          .first()
+          .siblings()
+          .contains('part')
+          .should('exist');
+
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('part', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
+        explorer.dragTreeItem('Documentation', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'add doc here').should('exist').should('have.length', 1);
+      });
+    });
   });
 });

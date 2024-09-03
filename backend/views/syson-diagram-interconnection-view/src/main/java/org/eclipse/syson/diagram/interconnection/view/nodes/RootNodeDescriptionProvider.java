@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
+import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -83,12 +84,15 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
         var optFirstLevelChildPartUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()));
         var optFirstLevelChildActionUsageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getActionUsage()));
         var optRootPortUsageBorderNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME);
+        var reusedChildren = new ArrayList<NodeDescription>();
+        InterconnectionViewDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(annotating)).ifPresent(reusedChildren::add));
 
         NodeDescription nodeDescription = optRootDefinitionNodeDescription.get();
         diagramDescription.getNodeDescriptions().add(nodeDescription);
         nodeDescription.getChildrenDescriptions().add(optFirstLevelChildPartUsageNodeDescription.get());
         nodeDescription.getChildrenDescriptions().add(optFirstLevelChildActionUsageNodeDescription.get());
         nodeDescription.getBorderNodesDescriptions().add(optRootPortUsageBorderNodeDescription.get());
+        nodeDescription.getReusedChildNodeDescriptions().addAll(reusedChildren);
         nodeDescription.setPalette(this.createNodePalette(cache));
     }
 
@@ -179,6 +183,8 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
         acceptedNodeTypes.add(optPortUsageBorderNodeDescription.get());
         acceptedNodeTypes.add(optChildPartUsageNodeDescription.get());
         acceptedNodeTypes.add(optFirstLevelChildPartUsageNodeDescription.get());
+        InterconnectionViewDiagramDescriptionProvider.ANNOTATINGS
+                .forEach(annotating -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(annotating)).ifPresent(acceptedNodeTypes::add));
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -119,6 +120,10 @@ public class NodeDescriptionService {
 
         VariableManager shouldRenderPredicateVariableManager = new VariableManager();
         shouldRenderPredicateVariableManager.put(VariableManager.SELF, element);
+        // Force the editingContext variable to null to enable editingContext and diagramContext null checks in AQL
+        // expressions.
+        shouldRenderPredicateVariableManager.put(IEditingContext.EDITING_CONTEXT, null);
+        shouldRenderPredicateVariableManager.put(IDiagramContext.DIAGRAM_CONTEXT, null);
         boolean shouldRender = nodeDescription.getShouldRenderPredicate().test(shouldRenderPredicateVariableManager);
 
         return candidatesList.contains(element) && shouldRender;

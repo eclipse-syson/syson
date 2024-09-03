@@ -70,9 +70,10 @@ image::gv-part-node.png[{gv} Part Node]
 
 The following element in _Definition_ compartments can be displayed in the {gv} diagram:
 
-  * _Action Definition_ can contain in its body Action, Accept action, Start action, Done action, Fork action, Join action, Merge action, Decision action and Perform action,
+  * _Action Definition_ can contain in its body _Action_, _Accept action_, _Start action_, _Done action_, _Fork action_, _Join action_, _Merge action_, _Decision action_ and _Perform action_,
   * Attribute in _Attribute Definition_/_Interface Definition_/_Item Definition_/_Metadata Definition_/_Occurrence Definition_/_Part Definition_/_Port Definition_/_Requirement Definition_,
   * Constraint in _Constraint Definition_,
+  * Documentation in all _Definition_ elements,
   * Enumerated Value in _Enumeration Definition_,
   * Interface in _Interface Definition_,
   * Port in _Interface Definition_/_Part Definition_,

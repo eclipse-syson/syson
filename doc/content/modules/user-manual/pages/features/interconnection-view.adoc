@@ -21,21 +21,26 @@ include::user-manual:partial$manage-toolbar-diagram.adoc[]
 
 === _Usage_ elements
 
-From the root _Usage_, two elements can be displayed in the {iv} diagram:
+From the root _Usage_, three elements can be displayed in the {iv} diagram:
 
 * _Usage_ part,
 
 image::interconnection-view-part-node.png[{iv} Part]
 
-* port.
+* port,
 
 image::interconnection-view-port-node.png[{iv} Port]
 
-From compartment of _Usage_ part, three elements can be displayed in the {iv} diagram:
+* Documentation.
 
-* attribute
-* part
-* port
+image::interconnection-view-documentation-node.png[{iv} Port]
+
+From compartment of _Usage_ part, four elements can be displayed in the {iv} diagram:
+
+* documentation,
+* attribute,
+* part,
+* port.
 
 image::interconnection-view-part-compartment-node.png[{iv} Compartment part]
 

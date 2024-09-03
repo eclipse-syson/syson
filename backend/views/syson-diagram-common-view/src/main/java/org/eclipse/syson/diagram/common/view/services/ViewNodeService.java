@@ -19,12 +19,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -35,6 +37,7 @@ import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
@@ -265,10 +268,69 @@ public class ViewNodeService {
         return element instanceof PartUsage && element.getOwningMembership() instanceof ActorMembership;
     }
 
+    /**
+     * Returns {@code true} if the provided annotated element of the given {@code element} is represented on the
+     * diagram, {@code false} otherwise.
+     *
+     * @param element
+     *            the element to check
+     * @param diagramContext
+     *            the diagram context
+     * @param editingContext
+     *            the editing context
+     * @return {@code true} if the provided annotated element of {@code element} is represented on the diagram,
+     *         {@code false} otherwise
+     */
+    public boolean showAnnotatingNode(Element element, IDiagramContext diagramContext, IEditingContext editingContext) {
+        boolean displayAnnotatingNode = true;
+        if (element instanceof AnnotatingElement ae && diagramContext != null && editingContext != null) {
+            EList<Element> annotatedElements = ae.getAnnotatedElement();
+            Node matchingNode = null;
+            for (Node node : diagramContext.getDiagram().getNodes()) {
+                matchingNode = this.getOneMatchingAnnotatedNodes(node, annotatedElements, diagramContext, editingContext);
+                if (matchingNode != null) {
+                    return true;
+                }
+            }
+            displayAnnotatingNode = false;
+        }
+        return displayAnnotatingNode;
+    }
+
     private boolean isReferencingPerformActionUsage(PerformActionUsage pau) {
         // the given PerformActionUsage is a referencing PerformActionUsage if it contains a reference subsetting
         // pointing to an action.
         ReferenceSubsetting referenceSubSetting = pau.getOwnedReferenceSubsetting();
         return referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage perfomedAction;
+    }
+
+    private Node getOneMatchingAnnotatedNodes(Node node, EList<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
+        Node matchingAnnotatedNode = null;
+        Optional<Object> semanticNodeOpt = this.objectService.getObject(editingContext, node.getTargetObjectId());
+        if (semanticNodeOpt.isPresent()) {
+            if (annotatedElements.contains(semanticNodeOpt.get())) {
+                boolean isDeletingAnnotatingNode = diagramContext.getViewDeletionRequests().stream() //
+                        .anyMatch(viewDeletionRequest -> Objects.equals(viewDeletionRequest.getElementId(), node.getId()));
+                if (!isDeletingAnnotatingNode) {
+                    // annotating node is present and it is not planned to be removed
+                    matchingAnnotatedNode = node;
+                }
+                // Do not browse children of annotating node which is planned to be removed
+                return matchingAnnotatedNode;
+            }
+        }
+        matchingAnnotatedNode = this.geFirstMatchingChildAnnotatedNode(node, annotatedElements, diagramContext, editingContext);
+        return matchingAnnotatedNode;
+    }
+
+    private Node geFirstMatchingChildAnnotatedNode(Node node, EList<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
+        List<Node> childrenNodes = Stream.concat(node.getChildNodes().stream(), node.getBorderNodes().stream()).toList();
+        for (Node childNode : childrenNodes) {
+            Node matchingChildAnnotatedNode = this.getOneMatchingAnnotatedNodes(childNode, annotatedElements, diagramContext, editingContext);
+            if (matchingChildAnnotatedNode != null) {
+                return matchingChildAnnotatedNode;
+            }
+        }
+        return null;
     }
 }

@@ -28,7 +28,9 @@ import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescr
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
+import org.eclipse.syson.diagram.common.view.edges.AnnotationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.AnnotatingNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
@@ -62,6 +64,9 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  * @author arichard
  */
 public class InterconnectionViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
+
+    public static final List<EClass> ANNOTATINGS = List.of(
+            SysmlPackage.eINSTANCE.getDocumentation());
 
     public static final String DESCRIPTION_NAME = "Interconnection View";
 
@@ -111,8 +116,13 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
                 new AllocateEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new InterfaceUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
                 new FlowConnectionUsageEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()),
-                new SuccessionEdgeDescriptionProvider(colorProvider)
+                new SuccessionEdgeDescriptionProvider(colorProvider),
+                new AnnotationEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator())
         ));
+
+        ANNOTATINGS.forEach(annotating -> {
+            diagramElementDescriptionProviders.add(new AnnotatingNodeDescriptionProvider(annotating, colorProvider, this.getDescriptionNameGenerator()));
+        });
 
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
             listItems.forEach(eReference -> {

@@ -56,9 +56,11 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Feature;
@@ -829,6 +831,25 @@ public class ViewToolService extends ToolService {
                     }
                 }
             }
+        }
+        return self;
+    }
+
+    /**
+     * Reconnects the annotation to the annotated element target.
+     * <p>
+     * The target of this edge can be all elements except a Documentation or a Comment.
+     * </p>
+     *
+     * @param self
+     *            the current annotating element
+     * @param newTarget
+     *            the new Annotated element
+     * @return the annotating element
+     */
+    public Element reconnnectTargetAnnotatedEdge(Element self, Element newTarget) {
+        if (!(newTarget instanceof Comment) && !(newTarget instanceof Documentation)) {
+            return this.utilService.moveMembership(self, newTarget);
         }
         return self;
     }

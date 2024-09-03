@@ -46,7 +46,9 @@ import org.eclipse.syson.diagram.actionflow.view.nodes.FakeNodeDescriptionProvid
 import org.eclipse.syson.diagram.actionflow.view.nodes.ReferencingPerformActionUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
+import org.eclipse.syson.diagram.common.view.edges.AnnotationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ActionFlowCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.AnnotatingNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
@@ -80,6 +82,9 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
             SysmlPackage.eINSTANCE.getAssignmentActionUsage(),
             SysmlPackage.eINSTANCE.getPerformActionUsage()
             );
+
+    public static final List<EClass> ANNOTATINGS = List.of(
+            SysmlPackage.eINSTANCE.getDocumentation());
 
     public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getAcceptActionUsage(),  List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
@@ -126,6 +131,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>>();
         diagramElementDescriptionProviders.add(new AllocateEdgeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new AnnotationEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new DependencyEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new FeatureTypingEdgeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new RedefinitionEdgeDescriptionProvider(colorProvider));
@@ -158,6 +164,10 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
 
         USAGES.forEach(usage -> {
             diagramElementDescriptionProviders.add(new UsageNodeDescriptionProvider(usage, colorProvider, this.getDescriptionNameGenerator()));
+        });
+
+        ANNOTATINGS.forEach(annotating -> {
+            diagramElementDescriptionProviders.add(new AnnotatingNodeDescriptionProvider(annotating, colorProvider, this.getDescriptionNameGenerator()));
         });
 
         COMPARTMENTS_WITH_LIST_ITEMS.forEach((eClass, listItems) -> {
