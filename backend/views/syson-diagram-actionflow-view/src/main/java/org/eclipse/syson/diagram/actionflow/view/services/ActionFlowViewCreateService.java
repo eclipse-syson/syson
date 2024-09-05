@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.actionflow.view.services;
 
+import java.util.List;
+
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
@@ -22,6 +25,7 @@ import org.eclipse.syson.diagram.actionflow.view.nodes.ActionFlowViewEmptyDiagra
 import org.eclipse.syson.diagram.common.view.services.ShowDiagramsInheritedMembersService;
 import org.eclipse.syson.diagram.common.view.services.ViewCreateService;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.SysmlPackage;
 
 /**
  * Creation-related Java services used by the {@link ActionFlowViewDiagramDescriptionProvider}.
@@ -50,5 +54,14 @@ public class ActionFlowViewCreateService extends ViewCreateService {
      */
     public Element getDiagramEmptyCandidate(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Diagram previousDiagram) {
         return this.getDiagramEmptyCandidate(element, editingContext, diagramContext, previousDiagram, ActionFlowViewEmptyDiagramNodeDescriptionProvider.NAME);
+    }
+
+    @Override
+    public boolean canCreateDiagram(Element element) {
+        List<EClass> acceptedRootTypes = List.of(
+                SysmlPackage.eINSTANCE.getPackage(),
+                SysmlPackage.eINSTANCE.getActionDefinition(),
+                SysmlPackage.eINSTANCE.getActionUsage());
+        return super.canCreateDiagram(element) && acceptedRootTypes.stream().anyMatch(rootType -> rootType.isSuperTypeOf(element.eClass()));
     }
 }
