@@ -60,6 +60,7 @@ The following methods have been moved to `UtilService` to make them reusable by 
 - https://github.com/eclipse-syson/syson/issues/552[#552] [diagrams] Rename `ViewLabelService#getInitialDirectEditLabel` service into `getInitialDirectEditListItemLabel` to specify the computation of the initial label on list item elements.
 - https://github.com/eclipse-syson/syson/issues/715[#715] [services] Fix the drop of an element on itself.
 `EMFUtils#isAncestor(parent, eObject)` now returns `true` if `parent == eObject`.
+- https://github.com/eclipse-syson/syson/issues/718[#718] [action-flow-view] It is not possible to create a Package in an Action Flow View diagram anymore.
 
 === Dependency update
 
@@ -140,6 +141,7 @@ For example, `myAttribute : ISQ::MassValue` now correctly types the attribute wi
 - https://github.com/eclipse-syson/syson/issues/670[#670] [diagrams] Ignore keywords order during direct edit of prefixes label of `Definitions` and `Usages` graphical elements.
 - https://github.com/eclipse-syson/syson/issues/689[#689] [diagrams] Ensure coherence between Direct Edit capabilities and the displayed label
 - https://github.com/eclipse-syson/syson/issues/709[#709] [diagrams] Allow to drop a Definition from the explorer on an Usage on a diagram or in a list compartment to type it.
+- https://github.com/eclipse-syson/syson/issues/718[#718] [action-flow-view] Allow to create an Action Flow View diagram on ActionDefinition or ActionUsage.
 
 === New features
 

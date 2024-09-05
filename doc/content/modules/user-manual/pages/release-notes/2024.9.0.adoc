@@ -79,6 +79,7 @@ The changes are:
 * Rename `ViewLabelService#getInitialDirectEditLabel` service into `getInitialDirectEditListItemLabel` to specify the computation of the initial label on list item elements.
 - Fix an issue that revealed the _documentation_ compartment when dropping an element on itself, the following method's contract has been updated as part of the fix:
 * `EMFUtils#isAncestor(parent, eObject)` now returns `true` if `parent == eObject`.
+- Allow to create an Action Flow View diagram on an ActionDefinition or ActionUsage in addition to Package, the tool _Create Package_ is not available in Action Flow View diagrams anymore.
 
 == Dependencies update
 
@@ -180,6 +181,7 @@ A warning message is now displayed when attempting to drop an element which is a
 - Ignore keywords order during direct edit of prefixes labels of `Definitions` and `Usages` graphical elements.
 - DirectEdit on graphical node or list item authorized only to modify keywords which can be displayed in each label.
 - Allow to drop a Definition from the explorer on an Usage on a diagram or in a list compartment to type it.
+- Allow to create an Action Flow View diagram on an ActionDefinition or ActionUsage in addition to Package.
 
 == New features
 

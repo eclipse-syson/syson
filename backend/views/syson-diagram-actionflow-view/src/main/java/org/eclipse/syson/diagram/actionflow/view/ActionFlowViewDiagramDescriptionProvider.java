@@ -43,7 +43,6 @@ import org.eclipse.syson.diagram.actionflow.view.nodes.ActionFlowViewEmptyDiagra
 import org.eclipse.syson.diagram.actionflow.view.nodes.CompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.DefinitionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.FakeNodeDescriptionProvider;
-import org.eclipse.syson.diagram.actionflow.view.nodes.PackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.ReferencingPerformActionUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.nodes.UsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
@@ -58,6 +57,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionPro
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
@@ -93,8 +93,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
                     SysmlPackage.eINSTANCE.getAcceptActionUsage(),
                     SysmlPackage.eINSTANCE.getActionUsage(),
                     SysmlPackage.eINSTANCE.getActionDefinition(),
-                    SysmlPackage.eINSTANCE.getAssignmentActionUsage(),
-                    SysmlPackage.eINSTANCE.getPackage()))
+                    SysmlPackage.eINSTANCE.getAssignmentActionUsage()))
             );
 
     /**
@@ -111,13 +110,14 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
 
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPackage());
+        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getNamespace());
 
         var diagramDescriptionBuilder = this.diagramBuilderHelper.newDiagramDescription();
         diagramDescriptionBuilder
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
                 .autoLayout(false)
                 .domainType(domainType)
+                .preconditionExpression(AQLUtils.getSelfServiceCallExpression("canCreateDiagram"))
                 .name(DESCRIPTION_NAME)
                 .titleExpression(DESCRIPTION_NAME);
 
@@ -141,7 +141,6 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
 
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new ActionFlowViewEmptyDiagramNodeDescriptionProvider(colorProvider));
-        diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new StartActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new DoneActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new JoinActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));

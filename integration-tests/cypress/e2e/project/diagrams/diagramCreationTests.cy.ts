@@ -64,5 +64,43 @@ describe('Diagram Creation Tests', () => {
         diagram.getDiagram('interconnectionView').should('exist');
       });
     });
+
+    context('When we select an ActionUsage in the explorer', () => {
+      beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionUsage'));
+
+      it('Then we can create a General View diagram', () => {
+        explorer.createRepresentation('action', 'General View', 'generalView');
+        diagram.getDiagram('generalView').should('exist');
+      });
+
+      it('Then we can create an Interconnection View diagram', () => {
+        explorer.createRepresentation('action', 'Interconnection View', 'interconnectionView');
+        diagram.getDiagram('interconnectionView').should('exist');
+      });
+
+      it('Then we can create an Action Flow View diagram', () => {
+        explorer.createRepresentation('action', 'Action Flow View', 'actionFlowView');
+        diagram.getDiagram('actionFlowView').should('exist');
+      });
+    });
+
+    context('When we select an ActionDefinition in the explorer', () => {
+      beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionDefinition'));
+
+      it('Then we can create a General View diagram', () => {
+        explorer.createRepresentation('ActionDefinition', 'General View', 'generalView');
+        diagram.getDiagram('generalView').should('exist');
+      });
+
+      it('Then we can create an Interconnection View diagram', () => {
+        explorer.createRepresentation('ActionDefinition', 'Interconnection View', 'interconnectionView');
+        diagram.getDiagram('interconnectionView').should('exist');
+      });
+
+      it('Then we can create an Action Flow View diagram', () => {
+        explorer.createRepresentation('ActionDefinition', 'Action Flow View', 'actionFlowView');
+        diagram.getDiagram('actionFlowView').should('exist');
+      });
+    });
   });
 });
