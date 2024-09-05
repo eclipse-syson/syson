@@ -346,9 +346,9 @@ public class ViewToolService extends ToolService {
             optTargetElement = this.objectService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
         }
         if (optTargetElement.isPresent() && optTargetElement.get() instanceof Element targetElement) {
-            // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we
-            // want to prevent the drop.
-            if (EMFUtils.isAncestor(element, targetElement)) {
+            // Check if the element we attempt to drop is in the ancestors of the target element and we attempt to drop
+            // it on anything else than the diagram background. If it is the case we want to prevent the drop.
+            if (EMFUtils.isAncestor(element, targetElement) && selectedNode != null) {
                 final String errorMessage;
                 if (element == targetElement) {
                     errorMessage = MessageFormat.format("Cannot drop {0} on itself", element.getName());
