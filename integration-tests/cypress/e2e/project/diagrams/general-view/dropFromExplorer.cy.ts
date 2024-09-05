@@ -59,6 +59,14 @@ describe('Drop From Explorer Tests', () => {
           .should('exist');
       });
 
+      it('Then we can drop the Package on the diagram', () => {
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem(sysmlv2.getRootElementLabel(), dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+
+        diagram.getNodes(diagramLabel, sysmlv2.getRootElementLabel()).should('exist');
+      });
+
       it('Then we can drop the PartUsage on the diagram, and its compartment are not visible', () => {
         const dataTransfer = new DataTransfer();
         explorer.dragTreeItem('part', dataTransfer);
