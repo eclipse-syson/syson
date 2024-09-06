@@ -10,6 +10,7 @@
             "$type": "OwningMembership",
             "target": {
               "$type": "ActionUsage",
+              "isReference": false,
               "children": [
                 {
                   "$type": "FeatureMembership",

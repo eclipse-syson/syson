@@ -14,8 +14,10 @@ package org.eclipse.syson.sysml;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
@@ -547,6 +549,8 @@ public class ASTTransformerTest {
         Package packageAssignment1 = (Package) namespace.getMember().get(0);
 
         ActionUsage actionUsageCounter = (ActionUsage) packageAssignment1.getMember().get(0);
+        assertFalse(actionUsageCounter.isIsReference());
+        assertTrue(actionUsageCounter.isIsComposite());
         AttributeUsage attributeUsagecount = (AttributeUsage) actionUsageCounter.getMember().get(0);
         AssignmentActionUsage assignmentActionUsage = (AssignmentActionUsage) actionUsageCounter.getMember().get(1);
 

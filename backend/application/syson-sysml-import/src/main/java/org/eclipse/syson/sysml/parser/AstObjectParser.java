@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.AstConstant;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
@@ -40,13 +41,19 @@ public class AstObjectParser {
 
     public void setObjectAttribute(final EObject eObject, final JsonNode astJson) {
         for (final EAttribute attribute : eObject.eClass().getEAllAttributes()) {
-            if (attribute.isDerived() || attribute.isUnsettable()) {
-                continue;
-            }
-
             final String mappedName = this.computeAttribute(eObject, attribute.getName());
 
-            if (!astJson.has(mappedName) || "isNonunique".equals(mappedName) || "isReference".equals(mappedName)) {
+            if ("isReference".equals(mappedName) && astJson.has(mappedName) && !astJson.get(mappedName).asBoolean()) {
+                // The isReference attribute is set to false, which indicates that the element is composite. Since
+                // isReference is un-settable and derived from isComposite, we have to set isComposite to true, which
+                // will automatically set isReference to false.
+                EStructuralFeature isCompositeFeature = eObject.eClass().getEStructuralFeature(SysmlPackage.eINSTANCE.getFeature_IsComposite().getFeatureID());
+                if (isCompositeFeature instanceof EAttribute isCompositeAttribute && isCompositeAttribute.getEType().getName().equals("EBoolean")) {
+                    eObject.eSet(isCompositeFeature, true);
+                }
+            }
+
+            if (attribute.isDerived() || attribute.isUnsettable() || !astJson.has(mappedName) || "isNonunique".equals(mappedName)) {
                 continue;
             }
 
