@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-siriusweb-customnodes-metamodel</artifactId>
-	<version>2024.7.5</version>
+	<version>2024.7.6</version>
 	<name>syson-siriusweb-customnodes-metamodel</name>
 	<description>SysON SysMLv2 Custom Nodes Metamodel for Sirius Web</description>
 
