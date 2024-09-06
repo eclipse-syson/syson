@@ -11,3 +11,6 @@
 == Improvements
 
 == New features
+
+- Add a new Custom node representing à _Note_ among possible node style descriptions available. 
+The custom node is resizable and the text content is wraped (back to the line) if it is too long compare to the node size.

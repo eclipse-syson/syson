@@ -16,5 +16,8 @@
     <genClasses ecoreClass="sysml-customnodes.ecore#//SysMLPackageNodeStyleDescription">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml-customnodes.ecore#//SysMLPackageNodeStyleDescription/background"/>
     </genClasses>
+    <genClasses ecoreClass="sysml-customnodes.ecore#//SysMLNoteNodeStyleDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml-customnodes.ecore#//SysMLNoteNodeStyleDescription/background"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

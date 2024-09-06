@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
+import org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 
 /**
@@ -78,6 +79,11 @@ public class SysMLCustomnodesAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseSysMLNoteNodeStyleDescription(SysMLNoteNodeStyleDescription object) {
+            return SysMLCustomnodesAdapterFactory.this.createSysMLNoteNodeStyleDescriptionAdapter();
+        }
+
+        @Override
         public Adapter caseBorderStyle(BorderStyle object) {
             return SysMLCustomnodesAdapterFactory.this.createBorderStyleAdapter();
         }
@@ -117,6 +123,20 @@ public class SysMLCustomnodesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSysMLPackageNodeStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription <em>Sys ML Note Node Style
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription
+     * @generated
+     */
+    public Adapter createSysMLNoteNodeStyleDescriptionAdapter() {
         return null;
     }
 

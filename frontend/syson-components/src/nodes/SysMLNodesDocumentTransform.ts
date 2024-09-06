@@ -69,7 +69,7 @@ const backgroundField: SelectionNode = {
   },
 };
 
-export const sysMLPackageNodeStyleDocumentTransform = new DocumentTransform((document) => {
+export const sysMLNodesStyleDocumentTransform = new DocumentTransform((document) => {
   if (shouldTransform(document)) {
     const transformedDocument = visit(document, {
       Field(field) {
@@ -94,11 +94,26 @@ export const sysMLPackageNodeStyleDocumentTransform = new DocumentTransform((doc
           },
         };
 
+        const sysMLNoteNodeStyleInlineFragment: InlineFragmentNode = {
+          kind: Kind.INLINE_FRAGMENT,
+          selectionSet: {
+            kind: Kind.SELECTION_SET,
+            selections: [borderColorField, borderSizeField, borderStyleField, backgroundField],
+          },
+          typeCondition: {
+            kind: Kind.NAMED_TYPE,
+            name: {
+              kind: Kind.NAME,
+              value: 'SysMLNoteNodeStyle',
+            },
+          },
+        };
+
         return {
           ...field,
           selectionSet: {
             ...field.selectionSet,
-            selections: [...selections, sysMLPackageNodeStyleInlineFragment],
+            selections: [...selections, sysMLPackageNodeStyleInlineFragment, sysMLNoteNodeStyleInlineFragment],
           },
         };
       },

@@ -17,7 +17,10 @@ export { ShowHideDiagramsInheritedMembers } from './extensions/ShowHideDiagramsI
 export { ShowHideDiagramsInheritedMembersFromStandardLibraries } from './extensions/ShowHideDiagramsInheritedMembersFromStandardLibraries';
 export { SysONDiagramPanelMenu } from './extensions/SysONDiagramPanelMenu';
 export { useInsertTextualSysMLv2 } from './extensions/useInsertTextualSysMLv2';
+export { SysMLNoteNode } from './nodes/note/SysMLNoteNode';
+export { SysMLNoteNodeConverter } from './nodes/note/SysMLNoteNodeConverter';
+export { SysMLNoteNodeLayoutHandler } from './nodes/note/SysMLNoteNodeLayoutHandler';
 export { SysMLPackageNode } from './nodes/package/SysMLPackageNode';
 export { SysMLPackageNodeConverter } from './nodes/package/SysMLPackageNodeConverter';
-export { sysMLPackageNodeStyleDocumentTransform } from './nodes/package/SysMLPackageNodeDocumentTransform';
 export { SysMLPackageNodeLayoutHandler } from './nodes/package/SysMLPackageNodeLayoutHandler';
+export { sysMLNodesStyleDocumentTransform } from './nodes/SysMLNodesDocumentTransform';
