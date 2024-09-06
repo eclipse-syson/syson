@@ -92,6 +92,7 @@ The drop doesn't reveal the _documentation_ compartment anymore, and a warning m
 - https://github.com/eclipse-syson/syson/issues/711[#711] [diagrams] Prevent feature typing from disappearing when nesting a PartUsage in a PartDefinition.
 * The tool _Add Part as nested Part_ now correctly keeps the existing relationships of the PartUsage after its owner is changed.
 - https://github.com/eclipse-syson/syson/issues/722[#722] [diagrams] Allow the drop of the root element of a diagram on its background.
+- https://github.com/eclipse-syson/syson/issues/726[#726] [import] Add support for isReference attribute in SysML parser.
 
 === Improvements
 

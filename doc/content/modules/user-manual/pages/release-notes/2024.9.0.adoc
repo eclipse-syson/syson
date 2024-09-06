@@ -112,6 +112,8 @@ The drop isn't allowed anymore, and a warning message is displayed.
 - Fix an issue that deleted feature typing specialization when nesting a PartUsage in a PartDefinition.
 * The tool _Add Part as nested Part_ now correctly keeps the existing relationships of the PartUsage after its owner is changed.
 - Fix an issue that prevented the drop of the root element of a diagram on its background.
+- Fix an issue that made all the elements references when imported by the SysMLParser.
+
 
 == Improvements
 
