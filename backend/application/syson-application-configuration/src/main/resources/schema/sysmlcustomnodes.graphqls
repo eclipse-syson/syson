@@ -6,3 +6,12 @@ type SysMLPackageNodeStyle {
   borderStyle: LineStyle!
   background: String!
 }
+
+extend union INodeStyle = SysMLNoteNodeStyle
+
+type SysMLNoteNodeStyle {
+  background: String!
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+}

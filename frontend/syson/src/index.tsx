@@ -33,10 +33,13 @@ import {
 } from '@eclipse-sirius/sirius-web-application';
 import {
   InsertTextualSysMLMenuContribution,
+  sysMLNodesStyleDocumentTransform,
+  SysMLNoteNode,
+  SysMLNoteNodeConverter,
+  SysMLNoteNodeLayoutHandler,
   SysMLPackageNode,
   SysMLPackageNodeConverter,
   SysMLPackageNodeLayoutHandler,
-  sysMLPackageNodeStyleDocumentTransform,
   SysONDiagramPanelMenu,
 } from '@eclipse-syson/syson-components';
 import ReactDOM from 'react-dom';
@@ -86,8 +89,8 @@ const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOpt
   const { documentTransform } = currentOptions;
 
   const newDocumentTransform = documentTransform
-    ? documentTransform.concat(sysMLPackageNodeStyleDocumentTransform)
-    : sysMLPackageNodeStyleDocumentTransform;
+    ? documentTransform.concat(sysMLNodesStyleDocumentTransform)
+    : sysMLNodesStyleDocumentTransform;
   return {
     ...currentOptions,
     documentTransform: newDocumentTransform,
@@ -113,10 +116,16 @@ extensionRegistry.addComponent(footerExtensionPoint, {
   Component: SysONFooter,
 });
 
+/*
+ * Custom node contribution
+ */
 const nodeTypeRegistry: NodeTypeRegistry = {
-  nodeLayoutHandlers: [new SysMLPackageNodeLayoutHandler()],
-  nodeConverters: [new SysMLPackageNodeConverter()],
-  nodeTypeContributions: [<NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />],
+  nodeLayoutHandlers: [new SysMLPackageNodeLayoutHandler(), new SysMLNoteNodeLayoutHandler()],
+  nodeConverters: [new SysMLPackageNodeConverter(), new SysMLNoteNodeConverter()],
+  nodeTypeContributions: [
+    <NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />,
+    <NodeTypeContribution component={SysMLNoteNode} type={'sysMLNoteNode'} />,
+  ],
 };
 
 ReactDOM.render(

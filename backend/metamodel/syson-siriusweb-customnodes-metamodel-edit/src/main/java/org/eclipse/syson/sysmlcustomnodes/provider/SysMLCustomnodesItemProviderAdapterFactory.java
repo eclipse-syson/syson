@@ -113,6 +113,30 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected SysMLNoteNodeStyleDescriptionItemProvider sysMLNoteNodeStyleDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSysMLNoteNodeStyleDescriptionAdapter() {
+        if (this.sysMLNoteNodeStyleDescriptionItemProvider == null) {
+            this.sysMLNoteNodeStyleDescriptionItemProvider = new SysMLNoteNodeStyleDescriptionItemProvider(this);
+        }
+
+        return this.sysMLNoteNodeStyleDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -214,6 +238,8 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
     public void dispose() {
         if (this.sysMLPackageNodeStyleDescriptionItemProvider != null)
             this.sysMLPackageNodeStyleDescriptionItemProvider.dispose();
+        if (this.sysMLNoteNodeStyleDescriptionItemProvider != null)
+            this.sysMLNoteNodeStyleDescriptionItemProvider.dispose();
     }
 
     /**
@@ -264,6 +290,9 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
                 this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
                         SysMLCustomnodesFactory.eINSTANCE.createSysMLPackageNodeStyleDescription()));
 
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+                        SysMLCustomnodesFactory.eINSTANCE.createSysMLNoteNodeStyleDescription()));
+
                 return null;
             }
 
@@ -276,6 +305,9 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
             public Object caseConditionalNodeStyle(ConditionalNodeStyle object) {
                 this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
                         SysMLCustomnodesFactory.eINSTANCE.createSysMLPackageNodeStyleDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        SysMLCustomnodesFactory.eINSTANCE.createSysMLNoteNodeStyleDescription()));
 
                 return null;
             }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
+import org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 
 /**
@@ -63,6 +64,8 @@ public class SysMLCustomnodesFactoryImpl extends EFactoryImpl implements SysMLCu
         switch (eClass.getClassifierID()) {
             case SysMLCustomnodesPackage.SYS_ML_PACKAGE_NODE_STYLE_DESCRIPTION:
                 return this.createSysMLPackageNodeStyleDescription();
+            case SysMLCustomnodesPackage.SYS_ML_NOTE_NODE_STYLE_DESCRIPTION:
+                return this.createSysMLNoteNodeStyleDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -77,6 +80,17 @@ public class SysMLCustomnodesFactoryImpl extends EFactoryImpl implements SysMLCu
     public SysMLPackageNodeStyleDescription createSysMLPackageNodeStyleDescription() {
         SysMLPackageNodeStyleDescriptionImpl sysMLPackageNodeStyleDescription = new SysMLPackageNodeStyleDescriptionImpl();
         return sysMLPackageNodeStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SysMLNoteNodeStyleDescription createSysMLNoteNodeStyleDescription() {
+        SysMLNoteNodeStyleDescriptionImpl sysMLNoteNodeStyleDescription = new SysMLNoteNodeStyleDescriptionImpl();
+        return sysMLNoteNodeStyleDescription;
     }
 
     /**
