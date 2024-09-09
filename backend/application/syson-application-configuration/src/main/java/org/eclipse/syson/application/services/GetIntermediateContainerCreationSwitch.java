@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
@@ -45,6 +46,11 @@ public class GetIntermediateContainerCreationSwitch extends SysmlEClassSwitch<Op
     @Override
     public Optional<EClass> defaultCase(EObject object) {
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<EClass> caseComment(Comment object) {
+        return Optional.of(SysmlPackage.eINSTANCE.getOwningMembership());
     }
 
     @Override

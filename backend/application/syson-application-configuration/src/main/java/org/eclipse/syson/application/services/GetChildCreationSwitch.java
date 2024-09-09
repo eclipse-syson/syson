@@ -68,6 +68,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubclassification());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
         return childrenCandidates;
     }
 
@@ -102,6 +103,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
                 });
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubclassification());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
         return childrenCandidates;
     }
 
@@ -192,6 +194,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getSubclassification());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
         return childrenCandidates;
     }
 
@@ -242,6 +245,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getLiteralString());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getFeatureMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
         return childrenCandidates;
     }
 
@@ -262,6 +266,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
                 });
         childrenCandidates.add(SysmlPackage.eINSTANCE.getOwningMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
         return childrenCandidates;
     }
 }
