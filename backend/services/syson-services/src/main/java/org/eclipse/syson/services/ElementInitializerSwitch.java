@@ -17,6 +17,7 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.BindingConnectorAsUsage;
+import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Dependency;
@@ -85,6 +86,12 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseBindingConnectorAsUsage(BindingConnectorAsUsage object) {
         object.setDeclaredName("bind");
+        return object;
+    }
+
+    @Override
+    public Element caseComment(Comment object) {
+        object.setBody("add comment here");
         return object;
     }
 

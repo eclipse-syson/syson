@@ -20,3 +20,5 @@ The `Documentation` graphical node is linked to its documented element by an edg
 - Display prefix keywords in labels of `Documentation` graphical nodes.
 
 image::release-notes-documentation-note.png[Documentation note node]
+
+- Allow creation of Comment from the Explorer view.
