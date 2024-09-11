@@ -83,7 +83,7 @@ The changes are:
 
 == Dependencies update
 
-- Switch to Sirius Web 2024.7.13
+- Switch to Sirius Web 2024.9.0
 - Migrate frontend to MUI 5
 - Switch to `maven-checkstyle-plugin` 3.4.0
 - Switch to Spring Boot 3.3.1
