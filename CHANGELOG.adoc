@@ -1,5 +1,18 @@
 = Changelog
 
+== v2024.11.0 (work in progress)
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== Improvements
+
+=== New features
+
+
 == v2024.9.0
 
 === Breaking changes

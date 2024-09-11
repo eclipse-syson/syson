@@ -1,0 +1,13 @@
+= 2024.11.0 (work in progress)
+
+== Key highlights
+
+== Breaking changes
+
+== Dependencies update
+
+== Bug fixes
+
+== Improvements
+
+== New features
