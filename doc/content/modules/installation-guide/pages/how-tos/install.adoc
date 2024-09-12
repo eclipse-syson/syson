@@ -15,10 +15,15 @@ Always use the stable `.0` releases for any production environments to ensure re
 For more details see xref:user-manual:cycle.adoc[].
 ====
 
-[#docker-install]
+[#docker-compose-install]
 === Installing {product} with Docker Compose
 
 The easiest and most straightforward method to install {product} using Docker Compose, which automatically installs Java and PostgreSQL.
+
+[CAUTION]
+====
+If on the same project you plan to have multiple client connections then you need to do a xref:how-tos/install.adoc#manual-install[manual installation] instead of a Docker Compose one. 
+====
 
 [INFO]
 ====
@@ -43,11 +48,21 @@ app:
   image: "${IMAGE_TAG:-eclipsesyson/syson:*vYYYY.MM.0*}"
 ====
 
+====
+UPDATE TO A NEW VERSION:
+
+If you want to update an existing installation with another version of {product} you have to redo same procedure referencing the new version.
+This will update your {product} product without any change on your database _(no loss of models)_.
+====
+
 All accessible versions of {product} as Docker containers are listed in the https://hub.docker.com/r/eclipsesyson/syson/tags[{product} Docker registry].
 
-Once your Docker up, please go directly to the xref:how-tos/install.adoc#openwebbrowser[Open your web browser] section!
+Once your Docker up command is finished, please go directly to the xref:how-tos/install.adoc#openwebbrowser[Open your web browser] section!
 
-[#download]
+
+
+
+[#manual-install]
 === Installing {product} Manually
 
 Detailed instructions for manually setting up {product}, including PostgreSQL installation with Docker, downloading the JAR application, and starting it manually.
@@ -116,7 +131,7 @@ These rights are necessary for the automatic creation of the database schema.
 [#start-app]
 ==== Start the application
 
-To run the application, you'll need to use the Java Runtime Environment (JRE) to execute the pre-build JAR ({product-jar}) you xref:how-tos/install.adoc#download[downloaded] earlier.
+To run the application, you'll need to use the Java Runtime Environment (JRE) to execute the pre-build JAR ({product-jar}) you xref:how-tos/install.adoc#manual-install[downloaded] earlier.
 
 Go to the folder containing the {product-jar} and run the command:"
 
@@ -135,8 +150,7 @@ Navigate to http://localhost:8080 to experience {product}.
 
 [TIP]
 ====
-To end your local testing session, ensure you stop the running PostgreSQL Docker container using the command `docker kill syson-postgres`.
-Please note that this will erase all the data you have generated during testing.
+To end your local testing session, ensure you stop the running PostgreSQL Docker container using the command `docker stop syson-postgres`.
 ====
 
 If you encounter any issues during the installation process, please refer to the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.

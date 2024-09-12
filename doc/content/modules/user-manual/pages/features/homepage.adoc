@@ -58,4 +58,4 @@ The _Existing Projects_ section streamlines project navigation, allowing users t
 
 image::homepage-existing-projects.png[Existing Projects]
 
-It facilitates the opening of pre-existing projects and provides essential actions for project management, including options to _xref:hands-on/how-tos/project-management.adoc#rename-project[rename]_, _xref:hands-on/how-tos/project-management.adoc#download-project[download]_, and _xref:hands-on/how-tos/project-management.adoc#delete-project[delete]_ projects.
+It facilitates the opening of pre-existing projects and provides essential actions for project management, including options to _xref:hands-on/how-tos/project-management.adoc#rename-project[rename]_, _xref:hands-on/how-tos/project-management.adoc#download-project[download]_, and _xref:hands-on/how-tos/project-management.adoc#delete-project[delete]_ projects using the "3 dots" icon on the right side of each project.

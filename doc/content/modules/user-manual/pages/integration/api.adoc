@@ -4,7 +4,7 @@
 
 [NOTE]
 ====
-The SysML v2 API is not available yet.
+The SysML v2 API is unavailable, but we are working on it.
 For interoperability with {product}, use the provided file exchange format.
 ====
 

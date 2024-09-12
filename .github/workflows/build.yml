@@ -12,6 +12,11 @@ on:
     tags:
       - "*"
   pull_request:
+    paths-ignore:
+      - "CHANGELOG.adoc"
+      - "docker-compose.yml"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - "doc/**"
   workflow_dispatch:
 
 jobs:

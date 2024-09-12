@@ -49,6 +49,9 @@ The new elements created from the {diag-toolbar} are visible either from the {ex
 . A new attribute usage is created.
 . Select the attribute and use the direct-edit tool to rename it to `actualSpeed : SpeedUnit`
 . A new import element appears in model which refers to the library `ISQSpaceTime` that contains `SpeedUnit`
++
+image::tutorial-referenced-library.png[Tutorial: Referenced library]
+
 . The attribute usage `actualSpeed` is typed with the new attribute definition.
 
 === Creating Specialization
