@@ -1,11 +1,5 @@
-// Reference all the files defined in the features folder
-* xref:user-manual:key-features.adoc[]
+= {Diagramming Tools}
 
-* xref:user-manual:features/sysmlv2-overview.adoc[]
-
-* xref:user-manual:concepts.adoc[]
-
-* Diagramming Tools
 ** Projects Management
 *** xref:user-manual:features/homepage.adoc[]
 ** Editor
@@ -35,4 +29,3 @@
 ** xref:user-manual:features/scaling-limits.adoc[]
 ** xref:developer-guide:extend.adoc[]
 ** xref:user-manual:features/security.adoc[]
-
