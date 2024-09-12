@@ -34,30 +34,30 @@ a|✅ (Partial)
 |xref:user-manual:features/interconnection-view.adoc[{iv}]
 a|✅ (Partial)
 
-|xref:user-manual:features/sysmlv2-overview.adoc[{afv}]
+|xref:user-manual:features/action-flow-view.adoc[{afv}]
 a|✅ (Partial)
 
-|xref:user-manual:features/sysmlv2-overview.adoc[{stv}]
+|xref:user-manual:features/state-transition-view.adoc[{stv}]
 a|✅ (Partial)
 
-|xref:user-manual:features/sysmlv2-overview.adoc[Sequence View]
+|xref:user-manual:support.adoc[Sequence View]
 a|❌
 
-|xref:user-manual:features/sysmlv2-overview.adoc[Geometry View]
+|xref:user-manual:support.adoc[Geometry View]
 a|❌
 
-|xref:user-manual:features/sysmlv2-overview.adoc[Grid View]
+|xref:user-manual:support.adoc[Grid View]
 a|❌
 
-|xref:user-manual:features/sysmlv2-overview.adoc[Browser View]
+|xref:user-manual:support.adoc[Browser View]
 a|❌
 
-|xref:user-manual:features/sysmlv2-overview.adoc[{kerml}/{sysml} Libraries]
-a|❌
+|{kerml}/{sysml} Libraries
+a|✅
 
 2+h|Diagram Management
 
-|xref:user-manual:support.adoc[Contextual Palette, Direct Edit, Multi-Selection, Reconnect, Hide/Fade, Collapse/Expand, Drag &Drop, Compartments, Custom Shapes, Assisted Layout (Auto layout, Ruler, Grid, Align, Distribute...)]
+|xref:user-manual:key-features.adoc[Contextual Palette, Multi-Selection, Reconnect, Hide/Fade, Collapse/Expand, Drag &Drop, Compartments, Custom Shapes, Assisted Layout (Auto layout, Ruler, Grid, Align, Distribute...)], xref:hands-on/how-tos/model-management.adoc#direct-edit[Direct Edit]
 a|✅
 
 |xref:user-manual:support.adoc[Edit Graphical Properties, Undo/Redo, Copy/Paste]
@@ -79,6 +79,8 @@ a|❌
 
 |xref:integration/interoperability.adoc[Download / Upload {sysmlv2} textual format]
 a|✅ (Partial)
+|xref:integration/api.adoc[SysML v2 Standard API]
+a|❌
 |===
 
 A detailed list of all {product} features is available in the xref:features/features.adoc[Features] section.

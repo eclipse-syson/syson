@@ -16,7 +16,8 @@ If you don't have a certificate, you can generate one by using https://docs.orac
 ----
 keytool -genkeypair -alias myalias -keyalg RSA -keysize 2048 -validity 365 -keystore keystore.jks
 ----
-. If you have installed {product} with xref:installation-guide:how-tos/install.adoc#docker-install[docker], just update your docker-compose file as below (otherwise, please go to next instruction):
+. If you have installed {product} with xref:installation-guide:how-tos/install.adoc#docker-install[docker], just update your docker-compose file as below (otherwise, please go to next instruction): 
++
 [source, bash]
 ----
 version: "3.8"
@@ -38,7 +39,8 @@ services:
       - --server.ssl.key-password=PASSWORD_USED_IN_STEP_1
 networks:
   ... no need to change anything in the networks section
-----
+---- 
+
 . If you have installed {product} manually, place the certificate file next to your `{product}-application` JAR file
 . Launch your JAR (as explained in the xref:installation-guide:how-tos/install.adoc#start-app[start the application section] with the following extra properties:
 +
