@@ -66,7 +66,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 public class InterconnectionViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
     public static final List<EClass> ANNOTATINGS = List.of(
-            SysmlPackage.eINSTANCE.getDocumentation());
+            SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getDocumentation());
 
     public static final String DESCRIPTION_NAME = "Interconnection View";
 

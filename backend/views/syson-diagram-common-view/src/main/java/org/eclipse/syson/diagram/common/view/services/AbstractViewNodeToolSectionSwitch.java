@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -71,5 +72,12 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
         CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
         compartmentNodeTools.add(provider.create(null));
         return compartmentNodeTools;
+    }
+
+    protected NodeDescription getNodeDescription(EClass eClass) {
+        return this.getAllNodeDescriptions().stream()
+                .filter(nd -> this.descriptionNameGenerator.getNodeName(eClass).equals(nd.getName()))
+                .findFirst()
+                .get();
     }
 }

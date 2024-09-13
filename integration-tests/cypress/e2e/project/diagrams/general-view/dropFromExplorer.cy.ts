@@ -173,6 +173,26 @@ describe('Drop From Explorer Tests', () => {
         diagram.dropOnDiagram(diagramLabel, dataTransfer);
         diagram.getNodes(diagramLabel, 'add doc here').should('exist').should('have.length', 1);
       });
+
+      it('Then when we create a Comment inside the Part and we drop the Comment on the diagram, the Comment is visible on the diagram', () => {
+        explorer.createObject('part', 'SysMLv2EditService-Comment');
+        explorer
+          .getTreeItemByLabel('Comment')
+          .should('exist')
+          .parents('ul')
+          .first()
+          .siblings()
+          .contains('part')
+          .should('exist');
+
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('part', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
+        explorer.dragTreeItem('Comment', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'add comment here').should('exist').should('have.length', 1);
+      });
     });
   });
 });

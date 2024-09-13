@@ -90,7 +90,8 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
 
     @Override
     public List<NodeToolSection> caseAcceptActionUsage(AcceptActionUsage object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(
+        var createSection = this.toolDescriptionService.buildCreateSection(this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
+                SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null),
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getItemDefinition()),
                 this.createPayloadNodeTool(SysmlPackage.eINSTANCE.getPartDefinition()),
                 this.createPortUsageAsReceiverNodeTool());
@@ -103,7 +104,9 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
 
     @Override
     public List<NodeToolSection> caseActionUsage(ActionUsage object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(new StartActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
+        var createSection = this.toolDescriptionService.buildCreateSection(this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
+                SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null),
+                new StartActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new DoneActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new JoinActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
                 new ForkActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionUsage(), this.descriptionNameGenerator).create(this.cache),
@@ -124,7 +127,8 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
 
     @Override
     public List<NodeToolSection> caseActionDefinition(ActionDefinition object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(
+        var createSection = this.toolDescriptionService.buildCreateSection(this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
+                SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null),
                 new StartActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
                 new DoneActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
                 new JoinActionNodeToolProvider(SysmlPackage.eINSTANCE.getActionDefinition(), this.descriptionNameGenerator).create(this.cache),
@@ -143,12 +147,14 @@ public class ActionFlowViewNodeToolSectionSwitch extends AbstractViewNodeToolSec
 
     @Override
     public List<NodeToolSection> caseAssignmentActionUsage(AssignmentActionUsage object) {
+        var createSection = this.toolDescriptionService.buildCreateSection(this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
+                SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new SetAsCompositeToolProvider().create(this.cache),
                 new SetAsRefToolProvider().create(this.cache));
         // Define here the set of node tools that should be added to the Assignment action palette,
         // such as "Set assigned element" and "Set value".
-        return List.of(editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
+        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
     @Override

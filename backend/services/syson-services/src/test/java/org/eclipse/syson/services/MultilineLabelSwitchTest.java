@@ -20,9 +20,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
+import org.eclipse.syson.sysml.AnnotatingElement;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.Definition;
-import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -61,6 +61,8 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
     private static final String DEFAULT_ATTRIBUTE_USAGE_LABEL = LabelConstants.OPEN_QUOTE + "attribute" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
     private static final String DEFAULT_ASSIGNMENT_ACTION_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "assign" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
+
+    private static final String DEFAULT_COMMENT_LABEL = LabelConstants.OPEN_QUOTE + "comment" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
     private static final String DEFAULT_CONSTRAINT_DEFINITION_LABEL = LabelConstants.OPEN_QUOTE + "constraint def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
@@ -126,6 +128,7 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
                 Arguments.of(SYSML.getAttributeDefinition(), DEFAULT_ATTRIBUTE_DEFINITION_LABEL),
                 Arguments.of(SYSML.getAttributeUsage(), DEFAULT_ATTRIBUTE_USAGE_LABEL),
                 Arguments.of(SYSML.getAssignmentActionUsage(), DEFAULT_ASSIGNMENT_ACTION_USAGE_LABEL),
+                Arguments.of(SYSML.getComment(), DEFAULT_COMMENT_LABEL),
                 Arguments.of(SYSML.getConstraintDefinition(), DEFAULT_CONSTRAINT_DEFINITION_LABEL),
                 Arguments.of(SYSML.getConstraintUsage(), DEFAULT_CONSTRAINT_USAGE_LABEL),
                 Arguments.of(SYSML.getDocumentation(), DEFAULT_DOCUMENTATION_LABEL),
@@ -207,7 +210,7 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
         if (newElement instanceof Element elt) {
             String declaredName = "myElt";
             elt.setDeclaredName(declaredName);
-            if (newElement instanceof AcceptActionUsage || newElement instanceof Documentation) {
+            if (newElement instanceof AcceptActionUsage || newElement instanceof AnnotatingElement) {
                 assertEquals(defaultLabel + declaredName + LabelConstants.CR,
                         this.multiLineLabelSwitch.doSwitch(newElement));
             } else if (elt instanceof AssignmentActionUsage) {

@@ -26,9 +26,9 @@ import org.eclipse.syson.services.grammars.DirectEditLexer;
 import org.eclipse.syson.services.grammars.DirectEditListener;
 import org.eclipse.syson.services.grammars.DirectEditParser;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
-import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.Feature;
@@ -226,14 +226,14 @@ public class LabelService {
     }
 
     /**
-     * Get the value to display when a direct edit has been called on the given {@link Documentation}.
+     * Get the value to display when a direct edit has been called on the given {@link Comment}.
      *
-     * @param usage
-     *            the given {@link Documentation}.
+     * @param comment
+     *            the given {@link Comment}.
      * @return the value to display.
      */
-    public String getDefaultInitialDirectEditLabel(Documentation documentation) {
-        return documentation.getBody();
+    public String getDefaultInitialDirectEditLabel(Comment comment) {
+        return comment.getBody();
     }
 
     /**

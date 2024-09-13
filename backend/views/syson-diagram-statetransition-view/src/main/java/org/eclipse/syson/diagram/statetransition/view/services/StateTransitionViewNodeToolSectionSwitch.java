@@ -98,6 +98,8 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
     @Override
     public List<NodeToolSection> caseStateDefinition(StateDefinition object) {
         var createSection = this.toolDescriptionService.buildCreateSection(
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()), SysmlPackage.eINSTANCE.getComment(),
+                        SysmlPackage.eINSTANCE.getOwningMembership(), null),
                 new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache),
                 new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache),
                 new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache),
@@ -113,6 +115,8 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
     @Override
     public List<NodeToolSection> caseStateUsage(StateUsage object) {
         var createSection = this.toolDescriptionService.buildCreateSection(
+                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()), SysmlPackage.eINSTANCE.getComment(),
+                        SysmlPackage.eINSTANCE.getOwningMembership(), null),
                 new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache),
                 new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache),
                 new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache),
@@ -130,7 +134,8 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
 
     @Override
     public List<NodeToolSection> caseUsage(Usage object) {
-        var createSection = this.toolDescriptionService.buildCreateSection();
+        var createSection = this.toolDescriptionService.buildCreateSection(this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
+                SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new SetAsCompositeToolProvider().create(this.cache),

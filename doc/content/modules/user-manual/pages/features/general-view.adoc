@@ -98,6 +98,7 @@ The following element in _Usage_ compartments can be displayed in the {gv} diagr
   * Attribute in _Attribute Usage_/_Interface Usage_/_Item Usage_/_Part Usage_/_Port Usage_/_Requirement Usage_,
   * Reference in _Attribute Usage_/_Item Usage_/_Port Usage_,
   * Constraint in _Constraint Usage_,
+  * Documentation in all _Usage_ elements,
   * Port in _Interface Usage_/_Part Usage_,
   * Occurrence in _Occurrence Usage_,
   * Assumed Constraint in _Requirement Usage_,
@@ -112,9 +113,17 @@ image::gv-part-compartment-node.png[{gv} Part Compartment Node]
 === _Package_ element
 
 _Package_ element can be represented on {gv} diagram.
-Its represented by a folder and its label has the keyword `package`.
+It is represented by a folder and its label has the keyword `package`.
 
 image::gv-package-node.png[{gv} Package Node]
+
+=== _Annotating_ element
+
+_Annotating_ elements such as _Documentation_ and _Comment_ elements can be represented on {gv} diagram.
+It is represented by a note node and its label contains the body of the _Annotating_ element in addition to its declared name.
+The label of _Documentation_ node also includes the keyword `doc` whereas the label of _Comment_ node includes the keyword `comment`.
+
+image::gv-annotating-node.png[{gv} Documentation Node]
 
 === Relationship
 

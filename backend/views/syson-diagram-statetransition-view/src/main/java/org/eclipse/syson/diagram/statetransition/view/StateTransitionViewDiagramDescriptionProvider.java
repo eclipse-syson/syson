@@ -64,7 +64,7 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public class StateTransitionViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
-    public static final List<EClass> ANNOTATINGS = List.of(SysmlPackage.eINSTANCE.getDocumentation());
+    public static final List<EClass> ANNOTATINGS = List.of(SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getDocumentation());
 
     public static final String DESCRIPTION_NAME = "State Transition View";
 
@@ -80,23 +80,19 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())),
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
-            Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
+            Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState()))
             );
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_MERGED_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction(), SysmlPackage.eINSTANCE.getStateDefinition_DoAction(), SysmlPackage.eINSTANCE.getStateDefinition_ExitAction())),
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction())),
-            Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
+            Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),    List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
             );
 
-    public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
-            new ToolSectionDescription("State Transition", List.of(
-                    SysmlPackage.eINSTANCE.getExhibitStateUsage(),
-                    SysmlPackage.eINSTANCE.getStateDefinition(),
-                    SysmlPackage.eINSTANCE.getStateUsage(),
-                    SysmlPackage.eINSTANCE.getPackage()
-                    ))
-            );
+    public static final ToolSectionDescription STATE_TRANSITION_TOOL_SECTIONS = new ToolSectionDescription("State Transition",
+            List.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getPackage()));
+
+    public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(STATE_TRANSITION_TOOL_SECTIONS);
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 

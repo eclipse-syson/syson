@@ -13,8 +13,10 @@
 package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -64,12 +66,24 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
 
         GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(allNodes::add));
         GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(allNodes::add));
+        GeneralViewDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.nameGenerator.getNodeName(annotating)).ifPresent(allNodes::add));
         cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
         return allNodes;
     }
 
     @Override
     protected List<ToolSectionDescription> getToolSections() {
-        return GeneralViewDiagramDescriptionProvider.TOOL_SECTIONS;
+        List<EClass> structureElementsGV = GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS.elements();
+        List<EClass> structureElementsPackage = new ArrayList<>(structureElementsGV);
+        structureElementsPackage.add(SysmlPackage.eINSTANCE.getComment());
+        return List.of(
+                new ToolSectionDescription(GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS.name(), Collections.unmodifiableList(structureElementsPackage)),
+                GeneralViewDiagramDescriptionProvider.INTERCONNECTION_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.ACTION_FLOW_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.REQUIREMENT_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.ANALYSIS_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.TEMPORAL_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.EXTENSION_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS);
     }
 }
