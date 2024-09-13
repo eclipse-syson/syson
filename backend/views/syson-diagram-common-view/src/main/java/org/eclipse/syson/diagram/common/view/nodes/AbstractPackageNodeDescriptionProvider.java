@@ -212,10 +212,17 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .variableName("newInstance")
                 .children(changeContextNewInstance.build());
 
+        var parentViewExpression = "aql:selectedNode";
+        if (SysmlPackage.eINSTANCE.getComment().equals(eClass)) {
+            // when a comment is Created from a Package Node, the new Comment node should be represented outside of the
+            // Package
+            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext"));
+        }
+
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(nodeDescription)
-                .parentViewExpression("aql:selectedNode")
+                .parentViewExpression(parentViewExpression)
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 

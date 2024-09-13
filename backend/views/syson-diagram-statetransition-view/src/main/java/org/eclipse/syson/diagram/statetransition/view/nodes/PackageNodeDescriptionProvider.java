@@ -13,8 +13,10 @@
 package org.eclipse.syson.diagram.statetransition.view.nodes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -41,6 +43,7 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
 
         StateTransitionViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(reusedChildren::add));
         StateTransitionViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(reusedChildren::add));
+        StateTransitionViewDiagramDescriptionProvider.ANNOTATINGS.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(reusedChildren::add));
         cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(reusedChildren::add);
         return reusedChildren;
     }
@@ -51,6 +54,7 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
 
         StateTransitionViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(droppableNodes::add));
         StateTransitionViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(droppableNodes::add));
+        StateTransitionViewDiagramDescriptionProvider.ANNOTATINGS.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(droppableNodes::add));
         cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(droppableNodes::add);
 
         return droppableNodes;
@@ -62,12 +66,17 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
 
         StateTransitionViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(allNodes::add));
         StateTransitionViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(allNodes::add));
+        StateTransitionViewDiagramDescriptionProvider.ANNOTATINGS.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(allNodes::add));
         cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
         return allNodes;
     }
 
     @Override
     protected List<ToolSectionDescription> getToolSections() {
-        return StateTransitionViewDiagramDescriptionProvider.TOOL_SECTIONS;
+        List<EClass> stateTransitionElementsSV = StateTransitionViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS.elements();
+        List<EClass> stateTransitionElementsPackage = new ArrayList<>(stateTransitionElementsSV);
+        stateTransitionElementsPackage.add(SysmlPackage.eINSTANCE.getComment());
+        return List.of(
+                new ToolSectionDescription(StateTransitionViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS.name(), Collections.unmodifiableList(stateTransitionElementsPackage)));
     }
 }

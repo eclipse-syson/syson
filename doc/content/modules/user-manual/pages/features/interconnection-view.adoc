@@ -31,9 +31,9 @@ image::interconnection-view-part-node.png[{iv} Part]
 
 image::interconnection-view-port-node.png[{iv} Port]
 
-* Documentation.
+* _Annotating_ elements (_Documentation_ and _Comment_).
 
-image::interconnection-view-documentation-node.png[{iv} Port]
+image::interconnection-view-annotating-node.png[{iv} Port]
 
 From compartment of _Usage_ part, four elements can be displayed in the {iv} diagram:
 

@@ -262,6 +262,29 @@ describe('Node Creation Tests', () => {
         diagram.getNodes(diagramLabel, 'body of my doc').should('exist');
         details.getTextField('Body').should('have.value', 'body of my doc');
       });
+
+      it('we can modify body of Comment with direct edit on Comment graphical node', () => {
+        explorer.createObject('part', 'SysMLv2EditService-Comment');
+        explorer
+          .getTreeItemByLabel('Comment')
+          .should('exist')
+          .parents('ul')
+          .first()
+          .siblings()
+          .contains('part')
+          .should('exist');
+
+        const dataTransfer = new DataTransfer();
+        explorer.dragTreeItem('part', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'part').should('exist').should('have.length', 1);
+        explorer.dragTreeItem('Comment', dataTransfer);
+        diagram.dropOnDiagram(diagramLabel, dataTransfer);
+        diagram.getNodes(diagramLabel, 'add comment here').should('exist').should('have.length', 1);
+        cy.getByTestId('Label\\ -\\ «comment»\\a \\a add\\ comment\\ here').type('body of my comment{enter}');
+        diagram.getNodes(diagramLabel, 'body of my comment').should('exist');
+        details.getTextField('Body').should('have.value', 'body of my comment');
+      });
     });
   });
 });

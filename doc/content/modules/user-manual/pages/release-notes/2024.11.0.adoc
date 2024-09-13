@@ -21,4 +21,10 @@ The `Documentation` graphical node is linked to its documented element by an edg
 
 image::release-notes-documentation-note.png[Documentation note node]
 
-- Allow creation of Comment from the Explorer view.
+- Allow creation of `Comment` from the Explorer view.
+- Add `Comment` representation in graphical views. 
+The `Comment` graphical node can appear when user drag and drop `Comment` element from explorer on the diagram but also when user handle creation tool from the palette.
+The `Comment` grphical node is linked to its annotated element by an edge and the node can only appear if the annotated element is represented on the diagram.
+- Display prefix keywords in labels of `Comment` graphical nodes.
+
+image::release-notes-comment-note.png[Comment note node]

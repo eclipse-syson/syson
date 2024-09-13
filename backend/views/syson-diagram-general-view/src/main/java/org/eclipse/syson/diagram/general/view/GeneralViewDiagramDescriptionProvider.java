@@ -138,7 +138,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             );
 
     public static final List<EClass> ANNOTATINGS = List.of(
-            SysmlPackage.eINSTANCE.getDocumentation());
+            SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getComment());
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
@@ -179,53 +179,68 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
             );
 
-    public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
-            new ToolSectionDescription("Structure", List.of(
-                    SysmlPackage.eINSTANCE.getAttributeUsage(),
-                    SysmlPackage.eINSTANCE.getAttributeDefinition(),
-                    SysmlPackage.eINSTANCE.getEnumerationDefinition(),
-                    SysmlPackage.eINSTANCE.getItemUsage(),
-                    SysmlPackage.eINSTANCE.getItemDefinition(),
-                    SysmlPackage.eINSTANCE.getPackage(),
-                    SysmlPackage.eINSTANCE.getPartUsage(),
-                    SysmlPackage.eINSTANCE.getPartDefinition()
-                    )),
-            new ToolSectionDescription("Interconnection", List.of(
-                    SysmlPackage.eINSTANCE.getAllocationUsage(),
-                    SysmlPackage.eINSTANCE.getAllocationDefinition(),
-                    SysmlPackage.eINSTANCE.getInterfaceUsage(),
-                    SysmlPackage.eINSTANCE.getInterfaceDefinition(),
-                    SysmlPackage.eINSTANCE.getPortUsage(),
-                    SysmlPackage.eINSTANCE.getPortDefinition()
-                    )),
-            new ToolSectionDescription("ActionFlow", List.of(
-                    SysmlPackage.eINSTANCE.getAcceptActionUsage(),
-                    SysmlPackage.eINSTANCE.getActionUsage(),
-                    SysmlPackage.eINSTANCE.getActionDefinition(),
-                    SysmlPackage.eINSTANCE.getAssignmentActionUsage()
-                    )),
-            new ToolSectionDescription("Requirement", List.of(
-                    SysmlPackage.eINSTANCE.getConstraintUsage(),
-                    SysmlPackage.eINSTANCE.getConstraintDefinition(),
-                    SysmlPackage.eINSTANCE.getRequirementUsage(),
-                    SysmlPackage.eINSTANCE.getRequirementDefinition()
-                    )),
-            new ToolSectionDescription("Analysis", List.of(
-                    SysmlPackage.eINSTANCE.getUseCaseUsage(),
-                    SysmlPackage.eINSTANCE.getUseCaseDefinition()
-                    )),
-            new ToolSectionDescription("Temporal", List.of(
-                    SysmlPackage.eINSTANCE.getOccurrenceUsage(),
-                    SysmlPackage.eINSTANCE.getOccurrenceDefinition()
-                    )),
-            new ToolSectionDescription("Extension", List.of(
-                    SysmlPackage.eINSTANCE.getMetadataDefinition()
-                    )),
-            new ToolSectionDescription("StateTransition", List.of(
-                    SysmlPackage.eINSTANCE.getExhibitStateUsage(),
-                    SysmlPackage.eINSTANCE.getStateDefinition(),
-                    SysmlPackage.eINSTANCE.getStateUsage())
+    public static final ToolSectionDescription STRUCTURE_TOOL_SECTIONS = new ToolSectionDescription("Structure", List.of(
+            SysmlPackage.eINSTANCE.getAttributeUsage(),
+            SysmlPackage.eINSTANCE.getAttributeDefinition(),
+            SysmlPackage.eINSTANCE.getEnumerationDefinition(),
+            SysmlPackage.eINSTANCE.getItemUsage(),
+            SysmlPackage.eINSTANCE.getItemDefinition(),
+            SysmlPackage.eINSTANCE.getPackage(),
+            SysmlPackage.eINSTANCE.getPartUsage(),
+            SysmlPackage.eINSTANCE.getPartDefinition()
             ));
+
+    public static final ToolSectionDescription INTERCONNECTION_TOOL_SECTIONS = new ToolSectionDescription("Interconnection", List.of(
+            SysmlPackage.eINSTANCE.getAllocationUsage(),
+            SysmlPackage.eINSTANCE.getAllocationDefinition(),
+            SysmlPackage.eINSTANCE.getInterfaceUsage(),
+            SysmlPackage.eINSTANCE.getInterfaceDefinition(),
+            SysmlPackage.eINSTANCE.getPortUsage(),
+            SysmlPackage.eINSTANCE.getPortDefinition()
+            ));
+
+    public static final ToolSectionDescription ACTION_FLOW_TOOL_SECTIONS = new ToolSectionDescription("ActionFlow", List.of(
+            SysmlPackage.eINSTANCE.getAcceptActionUsage(),
+            SysmlPackage.eINSTANCE.getActionUsage(),
+            SysmlPackage.eINSTANCE.getActionDefinition(),
+            SysmlPackage.eINSTANCE.getAssignmentActionUsage()
+            ));
+
+    public static final ToolSectionDescription REQUIREMENT_TOOL_SECTIONS =  new ToolSectionDescription("Requirement", List.of(
+            SysmlPackage.eINSTANCE.getConstraintUsage(),
+            SysmlPackage.eINSTANCE.getConstraintDefinition(),
+            SysmlPackage.eINSTANCE.getRequirementUsage(),
+            SysmlPackage.eINSTANCE.getRequirementDefinition()
+            ));
+
+    public static final ToolSectionDescription ANALYSIS_TOOL_SECTIONS = new ToolSectionDescription("Analysis", List.of(
+            SysmlPackage.eINSTANCE.getUseCaseUsage(),
+            SysmlPackage.eINSTANCE.getUseCaseDefinition()
+            ));
+
+    public static final ToolSectionDescription TEMPORAL_TOOL_SECTIONS = new ToolSectionDescription("Temporal", List.of(
+            SysmlPackage.eINSTANCE.getOccurrenceUsage(),
+            SysmlPackage.eINSTANCE.getOccurrenceDefinition()
+            ));
+
+    public static final ToolSectionDescription EXTENSION_TOOL_SECTIONS = new ToolSectionDescription("Extension", List.of(
+            SysmlPackage.eINSTANCE.getMetadataDefinition()
+            ));
+
+    public static final ToolSectionDescription STATE_TRANSITION_TOOL_SECTIONS = new ToolSectionDescription("StateTransition", List.of(
+            SysmlPackage.eINSTANCE.getExhibitStateUsage(),
+            SysmlPackage.eINSTANCE.getStateDefinition(),
+            SysmlPackage.eINSTANCE.getStateUsage()));
+
+    public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
+            STRUCTURE_TOOL_SECTIONS,
+            INTERCONNECTION_TOOL_SECTIONS,
+            ACTION_FLOW_TOOL_SECTIONS,
+            REQUIREMENT_TOOL_SECTIONS,
+            ANALYSIS_TOOL_SECTIONS,
+            TEMPORAL_TOOL_SECTIONS,
+            EXTENSION_TOOL_SECTIONS,
+            STATE_TRANSITION_TOOL_SECTIONS);
 
     /**
      * Following elements have additional creation tools one for each direction (in, out, and inout).

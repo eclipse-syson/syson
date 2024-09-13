@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
-import org.eclipse.syson.sysml.Documentation;
+import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
@@ -30,7 +30,7 @@ public class AttributeToDirectEditSwitch extends SysmlSwitch<Element> {
     }
 
     @Override
-    public Element caseDocumentation(Documentation object) {
+    public Element caseComment(Comment object) {
         object.setBody(this.newValue);
         return object;
     }

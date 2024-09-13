@@ -24,6 +24,7 @@ import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AssignmentActionUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -217,6 +218,29 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
                 .append(this.assignmentActionUsageDetails(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseComment(Comment object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(LabelConstants.OPEN_QUOTE)
+                .append("comment")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR);
+        String declaredName = object.getDeclaredName();
+        if (declaredName != null && !declaredName.isEmpty()) {
+            label
+                    .append(this.caseElement(object))
+                    .append(LabelConstants.CR);
+        }
+        String body = object.getBody();
+        if (body != null) {
+            label
+                    .append(LabelConstants.CR)
+                    .append(object.getBody());
+        }
         return label.toString();
     }
 
