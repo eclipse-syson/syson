@@ -14,18 +14,16 @@ package org.eclipse.syson.sysml.parser;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortDefinition;
-import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,81 +36,64 @@ public class ProxyResolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyResolver.class);
 
-    public void resolveAllProxy(final EObject content) {
-        final List<EReference> allReferences = content.eClass().getEAllReferences().stream().filter(reference -> !reference.isContainment() && !reference.isDerived()).toList();
-        for (final EReference reference : allReferences) {
-            if (reference.isMany()) {
-                final Object referenceList = content.eGet(reference, false);
-                if (referenceList instanceof Collection referenceCollection) {
-                    final Collection<Object> resultCollection = new ArrayList<>();
-                    boolean containProxy = false;
-                    for (final Object target : referenceCollection) {
-                        if (target instanceof InternalEObject eTarget && eTarget.eIsProxy()) {
-                            containProxy = true;
-                            final Element realElement = this.findProxyTarget(content, eTarget);
-                            resultCollection.add(realElement);
-                            LOGGER.debug("Add the reference " + reference.getName() + " of object " + content.toString() + " with the resolved proxy " + eTarget.eProxyURI().fragment() + " to target "
-                                    + realElement);
-                        } else {
-                            resultCollection.add(target);
-                        }
-                    }
-
-                    if (containProxy) {
-                        content.eSet(reference, resultCollection);
+    public boolean resolveProxy(final ProxiedReference proxiedReference) {
+        EObject realElement = this.findProxyTarget(proxiedReference.owner(), proxiedReference.targetProxy());
+        if (realElement == null) {
+            return false;
+        }
+        if (proxiedReference.reference().isMany()) {
+            final Object referenceList = proxiedReference.owner().eGet(proxiedReference.reference(), false);
+            if (referenceList instanceof Collection referenceCollection) {
+                final Collection<Object> resultCollection = new ArrayList<>();
+                for (final Object target : referenceCollection) {
+                    if (target.equals(proxiedReference.targetProxy())) {
+                        resultCollection.add(realElement);
+                        LOGGER.debug("Add the reference {} of object {} with the resolved proxy {} to target {}", proxiedReference.reference().getName(), proxiedReference.owner().toString(), proxiedReference.targetProxy().eProxyURI().fragment(), realElement);
+                    } else {
+                        resultCollection.add(target);
                     }
                 }
+                proxiedReference.owner().eSet(proxiedReference.reference(), resultCollection);
+            }
+        } else {
+            // Manage specific case of conjugated port
+            if (proxiedReference.owner() instanceof ConjugatedPortTyping && realElement instanceof PortDefinition elementPortDefinition) {
+                realElement = elementPortDefinition.getConjugatedPortDefinition();
+            }
+            proxiedReference.owner().eSet(proxiedReference.reference(), realElement);
+            if (realElement != null) {
+                LOGGER.debug("Set the reference {} of object {} with the resolved proxy {} to target {}", proxiedReference.reference().getName(), proxiedReference.owner(), proxiedReference.targetProxy().eProxyURI().fragment(), realElement);
             } else {
-                final Object target = content.eGet(reference, false);
-
-                if (target instanceof InternalEObject eTarget) {
-                    if (eTarget.eIsProxy()) {
-                        Element realElement = this.findProxyTarget(content, eTarget);
-                        // Manage specific case of conjugated port
-                        if (content instanceof ConjugatedPortTyping && realElement instanceof PortDefinition elementPortDefinition) {
-                            realElement = elementPortDefinition.getConjugatedPortDefinition();
-                        }
-                        content.eSet(reference, realElement);
-                        if (realElement != null) {
-                            LOGGER.debug("Set the reference " + reference.getName() + " of object " + content.toString() + " with the resolved proxy " + eTarget.eProxyURI().fragment() + " to target "
-                                    + realElement);
-                        } else {
-                            LOGGER.debug("Unable to set the reference " + reference.getName() + " of object " + content.toString() + " because of the unresolved proxy "
-                                    + eTarget.eProxyURI().fragment() + " to target "
-                                    + realElement);
-                        }
-                    }
-                }
+                LOGGER.debug("Unable to set the reference {} of object {} because of the unresolved proxy {}.", proxiedReference.reference().getName(), proxiedReference.owner(), proxiedReference.targetProxy().eProxyURI().fragment());
             }
         }
+        return true;
     }
 
-    private Element findProxyTarget(final EObject owner, final InternalEObject proxyObject) {
+    private EObject findProxyTarget(final EObject owner, final InternalEObject proxyObject) {
         final URI uri = proxyObject.eProxyURI();
         final String qualifiedName = uri.fragment();
 
-        final DeresolvingNamespaceProvider deresolvingNamespaceProvider = new DeresolvingNamespaceProvider();
-
         Namespace owningNamespace = null;
-
         if (owner instanceof Element ownerElement) {
-            owningNamespace = deresolvingNamespaceProvider.getDeresolvingNamespace(ownerElement);
+            owningNamespace = ownerElement.getOwningNamespace();
         }
 
         if (owningNamespace == null && owner.eContainer() instanceof Namespace containerNamespace) {
             owningNamespace = containerNamespace;
         }
 
-        Element target = null;
-
+        EObject target = null;
         if (owningNamespace == null) {
-            LOGGER.error("Unable to find owning Namespace of " + owner);
+            LOGGER.error("Unable to find owning Namespace of {}", owner);
         } else {
             final Membership membership = owningNamespace.resolve(qualifiedName);
-            if (membership == null) {
-                LOGGER.error("Unable to find object with qualifiedName " + qualifiedName + " in namespace " + owningNamespace.getQualifiedName());
-            } else {
-                target = membership.getMemberElement();
+            if (membership != null) {
+                if (SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(proxyObject.eClass())) {
+                    target = membership;
+                } else {
+                    target = membership.getMemberElement();
+                }
             }
         }
 

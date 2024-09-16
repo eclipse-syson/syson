@@ -11,6 +11,10 @@
 * Rename `UseCaseUsageActorsCompartmentNodeDescriptionProvider` to `CaseUsageActorsCompartmentNodeDescriptionProvider`
 * Rename `UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider` to `CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider`
 * Rename `UseCaseUsageSubjectCompartmentNodeDescriptionProvider` to `CaseUsageSubjectCompartmentNodeDescriptionProvider`
+- Handle of aliases and external references have been improved for textual import, the following methods have been deleted:
+* Deleted `AstTreeParser#resolveAllImport`
+* Deleted `AstTreeParser#resolveAllReference`
+* Deleted `ProxyResolver#resolveAllProxy`
 
 == Dependencies update
 
@@ -20,6 +24,7 @@
 
 - Add CaseUsage and CaseDefinition representations in the General View diagram.
 - Update Batmobile template.
+- Handle of aliases and external references have been improved for textual import.
 
 == New features
 

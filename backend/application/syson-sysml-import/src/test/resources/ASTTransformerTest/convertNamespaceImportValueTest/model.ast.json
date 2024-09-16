@@ -24,7 +24,7 @@
                   "$type": "Subclassification",
                   "targetRef": {
                     "$type": "ClassifierReference",
-                    "text": "Part1",
+                    "text": "part1",
                     "reference": "package1::part1"
                   }
                 }

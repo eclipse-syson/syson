@@ -26,6 +26,7 @@
                                             {
                                                 "$type": "FeatureTyping",
                                                 "targetRef": {
+                                                    "text": "attributeDefinition",
                                                     "$type": "TypeReference",
                                                     "reference": "package::attributeDefinition"
                                                 }

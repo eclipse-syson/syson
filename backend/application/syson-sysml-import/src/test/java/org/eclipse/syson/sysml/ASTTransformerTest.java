@@ -219,6 +219,49 @@ public class ASTTransformerTest {
         assertEquals(typedRedefinedAttributeUsage, redefinition.getRedefiningFeature());
     }
 
+
+    @DisplayName("Test Visibility")
+    @Test
+    void convertVisibilityTest() {
+        ASTTransformer transformer = new ASTTransformer();
+
+        Resource testResource = null;
+        try {
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertVisibilityTest/model.ast.json").readAllBytes());
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
+        } catch (IOException e) {
+            fail(e);
+        }
+
+        assertNotNull(testResource);
+
+        Namespace namespace = (Namespace) testResource.getContents().get(0);
+        Package packageObject = (Package) namespace.getMember().get(0);
+        assertEquals(3, packageObject.getMember().size());
+
+        assertInstanceOf(ItemDefinition.class, packageObject.getMember().get(1));
+        ItemDefinition alphonse = (ItemDefinition) packageObject.getMember().get(1);
+        assertEquals("A", alphonse.getName());
+        assertEquals(VisibilityKind.PUBLIC, packageObject.getMembership().get(1).getVisibility());
+
+        assertInstanceOf(ItemDefinition.class, packageObject.getMember().get(2));
+        ItemDefinition charlie = (ItemDefinition) packageObject.getMember().get(2);
+        assertEquals("C", charlie.getName());
+        assertEquals(VisibilityKind.PRIVATE, packageObject.getMembership().get(2).getVisibility());
+
+        assertEquals(1, alphonse.getMember().size());
+        assertInstanceOf(PartUsage.class, alphonse.getMember().get(0));
+        PartUsage delta = (PartUsage) alphonse.getMember().get(0);
+        assertEquals("c", delta.getName());
+
+        assertEquals(1, delta.getOwnedRelationship().size());
+        assertInstanceOf(FeatureTyping.class, delta.getOwnedRelationship().get(0));
+        FeatureTyping deltaFeatureTyping = (FeatureTyping) delta.getOwnedRelationship().get(0);
+        assertNotNull(deltaFeatureTyping.getGeneral());
+        assertNotNull(deltaFeatureTyping.getSpecific());
+
+    }
+
     @DisplayName("Test NamespaceImport")
     @Test
     void convertNamespaceImportTest() {
@@ -332,6 +375,49 @@ public class ASTTransformerTest {
         assertEquals(part1Definition, part2Definition.getOwnedSubclassification().get(0).getSuperclassifier());
         assertEquals(part2Definition, part2Definition.getOwnedSubclassification().get(0).getSubclassifier());
 
+    }
+
+    @DisplayName("Test Inheritance")
+    @Test
+    void convertInheritanceTest() {
+        ASTTransformer transformer = new ASTTransformer();
+
+        Resource testResource = null;
+        try {
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertInheritanceTest/inheritance.ast.json").readAllBytes());
+            testResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
+        } catch (IOException e) {
+            fail(e);
+        }
+        assertNotNull(testResource);
+        assertEquals(1, testResource.getContents().size());
+
+        Namespace namespace = (Namespace) testResource.getContents().get(0);
+        assertEquals(1, namespace.getMember().size());
+        Package packageObject = (Package) namespace.getMember().get(0);
+        assertEquals(2, packageObject.getMember().size());
+
+        PartDefinition definition = (PartDefinition) packageObject.getMember().get(0);
+        assertEquals("Def", definition.getName());
+        assertEquals(2, packageObject.getMember().size());
+        Element elementA = definition.getOwnedElement().get(0);
+        assertInstanceOf(PartUsage.class, elementA);
+        PartUsage partUsageA = (PartUsage) elementA;
+        assertEquals("a", partUsageA.getName());
+
+        Element elementP = packageObject.getMember().get(1);
+        assertInstanceOf(PartUsage.class, elementP);
+        PartUsage partUsageP =  (PartUsage) elementP;
+        assertEquals("p", partUsageP.getName());
+        assertEquals(1, partUsageP.getType().size());
+
+        assertEquals(1, partUsageP.getOwnedElement().size());
+        Element elementB = partUsageP.getOwnedElement().get(0);
+        assertInstanceOf(ReferenceUsage.class, elementB);
+        ReferenceUsage referenceUsageB = (ReferenceUsage) elementB;
+        assertEquals("b", referenceUsageB.getName());
+        assertEquals(partUsageA, referenceUsageB.getOwningNamespace().resolve("a").getMemberElement());
+        assertEquals(partUsageA, referenceUsageB.getOwnedRedefinition().get(0).getRedefinedFeature());
     }
 
     @DisplayName("Test Alias")

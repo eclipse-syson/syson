@@ -27,6 +27,7 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Featuring;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.MembershipImport;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.Redefinition;
@@ -52,9 +53,9 @@ public class AstWeakReferenceParser {
         final Map<String, List<JsonNode>> notOwnedJson = this.getNotOwnedJsonNode(astJson);
         notOwnedJson.forEach((referenceType, referenceList) -> {
             referenceList.forEach(referenceAST -> {
-                String qualifiedNameTarget = referenceAST.get(AstConstant.REFERENCE_CONST).asText();
+                String qualifiedNameTarget = referenceAST.get(AstConstant.TEXT_CONST).asText();
                 if (qualifiedNameTarget == null || qualifiedNameTarget.isBlank() || qualifiedNameTarget.equals("null")) {
-                    qualifiedNameTarget = referenceAST.get(AstConstant.TEXT_CONST).asText();
+                    qualifiedNameTarget = referenceAST.get(AstConstant.REFERENCE_CONST).asText();
                 }
                 final EObject reference = this.astObjectParser.createObject(referenceAST);
                 if (reference instanceof InternalEObject internalTarget) {
@@ -97,6 +98,9 @@ public class AstWeakReferenceParser {
                 }
                 if (reference instanceof Element referenceAsElement && owner instanceof Relationship ownerRelationship) {
                     ownerRelationship.getTarget().add(referenceAsElement);
+                }
+                if (reference instanceof Membership referenceAsMembership && owner instanceof MembershipImport ownerMembershipImport) {
+                    ownerMembershipImport.setImportedMembership(referenceAsMembership);
                 }
                 break;
             default:

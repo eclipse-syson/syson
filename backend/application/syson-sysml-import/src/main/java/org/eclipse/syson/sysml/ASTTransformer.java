@@ -27,6 +27,7 @@ import org.eclipse.syson.sysml.parser.AstContainmentReferenceParser;
 import org.eclipse.syson.sysml.parser.AstObjectParser;
 import org.eclipse.syson.sysml.parser.AstTreeParser;
 import org.eclipse.syson.sysml.parser.AstWeakReferenceParser;
+import org.eclipse.syson.sysml.parser.ProxiedReference;
 import org.eclipse.syson.sysml.parser.ProxyResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +44,10 @@ public class ASTTransformer {
     private final AstTreeParser astTreeParser;
 
     public ASTTransformer() {
-        final ProxyResolver proxyResolver = new ProxyResolver();
-        final AstObjectParser astObjectParser = new AstObjectParser();
-        final AstContainmentReferenceParser astContainmentReferenceParser = new AstContainmentReferenceParser();
-        final AstWeakReferenceParser astWeakReferenceParser = new AstWeakReferenceParser(astObjectParser);
+        var proxyResolver = new ProxyResolver();
+        var astObjectParser = new AstObjectParser();
+        var astContainmentReferenceParser = new AstContainmentReferenceParser();
+        var astWeakReferenceParser = new AstWeakReferenceParser(astObjectParser);
         this.astTreeParser = new AstTreeParser(astContainmentReferenceParser, astWeakReferenceParser, proxyResolver, astObjectParser);
         astContainmentReferenceParser.setAstTreeParser(this.astTreeParser);
     }
@@ -58,15 +59,13 @@ public class ASTTransformer {
             if (astJson != null) {
                 this.logger.info("Create the Root eObject containment structure");
                 final List<EObject> rootSysmlObjects = this.astTreeParser.parseAst(astJson);
-                result = new JSONResourceFactory().createResource(new JSONResourceFactory().createResourceURI(null));
+                result = new JSONResourceFactory().createResourceFromPath(null);
                 resourceSet.getResources().add(result);
                 result.getContents().addAll(rootSysmlObjects);
-                this.logger.info("End of create the Root eObject containment structure");
-                this.logger.info("Try to resolve Imports");
-                this.astTreeParser.resolveAllImport(result);
-                this.logger.info("End of import resolving");
-                this.logger.info("Try to resolve all references");
-                this.astTreeParser.resolveAllReference(result);
+                this.logger.info("File Parsed");
+                List<ProxiedReference> proxiedReferences = this.astTreeParser.collectUnresolvedReferences(result);
+                this.logger.info("{} references to resolve.", proxiedReferences.size());
+                this.astTreeParser.resolveAllReference(proxiedReferences);
                 this.logger.info("End of references resolving");
             }
         }
@@ -74,9 +73,9 @@ public class ASTTransformer {
     }
 
     private JsonNode readAst(final InputStream input) {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        // Read JSON file and map to JSON Object
+        var objectMapper = new ObjectMapper();
         try {
+            // Read JSON file and map to JSON Object
             return objectMapper.readTree(input);
         } catch (final IOException e) {
             this.logger.error(e.getMessage());
