@@ -1,0 +1,72 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "declaredName": "InheritanceTest",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartDefinition",
+              "declaredName": "Def",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "PartUsage",
+                    "declaredName": "a"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartUsage",
+              "declaredName": "p",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "ReferenceUsage",
+                    "declaredName": "b",
+                    "heritage": [
+                      {
+                        "$type": "Redefinition",
+                        "targetRef": {
+                          "$type": "FeatureReference",
+                          "text": "a",
+                          "reference": "InheritanceTest::Def::a",
+                          "parts": [
+                            "InheritanceTest::Def::a"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ],
+              "heritage": [
+                {
+                  "$type": "FeatureTyping",
+                  "targetRef": {
+                    "$type": "TypeReference",
+                    "text": "Def",
+                    "reference": "InheritanceTest::Def",
+                    "parts": [
+                      "InheritanceTest::Def"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -12,6 +12,10 @@ The following classes have been renamed to reflect their new usage:
 * Rename `UseCaseUsageActorsCompartmentNodeDescriptionProvider` to `CaseUsageActorsCompartmentNodeDescriptionProvider`
 * Rename `UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider` to `CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider`
 * Rename `UseCaseUsageSubjectCompartmentNodeDescriptionProvider` to `CaseUsageSubjectCompartmentNodeDescriptionProvider`
+- https://github.com/eclipse-syson/syson/issues/717[#717] [import] The following methods have been deleted:
+* Deleted `AstTreeParser#resolveAllImport`
+* Deleted `AstTreeParser#resolveAllReference`
+* Deleted `ProxyResolver#resolveAllProxy`
 
 === Dependency update
 
@@ -21,6 +25,7 @@ The following classes have been renamed to reflect their new usage:
 
 - https://github.com/eclipse-syson/syson/issues/699[#699] [general-view] Add CaseUsage and CaseDefinition in General View diagram.
 - https://github.com/eclipse-syson/syson/issues/746[#746] [syson] Update Batmobile template.
+- https://github.com/eclipse-syson/syson/issues/717[#717] [import] Handle of aliases and external references have been improved.
 
 === New features
 

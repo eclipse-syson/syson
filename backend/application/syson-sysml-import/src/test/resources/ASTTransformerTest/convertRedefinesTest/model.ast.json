@@ -21,6 +21,7 @@
                 {
                   "$type": "Redefinition",
                   "targetRef": {
+                    "text": "packet header",
                     "$type": "FeatureReference",
                     "reference": "Packets::packet header"
                   }

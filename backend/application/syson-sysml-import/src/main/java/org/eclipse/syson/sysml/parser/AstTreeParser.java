@@ -15,12 +15,14 @@ package org.eclipse.syson.sysml.parser;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Import;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,18 +52,14 @@ public class AstTreeParser {
     }
 
     public List<EObject> parseAst(final JsonNode astJson) {
-        List<EObject> rootElements;
         if (!astJson.isEmpty()) {
-            rootElements = this.parseJsonNode(astJson);
-        } else {
-            rootElements = List.of();
+            return this.parseJsonNode(astJson);
         }
-
-        return rootElements;
+        return List.of();
     }
 
     public List<EObject> parseJsonNode(final JsonNode astJson) {
-        List<EObject> result = null;
+        List<EObject> result;
         if (astJson == null) {
             result = List.of();
         } else if (astJson.isArray()) {
@@ -74,8 +72,8 @@ public class AstTreeParser {
 
     public List<EObject> parseJsonArray(final JsonNode astJson) {
         final List<EObject> result = new ArrayList<>();
-        astJson.forEach(t -> {
-            result.addAll(this.parseJsonNode(t));
+        astJson.forEach(jsonNode -> {
+            result.addAll(this.parseJsonNode(jsonNode));
         });
         return result;
     }
@@ -97,36 +95,50 @@ public class AstTreeParser {
         return result;
     }
 
-    public void resolveAllImport(final Resource rootResource) {
-        rootResource.getContents().forEach(content -> {
-            this.resolveAllImport(content);
+    public List<ProxiedReference> collectUnresolvedReferences(final Resource rootResource) {
+        List<ProxiedReference> unresolvedReferences =  new ArrayList<>();
+        rootResource.getAllContents().forEachRemaining(eObject -> {
+            final List<EReference> allReferences = eObject.eClass().getEAllReferences().stream()
+                    .filter(reference -> !reference.isContainment() && !reference.isDerived())
+                    .toList();
+
+            for (EReference reference : allReferences) {
+                if (reference.isMany()) {
+                    final Object referenceList = eObject.eGet(reference, false);
+                    if (referenceList instanceof Collection referenceCollection) {
+                        for (final Object target : referenceCollection) {
+                            if (target instanceof InternalEObject eTarget && eTarget.eIsProxy()) {
+                                unresolvedReferences.add(new ProxiedReference(eObject, reference, eTarget));
+                            }
+                        }
+                    }
+                } else {
+                    final Object target = eObject.eGet(reference, false);
+                    if (target instanceof InternalEObject eTarget && eTarget.eIsProxy()) {
+                        unresolvedReferences.add(new ProxiedReference(eObject, reference, eTarget));
+                    }
+                }
+            }
         });
+        return unresolvedReferences;
     }
 
-    public void resolveAllImport(final EObject parent) {
-
-        if (parent instanceof Import parentImport) {
-            LOGGER.debug("Resolve Import " + parentImport);
-            this.proxyResolver.resolveAllProxy(parent);
+    public void resolveAllReference(List<ProxiedReference> unresolvedReferences) {
+        List<ProxiedReference> unresolvedReferencesTmp = new ArrayList<>(unresolvedReferences);
+        // There can be at first unsolvable references or aliases because they depend on another yet unresolved element.
+        // Iterating over every unresolved reference until every single one is solved or no new resolution is possible.
+        while (!unresolvedReferencesTmp.isEmpty()) {
+            List<ProxiedReference> proxiedReferences = unresolvedReferencesTmp.stream()
+                    .filter(proxiedReference -> !this.proxyResolver.resolveProxy(proxiedReference))
+                    .toList();
+            if (proxiedReferences.equals(unresolvedReferencesTmp)) {
+                proxiedReferences.forEach(proxiedReference -> {
+                    LOGGER.error("Unable to find object with qualifiedName {} in namespace.", proxiedReference.targetProxy().eProxyURI().fragment());
+                });
+                break;
+            } else {
+                unresolvedReferencesTmp = proxiedReferences;
+            }
         }
-
-        parent.eContents().forEach(content -> {
-            this.resolveAllImport(content);
-        });
     }
-
-    public void resolveAllReference(final Resource rootResource) {
-        rootResource.getContents().forEach(content -> {
-            this.resolveAllReference(content);
-        });
-    }
-
-    public void resolveAllReference(final EObject parent) {
-        this.proxyResolver.resolveAllProxy(parent);
-
-        parent.eContents().forEach(content -> {
-            this.resolveAllReference(content);
-        });
-    }
-
 }
