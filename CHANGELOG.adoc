@@ -24,10 +24,11 @@ The following classes have been renamed to reflect their new usage:
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/694[#694] [diagrams] Add a new custom node note among possible node style descriptions.
-- https://github.com/eclipse-syson/syson/issues/695[#695] [diagrams] Add Documentation element as graphical node in all diagrams
-- https://github.com/eclipse-syson/syson/issues/731[#731] [explorer] Allow creation of Comment from the Explorer view
-- https://github.com/eclipse-syson/syson/issues/696[#696] [diagrams] Add Comment element as graphical node in all diagrams
+- https://github.com/eclipse-syson/syson/issues/695[#695] [diagrams] Add Documentation element as graphical node in all diagrams.
+- https://github.com/eclipse-syson/syson/issues/731[#731] [explorer] Allow creation of Comment from the Explorer view.
+- https://github.com/eclipse-syson/syson/issues/696[#696] [diagrams] Add Comment element as graphical node in all diagrams.
 - https://github.com/eclipse-syson/syson/issues/697[#697] [details] Add Comment property to Core tab of the Details view.
+- https://github.com/eclipse-syson/syson/issues/740[#740] [export] Fix missing declaredName after exporting an annotating element.
 
 
 == v2024.9.0

@@ -1630,7 +1630,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         Appender builder = this.newAppender();
         EList<Element> annotatedElements = comment.getAnnotatedElement();
         boolean selfNamespaceDescribingComment = this.isSelfNamespaceDescribingComment(comment);
-        if (isNullOrEmpty(comment.getLocale()) && selfNamespaceDescribingComment) {
+        if (isNullOrEmpty(comment.getLocale()) && selfNamespaceDescribingComment && comment.getDeclaredName() == null) {
             builder.append(this.getCommentBody(comment.getBody()));
         } else {
             builder.append("comment");
@@ -1656,6 +1656,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         Appender builder = this.newAppender();
 
         builder.appendSpaceIfNeeded().append("doc");
+        this.appendNameWithShortName(builder, doc);
         boolean selfNamespaceDescribingComment = this.isSelfNamespaceDescribingComment(doc);
         if (isNullOrEmpty(doc.getLocale()) && selfNamespaceDescribingComment) {
             builder.appendWithSpaceIfNeeded(this.getCommentBody(doc.getBody()));

@@ -42,3 +42,4 @@ image::release-notes-comment-note.png[Comment note node]
 - Add `Comment` property to Core tab of the Details view, allowing to add/edit a `Comment` for the selected element.
 This property widget will only handle the first `Comment` associated to the selected element.
 If no `Comment` is associated to the selected element, then a new value in this widget will also create a `Comment` element and will associate it to the selected element.
+- Add declaredName attribute in annotating export file result if the annotatingElement contains a declaredName.

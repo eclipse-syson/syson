@@ -119,6 +119,10 @@ public class SysMLElementSerializerTest {
 
     private static final String SUBSETTING2 = "sub2";
 
+    private static final String ANNOTATING1 = "Annotating1";
+
+    private static final String BODY = "A body";
+
     private ModelBuilder builder;
 
     private List<Status> status;
@@ -217,10 +221,10 @@ public class SysMLElementSerializerTest {
 
         this.builder.setType(partUsage, partDef);
 
-        this.builder.createIn(Comment.class, partUsage).setBody("A comment");
+        this.builder.createIn(Comment.class, partUsage).setBody(BODY);
         this.assertTextualFormEquals("""
                 ref part PartUsage1 : 'Part Def1' {
-                    /* A comment */
+                    /* A body */
                 }""", partUsage);
     }
 
@@ -453,7 +457,7 @@ public class SysMLElementSerializerTest {
         Package pack1 = this.fact.createPackage();
         pack1.setDeclaredName(PACKAGE1);
         Comment comment = this.fact.createComment();
-        comment.setBody("A body");
+        comment.setBody(BODY);
         this.addOwnedMembership(pack1, comment);
         this.assertTextualFormEquals("""
                 package Package1 {
@@ -462,14 +466,32 @@ public class SysMLElementSerializerTest {
     }
 
     /**
-     * Comment in Namespace can use a simple serialization format only only if no other information are provided.
+     * Comment in Namespace can use a simple serialization format only if no other declaredName is specified.
+     */
+    @Test
+    public void commentInNamespaceWithDeclaredName() {
+        Package pack1 = this.fact.createPackage();
+        pack1.setDeclaredName(PACKAGE1);
+        Comment comment = this.fact.createComment();
+        comment.setDeclaredName(ANNOTATING1);
+        comment.setBody(BODY);
+        this.addOwnedMembership(pack1, comment);
+        this.assertTextualFormEquals("""
+                package Package1 {
+                    comment Annotating1
+                        /* A body */
+                }""", pack1);
+    }
+
+    /**
+     * Comment in Namespace can use a simple serialization format only if no other information are provided.
      */
     @Test
     public void commentInNamespaceWithLocal() {
         Package pack1 = this.fact.createPackage();
         pack1.setDeclaredName(PACKAGE1);
         Comment comment = this.fact.createComment();
-        comment.setBody("A body");
+        comment.setBody(BODY);
         comment.setLocale("fr_FR");
         this.addOwnedMembership(pack1, comment);
         this.assertTextualFormEquals("""
@@ -489,7 +511,7 @@ public class SysMLElementSerializerTest {
         this.addOwnedMembership(pack1, attr);
 
         Comment comment = this.fact.createComment();
-        comment.setBody("A body");
+        comment.setBody(BODY);
         comment.setDeclaredName("XXX");
         comment.setDeclaredShortName("X");
         comment.setLocale("fr_FR");
@@ -617,7 +639,7 @@ public class SysMLElementSerializerTest {
         partDef.setDeclaredName("PartDef1");
 
         Comment comment = this.fact.createComment();
-        comment.setBody("A body");
+        comment.setBody(BODY);
         this.addOwnedMembership(partDef, comment);
 
         this.assertTextualFormEquals("""
@@ -662,7 +684,7 @@ public class SysMLElementSerializerTest {
         this.addOwnedMembership(greyLiteral, m1u);
         EnumerationUsage redLiteral = this.builder.createInWithName(EnumerationUsage.class, enumDef, "red");
 
-        this.builder.createIn(Comment.class, redLiteral).setBody("A body");
+        this.builder.createIn(Comment.class, redLiteral).setBody(BODY);
 
         this.assertTextualFormEquals("""
                 enum def Colors {
@@ -1163,11 +1185,11 @@ public class SysMLElementSerializerTest {
         RequirementUsage req = this.builder.createWithName(RequirementUsage.class, "requs");
 
         SubjectMembership subject = this.builder.createIn(SubjectMembership.class, req);
-        
+
         ReferenceUsage referenceUsage = this.builder.createWithName(ReferenceUsage.class, "subject_1");
         subject.getOwnedRelatedElement().add(referenceUsage);
         referenceUsage.setDirection(FeatureDirectionKind.IN);
-        
+
 
         PartDefinition partDefinition = this.builder.createWithName(PartDefinition.class, "partD_1");
         this.builder.setType(referenceUsage, partDefinition);
@@ -1496,7 +1518,7 @@ public class SysMLElementSerializerTest {
                 }""", root);
 
     }
-    
+
     @Test
     public void documentation() {
 
@@ -1512,11 +1534,29 @@ public class SysMLElementSerializerTest {
                     doc /* A comment */
                 }""", partUsage);
     }
-     
+
+    @Test
+    public void documentationWithDeclaredName() {
+
+        PartDefinition partDef = this.builder.createWithName(PartDefinition.class, "Part Def1");
+
+        PartUsage partUsage = this.builder.createWithName(PartUsage.class, "PartUsage1");
+
+        this.builder.setType(partUsage, partDef);
+
+        this.builder.createIn(Documentation.class, partUsage).setBody(BODY);
+        partUsage.getDocumentation().get(0).setDeclaredName(ANNOTATING1);
+
+        this.assertTextualFormEquals("""
+                ref part PartUsage1 : 'Part Def1' {
+                    doc Annotating1 /* A body */
+                }""", partUsage);
+    }
+
     @Test
     public void itemUsage() {
-        var model = new ItemTest(builder);
-        
+        var model = new ItemTest(this.builder);
+
         this.assertTextualFormEquals("""
             package ItemTest {
                 item f : A;
