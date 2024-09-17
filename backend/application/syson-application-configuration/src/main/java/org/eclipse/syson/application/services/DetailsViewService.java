@@ -42,7 +42,10 @@ import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.Annotation;
+import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
+import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.Expression;
@@ -487,6 +490,52 @@ public class DetailsViewService {
             return "";
         }
         return documentations.get(0).getBody();
+    }
+
+    public String getCommentBody(Element self) {
+        Comment comment = this.getComment(self);
+        if (comment == null) {
+            return "";
+        }
+        return comment.getBody();
+    }
+
+    private Comment getComment(Element self) {
+        Comment comment = null;
+        EList<Annotation> ownedAnnotations = self.getOwnedAnnotation();
+        if (!ownedAnnotations.isEmpty()) {
+            Optional<Comment> firstComment = ownedAnnotations.stream()
+                    .map(annotation -> annotation.getAnnotatingElement())
+                    .filter(Comment.class::isInstance)
+                    .map(Comment.class::cast)
+                    .filter(c -> !(c instanceof Documentation))
+                    .findFirst();
+            if (firstComment.isPresent()) {
+                comment = firstComment.get();
+            }
+        } else {
+            comment = self.getOwnedElement().stream()
+                    .filter(Comment.class::isInstance)
+                    .map(Comment.class::cast)
+                    .filter(c -> !(c instanceof Documentation))
+                    .findFirst()
+                    .orElse(null);
+        }
+        return comment;
+    }
+
+    public Element setNewCommentValue(Element self, String newValue) {
+        Comment comment = this.getComment(self);
+        if (comment == null) {
+            var newComment = SysmlFactory.eINSTANCE.createComment();
+            newComment.setBody(newValue);
+            var owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
+            self.getOwnedRelationship().add(owningMembership);
+            owningMembership.getOwnedRelatedElement().add(newComment);
+        } else {
+            comment.setBody(newValue);
+        }
+        return self;
     }
 
     public Element setNewDocumentationValue(Element self, String newValue) {
