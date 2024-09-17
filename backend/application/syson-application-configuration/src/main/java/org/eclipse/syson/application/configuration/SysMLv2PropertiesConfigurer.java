@@ -186,6 +186,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         group.setSemanticCandidatesExpression(AQLConstants.AQL_SELF);
 
         group.getChildren().add(this.createCoreWidgets());
+        group.getChildren().add(this.createCommentWidget());
         group.getChildren().add(this.createDocumentationWidget());
 
         return group;
@@ -561,7 +562,24 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         FormElementIf precondition = FormFactory.eINSTANCE.createFormElementIf();
         precondition.getChildren().add(textarea);
         precondition.setName("DocumentationWidget_Precondition");
-        precondition.setPredicateExpression("aql:not(self.oclIsKindOf(sysml::Documentation))");
+        precondition.setPredicateExpression("aql:not(self.oclIsKindOf(sysml::AnnotatingElement))");
+        return precondition;
+    }
+
+    private FormElementDescription createCommentWidget() {
+        TextAreaDescription textarea = FormFactory.eINSTANCE.createTextAreaDescription();
+        textarea.setName("CommentWidget");
+        textarea.setLabelExpression("Comment");
+        textarea.setValueExpression(AQLUtils.getSelfServiceCallExpression("getCommentBody"));
+        textarea.setHelpExpression("Use 'shift + enter' to add new lines");
+        textarea.setIsEnabledExpression("aql:not(self.isReadOnly())");
+        ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
+        setNewValueOperation.setExpression(AQLUtils.getSelfServiceCallExpression("setNewCommentValue", ViewFormDescriptionConverter.NEW_VALUE));
+        textarea.getBody().add(setNewValueOperation);
+        FormElementIf precondition = FormFactory.eINSTANCE.createFormElementIf();
+        precondition.getChildren().add(textarea);
+        precondition.setName("CommentWidget_Precondition");
+        precondition.setPredicateExpression("aql:not(self.oclIsKindOf(sysml::AnnotatingElement))");
         return precondition;
     }
 }
