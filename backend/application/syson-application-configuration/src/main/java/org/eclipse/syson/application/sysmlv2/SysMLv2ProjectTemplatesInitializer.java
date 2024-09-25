@@ -44,6 +44,8 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
 
     private static final String SYSMLV2_DOCUMENT_NAME = "SysMLv2.sysml";
 
+    private static final String BATMOBILE_DOCUMENT_NAME = "Batmobile.sysml";
+
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
     private final IDiagramCreationService diagramCreationService;
@@ -101,8 +103,11 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
         return this.getResourceSet(editingContext)
                 .flatMap(resourceSet -> {
                     Optional<RepresentationMetadata> result = Optional.empty();
-                    var resource = this.defaultSysMLv2ResourceProvider.getBatmobileResource();
+                    var resource = this.defaultSysMLv2ResourceProvider.getEmptyResource(UUID.randomUUID(), BATMOBILE_DOCUMENT_NAME);
                     resourceSet.getResources().add(resource);
+
+                    // Load after adding the resource to the resourceSet, to be sure that references will be resolved.
+                    this.defaultSysMLv2ResourceProvider.loadBatmobileResource(resource);
 
                     var optionalGeneralViewDiagram = this.findDiagramDescription(editingContext, "General View");
                     if (optionalGeneralViewDiagram.isPresent()) {

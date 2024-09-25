@@ -27,5 +27,5 @@ public interface IDefaultSysMLv2ResourceProvider {
 
     Resource getDefaultSysMLv2Resource(UUID resourcePath, String name);
 
-    Resource getBatmobileResource();
+    void loadBatmobileResource(Resource resource);
 }

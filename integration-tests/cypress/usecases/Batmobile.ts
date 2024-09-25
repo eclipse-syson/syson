@@ -37,6 +37,6 @@ export class Batmobile {
   }
 
   public getRootElementLabel(): string {
-    return 'User Model';
+    return 'Batmobile';
   }
 }

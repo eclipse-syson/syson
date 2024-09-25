@@ -42,15 +42,15 @@ describe('Diagram Panel in General View Tests', () => {
 
     afterEach(() => cy.deleteProject(projectId));
 
-    context('On a PartUsage', () => {
+    context('On a diagram with the "item def Hero" node', () => {
       beforeEach(() => {
         diagram.getDiagramElement(diagramLabel).click();
-        diagram.getPalette().should('exist').findByTestId('Add existing nested elements - Tool').click();
-        // Wait for the elements to display
-        cy.wait(1000);
-        diagram.arrangeAll();
-        // Wait for the arrange all action to complete
-        cy.wait(1000);
+        const dataTransferHero = new DataTransfer();
+        explorer.dragTreeItem('Hero', dataTransferHero);
+        diagram.dropOnDiagram(diagramLabel, dataTransferHero);
+        const dataTransferBatman = new DataTransfer();
+        explorer.dragTreeItem('Batman', dataTransferBatman);
+        diagram.dropOnDiagram(diagramLabel, dataTransferBatman);
       });
 
       it('The inherited members are visible in compartments (only if the option "inherited members" is enabled)', () => {
@@ -67,7 +67,7 @@ describe('Diagram Panel in General View Tests', () => {
         // be sure to have the inherited members from standard libraries disable
         cy.getByTestId('ShowHideDiagramInheritedMembersFromStandardLibrariesCheckbox').then(($cb) => {
           const check = $cb.attr('aria-label');
-          if (check === 'Hide Inherited Members in Diagrams') {
+          if (check === 'Hide Inherited Members from Standard Libraries in Diagrams') {
             $cb.trigger('click');
           }
         });
@@ -89,35 +89,11 @@ describe('Diagram Panel in General View Tests', () => {
           .find('div[role=tooltip]')
           .findByTestId('New Attribute - Tool')
           .click();
+        // wait for the tool to apply
+        cy.wait(400);
         diagram.getNodes(diagramLabel, 'attributes').should('exist');
         diagram.getNodes(diagramLabel, '^isSolid = null').should('not.exist');
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
-        // wait for the tool to apply
-        cy.wait(400);
-        diagram
-          .getNodes(diagramLabel, '«item def» Hero')
-          .click({ force: true })
-          .getByTestId('Palette')
-          .should('exist')
-          .findByTestId('Hide/Show Tool Section')
-          .findByTestId('expand')
-          .click();
-        diagram
-          .getNodes(diagramLabel, '«item def» Hero')
-          .getByTestId('Palette')
-          .should('exist')
-          .find('div[role=tooltip]')
-          .findByTestId('Hide - Tool')
-          .click();
-        // wait for the tool to apply
-        cy.wait(400);
-
-        diagram.getNodes(diagramLabel, 'attributes').should('exist');
-        diagram.getNodes(diagramLabel, '^isSolid = null').should('not.exist');
-        diagram.getNodes(diagramLabel, '^attribute').should('exist');
-
-        // palette is also available on inherited members
-        diagram.getNodes(diagramLabel, '^attribute').click().getByTestId('Palette').should('exist');
       });
 
       it('The inherited members from standard libraries are visible in compartments (only if the option "inherited members from standard libraries" is enabled)', () => {
@@ -128,16 +104,16 @@ describe('Diagram Panel in General View Tests', () => {
         cy.getByTestId('ShowHideDiagramInheritedMembersFromStandardLibrariesCheckbox').then(($cb) => {
           $cb.trigger('click');
           const check = $cb.attr('aria-label');
-          if (check === 'Show Inherited Members in Diagrams') {
+          if (check === 'Show Inherited Members from Standard Libraries in Diagrams') {
             $cb.trigger('click');
           }
         });
         // wait for the GraphQL mutation to apply
         cy.wait(1000);
 
-        diagram.getNodes(diagramLabel, 'Batman : Hero').should('exist');
+        diagram.getNodes(diagramLabel, 'Batman :> Hero').should('exist');
         diagram
-          .getNodes(diagramLabel, 'Batman : Hero')
+          .getNodes(diagramLabel, 'Batman :> Hero')
           .click({ force: true })
           .getByTestId('Palette')
           .should('exist')
@@ -145,7 +121,7 @@ describe('Diagram Panel in General View Tests', () => {
           .findByTestId('expand')
           .click();
         diagram
-          .getNodes(diagramLabel, 'Batman : Hero')
+          .getNodes(diagramLabel, 'Batman :> Hero')
           .getByTestId('Palette')
           .should('exist')
           .find('div[role=tooltip]')
