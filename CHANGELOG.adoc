@@ -20,6 +20,7 @@ The following classes have been renamed to reflect their new usage:
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/699[#699] [general-view] Add CaseUsage and CaseDefinition in General View diagram.
+- https://github.com/eclipse-syson/syson/issues/746[#746] [syson] Update Batmobile template.
 
 === New features
 

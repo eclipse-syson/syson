@@ -551,31 +551,33 @@ public class LabelService {
     }
 
     private String getValue(OperatorExpression operatorExpression) {
-        String value = null;
+        StringBuilder value = new StringBuilder();
         if (operatorExpression instanceof FeatureChainExpression featureChainExpression) {
             value = this.getValue(featureChainExpression);
         } else {
-            if (Objects.equals(operatorExpression.getOperator(), LabelConstants.OPEN_BRACKET)) {
-                value = this.getValue(operatorExpression.getArgument().get(0))
-                        + LabelConstants.SPACE
-                        + LabelConstants.OPEN_BRACKET
-                        + this.getValue(operatorExpression.getArgument().get(1))
-                        + LabelConstants.CLOSE_BRACKET;
-            } else if (List.of("<=", ">=", "<", ">", "==").contains(operatorExpression.getOperator())) {
-                value = this.getValue(operatorExpression.getArgument().get(0))
-                        + LabelConstants.SPACE
-                        + operatorExpression.getOperator()
-                        + LabelConstants.SPACE
-                        + this.getValue(operatorExpression.getArgument().get(1));
+            var argument = operatorExpression.getArgument();
+            if (argument.size() > 1 && Objects.equals(operatorExpression.getOperator(), LabelConstants.OPEN_BRACKET)) {
+                value.append(this.getValue(argument.get(0)));
+                value.append(LabelConstants.SPACE);
+                value.append(LabelConstants.OPEN_BRACKET);
+                value.append(this.getValue(operatorExpression.getArgument().get(1)));
+                value.append(LabelConstants.CLOSE_BRACKET);
+            } else if (argument.size() > 1 && List.of("<=", ">=", "<", ">", "==").contains(operatorExpression.getOperator())) {
+                value.append(this.getValue(argument.get(0)));
+                value.append(LabelConstants.SPACE);
+                value.append(operatorExpression.getOperator());
+                value.append(LabelConstants.SPACE);
+                value.append(this.getValue(operatorExpression.getArgument().get(1)));
             }
         }
-        return value;
+        return value.toString();
     }
 
-    private String getValue(FeatureChainExpression featureChainExpression) {
+    private StringBuilder getValue(FeatureChainExpression featureChainExpression) {
         StringBuilder value = new StringBuilder();
-        if (!featureChainExpression.getArgument().isEmpty()) {
-            value.append(this.getValue(featureChainExpression.getArgument().get(0)));
+        var argument = featureChainExpression.getArgument();
+        if (!argument.isEmpty()) {
+            value.append(this.getValue(argument.get(0)));
             value.append(".");
         }
         Feature targetFeature = featureChainExpression.getTargetFeature();
@@ -586,7 +588,7 @@ public class LabelService {
                     .map(Feature::getName)
                     .collect(Collectors.joining(".")));
         }
-        return value.toString();
+        return value;
     }
 
     private String getValue(FeatureReferenceExpression featureReferenceExpression) {

@@ -39,8 +39,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProvider {
 
-    private static final String BATMOBILE_DOCUMENT_NAME = "Batmobile.sysml";
-
     private final List<IMigrationParticipant> migrationParticipants;
 
     private final Logger logger = LoggerFactory.getLogger(SysONDefaultResourceProvider.class);
@@ -80,15 +78,11 @@ public class SysONDefaultResourceProvider implements IDefaultSysMLv2ResourceProv
     }
 
     @Override
-    public Resource getBatmobileResource() {
-        var resource = this.getEmptyResource(UUID.randomUUID(), BATMOBILE_DOCUMENT_NAME);
-
+    public void loadBatmobileResource(Resource resource) {
         try (var inputStream = new ClassPathResource("templates/Batmobile.json").getInputStream()) {
             resource.load(inputStream, null);
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
-
-        return resource;
     }
 }

@@ -103,12 +103,11 @@ public class ViewLabelService extends LabelService {
             if (declaredName != null) {
                 label.append(declaredName);
             }
-            label
-                    .append(this.getMultiplicityLabel(usage))
-                    .append(this.getTypingLabel(usage))
-                    .append(this.getRedefinitionLabel(usage))
-                    .append(this.getSubsettingLabel(usage))
-                    .append(this.getValueLabel(usage));
+            label.append(this.getMultiplicityLabel(usage));
+            label.append(this.getTypingLabel(usage));
+            label.append(this.getRedefinitionLabel(usage));
+            label.append(this.getSubsettingLabel(usage));
+            label.append(this.getValueLabel(usage));
         }
         return label.toString();
     }
