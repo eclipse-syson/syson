@@ -69,7 +69,7 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
     }
 
     @Override
-    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet) {
+    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
         Resource resource = null;
         InputStream astStream = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension());
         ASTTransformer tranformer = new ASTTransformer();
@@ -79,5 +79,4 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
         }
         return Optional.ofNullable(resource);
     }
-
 }

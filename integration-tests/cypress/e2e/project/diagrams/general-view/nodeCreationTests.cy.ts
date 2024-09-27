@@ -44,7 +44,8 @@ describe('Node Creation Tests', () => {
     context('When we create an AttributeUsage using the diagram palette', () => {
       beforeEach(() => {
         diagram.getDiagramElement(diagramLabel).click();
-        diagram.getPaletteToolSection(0).click();
+        diagram.getPalette().should('exist').findByTestId('Structure').findByTestId('expand').click();
+        diagram.getPalette().should('exist').find('div[role=tooltip]').findByTestId('New Attribute - Tool').click();
       });
 
       it('Then the new AttributeUsage is visible on the diagram and its compartments are not visible', () => {
@@ -52,22 +53,21 @@ describe('Node Creation Tests', () => {
         // Check that the compartments of the node aren't visible
         diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
         diagram.getNodes(diagramLabel, 'references').should('not.exist');
-      });
-
-      it('Then the new AttributeUsage has rounded borders', () => {
         diagram.getNodes(diagramLabel, 'attribute').find('div').should('have.css', 'border-radius', '10px');
       });
 
       it('Then we can create a new AttributeUsage inside it', () => {
         diagram.getNodes(diagramLabel, 'attribute').type('AttributeContainer{enter}');
+        cy.wait(400);
         // Make sure the edition is done and the new name is visible
         cy.getByTestId('List - «attribute»\nAttributeContainer').should('exist');
+
         diagram.getNodes(diagramLabel, 'AttributeContainer').click();
         diagram.getPaletteToolSection(0).click();
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
         diagram.getNodes(diagramLabel, 'attributes').should('exist');
         diagram.isNodeInside('List - attributes', 'List - «attribute»\nAttributeContainer');
-        diagram.isNodeInside('IconLabel - attribute', 'List - attributes');
+        diagram.isNodeInside('Label - attribute', 'List - attributes');
         diagram.getNodes(diagramLabel, 'references').should('not.exist');
       });
     });
@@ -87,20 +87,19 @@ describe('Node Creation Tests', () => {
       it('Then the new AttributeDefinition is visible on the diagram and its compartments are not visible', () => {
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
         diagram.getNodes(diagramLabel, 'attributes').should('not.exist');
-      });
-
-      it('Then the new AttributeDefinition has squared borders', () => {
         diagram.getNodes(diagramLabel, 'attribute').find('div').should('have.css', 'border-radius', '0px');
       });
 
       it('Then we can create a new AttributeUsage inside it', () => {
         diagram.getNodes(diagramLabel, 'attribute').type('AttributeContainer{enter}');
+        cy.wait(400);
         // Make sure the edition is done and the new name is visible
         cy.getByTestId('List - «attribute def»\nAttributeContainer').should('exist');
         diagram.getNodes(diagramLabel, 'AttributeContainer').click();
         diagram.getPaletteToolSection(0).click();
-        diagram.getNodes(diagramLabel, 'attribute').should('exist');
+        cy.wait(400);
         diagram.getNodes(diagramLabel, 'attributes').should('exist');
+        diagram.getNodes(diagramLabel, 'attribute').should('exist');
         diagram.isNodeInside('List - attributes', 'List - «attribute def»\nAttributeContainer');
         diagram.isNodeInside('IconLabel - attribute', 'List - attributes');
       });

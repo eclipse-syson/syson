@@ -42,7 +42,7 @@ import {
   SysMLPackageNodeLayoutHandler,
   SysONDiagramPanelMenu,
 } from '@eclipse-syson/syson-components';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { SysONIcon } from './core/SysONIcon';
 import { httpOrigin, wsOrigin } from './core/URL';
@@ -128,13 +128,14 @@ const nodeTypeRegistry: NodeTypeRegistry = {
   ],
 };
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container!);
+root.render(
   <SiriusWebApplication
     httpOrigin={httpOrigin}
     wsOrigin={wsOrigin}
     theme={sysonTheme}
     extensionRegistry={extensionRegistry}>
     <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
-  </SiriusWebApplication>,
-  document.getElementById('root')
+  </SiriusWebApplication>
 );
