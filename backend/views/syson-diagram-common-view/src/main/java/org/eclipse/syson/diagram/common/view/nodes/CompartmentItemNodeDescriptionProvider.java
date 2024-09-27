@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
@@ -86,7 +87,7 @@ public class CompartmentItemNodeDescriptionProvider extends AbstractNodeDescript
     protected InsideLabelStyle createInsideLabelStyle() {
         return this.diagramBuilderHelper.newInsideLabelStyle()
                 .borderSize(0)
-                .displayHeaderSeparator(false)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
                 .showIconExpression(AQLUtils.getSelfServiceCallExpression("showIcon"))
                 .withHeader(false)

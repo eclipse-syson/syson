@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
@@ -37,7 +38,7 @@ import org.eclipse.syson.util.ViewConstants;
 
 /**
  * Used to create the 'state transition' free form compartment that contains nested/owned states.
- * 
+ *
  * @author gdaniel
  */
 public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
@@ -81,7 +82,7 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         List<NodeDescription> droppableNodes = new ArrayList<>();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getStateUsage())).ifPresent(droppableNodes::add);
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);        
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentItemName(this.eClass, this.eReference)).ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 
@@ -99,7 +100,7 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
     protected InsideLabelStyle createInsideLabelStyle() {
         return this.diagramBuilderHelper.newInsideLabelStyle()
                 .borderSize(0)
-                .displayHeaderSeparator(false)
+                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.NEVER)
                 .fontSize(12)
                 .italic(true)
                 .labelColor(this.colorProvider.getColor(ViewConstants.DEFAULT_LABEL_COLOR))
@@ -114,7 +115,7 @@ public class StateTransitionCompartmentNodeDescriptionProvider extends AbstractC
 
         // Do not use getItemCreationToolProvider because the compartment contains multiple creation tools.
         palette.toolSections(this.diagramBuilderHelper.newNodeToolSection()
-                .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, false).create(cache), 
+                .nodeTools(new StateTransitionCompartmentNodeToolProvider(false, false).create(cache),
                         new StateTransitionCompartmentNodeToolProvider(true, false).create(cache),
                         new StateTransitionCompartmentNodeToolProvider(false, true).create(cache),
                         new StateTransitionCompartmentNodeToolProvider(true, true).create(cache)

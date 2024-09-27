@@ -42,7 +42,8 @@ describe('Diagram Panel in General View Tests', () => {
 
     afterEach(() => cy.deleteProject(projectId));
 
-    context('On a diagram with the "item def Hero" node', () => {
+    // D&D does not work anymore with Cypress APIs
+    context.skip('On a diagram with the "item def Hero" node', () => {
       beforeEach(() => {
         diagram.getDiagramElement(diagramLabel).click();
         const dataTransferHero = new DataTransfer();

@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.syson.application.sysmlv2.api.IDefaultSysMLv2ResourceProvider;
 import org.eclipse.syson.sysml.Element;
@@ -68,11 +69,11 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
     }
 
     @Override
-    public Optional<RepresentationMetadata> handle(String templateId, IEditingContext editingContext) {
+    public Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext) {
         Optional<RepresentationMetadata> project = Optional.empty();
-        if (SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID.equals(templateId)) {
+        if (SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID.equals(projectTemplateId)) {
             project = this.initializeSysMLv2Project(editingContext);
-        } else if (SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID.equals(templateId)) {
+        } else if (SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID.equals(projectTemplateId)) {
             project = this.initializeBatmobileProject(editingContext);
         }
         return project;
@@ -91,7 +92,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                         var semanticTarget = this.getRootPackage(resource);
                         if (semanticTarget.isPresent()) {
                             Diagram diagram = this.diagramCreationService.create("General View", semanticTarget.get(), generalViewDiagram, editingContext);
-                            this.representationPersistenceService.save(editingContext, diagram);
+                            this.representationPersistenceService.save(null, editingContext, diagram);
                             result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
                         }
                     }
@@ -115,7 +116,7 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                         var semanticTarget = this.getRootPackage(resource);
                         if (semanticTarget.isPresent()) {
                             Diagram diagram = this.diagramCreationService.create("General View", semanticTarget.get(), generalViewDiagram, editingContext);
-                            this.representationPersistenceService.save(editingContext, diagram);
+                            this.representationPersistenceService.save(null, editingContext, diagram);
                             result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
                         }
                     }
