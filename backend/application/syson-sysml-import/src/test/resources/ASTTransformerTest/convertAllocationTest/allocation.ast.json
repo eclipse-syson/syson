@@ -1,0 +1,50 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AllocationDefinition",
+              "declaredName": "A"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AllocationUsage",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "PartUsage",
+                    "declaredName": "source"
+                  }
+                }
+              ],
+              "heritage": [
+                {
+                  "$type": "FeatureTyping",
+                  "targetRef": {
+                    "$type": "TypeReference",
+                    "text": "A",
+                    "reference": "AllocationTest::A",
+                    "parts": [
+                      "AllocationTest::A"
+                    ]
+                  }
+                }
+              ],
+              "declaredName": "allocation1"
+            }
+          }
+        ],
+        "declaredName": "AllocationTest"
+      }
+    }
+  ]
+}

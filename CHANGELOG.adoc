@@ -20,6 +20,7 @@ The following classes have been renamed to reflect their new usage:
 === Dependency update
 
 === Bug fixes
+- https://github.com/eclipse-syson/syson/issues/744[#744] [import] Fix containment of imported Allocation and AllocationDefinition
 
 === Improvements
 

@@ -652,4 +652,46 @@ public class ASTTransformerTest {
         assertEquals(null, expression);
 
     }
+
+    @DisplayName("Test Allocation Containment")
+    @Test
+    void convertAllocationTest() {
+        ASTTransformer transformer = new ASTTransformer();
+
+        Resource namespaceResource = null;
+        try {
+            String fileContent = new String(this.getClass().getClassLoader().getResourceAsStream("ASTTransformerTest/convertAllocationTest/allocation.ast.json").readAllBytes());
+            namespaceResource = transformer.convertResource(new ByteArrayInputStream(fileContent.getBytes()), new ResourceSetImpl());
+        } catch (IOException e) {
+            fail(e);
+        }
+
+        assertNotNull(namespaceResource);
+
+        Namespace namespace = (Namespace) namespaceResource.getContents().get(0);
+        Package packageAllocation = (Package) namespace.getMember().get(0);
+        assertEquals("AllocationTest", packageAllocation.getName());
+        assertEquals(2, packageAllocation.getMember().size());
+
+        AllocationDefinition allocationDefinition = (AllocationDefinition) packageAllocation.getMember().get(0);
+        assertEquals("A", allocationDefinition.getName());
+        // Ensure that the AllocationDefinition is not treated as a Membership or Specialization
+        assertNull(allocationDefinition.getOwningRelatedElement());
+        assertEquals(packageAllocation, allocationDefinition.getOwningNamespace());
+        assertInstanceOf(OwningMembership.class, allocationDefinition.getOwningMembership());
+
+        AllocationUsage allocationUsage = (AllocationUsage) packageAllocation.getMember().get(1);
+        assertEquals("allocation1", allocationUsage.getName());
+        assertEquals(1, allocationUsage.getOwnedTyping().size());
+        FeatureTyping allocationUsageFeatureTyping = allocationUsage.getOwnedTyping().get(0);
+        // Ensure that the AllocationDefinition has been correctly resolved
+        assertEquals(allocationDefinition, allocationUsageFeatureTyping.getType());
+        assertEquals(packageAllocation, allocationUsage.getOwningNamespace());
+        assertInstanceOf(OwningMembership.class, allocationUsage.getOwningMembership());
+
+        assertEquals(1, allocationUsage.getOwnedFeatureMembership().size());
+        FeatureMembership allocationUsageFeatureMembership = allocationUsage.getOwnedFeatureMembership().get(0);
+        assertInstanceOf(PartUsage.class, allocationUsageFeatureMembership.getMemberElement());
+        assertEquals(allocationUsage, allocationUsageFeatureMembership.getMemberElement().getOwningNamespace());
+    }
 }
