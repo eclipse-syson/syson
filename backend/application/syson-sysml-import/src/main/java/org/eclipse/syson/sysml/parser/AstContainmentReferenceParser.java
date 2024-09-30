@@ -23,6 +23,7 @@ import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.Featuring;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.Redefinition;
@@ -104,7 +105,12 @@ public class AstContainmentReferenceParser {
             ownerConjugatedPortTyping.setConjugatedPortDefinition(ownedPortDefinition.getConjugatedPortDefinition());
         }
 
-        if (owner instanceof Element ownerElement && owned instanceof Relationship ownedRelationship) {
+        if (owner instanceof Element ownerElement && owned instanceof Relationship ownedRelationship
+                && !(owned instanceof Namespace)) {
+            // The owned object is a Relationship and isn't a Namespace (e.g. Membership, Specialization). We have to
+            // set its owning related element and source, and add it to the relationships of its owner. This is not the
+            // case if the element is a Relationship and a Namespace: these elements (e.g. Allocation) are handled as
+            // Element and not as Relationships and these references shouldn't be set here.
             LOGGER.trace("ownerElement");
             ownerElement.getOwnedRelationship().add(ownedRelationship);
             ownedRelationship.setOwningRelatedElement(ownerElement);
