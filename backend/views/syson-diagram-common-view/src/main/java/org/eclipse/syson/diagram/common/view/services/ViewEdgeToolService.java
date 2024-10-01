@@ -309,17 +309,17 @@ public class ViewEdgeToolService {
                 .build();
     }
 
-    public EdgeTool createAddAsNestedPartEdgeTool(List<NodeDescription> targetElementDescriptions) {
+    public EdgeTool createAddAsNestedEdgeTool(NodeDescription targetElementDescription) {
         var builder = this.diagramBuilderHelper.newEdgeTool();
 
         var callService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_SOURCE + ".addAsNestedPart(" + EdgeDescription.SEMANTIC_EDGE_TARGET + ")");
+                .expression(AQLConstants.AQL + EdgeDescription.SEMANTIC_EDGE_TARGET + ".becomeNestedUsage(" + EdgeDescription.SEMANTIC_EDGE_SOURCE + ")");
 
         return builder
-                .name(this.nameGenerator.getCreationToolName("Add Part as nested ", SysmlPackage.eINSTANCE.getPartUsage()))
+                .name(this.nameGenerator.getCreationToolName("Add as nested ", SysMLMetamodelHelper.toEClass(targetElementDescription.getDomainType())))
                 .iconURLsExpression(METAMODEL_ICONS_PATH + SysmlPackage.eINSTANCE.getMembership().getName() + SVG)
                 .body(callService.build())
-                .targetElementDescriptions(targetElementDescriptions.toArray(NodeDescription[]::new))
+                .targetElementDescriptions(targetElementDescription)
                 .build();
     }
 

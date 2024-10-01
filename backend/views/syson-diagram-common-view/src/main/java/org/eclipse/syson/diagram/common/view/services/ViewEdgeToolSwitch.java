@@ -127,6 +127,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
                 || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAllocationDefinition())).toList();
         edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAllocationUsage(), targetNodes));
+        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -139,6 +140,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
                 || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getOccurrenceDefinition())
                 || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeDefinition())).toList();
         edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getAttributeUsage(), targetNodes));
+        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -151,6 +153,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getConstraintUsage(), targetNodes));
+        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -178,6 +181,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getInterfaceUsage(), targetNodes));
+        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -191,6 +195,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getItemUsage(), targetNodes));
+        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -205,8 +210,10 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
     @Override
     public List<EdgeTool> casePartDefinition(PartDefinition object) {
         var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.add(this.edgeToolService.createAddAsNestedPartEdgeTool(
-                this.allNodeDescriptions.stream().filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartUsage())).toList()));
+        var targetNodes = this.allNodeDescriptions.stream()
+                .filter(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPartUsage()))
+                .toList();
+        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         edgeTools.addAll(this.caseDefinition(object));
         return edgeTools;
     }
@@ -220,6 +227,9 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPortUsage()).equals(nodeDesc.getName()));
         targetNodes.removeIf(nodeDesc -> this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getAttributeUsage()).equals(nodeDesc.getName()));
         edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPartUsage(), targetNodes));
+        var addAsNestedTargetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE))
+                .toList();
+        addAsNestedTargetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -230,6 +240,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         var targetNodes = this.allNodeDescriptions.stream().filter(nodeDesc -> nodeDesc.getName().toLowerCase().endsWith(USAGE)
                 || this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPortDefinition())).toList();
         edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getPortUsage(), targetNodes));
+        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         edgeTools.addAll(this.caseUsage(object));
         return edgeTools;
     }
@@ -242,6 +253,7 @@ public class ViewEdgeToolSwitch extends SysmlEClassSwitch<List<EdgeTool>> {
         targetNodes.removeIf(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getPortUsage()));
         targetNodes.removeIf(nodeDesc -> this.edgeToolService.isTheNodeDescriptionFor(nodeDesc, SysmlPackage.eINSTANCE.getAttributeUsage()));
         edgeTools.add(this.edgeToolService.createBecomeNestedElementEdgeTool(SysmlPackage.eINSTANCE.getRequirementUsage(), targetNodes));
+        targetNodes.forEach(targetNode -> edgeTools.add(this.edgeToolService.createAddAsNestedEdgeTool(targetNode)));
         var objectiveTargets = this.allNodeDescriptions.stream()
                 .filter(n -> this.edgeToolService.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseUsage())
                         || this.edgeToolService.isTheNodeDescriptionFor(n, SysmlPackage.eINSTANCE.getUseCaseDefinition()))

@@ -12,31 +12,34 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
+
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
+import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
-import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
+import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
+import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticCheckerFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
-import org.eclipse.syson.services.diagrams.NodeCreationTestsService;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramReference;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
@@ -44,9 +47,7 @@ import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -57,17 +58,13 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifier.Step;
 
 /**
- * Tests the creation of "Extension" sub nodes section in the General View diagram.
+ * Tests the creation of edges in the General View Diagram.
  *
- * @author arichard
+ * @author gdaniel
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class GVSubNodeExtensionCreationTests extends AbstractIntegrationTests {
-
-    private static final String ATTRIBUTES_COMPARTMENT = "attributes";
-
-    private static final String DOC_COMPARTMENT = "doc";
+public class GVEdgeCreationTests extends AbstractIntegrationTests {
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -88,7 +85,7 @@ public class GVSubNodeExtensionCreationTests extends AbstractIntegrationTests {
     private IObjectService objectService;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
+    private EdgeCreationTester edgeCreationTester;
 
     @Autowired
     private SemanticCheckerFactory semanticCheckerFactory;
@@ -104,27 +101,11 @@ public class GVSubNodeExtensionCreationTests extends AbstractIntegrationTests {
 
     private DiagramDescription diagramDescription;
 
-    private NodeCreationTestsService creationTestsService;
-
-    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
-
     private DiagramCheckerService diagramCheckerService;
 
     private SemanticCheckerService semanticCheckerService;
 
-    private static Stream<Arguments> metadataDefinitionSiblingNodeParameters() {
-        return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getItemUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedItem(), 3))
-                .map(TestNameGenerator::namedArguments);
-    }
-
-    private static Stream<Arguments> metadataDefinitionChildNodeParameters() {
-        return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute()),
-                Arguments.of(SysmlPackage.eINSTANCE.getReferenceUsage(), "references", SysmlPackage.eINSTANCE.getDefinition_OwnedReference()),
-                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation()))
-                .map(TestNameGenerator::namedArguments);
-    }
+    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
 
     @BeforeEach
     public void setUp() {
@@ -138,7 +119,6 @@ public class GVSubNodeExtensionCreationTests extends AbstractIntegrationTests {
         this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT,
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
-        this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
         this.semanticCheckerService = new SemanticCheckerService(this.semanticCheckerFactory, this.objectService);
     }
@@ -153,28 +133,40 @@ public class GVSubNodeExtensionCreationTests extends AbstractIntegrationTests {
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @ParameterizedTest
-    @MethodSource("metadataDefinitionSiblingNodeParameters")
-    public void createMetadataDefinitionSiblingNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
-        EClass parentEClass = SysmlPackage.eINSTANCE.getMetadataDefinition();
-        String parentLabel = "MetadataDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount), this.diagram,
-                this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
-    }
+    @Test
+    public void createAddAsNestedEdge() {
+        String creationToolId = this.diagramDescriptionIdProvider.getEdgeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "Add as nested Action");
+        this.verifier.then(() -> this.edgeCreationTester.createEdge(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT,
+                this.diagram,
+                "part",
+                "action",
+                creationToolId));
 
-    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
-    @ParameterizedTest
-    @MethodSource("metadataDefinitionChildNodeParameters")
-    public void createMetadataDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference) {
-        EClass parentEClass = SysmlPackage.eINSTANCE.getMetadataDefinition();
-        String parentLabel = "MetadataDefinition";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.diagramCheckerService.checkDiagram(
-                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
-                this.diagram, this.verifier);
-        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
+            new CheckDiagramElementCount(this.diagramComparator)
+                    // 1 new node has been created in the "actions" compartment of the part.
+                    .hasNewNodeCount(1)
+                    .hasNewEdgeCount(1)
+                    .check(initialDiagram, newDiagram);
+            DiagramNavigator diagramNavigator = new DiagramNavigator(newDiagram);
+            String sourceId = diagramNavigator.nodeWithTargetObjectLabel("part").getNode().getId();
+            // Get the target with its description instead of its label: there are new two elements with the label
+            // "action" on the diagram (one on the diagram itself, and one in the "actions" compartment of the part
+            // element).
+            String targetId = diagramNavigator
+                    .nodeWithNodeDescriptionId(this.diagramDescriptionIdProvider.getNodeDescriptionId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getActionUsage()))).getNode()
+                    .getId();
+            Edge newEdge = newDiagram.getEdges().get(0);
+            assertThat(newEdge).hasSourceId(sourceId);
+            assertThat(newEdge).hasTargetId(targetId);
+            assertThat(newEdge.getStyle()).hasSourceArrow(ArrowStyle.FillDiamond);
+        };
+
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+
+        ISemanticChecker semanticChecker = this.semanticCheckerService.getElementInParentSemanticChecker("part", SysmlPackage.eINSTANCE.getNamespace_OwnedMember(),
+                SysmlPackage.eINSTANCE.getActionUsage());
+
+        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 }

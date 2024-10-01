@@ -27,9 +27,11 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeInCompartment;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
+import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
@@ -110,6 +112,10 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
 
+    private DiagramCheckerService diagramCheckerService;
+
+    private SemanticCheckerService semanticCheckerService;
+
     private static Stream<Arguments> occurrenceUsageChildNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceUsage(), "occurrences", SysmlPackage.eINSTANCE.getUsage_NestedOccurrence()),
@@ -143,8 +149,9 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
         this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT,
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
-        this.creationTestsService = new NodeCreationTestsService(this.diagramComparator, this.semanticCheckerFactory, this.nodeCreationTester, this.objectService,
-                this.descriptionNameGenerator);
+        this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator);
+        this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticCheckerFactory, this.objectService);
     }
 
     @AfterEach
@@ -163,10 +170,10 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getOccurrenceUsage();
         String parentLabel = "occurrence";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.creationTestsService.checkDiagram(
-                this.creationTestsService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
+        this.diagramCheckerService.checkDiagram(
+                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
                 this.diagram, this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -200,11 +207,11 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
                         .check(initialDiagram, newDiagram);
             };
         } else {
-            diagramChecker = this.creationTestsService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount);
+            diagramChecker = this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount);
         }
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -215,9 +222,9 @@ public class GVSubNodeTemporalCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getOccurrenceDefinition();
         String parentLabel = "OccurrenceDefinition";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.creationTestsService.checkDiagram(
-                this.creationTestsService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
+        this.diagramCheckerService.checkDiagram(
+                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
                 this.diagram, this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 }

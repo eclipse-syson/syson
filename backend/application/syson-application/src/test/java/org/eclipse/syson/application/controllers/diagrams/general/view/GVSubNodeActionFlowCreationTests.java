@@ -39,9 +39,11 @@ import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
+import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckDiagramElementCount;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeInCompartment;
 import org.eclipse.syson.application.controllers.diagrams.checkers.CheckNodeOnDiagram;
+import org.eclipse.syson.application.controllers.diagrams.checkers.DiagramCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramChecker;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
@@ -132,6 +134,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
 
+    private DiagramCheckerService diagramCheckerService;
+
+    private SemanticCheckerService semanticCheckerService;
+
     private static Stream<Arguments> acceptActionUsagePayloadParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getPartDefinition()),
@@ -193,8 +199,9 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT,
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
-        this.creationTestsService = new NodeCreationTestsService(this.diagramComparator, this.semanticCheckerFactory, this.nodeCreationTester, this.objectService,
-                this.descriptionNameGenerator);
+        this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator);
+        this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticCheckerFactory, this.objectService);
     }
 
     @AfterEach
@@ -231,7 +238,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .contains("payload: acceptActionPayloadType");
         };
 
-        this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
         ISemanticChecker semanticChecker = (editingContext) -> {
             Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
@@ -250,7 +257,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             assertThat(featureTyping.getType().getName()).isEqualTo("acceptActionPayloadType");
         };
 
-        this.creationTestsService.checkEditingContext(semanticChecker, this.verifier);
+        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -278,7 +285,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .contains("acceptAction's receiver");
         };
 
-        this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
 
         ISemanticChecker semanticChecker = (editingContext) -> {
             Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
@@ -297,7 +304,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
             assertThat(membership.getMemberElement().getName()).isEqualTo("acceptAction's receiver");
         };
 
-        this.creationTestsService.checkEditingContext(semanticChecker, this.verifier);
+        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -331,10 +338,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                         .check(initialDiagram, newDiagram);
             };
         } else {
-            diagramChecker = this.creationTestsService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount);
+            diagramChecker = this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount);
         }
-        this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -345,10 +352,10 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionUsage();
         String parentLabel = "action";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.creationTestsService.checkDiagram(
-                this.creationTestsService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
+        this.diagramCheckerService.checkDiagram(
+                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
                 this.diagram, this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -387,8 +394,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
         };
 
-        this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -425,8 +432,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
         };
-        this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -460,8 +467,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .hasCompartmentCount(4)
                     .check(initialDiagram, newDiagram);
         };
-        this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -472,9 +479,9 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         EClass parentEClass = SysmlPackage.eINSTANCE.getActionDefinition();
         String parentLabel = "ActionDefinition";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
-        this.creationTestsService.checkDiagram(this.creationTestsService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount), this.diagram,
+        this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount), this.diagram,
                 this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -514,8 +521,8 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .check(initialDiagram, newDiagram);
         };
 
-        this.creationTestsService.checkDiagram(diagramChecker, this.diagram, this.verifier);
-        this.creationTestsService.checkEditingContext(this.creationTestsService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+        this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     private String getActionFlowNodeName(EClass eClass) {

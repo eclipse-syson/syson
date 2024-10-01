@@ -16,6 +16,15 @@ The following classes have been renamed to reflect their new usage:
 * Deleted `AstTreeParser#resolveAllImport`
 * Deleted `AstTreeParser#resolveAllReference`
 * Deleted `ProxyResolver#resolveAllProxy`
+- https://github.com/eclipse-syson/syson/issues/754[#754] [general-view] Add an edge tool to add target element as nested usage.
+The following methods have been moved from `NodeCreationTestsService` to `SemanticCheckerService` to better separate testing concerns:
+* `getElementInParentSemanticChecker`
+* `checkEditingContext`
+The following methods have been moved from `NodeCreationTestsService` to `DiagramCheckerService` to better separate testing concerns:
+* `getChildNodeGraphicalChecker`
+* `getCompartmentNodeGraphicalChecker`
+* `getSiblingNodeGraphicalChecker`
+* `checkDiagram`
 
 === Dependency update
 
@@ -40,6 +49,8 @@ The following classes have been renamed to reflect their new usage:
 - https://github.com/eclipse-syson/syson/issues/696[#696] [diagrams] Add Comment element as graphical node in all diagrams.
 - https://github.com/eclipse-syson/syson/issues/697[#697] [details] Add Comment property to Core tab of the Details view.
 - https://github.com/eclipse-syson/syson/issues/740[#740] [export] Fix missing declaredName after exporting an annotating element.
+- https://github.com/eclipse-syson/syson/issues/754[#754] [general-view] Add an edge tool to add target element as nested usage.
+This complements the existing tool that allows to add the source element as a nested usage of the target.
 
 
 == v2024.9.0

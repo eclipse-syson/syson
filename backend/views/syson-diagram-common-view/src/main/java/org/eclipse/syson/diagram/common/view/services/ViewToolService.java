@@ -678,11 +678,6 @@ public class ViewToolService extends ToolService {
         return requirement;
     }
 
-    public PartUsage addAsNestedPart(PartDefinition partDefinition, PartUsage partUsage) {
-        this.utilService.moveMembership(partUsage, partDefinition);
-        return partUsage;
-    }
-
     public Element dropSubjectFromDiagram(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         if (targetElement instanceof RequirementUsage
