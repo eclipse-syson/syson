@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -63,7 +64,20 @@ public class DiagramDescriptionIdProvider {
                         .filter(nodeTool -> nodeTool.getName().equals(toolName))
                         .map(nodeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(nodeTool).toString().getBytes()).toString())
                         .findFirst());
-        assertThat(creationToolId).as(nodeDescriptionName + " tool " + toolName + " should exist").isPresent();
+        assertThat(creationToolId).as(nodeDescriptionName + " node tool " + toolName + " should exist").isPresent();
+        return creationToolId.get();
+    }
+
+    public String getEdgeCreationToolId(String nodeDescriptionName, String toolName) {
+        Optional<String> creationToolId = EMFUtils.allContainedObjectOfType(this.diagramDescription, NodeDescription.class)
+                .filter(nodeDescription -> nodeDescription.getName().equals(nodeDescriptionName))
+                .findFirst()
+                .map(NodeDescription::getPalette)
+                .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, EdgeTool.class)
+                        .filter(edgeTool -> edgeTool.getName().equals(toolName))
+                        .map(edgeTool -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(edgeTool).toString().getBytes()).toString())
+                        .findFirst());
+        assertThat(creationToolId).as(nodeDescriptionName + " edge tool " + toolName + " should exist").isPresent();
         return creationToolId.get();
     }
 

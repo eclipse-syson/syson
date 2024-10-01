@@ -15,6 +15,15 @@
 * Deleted `AstTreeParser#resolveAllImport`
 * Deleted `AstTreeParser#resolveAllReference`
 * Deleted `ProxyResolver#resolveAllProxy`
+- Add an edge tool to add target element as nested usage.
+The following methods have been moved from `NodeCreationTestsService` to `SemanticCheckerService` to better separate testing concerns:
+* `getElementInParentSemanticChecker`
+* `checkEditingContext`
+The following methods have been moved from `NodeCreationTestsService` to `DiagramCheckerService` to better separate testing concerns:
+* `getChildNodeGraphicalChecker`
+* `getCompartmentNodeGraphicalChecker`
+* `getSiblingNodeGraphicalChecker`
+* `checkDiagram`
 
 == Dependencies update
 
@@ -54,3 +63,5 @@ image::release-notes-comment-note.png[Comment note node]
 This property widget will only handle the first `Comment` associated to the selected element.
 If no `Comment` is associated to the selected element, then a new value in this widget will also create a `Comment` element and will associate it to the selected element.
 - Add declaredName attribute in annotating export file result if the annotatingElement contains a declaredName.
+- Add an edge tool to add target element as nested usage.
+This complements the existing tool that allows to add the source element as a nested usage of the target.

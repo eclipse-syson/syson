@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
+import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
@@ -87,6 +88,8 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
 
     private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
 
+    private SemanticCheckerService semanticCheckerService;
+
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
@@ -95,8 +98,8 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
                 SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
-        this.creationTestsService = new NodeCreationTestsService(this.diagramComparator, this.semanticCheckerFactory, this.nodeCreationTester, this.objectService,
-                this.descriptionNameGenerator);
+        this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticCheckerFactory, this.objectService);
     }
 
     @AfterEach
@@ -156,7 +159,7 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
             assertTrue(anotherPart.specializesFromLibrary("Parts::Part"));
         };
 
-        this.creationTestsService.checkEditingContext(semanticChecker, this.verifier);
+        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 
     @DisplayName("Test that an AcceptAction implictly specializes 'Actions::acceptActions'")
@@ -177,6 +180,6 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
             assertTrue(acceptActionUsage.specializesFromLibrary("Actions::acceptActions"));
         };
 
-        this.creationTestsService.checkEditingContext(semanticChecker, this.verifier);
+        this.semanticCheckerService.checkEditingContext(semanticChecker, this.verifier);
     }
 }
