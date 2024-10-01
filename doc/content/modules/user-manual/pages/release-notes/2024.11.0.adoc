@@ -39,6 +39,7 @@ The following methods have been moved from `NodeCreationTestsService` to `Diagra
 - Add CaseUsage and CaseDefinition representations in the General View diagram.
 - Update Batmobile template.
 - Handle of aliases and external references have been improved for textual import.
+- Add support for short name in container and compartment item labels.
 
 == New features
 

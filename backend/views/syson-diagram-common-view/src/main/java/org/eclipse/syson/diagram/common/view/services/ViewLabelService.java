@@ -99,6 +99,7 @@ public class ViewLabelService extends LabelService {
             label.append(this.getCompartmentItemLabel(constraintUsage));
         } else {
             label.append(this.getUsageListItemPrefix(usage));
+            label.append(this.getShortNameLabel(usage));
             String declaredName = usage.getDeclaredName();
             if (declaredName != null) {
                 label.append(declaredName);
@@ -125,6 +126,7 @@ public class ViewLabelService extends LabelService {
             label.append(this.getValue(expression));
         } else {
             // The constraint doesn't have an expression, we use its name as default label.
+            label.append(this.getShortNameLabel(constraintUsage));
             label.append(constraintUsage.getDeclaredName());
         }
         return label.toString();

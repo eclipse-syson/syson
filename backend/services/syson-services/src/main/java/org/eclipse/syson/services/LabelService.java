@@ -383,6 +383,25 @@ public class LabelService {
     }
 
     /**
+     * Returns the label for the short name of the given {@code element}.
+     *
+     * @param element
+     *            the element to compute the short name label from
+     * @return the label for the short name of the given {@code element}
+     */
+    protected String getShortNameLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        String declaredShortName = element.getDeclaredShortName();
+        if (declaredShortName != null && !declaredShortName.isBlank()) {
+            label.append(LabelConstants.LESSER_THAN)
+                    .append(declaredShortName)
+                    .append(LabelConstants.GREATER_THAN)
+                    .append(LabelConstants.SPACE);
+        }
+        return label.toString();
+    }
+
+    /**
      * Return the label of the typing part of the given {@link Element}.
      *
      * @param usage

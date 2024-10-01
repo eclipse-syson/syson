@@ -31,11 +31,34 @@ import org.junit.jupiter.api.Test;
  */
 public class LabelServiceTest extends AbstractServiceTest {
 
+    private static final String ATTRIBUTE_USAGE_NAME = "myAttributeUsage";
+
+    private static final String ATTRIBUTE_USAGE_SHORT_NAME = "shortName";
+
     private LabelService labelService;
 
     @BeforeEach
     void beforeEach() {
         this.labelService = new LabelService(new IFeedbackMessageService.NoOp());
+    }
+
+    @DisplayName("Check Attribute label with name and short name")
+    @Test
+    void testAttributeLabelWithNameAndShortName() {
+        AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
+        attributeUsage.setDeclaredName(ATTRIBUTE_USAGE_NAME);
+        attributeUsage.setDeclaredShortName(ATTRIBUTE_USAGE_SHORT_NAME);
+        StringBuilder expectedLabel = new StringBuilder();
+        expectedLabel.append(LabelConstants.OPEN_QUOTE)
+                .append("attribute")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(LabelConstants.LESSER_THAN)
+                .append(ATTRIBUTE_USAGE_SHORT_NAME)
+                .append(LabelConstants.GREATER_THAN)
+                .append(LabelConstants.SPACE)
+                .append(ATTRIBUTE_USAGE_NAME);
+        assertEquals(expectedLabel.toString(), this.labelService.getContainerLabel(attributeUsage));
     }
 
     @DisplayName("Check Usage prefix label with default properties")

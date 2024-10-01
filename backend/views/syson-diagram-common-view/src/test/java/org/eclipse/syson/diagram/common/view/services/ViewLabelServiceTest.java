@@ -50,6 +50,8 @@ public class ViewLabelServiceTest {
 
     private static final String ATTRIBUTE_USAGE_NAME = "myAttributeUsage";
 
+    private static final String ATTRIBUTE_USAGE_SHORT_NAME = "shortName";
+
     private static final String CONSTRAINT_USAGE_NAME = "myConstraint";
 
     private ViewLabelService viewLabelService;
@@ -59,12 +61,21 @@ public class ViewLabelServiceTest {
         this.viewLabelService = new ViewLabelService(new IFeedbackMessageService.NoOp(), new ShowDiagramsIconsService());
     }
 
-    @DisplayName("Check Attribute Usage item label with default properties")
+    @DisplayName("Check Attribute Usage item label with name")
     @Test
-    void testItemCompartmentLabelWithDefaultProperties() {
+    void testItemCompartmentLabelWithName() {
         AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
         attributeUsage.setDeclaredName(ATTRIBUTE_USAGE_NAME);
         assertEquals(ATTRIBUTE_USAGE_NAME, this.viewLabelService.getCompartmentItemLabel(attributeUsage));
+    }
+
+    @DisplayName("Check Attribute Usage item label with name and short name")
+    void testItemCompartmentLabelWithNameAndShortName() {
+        AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
+        attributeUsage.setDeclaredName(ATTRIBUTE_USAGE_NAME);
+        attributeUsage.setDeclaredShortName(ATTRIBUTE_USAGE_SHORT_NAME);
+        assertEquals(LabelConstants.LESSER_THAN + ATTRIBUTE_USAGE_SHORT_NAME + LabelConstants.GREATER_THAN + LabelConstants.SPACE + ATTRIBUTE_USAGE_NAME,
+                this.viewLabelService.getCompartmentItemLabel(attributeUsage));
     }
 
     @DisplayName("Check Attribute Usage item label with no name")
