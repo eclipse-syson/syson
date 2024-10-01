@@ -41,9 +41,13 @@ public class LabelConstants {
 
     public static final String EQUAL = "=";
 
+    public static final String GREATER_THAN = ">";
+
     public static final String IN = "in";
 
     public static final String INOUT = "inout";
+
+    public static final String LESSER_THAN = "<";
 
     public static final String NON_UNIQUE = "nonunique";
 

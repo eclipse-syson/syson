@@ -82,11 +82,13 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
 
     @Override
     public String caseElement(Element object) {
+        StringBuilder label = new StringBuilder();
+        label.append(this.labelService.getShortNameLabel(object));
         String declaredName = object.getDeclaredName();
-        if (declaredName == null) {
-            return "";
+        if (declaredName != null) {
+            label.append(declaredName);
         }
-        return declaredName;
+        return label.toString();
     }
 
     @Override
@@ -518,7 +520,6 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                     .append(LabelConstants.CR);
         }
         label
-
                 .append(this.caseElement(object))
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
