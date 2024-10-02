@@ -80,6 +80,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         var features = new ArrayList<EStructuralFeature>();
         features.add(SysmlPackage.eINSTANCE.getElement_DeclaredName());
         features.add(SysmlPackage.eINSTANCE.getElement_QualifiedName());
+        features.add(SysmlPackage.eINSTANCE.getElement_DeclaredShortName());
         return features;
     }
 
