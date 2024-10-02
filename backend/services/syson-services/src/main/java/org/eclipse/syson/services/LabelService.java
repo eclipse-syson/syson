@@ -213,6 +213,7 @@ public class LabelService {
         if (element instanceof Usage usage) {
             builder.append(this.getBasicNamePrefix(usage));
         }
+        builder.append(this.getShortNameLabel(element));
         builder.append(element.getDeclaredName());
         builder.append(this.getMultiplicityLabel(element));
         builder.append(this.getTypingLabel(element));

@@ -372,6 +372,16 @@ public interface DirectEditListener extends ParseTreeListener {
 	 */
 	void exitQualifiedName(DirectEditParser.QualifiedNameContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#shortName}.
+	 * @param ctx the parse tree
+	 */
+	void enterShortName(DirectEditParser.ShortNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#shortName}.
+	 * @param ctx the parse tree
+	 */
+	void exitShortName(DirectEditParser.ShortNameContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#name}.
 	 * @param ctx the parse tree
 	 */

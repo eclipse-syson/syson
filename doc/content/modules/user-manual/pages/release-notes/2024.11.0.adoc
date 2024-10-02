@@ -40,6 +40,7 @@ The following methods have been moved from `NodeCreationTestsService` to `Diagra
 - Update Batmobile template.
 - Handle of aliases and external references have been improved for textual import.
 - Add support for short name in container and compartment item labels.
+- Allow to set short name via the direct edit.
 
 == New features
 

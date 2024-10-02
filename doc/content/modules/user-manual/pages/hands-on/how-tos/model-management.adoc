@@ -286,6 +286,8 @@ WARNING: If an element has a complex name such as `someElementName[x]:someTypeNa
 Here are some shortcuts for efficiently editing {product} models:
 
 * Typing `someName` updates the name of the selected element.
+* Typing `<someShortName>` updates the short name of the selected element.
+If _someShortName_ is empty (i.e. when typing `<>`) the short name of the selected element is deleted.
 * Typing `:SomeTypeName`, sets the type of the selected element to _SomeTypeName_.
 If _SomeTypeName_ doesn't exist, it's created as an appropriate type element (for example `Item Definition`, `Part Definition`, ...) within the same parent container as the selected element.
 * Typing `[x]` on an element or a relationship sets its cardinality to _x_.

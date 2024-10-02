@@ -55,6 +55,7 @@ import org.eclipse.syson.services.grammars.DirectEditParser.OrderedMultiplicityE
 import org.eclipse.syson.services.grammars.DirectEditParser.ReadonlyPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.RedefinitionExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ReferenceExpressionContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.ShortNameContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.SubsettingExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TriggerExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.TriggerExpressionNameContext;
@@ -183,6 +184,20 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.handleMissingRedefinitionExpression(ctx);
         this.handleMissingTypingExpression(ctx);
         this.handleMissingValueExpression(ctx);
+    }
+
+    @Override
+    public void exitShortName(ShortNameContext ctx) {
+        if (ctx != null) {
+            var innerShortName = ctx.name();
+            String newShortName = this.element.getShortName();
+            if (innerShortName == null || innerShortName.getText().isBlank()) {
+                newShortName = "";
+            } else {
+                newShortName = this.getFullText(innerShortName);
+            }
+            this.element.setDeclaredShortName(newShortName);
+        }
     }
 
     @Override
