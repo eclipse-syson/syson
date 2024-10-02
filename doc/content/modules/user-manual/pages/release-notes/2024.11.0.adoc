@@ -41,6 +41,7 @@ The following methods have been moved from `NodeCreationTestsService` to `Diagra
 - Handle of aliases and external references have been improved for textual import.
 - Add support for short name in container and compartment item labels.
 - Allow to set short name via the direct edit.
+- Make Declared Short Name accessible from the Core tab instead of the Advanced tab in the details view.
 
 == New features
 
