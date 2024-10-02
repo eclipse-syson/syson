@@ -233,6 +233,27 @@ public class DiagramDirectEditListenerTest {
         assertEquals(4, lowerBoundLiteral.getValue());
     }
 
+    @DisplayName("Given a PartUsage as graphical node, when it is edited with '<1.1>', then its short name is set and its name is unchanged")
+    @Test
+    public void testDirectEditPartUsageNodeWithShortName() {
+        PartUsage partUsage = this.createFlashlight();
+        String initialName = partUsage.getName();
+        this.doDirectEditOnNode(partUsage, "<1.1>");
+        assertThat(partUsage.getShortName()).isEqualTo("1.1");
+        assertThat(partUsage.getName()).isEqualTo(initialName);
+    }
+
+    @DisplayName("Given a PartUsage with a short name as graphical node, when it is edited with '<>', then its short name is deleted and its name is unchanged")
+    @Test
+    public void testDirectEditPartUsageNodeRemoveShortName() {
+        PartUsage partUsage = this.createFlashlight();
+        String initialName = partUsage.getName();
+        partUsage.setDeclaredShortName("1.1");
+        this.doDirectEditOnNode(partUsage, "<>");
+        assertThat(partUsage.getShortName()).isEmpty();
+        assertThat(partUsage.getName()).isEqualTo(initialName);
+    }
+
     @DisplayName("Given a PartUsage as graphical compartment list item, when it is edited with '[4]', then its multiplicity is set")
     @Test
     public void testDirectEditPartUsageListItemWithMultiplicity() {
@@ -251,6 +272,27 @@ public class DiagramDirectEditListenerTest {
         assertTrue(lowerBound instanceof LiteralInteger);
         LiteralInteger lowerBoundLiteral = (LiteralInteger) lowerBound;
         assertEquals(4, lowerBoundLiteral.getValue());
+    }
+
+    @DisplayName("Given a PartUsage as graphical compartment list item, when it is edited with '<1.1>', then its short name is set and its name is unchanged")
+    @Test
+    public void testDirectEditPartUsageListItemWithShortName() {
+        PartUsage partUsage = this.createFlashlight();
+        String initialName = partUsage.getName();
+        this.doDirectEditOnCompartmentListItem(partUsage, "<1.1>");
+        assertThat(partUsage.getShortName()).isEqualTo("1.1");
+        assertThat(partUsage.getName()).isEqualTo(initialName);
+    }
+
+    @DisplayName("Given a PartUsage with a short name as graphical compartment list item, when it is edited with '<>', then its short name is deleted and its name is unchanged")
+    @Test
+    public void testDirectEditPartUsageListItemRemoveShortName() {
+        PartUsage partUsage = this.createFlashlight();
+        partUsage.setDeclaredShortName("1.1");
+        String initialName = partUsage.getName();
+        this.doDirectEditOnCompartmentListItem(partUsage, "<>");
+        assertThat(partUsage.getShortName()).isEmpty();
+        assertThat(partUsage.getName()).isEqualTo(initialName);
     }
 
     /**

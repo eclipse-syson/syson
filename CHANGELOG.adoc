@@ -41,6 +41,7 @@ The following methods have been moved from `NodeCreationTestsService` to `Diagra
 - https://github.com/eclipse-syson/syson/issues/746[#746] [syson] Update Batmobile template.
 - https://github.com/eclipse-syson/syson/issues/717[#717] [import] Handle of aliases and external references have been improved.
 - https://github.com/eclipse-syson/syson/issues/756[#756] [diagrams] Add short name in container and compartment item labels.
+- https://github.com/eclipse-syson/syson/issues/760[#760] [diagrams] Allow to set short name via direct edit.
 
 === New features
 

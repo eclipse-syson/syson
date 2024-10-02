@@ -450,6 +450,18 @@ public class DirectEditBaseListener implements DirectEditListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterShortName(DirectEditParser.ShortNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitShortName(DirectEditParser.ShortNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterName(DirectEditParser.NameContext ctx) { }
 	/**
 	 * {@inheritDoc}

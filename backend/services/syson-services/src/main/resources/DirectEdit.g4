@@ -30,12 +30,12 @@ package org.eclipse.syson.services.grammars;
 
 // This rule is used as a top-level rule to parse expressions on graphical nodes.
 nodeExpression :
-	prefixNodeExpression referenceExpression? name? multiplicityExpression? featureExpressions EOF
+	prefixNodeExpression referenceExpression? shortName? name? multiplicityExpression? featureExpressions EOF
 ;
 
 // This rule is used as a top-level rule to parse expressions on compartment list items.
 listItemExpression :
-	prefixListItemExpression referenceExpression? name? multiplicityExpression? multiplicityPropExpression? featureExpressions EOF
+	prefixListItemExpression referenceExpression? shortName? name? multiplicityExpression? multiplicityPropExpression? featureExpressions EOF
 ;
 
 prefixNodeExpression : 
@@ -190,6 +190,10 @@ DoubleQuotedString :
 
 qualifiedName :
 	name ('::' name)*
+;
+
+shortName :
+	'<' name? '>'
 ;
 
 name :
