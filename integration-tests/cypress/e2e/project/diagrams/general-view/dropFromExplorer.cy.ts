@@ -62,6 +62,7 @@ describe.skip('Drop From Explorer Tests', () => {
 
       it('Then we can drop the Package on the diagram', () => {
         const dataTransfer = new DataTransfer();
+        explorer.getTreeItemByLabel(sysmlv2.getRootElementLabel()).should('exist');
         explorer.dragTreeItem(sysmlv2.getRootElementLabel(), dataTransfer);
         diagram.dropOnDiagram(diagramLabel, dataTransfer);
         explorer.getTreeItemByLabel(sysmlv2.getRootElementLabel()).trigger('dragend');
