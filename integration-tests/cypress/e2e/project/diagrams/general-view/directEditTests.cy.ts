@@ -51,38 +51,33 @@ describe.skip('Direct Edit Tests', () => {
       });
 
       it('We can add a subset to Parts::parts by direct editing the existing PartUsage', () => {
-        diagram.getNodes(diagramLabel, 'part').type('p1 :> parts{enter}');
-        cy.wait(400);
+        diagram.getNodes(diagramLabel, 'part').type('p1 :> parts{enter}', { waitForAnimations: true });
         // for standard libraries elements, the qualified name is displayed
         diagram.getNodes(diagramLabel, 'p1 :> Parts::parts').should('exist');
       });
 
       it('We can add a value to 10 [kg] by direct editing the existing PartUsage', () => {
-        diagram.getNodes(diagramLabel, 'part').type('p1 = 10 [kg]{enter}');
-        cy.wait(400);
+        diagram.getNodes(diagramLabel, 'part').type('p1 = 10 [kg]{enter}', { waitForAnimations: true });
         diagram.getNodes(diagramLabel, 'p1 = 10 [kg]').should('exist');
         // Check that the library containing kg has been imported
         explorer.getExplorerView().contains('import SI::*');
       });
 
       it('We can add a subset to a new PartUsage (that will be created) by direct editing the existing PartUsage', () => {
-        diagram.getNodes(diagramLabel, 'part').type('p1 :> aNewPart{enter}');
-        cy.wait(400);
+        diagram.getNodes(diagramLabel, 'part').type('p1 :> aNewPart{enter}', { waitForAnimations: true });
         // for standard libraries elements, the qualified name is displayed
         diagram.getNodes(diagramLabel, 'p1 :> aNewPart').should('exist');
         explorer.getExplorerView().contains('aNewPart');
       });
 
       it('We can rename a part with a name containing a properties keyword', () => {
-        diagram.getNodes(diagramLabel, 'part').type('abstractPart{enter}');
-        cy.wait(400);
+        diagram.getNodes(diagramLabel, 'part').type('abstractPart{enter}', { waitForAnimations: true });
         diagram.getNodes(diagramLabel, 'abstractPart').should('exist');
         explorer.getExplorerView().contains('abstractPart');
       });
 
       it('We can type the PartUsage with an element from a standard library', () => {
-        diagram.getNodes(diagramLabel, 'part').type('part : ISQBase::MassValue{enter}');
-        cy.wait(400);
+        diagram.getNodes(diagramLabel, 'part').type('part : ISQBase::MassValue{enter}', { waitForAnimations: true });
         diagram.getNodes(diagramLabel, 'part : ISQBase::MassValue').should('exist');
         // The import is added in the explorer
         explorer.getTreeItemByLabel('import ISQBase::*').should('exist');
@@ -92,8 +87,7 @@ describe.skip('Direct Edit Tests', () => {
       });
 
       it('We can type the PartUsage with an element from an aliased standard library', () => {
-        diagram.getNodes(diagramLabel, 'part').type('part : ISQ::MassValue{enter}');
-        cy.wait(400);
+        diagram.getNodes(diagramLabel, 'part').type('part : ISQ::MassValue{enter}', { waitForAnimations: true });
         diagram.getNodes(diagramLabel, 'part : ISQBase::MassValue').should('exist');
         // The import is added in the explorer
         explorer.getTreeItemByLabel('import ISQBase::*').should('exist');
@@ -103,8 +97,7 @@ describe.skip('Direct Edit Tests', () => {
       });
 
       it('We can type the PartUsage with an element from a standard library by using its name with no qualifier', () => {
-        diagram.getNodes(diagramLabel, 'part').type('part : MassValue{enter}');
-        cy.wait(400);
+        diagram.getNodes(diagramLabel, 'part').type('part : MassValue{enter}', { waitForAnimations: true });
         diagram.getNodes(diagramLabel, 'part : ISQBase::MassValue').should('exist');
         // The import is added in the explorer
         explorer.getTreeItemByLabel('import ISQBase::*').should('exist');
@@ -133,8 +126,9 @@ describe.skip('Direct Edit Tests', () => {
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
 
         // direct edit attribute
-        cy.getByTestId('Label - attribute').type('variation end myAttribute ordered nonunique{enter}');
-        cy.wait(400);
+        cy.getByTestId('Label - attribute').type('variation end myAttribute ordered nonunique{enter}', {
+          waitForAnimations: true,
+        });
         diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
 
         // check attribute properties
@@ -148,8 +142,9 @@ describe.skip('Direct Edit Tests', () => {
 
         // reset attribute to default properties
         diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
-        cy.getByTestId('Label - variation end myAttribute ordered nonunique').type('myAttribute{enter}');
-        cy.wait(400);
+        cy.getByTestId('Label - variation end myAttribute ordered nonunique').type('myAttribute{enter}', {
+          waitForAnimations: true,
+        });
 
         // check attribute properties
         details.getPage('Advanced').click();
@@ -181,8 +176,7 @@ describe.skip('Direct Edit Tests', () => {
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
 
         // direct edit attribute
-        cy.getByTestId('Label - attribute').type('inout myAttribute{enter}');
-        cy.wait(400);
+        cy.getByTestId('Label - attribute').type('inout myAttribute{enter}', { waitForAnimations: true });
         diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
 
         // check direction attribute
@@ -190,8 +184,7 @@ describe.skip('Direct Edit Tests', () => {
 
         // reset attribute to default properties
         diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
-        cy.getByTestId('Label - inout myAttribute').type('myAttribute{enter}');
-        cy.wait(400);
+        cy.getByTestId('Label - inout myAttribute').type('myAttribute{enter}', { waitForAnimations: true });
         // check direction attribute
         details.getRadioOption('Direction', 'inout').should('not.be.checked');
       });
@@ -216,8 +209,9 @@ describe.skip('Direct Edit Tests', () => {
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
 
         // direct edit attribute
-        cy.getByTestId('Label - attribute').type('end variation derived myAttribute{enter}');
-        cy.wait(400);
+        cy.getByTestId('Label - attribute').type('end variation derived myAttribute{enter}', {
+          waitForAnimations: true,
+        });
         diagram.getNodes(diagramLabel, 'myAttribute').should('exist');
 
         // check attribute properties
@@ -233,8 +227,7 @@ describe.skip('Direct Edit Tests', () => {
         diagram.getNodes(diagramLabel, 'part').should('exist').click();
 
         // direct edit attribute
-        cy.getByTestId('Label - «part»\npart').type('abstract myPart{enter}');
-        cy.wait(400);
+        cy.getByTestId('Label - «part»\npart').type('abstract myPart{enter}', { waitForAnimations: true });
         diagram.getNodes(diagramLabel, 'myPart').should('exist');
 
         // check attribute properties
@@ -243,8 +236,7 @@ describe.skip('Direct Edit Tests', () => {
         details.getDetailsView().find(`[data-testid="Is Abstract"]`).should('have.class', 'Mui-checked');
         details.getDetailsView().find(`[data-testid="Is Derived"]`).click();
 
-        cy.getByTestId('Label - «abstract»\n«part»\nmyPart').type('myPart{enter}');
-        cy.wait(400);
+        cy.getByTestId('Label - «abstract»\n«part»\nmyPart').type('myPart{enter}', { waitForAnimations: true });
         diagram.getNodes(diagramLabel, 'myPart').should('exist');
         details.getDetailsView().find(`[data-testid="Is Abstract"]`).should('not.have.class', 'Mui-checked');
         // even if derived keyword has not been typed, it is still derived because DirectEdit on graphical node does not take into account his keyword
@@ -270,8 +262,9 @@ describe.skip('Direct Edit Tests', () => {
         explorer.dragTreeItem('Documentation', dataTransfer);
         diagram.dropOnDiagram(diagramLabel, dataTransfer);
         diagram.getNodes(diagramLabel, 'add doc here').should('exist').should('have.length', 1);
-        cy.getByTestId('Label\\ -\\ «doc»\\a \\a add\\ doc\\ here').type('body of my doc{enter}');
-        cy.wait(400);
+        cy.getByTestId('Label\\ -\\ «doc»\\a \\a add\\ doc\\ here').type('body of my doc{enter}', {
+          waitForAnimations: true,
+        });
         diagram.getNodes(diagramLabel, 'body of my doc').should('exist');
         details.getTextField('Body').should('have.value', 'body of my doc');
       });
@@ -295,8 +288,9 @@ describe.skip('Direct Edit Tests', () => {
         explorer.dragTreeItem('Comment', dataTransfer);
         diagram.dropOnDiagram(diagramLabel, dataTransfer);
         diagram.getNodes(diagramLabel, 'add comment here').should('exist').should('have.length', 1);
-        cy.getByTestId('Label\\ -\\ «comment»\\a \\a add\\ comment\\ here').type('body of my comment{enter}');
-        cy.wait(400);
+        cy.getByTestId('Label\\ -\\ «comment»\\a \\a add\\ comment\\ here').type('body of my comment{enter}', {
+          waitForAnimations: true,
+        });
         diagram.getNodes(diagramLabel, 'body of my comment').should('exist');
         details.getTextField('Body').should('have.value', 'body of my comment');
       });
