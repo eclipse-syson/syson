@@ -3,8 +3,10 @@ name: Pull Request Checks
 on:
   pull_request:
     paths-ignore:
-      - 'CHANGELOG.adoc'
-      - 'doc/**'
+      - "CHANGELOG.adoc"
+      - "docker-compose.yml"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
+      - "doc/**"
     types:
       [
         opened,
