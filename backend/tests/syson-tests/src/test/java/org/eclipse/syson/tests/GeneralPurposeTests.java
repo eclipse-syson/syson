@@ -91,7 +91,7 @@ public class GeneralPurposeTests {
 
     private static final String HEIGHT_100 = "height: 100%;";
 
-    private static final String INVALID_MATERIALUI_IMPORT = "from '@material-ui/core';";
+    private static final String INVALID_MATERIALUI_IMPORT = "from '@mui/material';";
 
     private static final String IT_ONLY = "it.only(";
 
