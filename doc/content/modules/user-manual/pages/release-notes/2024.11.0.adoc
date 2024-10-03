@@ -2,6 +2,10 @@
 
 == Key highlights
 
+- *REST APIs*: Introduce partial support of the standard REST APIs from the OMG [SystemsModelingAPI](https://www.omg.org/spec/SystemsModelingAPI/).
+The firsts APIs to be handled are the project related ones, allowing to create, update, delete and retrieve project(s).
+Please read the [APIs section](https://doc.mbse-syson.org/syson/v2024.11.0/user-manual/integration/api.html) in the official [SysON documentation](https://doc.mbse-syson.org) for more details.
+
 == Breaking changes
 
 - Add CaseUsage and CaseDefinition in General View diagram, the following classes have been renamed to reflect their new usage:
@@ -67,3 +71,6 @@ If no `Comment` is associated to the selected element, then a new value in this 
 - Add declaredName attribute in annotating export file result if the annotatingElement contains a declaredName.
 - Add an edge tool to add target element as nested usage.
 This complements the existing tool that allows to add the source element as a nested usage of the target.
+- Introduce partial support of the standard REST APIs from the OMG [SystemsModelingAPI](https://www.omg.org/spec/SystemsModelingAPI/).
+The firsts APIs to be handled are the project related ones, allowing to create, update, delete and retrieve project(s).
+Please read the [APIs section](https://doc.mbse-syson.org/syson/v2024.11.0/user-manual/integration/api.html) in the official [SysON documentation](https://doc.mbse-syson.org) for more details.
