@@ -79,8 +79,9 @@ a|❌
 
 |xref:integration/interoperability.adoc[Download / Upload {sysmlv2} textual format]
 a|✅ (Partial)
+
 |xref:integration/api.adoc[SysML v2 Standard API]
-a|❌
+a|✅ (Partial)
 |===
 
 A detailed list of all {product} features is available in the xref:features/features.adoc[Features] section.

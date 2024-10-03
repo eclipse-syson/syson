@@ -99,7 +99,9 @@ Added source sysml file and unaltered ast.json result.
 - https://github.com/eclipse-syson/syson/issues/697[#697] [details] Add Comment property to Core tab of the Details view.
 - https://github.com/eclipse-syson/syson/issues/754[#754] [general-view] Add an edge tool to add target element as nested usage.
 This complements the existing tool that allows to add the source element as a nested usage of the target.
-
+- [rest-api] Introduce partial support of the standard REST APIs from the OMG [SystemsModelingAPI](https://www.omg.org/spec/SystemsModelingAPI/).
+The firsts APIs to be handled are the project related ones, allowing to create, update, delete and retrieve project(s).
+Please read the [APIs section](https://doc.mbse-syson.org/syson/v2024.11.0/user-manual/integration/api.html) in the official [SysON documentation](https://doc.mbse-syson.org) for more details.
 
 == v2024.9.0
 
