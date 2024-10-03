@@ -45,6 +45,7 @@ The method `getSuccessionLabel` in `ViewLabelService` has been deleted, successi
 - Allow to set short name via the direct edit.
 - Make Declared Short Name accessible from the Core tab instead of the Advanced tab in the details view.
 - Remove default name of relationships and improve edge labels.
+- Allow to create dependencies from the Explorer view.
 
 == New features
 
