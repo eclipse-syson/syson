@@ -5,6 +5,10 @@
 - *Model conformance to SysMLv2 Beta 2.2 version*: the metamodel has been modified to conform to SysMLv2 and KerML Beta 2.2 specifications released on October 2024.
 All standard libraries have also been updated.
 
+- *REST APIs*: Introduce partial support of the standard REST APIs from the OMG [SystemsModelingAPI](https://www.omg.org/spec/SystemsModelingAPI/).
+The firsts APIs to be handled are the project related ones, allowing to create, update, delete and retrieve project(s).
+Please read the [APIs section](https://doc.mbse-syson.org/syson/v2024.11.0/user-manual/integration/api.html) in the official [SysON documentation](https://doc.mbse-syson.org) for more details.
+
 == Breaking changes
 
 - Add CaseUsage and CaseDefinition in General View diagram, the following classes have been renamed to reflect their new usage:

@@ -1,11 +1,11 @@
 = APIs
 
-== {sysmlv2} Standard API
+== {sysmlv2} Standard REST APIs
 
 [NOTE]
 ====
-The SysML v2 API is unavailable, but we are working on it.
-For interoperability with {product}, use the provided file exchange format.
+The SysML v2 API is not fully available yet, we are working on it.
+For interoperability with {product}, the provided file exchange format is also a solution.
 ====
 
 {product}'s vision includes a dedicated commitment to interoperability, with a future-oriented perspective on supporting standard APIs for seamless connections with a diverse array of modeling resources.
@@ -13,4 +13,78 @@ While the implementation of standard APIs is an aspect under consideration for f
 
 As {product} progresses, these future developments in interoperability will further solidify its role as a collaborative platform, fostering an interconnected environment for `MBSE` practitioners.
 
-The ongoing commitment to incorporating standard APIs and {sysmlv2} textual specifications underscores {product}'s dedication to providing users with a versatile and interoperable modeling solution.
+The ongoing commitment to incorporating standard REST APIs and {sysmlv2} textual specifications underscores {product}'s dedication to providing users with a versatile and interoperable modeling solution.
+
+The whole list of REST APIs is available on the OMG website, in the [SystemsModelingAPI section](https://www.omg.org/spec/SystemsModelingAPI/).
+
+[IMPORTANT]
+====
+All REST APIs start by `/api/rest/`.
+====
+
+Here are some key concepts to know before manipulating the REST APIs in {product}: 
+
+- `Record`: a `Record` represents any data that is consumed (input) or produced (output) by the Systems Modeling API and Services. A `Record` is an abstract concept from which other concrete concepts inherit. A `Record` has the following attributes:
+** `id` is the UUID assigned to the `Record`
+** `resourceIdentifier` is an URI for the record (*This attribute is not supported in {product}*)
+** `alias` is a collection of other identifiers for this record, especially if the record was created or represented in other software applications and systems (*This attribute is not supported in {product}*)
+** `humanIdentifier` is a human-friendly unique identifier for this record (*This attribute is not supported in {product}*)
+** `description` is a statement that provides details about the record (*This attribute is not supported in {product}*)
+
+- `Project`: a `Project` is a specialized `Record` that represents a container for other `Records` and an entry point for version management and data navigation. The `Project` record has the following attributes:
+** `name` is the name of the project.
+** `identifiedData` is a derived attribute that is the set of Data Identity records corresponding to the Data contained in the project (*This attribute is not supported in {product}*)
+** `commit` is the set of all commits in the `Project` (*This attribute is not supported in {product}*)
+** `commitReference` is the set of all commit references in the `Project` (*This attribute is not supported in {product}*)
+** `branch` is the set of all the branches in the `Project` and a subset of commitReference (*This attribute is not supported in {product}*)
+** `defaultBranch` is the default branch in the `Project` and a subset of branch (*This attribute is not supported in {product}*)
+** `tag` is the set of all the tags in the `Project` and a subset of commitReference (*This attribute is not supported in {product}*)
+** `usage` is the set of `Project` Usage records representing all other `Projects` being used by the given `Project` (`Project` Usage.usedProject) (*This attribute is not supported in {product}*)
+** `queries` is the set of Query records owned by the project. Each Query record represents a saved query for the given project. See Query for details. (*This attribute is not supported in {product}*)
+** `created` is the creation timestamp for the project, in ISO8601DateTIme format (*This attribute is not supported in {product}*)
+
+Below is the list of REST APIs supported in {product}:
+
+- Project related operations:
+
+[cols="1,4,2,3"]
+|===
+|Method | Signature |Endpoint |Documentation 
+
+|GET
+|getProjectById(projectId : UUID) : Project [0..1]
+|/projects/{projectId}
+|Get project with the given id (projectId).
+
+4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f
+
+|GET
+|getProjects() : Project [0..*]
+|/projects
+|Get all projects.
+
+4.1+| Example: http://localhost:8080/api/rest/projects
+
+|POST
+|createProject(name : String, description : String [0..1]) : Project
+|/projects?name={name}
+|Create a new project with the given name and description (optional).
+
+4.1+| Example: http://localhost:8080/api/rest/projects?name=MyProject. The `description` optional parameter is not handled yet in {product}.
+
+|DELETE
+|deleteProject(projectId : UUID) : Project
+|/projects/{projectId}
+|Delete the project with the given id (projectId).
+
+4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f
+
+|PUT
+|updateProject( projectId : UUID, name : String [0..1], description : String [0..1], defaultBranch : Branch [0..1] ) : Project
+|/projects/{projectId}
+|Update the project with the given id (projectId).
+
+4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f?name=MyProjectWithNewName. 
+The `description` and `defaultBranch` optional parameters are not handled yet in {product}.
+|===
+
