@@ -267,6 +267,7 @@ public class GetChildCreationSwitch extends SysmlEClassSwitch<List<EClass>> {
         childrenCandidates.add(SysmlPackage.eINSTANCE.getOwningMembership());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getDocumentation());
         childrenCandidates.add(SysmlPackage.eINSTANCE.getComment());
+        childrenCandidates.add(SysmlPackage.eINSTANCE.getDependency());
         return childrenCandidates;
     }
 }
