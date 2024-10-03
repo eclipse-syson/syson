@@ -428,7 +428,6 @@ public class ViewCreateService {
         var ownerMembership = SysmlFactory.eINSTANCE.createOwningMembership();
         owner.getOwnedRelationship().add(ownerMembership);
         var allocation = SysmlFactory.eINSTANCE.createAllocationUsage();
-        allocation.setDeclaredName("allocate");
         ownerMembership.getOwnedRelatedElement().add(allocation);
         // create both ends ReferenceSubsetting
         this.addEndToAllocateEdge(allocation, source);

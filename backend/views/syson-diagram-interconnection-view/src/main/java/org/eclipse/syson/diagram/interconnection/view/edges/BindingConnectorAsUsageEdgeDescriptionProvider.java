@@ -67,7 +67,7 @@ public class BindingConnectorAsUsageEdgeDescriptionProvider implements IEdgeDesc
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression("")
+                .centerLabelExpression("=")
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .sourceNodesExpression("aql:self.getSourcePort()")

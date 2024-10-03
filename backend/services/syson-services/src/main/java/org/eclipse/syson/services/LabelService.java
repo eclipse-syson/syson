@@ -213,8 +213,7 @@ public class LabelService {
         if (element instanceof Usage usage) {
             builder.append(this.getBasicNamePrefix(usage));
         }
-        builder.append(this.getShortNameLabel(element));
-        builder.append(element.getDeclaredName());
+        builder.append(this.getIdentificationLabel(element));
         builder.append(this.getMultiplicityLabel(element));
         builder.append(this.getTypingLabel(element));
         builder.append(this.getRedefinitionLabel(element));
@@ -381,6 +380,26 @@ public class LabelService {
             // AttributeUsage are always referential, so no need to add the ref keyword
             label.append(LabelConstants.REF + LabelConstants.SPACE);
         }
+    }
+
+    /**
+     * Returns the identification of the provided {@code element}.
+     * <p>
+     * The identification of an element is the concatenation of its <i>short name</i> and its <i>declared name</i>.
+     * </p>
+     *
+     * @param element
+     *            the element to get the identification from
+     * @return the identification
+     */
+    protected String getIdentificationLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        label.append(this.getShortNameLabel(element));
+        String declaredName = element.getDeclaredName();
+        if (declaredName != null) {
+            label.append(declaredName);
+        }
+        return label.toString();
     }
 
     /**

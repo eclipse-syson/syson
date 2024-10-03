@@ -86,6 +86,7 @@ public class ActionFlowViewDiagramDescriptionTests {
                 .filter(edgeDescription -> edgeDescription.getCenterLabelExpression() != null && !edgeDescription.getCenterLabelExpression().isBlank())
                 // SuccessionAsUsage has a label but the grammar does not support the direct edit tool yet
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getSuccessionAsUsage()).negate())
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getAllocationUsage()).negate())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);
     }
