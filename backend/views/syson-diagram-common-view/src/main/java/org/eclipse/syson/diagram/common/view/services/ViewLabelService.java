@@ -30,12 +30,12 @@ import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Documentation;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.StateSubactionMembership;
-import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.TransitionFeatureKind;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
@@ -99,11 +99,7 @@ public class ViewLabelService extends LabelService {
             label.append(this.getCompartmentItemLabel(constraintUsage));
         } else {
             label.append(this.getUsageListItemPrefix(usage));
-            label.append(this.getShortNameLabel(usage));
-            String declaredName = usage.getDeclaredName();
-            if (declaredName != null) {
-                label.append(declaredName);
-            }
+            label.append(this.getIdentificationLabel(usage));
             label.append(this.getMultiplicityLabel(usage));
             label.append(this.getTypingLabel(usage));
             label.append(this.getRedefinitionLabel(usage));
@@ -111,6 +107,31 @@ public class ViewLabelService extends LabelService {
             label.append(this.getValueLabel(usage));
         }
         return label.toString();
+    }
+
+    /**
+     * The default label for edges.
+     *
+     * @param element
+     *            the element to get the edge label from
+     * @return the edge label
+     */
+    public String getEdgeLabel(Element element) {
+        StringBuilder label = new StringBuilder();
+        label.append(this.getIdentificationLabel(element));
+        label.append(this.getTypingLabel(element));
+        return label.toString();
+    }
+
+    /**
+     * Returns the label for the given {@code dependency}.
+     *
+     * @param dependency
+     *            the dependency to get the edge label from
+     * @return the edge label
+     */
+    public String getDependencyLabel(Dependency dependency) {
+        return this.getIdentificationLabel(dependency);
     }
 
     /**
@@ -126,8 +147,7 @@ public class ViewLabelService extends LabelService {
             label.append(this.getValue(expression));
         } else {
             // The constraint doesn't have an expression, we use its name as default label.
-            label.append(this.getShortNameLabel(constraintUsage));
-            label.append(constraintUsage.getDeclaredName());
+            label.append(this.getIdentificationLabel(constraintUsage));
         }
         return label.toString();
     }
@@ -257,27 +277,6 @@ public class ViewLabelService extends LabelService {
                 .forEach(val -> this.utilService.removeTransitionFeaturesOfSpecificKind(element, val));
 
         return element;
-    }
-
-    /**
-     * Succession edge label getter service.
-     *
-     * @param succession
-     *            The succession edge
-     * @return the label of the given {@link Succession}
-     */
-    public String getSuccessionLabel(Succession succession) {
-        StringBuilder resultLabel = new StringBuilder();
-        var guardExpressions = succession.getGuardExpression();
-        if (!guardExpressions.isEmpty()) {
-            String guardLabel = this.getGuardExpressionsDefaultDirectEditLabel(guardExpressions);
-            if (!guardLabel.isBlank()) {
-                resultLabel.append(LabelConstants.OPEN_BRACKET)
-                        .append(guardLabel)
-                        .append(LabelConstants.CLOSE_BRACKET);
-            }
-        }
-        return resultLabel.toString();
     }
 
     /**

@@ -21,12 +21,14 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
+import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.eclipse.syson.util.ViewConstants;
 
@@ -74,7 +76,7 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression("")
+                .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getDependencyLabel"))
                 .name(this.getName())
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .sourceNodesExpression(AQLConstants.AQL_SELF + "." + SysmlPackage.eINSTANCE.getDependency_Client().getName())
@@ -104,6 +106,18 @@ public abstract class AbstractDependencyEdgeDescriptionProvider extends Abstract
                 .lineStyle(LineStyle.DASH)
                 .sourceArrowStyle(ArrowStyle.NONE)
                 .targetArrowStyle(ArrowStyle.INPUT_ARROW)
+                .build();
+    }
+
+    @Override
+    protected LabelEditTool getEdgeEditTool() {
+        var changeContext = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"))
+                .build();
+
+        return this.diagramBuilderHelper.newLabelEditTool()
+                .name("Edit Dependency Label")
+                .body(changeContext)
                 .build();
     }
 

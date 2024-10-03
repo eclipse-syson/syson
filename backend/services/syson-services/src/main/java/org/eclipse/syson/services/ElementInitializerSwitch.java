@@ -85,7 +85,6 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element caseBindingConnectorAsUsage(BindingConnectorAsUsage object) {
-        object.setDeclaredName("bind");
         return object;
     }
 
@@ -97,7 +96,6 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element caseDependency(Dependency object) {
-        object.setDeclaredName("dependency");
         return object;
     }
 
@@ -127,13 +125,11 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element caseFeatureTyping(FeatureTyping object) {
-        object.setDeclaredName("typed by");
         return object;
     }
 
     @Override
     public Element caseFlowConnectionUsage(FlowConnectionUsage object) {
-        object.setDeclaredName("flow");
         return object;
     }
 
@@ -176,13 +172,11 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element caseRedefinition(Redefinition object) {
-        object.setDeclaredName("redefines");
         return object;
     }
 
     @Override
     public Element caseReferenceSubsetting(ReferenceSubsetting object) {
-        object.setDeclaredName("references");
         return object;
     }
 
@@ -208,39 +202,26 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element caseSpecialization(Specialization object) {
-        object.setDeclaredName("specializes");
         return object;
     }
 
     @Override
     public Element caseSubclassification(Subclassification object) {
-        object.setDeclaredName("specializes");
         return object;
     }
 
     @Override
     public Element caseSubsetting(Subsetting object) {
-        object.setDeclaredName("subsets");
         return object;
     }
 
     @Override
     public Element caseSuccessionAsUsage(SuccessionAsUsage object) {
-        object.setDeclaredName("succession");
         return object;
     }
 
     @Override
     public Element caseTransitionUsage(TransitionUsage object) {
-        StringBuilder label = new StringBuilder();
-        var source = object.getSource();
-        var target = object.getTarget();
-        if (source != null && target != null) {
-            label = label.append(source.getName()).append("_to_").append(target.getName());
-        } else {
-            label.append("transition");
-        }
-        object.setDeclaredName(label.toString());
         return object;
     }
 

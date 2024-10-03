@@ -20,12 +20,14 @@ import java.util.List;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.syson.sysml.AttributeUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
+import org.eclipse.syson.sysml.Dependency;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureChaining;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.OperatorExpression;
@@ -53,6 +55,10 @@ public class ViewLabelServiceTest {
     private static final String ATTRIBUTE_USAGE_SHORT_NAME = "shortName";
 
     private static final String CONSTRAINT_USAGE_NAME = "myConstraint";
+
+    private static final String SHORT_NAME = "1.1";
+
+    private static final String SHORT_NAME_LABEL = LabelConstants.LESSER_THAN + SHORT_NAME + LabelConstants.GREATER_THAN;
 
     private ViewLabelService viewLabelService;
 
@@ -251,6 +257,26 @@ public class ViewLabelServiceTest {
         feature.getOwnedRelationship().addAll(List.of(featureChaining1, featureChaining2));
 
         assertThat(this.viewLabelService.getCompartmentItemLabel(constraintUsage)).isEqualTo("1 >= x.y.z");
+    }
+
+    @DisplayName("Given a Dependency with a name and short name, when its edge label is computed, then the label contains the name and short name")
+    @Test
+    public void testGetDependencyLabelOfDependencyWithNameAndShortName() {
+        Dependency dependency = SysmlFactory.eINSTANCE.createDependency();
+        dependency.setDeclaredShortName(SHORT_NAME);
+        dependency.setDeclaredName("dependency");
+
+        assertThat(this.viewLabelService.getDependencyLabel(dependency)).isEqualTo(SHORT_NAME_LABEL + " dependency");
+    }
+
+    @DisplayName("Given an Interface with a name and short name, when its edge label is computed, then the label contains the name and short name")
+    @Test
+    public void testGetEdgeLabelOfInterfaceWithNameAndShortName() {
+        InterfaceUsage interfaceUsage = SysmlFactory.eINSTANCE.createInterfaceUsage();
+        interfaceUsage.setDeclaredShortName(SHORT_NAME);
+        interfaceUsage.setDeclaredName("interface");
+
+        assertThat(this.viewLabelService.getEdgeLabel(interfaceUsage)).isEqualTo(SHORT_NAME_LABEL + " interface");
     }
 
     /**

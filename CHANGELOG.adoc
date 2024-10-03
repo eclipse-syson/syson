@@ -25,6 +25,8 @@ The following methods have been moved from `NodeCreationTestsService` to `Diagra
 * `getCompartmentNodeGraphicalChecker`
 * `getSiblingNodeGraphicalChecker`
 * `checkDiagram`
+- https://github.com/eclipse-syson/syson/issues/765[#765] [diagrams] Remove default name of relationships and improve edge labels.
+The method `getSuccessionLabel` in `ViewLabelService` has been deleted, succession labels are now computed with the generic `getEdgeLabel` method.
 
 === Dependency update
 
@@ -43,6 +45,7 @@ The following methods have been moved from `NodeCreationTestsService` to `Diagra
 - https://github.com/eclipse-syson/syson/issues/756[#756] [diagrams] Add short name in container and compartment item labels.
 - https://github.com/eclipse-syson/syson/issues/760[#760] [diagrams] Allow to set short name via direct edit.
 - https://github.com/eclipse-syson/syson/issues/761[#761] [details] Make Declared Short Name accessible from the Core tab.
+- https://github.com/eclipse-syson/syson/issues/765[#765] [diagrams] Remove default name of relationships and improve edge labels.
 
 === New features
 

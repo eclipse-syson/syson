@@ -21,11 +21,11 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
-import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.util.AQLConstants;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
@@ -75,7 +75,7 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression("allocate")
+                .centerLabelExpression(LabelConstants.OPEN_QUOTE + "allocate" + LabelConstants.CLOSE_QUOTE)
                 .name(this.getName())
                 .semanticCandidatesExpression(AQLConstants.AQL_SELF + ".getAllReachableAllocateEdges()")
                 .sourceNodesExpression(AQLConstants.AQL_SELF + ".getSourceAllocateEdge()")
@@ -119,16 +119,5 @@ public abstract class AbstractAllocateEdgeDescriptionProvider extends AbstractEd
     protected ChangeContextBuilder getTargetReconnectToolBody() {
         return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectTargetAllocateEdge", AQLConstants.SEMANTIC_RECONNECTION_TARGET));
-    }
-
-    @Override
-    protected LabelEditTool getEdgeEditTool() {
-        var callEditService = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLConstants.AQL_SELF + ".directEditNameOff(newLabel)");
-
-        return this.diagramBuilderHelper.newLabelEditTool()
-                .name("Edit")
-                .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
-                .body(callEditService.build()).build();
     }
 }

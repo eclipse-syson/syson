@@ -41,6 +41,7 @@ import org.eclipse.syson.diagram.tests.checkers.NodeDescriptionIsReusedByChecker
 import org.eclipse.syson.diagram.tests.checkers.NodeDescriptionReusesChecker;
 import org.eclipse.syson.diagram.tests.predicates.DiagramPredicates;
 import org.eclipse.syson.services.ColorProvider;
+import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.DescriptionNameGenerator;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,6 +87,7 @@ public class StateTransitionViewDiagramDescriptionTests {
     public void eachEdgeWithCenterLabelHasDirectEditTool() {
         List<EdgeDescription> edgeDescriptionCandidates = this.diagramDescription.getEdgeDescriptions().stream()
                 .filter(edgeDescription -> edgeDescription.getCenterLabelExpression() != null && !edgeDescription.getCenterLabelExpression().isBlank())
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getAllocationUsage()).negate())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);
     }

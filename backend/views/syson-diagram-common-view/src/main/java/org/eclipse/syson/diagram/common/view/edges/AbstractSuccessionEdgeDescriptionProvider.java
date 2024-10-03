@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -71,7 +72,7 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
         return this.diagramBuilderHelper.newEdgeDescription()
                 .domainType(domainType)
                 .isDomainBasedEdge(true)
-                .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getSuccessionLabel"))
+                .centerLabelExpression(AQLUtils.getSelfServiceCallExpression("getEdgeLabel"))
                 .name(this.descriptionNameGenerator.getEdgeName(SysmlPackage.eINSTANCE.getSuccession()))
                 .semanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", domainType))
                 .style(this.createEdgeStyle())
@@ -103,6 +104,18 @@ public abstract class AbstractSuccessionEdgeDescriptionProvider extends Abstract
         var params = List.of(AQLConstants.SEMANTIC_RECONNECTION_SOURCE, AQLConstants.SEMANTIC_RECONNECTION_TARGET);
         return this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression(AQLConstants.EDGE_SEMANTIC_ELEMENT, "reconnectTargetSuccessionEdge", params));
+    }
+
+    @Override
+    protected LabelEditTool getEdgeEditTool() {
+        var changeContext = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("directEdit", "newLabel"))
+                .build();
+
+        return this.diagramBuilderHelper.newLabelEditTool()
+                .name("Edit Succession Label")
+                .body(changeContext)
+                .build();
     }
 
     private EdgeStyle createEdgeStyle() {

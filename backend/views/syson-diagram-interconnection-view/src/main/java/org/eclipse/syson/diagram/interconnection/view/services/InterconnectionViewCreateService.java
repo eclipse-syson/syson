@@ -94,7 +94,9 @@ public class InterconnectionViewCreateService extends ViewCreateService {
 
         InterfaceUsage interfaceUsage = SysmlFactory.eINSTANCE.createInterfaceUsage();
         this.elementInitializer(interfaceUsage);
-        interfaceUsage.setDeclaredName("connect");
+        // Edges should have an empty default name. This is not the case when using the initializer, because
+        // InterfaceUsage can be a node, which requires a default name.
+        interfaceUsage.setDeclaredName("");
         featureMembership.getOwnedRelatedElement().add(interfaceUsage);
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();

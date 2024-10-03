@@ -88,6 +88,9 @@ public class InterconnectionViewDiagramDescriptionTests {
         List<EdgeDescription> edgeDescriptionCandidates = this.diagramDescription.getEdgeDescriptions().stream()
                 // SuccessionAsUsage has a label but the grammar does not support the direct edit tool yet
                 .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getSuccessionAsUsage()).negate())
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getAllocationUsage()).negate())
+                // BindingConnectorAsUsage has a fixed label ("=") which cannot be edited.
+                .filter(this.diagramPredicates.hasDomainType(SysmlPackage.eINSTANCE.getBindingConnectorAsUsage()).negate())
                 .filter(edgeDescription -> edgeDescription.getCenterLabelExpression() != null && !edgeDescription.getCenterLabelExpression().isBlank())
                 .toList();
         new EdgeDescriptionHasDirectEditToolChecker().checkAll(edgeDescriptionCandidates);
