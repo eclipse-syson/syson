@@ -18,7 +18,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshed
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
-import org.eclipse.syson.services.SemanticCheckerFactory;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 
 import reactor.test.StepVerifier.Step;
 
@@ -29,12 +29,12 @@ import reactor.test.StepVerifier.Step;
  */
 public class SemanticCheckerService {
 
-    private final SemanticCheckerFactory semanticCheckerFactory;
+    private final SemanticRunnableFactory semanticRunnableFactory;
 
     private final IObjectService objectService;
 
-    public SemanticCheckerService(SemanticCheckerFactory semanticCheckerFactory, IObjectService objectService) {
-        this.semanticCheckerFactory = semanticCheckerFactory;
+    public SemanticCheckerService(SemanticRunnableFactory semanticRunnableFactory, IObjectService objectService) {
+        this.semanticRunnableFactory = semanticRunnableFactory;
         this.objectService = objectService;
     }
 
@@ -46,7 +46,7 @@ public class SemanticCheckerService {
     }
 
     public void checkEditingContext(ISemanticChecker semanticChecker, Step<DiagramRefreshedEventPayload> verifier) {
-        Runnable runnableChecker = this.semanticCheckerFactory.createRunnableChecker(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT,
+        Runnable runnableChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     semanticChecker.check(editingContext);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);

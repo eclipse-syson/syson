@@ -27,7 +27,7 @@ import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
  */
 public class ActionFlowViewEmptyDiagramNodeDescriptionProvider extends AbstractEmptyDiagramNodeDescriptionProvider {
 
-    public static final String NAME = "AFV Node EmptyDiagram";
+    public static final String NAME = "AFV Node " + EMPTY_DIAGRAM_NAME_SUFFIX;
 
     public ActionFlowViewEmptyDiagramNodeDescriptionProvider(IColorProvider colorProvider) {
         super(colorProvider, new AFVDescriptionNameGenerator());

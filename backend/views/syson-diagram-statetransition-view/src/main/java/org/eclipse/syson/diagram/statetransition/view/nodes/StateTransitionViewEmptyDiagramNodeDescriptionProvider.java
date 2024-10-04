@@ -27,7 +27,7 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
  */
 public class StateTransitionViewEmptyDiagramNodeDescriptionProvider extends AbstractEmptyDiagramNodeDescriptionProvider {
 
-    public static final String NAME = "STV Node EmptyDiagram";
+    public static final String NAME = "STV Node " + EMPTY_DIAGRAM_NAME_SUFFIX;
 
     public StateTransitionViewEmptyDiagramNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider, descriptionNameGenerator);

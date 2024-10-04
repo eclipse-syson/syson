@@ -38,6 +38,8 @@ public class CheckNodeOnDiagram implements IDiagramChecker {
 
     private int compartmentCount;
 
+    private String targetObjectLabel;
+
     public CheckNodeOnDiagram(DiagramDescriptionIdProvider diagramDescriptionIdProvider, DiagramComparator diagramComparator) {
         this.diagramDescriptionIdProvider = diagramDescriptionIdProvider;
         this.diagramComparator = diagramComparator;
@@ -53,12 +55,20 @@ public class CheckNodeOnDiagram implements IDiagramChecker {
         return this;
     }
 
+    public CheckNodeOnDiagram hasTargetObjectLabel(String expectedTargetObjectLabel) {
+        this.targetObjectLabel = Objects.requireNonNull(expectedTargetObjectLabel);
+        return this;
+    }
+
     @Override
     public void check(Diagram previousDiagram, Diagram newDiagram) {
         List<Node> newNodes = this.diagramComparator.newNodes(previousDiagram, newDiagram);
         assertThat(newDiagram.getNodes()).anySatisfy(childNode -> {
             assertThat(childNode).hasDescriptionId(this.diagramDescriptionIdProvider.getNodeDescriptionId(this.nodeDescriptionName));
             assertThat(childNode.getChildNodes()).hasSize(this.compartmentCount);
+            if (this.targetObjectLabel != null) {
+                assertThat(childNode).hasTargetObjectLabel(this.targetObjectLabel);
+            }
             assertThat(newNodes).contains(childNode);
         });
     }

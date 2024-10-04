@@ -47,6 +47,15 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
+    /**
+     * The suffix used to identify empty diagram nodes.
+     * <p>
+     * This suffix has to be used to define the name of the {@link NodeDescription} created by subclasses. It is used to
+     * differentiate empty diagram nodes from other nodes, e.g. when dropping element on them.
+     * </p>
+     */
+    public static final String EMPTY_DIAGRAM_NAME_SUFFIX = "EmptyDiagram";
+
     private final ToolDescriptionService toolDescriptionService;
 
     private final IDescriptionNameGenerator nameGenerator;

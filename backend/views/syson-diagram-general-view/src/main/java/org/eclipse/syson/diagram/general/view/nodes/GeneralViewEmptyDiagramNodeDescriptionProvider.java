@@ -28,7 +28,7 @@ import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvi
  */
 public class GeneralViewEmptyDiagramNodeDescriptionProvider extends AbstractEmptyDiagramNodeDescriptionProvider {
 
-    public static final String NAME = "GV Node EmptyDiagram";
+    public static final String NAME = "GV Node " + EMPTY_DIAGRAM_NAME_SUFFIX;
 
     public GeneralViewEmptyDiagramNodeDescriptionProvider(IColorProvider colorProvider) {
         super(colorProvider, new GVDescriptionNameGenerator());
