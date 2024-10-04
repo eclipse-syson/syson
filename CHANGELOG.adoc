@@ -27,6 +27,8 @@ The following methods have been moved from `NodeCreationTestsService` to `Diagra
 * `checkDiagram`
 - https://github.com/eclipse-syson/syson/issues/765[#765] [diagrams] Remove default name of relationships and improve edge labels.
 The method `getSuccessionLabel` in `ViewLabelService` has been deleted, succession labels are now computed with the generic `getEdgeLabel` method.
+- https://github.com/eclipse-syson/syson/issues/771[#771] [diagrams] Allow the drop of elements on empty diagram nodes.
+Rename the class `SemanticCheckerFactory` to `SemanticRunnableFactory` to reflect the new use cases of the class.
 
 === Dependency update
 
@@ -47,6 +49,7 @@ The method `getSuccessionLabel` in `ViewLabelService` has been deleted, successi
 - https://github.com/eclipse-syson/syson/issues/761[#761] [details] Make Declared Short Name accessible from the Core tab.
 - https://github.com/eclipse-syson/syson/issues/765[#765] [diagrams] Remove default name of relationships and improve edge labels.
 - https://github.com/eclipse-syson/syson/issues/767[#767] [explorer] Allow to create dependencies from the Explorer view.
+- https://github.com/eclipse-syson/syson/issues/771[#771] [diagrams] Allow the drop of elements on empty diagram nodes.
 
 === New features
 

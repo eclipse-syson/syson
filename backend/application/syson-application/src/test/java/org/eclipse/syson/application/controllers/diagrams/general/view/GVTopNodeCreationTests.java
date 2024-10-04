@@ -38,7 +38,7 @@ import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTe
 import org.eclipse.syson.application.controllers.utils.TestNameGenerator;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
-import org.eclipse.syson.services.SemanticCheckerFactory;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
@@ -92,7 +92,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     private NodeCreationTester nodeCreationTester;
 
     @Autowired
-    private SemanticCheckerFactory semanticCheckerFactory;
+    private SemanticRunnableFactory semanticRunnableFactory;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -194,7 +194,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
         this.verifier.consumeNextWith(updatedDiagramConsumer);
 
-        Runnable semanticChecker = this.semanticCheckerFactory.createRunnableChecker(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM_OBJECT).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);

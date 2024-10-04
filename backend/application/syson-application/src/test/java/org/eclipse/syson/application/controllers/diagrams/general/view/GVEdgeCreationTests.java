@@ -37,7 +37,7 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramCheck
 import org.eclipse.syson.application.controllers.diagrams.testers.EdgeCreationTester;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
-import org.eclipse.syson.services.SemanticCheckerFactory;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
@@ -88,7 +88,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
     private EdgeCreationTester edgeCreationTester;
 
     @Autowired
-    private SemanticCheckerFactory semanticCheckerFactory;
+    private SemanticRunnableFactory semanticRunnableFactory;
 
     @Autowired
     private DiagramComparator diagramComparator;
@@ -120,7 +120,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticCheckerFactory, this.objectService);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectService);
     }
 
     @AfterEach

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -344,23 +345,22 @@ public class ViewToolService extends ToolService {
     public Element dropElementFromExplorer(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Node selectedNode,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
         Optional<Object> optTargetElement;
+        Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> optNodeDescription = Optional.empty();
         if (selectedNode != null) {
             optTargetElement = this.objectService.getObject(editingContext, selectedNode.getTargetObjectId());
+            optNodeDescription = convertedNodes.entrySet().stream().filter(entry -> entry.getValue().getId().equals(selectedNode.getDescriptionId())).map(Entry::getKey).findFirst();
         } else {
             optTargetElement = this.objectService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
         }
-        if (optTargetElement.isPresent() && optTargetElement.get() instanceof Element targetElement) {
+        if (optNodeDescription.isPresent() && optNodeDescription.get().getName().contains("EmptyDiagram")) {
+            // The element is dropped on the information box displayed on an empty diagram. This box is visible only if
+            // the diagram is empty, so we want to actually perform the drop on the diagram itself.
+            return this.dropElementFromExplorer(element, editingContext, diagramContext, null, convertedNodes);
+        } else if (optTargetElement.isPresent() && optTargetElement.get() instanceof Element targetElement) {
             // Check if the element we attempt to drop is in the ancestors of the target element and we attempt to drop
             // it on anything else than the diagram background. If it is the case we want to prevent the drop.
             if (EMFUtils.isAncestor(element, targetElement) && selectedNode != null) {
-                final String errorMessage;
-                if (element == targetElement) {
-                    errorMessage = MessageFormat.format("Cannot drop {0} on itself", element.getName());
-                } else {
-                    errorMessage = MessageFormat.format("Cannot drop {0} on {1}: {0} is a parent of {1}", element.getName(), targetElement.getName());
-                }
-                this.logger.warn(errorMessage);
-                this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+                this.logAncestorError(element, targetElement);
             } else {
                 var optElementToDrop = Optional.ofNullable(element);
                 if (element instanceof Membership membership) {
@@ -461,14 +461,7 @@ public class ViewToolService extends ToolService {
         // Check if the element we attempt to drop is in the ancestors of the target element. If it is the case we want
         // to prevent the drop.
         if (EMFUtils.isAncestor(droppedElement, targetElement)) {
-            final String errorMessage;
-            if (droppedElement == targetElement) {
-                errorMessage = MessageFormat.format("Cannot drop {0} on itself", droppedElement.getName());
-            } else {
-                errorMessage = MessageFormat.format("Cannot drop {0} on {1}: {0} is a parent of {1}", droppedElement.getName(), targetElement.getName());
-            }
-            this.logger.warn(errorMessage);
-            this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
+            this.logAncestorError(droppedElement, targetElement);
             // Null prevents the drop and makes Sirius Web reset the position of the dragged element.
             result = null;
         } else {
@@ -476,6 +469,28 @@ public class ViewToolService extends ToolService {
             result = droppedElement;
         }
         return result;
+    }
+
+    /**
+     * Logs a message indicating an issue in the hierarchy of {@code parent} and {@code child}.
+     * <p>
+     * This method logs a message in the console as well as to the end user.
+     * </p>
+     *
+     * @param parent
+     *            the parent in the hierarchy
+     * @param child
+     *            the child in the hierarchy
+     */
+    private void logAncestorError(Element parent, Element child) {
+        final String errorMessage;
+        if (parent == child) {
+            errorMessage = MessageFormat.format("Cannot drop {0} on itself", parent.getName());
+        } else {
+            errorMessage = MessageFormat.format("Cannot drop {0} on {1}: {0} is a parent of {1}", parent.getName(), child.getName());
+        }
+        this.logger.warn(errorMessage);
+        this.feedbackMessageService.addFeedbackMessage(new Message(errorMessage, MessageLevel.WARNING));
     }
 
     /**

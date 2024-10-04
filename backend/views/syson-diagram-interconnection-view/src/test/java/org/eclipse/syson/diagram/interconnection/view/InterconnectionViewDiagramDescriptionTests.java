@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.emf.IJavaServiceProvider;
 import org.eclipse.syson.diagram.tests.checkers.AQLExpressionCallsExistingServicesChecker;
 import org.eclipse.syson.diagram.tests.checkers.DiagramDescriptionHasDropToolChecker;
+import org.eclipse.syson.diagram.tests.checkers.DiagramDescriptionHasNoEmptyDiagramNodeChecker;
 import org.eclipse.syson.diagram.tests.checkers.EdgeDescriptionHasDirectEditToolChecker;
 import org.eclipse.syson.diagram.tests.checkers.EdgeDescriptionHasReconnectToolChecker;
 import org.eclipse.syson.diagram.tests.checkers.NodeDescriptionHasChildrenChecker;
@@ -184,5 +185,11 @@ public class InterconnectionViewDiagramDescriptionTests {
                 .filter(expression -> expression != null && !expression.isBlank())
                 .collect(Collectors.toSet());
         new AQLExpressionCallsExistingServicesChecker(this.diagramServices).checkAll(aqlExpressions);
+    }
+
+    @Test
+    @DisplayName("Diagram does not contain an empty diagram node")
+    public void diagramHasNoEmptyDiagramNode() {
+        new DiagramDescriptionHasNoEmptyDiagramNodeChecker().check(this.diagramDescription);
     }
 }

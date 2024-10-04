@@ -27,19 +27,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import reactor.test.StepVerifier.Step;
 
 /**
- * Provides methods to run semantic checks as part of a subscription verification.
+ * Provides methods to run semantic functions as part of a subscription verification.
+ * <p>
+ * This class is typically used in conjunction with a {@link StepVerifier} to produce a {@link Runnable} that can be
+ * consumed by {@link Step#then(Runnable)}. The code executed inside the {@link Runnable} has access to the editing
+ * context, which can be used to update the semantic model, or perform verifications.
+ * </p>
  *
  * @author gdaniel
  */
 @Service
-public class SemanticCheckerFactory {
+public class SemanticRunnableFactory {
 
     @Autowired
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
-    public Runnable createRunnableChecker(String projectId, BiFunction<IEditingContext, IInput, IPayload> function) {
+    public Runnable createRunnable(String projectId, BiFunction<IEditingContext, IInput, IPayload> function) {
         return () -> {
             var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), projectId, function);
 

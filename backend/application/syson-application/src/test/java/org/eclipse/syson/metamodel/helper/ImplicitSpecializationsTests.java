@@ -27,12 +27,8 @@ import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
 import org.eclipse.syson.application.controller.editingContext.checkers.SemanticCheckerService;
-import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
-import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
-import org.eclipse.syson.services.SemanticCheckerFactory;
-import org.eclipse.syson.services.diagrams.DiagramComparator;
-import org.eclipse.syson.services.diagrams.NodeCreationTestsService;
+import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramSubscription;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.Element;
@@ -40,7 +36,6 @@ import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.helper.EMFUtils;
-import org.eclipse.syson.util.IDescriptionNameGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,19 +69,9 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
     private IObjectService objectService;
 
     @Autowired
-    private NodeCreationTester nodeCreationTester;
-
-    @Autowired
-    private SemanticCheckerFactory semanticCheckerFactory;
-
-    @Autowired
-    private DiagramComparator diagramComparator;
+    private SemanticRunnableFactory semanticRunnableFactory;
 
     private Step<DiagramRefreshedEventPayload> verifier;
-
-    private NodeCreationTestsService creationTestsService;
-
-    private final IDescriptionNameGenerator descriptionNameGenerator = new GVDescriptionNameGenerator();
 
     private SemanticCheckerService semanticCheckerService;
 
@@ -98,8 +83,7 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
                 SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
-        this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticCheckerFactory, this.objectService);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectService);
     }
 
     @AfterEach
