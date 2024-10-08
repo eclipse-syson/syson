@@ -53,7 +53,7 @@ a|❌
 a|❌
 
 |xref:user-manual:features/sysmlv2-overview.adoc[{kerml}/{sysml} Libraries]
-a|❌
+a|✅ (Partial)
 
 2+h|Diagram Management
 
@@ -78,6 +78,9 @@ a|✅
 a|❌
 
 |xref:integration/interoperability.adoc[Download / Upload {sysmlv2} textual format]
+a|✅ (Partial)
+
+|xref:integration/api.adoc[{sysmlv2} Standard REST APIs]
 a|✅ (Partial)
 |===
 

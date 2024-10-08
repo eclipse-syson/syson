@@ -26,12 +26,11 @@ include::user-manual:partial$before-you-start-experimental-all.adoc[]
 
 {product} is able to upload {sysmlv2} textual files and JSON files.
 
-====
 [NOTE]
 ====
 For {sysmlv2} textual files, only files with ".sysml" extension will be processed as {sysmlv2} textual files and uploaded successfully.
 ====
-====
+
 [NOTE]
 ====
 For JSON models, only models exported in the specific JSON format recognized by {product} can be re-uploaded by using the upload action.
