@@ -51,6 +51,9 @@ Rename the class `SemanticCheckerFactory` to `SemanticRunnableFactory` to reflec
 - https://github.com/eclipse-syson/syson/issues/765[#765] [diagrams] Remove default name of relationships and improve edge labels.
 - https://github.com/eclipse-syson/syson/issues/767[#767] [explorer] Allow to create dependencies from the Explorer view.
 - https://github.com/eclipse-syson/syson/issues/771[#771] [diagrams] Allow the drop of elements on empty diagram nodes.
+- https://github.com/eclipse-syson/syson/issues/775[#775] [syson] Exclude `src/test/resources` from checkstyle.
+This reduces the time required to build SysON, especially when using Spring Tool Suite.
+
 
 === New features
 
