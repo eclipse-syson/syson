@@ -52,6 +52,8 @@ Rename the class `SemanticCheckerFactory` to `SemanticRunnableFactory` to reflec
 - Allow the drop of elements on empty diagram nodes.
 It is now possible to drop elements from the explorer on the information box visible on empty diagrams.
 The dropped element is displayed on the diagram, the same way element creation tools on the information box display them on the diagram.
+- Exclude `src/test/resources` from checkstyle.
+This reduces the time required to build SysON, especially when using Spring Tool Suite.
 
 == New features
 
