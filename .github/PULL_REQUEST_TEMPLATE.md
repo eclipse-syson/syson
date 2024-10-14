@@ -1,14 +1,12 @@
-# Pull request template
-
-PLEASE READ ALL ITEMS AND CHECK RELEVANT CHECKBOXES BELOW.
+# PLEASE READ ALL ITEMS AND CHECK ONLY RELEVANT CHECKBOXES BELOW
 
 ## Project management
 
-- [ ] Has the pull request been added to the relevant project and milestone?
+- [ ] Has the pull request been added to the relevant milestone?
 - [ ] Have the `priority:` and `pr:` labels been added to the pull request? (In case of doubt, start with the labels `priority: low` and `pr: to review later`)
 - [ ] Have the relevant issues been added to the pull request?
 - [ ] Have the relevant labels been added to the issues? (`area:`, `type:`)
-- [ ] Have the relevant issues been added to the same project and milestone as the pull request?
+- [ ] Have the relevant issues been added to the same project milestone as the pull request?
 
 ## Changelog and release notes
 

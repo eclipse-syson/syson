@@ -34,7 +34,7 @@ Rename the class `SemanticCheckerFactory` to `SemanticRunnableFactory` to reflec
 
 - [releng] Switch to Spring Boot 3.3.3
 - [releng] Migrate the frontend to `react 18.3.1`, `react-dom 18.3.1`, `react-router-dom 6.26.0`, `@xstate/react: 3.0.0` and `@ObeoNetwork/gantt-task-react 0.6.0`
-- [releng] Switch to Sirius Web 2024.9.2
+- [releng] Switch to Sirius Web 2024.9.8
 - [releng] Switch to `commons-io 2.17` 
 
 === Bug fixes
