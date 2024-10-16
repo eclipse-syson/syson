@@ -400,10 +400,10 @@ public interface Type extends Namespace {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @model excludedMany="true" excludedOrdered="false"
+     * @model excludedMany="true" excludedOrdered="false" excludeImpliedRequired="true" excludeImpliedOrdered="false"
      * @generated
      */
-    EList<Membership> inheritedMemberships(EList<Type> excluded);
+    EList<Membership> inheritedMemberships(EList<Type> excluded, boolean excludeImplied);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -61,6 +61,7 @@ public class FeatureItemProvider extends TypeItemProvider {
             this.addIsUniquePropertyDescriptor(object);
             this.addChainingFeaturePropertyDescriptor(object);
             this.addEndOwningTypePropertyDescriptor(object);
+            this.addFeatureTargetPropertyDescriptor(object);
             this.addFeaturingTypePropertyDescriptor(object);
             this.addOwnedFeatureChainingPropertyDescriptor(object);
             this.addOwnedFeatureInvertingPropertyDescriptor(object);
@@ -129,6 +130,25 @@ public class FeatureItemProvider extends TypeItemProvider {
                 true,
                 false,
                 true,
+                null,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Feature Target feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addFeatureTargetPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_Feature_featureTarget_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_featureTarget_feature", "_UI_Feature_type"),
+                SysmlPackage.eINSTANCE.getFeature_FeatureTarget(),
+                false,
+                false,
+                false,
                 null,
                 null,
                 null));

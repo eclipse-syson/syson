@@ -250,11 +250,13 @@ public class NamespaceImplTest {
         // Import p3 in P2
         NamespaceImport nmImport0 = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         nmImport0.setImportedNamespace(testModel.p3);
+        nmImport0.setVisibility(VisibilityKind.PUBLIC);
 
         // Import p2 in p1 with recursion
         NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
         nmImport.setImportedNamespace(testModel.p2);
         nmImport.setIsRecursive(true);
+        nmImport.setVisibility(VisibilityKind.PUBLIC);
 
         assertContentEquals(testModel.p1.getImportedMembership(),
                 // All P2 content
@@ -271,10 +273,12 @@ public class NamespaceImplTest {
         // Import p3 in P2
         NamespaceImport nmImport0 = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
+        nmImport0.setVisibility(VisibilityKind.PUBLIC);
 
         // Import p2 in p1 with recursion
         NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
+        nmImport.setVisibility(VisibilityKind.PUBLIC);
 
         assertContentEquals(testModel.p3.getImportedMembership(),
                 // All P2 content
@@ -291,10 +295,12 @@ public class NamespaceImplTest {
         // Import p3 in P2
         NamespaceImport nmImport0 = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
+        nmImport0.setVisibility(VisibilityKind.PUBLIC);
 
         // Import p2 in p1 with recursion
         NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
+        nmImport.setVisibility(VisibilityKind.PUBLIC);
 
         assertContentEquals(testModel.p3.getMembership(),
                 // All P2 content
@@ -320,10 +326,12 @@ public class NamespaceImplTest {
         // Import p3 in P2
         NamespaceImport nmImport0 = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3);
         nmImport0.setImportedNamespace(testModel.p2);
+        nmImport0.setVisibility(VisibilityKind.PUBLIC);
 
         // Import p2 in p1 with recursion
         NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         nmImport.setImportedNamespace(testModel.p1);
+        nmImport.setVisibility(VisibilityKind.PUBLIC);
 
         assertContentEquals(testModel.p3.getImportedMembership(),
                 // All P2 content except def2
@@ -378,30 +386,34 @@ public class NamespaceImplTest {
                 testModel.privateDef3x1.getOwningMembership());
     }
 
-    @DisplayName("Check imported membershits with a simple recursive NamespaceImport with a loop")
+    @DisplayName("Check imported memberships with a simple recursive NamespaceImport with a loop")
     @Test
     public void importedMembershipRecursiveNamespaceImportWithLoop() {
         var testModel = new TestModel();
 
         // Import p1 in p3
-        testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3).setImportedNamespace(testModel.p1);
+        NamespaceImport namespaceImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p3);
+        namespaceImport.setImportedNamespace(testModel.p1);
+        namespaceImport.setVisibility(VisibilityKind.PUBLIC);
 
         // Import p3 in P2
-        NamespaceImport namespaceImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
+        namespaceImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p2);
         namespaceImport.setImportedNamespace(testModel.p3);
+        namespaceImport.setVisibility(VisibilityKind.PUBLIC);
 
         // Import p2 in p1 with recursion
-        NamespaceImport nmImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
-        nmImport.setImportedNamespace(testModel.p2);
-        nmImport.setIsRecursive(true);
+        namespaceImport = testModel.getBuilder().createIn(NamespaceImport.class, testModel.p1);
+        namespaceImport.setImportedNamespace(testModel.p2);
+        namespaceImport.setIsRecursive(true);
+        namespaceImport.setVisibility(VisibilityKind.PUBLIC);
 
-        assertContentEquals(testModel.p1.getImportedMembership(), //
+        assertContentEquals(testModel.p1.getImportedMembership(),
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content
                 testModel.def3.getOwningMembership(), testModel.p3x1.getOwningMembership(), testModel.def3x1.getOwningMembership());
 
-        assertContentEquals(testModel.p1.getMembership(), //
+        assertContentEquals(testModel.p1.getMembership(),
                 // All P2 content
                 testModel.def2.getOwningMembership(), testModel.p2x1.getOwningMembership(), testModel.def2x1.getOwningMembership(),
                 // All P3 content

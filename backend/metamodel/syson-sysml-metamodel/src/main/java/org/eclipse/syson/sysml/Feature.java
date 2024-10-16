@@ -32,6 +32,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.syson.sysml.Feature#isIsUnique <em>Is Unique</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getChainingFeature <em>Chaining Feature</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getEndOwningType <em>End Owning Type</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.Feature#getFeatureTarget <em>Feature Target</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getFeaturingType <em>Featuring Type</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getOwnedFeatureChaining <em>Owned Feature Chaining</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.Feature#getOwnedFeatureInverting <em>Owned Feature Inverting</em>}</li>
@@ -125,6 +126,17 @@ public interface Feature extends Type {
      * @generated
      */
     Type getEndOwningType();
+
+    /**
+     * Returns the value of the '<em><b>Feature Target</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Feature Target</em>' reference.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getFeature_FeatureTarget()
+     * @model required="true" transient="true" changeable="false" volatile="true" derived="true" ordered="false"
+     * @generated
+     */
+    Feature getFeatureTarget();
 
     /**
      * Returns the value of the '<em><b>Featuring Type</b></em>' reference list. The list contents are of type
@@ -506,5 +518,13 @@ public interface Feature extends Type {
      * @generated
      */
     boolean subsetsChain(Feature first, Feature second);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model ordered="false"
+     * @generated
+     */
+    EList<Feature> typingFeatures();
 
 } // Feature

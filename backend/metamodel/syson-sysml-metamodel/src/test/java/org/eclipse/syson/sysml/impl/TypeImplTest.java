@@ -204,12 +204,12 @@ public class TypeImplTest {
     public void inheritedMembers() {
         var testModel = new TestModel();
 
-        assertContentEquals(testModel.subDef.inheritedMemberships(new BasicEList<>()),
+        assertContentEquals(testModel.subDef.inheritedMemberships(new BasicEList<>(), false),
                 testModel.attr1.getOwningMembership(), testModel.attr0.getOwningMembership(), testModel.protectedAttr.getOwningMembership());
-        assertContentEquals(testModel.superDef.inheritedMemberships(new BasicEList<>()), testModel.attr0.getOwningMembership());
+        assertContentEquals(testModel.superDef.inheritedMemberships(new BasicEList<>(), false), testModel.attr0.getOwningMembership());
         assertContentEquals(testModel.superDef.getInheritedMembership(), testModel.attr0.getOwningMembership());
-        assertContentEquals(testModel.superSuperDef.inheritedMemberships(new BasicEList<>()));
-        assertContentEquals(testModel.megaDef.inheritedMemberships(new BasicEList<>()));
+        assertContentEquals(testModel.superSuperDef.inheritedMemberships(new BasicEList<>(), false));
+        assertContentEquals(testModel.megaDef.inheritedMemberships(new BasicEList<>(), false));
 
         // Inherited membership is a subset of membership.
         // All those elements should also be contained in memebership.

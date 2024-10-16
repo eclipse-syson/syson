@@ -105,7 +105,7 @@ public interface Import extends Relationship {
     void setIsRecursive(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Visibility</b></em>' attribute. The default value is <code>"public"</code>. The
+     * Returns the value of the '<em><b>Visibility</b></em>' attribute. The default value is <code>"private"</code>. The
      * literals are from the enumeration {@link org.eclipse.syson.sysml.VisibilityKind}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -113,7 +113,7 @@ public interface Import extends Relationship {
      * @see org.eclipse.syson.sysml.VisibilityKind
      * @see #setVisibility(VisibilityKind)
      * @see org.eclipse.syson.sysml.SysmlPackage#getImport_Visibility()
-     * @model default="public" required="true" ordered="false"
+     * @model default="private" required="true" ordered="false"
      * @generated
      */
     VisibilityKind getVisibility();

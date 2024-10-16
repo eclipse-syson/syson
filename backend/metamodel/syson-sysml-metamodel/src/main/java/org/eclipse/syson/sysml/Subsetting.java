@@ -37,8 +37,8 @@ public interface Subsetting extends Specialization {
      * @return the value of the '<em>Owning Feature</em>' reference.
      * @see org.eclipse.syson.sysml.SysmlPackage#getSubsetting_OwningFeature()
      * @see org.eclipse.syson.sysml.Feature#getOwnedSubsetting
-     * @model opposite="ownedSubsetting" required="true" transient="true" changeable="false" volatile="true"
-     *        derived="true" ordered="false" annotation="redefines" annotation="subsets"
+     * @model opposite="ownedSubsetting" transient="true" changeable="false" volatile="true" derived="true"
+     *        ordered="false" annotation="redefines" annotation="subsets"
      * @generated
      */
     Feature getOwningFeature();

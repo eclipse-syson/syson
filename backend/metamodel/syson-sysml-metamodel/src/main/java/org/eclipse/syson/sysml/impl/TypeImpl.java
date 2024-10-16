@@ -207,7 +207,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<FeatureMembership> getFeatureMembership() {
-        FeatureMembership[] featureMemberships = Stream.concat(this.getOwnedFeatureMembership().stream(), this.inheritedMemberships(new BasicEList<>()).stream())
+        FeatureMembership[] featureMemberships = Stream.concat(this.getOwnedFeatureMembership().stream(), this.inheritedMemberships(new BasicEList<>(), false).stream())
                 .filter(FeatureMembership.class::isInstance)
                 .toArray(FeatureMembership[]::new);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_FeatureMembership(), featureMemberships.length, featureMemberships);
@@ -239,7 +239,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        FeatureMembership[] data = this.inheritedMemberships(new BasicEList<>()).stream()
+        FeatureMembership[] data = this.inheritedMemberships(new BasicEList<>(), false).stream()
                 .filter(FeatureMembership.class::isInstance)
                 .map(FeatureMembership.class::cast)
                 .toArray(FeatureMembership[]::new);
@@ -586,7 +586,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
      * @generated NOT
      */
     @Override
-    public EList<Membership> inheritedMemberships(EList<Type> excluded) {
+    public EList<Membership> inheritedMemberships(EList<Type> excluded, boolean excludeImplied) {
         return new MembershipComputer(this, excluded).inheritedMemberships();
     }
 
@@ -615,7 +615,7 @@ public class TypeImpl extends NamespaceImpl implements Type {
         this.inheritedMemberships(excluded.stream()
                 .filter(Type.class::isInstance)
                 .map(Type.class::cast)
-                .collect(toCollection(UniqueEList::new)))
+                .collect(toCollection(UniqueEList::new)), false)
                 .stream()
                 .filter(filter)
                 .forEach(memberships::add);
@@ -832,8 +832,8 @@ public class TypeImpl extends NamespaceImpl implements Type {
                 return this.directionOf((Feature) arguments.get(0));
             case SysmlPackage.TYPE___DIRECTION_OF_EXCLUDING__FEATURE_ELIST:
                 return this.directionOfExcluding((Feature) arguments.get(0), (EList<Type>) arguments.get(1));
-            case SysmlPackage.TYPE___INHERITED_MEMBERSHIPS__ELIST:
-                return this.inheritedMemberships((EList<Type>) arguments.get(0));
+            case SysmlPackage.TYPE___INHERITED_MEMBERSHIPS__ELIST_BOOLEAN:
+                return this.inheritedMemberships((EList<Type>) arguments.get(0), (Boolean) arguments.get(1));
             case SysmlPackage.TYPE___SPECIALIZES__TYPE:
                 return this.specializes((Type) arguments.get(0));
             case SysmlPackage.TYPE___SPECIALIZES_FROM_LIBRARY__STRING:

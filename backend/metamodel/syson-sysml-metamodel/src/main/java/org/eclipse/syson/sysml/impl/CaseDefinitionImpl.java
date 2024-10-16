@@ -138,14 +138,12 @@ public class CaseDefinitionImpl extends CalculationDefinitionImpl implements Cas
             case SysmlPackage.CASE_DEFINITION__ACTOR_PARAMETER:
                 return this.getActorParameter();
             case SysmlPackage.CASE_DEFINITION__OBJECTIVE_REQUIREMENT:
-                if (resolve) {
+                if (resolve)
                     return this.getObjectiveRequirement();
-                }
                 return this.basicGetObjectiveRequirement();
             case SysmlPackage.CASE_DEFINITION__SUBJECT_PARAMETER:
-                if (resolve) {
+                if (resolve)
                     return this.getSubjectParameter();
-                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);

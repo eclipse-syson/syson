@@ -12,18 +12,11 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EcoreEList;
-import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.AnalysisCaseDefinition;
 import org.eclipse.syson.sysml.Expression;
 import org.eclipse.syson.sysml.SysmlPackage;
-import org.eclipse.syson.sysml.Usage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Analysis Case Definition</b></em>'. <!--
@@ -32,7 +25,6 @@ import org.eclipse.syson.sysml.Usage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.syson.sysml.impl.AnalysisCaseDefinitionImpl#getAnalysisAction <em>Analysis Action</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.impl.AnalysisCaseDefinitionImpl#getResultExpression <em>Result
  * Expression</em>}</li>
  * </ul>
@@ -57,17 +49,6 @@ public class AnalysisCaseDefinitionImpl extends CaseDefinitionImpl implements An
     @Override
     protected EClass eStaticClass() {
         return SysmlPackage.eINSTANCE.getAnalysisCaseDefinition();
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<ActionUsage> getAnalysisAction() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getAnalysisCaseDefinition_AnalysisAction(), data.size(), data.toArray());
     }
 
     /**
@@ -101,8 +82,6 @@ public class AnalysisCaseDefinitionImpl extends CaseDefinitionImpl implements An
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case SysmlPackage.ANALYSIS_CASE_DEFINITION__ANALYSIS_ACTION:
-                return this.getAnalysisAction();
             case SysmlPackage.ANALYSIS_CASE_DEFINITION__RESULT_EXPRESSION:
                 if (resolve)
                     return this.getResultExpression();
@@ -119,8 +98,6 @@ public class AnalysisCaseDefinitionImpl extends CaseDefinitionImpl implements An
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case SysmlPackage.ANALYSIS_CASE_DEFINITION__ANALYSIS_ACTION:
-                return !this.getAnalysisAction().isEmpty();
             case SysmlPackage.ANALYSIS_CASE_DEFINITION__RESULT_EXPRESSION:
                 return this.basicGetResultExpression() != null;
         }

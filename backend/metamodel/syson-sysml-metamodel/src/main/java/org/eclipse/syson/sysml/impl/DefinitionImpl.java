@@ -167,8 +167,9 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
     public void setIsVariation(boolean newIsVariation) {
         boolean oldIsVariation = this.isVariation;
         this.isVariation = newIsVariation;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DEFINITION__IS_VARIATION, oldIsVariation, this.isVariation));
+        }
     }
 
     /**
@@ -697,7 +698,7 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        EList<Membership> inheritedMemberships = this.inheritedMemberships(new BasicEList<>());
+        EList<Membership> inheritedMemberships = this.inheritedMemberships(new BasicEList<>(), false);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMemberships.size(), inheritedMemberships.toArray());
     }
 
@@ -891,8 +892,9 @@ public class DefinitionImpl extends ClassifierImpl implements Definition {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isVariation: ");

@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test for {@link PartDefinitionImpl}.
- * 
+ *
  * @author Arthur Daussy
  */
 public class PartDefinitionImplTest {
@@ -34,14 +34,14 @@ public class PartDefinitionImplTest {
 
     @BeforeEach
     public void setUp() {
-        builder = new ModelBuilder();
+        this.builder = new ModelBuilder();
     }
 
     @Test
     public void testGetInheritedMembers() {
 
-        Package p1 = builder.createWithName(Package.class, "p1");
-        
+        Package p1 = this.builder.createWithName(Package.class, "p1");
+
         /**
          * <pre>
          *   part def superDef {
@@ -54,22 +54,22 @@ public class PartDefinitionImplTest {
          * </pre>
          */
 
-        PartDefinition superDef = builder.createInWithName(PartDefinition.class, p1, "superDef");
-        AttributeUsage publicAttrSuperDef = builder.createInWithName(AttributeUsage.class, superDef, "publicAttrSuperDef");
-        AttributeUsage privateAttrSuperDef = builder.createInWithName(AttributeUsage.class, superDef, "privateAttrSuperDef");
+        PartDefinition superDef = this.builder.createInWithName(PartDefinition.class, p1, "superDef");
+        AttributeUsage publicAttrSuperDef = this.builder.createInWithName(AttributeUsage.class, superDef, "publicAttrSuperDef");
+        AttributeUsage privateAttrSuperDef = this.builder.createInWithName(AttributeUsage.class, superDef, "privateAttrSuperDef");
         privateAttrSuperDef.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
-        AttributeUsage protectedAttrSuperDef = builder.createInWithName(AttributeUsage.class, superDef, "protectedAttrSuperDef");
+        AttributeUsage protectedAttrSuperDef = this.builder.createInWithName(AttributeUsage.class, superDef, "protectedAttrSuperDef");
         protectedAttrSuperDef.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
 
-        PartDefinition subDef = builder.createInWithName(PartDefinition.class, p1, "subDef");
-        builder.addSubclassification(subDef, superDef);
+        PartDefinition subDef = this.builder.createInWithName(PartDefinition.class, p1, "subDef");
+        this.builder.addSubclassification(subDef, superDef);
 
         assertContentEquals(subDef.getInheritedMembership(), publicAttrSuperDef.getOwningMembership(), protectedAttrSuperDef.getOwningMembership());
-        assertContentEquals(subDef.inheritedMemberships(new BasicEList<>()), publicAttrSuperDef.getOwningMembership(), protectedAttrSuperDef.getOwningMembership());
+        assertContentEquals(subDef.inheritedMemberships(new BasicEList<>(), false), publicAttrSuperDef.getOwningMembership(), protectedAttrSuperDef.getOwningMembership());
         assertContentEquals(subDef.getInheritedFeature(), publicAttrSuperDef, protectedAttrSuperDef);
 
         assertContentEquals(superDef.getInheritedMembership());
-        assertContentEquals(superDef.inheritedMemberships(new BasicEList<>()));
+        assertContentEquals(superDef.inheritedMemberships(new BasicEList<>(), false));
         assertContentEquals(superDef.getInheritedFeature());
 
     }

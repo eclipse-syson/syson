@@ -159,9 +159,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
     public void setReqId(String newReqId) {
         String oldReqId = this.reqId;
         this.reqId = newReqId;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_DEFINITION__REQ_ID, oldReqId, this.reqId));
-        }
     }
 
     /**
@@ -253,9 +252,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
             case SysmlPackage.REQUIREMENT_DEFINITION__STAKEHOLDER_PARAMETER:
                 return this.getStakeholderParameter();
             case SysmlPackage.REQUIREMENT_DEFINITION__SUBJECT_PARAMETER:
-                if (resolve) {
+                if (resolve)
                     return this.getSubjectParameter();
-                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -327,9 +325,8 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public String toString() {
-        if (this.eIsProxy()) {
+        if (this.eIsProxy())
             return super.toString();
-        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (reqId: ");

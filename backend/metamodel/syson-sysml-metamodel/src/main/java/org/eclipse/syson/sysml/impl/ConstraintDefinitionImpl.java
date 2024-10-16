@@ -166,9 +166,8 @@ public class ConstraintDefinitionImpl extends OccurrenceDefinitionImpl implement
             case SysmlPackage.CONSTRAINT_DEFINITION__EXPRESSION:
                 return this.getExpression();
             case SysmlPackage.CONSTRAINT_DEFINITION__RESULT:
-                if (resolve) {
+                if (resolve)
                     return this.getResult();
-                }
                 return this.basicGetResult();
         }
         return super.eGet(featureID, resolve, coreType);

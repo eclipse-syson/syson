@@ -48,30 +48,10 @@ public class AnalysisCaseUsageItemProvider extends CaseUsageItemProvider {
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addAnalysisActionPropertyDescriptor(object);
             this.addAnalysisCaseDefinitionPropertyDescriptor(object);
             this.addResultExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Analysis Action feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addAnalysisActionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_AnalysisCaseUsage_analysisAction_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_AnalysisCaseUsage_analysisAction_feature", "_UI_AnalysisCaseUsage_type"),
-                SysmlPackage.eINSTANCE.getAnalysisCaseUsage_AnalysisAction(),
-                true,
-                false,
-                true,
-                null,
-                null,
-                null));
     }
 
     /**

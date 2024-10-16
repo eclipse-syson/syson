@@ -101,9 +101,8 @@ public class FeatureChainExpressionImpl extends OperatorExpressionImpl implement
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURE_CHAIN_EXPRESSION__TARGET_FEATURE:
-                if (resolve) {
+                if (resolve)
                     return this.getTargetFeature();
-                }
                 return this.basicGetTargetFeature();
         }
         return super.eGet(featureID, resolve, coreType);
