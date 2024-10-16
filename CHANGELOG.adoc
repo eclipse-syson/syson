@@ -53,6 +53,7 @@ Rename the class `SemanticCheckerFactory` to `SemanticRunnableFactory` to reflec
 - https://github.com/eclipse-syson/syson/issues/771[#771] [diagrams] Allow the drop of elements on empty diagram nodes.
 - https://github.com/eclipse-syson/syson/issues/775[#775] [syson] Exclude `src/test/resources` from checkstyle.
 This reduces the time required to build SysON, especially when using Spring Tool Suite.
+- https://github.com/eclipse-syson/syson/issues/779[#779] [diagrams] Add `New Subsetting` tool on `PartUsage` to create a `Subsetting` edge and a `PartUsage` that is subset.
 
 
 === New features
