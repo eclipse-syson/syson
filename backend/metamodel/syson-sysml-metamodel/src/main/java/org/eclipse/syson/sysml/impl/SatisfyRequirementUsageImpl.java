@@ -120,7 +120,7 @@ public class SatisfyRequirementUsageImpl extends RequirementUsageImpl implements
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
-     * 
+     *
      */
     public ConstraintUsage basicGetAssertedConstraint() {
         return this.getSatisfiedRequirement();

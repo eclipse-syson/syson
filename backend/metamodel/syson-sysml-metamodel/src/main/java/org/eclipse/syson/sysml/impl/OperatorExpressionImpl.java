@@ -89,9 +89,8 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
     public void setOperator(String newOperator) {
         String oldOperator = this.operator;
         this.operator = newOperator;
-        if (this.eNotificationRequired()) {
+        if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OPERATOR_EXPRESSION__OPERATOR, oldOperator, this.operator));
-        }
     }
 
     /**
@@ -160,9 +159,8 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
      */
     @Override
     public String toString() {
-        if (this.eIsProxy()) {
+        if (this.eIsProxy())
             return super.toString();
-        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (operator: ");

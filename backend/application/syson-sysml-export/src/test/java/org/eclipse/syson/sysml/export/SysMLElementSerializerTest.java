@@ -205,7 +205,7 @@ public class SysMLElementSerializerTest {
         // The root namespace should not be serialized
         this.assertTextualFormEquals("""
                 package Package1 {
-                    import 'Package 2'::'Package 3'::*;
+                    private import 'Package 2'::'Package 3'::*;
                     package 'Package 2' {
                         package 'Package 3';
                     }
@@ -230,7 +230,7 @@ public class SysMLElementSerializerTest {
 
     @Test
     public void emptyNamespaceImport() {
-        this.assertTextualFormEquals("import *;", this.fact.createNamespaceImport());
+        this.assertTextualFormEquals("private import *;", this.fact.createNamespaceImport());
     }
 
     @Test
@@ -275,7 +275,7 @@ public class SysMLElementSerializerTest {
 
         nmImport.setImportedNamespace(pack2);
 
-        this.assertTextualFormEquals("import Package1::'Package 2'::*;", nmImport);
+        this.assertTextualFormEquals("private import Package1::'Package 2'::*;", nmImport);
     }
 
     @Test
@@ -292,7 +292,7 @@ public class SysMLElementSerializerTest {
         nmImport.setImportedNamespace(pack1);
 
         this.assertTextualFormEquals("""
-                import Package1::* {
+                private import Package1::* {
                     comment
                         /* A comment */
                 }""", nmImport);
@@ -321,7 +321,7 @@ public class SysMLElementSerializerTest {
         nmImport.setImportedNamespace(pack3);
         pack1.getOwnedRelationship().add(nmImport);
 
-        this.assertTextualFormEquals("import 'Package 2'::'Package 3'::*;", nmImport);
+        this.assertTextualFormEquals("private import 'Package 2'::'Package 3'::*;", nmImport);
     }
 
     @Test
@@ -388,7 +388,7 @@ public class SysMLElementSerializerTest {
 
         mImport.setImportedMembership((Membership) pack2.eContainer());
 
-        this.assertTextualFormEquals("import Package1::'Package 2';", mImport);
+        this.assertTextualFormEquals("private import Package1::'Package 2';", mImport);
     }
 
     @Test
@@ -430,7 +430,7 @@ public class SysMLElementSerializerTest {
         mImport.setImportedMembership((Membership) pack3.eContainer());
         pack1.getOwnedRelationship().add(mImport);
 
-        this.assertTextualFormEquals("import 'Package 2'::'Package 3';", mImport);
+        this.assertTextualFormEquals("private import 'Package 2'::'Package 3';", mImport);
     }
 
     @Test
@@ -1425,7 +1425,7 @@ public class SysMLElementSerializerTest {
 
         this.assertTextualFormEquals("""
                 part def Camera {
-                    import PictureTaking::*;
+                    private import PictureTaking::*;
                     perform action takePicture :> PictureTaking::takePicture [0..*];
                     ref part focusingSubsystem {
                         perform takePicture.focus;

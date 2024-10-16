@@ -49,6 +49,7 @@ public class InvocationExpressionItemProvider extends ExpressionItemProvider {
             super.getPropertyDescriptors(object);
 
             this.addArgumentPropertyDescriptor(object);
+            this.addOperandPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -67,6 +68,25 @@ public class InvocationExpressionItemProvider extends ExpressionItemProvider {
                 true,
                 false,
                 true,
+                null,
+                null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the Operand feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addOperandPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
+                this.getResourceLocator(),
+                this.getString("_UI_InvocationExpression_operand_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_InvocationExpression_operand_feature", "_UI_InvocationExpression_type"),
+                SysmlPackage.eINSTANCE.getInvocationExpression_Operand(),
+                false,
+                false,
+                false,
                 null,
                 null,
                 null));

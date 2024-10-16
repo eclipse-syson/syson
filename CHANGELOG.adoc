@@ -29,6 +29,21 @@ The following methods have been moved from `NodeCreationTestsService` to `Diagra
 The method `getSuccessionLabel` in `ViewLabelService` has been deleted, succession labels are now computed with the generic `getEdgeLabel` method.
 - https://github.com/eclipse-syson/syson/issues/771[#771] [diagrams] Allow the drop of elements on empty diagram nodes.
 Rename the class `SemanticCheckerFactory` to `SemanticRunnableFactory` to reflect the new use cases of the class.
+- https://github.com/eclipse-syson/syson/issues/803[#803] [metamodel] Align metamodel to SysMLv2 and KerML Beta 2.2 specifications.
+The changes are:
+* Import
+** visibility attribute default value is now `private` instead of `public`
+* Type
+** inheritedMemberships operation now have a second parameter, `excludeImplied : boolean`
+* Feature
+** new `featureTarget : Feature` derived reference
+** new `typingFeatures : List<Feature>` operation
+* InvocationExpression
+** new `operand : List>Expression>` derived reference
+* AnalysisCaseUsage
+** remove `analysisAction : ActionUsage` reference
+* AnalysisCaseDefinition
+** remove `analysisAction : ActionUsage` reference
 
 === Dependency update
 

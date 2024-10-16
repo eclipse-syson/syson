@@ -48,29 +48,9 @@ public class AnalysisCaseDefinitionItemProvider extends CaseDefinitionItemProvid
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addAnalysisActionPropertyDescriptor(object);
             this.addResultExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Analysis Action feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addAnalysisActionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                this.getResourceLocator(),
-                this.getString("_UI_AnalysisCaseDefinition_analysisAction_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_AnalysisCaseDefinition_analysisAction_feature", "_UI_AnalysisCaseDefinition_type"),
-                SysmlPackage.eINSTANCE.getAnalysisCaseDefinition_AnalysisAction(),
-                true,
-                false,
-                true,
-                null,
-                null,
-                null));
     }
 
     /**

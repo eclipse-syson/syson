@@ -179,7 +179,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public EList<Membership> getInheritedMembership() {
-        EList<Membership> inheritedMembers = this.inheritedMemberships(new BasicEList<>());
+        EList<Membership> inheritedMembers = this.inheritedMemberships(new BasicEList<>(), false);
         return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getType_InheritedMembership(), inheritedMembers.size(), inheritedMembers.toArray());
     }
 
@@ -187,7 +187,7 @@ public class UsageImpl extends FeatureImpl implements Usage {
      * @generated NOT
      */
     @Override
-    public EList<Membership> inheritedMemberships(EList<Type> excluded) {
+    public EList<Membership> inheritedMemberships(EList<Type> excluded, boolean excludeImplied) {
         return new MembershipComputer(this, excluded).inheritedMemberships();
     }
 
@@ -231,8 +231,9 @@ public class UsageImpl extends FeatureImpl implements Usage {
     public void setIsVariation(boolean newIsVariation) {
         boolean oldIsVariation = this.isVariation;
         this.isVariation = newIsVariation;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.USAGE__IS_VARIATION, oldIsVariation, this.isVariation));
+        }
     }
 
     /**
@@ -893,12 +894,14 @@ public class UsageImpl extends FeatureImpl implements Usage {
             case SysmlPackage.USAGE__NESTED_VIEWPOINT:
                 return this.getNestedViewpoint();
             case SysmlPackage.USAGE__OWNING_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningDefinition();
+                }
                 return this.basicGetOwningDefinition();
             case SysmlPackage.USAGE__OWNING_USAGE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningUsage();
+                }
                 return this.basicGetOwningUsage();
             case SysmlPackage.USAGE__USAGE:
                 return this.getUsage();
@@ -1032,8 +1035,9 @@ public class UsageImpl extends FeatureImpl implements Usage {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isVariation: ");

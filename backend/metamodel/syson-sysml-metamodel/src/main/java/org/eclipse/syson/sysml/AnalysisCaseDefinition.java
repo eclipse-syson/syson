@@ -12,8 +12,6 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml;
 
-import org.eclipse.emf.common.util.EList;
-
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Analysis Case Definition</b></em>'. <!--
  * end-user-doc -->
@@ -22,7 +20,6 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.syson.sysml.AnalysisCaseDefinition#getAnalysisAction <em>Analysis Action</em>}</li>
  * <li>{@link org.eclipse.syson.sysml.AnalysisCaseDefinition#getResultExpression <em>Result Expression</em>}</li>
  * </ul>
  *
@@ -31,17 +28,6 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface AnalysisCaseDefinition extends CaseDefinition {
-    /**
-     * Returns the value of the '<em><b>Analysis Action</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.syson.sysml.ActionUsage}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Analysis Action</em>' reference list.
-     * @see org.eclipse.syson.sysml.SysmlPackage#getAnalysisCaseDefinition_AnalysisAction()
-     * @model transient="true" changeable="false" volatile="true" derived="true" annotation="subsets"
-     * @generated
-     */
-    EList<ActionUsage> getAnalysisAction();
-
     /**
      * Returns the value of the '<em><b>Result Expression</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc
      * -->

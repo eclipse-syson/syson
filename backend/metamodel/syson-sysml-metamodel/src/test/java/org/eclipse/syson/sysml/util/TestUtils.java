@@ -27,7 +27,7 @@ import org.eclipse.syson.sysml.Type;
 
 /**
  * Utils class for tests.
- * 
+ *
  * @author Arthur Daussy
  */
 public class TestUtils {
@@ -39,7 +39,7 @@ public class TestUtils {
 
     public static void testInheritedFeature(Type toTest, Feature... expected) {
         assertContentEquals(toTest.getInheritedMembership(), Stream.of(expected).map(Feature::getOwningMembership).toArray(Element[]::new));
-        assertContentEquals(toTest.inheritedMemberships(new BasicEList<>()), Stream.of(expected).map(Feature::getOwningMembership).toArray(Element[]::new));
+        assertContentEquals(toTest.inheritedMemberships(new BasicEList<>(), false), Stream.of(expected).map(Feature::getOwningMembership).toArray(Element[]::new));
         assertContentEquals(toTest.getInheritedFeature(), expected);
     }
 

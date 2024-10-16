@@ -92,7 +92,7 @@ public abstract class ImportImpl extends RelationshipImpl implements Import {
      * @generated
      * @ordered
      */
-    protected static final VisibilityKind VISIBILITY_EDEFAULT = VisibilityKind.PUBLIC;
+    protected static final VisibilityKind VISIBILITY_EDEFAULT = VisibilityKind.PRIVATE;
 
     /**
      * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!--

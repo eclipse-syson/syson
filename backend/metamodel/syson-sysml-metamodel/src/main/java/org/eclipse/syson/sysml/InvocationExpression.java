@@ -23,6 +23,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.syson.sysml.InvocationExpression#getArgument <em>Argument</em>}</li>
+ * <li>{@link org.eclipse.syson.sysml.InvocationExpression#getOperand <em>Operand</em>}</li>
  * </ul>
  *
  * @see org.eclipse.syson.sysml.SysmlPackage#getInvocationExpression()
@@ -40,5 +41,16 @@ public interface InvocationExpression extends Expression {
      * @generated
      */
     EList<Expression> getArgument();
+
+    /**
+     * Returns the value of the '<em><b>Operand</b></em>' reference list. The list contents are of type
+     * {@link org.eclipse.syson.sysml.Expression}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Operand</em>' reference list.
+     * @see org.eclipse.syson.sysml.SysmlPackage#getInvocationExpression_Operand()
+     * @model transient="true" changeable="false" derived="true"
+     * @generated
+     */
+    EList<Expression> getOperand();
 
 } // InvocationExpression
