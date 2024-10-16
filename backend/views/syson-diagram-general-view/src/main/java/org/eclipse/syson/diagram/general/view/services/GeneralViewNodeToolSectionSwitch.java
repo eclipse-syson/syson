@@ -39,6 +39,7 @@ import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.PartUsageSubsettingNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
@@ -361,6 +362,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
         createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
         createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache));
+        createSection.getNodeTools().add(new PartUsageSubsettingNodeToolProvider(descriptionNameGenerator).create(this.cache));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new SetAsCompositeToolProvider().create(this.cache),
                 new SetAsRefToolProvider().create(this.cache));

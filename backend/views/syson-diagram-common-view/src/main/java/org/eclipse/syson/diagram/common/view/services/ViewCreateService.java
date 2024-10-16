@@ -105,7 +105,7 @@ public class ViewCreateService {
      * Returns {@code true} if the diagram can be created on the provided {@code element}.
      *
      * @param element
-     *            the element to check
+     *         the element to check
      * @return {@code true} if the diagram can be created on the provided {@code element}
      */
     public boolean canCreateDiagram(Element element) {
@@ -113,11 +113,10 @@ public class ViewCreateService {
     }
 
     /**
-     * Call the {@link ElementInitializerSwitch} on the given {@link Element}. Allows to set various
-     * attributes/references.
+     * Call the {@link ElementInitializerSwitch} on the given {@link Element}. Allows to set various attributes/references.
      *
      * @param element
-     *            the given {@link Element}.
+     *         the given {@link Element}.
      * @return the given {@link Element}.
      */
     public Element elementInitializer(Element element) {
@@ -128,7 +127,7 @@ public class ViewCreateService {
      * Create the appropriate {@link Membership} child according to the given {@link Element}.
      *
      * @param element
-     *            the given {@link Element}.
+     *         the given {@link Element}.
      * @return the newly created {@link Membership}.
      */
     public Membership createMembership(Element element) {
@@ -146,9 +145,9 @@ public class ViewCreateService {
      * Create the appropriate {@link Membership} child according to the given {@link EClass} type.
      *
      * @param element
-     *            the given {@link Element}.
+     *         the given {@link Element}.
      * @param membershipType
-     *            the type of {@link Membership} to create.
+     *         the type of {@link Membership} to create.
      * @return the newly created {@link Membership}.
      */
     public Membership createMembership(Element element, EClass membershipType) {
@@ -165,7 +164,7 @@ public class ViewCreateService {
      * Create a {@link PartUsage} under the given {@link PartUsage}.
      *
      * @param partUsage
-     *            the {@link PartUsage} on which we want to create a nested {@link PartUsage}.
+     *         the {@link PartUsage} on which we want to create a nested {@link PartUsage}.
      * @return the created element.
      */
     public PartUsage createNestedPartUsage(PartUsage partUsage) {
@@ -181,15 +180,15 @@ public class ViewCreateService {
      * Check if the diagram associated to the given {@link IDiagramContext} contains nodes.
      *
      * @param element
-     *            the element on which this service has been called.
+     *         the element on which this service has been called.
      * @param editingContext
-     *            the {@link IEditingContext} retrieved from the Variable Manager.
+     *         the {@link IEditingContext} retrieved from the Variable Manager.
      * @param diagramContext
-     *            the {@link IDiagramContext} retrieved from the Variable Manager.
+     *         the {@link IDiagramContext} retrieved from the Variable Manager.
      * @param previousDiagram
-     *            the previous {@link Diagram} retrieved from the Variable Manager.
+     *         the previous {@link Diagram} retrieved from the Variable Manager.
      * @param emptyNodeName
-     *            the name of the special empty node description for the given diagram.
+     *         the name of the special empty node description for the given diagram.
      * @return the given {@link Element} if the diagram is empty, <code>null</code> otherwise.
      */
     protected Element getDiagramEmptyCandidate(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Diagram previousDiagram, String emptyNodeName) {
@@ -197,8 +196,11 @@ public class ViewCreateService {
         if (previousDiagram != null && diagramContext != null) {
             List<Node> previousNodes = previousDiagram.getNodes();
             List<ViewCreationRequest> viewCreationRequests = diagramContext.getViewCreationRequests();
-            if (viewCreationRequests.isEmpty() && (previousNodes.isEmpty() || previousNodes.stream().anyMatch(node -> this.viewDiagramDescriptionSearchService
-                    .findViewNodeDescriptionById(editingContext, node.getDescriptionId()).stream().anyMatch(nd -> emptyNodeName.equals(nd.getName()))))) {
+            if (viewCreationRequests.isEmpty() && (previousNodes.isEmpty() || previousNodes.stream()
+                    .anyMatch(node -> this.viewDiagramDescriptionSearchService
+                            .findViewNodeDescriptionById(editingContext, node.getDescriptionId())
+                            .stream()
+                            .anyMatch(nd -> emptyNodeName.equals(nd.getName()))))) {
                 emptyDiagram = true;
             }
         } else {
@@ -266,7 +268,7 @@ public class ViewCreateService {
      * Create a new RequirementUsage and set it as the objective requirement of the self element.
      *
      * @param self
-     *            the element usage to set the objective for
+     *         the element usage to set the objective for
      * @return the created RequirementUsage
      */
     public Element createRequirementUsageAsObjectiveRequirement(Element self, Element selectedObject) {
@@ -331,8 +333,7 @@ public class ViewCreateService {
      * Service to check whether the given element has a subject defined or not.
      *
      * @param self
-     *            a {@link RequirementUsage} or a {@link RequirementDefinition} or a {@link UseCaseUsage} or a
-     *            {@link UseCaseDefinition}
+     *         a {@link RequirementUsage} or a {@link RequirementDefinition} or a {@link UseCaseUsage} or a {@link UseCaseDefinition}
      * @return {@code true} if {@code self} contains a subject and {@code false} otherwise.
      */
     public boolean isEmptySubjectCompartment(Element self) {
@@ -343,7 +344,8 @@ public class ViewCreateService {
             return self.getOwnedRelationship().stream()
                     .filter(SubjectMembership.class::isInstance)
                     .map(SubjectMembership.class::cast)
-                    .findFirst().isEmpty();
+                    .findFirst()
+                    .isEmpty();
         }
         // irrelevant case, this service should only be used upon a RequirementUsage/RequirementDefinition/UseCaseUsage
         // or UseCaseDefinition
@@ -354,7 +356,7 @@ public class ViewCreateService {
      * Service to check whether the given UseCaseUsage or UseCaseDefinition has an objective requirement defined or not.
      *
      * @param self
-     *            a {@link UseCaseUsage} or a {@link UseCaseDefinition}
+     *         a {@link UseCaseUsage} or a {@link UseCaseDefinition}
      * @return {@code true} if {@code self} contains a subject and {@code false} otherwise.
      */
     public boolean isEmptyObjectiveRequirementCompartment(Element self) {
@@ -362,34 +364,34 @@ public class ViewCreateService {
     }
 
     /**
-     * Check whether the given element(that should be a {@link UseCaseDefinition} or a {@link UseCaseUsage}) contains an
-     * objective requirement or not.
+     * Check whether the given element(that should be a {@link UseCaseDefinition} or a {@link UseCaseUsage}) contains an objective requirement or not.
      *
      * @param self
-     *            a {@link UseCaseDefinition} or a {@link UseCaseUsage} in which the objective is looked for
+     *         a {@link UseCaseDefinition} or a {@link UseCaseUsage} in which the objective is looked for
      * @return {@code true} if the given use case contains an objective and {@code false} otherwise.
      */
     public static boolean isEmptyObjectiveRequirement(Element self) {
         return self.getOwnedRelationship().stream()
                 .filter(ObjectiveMembership.class::isInstance)
                 .map(ObjectiveMembership.class::cast)
-                .findFirst().isEmpty();
+                .findFirst()
+                .isEmpty();
     }
 
     /**
      * Service to check whether the given element has a subaction of Kind {@code kind} subject defined or not.
      *
      * @param self
-     *            a {@link StateUsage} or a {@link StateDefinition}
+     *         a {@link StateUsage} or a {@link StateDefinition}
      * @return {@code true} if {@code self} contains a subaction of the specified kind and {@code false} otherwise.
      */
     public boolean isEmptyOfActionKindCompartment(Element self, String kind) {
         if (self instanceof StateUsage
                 || self instanceof StateDefinition) {
-            return !self.getOwnedRelationship().stream()
+            return self.getOwnedRelationship().stream()
                     .filter(StateSubactionMembership.class::isInstance)
                     .map(StateSubactionMembership.class::cast)
-                    .anyMatch(mem -> mem.getKind().getLiteral().equalsIgnoreCase(kind));
+                    .noneMatch(mem -> mem.getKind().getLiteral().equalsIgnoreCase(kind));
         }
         // irrelevant case, this service should only be used upon a StateUsage/StateDefinition
         return true;
@@ -399,10 +401,10 @@ public class ViewCreateService {
      * Create a new Part Usage which is used as the end given Allocation Definition.
      *
      * @param self
-     *            the Allocation Definition in which the new end is added.
+     *         the Allocation Definition in which the new end is added.
      * @param endParent
-     *            the owner of the new part usage used as the end.
-     * @return
+     *         the owner of the new part usage used as the end.
+     * @return the self modified element is returned
      */
     public Element createPartUsageAsAllocationDefinitionEnd(AllocationDefinition self, Element endParent) {
         // create the part usage that is used as the end element
@@ -451,10 +453,12 @@ public class ViewCreateService {
      * Retrieve the parent node semantic element of the given node
      *
      * @param sourceNode
-     *            a {@link Node}
+     *         a {@link Node}
      * @param editingContext
-     * @return the semantic element of the parent graphical node of the given one or <code>null</code> if unable to find
-     *         it.
+     *         the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable manager.
+     * @param diagramService
+     *         the {@link IDiagramService} used to retrieve diagram
+     * @return the semantic element of the parent graphical node of the given one or <code>null</code> if unable to find it.
      */
     private Element getSourceOwner(Node sourceNode, IEditingContext editingContext, IDiagramService diagramService) {
         Diagram diagram = diagramService.getDiagramContext().getDiagram();
@@ -488,20 +492,24 @@ public class ViewCreateService {
                     .forEach(inheritedElements::add);
         }
         // Removes all features that have been redefined, subsetted, subclassed...
-        List<Element> alreadySpecializedFeatures = new ArrayList<>();
+        var alreadySpecializedFeatures = new ArrayList<Feature>();
         type.getOwnedFeature().stream()
                 .flatMap(f -> this.getSpecializationTypeHierarchy(f).stream())
-                .filter(general -> inheritedElements.contains(general))
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .filter(inheritedElements::contains)
                 .forEach(alreadySpecializedFeatures::add);
         inheritedElements.stream()
                 .flatMap(f -> this.getSpecializationTypeHierarchy(f).stream())
-                .filter(general -> inheritedElements.contains(general))
+                .filter(Feature.class::isInstance)
+                .map(Feature.class::cast)
+                .filter(inheritedElements::contains)
                 .forEach(alreadySpecializedFeatures::add);
         inheritedElements.removeAll(alreadySpecializedFeatures);
         inheritedElements.remove(type);
 
         if (showInheritedMembers && !showInheritedMembersFromStandardLibraries) {
-            inheritedElements.removeIf(elt -> ElementUtil.isFromStandardLibrary(elt));
+            inheritedElements.removeIf(ElementUtil::isFromStandardLibrary);
         } else if (showInheritedMembersFromStandardLibraries && !showInheritedMembers) {
             inheritedElements.removeIf(elt -> !ElementUtil.isFromStandardLibrary(elt));
         }
@@ -602,7 +610,7 @@ public class ViewCreateService {
                 .filter(ParameterMembership.class::isInstance)
                 .map(ParameterMembership.class::cast)
                 .toList();
-        if (memberships.size() == 0) {
+        if (memberships.isEmpty()) {
             // add an empty payload
             acceptActionUsage.getOwnedRelationship().add(this.createParameterMembershipWithReferenceUsage());
             result = SysmlFactory.eINSTANCE.createParameterMembership();
@@ -677,12 +685,12 @@ public class ViewCreateService {
         boolean result = true;
         if (element instanceof AcceptActionUsage aau) {
             var payloadParameter = aau.getPayloadParameter();
-            if (payloadParameter != null && payloadParameter.getOwnedRelationship().size() > 0) {
+            if (payloadParameter != null && !payloadParameter.getOwnedRelationship().isEmpty()) {
                 var type = payloadParameter.getOwnedRelationship().stream()
                         .filter(FeatureTyping.class::isInstance)
                         .map(FeatureTyping.class::cast)
                         .map(FeatureTyping::getType)
-                        .filter(t -> t != null)
+                        .filter(Objects::nonNull)
                         .findFirst()
                         .orElse(null);
                 return type == null;
@@ -743,7 +751,7 @@ public class ViewCreateService {
      * Add the standard start action as the child of the given element.
      *
      * @param ownerElement
-     *            an element that will own the standard start action.
+     *         an element that will own the standard start action.
      * @return the {@link Membership} element containing the start action in its memberElement feature.
      */
     public Membership addStartAction(Element ownerElement) {
@@ -761,7 +769,7 @@ public class ViewCreateService {
      * Add the standard done action as the child of the given element.
      *
      * @param ownerElement
-     *            an element that will own the standard done action.
+     *         an element that will own the standard done action.
      * @return the {@link Membership} element containing the done action in its memberElement feature.
      */
     public Membership addDoneAction(Element ownerElement) {
@@ -776,11 +784,10 @@ public class ViewCreateService {
     }
 
     /**
-     * Create a new action {@link ActionUsage} inside the given element which should be an {@link ActionUsage} or an
-     * {@link ActionDefintion}.
+     * Create a new action {@link ActionUsage} inside the given element which should be an {@link ActionUsage} or an {@link ActionDefinition}.
      *
      * @param ownerElement
-     *            the owner of the new action usage.
+     *         the owner of the new action usage.
      * @return the newly created action usage.
      */
     public ActionUsage createSubActionUsage(Element ownerElement) {
@@ -796,24 +803,23 @@ public class ViewCreateService {
      * Removal service for Start action inside an action usage or definition.
      *
      * @param selectedNode
-     *            the node element that represents the start action in the diagram.
+     *         the node element that represents the start action in the diagram.
      * @param editingContext
+     *         the {@link IEditingContext} of the tool. It corresponds to a variable accessible from the variable manager.
      * @param diagramService
+     *         the {@link IDiagramService} used to retrieve diagram
      * @return the element that owned the start action.
      */
     public Element removeStartAction(Node selectedNode, IEditingContext editingContext, IDiagramService diagramService) {
         Element owner = this.getSourceOwner(selectedNode, editingContext, diagramService);
-        var membership = owner.getOwnedRelationship().stream()
+        owner.getOwnedRelationship().stream()
                 .filter(Membership.class::isInstance)
                 .map(Membership.class::cast)
                 .filter(m -> {
                     return m.getMemberElement() instanceof ActionUsage au && this.utilService.isStandardStartAction(au);
                 })
                 .findFirst()
-                .orElse(null);
-        if (membership != null) {
-            this.deleteService.deleteFromModel(membership);
-        }
+                .ifPresent(this.deleteService::deleteFromModel);
         return owner;
     }
 
@@ -821,7 +827,7 @@ public class ViewCreateService {
      * Creation of the semantic elements associated to a Join action.
      *
      * @param ownerElement
-     *            the element owning the new Join action.
+     *         the element owning the new Join action.
      * @return the new Join action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createJoinAction(Element ownerElement) {
@@ -840,7 +846,7 @@ public class ViewCreateService {
      * Creation of the semantic elements associated to a Fork action.
      *
      * @param ownerElement
-     *            the element owning the new Fork action.
+     *         the element owning the new Fork action.
      * @return the new Fork action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createForkAction(Element ownerElement) {
@@ -859,7 +865,7 @@ public class ViewCreateService {
      * Creation of the semantic elements associated to a Merge action.
      *
      * @param ownerElement
-     *            the element owning the new Merge action.
+     *         the element owning the new Merge action.
      * @return the new Merge action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createMergeAction(Element ownerElement) {
@@ -878,7 +884,7 @@ public class ViewCreateService {
      * Creation of the semantic elements associated to a Decision action.
      *
      * @param ownerElement
-     *            the element owning the new Decision action.
+     *         the element owning the new Decision action.
      * @return the new Decision action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createDecisionAction(Element ownerElement) {
@@ -897,7 +903,7 @@ public class ViewCreateService {
      * Creation of the semantic elements associated to an Assignment action inside an Action or ActionDefinition.
      *
      * @param ownerElement
-     *            the element owning the new Assignment action.
+     *         the element owning the new Assignment action.
      * @return the new Assignment action if it has been successfully created or <code>ownerElement</code> otherwise.
      */
     public Element createAssignmentAction(Element ownerElement) {
@@ -949,5 +955,28 @@ public class ViewCreateService {
 
     private boolean isAction(Element element) {
         return element instanceof ActionUsage || element instanceof ActionDefinition;
+    }
+
+    /**
+     * Creates a new sibling part usage as well as a subsetting edge between those parts.
+     *
+     * @param self
+     *         the {@link PartUsage} to subset by a new part usage
+     * @return the new part usage or self if something went wrong.
+     */
+    public PartUsage createPartUsageAndSubsetting(PartUsage self) {
+        var parent = self.getOwner();
+        if (parent != null) {
+            // create a new part usage
+            var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+            elementInitializerSwitch.doSwitch(newPartUsage);
+            var membership = SysmlFactory.eINSTANCE.createOwningMembership();
+            membership.getOwnedRelatedElement().add(newPartUsage);
+            parent.getOwnedRelationship().add(membership);
+            // create subsetting edge between self and new part usage
+            this.utilService.setSubsetting(self, newPartUsage);
+            return newPartUsage;
+        }
+        return self;
     }
 }
