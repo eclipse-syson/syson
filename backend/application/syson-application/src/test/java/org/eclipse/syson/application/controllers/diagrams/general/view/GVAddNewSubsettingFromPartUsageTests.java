@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -31,7 +30,6 @@ import org.eclipse.syson.application.controllers.diagrams.checkers.IDiagramCheck
 import org.eclipse.syson.application.controllers.diagrams.testers.NodeCreationTester;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
-import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
 import org.eclipse.syson.services.diagrams.DiagramDescriptionIdProvider;
 import org.eclipse.syson.services.diagrams.api.IGivenDiagramDescription;
@@ -53,29 +51,13 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifier.Step;
 
 /**
- * Tests the invocation of the "new Subsetting" tool from a Part Usage in the General View diagram.
+ * Tests the invocation of the "New Subsetting" tool from a Part Usage in the General View diagram.
  *
  * @author Jerome Gout
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class GVAddNewSubsettingFromPartUsageTests extends AbstractIntegrationTests {
-
-    private static final String PACKAGE1 = "Package1";
-
-    private static final String ACTION1 = "action1";
-
-    private static final String ACTION2 = "action2";
-
-    private static final String ACTION3 = "action3";
-
-    private static final String PART1 = "part1";
-
-    private static final String PART2 = "part2";
-
-    private static final String ATTRIBUTE_DEFINITION = "AttributeDefinition1";
-
-    private static final String NODE_SHOULD_BE_ON_DIAGRAM_MESSAGE = "Node {0} should exist on the diagram";
 
     private static final int PART_USAGE_COMPARTMENT_COUNT = 7;
 
@@ -95,13 +77,7 @@ public class GVAddNewSubsettingFromPartUsageTests extends AbstractIntegrationTes
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private IObjectService objectService;
-
-    @Autowired
     private NodeCreationTester nodeCreationTester;
-
-    @Autowired
-    private SemanticRunnableFactory semanticRunnableFactory;
 
     @Autowired
     private DiagramComparator diagramComparator;
