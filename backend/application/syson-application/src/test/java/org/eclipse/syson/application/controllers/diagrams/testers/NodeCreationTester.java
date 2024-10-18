@@ -17,13 +17,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +47,9 @@ import reactor.test.StepVerifier;
  */
 @Service
 public class NodeCreationTester {
+
+    @Autowired
+    private EditLabelMutationRunner editLabelMutationRunner;
 
     @Autowired
     private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
@@ -72,5 +80,20 @@ public class NodeCreationTester {
         var createElementResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(createElementInput);
         String typename = JsonPath.read(createElementResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+
+        Runnable editLabel = () -> {
+        };
+    }
+
+    public void renameNode(String projectId, AtomicReference<Diagram> diagram, String nodeName, String newName) {
+        Optional<Node> optionalNode = diagram.get().getNodes().stream().filter(n -> n.getTargetObjectLabel().equals(nodeName)).findFirst();
+
+        assertThat(optionalNode).as("the node " + nodeName + " is not present in the diagram").isNotEmpty();
+
+        var input = new EditLabelInput(UUID.randomUUID(), projectId, diagram.get().getId(), optionalNode.get().getInsideLabel().getId(), newName);
+        var invokeSingleClickOnDiagramElementToolResult = this.editLabelMutationRunner.run(input);
+
+        String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.editLabel.__typename");
+        assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
     }
 }

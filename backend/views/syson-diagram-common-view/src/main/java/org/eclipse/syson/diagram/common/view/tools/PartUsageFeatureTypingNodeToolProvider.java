@@ -29,46 +29,47 @@ import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
- * Node tool provider to create a subsetting edge from a Part usage to a new Part usage.
+ * Node tool provider to create a FeatureTyping edge from a PartUsage to a new PartDefinition.
  *
  * @author Jerome Gout
  */
-public class PartUsageSubsettingNodeToolProvider implements INodeToolProvider {
+public class PartUsageFeatureTypingNodeToolProvider implements INodeToolProvider {
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
+    private final NodeDescription definitionNodeDescription;
+
     private final IDescriptionNameGenerator descriptionNameGenerator;
 
-    public PartUsageSubsettingNodeToolProvider(IDescriptionNameGenerator descriptionNameGenerator) {
+    public PartUsageFeatureTypingNodeToolProvider(NodeDescription definitionNodeDescription, IDescriptionNameGenerator descriptionNameGenerator) {
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+        this.definitionNodeDescription = Objects.requireNonNull(definitionNodeDescription);
     }
 
     @Override
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var creationSubsettingServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createPartUsageAndSubsetting"))
+        var creationFeatureTypingServiceCall = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("createPartDefinitionAndFeatureTyping"))
                 .build();
-
-        NodeDescription nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage())).orElse(null);
 
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
-                .elementDescription(nodeDescription)
+                .elementDescription(this.definitionNodeDescription)
                 .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext")))
                 .semanticElementExpression(AQLConstants.AQL_SELF)
                 .variableName("newView");
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF)
-                .children(creationSubsettingServiceCall, createView.build())
+                .children(creationFeatureTypingServiceCall, createView.build())
                 .build();
 
-        return builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getSubsetting()))
-                .iconURLsExpression("/icons/full/obj16/Subsetting.svg")
+        return builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFeatureTyping()))
+                .iconURLsExpression("/icons/full/obj16/FeatureTyping.svg")
                 .body(rootChangContext)
                 .build();
     }

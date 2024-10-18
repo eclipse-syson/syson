@@ -39,6 +39,7 @@ import org.eclipse.syson.diagram.common.view.tools.JoinActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.MergeActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ObjectiveRequirementWithBaseRequirementCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.PartUsageFeatureTypingNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PartUsageSubsettingNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
@@ -50,6 +51,7 @@ import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNod
 import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -91,11 +93,14 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
 
     private final ToolDescriptionService toolDescriptionService;
 
+    private final UtilService utilService;
+
     public GeneralViewNodeToolSectionSwitch(IViewDiagramElementFinder cache, List<NodeDescription> allNodeDescriptions) {
         super(new GVDescriptionNameGenerator());
         this.cache = Objects.requireNonNull(cache);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
         this.toolDescriptionService = new ToolDescriptionService(this.descriptionNameGenerator);
+        this.utilService = new UtilService();
     }
 
     @Override
@@ -362,7 +367,8 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
         createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
         createSection.getNodeTools().add(new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache));
-        createSection.getNodeTools().add(new PartUsageSubsettingNodeToolProvider(descriptionNameGenerator).create(this.cache));
+        createSection.getNodeTools().add(new PartUsageSubsettingNodeToolProvider(this.descriptionNameGenerator).create(this.cache));
+        this.createPartUsageFeatureTypingToolNode(object, createSection);
         var editSection = this.toolDescriptionService.buildEditSection(
                 new SetAsCompositeToolProvider().create(this.cache),
                 new SetAsRefToolProvider().create(this.cache));
@@ -673,5 +679,13 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     private NodeTool createPortUsageAsReceiverNodeTool() {
         var newPortAsReceiverToolProvider = new AcceptActionPortUsageReceiverToolNodeProvider();
         return newPortAsReceiverToolProvider.create(null);
+    }
+
+    private void createPartUsageFeatureTypingToolNode(PartUsage object, NodeToolSection createSection) {
+        var definitionNodeName = this.descriptionNameGenerator.getNodeName(this.utilService.getPartDefinitionEClassFrom(object));
+        this.allNodeDescriptions.stream()
+                .filter(nodeDesc -> Objects.equals(nodeDesc.getName(), definitionNodeName))
+                .findFirst()
+                .ifPresent(nodeDesc -> createSection.getNodeTools().add(new PartUsageFeatureTypingNodeToolProvider(nodeDesc, this.descriptionNameGenerator).create(this.cache)));
     }
 }
