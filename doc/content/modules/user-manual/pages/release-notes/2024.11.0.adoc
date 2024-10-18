@@ -54,7 +54,8 @@ It is now possible to drop elements from the explorer on the information box vis
 The dropped element is displayed on the diagram, the same way element creation tools on the information box display them on the diagram.
 - Exclude `src/test/resources` from checkstyle.
 This reduces the time required to build SysON, especially when using Spring Tool Suite.
--  Add `New Subsetting` tool on `PartUsage` to create a `Subsetting` edge and a `PartUsage` that is subset.
+- Add `New Subsetting` tool on `PartUsage` to create a `Subsetting` edge and a `PartUsage` that is subset.
+- Add `New Feature Typing` tool on `PartUsage` to create a `FeatureTyping` edge and a `PartDefinition`.
 
 == New features
 
