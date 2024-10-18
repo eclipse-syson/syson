@@ -969,13 +969,36 @@ public class ViewCreateService {
         if (parent != null) {
             // create a new part usage
             var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            elementInitializerSwitch.doSwitch(newPartUsage);
+            this.elementInitializerSwitch.doSwitch(newPartUsage);
             var membership = SysmlFactory.eINSTANCE.createOwningMembership();
             membership.getOwnedRelatedElement().add(newPartUsage);
             parent.getOwnedRelationship().add(membership);
             // create subsetting edge between self and new part usage
             this.utilService.setSubsetting(self, newPartUsage);
             return newPartUsage;
+        }
+        return self;
+    }
+
+    /**
+     * Creates a new sibling part definition as well as a feature typing edge between the part usage and the part definition.
+     *
+     * @param self
+     *         the {@link PartUsage} to type by a new part definition
+     * @return the new part definition or self if something went wrong.
+     */
+    public Element createPartDefinitionAndFeatureTyping(PartUsage self) {
+        var parent = self.getOwner();
+        if (parent != null) {
+            // create a new definition associated to the given part usage
+            var newPartDefinition = this.utilService.createPartDefinitionFrom(self);
+            this.elementInitializerSwitch.doSwitch(newPartDefinition);
+            var membership = SysmlFactory.eINSTANCE.createOwningMembership();
+            membership.getOwnedRelatedElement().add(newPartDefinition);
+            parent.getOwnedRelationship().add(membership);
+            // create feature typing edge between self and new part definition
+            this.utilService.setFeatureTyping(self, newPartDefinition);
+            return newPartDefinition;
         }
         return self;
     }

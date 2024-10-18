@@ -31,14 +31,18 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Classifier;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
+import org.eclipse.syson.sysml.ConnectionUsage;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -48,6 +52,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.Relationship;
+import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.StateUsage;
@@ -60,6 +65,7 @@ import org.eclipse.syson.sysml.TransitionFeatureMembership;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.ViewUsage;
 import org.eclipse.syson.sysml.helper.NameHelper;
 import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.AQLUtils;
@@ -760,5 +766,44 @@ public class UtilService {
 
     private boolean isAction(Element element) {
         return element instanceof ActionUsage || element instanceof ActionDefinition;
+    }
+
+    /**
+     * Return an instance of the actual {@link PartDefinition} associated to the given {@link PartUsage}.
+     * The type of the given parameter may be a subclass of {@link PartUsage}, in that case the method
+     * returns the definition associated to the actual instance type.
+     *
+     * @param partUsage
+     *         an instance of PartUsage
+     * @return an actual part definition instance associated to the given part usage.
+     */
+    public Definition createPartDefinitionFrom(PartUsage partUsage) {
+        return (Definition) SysmlFactory.eINSTANCE.create(this.getPartDefinitionEClassFrom(partUsage));
+    }
+
+    /**
+     * Return the PartDefinition {@link EClass} corresponding to the given PartUsage.
+     * The type of the given parameter may be a subclass of {@link PartUsage},
+     * the method returns the {@link EClass} of the corresponding part definition.
+     *
+     * @param partUsage a PartUsage instance
+     * @return the EClass of the PartDefinition associated to the given PartUsage.
+     */
+    public EClass getPartDefinitionEClassFrom(PartUsage partUsage) {
+        EClass result = SysmlPackage.eINSTANCE.getPartDefinition();
+        if (partUsage instanceof FlowConnectionUsage) {
+            result = SysmlPackage.eINSTANCE.getFlowConnectionDefinition();
+        } else if (partUsage instanceof AllocationUsage) {
+            result = SysmlPackage.eINSTANCE.getAllocationDefinition();
+        } else if (partUsage instanceof InterfaceUsage) {
+            result = SysmlPackage.eINSTANCE.getInterfaceDefinition();
+        } else if (partUsage instanceof ConnectionUsage) {
+            result = SysmlPackage.eINSTANCE.getConnectionDefinition();
+        } else if (partUsage instanceof RenderingUsage) {
+            result = SysmlPackage.eINSTANCE.getRenderingDefinition();
+        } else if (partUsage instanceof ViewUsage) {
+            result = SysmlPackage.eINSTANCE.getViewDefinition();
+        }
+        return result;
     }
 }
