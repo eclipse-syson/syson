@@ -1,0 +1,455 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "visibility": "private",
+            "target": {
+              "$type": "PartDefinition",
+              "declaredName": "Referred"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "visibility": "public",
+            "target": {
+              "$type": "ItemDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "visibility": "protected",
+                  "target": {
+                    "$type": "PartUsage",
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "text": "Referred",
+                          "reference": "BooleanTest::Referred",
+                          "parts": [
+                            "BooleanTest::Referred"
+                          ]
+                        }
+                      }
+                    ],
+                    "declaredName": "aReference",
+                    "isReference": true
+                  }
+                }
+              ],
+              "declaredName": "A"
+            }
+          },
+          {
+            "$type": "MembershipImport",
+            "targetRef": {
+              "$type": "MembershipReference",
+              "text": "q",
+              "reference": "",
+              "parts": [
+                ""
+              ]
+            },
+            "isRecursive": true,
+            "visibility": "private"
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "RequirementDefinition",
+              "declaredName": "R"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartUsage",
+              "declaredName": "p"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartUsage",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "RequirementUsage",
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "text": "R",
+                          "reference": "BooleanTest::R",
+                          "parts": [
+                            "BooleanTest::R"
+                          ]
+                        }
+                      }
+                    ],
+                    "declaredName": "req1"
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "SatisfyRequirementUsage",
+                    "heritage": [
+                      {
+                        "$type": "ReferenceSubsetting",
+                        "targetRef": {
+                          "$type": "FeatureReference",
+                          "text": "req1",
+                          "reference": "BooleanTest::q::req1",
+                          "parts": [
+                            "BooleanTest::q::req1"
+                          ]
+                        }
+                      }
+                    ],
+                    "satisfactionSubject": {
+                      "$type": "SubjectMembership",
+                      "target": {
+                        "$type": "ReferenceUsage",
+                        "value": {
+                          "$type": "FeatureValue",
+                          "target": {
+                            "$type": "FeatureReferenceExpression",
+                            "expression": {
+                              "$type": "Membership",
+                              "targetRef": {
+                                "$type": "FeatureReference",
+                                "text": "p",
+                                "reference": "BooleanTest::p",
+                                "parts": [
+                                  "BooleanTest::p"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "SatisfyRequirementUsage",
+                    "heritage": [
+                      {
+                        "$type": "ReferenceSubsetting",
+                        "targetRef": {
+                          "$type": "FeatureReference",
+                          "text": "req1",
+                          "reference": "BooleanTest::q::req1",
+                          "parts": [
+                            "BooleanTest::q::req1"
+                          ]
+                        }
+                      }
+                    ],
+                    "satisfactionSubject": {
+                      "$type": "SubjectMembership",
+                      "target": {
+                        "$type": "ReferenceUsage",
+                        "value": {
+                          "$type": "FeatureValue",
+                          "target": {
+                            "$type": "FeatureReferenceExpression",
+                            "expression": {
+                              "$type": "Membership",
+                              "targetRef": {
+                                "$type": "FeatureReference",
+                                "text": "q",
+                                "reference": "BooleanTest::q",
+                                "parts": [
+                                  "BooleanTest::q"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              ],
+              "declaredName": "q"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "RequirementUsage",
+              "heritage": [
+                {
+                  "$type": "FeatureTyping",
+                  "targetRef": {
+                    "$type": "TypeReference",
+                    "text": "R",
+                    "reference": "BooleanTest::R",
+                    "parts": [
+                      "BooleanTest::R"
+                    ]
+                  }
+                }
+              ],
+              "declaredName": "req2"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "SatisfyRequirementUsage",
+              "isNegated": true,
+              "heritage": [
+                {
+                  "$type": "ReferenceSubsetting",
+                  "targetRef": {
+                    "$type": "FeatureReference",
+                    "text": "req2",
+                    "reference": "BooleanTest::req2",
+                    "parts": [
+                      "BooleanTest::req2"
+                    ]
+                  }
+                }
+              ],
+              "satisfactionSubject": {
+                "$type": "SubjectMembership",
+                "target": {
+                  "$type": "ReferenceUsage",
+                  "value": {
+                    "$type": "FeatureValue",
+                    "target": {
+                      "$type": "FeatureReferenceExpression",
+                      "expression": {
+                        "$type": "Membership",
+                        "targetRef": {
+                          "$type": "FeatureReference",
+                          "text": "p",
+                          "reference": "BooleanTest::p",
+                          "parts": [
+                            "BooleanTest::p"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "$type": "Membership",
+            "declaredName": "alias1",
+            "isAlias": true,
+            "targetRef": {
+              "$type": "ElementReference",
+              "text": "q::req1",
+              "reference": "BooleanTest::q::req1",
+              "parts": [
+                "BooleanTest::q",
+                "BooleanTest::q::req1"
+              ]
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "value": {
+                "$type": "FeatureValue",
+                "isInitial": true,
+                "target": {
+                  "$type": "LiteralNumber",
+                  "literal": 0
+                }
+              },
+              "heritage": [
+                {
+                  "$type": "FeatureTyping",
+                  "targetRef": {
+                    "$type": "TypeReference",
+                    "text": "ScalarValues::Integer",
+                    "reference": null,
+                    "parts": [
+                      null,
+                      null
+                    ]
+                  }
+                }
+              ],
+              "declaredName": "init1"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartDefinition",
+              "heritage": [
+                {
+                  "$type": "Subclassification",
+                  "targetRef": {
+                    "$type": "ClassifierReference",
+                    "text": "A",
+                    "reference": "BooleanTest::A",
+                    "parts": [
+                      "BooleanTest::A"
+                    ]
+                  }
+                }
+              ],
+              "declaredName": "V",
+              "isVariation": true
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "OccurrenceDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "OccurrenceUsage",
+                    "declaredName": "snapshot1",
+                    "portionKind": "snapshot"
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "OccurrenceUsage",
+                    "declaredName": "timeslice1",
+                    "portionKind": "timeslice"
+                  }
+                }
+              ],
+              "declaredName": "Ind",
+              "isIndividual": true
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "value": {
+                "$type": "FeatureValue",
+                "isDefault": true,
+                "target": {
+                  "$type": "LiteralNumber",
+                  "literal": 10
+                }
+              },
+              "declaredName": "default1"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "StateUsage",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "StateUsage",
+                    "declaredName": "s1"
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "StateUsage",
+                    "declaredName": "s2"
+                  }
+                }
+              ],
+              "isParallel": true,
+              "declaredName": "s"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "ItemDefinition",
+              "declaredName": "B",
+              "isAbstract": "abstract"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "ReferenceUsage",
+              "declaredName": "e1",
+              "isEnd": "end"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "multiplicity": {
+                "$type": "OwningMembership",
+                "target": {
+                  "$type": "MultiplicityRange",
+                  "range": {
+                    "$type": "OwningMembership",
+                    "target": {
+                      "$type": "OperatorExpression",
+                      "operands": [
+                        {
+                          "$type": "LiteralNumber",
+                          "literal": 0
+                        },
+                        {
+                          "$type": "LiteralNumber",
+                          "literal": 2
+                        }
+                      ],
+                      "operator": ".."
+                    }
+                  }
+                }
+              },
+              "declaredName": "ro",
+              "isReadOnly": "readonly"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "heritage": [
+                {
+                  "$type": "Subsetting",
+                  "targetRef": {
+                    "$type": "FeatureReference",
+                    "text": "init1",
+                    "reference": "BooleanTest::init1",
+                    "parts": [
+                      "BooleanTest::init1"
+                    ]
+                  }
+                }
+              ],
+              "declaredName": "y",
+              "isReference": true,
+              "isDerived": "derived"
+            }
+          }
+        ],
+        "declaredName": "BooleanTest"
+      }
+    }
+  ]
+}

@@ -74,7 +74,7 @@ public class AstObjectParser {
                             eObject.eSet(attribute, astJson.get(mappedName).asInt());
                             break;
                         case "EBoolean":
-                            eObject.eSet(attribute, astJson.get(mappedName).asBoolean());
+                            setBooleanValue(eObject, astJson, attribute, mappedName);
                             break;
                         case "EString":
                             String textContent = AstConstant.asCleanedText(astJson.get(mappedName));
@@ -97,6 +97,25 @@ public class AstObjectParser {
                 AstObjectParser.LOGGER.warn("Try to change an non changeable attribute" + eObject.eClass().getName() + "::" + mappedName);
             }
         }
+    }
+
+    private void setBooleanValue(EObject eObject, JsonNode astJson, EAttribute attribute, String mappedName) {
+        if (handleBooleansAsString(astJson, mappedName)) {
+            eObject.eSet(attribute, true);
+        } else {
+            eObject.eSet(attribute, astJson.get(mappedName).asBoolean());
+        }
+    }
+
+    private static boolean handleBooleansAsString(JsonNode astJson, String mappedName) {
+        return handleBooleanAsString("isAbstract", mappedName, "abstract", astJson)
+                || handleBooleanAsString("isDerived", mappedName, "derived", astJson)
+                || handleBooleanAsString("isEnd", mappedName, "end", astJson)
+                || handleBooleanAsString("isReadOnly", mappedName, "readonly", astJson);
+    }
+
+    private static boolean handleBooleanAsString(String attributeName, String mappedName, String stringValueIfTrue, JsonNode astJson) {
+        return attributeName.equals(mappedName) && stringValueIfTrue.equals(astJson.get(mappedName).asText());
     }
 
     public EObject createObject(final JsonNode astJson) {
