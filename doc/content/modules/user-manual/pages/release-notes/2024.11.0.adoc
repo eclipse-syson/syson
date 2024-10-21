@@ -38,6 +38,7 @@ Rename the class `SemanticCheckerFactory` to `SemanticRunnableFactory` to reflec
 
 == Bug fixes
 - Fix an issue that prevented the import of `Allocation` and `AllocationDefinition`.
+- Fix import of some boolean properties of elements (Type#isAbstract, Feature#isDerived, Feature#isEnd, Feature#isReadOnly).
 
 == Improvements
 
