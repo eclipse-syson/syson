@@ -28,8 +28,10 @@ import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.SysmlFactory;
@@ -52,12 +54,10 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         if (bindingContainer == null) {
             return null;
         }
-        FeatureMembership featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        bindingContainer.getOwnedRelationship().add(featureMembership);
 
         BindingConnectorAsUsage bindingConnectorAsUsage = SysmlFactory.eINSTANCE.createBindingConnectorAsUsage();
         this.elementInitializer(bindingConnectorAsUsage);
-        featureMembership.getOwnedRelatedElement().add(bindingConnectorAsUsage);
+        this.addChildInParent(bindingContainer, bindingConnectorAsUsage);
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         bindingConnectorAsUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
@@ -175,5 +175,38 @@ public class InterconnectionViewCreateService extends ViewCreateService {
                 SysmlPackage.eINSTANCE.getUsage(),
                 SysmlPackage.eINSTANCE.getDefinition());
         return super.canCreateDiagram(element) && acceptedRootTypes.stream().anyMatch(rootType -> rootType.isSuperTypeOf(element.eClass()));
+    }
+    
+    public Element createPartUsageAndBindingConnectorAsUsage(PartUsage self) {
+        var parent = self.getOwner();
+        if (parent != null) {
+            // create a new port on given part usage
+            var newSelfPort = SysmlFactory.eINSTANCE.createPortUsage();
+            this.elementInitializer(newSelfPort);
+            this.addChildInParent(self, newSelfPort);
+            // create a new part usage as a self sibling
+            var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+            this.elementInitializer(newPartUsage);
+            this.addChildInParent(parent, newPartUsage);
+            // create a new port on the new part usage
+            var newPartUsagePort = SysmlFactory.eINSTANCE.createPortUsage();
+            this.elementInitializer(newPartUsagePort);
+            this.addChildInParent(newPartUsage, newPartUsagePort);
+            // create binding connector as usage edge between both new ports
+            this.createBindingConnectorAsUsage(newSelfPort, newPartUsagePort);
+            return newPartUsage;
+        }
+        return self;
+    }
+
+    private void addChildInParent(Element parent, Element child) {
+        // Parent could be a Package where children are stored
+        // in OwingMembership and not in FeatureMembership.
+        Membership membership = SysmlFactory.eINSTANCE.createFeatureMembership();
+        if (parent instanceof Package) {
+            membership = SysmlFactory.eINSTANCE.createOwningMembership();
+        }
+        membership.getOwnedRelatedElement().add(child);
+        parent.getOwnedRelationship().add(membership);
     }
 }

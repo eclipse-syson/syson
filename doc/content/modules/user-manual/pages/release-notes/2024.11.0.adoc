@@ -57,6 +57,7 @@ The dropped element is displayed on the diagram, the same way element creation t
 This reduces the time required to build SysON, especially when using Spring Tool Suite.
 - Add `New Subsetting` tool on `PartUsage` to create a `Subsetting` edge and a `PartUsage` that is subset.
 - Add `New Feature Typing` tool on `PartUsage` to create a `FeatureTyping` edge and a `PartDefinition`.
+- Add `New Binding Connector As Usage` tool on `PartUsage` in Interconnection view diagram.
 
 == New features
 
