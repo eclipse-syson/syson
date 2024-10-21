@@ -40,6 +40,7 @@ import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvid
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.services.ChildUsageCreationNodeToolsProvider;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewNodeToolSectionSwitch;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -189,7 +190,7 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
     }
 
     private List<NodeToolSection> createNodeToolSections(IViewDiagramElementFinder cache) {
-        InterconnectionViewNodeToolSectionSwitch toolSectionSwitch = new InterconnectionViewNodeToolSectionSwitch(cache);
+        InterconnectionViewNodeToolSectionSwitch toolSectionSwitch = new InterconnectionViewNodeToolSectionSwitch(cache, new ChildUsageCreationNodeToolsProvider());
         return toolSectionSwitch.doSwitch(this.eClass);
     }
 

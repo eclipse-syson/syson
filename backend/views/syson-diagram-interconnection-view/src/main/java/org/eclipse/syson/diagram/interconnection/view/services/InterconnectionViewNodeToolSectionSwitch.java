@@ -56,26 +56,32 @@ public class InterconnectionViewNodeToolSectionSwitch extends AbstractViewNodeTo
 
     private final ToolDescriptionService toolDescriptionService;
 
-    public InterconnectionViewNodeToolSectionSwitch(IViewDiagramElementFinder cache) {
+    private final ILeveledCreationNodeToolsProvider leveledCreationNodeToolProvider;
+
+    public InterconnectionViewNodeToolSectionSwitch(IViewDiagramElementFinder cache, ILeveledCreationNodeToolsProvider leveledCreationNodeToolProvider) {
         super(new IVDescriptionNameGenerator());
         this.cache = Objects.requireNonNull(cache);
         this.toolDescriptionService = new ToolDescriptionService(this.descriptionNameGenerator);
+        this.leveledCreationNodeToolProvider = Objects.requireNonNull(leveledCreationNodeToolProvider);
     }
 
     @Override
     public List<NodeToolSection> casePartUsage(PartUsage object) {
-        NodeDescription portNodeDescription = this.cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage())).get();
+        var optionalPortNodeDescription = this.cache.getNodeDescription(this.descriptionNameGenerator.getBorderNodeName(SysmlPackage.eINSTANCE.getPortUsage()));
 
         var createSection = this.toolDescriptionService.buildCreateSection(
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
                         SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null),
-                new ChildrenPartUsageCompartmentNodeToolProvider().create(null),
-                this.toolDescriptionService.createNodeTool(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE),
-                this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN),
-                this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.INOUT),
-                this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT)
-
-        );
+                new ChildrenPartUsageCompartmentNodeToolProvider().create(null));
+        if (optionalPortNodeDescription.isPresent()) {
+            var portNodeDescription = optionalPortNodeDescription.get();
+            createSection.getNodeTools().add(this.toolDescriptionService.createNodeTool(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE));
+            createSection.getNodeTools().add(this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN));
+            createSection.getNodeTools().add(this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.INOUT));
+            createSection.getNodeTools().add(this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT));
+        }
+        // add tools depending whether the PartUsage is at the first level or not.
+        createSection.getNodeTools().addAll(this.leveledCreationNodeToolProvider.getNodeTools(object, this.descriptionNameGenerator, this.cache));
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new SetAsCompositeToolProvider().create(this.cache),
@@ -126,11 +132,7 @@ public class InterconnectionViewNodeToolSectionSwitch extends AbstractViewNodeTo
     @Override
     protected List<EReference> getElementCompartmentReferences(Element element) {
         List<EReference> refs = InterconnectionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_LIST_ITEMS.get(element.eClass());
-        if (refs != null) {
-            return refs;
-        } else {
-            return List.of();
-        }
+        return Objects.requireNonNullElseGet(refs, List::of);
     }
 
     @Override

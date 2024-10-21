@@ -969,7 +969,7 @@ public class ViewCreateService {
         if (parent != null) {
             // create a new part usage
             var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            this.elementInitializerSwitch.doSwitch(newPartUsage);
+            this.elementInitializer(newPartUsage);
             var membership = SysmlFactory.eINSTANCE.createOwningMembership();
             membership.getOwnedRelatedElement().add(newPartUsage);
             parent.getOwnedRelationship().add(membership);
