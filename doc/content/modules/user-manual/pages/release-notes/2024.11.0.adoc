@@ -60,6 +60,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - Add `New Feature Typing` tool on `PartUsage` to create a `FeatureTyping` edge and a `PartDefinition`.
 - Add `New Binding Connector As Usage` tool on `PartUsage` in Interconnection View diagram.
 - Add `New Flow Connection` tool on `PartUsage` in Interconnection View diagram.
+- Add `New Interface` tool on `PartUsage` in Interconnection View diagram.
 
 == New features
 

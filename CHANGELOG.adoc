@@ -59,6 +59,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - https://github.com/eclipse-syson/syson/issues/780[#780] [diagrams] Add `New Feature Typing` tool on `PartUsage` to create a `FeatureTyping` edge and a `PartDefinition`
 - https://github.com/eclipse-syson/syson/issues/785[#785] [interconnection-view] Add `New Binding Connector As Usage` tool on `PartUsage` in Interconnection View diagram.
 - https://github.com/eclipse-syson/syson/issues/789[#789] [interconnection-view] Add `New Flow Connection` tool on `PartUsage` in Interconnection View diagram.
+- https://github.com/eclipse-syson/syson/issues/790[#790] [interconnection-view] Add `New Interface` tool on `PartUsage` in Interconnection View diagram.
 
 === New features
 
