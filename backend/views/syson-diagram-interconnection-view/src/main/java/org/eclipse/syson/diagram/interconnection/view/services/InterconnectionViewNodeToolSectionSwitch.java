@@ -80,8 +80,10 @@ public class InterconnectionViewNodeToolSectionSwitch extends AbstractViewNodeTo
             createSection.getNodeTools().add(this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.INOUT));
             createSection.getNodeTools().add(this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT));
         }
+
         // add tools depending whether the PartUsage is at the first level or not.
         createSection.getNodeTools().addAll(this.leveledCreationNodeToolProvider.getNodeTools(object, this.descriptionNameGenerator, this.cache));
+
         createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new SetAsCompositeToolProvider().create(this.cache),
