@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.interconnection.view.ILeveledNodeDescriptionNameGenerator;
 import org.eclipse.syson.diagram.interconnection.view.tools.PartUsageBindingConnectorAsUsageNodeToolProvider;
+import org.eclipse.syson.diagram.interconnection.view.tools.PartUsageFlowConnectionNodeToolProvider;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -35,7 +36,8 @@ public class FirstLevelChildUsageCreationNodeToolsProvider implements ILeveledCr
         if (descriptionNameGenerator instanceof ILeveledNodeDescriptionNameGenerator leveledNodeDescriptionNameGenerator) {
             var firstLevelPartUsageNodeDescriptionName = leveledNodeDescriptionNameGenerator.getFirstLevelNodeName(element.eClass());
             var bindingConnectorAsUsageTool = new PartUsageBindingConnectorAsUsageNodeToolProvider(descriptionNameGenerator, firstLevelPartUsageNodeDescriptionName).create(cache);
-            result = List.of(bindingConnectorAsUsageTool);
+            var flowConnectionTool = new PartUsageFlowConnectionNodeToolProvider(descriptionNameGenerator, firstLevelPartUsageNodeDescriptionName).create(cache);
+            result = List.of(bindingConnectorAsUsageTool, flowConnectionTool);
         }
         return result;
     }

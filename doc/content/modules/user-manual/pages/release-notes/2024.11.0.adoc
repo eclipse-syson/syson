@@ -37,8 +37,9 @@ Rename the class `SemanticCheckerFactory` to `SemanticRunnableFactory` to reflec
 - Switch to `commons-io 2.17`
 
 == Bug fixes
+
 - Fix an issue that prevented the import of `Allocation` and `AllocationDefinition`.
-- Fix import of some boolean properties of elements (Type#isAbstract, Feature#isDerived, Feature#isEnd, Feature#isReadOnly).
+- Fix import of some boolean attributes (`Type#isAbstract`, `Feature#isDerived`, `Feature#isEnd`, `Feature#isReadOnly`).
 
 == Improvements
 
@@ -57,7 +58,8 @@ The dropped element is displayed on the diagram, the same way element creation t
 This reduces the time required to build SysON, especially when using Spring Tool Suite.
 - Add `New Subsetting` tool on `PartUsage` to create a `Subsetting` edge and a `PartUsage` that is subset.
 - Add `New Feature Typing` tool on `PartUsage` to create a `FeatureTyping` edge and a `PartDefinition`.
-- Add `New Binding Connector As Usage` tool on `PartUsage` in Interconnection view diagram.
+- Add `New Binding Connector As Usage` tool on `PartUsage` in Interconnection View diagram.
+- Add `New Flow Connection` tool on `PartUsage` in Interconnection View diagram.
 
 == New features
 

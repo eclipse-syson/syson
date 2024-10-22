@@ -50,13 +50,13 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifier.Step;
 
 /**
- * Tests the invocation of the "new Binding Connector As Usage" tool from a Part Usage in the Interconnection View diagram.
+ * Tests the invocation of the "new Flow Connection" tool from a Part Usage in the Interconnection View diagram.
  *
  * @author Jerome Gout
  */
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractIntegrationTests {
+public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegrationTests {
 
     private static final int PART_USAGE_COMPARTMENT_COUNT = 3;
 
@@ -114,13 +114,13 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
         }
     }
 
-    @DisplayName("Given a SysML Project, when New Binding Connector As Usage tool of first level element is requested on a PartUsage, then a new PartUsage and a Binding Connector As Usage edge are created")
+    @DisplayName("Given a SysML Project, when New Flow Connection tool of first level element is requested on a PartUsage, then a new PartUsage and a Flow Connection edge are created")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void givenASysMLProjectWhenNewBindingConnectorAsUsageToolOfFirstLevelElementIsRequestedOnAPartUsageThenANewPartUsageAndABindingConnectorAsUsageEdgeAreCreated() {
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Binding Connector As Usage");
-        assertThat(creationToolId).as("The tool 'New Binding Connector As Usage' should exist on a first level PartUsage").isNotNull();
+    public void givenASysMLProjectWhenNewFlowConnectionToolOfFirstLevelElementIsRequestedOnAPartUsageThenANewPartUsageAndAFlowConnectionEdgeAreCreated() {
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow Connection");
+        assertThat(creationToolId).as("The tool 'New Flow Connection' should exist on a PartUsage").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
                 this.diagram,
                 "part1",
@@ -130,7 +130,7 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
             new CheckDiagramElementCount(this.diagramComparator)
                     // we should have 1 more node for the new PartUsage, 3 more nodes for its compartments and
                     // 2 more nodes for ports on each part usage.
-                    // we should have 1 more edge (the new binding connector as usage edge)
+                    // we should have 1 more edge (the new flow connection edge)
                     .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2)
                     .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
@@ -138,11 +138,12 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
 
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
     }
-    @DisplayName("Given a SysML Project, when New Binding Connector As Usage tool of nested element is requested on a PartUsage, then a new PartUsage and a Binding Connector As Usage edge are created")
+
+    @DisplayName("Given a SysML Project, when New Flow Connection tool of nested element is requested on a PartUsage, then a new PartUsage and a Flow Connection edge are created")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void givenASysMLProjectWhenNewBindingConnectorAsUsageToolOfNestedElementIsRequestedOnAPartUsageThenANewPartUsageAndABindingConnectorAsUsageEdgeAreCreated() {
+    public void givenASysMLProjectWhenNewFlowConnectionToolOfNestedElementIsRequestedOnAPartUsageThenANewPartUsageAndAFlowConnectionEdgeAreCreated() {
         String creationPartToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
         assertThat(creationPartToolId).as("The tool 'New Part' should exist on a first level PartUsage").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
@@ -152,8 +153,8 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
 
         var diagramAfterNestedPartUsageCreation = this.givenDiagram.getDiagram(this.verifier);
 
-        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Binding Connector As Usage");
-        assertThat(creationToolId).as("The tool 'New Binding Connector As Usage' should exist on a nested PartUsage").isNotNull();
+        String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow Connection");
+        assertThat(creationToolId).as("The tool 'New Flow Connection' should exist on a nested PartUsage").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
                 diagramAfterNestedPartUsageCreation,
                 "part",
@@ -163,7 +164,7 @@ public class IVAddNewBindingConnectorAsUsageFromPartUsageTests extends AbstractI
             new CheckDiagramElementCount(this.diagramComparator)
                     // we should have 1 more node for the new PartUsage, 3 more nodes for its compartments and
                     // 2 more nodes for ports on each part usage.
-                    // we should have 1 more edge (the new binding connector as usage edge)
+                    // we should have 1 more edge (the new flow connection edge)
                     .hasNewNodeCount(1 + PART_USAGE_COMPARTMENT_COUNT + 2)
                     .hasNewEdgeCount(1)
                     .check(initialDiagram, newDiagram);
