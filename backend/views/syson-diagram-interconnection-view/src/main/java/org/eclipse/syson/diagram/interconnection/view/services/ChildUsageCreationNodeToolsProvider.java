@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.interconnection.view.tools.PartUsageBindingConnectorAsUsageNodeToolProvider;
 import org.eclipse.syson.diagram.interconnection.view.tools.PartUsageFlowConnectionNodeToolProvider;
+import org.eclipse.syson.diagram.interconnection.view.tools.PartUsageInterfaceNodeToolProvider;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -36,7 +37,8 @@ public class ChildUsageCreationNodeToolsProvider implements ILeveledCreationNode
         var nodeDescriptionName = descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage());
         var bindingConnectorAsUsageTool = new PartUsageBindingConnectorAsUsageNodeToolProvider(descriptionNameGenerator, nodeDescriptionName).create(cache);
         var flowConnectionTool = new PartUsageFlowConnectionNodeToolProvider(descriptionNameGenerator, nodeDescriptionName).create(cache);
-        result = List.of(bindingConnectorAsUsageTool, flowConnectionTool);
+        var interfaceTool = new PartUsageInterfaceNodeToolProvider(descriptionNameGenerator, nodeDescriptionName).create(cache);
+        result = List.of(bindingConnectorAsUsageTool, flowConnectionTool, interfaceTool);
         return result;
     }
 }
