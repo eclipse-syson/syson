@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractNodeDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
+import org.eclipse.syson.diagram.interconnection.view.services.FirstLevelChildUsageCreationNodeToolsProvider;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewNodeToolSectionSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -188,7 +189,7 @@ public class FirstLevelChildUsageNodeDescriptionProvider extends AbstractNodeDes
     }
 
     private List<NodeToolSection> createNodeToolSections(IViewDiagramElementFinder cache) {
-        InterconnectionViewNodeToolSectionSwitch toolSectionSwitch = new InterconnectionViewNodeToolSectionSwitch(cache);
+        InterconnectionViewNodeToolSectionSwitch toolSectionSwitch = new InterconnectionViewNodeToolSectionSwitch(cache, new FirstLevelChildUsageCreationNodeToolsProvider());
         return toolSectionSwitch.doSwitch(this.eClass);
     }
 
