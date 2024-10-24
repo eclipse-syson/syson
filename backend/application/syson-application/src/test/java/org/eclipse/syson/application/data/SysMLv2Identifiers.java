@@ -40,6 +40,21 @@ public final class SysMLv2Identifiers {
 
     public static final String GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT = "8bd049dc-6f98-44fc-9be6-b2acb871c8c3";
 
+    public static final String INTERCONNECTION_VIEW_DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=74c5d045-51d7-359f-9634-611d0f1bef3d&sourceElementId=e1bd3b6d-357b-3068-b2e9-e0c1e19d6856";
+
+    public static final String INTERCONNECTION_VIEW_EMPTY_PROJECT = "43df3d33-5cad-447b-a2fb-a31a5d096d92";
+
+    public static final String INTERCONNECTION_VIEW_EMPTY_DIAGRAM = "b01eb87a-5383-4883-b4b3-bf53067a4cc5";
+
+    public static final String INTERCONNECTION_VIEW_EMPTY_DIAGRAM_OBJECT = "b06dee32-6645-4b78-8a86-8df3b4306c7f";
+
+    public static final String INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT = "411aab7b-892d-41d1-b9e2-ca10f901bb45";
+
+    public static final String INTERCONNECTION_VIEW_WITH_TOP_NODES_DIAGRAM = "ea522a25-80fd-4e16-8256-5a34e4cb687b";
+
+    public static final String INTERCONNECTION_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT = "5465efdc-f100-4854-9f86-d09f63de1d3b";
+
+
     private SysMLv2Identifiers() {
         // Prevent instantiation
     }

@@ -20,16 +20,18 @@ import org.eclipse.syson.util.DescriptionNameGenerator;
  *
  * @author arichard
  */
-public class IVDescriptionNameGenerator extends DescriptionNameGenerator {
+public class IVDescriptionNameGenerator extends DescriptionNameGenerator implements ILeveledNodeDescriptionNameGenerator {
 
     public IVDescriptionNameGenerator() {
         super("IV");
     }
 
+    @Override
     public String getFirstLevelNodeName(EClass eClass) {
         return this.getName(this.getDiagramPrefix(), "FirstLevelNode", eClass.getName());
     }
 
+    @Override
     public String getChildNodeName(EClass eClass) {
         return this.getName(this.getDiagramPrefix(), "ChildNode", eClass.getName());
     }
