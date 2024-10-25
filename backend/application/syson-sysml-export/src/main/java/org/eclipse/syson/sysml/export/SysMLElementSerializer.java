@@ -65,6 +65,7 @@ import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.Import;
+import org.eclipse.syson.sysml.IncludeUseCaseUsage;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.ItemDefinition;
@@ -117,6 +118,7 @@ import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
+import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.VerificationCaseUsage;
 import org.eclipse.syson.sysml.ViewpointDefinition;
 import org.eclipse.syson.sysml.VisibilityKind;
@@ -137,11 +139,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private static final Predicate<Object> NOT_NULL = s -> s != null;
 
-    private String lineSeparator;
+    private final String lineSeparator;
 
-    private String indentation;
+    private final String indentation;
 
-    private NameDeresolver nameDeresolver;
+    private final NameDeresolver nameDeresolver;
 
     private final SysMLKeywordSwitch keywordProvider = new SysMLKeywordSwitch();
 
@@ -712,6 +714,47 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendDefinitionDeclaration(builder, useCase);
 
         this.appendChildrenContent(builder, useCase, useCase.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseUseCaseUsage(UseCaseUsage useCaseUsage) {
+
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, useCaseUsage);
+
+        builder.appendWithSpaceIfNeeded("use case");
+
+        this.appendUsageDeclaration(builder, useCaseUsage);
+
+        this.appendValuePart(builder, useCaseUsage);
+
+        this.appendChildrenContent(builder, useCaseUsage, useCaseUsage.getOwnedMembership());
+
+        return builder.toString();
+    }
+
+    @Override
+    public String caseIncludeUseCaseUsage(IncludeUseCaseUsage includeUseCaseUsage) {
+        Appender builder = this.newAppender();
+
+        this.appendOccurrenceUsagePrefix(builder, includeUseCaseUsage);
+
+        builder.appendWithSpaceIfNeeded("include");
+
+        if (includeUseCaseUsage.getOwnedReferenceSubsetting() != null) {
+            builder.appendWithSpaceIfNeeded(this.getDeresolvableName(includeUseCaseUsage.getOwnedReferenceSubsetting().getReferencedFeature(), includeUseCaseUsage));
+        } else {
+
+            builder.appendWithSpaceIfNeeded("use case");
+            this.appendUsageDeclaration(builder, includeUseCaseUsage);
+        }
+
+        this.appendValuePart(builder, includeUseCaseUsage);
+
+        this.appendChildrenContent(builder, includeUseCaseUsage, includeUseCaseUsage.getOwnedMembership());
 
         return builder.toString();
     }

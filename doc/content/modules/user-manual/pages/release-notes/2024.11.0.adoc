@@ -62,6 +62,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - Add `New Binding Connector As Usage` tool on `PartUsage` in Interconnection View diagram.
 - Add `New Flow Connection` tool on `PartUsage` in Interconnection View diagram.
 - Add `New Interface` tool on `PartUsage` in Interconnection View diagram.
+- Handle `UseCaseUsage` and `IncludeUseCaseUsage` elements in export to textual SysMLv2.
 
 == New features
 
