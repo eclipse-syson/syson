@@ -99,7 +99,6 @@
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>1.15.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
