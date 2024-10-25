@@ -89,6 +89,7 @@ import org.eclipse.syson.sysml.export.models.AttributeUsageWithInvocationExpress
 import org.eclipse.syson.sysml.export.models.AttributeUsageWithSequenceExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.ConditionalBinaryOperatorExpressionTestModel;
 import org.eclipse.syson.sysml.export.models.ConstraintUsageWithOperatorExpressionTestModel;
+import org.eclipse.syson.sysml.export.models.UseCaseDefinitionTestModel;
 import org.eclipse.syson.sysml.export.models.sample.CameraModel;
 import org.eclipse.syson.sysml.export.models.sample.ItemTest;
 import org.eclipse.syson.sysml.export.models.sample.PictureTakingModel;
@@ -1554,26 +1555,37 @@ public class SysMLElementSerializerTest {
     }
 
     @Test
+    public void useCaseUsage() {
+
+        UseCaseDefinitionTestModel modelBuilder = new UseCaseDefinitionTestModel();
+
+        this.assertTextualFormEquals("""
+                use case ucu_1 : Ucd_1 {
+                    actor :>> partU_1;
+                }""", modelBuilder.getUseCaseUsage());
+    }
+
+    @Test
     public void itemUsage() {
         var model = new ItemTest(this.builder);
 
         this.assertTextualFormEquals("""
-            package ItemTest {
-                item f : A;
-                item def A {
-                    item b : B;
-                    protected ref part c : C;
-                }
-                abstract item def B {
-                    abstract ref part a : A;
-                }
-                private part def C {
-                    private in y : A, B;
-                }
-                port def P {
-                    in item a1 : A;
-                    out item a2 : A;
-                }
-            }""", model.getItemTest());
+                package ItemTest {
+                    item f : A;
+                    item def A {
+                        item b : B;
+                        protected ref part c : C;
+                    }
+                    abstract item def B {
+                        abstract ref part a : A;
+                    }
+                    private part def C {
+                        private in y : A, B;
+                    }
+                    port def P {
+                        in item a1 : A;
+                        out item a2 : A;
+                    }
+                }""", model.getItemTest());
     }
 }

@@ -58,9 +58,8 @@ public class ImportExportTests extends AbstractIntegrationTests {
     @Test
     public void checkUseCaseTest() throws IOException {
         /*
-         * The file has been modified because a problem has been detected during the export phase see
-         * https://github.com/eclipse-syson/syson/issues/795. Once this problem is fixed, the used of qualified names should
-         * not be necessary anymore.
+         * The file has been modified because a problem has been detected during the export phase that force us to use
+         * some qualified name. This should be investigated.
          */
         var input = """
                 package UseCaseTest {
@@ -88,7 +87,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     part user : User;
 
                     use case uc2 {
-                        actor :>> UseCaseTest::user;
+                        actor :>> user;
                     }
 
                     use case u : UseSystem;
