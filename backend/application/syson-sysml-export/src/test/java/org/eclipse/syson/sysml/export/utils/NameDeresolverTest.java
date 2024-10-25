@@ -63,15 +63,9 @@ public class NameDeresolverTest {
 
     @Test
     public void directOnwendMember() {
-
         Package p1 = this.builder.createWithName(Package.class, P1);
         PartDefinition partDef1 = this.builder.createInWithName(PartDefinition.class, p1, PART_DEF1);
-
-        assertEquals(PART_DEF1, this.getDerolvedName(partDef1, partDef1));
-    }
-
-    private String getDerolvedName(Element toDeresolve, Element context) {
-        return new NameDeresolver().getDeresolvedName(toDeresolve, context);
+        assertEquals(PART_DEF1, this.getDeresolvedName(partDef1, partDef1));
     }
 
     @Test
@@ -82,14 +76,17 @@ public class NameDeresolverTest {
          *   public import Lib1::*;
          *   package p1 {
          *       ref attribute mass :> Lib2::mass; // Needs qualified name since the attribute hides the imported element
+         *
          *   }
          *   package p2 {
          *      ref attribute mass2 :> mass; // No need for qualified name since mass is directly visible
          *   }
          *   package p3 {
+         *       part def Part1;
          *       ref attribute mass; // Needs qualified name since the attribute p3::mass hides the imported element
          *       package p3x1 {
          *           ref attribute mass2 :> Lib2::mass; // Needs qualified name since the attribute p3::mass hides the imported element
+         *           part Part1 : p3::Part1; // We need relative qualified name because Part1 usage conflict with Part1 definition
          *   }
          *       }
          * }
@@ -108,14 +105,14 @@ public class NameDeresolverTest {
         PartDefinition massAttr = this.builder.createInWithName(PartDefinition.class, lib2, "mass");
 
         Package lib1 = this.builder.createWithName(Package.class, "Lib1");
-        NamespaceImport namespaceImport = this.builder.createIn(NamespaceImport.class, lib1);
-        namespaceImport.setImportedNamespace(lib2);
-        namespaceImport.setVisibility(VisibilityKind.PUBLIC);
+        NamespaceImport import1 = this.builder.createIn(NamespaceImport.class, lib1);
+        import1.setImportedNamespace(lib2);
+        import1.setVisibility(VisibilityKind.PUBLIC);
 
         Package root = this.builder.createWithName(Package.class, "Root");
-        NamespaceImport namespaceImport2 = this.builder.createIn(NamespaceImport.class, root);
-        namespaceImport2.setImportedNamespace(lib1);
-        namespaceImport2.setVisibility(VisibilityKind.PUBLIC);
+        NamespaceImport import2 = this.builder.createIn(NamespaceImport.class, root);
+        import2.setImportedNamespace(lib1);
+        import2.setVisibility(VisibilityKind.PUBLIC);
 
         Package p1 = this.builder.createInWithName(Package.class, root, "p1");
         PartDefinition p1Mass = this.builder.createInWithName(PartDefinition.class, p1, "mass");
@@ -128,18 +125,25 @@ public class NameDeresolverTest {
         Package p3 = this.builder.createInWithName(Package.class, root, "p3");
         AttributeUsage p3Mass = this.builder.createInWithName(AttributeUsage.class, p3, "mass");
 
+        PartDefinition part1Def = this.builder.createInWithName(PartDefinition.class, p3, "Part1");
+
         Package p3x1 = this.builder.createInWithName(Package.class, p3, "p3x1");
         PartDefinition p3x1Mass = this.builder.createInWithName(PartDefinition.class, p3x1, "mass2");
         this.builder.addSubclassification(p3x1Mass, massAttr);
 
+        PartUsage part1Usage = this.builder.createInWithName(PartUsage.class, p3x1, "Part1");
+        this.builder.setType(part1Usage, part1Def);
+
         // Needs qualified name since the attribute p1::mass hides the imported element
-        assertEquals("Lib2::mass", this.getDerolvedName(massAttr, p1Mass));
+        assertEquals("Lib2::mass", this.getDeresolvedName(massAttr, p1Mass));
         // // No need for qualified name since mass is directly visible
-        assertEquals("mass", this.getDerolvedName(massAttr, p2Mass));
+        assertEquals("mass", this.getDeresolvedName(massAttr, p2Mass));
         // // Needs qualified name since the attribute p3::mass hides the imported element
-        assertEquals("Lib2::mass", this.getDerolvedName(massAttr, p3Mass));
+        assertEquals("Lib2::mass", this.getDeresolvedName(massAttr, p3Mass));
         // Needs qualified name since the attribute p3::mass hides the imported element
-        assertEquals("Lib2::mass", this.getDerolvedName(massAttr, p3x1Mass));
+        assertEquals("Lib2::mass", this.getDeresolvedName(massAttr, p3x1Mass));
+        // Need relative qualified name
+        assertEquals("p3::Part1", this.getDeresolvedName(part1Def, part1Usage));
     }
 
     @Test
@@ -165,8 +169,8 @@ public class NameDeresolverTest {
         this.builder.addSubclassification(attr2, attr1);
         this.builder.addSubclassification(attr4, attr3);
 
-        assertEquals("'Attr 1'", this.getDerolvedName(attr1, attr2));
-        assertEquals("'Attr-3'", this.getDerolvedName(attr3, attr4));
+        assertEquals("'Attr 1'", this.getDeresolvedName(attr1, attr2));
+        assertEquals("'Attr-3'", this.getDeresolvedName(attr3, attr4));
     }
 
     @Test
@@ -196,7 +200,7 @@ public class NameDeresolverTest {
             }
 
             package p2 {
-                import p1::*;
+                public import p1::*;
             }
 
             package p3 {
@@ -206,7 +210,7 @@ public class NameDeresolverTest {
             }
          * </pre>
          */
-        assertEquals("def1", this.getDerolvedName(partDef1, partDef3));
+        assertEquals("def1", this.getDeresolvedName(partDef1, partDef3));
     }
 
     @Test
@@ -231,7 +235,7 @@ public class NameDeresolverTest {
          *  }
          * </pre>
          */
-        assertEquals("p1::PartDef1", this.getDerolvedName(partDef1, partDef2));
+        assertEquals("p1::PartDef1", this.getDeresolvedName(partDef1, partDef2));
 
         // Add import
         /**
@@ -247,7 +251,7 @@ public class NameDeresolverTest {
          * </pre>
          */
         this.builder.createIn(NamespaceImport.class, p2).setImportedNamespace(p1);
-        assertEquals(PART_DEF1, this.getDerolvedName(partDef1, partDef2));
+        assertEquals(PART_DEF1, this.getDeresolvedName(partDef1, partDef2));
 
     }
 
@@ -277,7 +281,7 @@ public class NameDeresolverTest {
          * </pre>
          */
 
-        assertEquals("p1x1::PartDef1", this.getDerolvedName(partDef1, partDef2));
+        assertEquals("p1x1::PartDef1", this.getDeresolvedName(partDef1, partDef2));
 
     }
 
@@ -309,7 +313,7 @@ public class NameDeresolverTest {
          * </pre>
          */
 
-        assertEquals(PART_DEF1, this.getDerolvedName(partDef1, partDef2));
+        assertEquals(PART_DEF1, this.getDeresolvedName(partDef1, partDef2));
 
     }
 
@@ -353,38 +357,38 @@ public class NameDeresolverTest {
          * </pre>
          */
 
-        assertEquals(PART_DEF1, this.getDerolvedName(partDef1, partDef3));
+        assertEquals(PART_DEF1, this.getDeresolvedName(partDef1, partDef3));
 
         p3.getOwnedRelationship().remove(nmImport2);
-        assertEquals("p1::p1x1::PartDef1", this.getDerolvedName(partDef1, partDef3));
+        assertEquals("p1::p1x1::PartDef1", this.getDeresolvedName(partDef1, partDef3));
     }
 
     @Test
     public void noImport() {
         var model = new TestModel();
         // Descendant
-        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDerolvedName(model.def1x1x1, model.def1));
-        assertEquals("p1x1::def1x1", this.getDerolvedName(model.def1x1, model.def1));
-        assertEquals(DEF1, this.getDerolvedName(model.def1, model.def1));
+        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDeresolvedName(model.def1x1x1, model.def1));
+        assertEquals("p1x1::def1x1", this.getDeresolvedName(model.def1x1, model.def1));
+        assertEquals(DEF1, this.getDeresolvedName(model.def1, model.def1));
 
         // In sibling package
-        assertEquals(P2_DEF2, this.getDerolvedName(model.def2, model.def1));
-        assertEquals("p2::p2x1::def2x1", this.getDerolvedName(model.def2x1, model.def1));
-        assertEquals("p2::p2x1::p2x1x1::def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1));
+        assertEquals(P2_DEF2, this.getDeresolvedName(model.def2, model.def1));
+        assertEquals("p2::p2x1::def2x1", this.getDeresolvedName(model.def2x1, model.def1));
+        assertEquals("p2::p2x1::p2x1x1::def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1));
 
         // Ancestor
-        assertEquals(DEF1, this.getDerolvedName(model.def1, model.def1x1x1));
-        assertEquals("def1x1", this.getDerolvedName(model.def1x1, model.def1x1x1));
-        assertEquals("def1x1x1", this.getDerolvedName(model.def1x1x1, model.def1x1x1));
+        assertEquals(DEF1, this.getDeresolvedName(model.def1, model.def1x1x1));
+        assertEquals("def1x1", this.getDeresolvedName(model.def1x1, model.def1x1x1));
+        assertEquals("def1x1x1", this.getDeresolvedName(model.def1x1x1, model.def1x1x1));
 
         // In sibling ancestor
-        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDerolvedName(model.def1x2x1, model.def1x1x1));
-        assertEquals("p1x2::def1x2", this.getDerolvedName(model.def1x2, model.def1x1x1));
+        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDeresolvedName(model.def1x2x1, model.def1x1x1));
+        assertEquals("p1x2::def1x2", this.getDeresolvedName(model.def1x2, model.def1x1x1));
 
         // In another package
-        assertEquals("p2::p2x1::p2x1x1::def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1x1x1));
-        assertEquals("p2::p2x1::def2x1", this.getDerolvedName(model.def2x1, model.def1x1x1));
-        assertEquals(P2_DEF2, this.getDerolvedName(model.def2, model.def1x1x1));
+        assertEquals("p2::p2x1::p2x1x1::def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1x1x1));
+        assertEquals("p2::p2x1::def2x1", this.getDeresolvedName(model.def2x1, model.def1x1x1));
+        assertEquals(P2_DEF2, this.getDeresolvedName(model.def2, model.def1x1x1));
 
     }
 
@@ -418,7 +422,7 @@ public class NameDeresolverTest {
 
         this.builder.addReferenceSubsetting(performAction, verif);
 
-        assertEquals("p1x1::v1", this.getDerolvedName(verif, performAction));
+        assertEquals("p1x1::v1", this.getDeresolvedName(verif, performAction));
 
         /*
          * We now add an import in p1 to p1x1 which makes v1 directly accessible from the perform action. Meaning that
@@ -448,8 +452,8 @@ public class NameDeresolverTest {
         namespaceImport.setImportedNamespace(p1x1);
         namespaceImport.setVisibility(VisibilityKind.PUBLIC);
 
-        assertEquals("v1", this.getDerolvedName(performAction, performAction));
-        assertEquals("v1", this.getDerolvedName(verif, performAction));
+        assertEquals("v1", this.getDeresolvedName(performAction, performAction));
+        assertEquals("v1", this.getDeresolvedName(verif, performAction));
     }
 
     @DisplayName("Check the deresolved names with a NamespaceImport at root level")
@@ -464,28 +468,28 @@ public class NameDeresolverTest {
         namespaceImport.setVisibility(VisibilityKind.PUBLIC);
 
         // Descendant
-        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDerolvedName(model.def1x1x1, model.def1));
-        assertEquals("p1x1::def1x1", this.getDerolvedName(model.def1x1, model.def1));
-        assertEquals(DEF1, this.getDerolvedName(model.def1, model.def1));
+        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDeresolvedName(model.def1x1x1, model.def1));
+        assertEquals("p1x1::def1x1", this.getDeresolvedName(model.def1x1, model.def1));
+        assertEquals(DEF1, this.getDeresolvedName(model.def1, model.def1));
 
         // In sibling package
-        assertEquals("def2", this.getDerolvedName(model.def2, model.def1));
-        assertEquals("p2x1::def2x1", this.getDerolvedName(model.def2x1, model.def1));
-        assertEquals("p2x1::p2x1x1::def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1));
+        assertEquals("def2", this.getDeresolvedName(model.def2, model.def1));
+        assertEquals("p2x1::def2x1", this.getDeresolvedName(model.def2x1, model.def1));
+        assertEquals("p2x1::p2x1x1::def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1));
 
         // Ancestor
-        assertEquals(DEF1, this.getDerolvedName(model.def1, model.def1x1x1));
-        assertEquals("def1x1", this.getDerolvedName(model.def1x1, model.def1x1x1));
-        assertEquals("def1x1x1", this.getDerolvedName(model.def1x1x1, model.def1x1x1));
+        assertEquals(DEF1, this.getDeresolvedName(model.def1, model.def1x1x1));
+        assertEquals("def1x1", this.getDeresolvedName(model.def1x1, model.def1x1x1));
+        assertEquals("def1x1x1", this.getDeresolvedName(model.def1x1x1, model.def1x1x1));
 
         // In sibling ancestor
-        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDerolvedName(model.def1x2x1, model.def1x1x1));
-        assertEquals("p1x2::def1x2", this.getDerolvedName(model.def1x2, model.def1x1x1));
+        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDeresolvedName(model.def1x2x1, model.def1x1x1));
+        assertEquals("p1x2::def1x2", this.getDeresolvedName(model.def1x2, model.def1x1x1));
 
         // In another package
-        assertEquals("p2x1::p2x1x1::def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1x1x1));
-        assertEquals("p2x1::def2x1", this.getDerolvedName(model.def2x1, model.def1x1x1));
-        assertEquals("def2", this.getDerolvedName(model.def2, model.def1x1x1));
+        assertEquals("p2x1::p2x1x1::def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1x1x1));
+        assertEquals("p2x1::def2x1", this.getDeresolvedName(model.def2x1, model.def1x1x1));
+        assertEquals("def2", this.getDeresolvedName(model.def2, model.def1x1x1));
 
     }
 
@@ -502,28 +506,28 @@ public class NameDeresolverTest {
         namespaceImport.setVisibility(VisibilityKind.PUBLIC);
 
         // Descendant
-        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDerolvedName(model.def1x1x1, model.def1));
-        assertEquals("p1x1::def1x1", this.getDerolvedName(model.def1x1, model.def1));
-        assertEquals(DEF1, this.getDerolvedName(model.def1, model.def1));
+        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDeresolvedName(model.def1x1x1, model.def1));
+        assertEquals("p1x1::def1x1", this.getDeresolvedName(model.def1x1, model.def1));
+        assertEquals(DEF1, this.getDeresolvedName(model.def1, model.def1));
 
         // In sibling package
-        assertEquals("def2", this.getDerolvedName(model.def2, model.def1));
-        assertEquals("def2x1", this.getDerolvedName(model.def2x1, model.def1));
-        assertEquals("def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1));
+        assertEquals("def2", this.getDeresolvedName(model.def2, model.def1));
+        assertEquals("def2x1", this.getDeresolvedName(model.def2x1, model.def1));
+        assertEquals("def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1));
 
         // Ancestor
-        assertEquals(DEF1, this.getDerolvedName(model.def1, model.def1x1x1));
-        assertEquals("def1x1", this.getDerolvedName(model.def1x1, model.def1x1x1));
-        assertEquals("def1x1x1", this.getDerolvedName(model.def1x1x1, model.def1x1x1));
+        assertEquals(DEF1, this.getDeresolvedName(model.def1, model.def1x1x1));
+        assertEquals("def1x1", this.getDeresolvedName(model.def1x1, model.def1x1x1));
+        assertEquals("def1x1x1", this.getDeresolvedName(model.def1x1x1, model.def1x1x1));
 
         // In sibling ancestor
-        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDerolvedName(model.def1x2x1, model.def1x1x1));
-        assertEquals("p1x2::def1x2", this.getDerolvedName(model.def1x2, model.def1x1x1));
+        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDeresolvedName(model.def1x2x1, model.def1x1x1));
+        assertEquals("p1x2::def1x2", this.getDeresolvedName(model.def1x2, model.def1x1x1));
 
         // In another package
-        assertEquals("def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1x1x1));
-        assertEquals("def2x1", this.getDerolvedName(model.def2x1, model.def1x1x1));
-        assertEquals("def2", this.getDerolvedName(model.def2, model.def1x1x1));
+        assertEquals("def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1x1x1));
+        assertEquals("def2x1", this.getDeresolvedName(model.def2x1, model.def1x1x1));
+        assertEquals("def2", this.getDeresolvedName(model.def2, model.def1x1x1));
 
     }
 
@@ -539,28 +543,28 @@ public class NameDeresolverTest {
         namespaceImport.setVisibility(VisibilityKind.PUBLIC);
 
         // Descendant
-        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDerolvedName(model.def1x1x1, model.def1));
-        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDerolvedName(model.def1x1x1, model.def1));
-        assertEquals("p1x1::def1x1", this.getDerolvedName(model.def1x1, model.def1));
+        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDeresolvedName(model.def1x1x1, model.def1));
+        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDeresolvedName(model.def1x1x1, model.def1));
+        assertEquals("p1x1::def1x1", this.getDeresolvedName(model.def1x1, model.def1));
 
         // In sibling package
-        assertEquals(P2_DEF2, this.getDerolvedName(model.def2, model.def1));
-        assertEquals("p2::p2x1::def2x1", this.getDerolvedName(model.def2x1, model.def1));
-        assertEquals("p2::p2x1::p2x1x1::def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1));
+        assertEquals(P2_DEF2, this.getDeresolvedName(model.def2, model.def1));
+        assertEquals("p2::p2x1::def2x1", this.getDeresolvedName(model.def2x1, model.def1));
+        assertEquals("p2::p2x1::p2x1x1::def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1));
 
         // Ancestor
-        assertEquals(DEF1, this.getDerolvedName(model.def1, model.def1x1x1));
-        assertEquals("def1x1", this.getDerolvedName(model.def1x1, model.def1x1x1));
-        assertEquals("def1x1x1", this.getDerolvedName(model.def1x1x1, model.def1x1x1));
+        assertEquals(DEF1, this.getDeresolvedName(model.def1, model.def1x1x1));
+        assertEquals("def1x1", this.getDeresolvedName(model.def1x1, model.def1x1x1));
+        assertEquals("def1x1x1", this.getDeresolvedName(model.def1x1x1, model.def1x1x1));
 
         // In sibling ancestor
-        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDerolvedName(model.def1x2x1, model.def1x1x1));
-        assertEquals("p1x2::def1x2", this.getDerolvedName(model.def1x2, model.def1x1x1));
+        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDeresolvedName(model.def1x2x1, model.def1x1x1));
+        assertEquals("p1x2::def1x2", this.getDeresolvedName(model.def1x2, model.def1x1x1));
 
         // In another package
-        assertEquals("p2x1x1::def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1x1x1));
-        assertEquals("def2x1", this.getDerolvedName(model.def2x1, model.def1x1x1));
-        assertEquals(P2_DEF2, this.getDerolvedName(model.def2, model.def1x1x1));
+        assertEquals("p2x1x1::def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1x1x1));
+        assertEquals("def2x1", this.getDeresolvedName(model.def2x1, model.def1x1x1));
+        assertEquals(P2_DEF2, this.getDeresolvedName(model.def2, model.def1x1x1));
 
     }
 
@@ -577,29 +581,33 @@ public class NameDeresolverTest {
         namespaceImport.setVisibility(VisibilityKind.PUBLIC);
 
         // Descendant
-        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDerolvedName(model.def1x1x1, model.def1));
-        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDerolvedName(model.def1x1x1, model.def1));
-        assertEquals("p1x1::def1x1", this.getDerolvedName(model.def1x1, model.def1));
+        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDeresolvedName(model.def1x1x1, model.def1));
+        assertEquals(P1X1_P1X1X1_DEF1X1X1, this.getDeresolvedName(model.def1x1x1, model.def1));
+        assertEquals("p1x1::def1x1", this.getDeresolvedName(model.def1x1, model.def1));
 
         // In sibling package but no import
-        assertEquals(P2_DEF2, this.getDerolvedName(model.def2, model.def1));
-        assertEquals("p2::p2x1::def2x1", this.getDerolvedName(model.def2x1, model.def1));
-        assertEquals("p2::p2x1::p2x1x1::def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1));
+        assertEquals(P2_DEF2, this.getDeresolvedName(model.def2, model.def1));
+        assertEquals("p2::p2x1::def2x1", this.getDeresolvedName(model.def2x1, model.def1));
+        assertEquals("p2::p2x1::p2x1x1::def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1));
 
         // Ancestor
-        assertEquals(DEF1, this.getDerolvedName(model.def1, model.def1x1x1));
-        assertEquals("def1x1", this.getDerolvedName(model.def1x1, model.def1x1x1));
-        assertEquals("def1x1x1", this.getDerolvedName(model.def1x1x1, model.def1x1x1));
+        assertEquals(DEF1, this.getDeresolvedName(model.def1, model.def1x1x1));
+        assertEquals("def1x1", this.getDeresolvedName(model.def1x1, model.def1x1x1));
+        assertEquals("def1x1x1", this.getDeresolvedName(model.def1x1x1, model.def1x1x1));
 
         // In sibling ancestor
-        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDerolvedName(model.def1x2x1, model.def1x1x1));
-        assertEquals("p1x2::def1x2", this.getDerolvedName(model.def1x2, model.def1x1x1));
+        assertEquals("p1x2::p1x2x1::def1x2x1", this.getDeresolvedName(model.def1x2x1, model.def1x1x1));
+        assertEquals("p1x2::def1x2", this.getDeresolvedName(model.def1x2, model.def1x1x1));
 
         // In another package with import of p2x1
-        assertEquals("def2x1x1", this.getDerolvedName(model.def2x1x1, model.def1x1x1));
-        assertEquals("def2x1", this.getDerolvedName(model.def2x1, model.def1x1x1));
-        assertEquals(P2_DEF2, this.getDerolvedName(model.def2, model.def1x1x1));
+        assertEquals("def2x1x1", this.getDeresolvedName(model.def2x1x1, model.def1x1x1));
+        assertEquals("def2x1", this.getDeresolvedName(model.def2x1, model.def1x1x1));
+        assertEquals(P2_DEF2, this.getDeresolvedName(model.def2, model.def1x1x1));
 
+    }
+
+    private String getDeresolvedName(Element toDeresolve, Element context) {
+        return new NameDeresolver().getDeresolvedName(toDeresolve, context);
     }
 
     /**

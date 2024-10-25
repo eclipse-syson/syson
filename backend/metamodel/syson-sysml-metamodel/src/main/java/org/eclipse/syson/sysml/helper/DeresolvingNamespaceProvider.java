@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.helper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
@@ -28,6 +30,7 @@ import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.Type;
@@ -39,27 +42,57 @@ import org.eclipse.syson.sysml.Type;
  */
 public class DeresolvingNamespaceProvider {
 
-    public Namespace getDeresolvingNamespace(Element element) {
+    public List<Namespace> getDeresolvingNamespaces(Element element) {
         // See 8.2.3.5.2 Local and Global Namespaces
-        Namespace result;
+        List<Namespace> result = new ArrayList<>();
         if (element instanceof Import aImport) {
-            result = aImport.getImportOwningNamespace();
+            result.add(aImport.getImportOwningNamespace());
         } else if (element instanceof Membership membership) {
-            result = this.getDeresolvingNamespaceForMembership(membership);
+            result.add(this.getDeresolvingNamespaceForMembership(membership));
+        } else if (element instanceof Redefinition redefinition) {
+            result.addAll(this.getDeresolvingNamespaceForRedefinition(redefinition));
         } else if (element instanceof Specialization specialization) {
-            result = this.getDeresolvingNamespaceForSpecialization(specialization);
+            result.add(this.getDeresolvingNamespaceForSpecialization(specialization));
         } else if (element instanceof Conjugation conjugation) {
-            result = this.getDeresolvingNamespaceForConjugation(element, conjugation);
+            result.add(this.getDeresolvingNamespaceForConjugation(element, conjugation));
         } else if (element instanceof FeatureChaining featureChaining) {
-            result = this.getDeresolvingNamespaceFeatureChaining(element, featureChaining);
+            result.addAll(this.getDeresolvingNamespaceFeatureChaining(element, featureChaining));
         } else {
-            result = element.getOwningNamespace();
+            result.add(element.getOwningNamespace());
         }
-        if (result == null && element.getOwner() instanceof Namespace ownerNamespace) {
-            result = ownerNamespace;
+        if (result.isEmpty() && element.getOwner() instanceof Namespace ownerNamespace) {
+            result.add(ownerNamespace);
         }
-        if (result == null && element.eContainer() instanceof Namespace containerNamespace) {
-            result = containerNamespace;
+        if (result.isEmpty() && element.eContainer() instanceof Namespace containerNamespace) {
+            result.add(containerNamespace);
+        }
+
+        return result;
+    }
+
+    private List<Namespace> getDeresolvingNamespaceForRedefinition(Redefinition redefinition) {
+        /*
+         * In general, the resolution of a qualified name begins with the namespace in which the name appears and
+         * proceeds outwards from there to containing namespaces (see 8.2.3.5). However, the resolution of the qualified
+         * names of redefined features of owned redefinitions follow special rules. In particular, the local namespace
+         * of the owning type of the redefining feature is not included in the name resolution of the redefined
+         * features, with resolution beginning instead with the direct supertypes of the owning type. Since redefined
+         * features are not inherited, they would not be included in the local namespace of the owning type and,
+         * therefore, could not be referenced by an unqualified name.
+         */
+        List<Namespace> result = new ArrayList<>();
+        Feature redefiningFeature = redefinition.getRedefiningFeature();
+        if (redefiningFeature != null) {
+            Type owningType = redefiningFeature.getOwningType();
+            if (owningType != null) {
+                owningType.allSupertypes().stream()
+                        .filter(sp -> sp != null)
+                        .forEach(result::add);
+                result.remove(owningType);
+                // Always look into the outer scope
+                result.add(owningType.getOwningNamespace());
+
+            }
         }
 
         return result;
@@ -127,6 +160,7 @@ public class DeresolvingNamespaceProvider {
                 result = connector.getOwningNamespace();
             }
         }
+
         if (result == null && specialization instanceof FeatureTyping featureTyping && featureTyping.getOwningFeature() instanceof InvocationExpression) {
             // If the Specialization is a FeatureTyping (see 8.3.3.3.6), and its owningFeature is an
             // InvocationExpression, then the local Namespace is the non-invocation Namespace for the
@@ -148,8 +182,8 @@ public class DeresolvingNamespaceProvider {
         return result;
     }
 
-    private Namespace getDeresolvingNamespaceFeatureChaining(Element element, FeatureChaining featureChaining) {
-        final Namespace result;
+    private List<Namespace> getDeresolvingNamespaceFeatureChaining(Element element, FeatureChaining featureChaining) {
+        final List<Namespace> result;
         // If the FeatureChaining is the first ownedFeatureChaining of its featureChained, then the local
         // Namespace is determined as if the owningRelationship of the featureChained (which will be a
         // Membership, Subsetting or Conjugation) was the context Relationship (see above).
@@ -160,12 +194,12 @@ public class DeresolvingNamespaceProvider {
         if (indexOf != -1) {
 
             if (indexOf == 0) {
-                result = this.getDeresolvingNamespace(featureChained.getOwningRelationship());
+                result = this.getDeresolvingNamespaces(featureChained.getOwningRelationship());
             } else {
-                result = featureChained.getOwnedFeatureChaining().get(indexOf - 1).getChainingFeature();
+                result = List.of(featureChained.getOwnedFeatureChaining().get(indexOf - 1).getChainingFeature());
             }
         } else {
-            result = element.getOwningNamespace();
+            result = List.of(element.getOwningNamespace());
         }
         return result;
     }

@@ -14,9 +14,11 @@ package org.eclipse.syson.sysml.parser;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.ConjugatedPortTyping;
 import org.eclipse.syson.sysml.Element;
@@ -24,6 +26,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +40,7 @@ public class ProxyResolver {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyResolver.class);
 
     public boolean resolveProxy(final ProxiedReference proxiedReference) {
-        EObject realElement = this.findProxyTarget(proxiedReference.owner(), proxiedReference.targetProxy());
+        EObject realElement = this.findProxyTarget(proxiedReference.owner(), proxiedReference.targetProxy(), proxiedReference.reference());
         if (realElement == null) {
             return false;
         }
@@ -48,7 +51,8 @@ public class ProxyResolver {
                 for (final Object target : referenceCollection) {
                     if (target.equals(proxiedReference.targetProxy())) {
                         resultCollection.add(realElement);
-                        LOGGER.debug("Add the reference {} of object {} with the resolved proxy {} to target {}", proxiedReference.reference().getName(), proxiedReference.owner().toString(), proxiedReference.targetProxy().eProxyURI().fragment(), realElement);
+                        LOGGER.debug("Add the reference {} of object {} with the resolved proxy {} to target {}", proxiedReference.reference().getName(), proxiedReference.owner().toString(),
+                                proxiedReference.targetProxy().eProxyURI().fragment(), realElement);
                     } else {
                         resultCollection.add(target);
                     }
@@ -62,37 +66,38 @@ public class ProxyResolver {
             }
             proxiedReference.owner().eSet(proxiedReference.reference(), realElement);
             if (realElement != null) {
-                LOGGER.debug("Set the reference {} of object {} with the resolved proxy {} to target {}", proxiedReference.reference().getName(), proxiedReference.owner(), proxiedReference.targetProxy().eProxyURI().fragment(), realElement);
+                LOGGER.debug("Set the reference {} of object {} with the resolved proxy {} to target {}", proxiedReference.reference().getName(), proxiedReference.owner(),
+                        proxiedReference.targetProxy().eProxyURI().fragment(), realElement);
             } else {
-                LOGGER.debug("Unable to set the reference {} of object {} because of the unresolved proxy {}.", proxiedReference.reference().getName(), proxiedReference.owner(), proxiedReference.targetProxy().eProxyURI().fragment());
+                LOGGER.debug("Unable to set the reference {} of object {} because of the unresolved proxy {}.", proxiedReference.reference().getName(), proxiedReference.owner(),
+                        proxiedReference.targetProxy().eProxyURI().fragment());
             }
         }
         return true;
     }
 
-    private EObject findProxyTarget(final EObject owner, final InternalEObject proxyObject) {
+    private EObject findProxyTarget(final EObject owner, final InternalEObject proxyObject, EReference eReference) {
         final URI uri = proxyObject.eProxyURI();
         final String qualifiedName = uri.fragment();
 
-        Namespace owningNamespace = null;
+        List<Namespace> deresolvingNamespaces = new ArrayList<>();
         if (owner instanceof Element ownerElement) {
-            owningNamespace = ownerElement.getOwningNamespace();
-        }
-
-        if (owningNamespace == null && owner.eContainer() instanceof Namespace containerNamespace) {
-            owningNamespace = containerNamespace;
+            deresolvingNamespaces.addAll(new DeresolvingNamespaceProvider().getDeresolvingNamespaces(ownerElement));
         }
 
         EObject target = null;
-        if (owningNamespace == null) {
+        if (deresolvingNamespaces.isEmpty()) {
             LOGGER.error("Unable to find owning Namespace of {}", owner);
         } else {
-            final Membership membership = owningNamespace.resolve(qualifiedName);
-            if (membership != null) {
-                if (SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(proxyObject.eClass())) {
-                    target = membership;
-                } else {
-                    target = membership.getMemberElement();
+            for (Namespace deresolvingNamespace : deresolvingNamespaces) {
+
+                final Membership membership = deresolvingNamespace.resolve(qualifiedName);
+                if (membership != null) {
+                    if (SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(proxyObject.eClass())) {
+                        target = membership;
+                    } else {
+                        target = membership.getMemberElement();
+                    }
                 }
             }
         }

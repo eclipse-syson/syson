@@ -15,8 +15,10 @@ package org.eclipse.syson.sysml.export.utils;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toSet;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -53,20 +55,20 @@ public class NameDeresolver {
     /**
      * Keep a cache of the visible memberships of a given Namespace identified by its elementId.
      */
-    private Map<String, EList<Membership>> visibleMembershipsCache = new HashMap<>();
+    private final Map<String, EList<Membership>> visibleMembershipsCache = new HashMap<>();
 
     /**
      * Keep a cache the deresolved name of an element from a given namespace. The key of the map is a pair of the
      * elementId of the deresolving namespace and the element itself.
      */
-    private Map<Pair<String, String>, String> deresolvedNamesCache = new HashMap<>();
+    private final Map<Pair<String, String>, String> deresolvedNamesCache = new HashMap<>();
 
     /**
      * Keeps a cache of the qualified name of an element identified by its elementId.
      */
-    private Map<String, String> qualifiedNameCache = new HashMap<>();
+    private final Map<String, String> qualifiedNameCache = new HashMap<>();
 
-    private DeresolvingNamespaceProvider deresolvingNamespaceProvider = new DeresolvingNamespaceProvider();
+    private final DeresolvingNamespaceProvider deresolvingNamespaceProvider = new DeresolvingNamespaceProvider();
 
     public String getDeresolvedName(Element element, Element context) {
 
@@ -74,16 +76,26 @@ public class NameDeresolver {
             return null;
         }
 
-        Namespace deresolvingNamespace = this.deresolvingNamespaceProvider.getDeresolvingNamespace(context);
+        List<Namespace> deresolvingNamespaces = this.deresolvingNamespaceProvider.getDeresolvingNamespaces(context);
 
         final String qualifiedName;
-        if (deresolvingNamespace == null) {
+        if (deresolvingNamespaces.isEmpty()) {
             qualifiedName = this.getQualifiedName(element);
         } else {
-            // An element is either reachable form its containment tree or via a reference Membership#memberElement
-            Set<Membership> elementAncestors = EMFUtils.getAncestors(Membership.class, element, null).stream().collect(toSet());
-            EMFUtils.getInverse(element, SysmlPackage.eINSTANCE.getMembership_MemberElement()).stream().map(s -> (Membership) s.getEObject()).forEach(elementAncestors::add);
-            qualifiedName = this.deresolve(element, deresolvingNamespace, deresolvingNamespace, elementAncestors);
+
+            List<String> qualifiedNames = new ArrayList<>();
+            for (Namespace deresolvingNamespace : deresolvingNamespaces) {
+
+                // An element is either reachable form its containment tree or via a reference Membership#memberElement
+                Set<Membership> elementAncestors = EMFUtils.getAncestors(Membership.class, element, null).stream().collect(toSet());
+                EMFUtils.getInverse(element, SysmlPackage.eINSTANCE.getMembership_MemberElement()).stream().map(s -> (Membership) s.getEObject()).forEach(elementAncestors::add);
+                String computedQualidiedName = this.deresolve(element, deresolvingNamespace, deresolvingNamespace, elementAncestors);
+                if (computedQualidiedName != null && !computedQualidiedName.isBlank()) {
+                    qualifiedNames.add(computedQualidiedName);
+                }
+
+            }
+            qualifiedName = qualifiedNames.stream().sorted(Comparator.comparing(String::length)).findFirst().orElse(this.getQualifiedName(element));
         }
 
         return qualifiedName;
@@ -202,7 +214,7 @@ public class NameDeresolver {
             // Last try if the element is in the containment tree find the shortest qualified name
             String qualifiedName = this.getQualifiedName(owningNamespace);
             if (qualifiedName != null && !qualifiedName.isBlank() && elementQn.startsWith(qualifiedName)) {
-                relativeQualifiedName = elementQn.substring(qualifiedName.length() + 2, elementQn.length());
+                relativeQualifiedName = owningNamespace.getName() + "::" + elementQn.substring(qualifiedName.length() + 2, elementQn.length());
             } else {
                 relativeQualifiedName = elementQn;
             }
