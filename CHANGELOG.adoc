@@ -61,6 +61,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - https://github.com/eclipse-syson/syson/issues/785[#785] [interconnection-view] Add `New Binding Connector As Usage` tool on `PartUsage` in Interconnection View diagram.
 - https://github.com/eclipse-syson/syson/issues/789[#789] [interconnection-view] Add `New Flow Connection` tool on `PartUsage` in Interconnection View diagram.
 - https://github.com/eclipse-syson/syson/issues/790[#790] [interconnection-view] Add `New Interface` tool on `PartUsage` in Interconnection View diagram.
+- https://github.com/eclipse-syson/syson/issues/799[#799] [export] Handle `UseCaseUsage` and `IncludeUseCaseUsage` elements.
 
 === New features
 
@@ -69,7 +70,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - https://github.com/eclipse-syson/syson/issues/731[#731] [explorer] Allow creation of Comment from the Explorer view.
 - https://github.com/eclipse-syson/syson/issues/696[#696] [diagrams] Add Comment element as graphical node in all diagrams.
 - https://github.com/eclipse-syson/syson/issues/697[#697] [details] Add Comment property to Core tab of the Details view.
-- https://github.com/eclipse-syson/syson/issues/740[#740] [export] Fix missing declaredName after exporting an annotating element.
+- https://github.com/eclipse-syson/syson/issues/740[#740] [export] Fix missing `declaredName` after exporting an annotating element.
 - https://github.com/eclipse-syson/syson/issues/754[#754] [general-view] Add an edge tool to add target element as nested usage.
 This complements the existing tool that allows to add the source element as a nested usage of the target.
 
