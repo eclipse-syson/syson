@@ -142,12 +142,12 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
                 );
     }
 
-    @DisplayName("Given a SysML Project, when New Feature Typing tool is  requested on a PartUsage, then a new PartDefinition and a FeatureTyping edge are created")
+    @DisplayName("Given a SysML Project, when the New Feature Typing tool is requested on a PartUsage, then a new PartDefinition node and a FeatureTyping edge are created")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @ParameterizedTest
     @MethodSource("partUsageNodeParameters")
-    public void givenASysMLProjectWhenNewFeatureTypingToolIsRequestedOnAPartUsageThenANewPartDefinitionAndAFeatureTypingEdgeAreCreated(EClass eClass, String nodeName, int definitionCompartmentCount) {
+    public void testApplyTool(EClass eClass, String nodeName, int definitionCompartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
 
         this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
@@ -164,7 +164,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
         var diagramAfterRenameElement = this.givenDiagram.getDiagram(this.verifier);
 
         String toolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(eClass), "New Feature Typing");
-        assertThat(toolId).as("The tool 'New Feature Tying' should exist on a ").isNotNull();
+        assertThat(toolId).as("The tool 'New Feature Typing' should exist on a ").isNotNull();
 
         this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
                 diagramAfterRenameElement,

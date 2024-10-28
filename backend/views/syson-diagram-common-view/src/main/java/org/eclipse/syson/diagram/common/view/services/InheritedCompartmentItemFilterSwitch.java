@@ -14,18 +14,22 @@ package org.eclipse.syson.diagram.common.view.services;
 
 import java.util.Objects;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.OwningMembership;
+import org.eclipse.syson.sysml.PartUsage;
+import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
 /**
- * Test.
+ * Switch allowing to filter some candidates to be considered as inherited node items or not.
  *
  * @author arichard
  */
@@ -64,5 +68,19 @@ public class InheritedCompartmentItemFilterSwitch extends SysmlSwitch<Boolean> {
             }
         }
         return keep && this.caseFeature(object);
+    }
+
+    @Override
+    public Boolean casePartUsage(PartUsage object) {
+        EClassifier eType = this.eReference.getEType();
+        EClass eClass = object.eClass();
+        return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
+    }
+
+    @Override
+    public Boolean caseReferenceUsage(ReferenceUsage object) {
+        EClassifier eType = this.eReference.getEType();
+        EClass eClass = object.eClass();
+        return eType.equals(eClass) || (eType instanceof EClass eTypeEClass && eTypeEClass.isSuperTypeOf(eClass));
     }
 }

@@ -70,6 +70,7 @@ import org.eclipse.syson.diagram.general.view.edges.UsageNestedUsageEdgeDescript
 import org.eclipse.syson.diagram.general.view.nodes.ActionItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ActionsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.ActorNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.AllocationDefinitionEndsCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.AllocationDefinitionEndsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.CaseDefinitionActorsCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.CaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider;
@@ -402,7 +403,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getCaseDefinition(),
                 SysmlPackage.eINSTANCE.getCaseDefinition_ObjectiveRequirement(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new AllocationDefinitionEndsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
-        diagramElementDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationDefinition(),
+        diagramElementDescriptionProviders.add(new AllocationDefinitionEndsCompartmentItemNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new InheritedCompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getAllocationDefinition(),
                 SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ActionFlowCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getActionUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), colorProvider,
                 this.getDescriptionNameGenerator()));
