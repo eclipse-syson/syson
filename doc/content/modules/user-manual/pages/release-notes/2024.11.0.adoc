@@ -84,6 +84,8 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - Add `New Interface` tool on `PartUsage` in Interconnection View diagram.
 - Handle `UseCaseUsage` and `IncludeUseCaseUsage` elements in export to textual SysMLv2.
 - All standard libraries have been updated to comply with the SysML Beta 2.2 specification.
+- Improve import feature non regression tests.
+Added source sysml file and unaltered ast.json result.
 
 == New features
 

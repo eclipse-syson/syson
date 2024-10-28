@@ -1,0 +1,292 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "Package",
+              "children": [
+                {
+                  "$type": "OwningMembership",
+                  "target": {
+                    "$type": "PartDefinition",
+                    "$cstNode": {
+                      "text": "part def Vehicle;",
+                      "stack": [
+                        "DefinitionElement",
+                        "DefinitionMember"
+                      ]
+                    },
+                    "declaredName": "Vehicle",
+                    "isIndividual": false,
+                    "isVariation": false,
+                    "heritage": [],
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 6,
+                      "qualifiedName": "AliasImport::Definitions::Vehicle"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "part def Vehicle;",
+                    "stack": [
+                      "DefinitionMember",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 5,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "Membership",
+                  "$cstNode": {
+                    "text": "alias Car for Vehicle;",
+                    "stack": [
+                      "AliasMember",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "declaredName": "Car",
+                  "isAlias": true,
+                  "elements": [],
+                  "targetRef": {
+                    "$type": "ElementReference",
+                    "$cstNode": {
+                      "text": "Vehicle",
+                      "stack": [
+                        "ElementReference",
+                        "AliasMember"
+                      ]
+                    },
+                    "text": "Vehicle",
+                    "reference": "AliasImport::Definitions::Vehicle",
+                    "parts": [
+                      "AliasImport::Definitions::Vehicle"
+                    ]
+                  },
+                  "$meta": {
+                    "elementId": 10,
+                    "qualifiedName": "AliasImport::Definitions::Car"
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "package Definitions {\n        part def Vehicle;\n        alias Car for Vehicle;\n    }",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "Definitions",
+              "prefixes": [],
+              "$meta": {
+                "elementId": 4,
+                "qualifiedName": "AliasImport::Definitions"
+              }
+            },
+            "$cstNode": {
+              "text": "package Definitions {\n        part def Vehicle;\n        alias Car for Vehicle;\n    }",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "Package",
+              "children": [
+                {
+                  "$type": "MembershipImport",
+                  "$cstNode": {
+                    "text": "public import Definitions::Car;",
+                    "stack": [
+                      "Import",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "targetRef": {
+                    "$type": "MembershipReference",
+                    "$cstNode": {
+                      "text": "Definitions::Car",
+                      "stack": [
+                        "ElementReference",
+                        "ImportedReference"
+                      ]
+                    },
+                    "text": "Definitions::Car",
+                    "reference": "AliasImport::Definitions::Car",
+                    "parts": [
+                      "AliasImport::Definitions",
+                      "AliasImport::Definitions::Car"
+                    ]
+                  },
+                  "visibility": "public",
+                  "importsAll": false,
+                  "isRecursive": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 14,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "OwningMembership",
+                  "target": {
+                    "$type": "PartUsage",
+                    "$cstNode": {
+                      "text": "part vehicle : Car;",
+                      "stack": [
+                        "UsageElement",
+                        "UsageMember"
+                      ]
+                    },
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "$cstNode": {
+                            "text": "Car",
+                            "stack": [
+                              "TypeReference",
+                              "FeatureType"
+                            ]
+                          },
+                          "text": "Car",
+                          "reference": "AliasImport::Definitions::Vehicle",
+                          "parts": [
+                            "AliasImport::Definitions::Vehicle"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "Car",
+                          "stack": [
+                            "FeatureTyping",
+                            "TypedBy"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 18,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "declaredName": "vehicle",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 17,
+                      "qualifiedName": "AliasImport::Usages::vehicle"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "part vehicle : Car;",
+                    "stack": [
+                      "UsageMember",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 16,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "package Usages {\n        public import Definitions::Car;\n        part vehicle : Car;\n    }",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "Usages",
+              "prefixes": [],
+              "$meta": {
+                "elementId": 13,
+                "qualifiedName": "AliasImport::Usages"
+              }
+            },
+            "$cstNode": {
+              "text": "package Usages {\n        public import Definitions::Car;\n        part vehicle : Car;\n    }",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 12,
+              "qualifiedName": ""
+            }
+          }
+        ],
+        "$cstNode": {
+          "text": "package AliasImport {\n    package Definitions {\n        part def Vehicle;\n        alias Car for Vehicle;\n    }\n    package Usages {\n        public import Definitions::Car;\n        part vehicle : Car;\n    }\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "AliasImport",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "AliasImport"
+        }
+      },
+      "$cstNode": {
+        "text": "package AliasImport {\n    package Definitions {\n        part def Vehicle;\n        alias Car for Vehicle;\n    }\n    package Usages {\n        public import Definitions::Car;\n        part vehicle : Car;\n    }\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
+      }
+    }
+  ],
+  "$cstNode": {
+    "text": "package AliasImport {\n    package Definitions {\n        part def Vehicle;\n        alias Car for Vehicle;\n    }\n    package Usages {\n        public import Definitions::Car;\n        part vehicle : Car;\n    }\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
+}

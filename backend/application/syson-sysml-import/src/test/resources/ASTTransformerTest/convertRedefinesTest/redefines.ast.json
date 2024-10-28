@@ -1,0 +1,161 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "$cstNode": {
+                "text": "attribute packetHeader { }",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "declaredName": "packetHeader",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 4,
+                "qualifiedName": "Packets::packetHeader"
+              }
+            },
+            "$cstNode": {
+              "text": "attribute packetHeader { }",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "$cstNode": {
+                "text": "attribute packetSecondaryHeader' redefines packetHeader;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "heritage": [
+                {
+                  "$type": "Redefinition",
+                  "targetRef": {
+                    "$type": "FeatureReference",
+                    "$cstNode": {
+                      "text": "packetHeader",
+                      "stack": [
+                        "FeatureReference",
+                        "OwnedRedefinition"
+                      ]
+                    },
+                    "text": "packetHeader",
+                    "reference": "Packets::packetHeader",
+                    "parts": [
+                      "Packets::packetHeader"
+                    ]
+                  },
+                  "$cstNode": {
+                    "text": "packetHeader",
+                    "stack": [
+                      "OwnedRedefinition",
+                      "Redefines"
+                    ]
+                  },
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 7,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "declaredName": "packetSecondaryHeader",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 6,
+                "qualifiedName": "Packets::packetSecondaryHeader"
+              }
+            },
+            "$cstNode": {
+              "text": "attribute packetSecondaryHeader' redefines packetHeader;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 5,
+              "qualifiedName": ""
+            }
+          }
+        ],
+        "$cstNode": {
+          "text": "package Packets {\n    attribute packetHeader { }\n    attribute packetSecondaryHeader' redefines packetHeader;\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "Packets",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "Packets"
+        }
+      },
+      "$cstNode": {
+        "text": "package Packets {\n    attribute packetHeader { }\n    attribute packetSecondaryHeader' redefines packetHeader;\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
+      }
+    }
+  ],
+  "$cstNode": {
+    "text": "package Packets {\n    attribute packetHeader { }\n    attribute packetSecondaryHeader' redefines packetHeader;\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
+}

@@ -5,18 +5,82 @@
       "$type": "OwningMembership",
       "target": {
         "$type": "Package",
-        "declaredName": "package1",
         "children": [
           {
             "$type": "OwningMembership",
             "target": {
               "$type": "PartDefinition",
+              "$cstNode": {
+                "text": "part def part1;",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "part1",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
               "children": [],
-              "declaredName": "part1"
+              "prefixes": [],
+              "$meta": {
+                "elementId": 4,
+                "qualifiedName": "package1::part1"
+              }
+            },
+            "$cstNode": {
+              "text": "part def part1;",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
             }
           }
+        ],
+        "$cstNode": {
+          "text": "package package1 {\n    part def part1;\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "package1",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "package1"
+        }
+      },
+      "$cstNode": {
+        "text": "package package1 {\n    part def part1;\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
         ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
       }
     }
-  ]
+  ],
+  "$cstNode": {
+    "text": "package package1 {\n    part def part1;\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
 }

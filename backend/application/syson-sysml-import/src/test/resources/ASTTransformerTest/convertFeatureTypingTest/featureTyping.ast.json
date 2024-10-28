@@ -9,16 +9,15 @@
           {
             "$type": "OwningMembership",
             "target": {
-              "$type": "AllocationDefinition",
+              "$type": "AttributeDefinition",
               "$cstNode": {
-                "text": "allocation def A;",
+                "text": "attribute def attributeDefinition;",
                 "stack": [
                   "DefinitionElement",
                   "DefinitionMember"
                 ]
               },
-              "declaredName": "A",
-              "elements": [],
+              "declaredName": "attributeDefinition",
               "isIndividual": false,
               "isVariation": false,
               "heritage": [],
@@ -28,11 +27,11 @@
               "prefixes": [],
               "$meta": {
                 "elementId": 4,
-                "qualifiedName": "AllocationTest::A"
+                "qualifiedName": "package::attributeDefinition"
               }
             },
             "$cstNode": {
-              "text": "allocation def A;",
+              "text": "attribute def attributeDefinition;",
               "stack": [
                 "DefinitionMember",
                 "PackageBodyElement"
@@ -48,136 +47,132 @@
           {
             "$type": "OwningMembership",
             "target": {
-              "$type": "AllocationUsage",
+              "$type": "PortDefinition",
               "children": [
                 {
                   "$type": "FeatureMembership",
                   "target": {
-                    "$type": "PartUsage",
+                    "$type": "ReferenceUsage",
                     "$cstNode": {
-                      "text": "part source;",
+                      "text": "in referenceUsage : attributeDefinition;",
                       "stack": [
-                        "OccurrenceUsageElement",
-                        "OccurrenceUsageMember"
+                        "NonOccurrenceUsageElement",
+                        "NonOccurrenceUsageMember"
                       ]
                     },
-                    "declaredName": "source",
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "$cstNode": {
+                            "text": "attributeDefinition",
+                            "stack": [
+                              "TypeReference",
+                              "FeatureType"
+                            ]
+                          },
+                          "text": "attributeDefinition",
+                          "reference": "package::attributeDefinition",
+                          "parts": [
+                            "package::attributeDefinition"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "attributeDefinition",
+                          "stack": [
+                            "FeatureTyping",
+                            "TypedBy"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 18,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "declaredName": "referenceUsage",
+                    "direction": "in",
                     "isIndividual": false,
                     "isReference": false,
                     "isVariation": false,
                     "isNonunique": false,
                     "isOrdered": false,
-                    "heritage": [],
                     "isSufficient": false,
                     "typeRelationships": [],
                     "children": [],
                     "prefixes": [],
                     "$meta": {
-                      "elementId": 13,
-                      "qualifiedName": "AllocationTest::allocation1::source"
+                      "elementId": 17,
+                      "qualifiedName": "package::portDefinition::referenceUsage"
                     }
                   },
                   "$cstNode": {
-                    "text": "part source;",
+                    "text": "in referenceUsage : attributeDefinition;",
                     "stack": [
-                      "OccurrenceUsageMember",
+                      "NonOccurrenceUsageMember",
                       "DefinitionBodyItem"
                     ]
                   },
                   "isAlias": false,
                   "elements": [],
                   "$meta": {
-                    "elementId": 12,
+                    "elementId": 16,
                     "qualifiedName": ""
                   }
                 }
               ],
               "$cstNode": {
-                "text": "allocation allocation1 : A {\n        part source;\n    }",
+                "text": "port def portDefinition {\n        in referenceUsage : attributeDefinition;\n    }",
                 "stack": [
-                  "UsageElement",
-                  "UsageMember"
+                  "DefinitionElement",
+                  "DefinitionMember"
                 ]
               },
-              "heritage": [
-                {
-                  "$type": "FeatureTyping",
-                  "targetRef": {
-                    "$type": "TypeReference",
-                    "$cstNode": {
-                      "text": "A",
-                      "stack": [
-                        "TypeReference",
-                        "FeatureType"
-                      ]
-                    },
-                    "text": "A",
-                    "reference": "AllocationTest::A",
-                    "parts": [
-                      "AllocationTest::A"
-                    ]
-                  },
-                  "$cstNode": {
-                    "text": "A",
-                    "stack": [
-                      "FeatureTyping",
-                      "TypedBy"
-                    ]
-                  },
-                  "elements": [],
-                  "$meta": {
-                    "elementId": 10,
-                    "qualifiedName": ""
-                  }
-                }
-              ],
-              "declaredName": "allocation1",
-              "ends": [],
-              "elements": [],
+              "declaredName": "portDefinition",
               "isIndividual": false,
-              "isReference": false,
               "isVariation": false,
-              "isNonunique": false,
-              "isOrdered": false,
+              "heritage": [],
               "isSufficient": false,
               "typeRelationships": [],
               "prefixes": [],
               "$meta": {
-                "elementId": 9,
-                "qualifiedName": "AllocationTest::allocation1"
+                "elementId": 6,
+                "qualifiedName": "package::portDefinition"
               }
             },
             "$cstNode": {
-              "text": "allocation allocation1 : A {\n        part source;\n    }",
+              "text": "port def portDefinition {\n        in referenceUsage : attributeDefinition;\n    }",
               "stack": [
-                "UsageMember",
+                "DefinitionMember",
                 "PackageBodyElement"
               ]
             },
             "isAlias": false,
             "elements": [],
             "$meta": {
-              "elementId": 8,
+              "elementId": 5,
               "qualifiedName": ""
             }
           }
         ],
         "$cstNode": {
-          "text": "package AllocationTest {\n\n    allocation def A;\n\n    allocation allocation1 : A {\n        part source;\n    }\n\n}",
+          "text": "package 'package' {\n    attribute def attributeDefinition;\n    port def portDefinition {\n        in referenceUsage : attributeDefinition;\n    }\n}",
           "stack": [
             "DefinitionElement",
             "DefinitionMember"
           ]
         },
-        "declaredName": "AllocationTest",
+        "declaredName": "'package'",
         "prefixes": [],
         "$meta": {
           "elementId": 2,
-          "qualifiedName": "AllocationTest"
+          "qualifiedName": "package"
         }
       },
       "$cstNode": {
-        "text": "package AllocationTest {\n\n    allocation def A;\n\n    allocation allocation1 : A {\n        part source;\n    }\n\n}",
+        "text": "package 'package' {\n    attribute def attributeDefinition;\n    port def portDefinition {\n        in referenceUsage : attributeDefinition;\n    }\n}",
         "stack": [
           "DefinitionMember",
           "PackageBodyElement"
@@ -192,7 +187,7 @@
     }
   ],
   "$cstNode": {
-    "text": "package AllocationTest {\n\n    allocation def A;\n\n    allocation allocation1 : A {\n        part source;\n    }\n\n}",
+    "text": "package 'package' {\n    attribute def attributeDefinition;\n    port def portDefinition {\n        in referenceUsage : attributeDefinition;\n    }\n}",
     "stack": []
   },
   "prefixes": [],

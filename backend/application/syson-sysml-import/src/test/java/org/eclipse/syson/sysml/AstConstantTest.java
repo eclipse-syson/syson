@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -33,11 +32,11 @@ public class AstConstantTest {
     @Test
     void getIdentifierTest() {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.createObjectNode();
-        JsonNode metaNode = mapper.createObjectNode();
+        ObjectNode rootNode = mapper.createObjectNode();
+        ObjectNode metaNode = mapper.createObjectNode();
 
-        ((ObjectNode) rootNode).set("$meta", metaNode);
-        ((ObjectNode) metaNode).put("elementId", "Identifier");
+        rootNode.set("$meta", metaNode);
+        metaNode.put("elementId", "Identifier");
 
         String identifier = AstConstant.getIdentifier(rootNode);
 
@@ -50,11 +49,11 @@ public class AstConstantTest {
     @Test
     void getQualifiedNameSimpleTest() {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.createObjectNode();
-        JsonNode rootMetaNode = mapper.createObjectNode();
+        ObjectNode rootNode = mapper.createObjectNode();
+        ObjectNode rootMetaNode = mapper.createObjectNode();
 
-        ((ObjectNode) rootNode).set("$meta", rootMetaNode);
-        ((ObjectNode) rootMetaNode).put("qualifiedName", "Parent");
+        rootNode.set("$meta", rootMetaNode);
+        rootMetaNode.put("qualifiedName", "Parent");
 
         String qualifiedName = AstConstant.getQualifiedName(rootNode);
 
@@ -67,11 +66,11 @@ public class AstConstantTest {
     @Test
     void getQualifiedNameComplexTest() {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = mapper.createObjectNode();
-        JsonNode rootMetaNode = mapper.createObjectNode();
+        ObjectNode rootNode = mapper.createObjectNode();
+        ObjectNode rootMetaNode = mapper.createObjectNode();
 
-        ((ObjectNode) rootNode).set("$meta", rootMetaNode);
-        ((ObjectNode) rootMetaNode).put("qualifiedName", "Parent::Text Space::Element");
+        rootNode.set("$meta", rootMetaNode);
+        rootMetaNode.put("qualifiedName", "Parent::Text Space::Element");
 
         String qualifiedName = AstConstant.getQualifiedName(rootNode);
 

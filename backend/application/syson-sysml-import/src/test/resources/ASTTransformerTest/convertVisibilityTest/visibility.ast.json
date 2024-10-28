@@ -1,0 +1,346 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "ItemUsage",
+              "$cstNode": {
+                "text": "item f : A;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "heritage": [
+                {
+                  "$type": "FeatureTyping",
+                  "targetRef": {
+                    "$type": "TypeReference",
+                    "$cstNode": {
+                      "text": "A",
+                      "stack": [
+                        "TypeReference",
+                        "FeatureType"
+                      ]
+                    },
+                    "text": "A",
+                    "reference": "VisibilityTest::A",
+                    "parts": [
+                      "VisibilityTest::A"
+                    ]
+                  },
+                  "$cstNode": {
+                    "text": "A",
+                    "stack": [
+                      "FeatureTyping",
+                      "TypedBy"
+                    ]
+                  },
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 5,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "declaredName": "f",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 4,
+                "qualifiedName": "VisibilityTest::f"
+              }
+            },
+            "$cstNode": {
+              "text": "item f : A;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "ItemDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "visibility": "protected",
+                  "$cstNode": {
+                    "text": "protected part c : C;",
+                    "stack": [
+                      "OccurrenceUsageMember",
+                      "DefinitionBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "target": {
+                    "$type": "PartUsage",
+                    "$cstNode": {
+                      "text": "part c : C;",
+                      "stack": [
+                        "OccurrenceUsageElement",
+                        "OccurrenceUsageMember"
+                      ]
+                    },
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "$cstNode": {
+                            "text": "C",
+                            "stack": [
+                              "TypeReference",
+                              "FeatureType"
+                            ]
+                          },
+                          "text": "C",
+                          "reference": "VisibilityTest::C",
+                          "parts": [
+                            "VisibilityTest::C"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "C",
+                          "stack": [
+                            "FeatureTyping",
+                            "TypedBy"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 14,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "declaredName": "c",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 13,
+                      "qualifiedName": "VisibilityTest::A::c"
+                    }
+                  },
+                  "$meta": {
+                    "elementId": 12,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "item def A {\n        protected part c : C;\n    }",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "A",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 8,
+                "qualifiedName": "VisibilityTest::A"
+              }
+            },
+            "$cstNode": {
+              "text": "item def A {\n        protected part c : C;\n    }",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 7,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "visibility": "private",
+            "$cstNode": {
+              "text": "private part def C {\n        private in y : A;\n    }",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "target": {
+              "$type": "PartDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "visibility": "private",
+                  "$cstNode": {
+                    "text": "private in y : A;",
+                    "stack": [
+                      "NonOccurrenceUsageMember",
+                      "DefinitionBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "target": {
+                    "$type": "ReferenceUsage",
+                    "$cstNode": {
+                      "text": "in y : A;",
+                      "stack": [
+                        "NonOccurrenceUsageElement",
+                        "NonOccurrenceUsageMember"
+                      ]
+                    },
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "$cstNode": {
+                            "text": "A",
+                            "stack": [
+                              "TypeReference",
+                              "FeatureType"
+                            ]
+                          },
+                          "text": "A",
+                          "reference": "VisibilityTest::A",
+                          "parts": [
+                            "VisibilityTest::A"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "A",
+                          "stack": [
+                            "FeatureTyping",
+                            "TypedBy"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 23,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "declaredName": "y",
+                    "direction": "in",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 22,
+                      "qualifiedName": "VisibilityTest::C::y"
+                    }
+                  },
+                  "$meta": {
+                    "elementId": 21,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "part def C {\n        private in y : A;\n    }",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "C",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 17,
+                "qualifiedName": "VisibilityTest::C"
+              }
+            },
+            "$meta": {
+              "elementId": 16,
+              "qualifiedName": ""
+            }
+          }
+        ],
+        "$cstNode": {
+          "text": "package VisibilityTest {\n    item f : A;\n    item def A {\n        protected part c : C;\n    }\n    private part def C {\n        private in y : A;\n    }\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "VisibilityTest",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "VisibilityTest"
+        }
+      },
+      "$cstNode": {
+        "text": "package VisibilityTest {\n    item f : A;\n    item def A {\n        protected part c : C;\n    }\n    private part def C {\n        private in y : A;\n    }\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
+      }
+    }
+  ],
+  "$cstNode": {
+    "text": "package VisibilityTest {\n    item f : A;\n    item def A {\n        protected part c : C;\n    }\n    private part def C {\n        private in y : A;\n    }\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
+}
