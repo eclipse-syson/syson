@@ -118,6 +118,13 @@ public class JavaServiceIsCalledChecker {
                         .map(ChangeContext::getExpression)
                         .forEach(expressions::add);
             }
+            if (diagramTool instanceof NodeTool nodeTool) {
+                if (nodeTool.getDialogDescription() instanceof SelectionDialogDescription selectionDialogDescription) {
+                    expressions.add(selectionDialogDescription.getSelectionDialogTreeDescription().getElementsExpression());
+                    expressions.add(selectionDialogDescription.getSelectionDialogTreeDescription().getChildrenExpression());
+                    expressions.add(selectionDialogDescription.getSelectionDialogTreeDescription().getIsSelectableExpression());
+                }
+            }
         }
 
         EMFUtils.allContainedObjectOfType(diagramDescription, NodeDescription.class)

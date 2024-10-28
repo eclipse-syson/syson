@@ -23,7 +23,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
@@ -43,6 +47,8 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
@@ -171,7 +177,7 @@ public class ViewToolService extends ToolService {
             List<ViewCreationRequest> creationRequests = new ArrayList<>();
             boolean hasRenderedSynchronizedElement = false;
             if (parentViewCreationRequest == null) {
-                creationRequests.add(this.createView(childElement, editingContext, diagramContext, (Node) null, convertedNodes));
+                creationRequests.add(this.createView(childElement, editingContext, diagramContext, null, convertedNodes));
             } else {
                 if (parentNodeDescription.getChildrenLayoutStrategy() instanceof ListLayoutStrategyDescription) {
                     // The parent node has compartments, we want to add elements inside them if possible.
@@ -622,7 +628,7 @@ public class ViewToolService extends ToolService {
                                     this.addExistingElements(element, editingContext, diagramContext, req, convertedNodes, recursive);
                                 }
                             }, () -> {
-                                var req = this.createView(element, editingContext, diagramContext, (Node) null, convertedNodes);
+                                var req = this.createView(element, editingContext, diagramContext, null, convertedNodes);
                                 if (recursive) {
                                     this.addExistingElements(element, editingContext, diagramContext, req, convertedNodes, recursive);
                                 }
@@ -1105,5 +1111,80 @@ public class ViewToolService extends ToolService {
             }
         }
         return selectedNode;
+    }
+
+    /**
+     * Service to retrieve the root elements of the selection dialog of the NamespaceImport creation tool.
+     * @param editingContext the editing context
+     * @return the list of resources that contain at least one {@link Package}
+     */
+    public List<Resource> getNamespaceImportSelectionDialogElements(IEditingContext editingContext) {
+        var optionalResourceSet = Optional.of(editingContext)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
+                .map(EditingDomain::getResourceSet);
+        var resouces = optionalResourceSet.map(resourceSet -> resourceSet.getResources().stream()
+                        .filter(this::containsPackage)
+                        .toList())
+                .orElseGet(ArrayList::new);
+        return resouces.stream().sorted((r1, r2) -> this.getResourceName(r1).compareTo(this.getResourceName(r2))).toList();
+    }
+
+    /**
+     * Service to retrieve the children of a given element in the selection dialog of the NamespaceImport creation tool.
+     *
+     * @param self
+     *         an element of the tree
+     * @return the list of {@link Package} element found under the given root element.
+     */
+    public List<Package> getNamespaceImportSelectionDialogChildren(Object self) {
+        List<Package> result = new ArrayList<>();
+        if (self instanceof Resource resource) {
+            resource.getContents().stream()
+                    .filter(Element.class::isInstance)
+                    .map(Element.class::cast)
+                    .forEach(element -> result.addAll(this.findClosestPackageInChildren(element)));
+        } else if (self instanceof Package packageElement) {
+            packageElement.getOwnedRelationship().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .forEach(membership -> result.addAll(this.findClosestPackageInChildren(membership)));
+        }
+        return result;
+    }
+
+    private boolean containsPackage(Resource resource) {
+        boolean found = false;
+        TreeIterator<EObject> allContents = resource.getAllContents();
+        while (!found && allContents.hasNext()) {
+            found = allContents.next() instanceof Package;
+        }
+        return found;
+    }
+
+    private String getResourceName(Resource resource) {
+        return resource.eAdapters().stream()
+                .filter(ResourceMetadataAdapter.class::isInstance)
+                .map(ResourceMetadataAdapter.class::cast)
+                .findFirst()
+                .map(ResourceMetadataAdapter::getName)
+                .orElse(resource.getURI().lastSegment());
+    }
+
+    private List<Package> findClosestPackageInChildren(Element element) {
+        var result = new ArrayList<Package>();
+        if (element instanceof Package packageElement) {
+            result.add(packageElement);
+        } else if (element instanceof Membership membership) {
+            membership.getOwnedRelatedElement()
+                    .forEach(child -> result.addAll(this.findClosestPackageInChildren(child)));
+        } else {
+            element.getOwnedRelationship().stream()
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
+                    .forEach(membership -> result.addAll(this.findClosestPackageInChildren(membership)));
+        }
+        return result;
     }
 }

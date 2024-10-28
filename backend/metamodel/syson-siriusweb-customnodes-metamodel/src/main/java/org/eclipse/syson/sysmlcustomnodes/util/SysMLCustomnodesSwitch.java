@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
+import org.eclipse.syson.sysmlcustomnodes.SysMLImportedPackageNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 
@@ -94,6 +95,17 @@ public class SysMLCustomnodesSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
+            case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION: {
+                SysMLImportedPackageNodeStyleDescription sysMLImportedPackageNodeStyleDescription = (SysMLImportedPackageNodeStyleDescription) theEObject;
+                T result = this.caseSysMLImportedPackageNodeStyleDescription(sysMLImportedPackageNodeStyleDescription);
+                if (result == null)
+                    result = this.caseNodeStyleDescription(sysMLImportedPackageNodeStyleDescription);
+                if (result == null)
+                    result = this.caseBorderStyle(sysMLImportedPackageNodeStyleDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
             default:
                 return this.defaultCase(theEObject);
         }
@@ -126,6 +138,22 @@ public class SysMLCustomnodesSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseSysMLNoteNodeStyleDescription(SysMLNoteNodeStyleDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Sys ML Imported Package Node Style
+     * Description</em>'. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
+     * terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Sys ML Imported Package Node Style
+     *         Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSysMLImportedPackageNodeStyleDescription(SysMLImportedPackageNodeStyleDescription object) {
         return null;
     }
 

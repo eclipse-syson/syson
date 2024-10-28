@@ -33,6 +33,9 @@ import {
 } from '@eclipse-sirius/sirius-web-application';
 import {
   InsertTextualSysMLMenuContribution,
+  SysMLImportedPackageNode,
+  SysMLImportedPackageNodeConverter,
+  SysMLImportedPackageNodeLayoutHandler,
   sysMLNodesStyleDocumentTransform,
   SysMLNoteNode,
   SysMLNoteNodeConverter,
@@ -120,11 +123,20 @@ extensionRegistry.addComponent(footerExtensionPoint, {
  * Custom node contribution
  */
 const nodeTypeRegistry: NodeTypeRegistry = {
-  nodeLayoutHandlers: [new SysMLPackageNodeLayoutHandler(), new SysMLNoteNodeLayoutHandler()],
-  nodeConverters: [new SysMLPackageNodeConverter(), new SysMLNoteNodeConverter()],
+  nodeLayoutHandlers: [
+    new SysMLPackageNodeLayoutHandler(),
+    new SysMLNoteNodeLayoutHandler(),
+    new SysMLImportedPackageNodeLayoutHandler(),
+  ],
+  nodeConverters: [
+    new SysMLPackageNodeConverter(),
+    new SysMLNoteNodeConverter(),
+    new SysMLImportedPackageNodeConverter(),
+  ],
   nodeTypeContributions: [
     <NodeTypeContribution component={SysMLPackageNode} type={'sysMLPackageNode'} />,
     <NodeTypeContribution component={SysMLNoteNode} type={'sysMLNoteNode'} />,
+    <NodeTypeContribution component={SysMLImportedPackageNode} type={'sysMLImportedPackageNode'} />,
   ],
 };
 

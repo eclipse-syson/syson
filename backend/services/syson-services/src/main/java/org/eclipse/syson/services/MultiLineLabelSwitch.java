@@ -45,6 +45,8 @@ import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MultiplicityRange;
+import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -64,6 +66,7 @@ import org.eclipse.syson.sysml.Usage;
 import org.eclipse.syson.sysml.UseCaseDefinition;
 import org.eclipse.syson.sysml.UseCaseUsage;
 import org.eclipse.syson.sysml.VariantMembership;
+import org.eclipse.syson.sysml.VisibilityKind;
 import org.eclipse.syson.sysml.helper.LabelConstants;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
 
@@ -411,6 +414,22 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.caseElement(object))
                 .append(this.labelService.getSubclassificationLabel(object));
         return label.toString();
+    }
+
+    @Override
+    public String caseNamespaceImport(NamespaceImport object) {
+        Namespace importedNamespace = object.getImportedNamespace();
+        StringBuilder builder = new StringBuilder();
+        if (importedNamespace != null) {
+            if (object.getVisibility() != VisibilityKind.PUBLIC) {
+                builder.append(LabelConstants.OPEN_QUOTE);
+                builder.append(object.getVisibility().getLiteral());
+                builder.append(LabelConstants.CLOSE_QUOTE);
+                builder.append(LabelConstants.CR);
+            }
+            builder.append(this.caseElement(importedNamespace));
+        }
+        return builder.toString();
     }
 
     @Override

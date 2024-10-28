@@ -106,7 +106,9 @@ public class GeneralViewDiagramDescriptionTests {
                 .filter(this.diagramPredicates.isFakeNode().negate()
                         .and(this.diagramPredicates.isEmptyDiagramNode().negate())
                         .and(this.diagramPredicates.isCompartmentNode().negate())
-                        .and(this.diagramPredicates.isInheritedCompartmentItemNode().negate()))
+                        .and(this.diagramPredicates.isInheritedCompartmentItemNode().negate())
+                        .and(this.diagramPredicates.getIsNamespaceImportNode().negate())
+                )
                 .filter(nodeDescription -> nodeDescription.getInsideLabel() != null && nodeDescription.getInsideLabel().getLabelExpression() != null
                         && !nodeDescription.getInsideLabel().getLabelExpression().isBlank())
                 .toList();

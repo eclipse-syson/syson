@@ -55,6 +55,7 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
+import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.ParameterMembership;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
@@ -184,7 +185,7 @@ public class DetailsViewService {
             isReadOnly = isReadOnly || this.isReadOnly(element);
             if ((element instanceof StateUsage && SysmlPackage.eINSTANCE.getStateUsage_IsParallel().equals(eStructuralFeature))
                     || (element instanceof StateDefinition && SysmlPackage.eINSTANCE.getStateDefinition_IsParallel().equals(eStructuralFeature))) {
-                isReadOnly = isReadOnly || ((Type) element).getOwnedFeature().stream().filter(TransitionUsage.class::isInstance).findAny().isPresent();
+                isReadOnly = isReadOnly || ((Type) element).getOwnedFeature().stream().anyMatch(TransitionUsage.class::isInstance);
             } else if (element instanceof FeatureMembership && SysmlPackage.eINSTANCE.getFeaturing_Feature().equals(eStructuralFeature)) {
                 isReadOnly = true;
             }
@@ -393,12 +394,11 @@ public class DetailsViewService {
         if (newPayloadParameter instanceof Type newType) {
             var payloadParam = acceptActionUsage.getPayloadParameter();
             if (payloadParam != null) {
-                var ft = payloadParam.getOwnedRelationship().stream()
+                payloadParam.getOwnedRelationship().stream()
                         .filter(FeatureTyping.class::isInstance)
                         .map(FeatureTyping.class::cast)
                         .findFirst()
-                        .orElse(null);
-                ft.setType(newType);
+                        .ifPresent(ft -> ft.setType(newType));
                 return true;
             }
         }
@@ -409,7 +409,7 @@ public class DetailsViewService {
         if (newSource instanceof ActionUsage au) {
             // Update transition source
             transitionUsage.getOwnedMembership().stream()
-                    .filter(Membership.class::isInstance)
+                    .filter(Objects::nonNull)
                     .map(Membership.class::cast)
                     .findFirst()
                     .ifPresent(mem -> mem.setMemberElement(au));
@@ -505,7 +505,7 @@ public class DetailsViewService {
         EList<Annotation> ownedAnnotations = self.getOwnedAnnotation();
         if (!ownedAnnotations.isEmpty()) {
             Optional<Comment> firstComment = ownedAnnotations.stream()
-                    .map(annotation -> annotation.getAnnotatingElement())
+                    .map(Annotation::getAnnotatingElement)
                     .filter(Comment.class::isInstance)
                     .map(Comment.class::cast)
                     .filter(c -> !(c instanceof Documentation))
@@ -550,6 +550,67 @@ public class DetailsViewService {
             documentations.get(0).setBody(newValue);
         }
         return self;
+    }
+
+    /**
+     * Returns the element that owns the visibility feature of the given element.
+     *
+     * @param self
+     *         An element for which the visibility owner is being searched.
+     * @return the element that owns the visibility feature of the given element
+     */
+    public Element getVisibilityPropertyOwner(Element self) {
+        if (!(self instanceof Import) && (self.eContainer() instanceof Membership membership)) {
+            return membership;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the enumeration literals for the visibility feature of the given element.
+     *
+     * @param self
+     *         An element for which the list of  visibility literals are being searched.
+     * @return the enumeration literals for the visibility feature of the given element.
+     */
+    public List<EEnumLiteral> getVisibilityEnumLiterals(Element self) {
+        List<EEnumLiteral> result = List.of();
+        if (self instanceof Membership membership) {
+            result = this.getEnumCandidates(membership, SysmlPackage.eINSTANCE.getMembership_Visibility().getName());
+        }
+        return result;
+    }
+
+    /**
+     * Returns the visibility value of the given element.
+     *
+     * @param self
+     *         An element for which the list of  visibility literals are being searched.
+     * @return the current value of the visibility feature of the given element.
+     */
+    public EEnumLiteral getVisibilityValue(Element self) {
+        EEnumLiteral result = null;
+        if (self instanceof Membership membership) {
+            result = this.getEnumValue(membership, SysmlPackage.eINSTANCE.getMembership_Visibility().getName());
+        }
+        return result;
+    }
+
+    /**
+     * Sets the visibility value of the given element.
+     *
+     * @param self
+     *         An element for which the list of  visibility literals are being searched.
+     * @param newValue
+     *         the value to set.
+     * @return <code>true</code> if the visibility feature of the given element has been properly set and <code>false</code> otherwise.
+     */
+    public boolean setVisibilityValue(Element self, Object newValue) {
+        boolean result = false;
+        if (self instanceof Membership membership) {
+            result = this.setNewValue(membership, SysmlPackage.eINSTANCE.getMembership_Visibility().getName(), newValue);
+        }
+        return result;
     }
 
     private BiFunction<Element, EStructuralFeature, String> getLabelProvider() {
@@ -693,5 +754,4 @@ public class DetailsViewService {
             receiverReturn.getOwnedRelatedElement().add(receiverFeature);
         }
     }
-
 }

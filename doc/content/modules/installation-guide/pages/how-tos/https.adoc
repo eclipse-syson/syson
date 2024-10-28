@@ -33,7 +33,7 @@ services:
     entrypoint:
       - java
       - -jar
-      - /app.jar
+      - /syson-application.jar
       - --server.ssl.key-store=./keystore.jks
       - --server.ssl.key-store-password=PASSWORD_USED_IN_STEP_1
       - --server.ssl.key-store-type=JKS

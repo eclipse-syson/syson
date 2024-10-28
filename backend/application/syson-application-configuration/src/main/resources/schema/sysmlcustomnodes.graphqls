@@ -7,6 +7,15 @@ type SysMLPackageNodeStyle {
   background: String!
 }
 
+extend union INodeStyle = SysMLImportedPackageNodeStyle
+
+type SysMLImportedPackageNodeStyle {
+  borderColor: String!
+  borderSize: Int!
+  borderStyle: LineStyle!
+  background: String!
+}
+
 extend union INodeStyle = SysMLNoteNodeStyle
 
 type SysMLNoteNodeStyle {
