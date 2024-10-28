@@ -14,6 +14,8 @@
 
 === New features
 
+- https://github.com/eclipse-syson/syson/issues/802[#802] [diagrams] Handle imported package elements in diagrams.
+
 
 == v2024.11.0
 

@@ -48,6 +48,15 @@ public interface SysMLCustomnodesFactory extends EFactory {
     SysMLNoteNodeStyleDescription createSysMLNoteNodeStyleDescription();
 
     /**
+     * Returns a new object of class '<em>Sys ML Imported Package Node Style Description</em>'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Sys ML Imported Package Node Style Description</em>'.
+     * @generated
+     */
+    SysMLImportedPackageNodeStyleDescription createSysMLImportedPackageNodeStyleDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

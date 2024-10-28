@@ -38,6 +38,8 @@ public class DiagramPredicates {
 
     private final Predicate<NodeDescription> isInheritedCompartmentItemNode;
 
+    private final Predicate<NodeDescription> isNamespaceImportNode;
+
     public DiagramPredicates(String diagramPrefix, DescriptionNameGenerator nameGenerator) {
         this.isFakeNode = n -> n.getName().equals(diagramPrefix + " Node Fake");
         this.isEmptyDiagramNode = n -> n.getName().equals(diagramPrefix + " Node EmptyDiagram");
@@ -45,6 +47,7 @@ public class DiagramPredicates {
         this.isCompartmentNode = n -> n.getName().contains(compartmentNameFragment);
         String inheritedCompartmentItemNameFragment = this.getInheritedCompartmentItemNameFragment(nameGenerator);
         this.isInheritedCompartmentItemNode = n -> n.getName().contains(inheritedCompartmentItemNameFragment);
+        this.isNamespaceImportNode = n -> n.getName().equals(diagramPrefix + " Node NamespaceImport");
     }
 
     public Predicate<NodeDescription> isFakeNode() {
@@ -61,6 +64,10 @@ public class DiagramPredicates {
 
     public Predicate<NodeDescription> isInheritedCompartmentItemNode() {
         return this.isInheritedCompartmentItemNode;
+    }
+
+    public Predicate<NodeDescription> getIsNamespaceImportNode() {
+        return this.isNamespaceImportNode;
     }
 
     public Predicate<DiagramElementDescription> hasDomainType(EClass eClass) {

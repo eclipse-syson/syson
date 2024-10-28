@@ -13,3 +13,7 @@
 - `OccurrenceUsag#portionKind` is now unsettable and its default value is `null` in the SysMLv2 metamodel to conform to the specification.
 
 == New features
+
+- Handle imported package elements in diagrams.
+
+image::namesapce-import.png[Namespace import node]

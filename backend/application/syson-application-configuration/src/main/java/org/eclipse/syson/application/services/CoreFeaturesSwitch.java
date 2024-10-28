@@ -155,6 +155,7 @@ public class CoreFeaturesSwitch extends SysmlSwitch<List<EStructuralFeature>> {
         features.add(SysmlPackage.eINSTANCE.getNamespaceImport_ImportedNamespace());
         features.add(SysmlPackage.eINSTANCE.getImport_IsImportAll());
         features.add(SysmlPackage.eINSTANCE.getImport_IsRecursive());
+        features.add(SysmlPackage.eINSTANCE.getImport_Visibility());
         return features;
     }
 

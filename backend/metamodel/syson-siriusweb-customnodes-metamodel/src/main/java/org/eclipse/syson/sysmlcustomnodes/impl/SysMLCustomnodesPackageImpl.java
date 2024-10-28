@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
+import org.eclipse.syson.sysmlcustomnodes.SysMLImportedPackageNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 
@@ -42,6 +43,13 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
      * @generated
      */
     private EClass sysMLNoteNodeStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass sysMLImportedPackageNodeStyleDescriptionEClass = null;
 
     /**
      * Creates an instance of the model <b>Package</b>, registered with {@link org.eclipse.emf.ecore.EPackage.Registry
@@ -156,6 +164,26 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
      * @generated
      */
     @Override
+    public EClass getSysMLImportedPackageNodeStyleDescription() {
+        return this.sysMLImportedPackageNodeStyleDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getSysMLImportedPackageNodeStyleDescription_Background() {
+        return (EReference) this.sysMLImportedPackageNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public SysMLCustomnodesFactory getSysMLCustomnodesFactory() {
         return (SysMLCustomnodesFactory) this.getEFactoryInstance();
     }
@@ -184,6 +212,9 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
 
         this.sysMLNoteNodeStyleDescriptionEClass = this.createEClass(SYS_ML_NOTE_NODE_STYLE_DESCRIPTION);
         this.createEReference(this.sysMLNoteNodeStyleDescriptionEClass, SYS_ML_NOTE_NODE_STYLE_DESCRIPTION__BACKGROUND);
+
+        this.sysMLImportedPackageNodeStyleDescriptionEClass = this.createEClass(SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION);
+        this.createEReference(this.sysMLImportedPackageNodeStyleDescriptionEClass, SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION__BACKGROUND);
     }
 
     /**
@@ -220,6 +251,7 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
         // Add supertypes to classes
         this.sysMLPackageNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
         this.sysMLNoteNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
+        this.sysMLImportedPackageNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.sysMLPackageNodeStyleDescriptionEClass, SysMLPackageNodeStyleDescription.class, "SysMLPackageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE,
@@ -231,6 +263,12 @@ public class SysMLCustomnodesPackageImpl extends EPackageImpl implements SysMLCu
         this.initEReference(this.getSysMLNoteNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, SysMLNoteNodeStyleDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.sysMLImportedPackageNodeStyleDescriptionEClass, SysMLImportedPackageNodeStyleDescription.class, "SysMLImportedPackageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getSysMLImportedPackageNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1,
+                SysMLImportedPackageNodeStyleDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         this.createResource(eNS_URI);

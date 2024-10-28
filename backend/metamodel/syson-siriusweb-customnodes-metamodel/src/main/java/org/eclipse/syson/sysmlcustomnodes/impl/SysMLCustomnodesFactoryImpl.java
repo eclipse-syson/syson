@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesPackage;
+import org.eclipse.syson.sysmlcustomnodes.SysMLImportedPackageNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLNoteNodeStyleDescription;
 import org.eclipse.syson.sysmlcustomnodes.SysMLPackageNodeStyleDescription;
 
@@ -66,6 +67,8 @@ public class SysMLCustomnodesFactoryImpl extends EFactoryImpl implements SysMLCu
                 return this.createSysMLPackageNodeStyleDescription();
             case SysMLCustomnodesPackage.SYS_ML_NOTE_NODE_STYLE_DESCRIPTION:
                 return this.createSysMLNoteNodeStyleDescription();
+            case SysMLCustomnodesPackage.SYS_ML_IMPORTED_PACKAGE_NODE_STYLE_DESCRIPTION:
+                return this.createSysMLImportedPackageNodeStyleDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -91,6 +94,17 @@ public class SysMLCustomnodesFactoryImpl extends EFactoryImpl implements SysMLCu
     public SysMLNoteNodeStyleDescription createSysMLNoteNodeStyleDescription() {
         SysMLNoteNodeStyleDescriptionImpl sysMLNoteNodeStyleDescription = new SysMLNoteNodeStyleDescriptionImpl();
         return sysMLNoteNodeStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SysMLImportedPackageNodeStyleDescription createSysMLImportedPackageNodeStyleDescription() {
+        SysMLImportedPackageNodeStyleDescriptionImpl sysMLImportedPackageNodeStyleDescription = new SysMLImportedPackageNodeStyleDescriptionImpl();
+        return sysMLImportedPackageNodeStyleDescription;
     }
 
     /**

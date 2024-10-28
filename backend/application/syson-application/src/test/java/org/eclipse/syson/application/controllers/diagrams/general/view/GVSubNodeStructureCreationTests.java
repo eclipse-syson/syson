@@ -13,6 +13,7 @@
 package org.eclipse.syson.application.controllers.diagrams.general.view;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -21,6 +22,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -196,7 +199,8 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getOccurrenceDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getMetadataDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getStateUsage(), ownedMember, 4),
-                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), ownedMember, 4))
+                Arguments.of(SysmlPackage.eINSTANCE.getStateDefinition(), ownedMember, 4),
+                Arguments.of(SysmlPackage.eINSTANCE.getNamespaceImport(), SysmlPackage.eINSTANCE.getNamespace_OwnedImport(), 0))
                 .map(TestNameGenerator::namedArguments);
     }
 
@@ -361,7 +365,11 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
     public void createPackageChildNodes(EClass childEClass, EReference containmentReference, int compartmentCount) {
         EClass parentEClass = SysmlPackage.eINSTANCE.getPackage();
         String parentLabel = "Package";
-        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
+        List<ToolVariable> variables = List.of();
+        if (SysmlPackage.eINSTANCE.getNamespaceImport().equals(childEClass)) {
+            variables = List.of(new ToolVariable("selectedObject", SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT, ToolVariableType.OBJECT_ID));
+        }
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass, variables);
         this.diagramCheckerService.checkDiagram(
                 this.diagramCheckerService.getChildNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, childEClass, compartmentCount), this.diagram,
                 this.verifier);

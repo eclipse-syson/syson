@@ -23,4 +23,7 @@ export { SysMLNoteNodeLayoutHandler } from './nodes/note/SysMLNoteNodeLayoutHand
 export { SysMLPackageNode } from './nodes/package/SysMLPackageNode';
 export { SysMLPackageNodeConverter } from './nodes/package/SysMLPackageNodeConverter';
 export { SysMLPackageNodeLayoutHandler } from './nodes/package/SysMLPackageNodeLayoutHandler';
+export { SysMLImportedPackageNode } from './nodes/imported_package/SysMLImportedPackageNode';
+export { SysMLImportedPackageNodeConverter } from './nodes/imported_package/SysMLImportedPackageNodeConverter';
+export { SysMLImportedPackageNodeLayoutHandler } from './nodes/imported_package/SysMLImportedPackageNodeLayoutHandler';
 export { sysMLNodesStyleDocumentTransform } from './nodes/SysMLNodesDocumentTransform';

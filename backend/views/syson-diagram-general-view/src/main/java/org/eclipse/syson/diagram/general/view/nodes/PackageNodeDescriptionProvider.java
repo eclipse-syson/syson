@@ -20,7 +20,10 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractPackageNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
@@ -41,10 +44,11 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
     protected List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache) {
         var reusedChildren = new ArrayList<NodeDescription>();
 
-        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(reusedChildren::add));
-        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(reusedChildren::add));
-        GeneralViewDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.nameGenerator.getNodeName(annotating)).ifPresent(reusedChildren::add));
-        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(reusedChildren::add);
+        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(reusedChildren::add));
+        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(usage)).ifPresent(reusedChildren::add));
+        GeneralViewDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(annotating)).ifPresent(reusedChildren::add));
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(reusedChildren::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).ifPresent(reusedChildren::add);
         return reusedChildren;
     }
 
@@ -52,10 +56,11 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
     protected List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache) {
         var droppableNodes = new ArrayList<NodeDescription>();
 
-        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(droppableNodes::add));
-        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(droppableNodes::add));
-        GeneralViewDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.nameGenerator.getNodeName(annotating)).ifPresent(droppableNodes::add));
-        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(droppableNodes::add);
+        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(droppableNodes::add));
+        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(usage)).ifPresent(droppableNodes::add));
+        GeneralViewDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(annotating)).ifPresent(droppableNodes::add));
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(droppableNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).ifPresent(droppableNodes::add);
 
         return droppableNodes;
     }
@@ -64,10 +69,11 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
     protected List<NodeDescription> getAllNodeDescriptions(IViewDiagramElementFinder cache) {
         var allNodes = new ArrayList<NodeDescription>();
 
-        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(allNodes::add));
-        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.nameGenerator.getNodeName(usage)).ifPresent(allNodes::add));
-        GeneralViewDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.nameGenerator.getNodeName(annotating)).ifPresent(allNodes::add));
-        cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
+        GeneralViewDiagramDescriptionProvider.DEFINITIONS.forEach(definition -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(allNodes::add));
+        GeneralViewDiagramDescriptionProvider.USAGES.forEach(usage -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(usage)).ifPresent(allNodes::add));
+        GeneralViewDiagramDescriptionProvider.ANNOTATINGS.forEach(annotating -> cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(annotating)).ifPresent(allNodes::add));
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage())).ifPresent(allNodes::add);
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).ifPresent(allNodes::add);
         return allNodes;
     }
 
@@ -85,5 +91,17 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
                 GeneralViewDiagramDescriptionProvider.TEMPORAL_TOOL_SECTIONS,
                 GeneralViewDiagramDescriptionProvider.EXTENSION_TOOL_SECTIONS,
                 GeneralViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS);
+    }
+
+    @Override
+    protected List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
+        var nodeTools = new ArrayList<NodeTool>();
+        if (GeneralViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS.name().equals(sectionName)) {
+            nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(cache));
+        } else if (GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS.name().equals(sectionName)) {
+            NodeDescription nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
+            nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(cache));
+        }
+        return nodeTools;
     }
 }

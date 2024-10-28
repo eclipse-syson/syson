@@ -13,7 +13,6 @@
 package org.eclipse.syson.diagram.statetransition.view;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -37,12 +36,14 @@ import org.eclipse.syson.diagram.common.view.ViewDiagramElementFinder;
 import org.eclipse.syson.diagram.common.view.edges.AnnotationEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.AnnotatingNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.ImportedPackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergedReferencesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.statetransition.view.edges.TransitionEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.nodes.CompartmentNodeDescriptionProvider;
@@ -90,7 +91,11 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
             );
 
     public static final ToolSectionDescription STATE_TRANSITION_TOOL_SECTIONS = new ToolSectionDescription("State Transition",
-            List.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getPackage()));
+            List.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(),
+                    SysmlPackage.eINSTANCE.getStateDefinition(),
+                    SysmlPackage.eINSTANCE.getStateUsage(),
+                    SysmlPackage.eINSTANCE.getPackage()
+            ));
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(STATE_TRANSITION_TOOL_SECTIONS);
 
@@ -120,6 +125,7 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
         diagramElementDescriptionProviders.add(new FakeNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new StateTransitionViewEmptyDiagramNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new PackageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new ImportedPackageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new TransitionEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders
                 .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getStateDefinition(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider, this.getDescriptionNameGenerator()));
@@ -128,6 +134,7 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
         diagramElementDescriptionProviders
                 .add(new StateTransitionCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getExhibitStateUsage(), SysmlPackage.eINSTANCE.getUsage_NestedState(), colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new AnnotationEdgeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
+        diagramElementDescriptionProviders.add(new ImportedPackageNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
 
         DEFINITIONS.forEach(definition -> {
             diagramElementDescriptionProviders.add(new DefinitionNodeDescriptionProvider(definition, colorProvider, this.getDescriptionNameGenerator()));
@@ -225,23 +232,31 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(element -> {
-            var nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element));
-            if (nodeDescription.isPresent()) {
-                nodeTools.add(this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription.get(), element));
-            }
+            cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(element))
+                    .ifPresent(nodeDescription -> {
+                        NodeTool nodeTool = null;
+                        if (SysmlPackage.eINSTANCE.getNamespaceImport().equals(element)) {
+                            nodeTool = new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(cache);
+                        } else {
+                            nodeTool = this.toolDescriptionService.createNodeToolFromDiagramBackground(nodeDescription, element);
+                        }
+                        nodeTools.add(nodeTool);
+                    });
         });
 
         nodeTools.addAll(this.addCustomTools(cache, name));
 
-        Collections.sort(nodeTools, Comparator.comparing(NodeTool::getName));
+        nodeTools.sort(Comparator.comparing(NodeTool::getName));
 
         return nodeTools.toArray(NodeTool[]::new);
     }
 
     private List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
-        if ("State Transition".equals(sectionName)) {
+        if (STATE_TRANSITION_TOOL_SECTIONS.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
+            NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
+            nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.getDescriptionNameGenerator()).create(cache));
         }
         return nodeTools;
     }

@@ -45,6 +45,7 @@ import org.eclipse.syson.diagram.common.view.nodes.CompartmentItemNodeDescriptio
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.nodes.ImportedPackageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.InheritedCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
@@ -55,6 +56,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDesc
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.diagram.general.view.edges.AllocateEdgeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.edges.DefinitionOwnedActionUsageEdgeDescriptionProvider;
@@ -431,6 +433,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         diagramElementDescriptionProviders.add(new DecisionActionNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         diagramElementDescriptionProviders.add(new ReferencingPerformActionUsageNodeDescriptionProvider(colorProvider));
         diagramElementDescriptionProviders.add(new ActorNodeDescriptionProvider(colorProvider));
+        diagramElementDescriptionProviders.add(new ImportedPackageNodeDescriptionProvider(colorProvider, this.descriptionNameGenerator));
     }
 
     private void addEdgeDescriptionProviders(IColorProvider colorProvider, ArrayList<IDiagramElementDescriptionProvider<? extends DiagramElementDescription>> diagramElementDescriptionProviders) {
@@ -693,8 +696,11 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
     private List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
-        if ("StateTransition".equals(sectionName)) {
+        if (STATE_TRANSITION_TOOL_SECTIONS.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
+        } else if (STRUCTURE_TOOL_SECTIONS.name().equals(sectionName)) {
+            NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
+            nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.getDescriptionNameGenerator()).create(cache));
         }
         return nodeTools;
     }

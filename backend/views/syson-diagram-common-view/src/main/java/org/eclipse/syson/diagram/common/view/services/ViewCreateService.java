@@ -49,6 +49,7 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.Package;
 import org.eclipse.syson.sysml.ParameterMembership;
@@ -999,6 +1000,17 @@ public class ViewCreateService {
             // create feature typing edge between self and new part definition
             this.utilService.setFeatureTyping(self, newPartDefinition);
             return newPartDefinition;
+        }
+        return self;
+    }
+
+    public Element createNamespaceImport(Element self, Namespace importedNamespace) {
+        if (self instanceof Namespace namespace) {
+            var namespaceImport = SysmlFactory.eINSTANCE.createNamespaceImport();
+            this.elementInitializer(namespaceImport);
+            namespaceImport.setImportedNamespace(importedNamespace);
+            self.getOwnedRelationship().add(namespaceImport);
+            return namespaceImport;
         }
         return self;
     }

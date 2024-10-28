@@ -155,7 +155,7 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         pageCore.setPreconditionExpression("");
         pageCore.setLabelExpression("Core");
         pageCore.getGroups().add(this.createCorePropertiesGroup());
-        pageCore.getGroups().add(this.createExtraMembershipPropertiesGroup());
+        pageCore.getGroups().add(this.createVisibilityPropertyGroup());
         pageCore.getGroups().add(this.createExtraRedefinitionPropertiesGroup());
         pageCore.getGroups().add(this.createExtraStatesubactionMembershipKindPropertiesGroup());
         pageCore.getGroups().add(this.createExtraSubclassificationPropertiesGroup());
@@ -341,22 +341,22 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
         return group;
     }
 
-    private GroupDescription createExtraMembershipPropertiesGroup() {
+    private GroupDescription createVisibilityPropertyGroup() {
         GroupDescription group = FormFactory.eINSTANCE.createGroupDescription();
         group.setDisplayMode(GroupDisplayMode.LIST);
         group.setName(MEMBERSHIP_PROPERTIES);
         group.setLabelExpression("");
-        group.setSemanticCandidatesExpression("aql:self.eContainer()->filter(sysml::Membership)");
+        group.setSemanticCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getVisibilityPropertyOwner"));
 
         RadioDescription radio = FormFactory.eINSTANCE.createRadioDescription();
         radio.setName("ExtraRadioVisibilityWidget");
         radio.setLabelExpression("Visibility");
-        radio.setCandidatesExpression("aql:self.getEnumCandidates('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + CLOSING_QUOTE_CLOSING_PARENTHESIS);
+        radio.setCandidatesExpression(AQLUtils.getSelfServiceCallExpression("getVisibilityEnumLiterals"));
         radio.setCandidateLabelExpression("aql:candidate.name");
-        radio.setValueExpression("aql:self.getEnumValue('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + CLOSING_QUOTE_CLOSING_PARENTHESIS);
+        radio.setValueExpression(AQLUtils.getSelfServiceCallExpression("getVisibilityValue"));
         radio.setIsEnabledExpression(AQL_NOT_SELF_IS_READ_ONLY);
         ChangeContext setNewValueOperation = ViewFactory.eINSTANCE.createChangeContext();
-        setNewValueOperation.setExpression("aql:self.setNewValue('" + SysmlPackage.eINSTANCE.getMembership_Visibility().getName() + "', newValue.instance)");
+        setNewValueOperation.setExpression(AQLUtils.getSelfServiceCallExpression("setVisibilityValue", "newValue.instance"));
         radio.getBody().add(setNewValueOperation);
 
         group.getChildren().add(radio);

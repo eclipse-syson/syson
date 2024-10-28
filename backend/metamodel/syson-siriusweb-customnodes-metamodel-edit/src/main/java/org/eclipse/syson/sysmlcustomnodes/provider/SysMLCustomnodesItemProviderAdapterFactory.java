@@ -137,6 +137,31 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.syson.sysmlcustomnodes.SysMLImportedPackageNodeStyleDescription} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SysMLImportedPackageNodeStyleDescriptionItemProvider sysMLImportedPackageNodeStyleDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.eclipse.syson.sysmlcustomnodes.SysMLImportedPackageNodeStyleDescription}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSysMLImportedPackageNodeStyleDescriptionAdapter() {
+        if (this.sysMLImportedPackageNodeStyleDescriptionItemProvider == null) {
+            this.sysMLImportedPackageNodeStyleDescriptionItemProvider = new SysMLImportedPackageNodeStyleDescriptionItemProvider(this);
+        }
+
+        return this.sysMLImportedPackageNodeStyleDescriptionItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -240,6 +265,8 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
             this.sysMLPackageNodeStyleDescriptionItemProvider.dispose();
         if (this.sysMLNoteNodeStyleDescriptionItemProvider != null)
             this.sysMLNoteNodeStyleDescriptionItemProvider.dispose();
+        if (this.sysMLImportedPackageNodeStyleDescriptionItemProvider != null)
+            this.sysMLImportedPackageNodeStyleDescriptionItemProvider.dispose();
     }
 
     /**
@@ -293,6 +320,9 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
                 this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
                         SysMLCustomnodesFactory.eINSTANCE.createSysMLNoteNodeStyleDescription()));
 
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+                        SysMLCustomnodesFactory.eINSTANCE.createSysMLImportedPackageNodeStyleDescription()));
+
                 return null;
             }
 
@@ -308,6 +338,9 @@ public class SysMLCustomnodesItemProviderAdapterFactory extends SysMLCustomnodes
 
                 this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
                         SysMLCustomnodesFactory.eINSTANCE.createSysMLNoteNodeStyleDescription()));
+
+                this.newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+                        SysMLCustomnodesFactory.eINSTANCE.createSysMLImportedPackageNodeStyleDescription()));
 
                 return null;
             }

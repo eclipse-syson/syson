@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.ViewEdgeToolSwitch;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
+import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysmlcustomnodes.SysMLCustomnodesFactory;
@@ -57,14 +58,14 @@ import org.eclipse.syson.util.ViewConstants;
  */
 public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNodeDescriptionProvider {
 
-    protected final IDescriptionNameGenerator nameGenerator;
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
 
     private final ToolDescriptionService toolDescriptionService;
 
-    public AbstractPackageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator nameGenerator) {
+    public AbstractPackageNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
-        this.nameGenerator = Objects.requireNonNull(nameGenerator);
-        this.toolDescriptionService = new ToolDescriptionService(nameGenerator);
+        this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }
 
     /**
@@ -104,6 +105,20 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
      */
     protected abstract List<ToolSectionDescription> getToolSections();
 
+
+    /**
+     * Implementors may provide the list of custom tool to add to a given tool section.
+     *
+     * @param cache
+     *         the cache used to retrieve node descriptions.
+     * @param sectionName
+     *         the name of the tool section in which the returned tools should be added.
+     * @return the list of custom tool specific for the given tool section
+     */
+    protected List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
+        return List.of();
+    }
+
     @Override
     public NodeDescription create() {
         String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getPackage());
@@ -114,7 +129,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .defaultWidthExpression("300")
                 .domainType(domainType)
                 .insideLabel(this.createInsideLabelDescription())
-                .name(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))
+                .name(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()))
                 .semanticCandidatesExpression("aql:self.getAllReachable(" + domainType + ")")
                 .style(this.createPackageNodeStyle())
                 .userResizable(UserResizableDirection.BOTH)
@@ -124,7 +139,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        var optPackageNodeDescription = cache.getNodeDescription(this.nameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()));
+        var optPackageNodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPackage()));
         NodeDescription packageNodeDescription = optPackageNodeDescription.get();
         diagramDescription.getNodeDescriptions().add(packageNodeDescription);
 
@@ -176,8 +191,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
                 .body(callEditService.build());
 
-        var edgeTools = new ArrayList<EdgeTool>();
-        edgeTools.addAll(this.getEdgeTools(nodeDescription, cache));
+        var edgeTools = new ArrayList<EdgeTool>(this.getEdgeTools(nodeDescription, cache));
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
@@ -189,7 +203,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
     }
 
     private List<EdgeTool> getEdgeTools(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.nameGenerator);
+        ViewEdgeToolSwitch edgeToolSwitch = new ViewEdgeToolSwitch(nodeDescription, this.getAllNodeDescriptions(cache), this.descriptionNameGenerator);
         return edgeToolSwitch.doSwitch(SysmlPackage.eINSTANCE.getPackage());
     }
 
@@ -205,6 +219,10 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
     }
 
     private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass) {
+        if (SysmlPackage.eINSTANCE.getNamespaceImport().equals(eClass)) {
+            return new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(null);
+        }
+
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance.elementInitializer()");
 
@@ -239,7 +257,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .children(changeContexMembership.build());
 
         return this.diagramBuilderHelper.newNodeTool()
-                .name(this.nameGenerator.getCreationToolName(eClass))
+                .name(this.descriptionNameGenerator.getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
@@ -251,7 +269,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         this.getToolSections().forEach(sectionTool -> {
             NodeToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newNodeToolSection()
                     .name(sectionTool.name())
-                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.elements()));
+                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.name(), sectionTool.elements()));
             sections.add(sectionBuilder.build());
         });
 
@@ -261,14 +279,16 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         return sections.toArray(NodeToolSection[]::new);
     }
 
-    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, List<EClass> elements) {
+    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, String toolSectionName, List<EClass> elements) {
         var nodeTools = new ArrayList<NodeTool>();
 
         elements.forEach(definition -> {
-            cache.getNodeDescription(this.nameGenerator.getNodeName(definition)).ifPresent(nodeDescription -> {
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(nodeDescription -> {
                 nodeTools.add(this.createNodeTool(nodeDescription, definition));
             });
         });
+
+        nodeTools.addAll(this.addCustomTools(cache, toolSectionName));
 
         nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
 
