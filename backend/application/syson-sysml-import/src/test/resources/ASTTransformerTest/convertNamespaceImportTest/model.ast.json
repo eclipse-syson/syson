@@ -8,15 +8,74 @@
         "children": [
           {
             "$type": "NamespaceImport",
+            "$cstNode": {
+              "text": "public import ScalarValues::*;",
+              "stack": [
+                "Import",
+                "PackageBodyElement"
+              ]
+            },
             "targetRef": {
               "$type": "NamespaceReference",
+              "$cstNode": {
+                "text": "ScalarValues",
+                "stack": [
+                  "ElementReference",
+                  "ImportedReference"
+                ]
+              },
               "text": "ScalarValues",
-              "reference": null
+              "reference": null,
+              "parts": [
+                null
+              ]
+            },
+            "visibility": "public",
+            "importsAll": false,
+            "isRecursive": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
             }
           }
         ],
-        "declaredName": "Packets"
+        "$cstNode": {
+          "text": "package Packets {\n    public import ScalarValues::*;\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "Packets",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "Packets"
+        }
+      },
+      "$cstNode": {
+        "text": "package Packets {\n    public import ScalarValues::*;\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
       }
     }
-  ]
+  ],
+  "$cstNode": {
+    "text": "package Packets {\n    public import ScalarValues::*;\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
 }

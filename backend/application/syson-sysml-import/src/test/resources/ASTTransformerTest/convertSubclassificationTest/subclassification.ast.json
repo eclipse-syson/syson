@@ -14,15 +14,15 @@
                 {
                   "$type": "FeatureMembership",
                   "target": {
-                    "$type": "PartUsage",
+                    "$type": "AttributeUsage",
                     "$cstNode": {
-                      "text": "part a;",
+                      "text": "attribute attribute1;",
                       "stack": [
-                        "OccurrenceUsageElement",
-                        "OccurrenceUsageMember"
+                        "NonOccurrenceUsageElement",
+                        "NonOccurrenceUsageMember"
                       ]
                     },
-                    "declaredName": "a",
+                    "declaredName": "attribute1",
                     "isIndividual": false,
                     "isReference": false,
                     "isVariation": false,
@@ -35,13 +35,13 @@
                     "prefixes": [],
                     "$meta": {
                       "elementId": 9,
-                      "qualifiedName": "InheritanceTest::Def::a"
+                      "qualifiedName": "::Part1::attribute1"
                     }
                   },
                   "$cstNode": {
-                    "text": "part a;",
+                    "text": "attribute attribute1;",
                     "stack": [
-                      "OccurrenceUsageMember",
+                      "NonOccurrenceUsageMember",
                       "DefinitionBodyItem"
                     ]
                   },
@@ -54,13 +54,13 @@
                 }
               ],
               "$cstNode": {
-                "text": "part def Def {\n        part a;\n    }",
+                "text": "part def Part1 {\n        attribute attribute1;\n    }",
                 "stack": [
                   "DefinitionElement",
                   "DefinitionMember"
                 ]
               },
-              "declaredName": "Def",
+              "declaredName": "Part1",
               "isIndividual": false,
               "isVariation": false,
               "heritage": [],
@@ -69,11 +69,11 @@
               "prefixes": [],
               "$meta": {
                 "elementId": 4,
-                "qualifiedName": "InheritanceTest::Def"
+                "qualifiedName": "::Part1"
               }
             },
             "$cstNode": {
-              "text": "part def Def {\n        part a;\n    }",
+              "text": "part def Part1 {\n        attribute attribute1;\n    }",
               "stack": [
                 "DefinitionMember",
                 "PackageBodyElement"
@@ -89,68 +89,37 @@
           {
             "$type": "OwningMembership",
             "target": {
-              "$type": "PartUsage",
+              "$type": "PartDefinition",
               "children": [
                 {
                   "$type": "FeatureMembership",
                   "target": {
-                    "$type": "ReferenceUsage",
+                    "$type": "AttributeUsage",
                     "$cstNode": {
-                      "text": "b :>> a;",
+                      "text": "attribute attribute2;",
                       "stack": [
                         "NonOccurrenceUsageElement",
                         "NonOccurrenceUsageMember"
                       ]
                     },
-                    "heritage": [
-                      {
-                        "$type": "Redefinition",
-                        "targetRef": {
-                          "$type": "FeatureReference",
-                          "$cstNode": {
-                            "text": "a",
-                            "stack": [
-                              "FeatureReference",
-                              "OwnedRedefinition"
-                            ]
-                          },
-                          "text": "a",
-                          "reference": "InheritanceTest::Def::a",
-                          "parts": [
-                            "InheritanceTest::Def::a"
-                          ]
-                        },
-                        "$cstNode": {
-                          "text": "a",
-                          "stack": [
-                            "OwnedRedefinition",
-                            "Redefines"
-                          ]
-                        },
-                        "elements": [],
-                        "$meta": {
-                          "elementId": 16,
-                          "qualifiedName": ""
-                        }
-                      }
-                    ],
-                    "declaredName": "b",
+                    "declaredName": "attribute2",
                     "isIndividual": false,
                     "isReference": false,
                     "isVariation": false,
                     "isNonunique": false,
                     "isOrdered": false,
+                    "heritage": [],
                     "isSufficient": false,
                     "typeRelationships": [],
                     "children": [],
                     "prefixes": [],
                     "$meta": {
-                      "elementId": 15,
-                      "qualifiedName": "InheritanceTest::p::b"
+                      "elementId": 18,
+                      "qualifiedName": "::Part2::attribute2"
                     }
                   },
                   "$cstNode": {
-                    "text": "b :>> a;",
+                    "text": "attribute attribute2;",
                     "stack": [
                       "NonOccurrenceUsageMember",
                       "DefinitionBodyItem"
@@ -159,68 +128,65 @@
                   "isAlias": false,
                   "elements": [],
                   "$meta": {
-                    "elementId": 14,
+                    "elementId": 17,
                     "qualifiedName": ""
                   }
                 }
               ],
               "$cstNode": {
-                "text": "part p : Def {\n        b :>> a;\n    }",
+                "text": "part def Part2 :> Part1 {\n        attribute attribute2;\n    }",
                 "stack": [
-                  "UsageElement",
-                  "UsageMember"
+                  "DefinitionElement",
+                  "DefinitionMember"
                 ]
               },
               "heritage": [
                 {
-                  "$type": "FeatureTyping",
+                  "$type": "Subclassification",
                   "targetRef": {
-                    "$type": "TypeReference",
+                    "$type": "ClassifierReference",
                     "$cstNode": {
-                      "text": "Def",
+                      "text": "Part1",
                       "stack": [
-                        "TypeReference",
-                        "FeatureType"
+                        "ClassifierReference",
+                        "OwnedSubclassification"
                       ]
                     },
-                    "text": "Def",
-                    "reference": "InheritanceTest::Def",
+                    "text": "Part1",
+                    "reference": "::Part1",
                     "parts": [
-                      "InheritanceTest::Def"
+                      "::Part1"
                     ]
                   },
                   "$cstNode": {
-                    "text": "Def",
+                    "text": "Part1",
                     "stack": [
-                      "FeatureTyping",
-                      "TypedBy"
+                      "OwnedSubclassification",
+                      "SubclassificationPart"
                     ]
                   },
                   "elements": [],
                   "$meta": {
-                    "elementId": 12,
+                    "elementId": 15,
                     "qualifiedName": ""
                   }
                 }
               ],
-              "declaredName": "p",
+              "declaredName": "Part2",
               "isIndividual": false,
-              "isReference": false,
               "isVariation": false,
-              "isNonunique": false,
-              "isOrdered": false,
               "isSufficient": false,
               "typeRelationships": [],
               "prefixes": [],
               "$meta": {
                 "elementId": 11,
-                "qualifiedName": "InheritanceTest::p"
+                "qualifiedName": "::Part2"
               }
             },
             "$cstNode": {
-              "text": "part p : Def {\n        b :>> a;\n    }",
+              "text": "part def Part2 :> Part1 {\n        attribute attribute2;\n    }",
               "stack": [
-                "UsageMember",
+                "DefinitionMember",
                 "PackageBodyElement"
               ]
             },
@@ -233,21 +199,20 @@
           }
         ],
         "$cstNode": {
-          "text": "package InheritanceTest {\n    part def Def {\n        part a;\n    }\n    part p : Def {\n        b :>> a;\n    }\n}",
+          "text": "package {\n    part def Part1 {\n        attribute attribute1;\n    }\n    part def Part2 :> Part1 {\n        attribute attribute2;\n    }\n}",
           "stack": [
             "DefinitionElement",
             "DefinitionMember"
           ]
         },
-        "declaredName": "InheritanceTest",
         "prefixes": [],
         "$meta": {
           "elementId": 2,
-          "qualifiedName": "InheritanceTest"
+          "qualifiedName": ""
         }
       },
       "$cstNode": {
-        "text": "package InheritanceTest {\n    part def Def {\n        part a;\n    }\n    part p : Def {\n        b :>> a;\n    }\n}",
+        "text": "package {\n    part def Part1 {\n        attribute attribute1;\n    }\n    part def Part2 :> Part1 {\n        attribute attribute2;\n    }\n}",
         "stack": [
           "DefinitionMember",
           "PackageBodyElement"
@@ -262,7 +227,7 @@
     }
   ],
   "$cstNode": {
-    "text": "package InheritanceTest {\n    part def Def {\n        part a;\n    }\n    part p : Def {\n        b :>> a;\n    }\n}",
+    "text": "package {\n    part def Part1 {\n        attribute attribute1;\n    }\n    part def Part2 :> Part1 {\n        attribute attribute2;\n    }\n}",
     "stack": []
   },
   "prefixes": [],

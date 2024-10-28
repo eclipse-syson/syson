@@ -84,7 +84,7 @@ public class ASTTransformerTest {
     @DisplayName("Test Boolean parsing")
     @Test
     void convertBooleanValuesTest() {
-        Resource testResource = getResourceFromFile("ASTTransformerTest/convertBooleanTest/model.ast.json");
+        Resource testResource = getResourceFromFile("ASTTransformerTest/convertBooleanTest/boolean.ast.json");
         assertNotNull(testResource);
 
         assertEquals(1, testResource.getContents().size());
@@ -222,7 +222,7 @@ public class ASTTransformerTest {
     @DisplayName("Test FeatureTyping")
     @Test
     void convertFeatureTypingTest() {
-        Resource testResource = getResourceFromFile("ASTTransformerTest/convertFeatureTypingTest/model.ast.json");
+        Resource testResource = getResourceFromFile("ASTTransformerTest/convertFeatureTypingTest/featureTyping.ast.json");
         assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
@@ -260,7 +260,7 @@ public class ASTTransformerTest {
     @DisplayName("Test Redefines")
     @Test
     void convertRedefinesTest() {
-        Resource testResource = getResourceFromFile("ASTTransformerTest/convertRedefinesTest/model.ast.json");
+        Resource testResource = getResourceFromFile("ASTTransformerTest/convertRedefinesTest/redefines.ast.json");
         assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
@@ -269,12 +269,12 @@ public class ASTTransformerTest {
         EObject attributeUsage = packageObject.getMember().get(0);
         assertInstanceOf(AttributeUsage.class, attributeUsage);
         AttributeUsage typedAttributeUsage = (AttributeUsage) attributeUsage;
-        assertEquals("Packets::'packet header'", typedAttributeUsage.getQualifiedName());
+        assertEquals("Packets::packetHeader", typedAttributeUsage.getQualifiedName());
 
         EObject redefinedAttributeUsage = packageObject.getMember().get(1);
         assertInstanceOf(AttributeUsage.class, redefinedAttributeUsage);
         AttributeUsage typedRedefinedAttributeUsage = (AttributeUsage) redefinedAttributeUsage;
-        assertEquals("Packets::'packet secondary header'", typedRedefinedAttributeUsage.getQualifiedName());
+        assertEquals("Packets::packetSecondaryHeader", typedRedefinedAttributeUsage.getQualifiedName());
 
         assertEquals(1, typedRedefinedAttributeUsage.getOwnedRelationship().size());
         assertEquals(1, typedRedefinedAttributeUsage.getOwnedRedefinition().size());
@@ -288,7 +288,7 @@ public class ASTTransformerTest {
     @Test
     void convertVisibilityTest() {
 
-        Resource testResource = getResourceFromFile("ASTTransformerTest/convertVisibilityTest/model.ast.json");
+        Resource testResource = getResourceFromFile("ASTTransformerTest/convertVisibilityTest/visibility.ast.json");
 
         assertNotNull(testResource);
 
@@ -345,7 +345,7 @@ public class ASTTransformerTest {
     @DisplayName("Test Conjugated")
     @Test
     void convertConjugatedPortTest() {
-        Resource testResource = getResourceFromFile("ASTTransformerTest/convertConjugatedPortTest/model.ast.json");
+        Resource testResource = getResourceFromFile("ASTTransformerTest/convertConjugatedPortTest/conjugatedPort.ast.json");
         assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
@@ -377,7 +377,7 @@ public class ASTTransformerTest {
     @DisplayName("Test Subclassification")
     @Test
     void convertSubclassificationTest() {
-        Resource testResource = getResourceFromFile("ASTTransformerTest/convertSubclassificationTest/model.ast.json");
+        Resource testResource = getResourceFromFile("ASTTransformerTest/convertSubclassificationTest/subclassification.ast.json");
         assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
@@ -437,7 +437,7 @@ public class ASTTransformerTest {
     @DisplayName("Test Alias")
     @Test
     void convertAliasTest() {
-        Resource testResource = getResourceFromFile("ASTTransformerTest/convertAliasTest/model.ast.json");
+        Resource testResource = getResourceFromFile("ASTTransformerTest/convertAliasTest/alias.ast.json");
         assertNotNull(testResource);
 
         Namespace namespace = (Namespace) testResource.getContents().get(0);
@@ -506,7 +506,7 @@ public class ASTTransformerTest {
     @DisplayName("Test Import")
     @Test
     void convertImportTest() {
-        Resource namespaceResource = getResourceFromFile("ASTTransformerTest/convertImportTest/model.ast.json");
+        Resource namespaceResource = getResourceFromFile("ASTTransformerTest/convertImportTest/import.ast.json");
         assertNotNull(namespaceResource);
 
         Namespace testNamespace = (Namespace) namespaceResource.getContents().get(0);

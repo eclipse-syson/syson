@@ -5,25 +5,61 @@
       "$type": "OwningMembership",
       "target": {
         "$type": "Package",
-        "declaredName": "Assignment1",
         "children": [
           {
             "$type": "OwningMembership",
             "target": {
               "$type": "PartDefinition",
-              "declaredName": "Counter",
               "children": [
                 {
                   "$type": "FeatureMembership",
                   "target": {
                     "$type": "AttributeUsage",
-                    "declaredName": "count",
+                    "$cstNode": {
+                      "text": "attribute count : ScalarValues::Integer := 0;",
+                      "stack": [
+                        "NonOccurrenceUsageElement",
+                        "NonOccurrenceUsageMember"
+                      ]
+                    },
                     "value": {
                       "$type": "FeatureValue",
                       "isInitial": true,
                       "target": {
                         "$type": "LiteralNumber",
-                        "literal": 0
+                        "literal": 0,
+                        "$cstNode": {
+                          "text": "0",
+                          "stack": [
+                            "OwnedExpression",
+                            "FeatureValueExpression"
+                          ]
+                        },
+                        "isNonunique": false,
+                        "isOrdered": false,
+                        "heritage": [],
+                        "isSufficient": false,
+                        "typeRelationships": [],
+                        "children": [],
+                        "prefixes": [],
+                        "$meta": {
+                          "elementId": 13,
+                          "qualifiedName": ""
+                        }
+                      },
+                      "$cstNode": {
+                        "text": ":= 0",
+                        "stack": [
+                          "FeatureValueExpression",
+                          "ValuePart"
+                        ]
+                      },
+                      "isDefault": false,
+                      "isAlias": false,
+                      "elements": [],
+                      "$meta": {
+                        "elementId": 12,
+                        "qualifiedName": ""
                       }
                     },
                     "heritage": [
@@ -31,32 +67,108 @@
                         "$type": "FeatureTyping",
                         "targetRef": {
                           "$type": "TypeReference",
+                          "$cstNode": {
+                            "text": "ScalarValues::Integer",
+                            "stack": [
+                              "TypeReference",
+                              "FeatureType"
+                            ]
+                          },
                           "text": "ScalarValues::Integer",
-                          "reference": null
+                          "reference": null,
+                          "parts": [
+                            null,
+                            null
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "ScalarValues::Integer",
+                          "stack": [
+                            "FeatureTyping",
+                            "TypedBy"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 10,
+                          "qualifiedName": ""
                         }
                       }
+                    ],
+                    "declaredName": "count",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 9,
+                      "qualifiedName": "Assignment1::Counter::count"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "attribute count : ScalarValues::Integer := 0;",
+                    "stack": [
+                      "NonOccurrenceUsageMember",
+                      "DefinitionBodyItem"
                     ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 8,
+                    "qualifiedName": ""
                   }
                 },
                 {
                   "$type": "FeatureMembership",
                   "target": {
                     "$type": "ActionUsage",
-                    "declaredName": "incr",
                     "children": [
                       {
                         "$type": "FeatureMembership",
                         "target": {
                           "$type": "AssignmentActionUsage",
+                          "$cstNode": {
+                            "text": "assign count := 1;",
+                            "stack": [
+                              "ActionNode",
+                              "ActionNodeMember"
+                            ]
+                          },
                           "targetMember": {
                             "$type": "Membership",
                             "targetRef": {
                               "$type": "FeatureReference",
+                              "$cstNode": {
+                                "text": "count",
+                                "stack": [
+                                  "FeatureReference",
+                                  "FeatureChainMember"
+                                ]
+                              },
                               "text": "count",
                               "reference": "Assignment1::Counter::count",
                               "parts": [
                                 "Assignment1::Counter::count"
                               ]
+                            },
+                            "$cstNode": {
+                              "text": "count",
+                              "stack": [
+                                "FeatureChainMember",
+                                "AssignmentNodeDeclaration"
+                              ]
+                            },
+                            "isAlias": false,
+                            "elements": [],
+                            "$meta": {
+                              "elementId": 18,
+                              "qualifiedName": ""
                             }
                           },
                           "assignedValue": {
@@ -67,21 +179,215 @@
                                 "$type": "FeatureValue",
                                 "target": {
                                   "$type": "LiteralNumber",
-                                  "literal": 1
+                                  "literal": 1,
+                                  "$cstNode": {
+                                    "text": "1",
+                                    "stack": [
+                                      "OwnedExpression",
+                                      "FeatureBinding"
+                                    ]
+                                  },
+                                  "isNonunique": false,
+                                  "isOrdered": false,
+                                  "heritage": [],
+                                  "isSufficient": false,
+                                  "typeRelationships": [],
+                                  "children": [],
+                                  "prefixes": [],
+                                  "$meta": {
+                                    "elementId": 23,
+                                    "qualifiedName": ""
+                                  }
+                                },
+                                "$cstNode": {
+                                  "text": "1",
+                                  "stack": [
+                                    "FeatureBinding",
+                                    "NodeParameter"
+                                  ]
+                                },
+                                "isDefault": false,
+                                "isInitial": false,
+                                "isAlias": false,
+                                "elements": [],
+                                "$meta": {
+                                  "elementId": 22,
+                                  "qualifiedName": ""
                                 }
+                              },
+                              "$cstNode": {
+                                "text": "1",
+                                "stack": [
+                                  "NodeParameter",
+                                  "NodeParameterMember"
+                                ]
+                              },
+                              "isIndividual": false,
+                              "isReference": false,
+                              "isVariation": false,
+                              "isNonunique": false,
+                              "isOrdered": false,
+                              "heritage": [],
+                              "isSufficient": false,
+                              "typeRelationships": [],
+                              "children": [],
+                              "prefixes": [],
+                              "$meta": {
+                                "elementId": 21,
+                                "qualifiedName": ""
                               }
+                            },
+                            "$cstNode": {
+                              "text": "1",
+                              "stack": [
+                                "NodeParameterMember",
+                                "AssignmentNodeDeclaration"
+                              ]
+                            },
+                            "isAlias": false,
+                            "elements": [],
+                            "$meta": {
+                              "elementId": 20,
+                              "qualifiedName": ""
                             }
+                          },
+                          "isIndividual": false,
+                          "isReference": false,
+                          "isVariation": false,
+                          "isNonunique": false,
+                          "isOrdered": false,
+                          "heritage": [],
+                          "isSufficient": false,
+                          "typeRelationships": [],
+                          "children": [],
+                          "prefixes": [],
+                          "$meta": {
+                            "elementId": 17,
+                            "qualifiedName": ""
                           }
+                        },
+                        "$cstNode": {
+                          "text": "assign count := 1;",
+                          "stack": [
+                            "ActionNodeMember",
+                            "ActionBodyItem"
+                          ]
+                        },
+                        "isAlias": false,
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 16,
+                          "qualifiedName": ""
                         }
                       }
+                    ],
+                    "$cstNode": {
+                      "text": "action incr {\n\t\t\tassign count := 1;\n\t\t}",
+                      "stack": [
+                        "OccurrenceUsageElement",
+                        "OccurrenceUsageMember"
+                      ]
+                    },
+                    "declaredName": "incr",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "heritage": [],
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 15,
+                      "qualifiedName": "Assignment1::Counter::incr"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "action incr {\n\t\t\tassign count := 1;\n\t\t}",
+                    "stack": [
+                      "OccurrenceUsageMember",
+                      "DefinitionBodyItem"
                     ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 14,
+                    "qualifiedName": ""
                   }
                 }
+              ],
+              "$cstNode": {
+                "text": "part def Counter {\n\t\tattribute count : ScalarValues::Integer := 0;\n\t\taction incr {\n\t\t\tassign count := 1;\n\t\t}\n    }",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "Counter",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 4,
+                "qualifiedName": "Assignment1::Counter"
+              }
+            },
+            "$cstNode": {
+              "text": "part def Counter {\n\t\tattribute count : ScalarValues::Integer := 0;\n\t\taction incr {\n\t\t\tassign count := 1;\n\t\t}\n    }",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
               ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
             }
           }
+        ],
+        "$cstNode": {
+          "text": "package Assignment1 {\n    part def Counter {\n\t\tattribute count : ScalarValues::Integer := 0;\n\t\taction incr {\n\t\t\tassign count := 1;\n\t\t}\n    }\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "Assignment1",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "Assignment1"
+        }
+      },
+      "$cstNode": {
+        "text": "package Assignment1 {\n    part def Counter {\n\t\tattribute count : ScalarValues::Integer := 0;\n\t\taction incr {\n\t\t\tassign count := 1;\n\t\t}\n    }\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
         ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
       }
     }
-  ]
+  ],
+  "$cstNode": {
+    "text": "package Assignment1 {\n    part def Counter {\n\t\tattribute count : ScalarValues::Integer := 0;\n\t\taction incr {\n\t\t\tassign count := 1;\n\t\t}\n    }\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
 }

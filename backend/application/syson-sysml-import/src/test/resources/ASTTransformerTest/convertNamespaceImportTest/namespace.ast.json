@@ -5,8 +5,43 @@
       "$type": "OwningMembership",
       "target": {
         "$type": "Package",
-        "declaredName": "ScalarValues"
+        "$cstNode": {
+          "text": "package ScalarValues {\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "ScalarValues",
+        "children": [],
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "ScalarValues"
+        }
+      },
+      "$cstNode": {
+        "text": "package ScalarValues {\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
       }
     }
-  ]
+  ],
+  "$cstNode": {
+    "text": "package ScalarValues {\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
 }

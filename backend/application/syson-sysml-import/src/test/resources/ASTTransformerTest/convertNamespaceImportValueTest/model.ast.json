@@ -8,33 +8,143 @@
         "children": [
           {
             "$type": "NamespaceImport",
+            "$cstNode": {
+              "text": "public import package1::*;",
+              "stack": [
+                "Import",
+                "PackageBodyElement"
+              ]
+            },
             "targetRef": {
               "$type": "NamespaceReference",
+              "$cstNode": {
+                "text": "package1",
+                "stack": [
+                  "ElementReference",
+                  "ImportedReference"
+                ]
+              },
               "text": "package1",
-              "reference": null
+              "reference": null,
+              "parts": [
+                null
+              ]
+            },
+            "visibility": "public",
+            "importsAll": false,
+            "isRecursive": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
             }
           },
           {
             "$type": "OwningMembership",
             "target": {
               "$type": "PartDefinition",
-              "children": [],
+              "$cstNode": {
+                "text": "part def Part2 :> part1;",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
               "heritage": [
                 {
                   "$type": "Subclassification",
                   "targetRef": {
                     "$type": "ClassifierReference",
+                    "$cstNode": {
+                      "text": "part1",
+                      "stack": [
+                        "ClassifierReference",
+                        "OwnedSubclassification"
+                      ]
+                    },
                     "text": "part1",
-                    "reference": "package1::part1"
+                    "reference": null,
+                    "parts": [
+                      null
+                    ]
+                  },
+                  "$cstNode": {
+                    "text": "part1",
+                    "stack": [
+                      "OwnedSubclassification",
+                      "SubclassificationPart"
+                    ]
+                  },
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 10,
+                    "qualifiedName": ""
                   }
                 }
               ],
-              "declaredName": "Part2"
+              "declaredName": "Part2",
+              "isIndividual": false,
+              "isVariation": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 6,
+                "qualifiedName": "package2::Part2"
+              }
+            },
+            "$cstNode": {
+              "text": "part def Part2 :> part1;",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 5,
+              "qualifiedName": ""
             }
           }
         ],
-        "declaredName": "package2"
+        "$cstNode": {
+          "text": "package package2 {\n    public import package1::*;\n    part def Part2 :> part1;\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "package2",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "package2"
+        }
+      },
+      "$cstNode": {
+        "text": "package package2 {\n    public import package1::*;\n    part def Part2 :> part1;\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
       }
     }
-  ]
+  ],
+  "$cstNode": {
+    "text": "package package2 {\n    public import package1::*;\n    part def Part2 :> part1;\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
 }

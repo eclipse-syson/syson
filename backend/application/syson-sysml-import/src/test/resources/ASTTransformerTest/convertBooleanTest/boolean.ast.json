@@ -1,0 +1,1907 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "visibility": "private",
+            "$cstNode": {
+              "text": "private part def Referred {\n\t}",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "target": {
+              "$type": "PartDefinition",
+              "$cstNode": {
+                "text": "part def Referred {\n\t}",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "Referred",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 4,
+                "qualifiedName": "BooleanTest::Referred"
+              }
+            },
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "visibility": "public",
+            "$cstNode": {
+              "text": "public item def A {\n\t\tprotected ref part aReference: Referred;\n\t}",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "target": {
+              "$type": "ItemDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "visibility": "protected",
+                  "$cstNode": {
+                    "text": "protected ref part aReference: Referred;",
+                    "stack": [
+                      "OccurrenceUsageMember",
+                      "DefinitionBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "target": {
+                    "$type": "PartUsage",
+                    "$cstNode": {
+                      "text": "ref part aReference: Referred;",
+                      "stack": [
+                        "OccurrenceUsageElement",
+                        "OccurrenceUsageMember"
+                      ]
+                    },
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "$cstNode": {
+                            "text": "Referred",
+                            "stack": [
+                              "TypeReference",
+                              "FeatureType"
+                            ]
+                          },
+                          "text": "Referred",
+                          "reference": "BooleanTest::Referred",
+                          "parts": [
+                            "BooleanTest::Referred"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "Referred",
+                          "stack": [
+                            "FeatureTyping",
+                            "TypedBy"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 15,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "declaredName": "aReference",
+                    "isReference": true,
+                    "isIndividual": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 14,
+                      "qualifiedName": "BooleanTest::A::aReference"
+                    }
+                  },
+                  "$meta": {
+                    "elementId": 13,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "item def A {\n\t\tprotected ref part aReference: Referred;\n\t}",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "A",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 9,
+                "qualifiedName": "BooleanTest::A"
+              }
+            },
+            "$meta": {
+              "elementId": 8,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "MembershipImport",
+            "$cstNode": {
+              "text": "private import q::**;",
+              "stack": [
+                "Import",
+                "PackageBodyElement"
+              ]
+            },
+            "targetRef": {
+              "$type": "MembershipReference",
+              "$cstNode": {
+                "text": "q",
+                "stack": [
+                  "ElementReference",
+                  "ImportedReference"
+                ]
+              },
+              "text": "q",
+              "reference": "",
+              "parts": [
+                ""
+              ]
+            },
+            "isRecursive": true,
+            "visibility": "private",
+            "importsAll": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 17,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "RequirementDefinition",
+              "$cstNode": {
+                "text": "requirement def R;",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "R",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 20,
+                "qualifiedName": "BooleanTest::R"
+              }
+            },
+            "$cstNode": {
+              "text": "requirement def R;",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 19,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartUsage",
+              "$cstNode": {
+                "text": "part p;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "declaredName": "p",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 25,
+                "qualifiedName": "BooleanTest::p"
+              }
+            },
+            "$cstNode": {
+              "text": "part p;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 24,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartUsage",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "RequirementUsage",
+                    "$cstNode": {
+                      "text": "requirement req1 : R;",
+                      "stack": [
+                        "OccurrenceUsageElement",
+                        "OccurrenceUsageMember"
+                      ]
+                    },
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "$cstNode": {
+                            "text": "R",
+                            "stack": [
+                              "TypeReference",
+                              "FeatureType"
+                            ]
+                          },
+                          "text": "R",
+                          "reference": "BooleanTest::R",
+                          "parts": [
+                            "BooleanTest::R"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "R",
+                          "stack": [
+                            "FeatureTyping",
+                            "TypedBy"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 30,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "declaredName": "req1",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 29,
+                      "qualifiedName": "BooleanTest::q::req1"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "requirement req1 : R;",
+                    "stack": [
+                      "OccurrenceUsageMember",
+                      "DefinitionBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 28,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "SatisfyRequirementUsage",
+                    "$cstNode": {
+                      "text": "satisfy req1 by p;",
+                      "stack": [
+                        "OccurrenceUsageElement",
+                        "OccurrenceUsageMember"
+                      ]
+                    },
+                    "heritage": [
+                      {
+                        "$type": "ReferenceSubsetting",
+                        "targetRef": {
+                          "$type": "FeatureReference",
+                          "$cstNode": {
+                            "text": "req1",
+                            "stack": [
+                              "FeatureReference",
+                              "OwnedReferenceSubsetting"
+                            ]
+                          },
+                          "text": "req1",
+                          "reference": "BooleanTest::q::req1",
+                          "parts": [
+                            "BooleanTest::q::req1"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "req1",
+                          "stack": [
+                            "OwnedReferenceSubsetting",
+                            "SatisfyRequirementUsage"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 34,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "satisfactionSubject": {
+                      "$type": "SubjectMembership",
+                      "target": {
+                        "$type": "ReferenceUsage",
+                        "value": {
+                          "$type": "FeatureValue",
+                          "target": {
+                            "$type": "FeatureReferenceExpression",
+                            "expression": {
+                              "$type": "Membership",
+                              "targetRef": {
+                                "$type": "FeatureReference",
+                                "$cstNode": {
+                                  "text": "p",
+                                  "stack": [
+                                    "FeatureReference",
+                                    "FeatureChainMember"
+                                  ]
+                                },
+                                "text": "p",
+                                "reference": "BooleanTest::p",
+                                "parts": [
+                                  "BooleanTest::p"
+                                ]
+                              },
+                              "$cstNode": {
+                                "text": "p",
+                                "stack": [
+                                  "FeatureChainMember",
+                                  "SatisfactionReferenceExpression"
+                                ]
+                              },
+                              "isAlias": false,
+                              "elements": [],
+                              "$meta": {
+                                "elementId": 40,
+                                "qualifiedName": ""
+                              }
+                            },
+                            "$cstNode": {
+                              "text": "p",
+                              "stack": [
+                                "SatisfactionReferenceExpression",
+                                "SatisfactionFeatureValue"
+                              ]
+                            },
+                            "isNonunique": false,
+                            "isOrdered": false,
+                            "heritage": [],
+                            "isSufficient": false,
+                            "typeRelationships": [],
+                            "children": [],
+                            "prefixes": [],
+                            "$meta": {
+                              "elementId": 39,
+                              "qualifiedName": ""
+                            }
+                          },
+                          "$cstNode": {
+                            "text": "p",
+                            "stack": [
+                              "SatisfactionFeatureValue",
+                              "SatisfactionParameter"
+                            ]
+                          },
+                          "isDefault": false,
+                          "isInitial": false,
+                          "isAlias": false,
+                          "elements": [],
+                          "$meta": {
+                            "elementId": 38,
+                            "qualifiedName": ""
+                          }
+                        },
+                        "$cstNode": {
+                          "text": "p",
+                          "stack": [
+                            "SatisfactionParameter",
+                            "SatisfactionSubjectMember"
+                          ]
+                        },
+                        "isIndividual": false,
+                        "isReference": false,
+                        "isVariation": false,
+                        "isNonunique": false,
+                        "isOrdered": false,
+                        "heritage": [],
+                        "isSufficient": false,
+                        "typeRelationships": [],
+                        "children": [],
+                        "prefixes": [],
+                        "$meta": {
+                          "elementId": 37,
+                          "qualifiedName": ""
+                        }
+                      },
+                      "$cstNode": {
+                        "text": "p",
+                        "stack": [
+                          "SatisfactionSubjectMember",
+                          "SatisfyRequirementUsage"
+                        ]
+                      },
+                      "isAlias": false,
+                      "elements": [],
+                      "$meta": {
+                        "elementId": 36,
+                        "qualifiedName": ""
+                      }
+                    },
+                    "isNegated": false,
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 33,
+                      "qualifiedName": ""
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "satisfy req1 by p;",
+                    "stack": [
+                      "OccurrenceUsageMember",
+                      "DefinitionBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 32,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "SatisfyRequirementUsage",
+                    "$cstNode": {
+                      "text": "assert satisfy req1 by q;",
+                      "stack": [
+                        "OccurrenceUsageElement",
+                        "OccurrenceUsageMember"
+                      ]
+                    },
+                    "heritage": [
+                      {
+                        "$type": "ReferenceSubsetting",
+                        "targetRef": {
+                          "$type": "FeatureReference",
+                          "$cstNode": {
+                            "text": "req1",
+                            "stack": [
+                              "FeatureReference",
+                              "OwnedReferenceSubsetting"
+                            ]
+                          },
+                          "text": "req1",
+                          "reference": "BooleanTest::q::req1",
+                          "parts": [
+                            "BooleanTest::q::req1"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "req1",
+                          "stack": [
+                            "OwnedReferenceSubsetting",
+                            "SatisfyRequirementUsage"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 44,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "satisfactionSubject": {
+                      "$type": "SubjectMembership",
+                      "target": {
+                        "$type": "ReferenceUsage",
+                        "value": {
+                          "$type": "FeatureValue",
+                          "target": {
+                            "$type": "FeatureReferenceExpression",
+                            "expression": {
+                              "$type": "Membership",
+                              "targetRef": {
+                                "$type": "FeatureReference",
+                                "$cstNode": {
+                                  "text": "q",
+                                  "stack": [
+                                    "FeatureReference",
+                                    "FeatureChainMember"
+                                  ]
+                                },
+                                "text": "q",
+                                "reference": "BooleanTest::q",
+                                "parts": [
+                                  "BooleanTest::q"
+                                ]
+                              },
+                              "$cstNode": {
+                                "text": "q",
+                                "stack": [
+                                  "FeatureChainMember",
+                                  "SatisfactionReferenceExpression"
+                                ]
+                              },
+                              "isAlias": false,
+                              "elements": [],
+                              "$meta": {
+                                "elementId": 50,
+                                "qualifiedName": ""
+                              }
+                            },
+                            "$cstNode": {
+                              "text": "q",
+                              "stack": [
+                                "SatisfactionReferenceExpression",
+                                "SatisfactionFeatureValue"
+                              ]
+                            },
+                            "isNonunique": false,
+                            "isOrdered": false,
+                            "heritage": [],
+                            "isSufficient": false,
+                            "typeRelationships": [],
+                            "children": [],
+                            "prefixes": [],
+                            "$meta": {
+                              "elementId": 49,
+                              "qualifiedName": ""
+                            }
+                          },
+                          "$cstNode": {
+                            "text": "q",
+                            "stack": [
+                              "SatisfactionFeatureValue",
+                              "SatisfactionParameter"
+                            ]
+                          },
+                          "isDefault": false,
+                          "isInitial": false,
+                          "isAlias": false,
+                          "elements": [],
+                          "$meta": {
+                            "elementId": 48,
+                            "qualifiedName": ""
+                          }
+                        },
+                        "$cstNode": {
+                          "text": "q",
+                          "stack": [
+                            "SatisfactionParameter",
+                            "SatisfactionSubjectMember"
+                          ]
+                        },
+                        "isIndividual": false,
+                        "isReference": false,
+                        "isVariation": false,
+                        "isNonunique": false,
+                        "isOrdered": false,
+                        "heritage": [],
+                        "isSufficient": false,
+                        "typeRelationships": [],
+                        "children": [],
+                        "prefixes": [],
+                        "$meta": {
+                          "elementId": 47,
+                          "qualifiedName": ""
+                        }
+                      },
+                      "$cstNode": {
+                        "text": "q",
+                        "stack": [
+                          "SatisfactionSubjectMember",
+                          "SatisfyRequirementUsage"
+                        ]
+                      },
+                      "isAlias": false,
+                      "elements": [],
+                      "$meta": {
+                        "elementId": 46,
+                        "qualifiedName": ""
+                      }
+                    },
+                    "isNegated": false,
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 43,
+                      "qualifiedName": ""
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "assert satisfy req1 by q;",
+                    "stack": [
+                      "OccurrenceUsageMember",
+                      "DefinitionBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 42,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "part q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "declaredName": "q",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 27,
+                "qualifiedName": "BooleanTest::q"
+              }
+            },
+            "$cstNode": {
+              "text": "part q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 26,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "RequirementUsage",
+              "$cstNode": {
+                "text": "requirement req2 : R;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "heritage": [
+                {
+                  "$type": "FeatureTyping",
+                  "targetRef": {
+                    "$type": "TypeReference",
+                    "$cstNode": {
+                      "text": "R",
+                      "stack": [
+                        "TypeReference",
+                        "FeatureType"
+                      ]
+                    },
+                    "text": "R",
+                    "reference": "BooleanTest::R",
+                    "parts": [
+                      "BooleanTest::R"
+                    ]
+                  },
+                  "$cstNode": {
+                    "text": "R",
+                    "stack": [
+                      "FeatureTyping",
+                      "TypedBy"
+                    ]
+                  },
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 54,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "declaredName": "req2",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 53,
+                "qualifiedName": "BooleanTest::req2"
+              }
+            },
+            "$cstNode": {
+              "text": "requirement req2 : R;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 52,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "SatisfyRequirementUsage",
+              "$cstNode": {
+                "text": "not satisfy req2 by p;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "isNegated": true,
+              "heritage": [
+                {
+                  "$type": "ReferenceSubsetting",
+                  "targetRef": {
+                    "$type": "FeatureReference",
+                    "$cstNode": {
+                      "text": "req2",
+                      "stack": [
+                        "FeatureReference",
+                        "OwnedReferenceSubsetting"
+                      ]
+                    },
+                    "text": "req2",
+                    "reference": "BooleanTest::req2",
+                    "parts": [
+                      "BooleanTest::req2"
+                    ]
+                  },
+                  "$cstNode": {
+                    "text": "req2",
+                    "stack": [
+                      "OwnedReferenceSubsetting",
+                      "SatisfyRequirementUsage"
+                    ]
+                  },
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 58,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "satisfactionSubject": {
+                "$type": "SubjectMembership",
+                "target": {
+                  "$type": "ReferenceUsage",
+                  "value": {
+                    "$type": "FeatureValue",
+                    "target": {
+                      "$type": "FeatureReferenceExpression",
+                      "expression": {
+                        "$type": "Membership",
+                        "targetRef": {
+                          "$type": "FeatureReference",
+                          "$cstNode": {
+                            "text": "p",
+                            "stack": [
+                              "FeatureReference",
+                              "FeatureChainMember"
+                            ]
+                          },
+                          "text": "p",
+                          "reference": "BooleanTest::p",
+                          "parts": [
+                            "BooleanTest::p"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "p",
+                          "stack": [
+                            "FeatureChainMember",
+                            "SatisfactionReferenceExpression"
+                          ]
+                        },
+                        "isAlias": false,
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 64,
+                          "qualifiedName": ""
+                        }
+                      },
+                      "$cstNode": {
+                        "text": "p",
+                        "stack": [
+                          "SatisfactionReferenceExpression",
+                          "SatisfactionFeatureValue"
+                        ]
+                      },
+                      "isNonunique": false,
+                      "isOrdered": false,
+                      "heritage": [],
+                      "isSufficient": false,
+                      "typeRelationships": [],
+                      "children": [],
+                      "prefixes": [],
+                      "$meta": {
+                        "elementId": 63,
+                        "qualifiedName": ""
+                      }
+                    },
+                    "$cstNode": {
+                      "text": "p",
+                      "stack": [
+                        "SatisfactionFeatureValue",
+                        "SatisfactionParameter"
+                      ]
+                    },
+                    "isDefault": false,
+                    "isInitial": false,
+                    "isAlias": false,
+                    "elements": [],
+                    "$meta": {
+                      "elementId": 62,
+                      "qualifiedName": ""
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "p",
+                    "stack": [
+                      "SatisfactionParameter",
+                      "SatisfactionSubjectMember"
+                    ]
+                  },
+                  "isIndividual": false,
+                  "isReference": false,
+                  "isVariation": false,
+                  "isNonunique": false,
+                  "isOrdered": false,
+                  "heritage": [],
+                  "isSufficient": false,
+                  "typeRelationships": [],
+                  "children": [],
+                  "prefixes": [],
+                  "$meta": {
+                    "elementId": 61,
+                    "qualifiedName": ""
+                  }
+                },
+                "$cstNode": {
+                  "text": "p",
+                  "stack": [
+                    "SatisfactionSubjectMember",
+                    "SatisfyRequirementUsage"
+                  ]
+                },
+                "isAlias": false,
+                "elements": [],
+                "$meta": {
+                  "elementId": 60,
+                  "qualifiedName": ""
+                }
+              },
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 57,
+                "qualifiedName": ""
+              }
+            },
+            "$cstNode": {
+              "text": "not satisfy req2 by p;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 56,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "Membership",
+            "$cstNode": {
+              "text": "alias alias1 for q::req1;",
+              "stack": [
+                "AliasMember",
+                "PackageBodyElement"
+              ]
+            },
+            "declaredName": "alias1",
+            "isAlias": true,
+            "elements": [],
+            "targetRef": {
+              "$type": "ElementReference",
+              "$cstNode": {
+                "text": "q::req1",
+                "stack": [
+                  "ElementReference",
+                  "AliasMember"
+                ]
+              },
+              "text": "q::req1",
+              "reference": "BooleanTest::q::req1",
+              "parts": [
+                "BooleanTest::q",
+                "BooleanTest::q::req1"
+              ]
+            },
+            "$meta": {
+              "elementId": 66,
+              "qualifiedName": "BooleanTest::alias1"
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "$cstNode": {
+                "text": "attribute init1 : ScalarValues::Integer := 0;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "value": {
+                "$type": "FeatureValue",
+                "isInitial": true,
+                "target": {
+                  "$type": "LiteralNumber",
+                  "literal": 0,
+                  "$cstNode": {
+                    "text": "0",
+                    "stack": [
+                      "OwnedExpression",
+                      "FeatureValueExpression"
+                    ]
+                  },
+                  "isNonunique": false,
+                  "isOrdered": false,
+                  "heritage": [],
+                  "isSufficient": false,
+                  "typeRelationships": [],
+                  "children": [],
+                  "prefixes": [],
+                  "$meta": {
+                    "elementId": 73,
+                    "qualifiedName": ""
+                  }
+                },
+                "$cstNode": {
+                  "text": ":= 0",
+                  "stack": [
+                    "FeatureValueExpression",
+                    "ValuePart"
+                  ]
+                },
+                "isDefault": false,
+                "isAlias": false,
+                "elements": [],
+                "$meta": {
+                  "elementId": 72,
+                  "qualifiedName": ""
+                }
+              },
+              "heritage": [
+                {
+                  "$type": "FeatureTyping",
+                  "targetRef": {
+                    "$type": "TypeReference",
+                    "$cstNode": {
+                      "text": "ScalarValues::Integer",
+                      "stack": [
+                        "TypeReference",
+                        "FeatureType"
+                      ]
+                    },
+                    "text": "ScalarValues::Integer",
+                    "reference": null,
+                    "parts": [
+                      null,
+                      null
+                    ]
+                  },
+                  "$cstNode": {
+                    "text": "ScalarValues::Integer",
+                    "stack": [
+                      "FeatureTyping",
+                      "TypedBy"
+                    ]
+                  },
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 70,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "declaredName": "init1",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 69,
+                "qualifiedName": "BooleanTest::init1"
+              }
+            },
+            "$cstNode": {
+              "text": "attribute init1 : ScalarValues::Integer := 0;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 68,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartDefinition",
+              "$cstNode": {
+                "text": "variation part def V :> A {\n\t}",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "heritage": [
+                {
+                  "$type": "Subclassification",
+                  "targetRef": {
+                    "$type": "ClassifierReference",
+                    "$cstNode": {
+                      "text": "A",
+                      "stack": [
+                        "ClassifierReference",
+                        "OwnedSubclassification"
+                      ]
+                    },
+                    "text": "A",
+                    "reference": "BooleanTest::A",
+                    "parts": [
+                      "BooleanTest::A"
+                    ]
+                  },
+                  "$cstNode": {
+                    "text": "A",
+                    "stack": [
+                      "OwnedSubclassification",
+                      "SubclassificationPart"
+                    ]
+                  },
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 79,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "declaredName": "V",
+              "isVariation": true,
+              "isIndividual": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 75,
+                "qualifiedName": "BooleanTest::V"
+              }
+            },
+            "$cstNode": {
+              "text": "variation part def V :> A {\n\t}",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 74,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "OccurrenceDefinition",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "OccurrenceUsage",
+                    "$cstNode": {
+                      "text": "snapshot snapshot1;",
+                      "stack": [
+                        "OccurrenceUsageElement",
+                        "OccurrenceUsageMember"
+                      ]
+                    },
+                    "declaredName": "snapshot1",
+                    "portionKind": "snapshot",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "heritage": [],
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 87,
+                      "qualifiedName": "BooleanTest::Ind::snapshot1"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "snapshot snapshot1;",
+                    "stack": [
+                      "OccurrenceUsageMember",
+                      "DefinitionBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 86,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "OccurrenceUsage",
+                    "$cstNode": {
+                      "text": "timeslice timeslice1;",
+                      "stack": [
+                        "OccurrenceUsageElement",
+                        "OccurrenceUsageMember"
+                      ]
+                    },
+                    "declaredName": "timeslice1",
+                    "portionKind": "timeslice",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "heritage": [],
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 89,
+                      "qualifiedName": "BooleanTest::Ind::timeslice1"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "timeslice timeslice1;",
+                    "stack": [
+                      "OccurrenceUsageMember",
+                      "DefinitionBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 88,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "individual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "Ind",
+              "isIndividual": true,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 82,
+                "qualifiedName": "BooleanTest::Ind"
+              }
+            },
+            "$cstNode": {
+              "text": "individual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 81,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "$cstNode": {
+                "text": "attribute default1 default = 10;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "value": {
+                "$type": "FeatureValue",
+                "isDefault": true,
+                "target": {
+                  "$type": "LiteralNumber",
+                  "literal": 10,
+                  "$cstNode": {
+                    "text": "10",
+                    "stack": [
+                      "OwnedExpression",
+                      "FeatureValue"
+                    ]
+                  },
+                  "isNonunique": false,
+                  "isOrdered": false,
+                  "heritage": [],
+                  "isSufficient": false,
+                  "typeRelationships": [],
+                  "children": [],
+                  "prefixes": [],
+                  "$meta": {
+                    "elementId": 93,
+                    "qualifiedName": ""
+                  }
+                },
+                "$cstNode": {
+                  "text": "default = 10",
+                  "stack": [
+                    "FeatureValue",
+                    "ValuePart"
+                  ]
+                },
+                "isInitial": false,
+                "isAlias": false,
+                "elements": [],
+                "$meta": {
+                  "elementId": 92,
+                  "qualifiedName": ""
+                }
+              },
+              "declaredName": "default1",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 91,
+                "qualifiedName": "BooleanTest::default1"
+              }
+            },
+            "$cstNode": {
+              "text": "attribute default1 default = 10;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 90,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "StateUsage",
+              "children": [
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "StateUsage",
+                    "$cstNode": {
+                      "text": "state s1;",
+                      "stack": [
+                        "BehaviorUsageElement",
+                        "BehaviorUsageMember"
+                      ]
+                    },
+                    "declaredName": "s1",
+                    "isParallel": false,
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "heritage": [],
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 97,
+                      "qualifiedName": "BooleanTest::s::s1"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "state s1;",
+                    "stack": [
+                      "BehaviorUsageMember",
+                      "StateBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 96,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "FeatureMembership",
+                  "target": {
+                    "$type": "StateUsage",
+                    "$cstNode": {
+                      "text": "state s2;",
+                      "stack": [
+                        "BehaviorUsageElement",
+                        "BehaviorUsageMember"
+                      ]
+                    },
+                    "declaredName": "s2",
+                    "isParallel": false,
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "heritage": [],
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 99,
+                      "qualifiedName": "BooleanTest::s::s2"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "state s2;",
+                    "stack": [
+                      "BehaviorUsageMember",
+                      "StateBodyItem"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 98,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "state s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "isParallel": true,
+              "declaredName": "s",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 95,
+                "qualifiedName": "BooleanTest::s"
+              }
+            },
+            "$cstNode": {
+              "text": "state s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 94,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "ItemDefinition",
+              "$cstNode": {
+                "text": "abstract item def B;",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "B",
+              "isAbstract": "abstract",
+              "isIndividual": false,
+              "isVariation": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 101,
+                "qualifiedName": "BooleanTest::B"
+              }
+            },
+            "$cstNode": {
+              "text": "abstract item def B;",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 100,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "ReferenceUsage",
+              "$cstNode": {
+                "text": "end e1;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "declaredName": "e1",
+              "isEnd": "end",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 106,
+                "qualifiedName": "BooleanTest::e1"
+              }
+            },
+            "$cstNode": {
+              "text": "end e1;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 105,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "$cstNode": {
+                "text": "readonly attribute ro[0..2];",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "multiplicity": {
+                "$type": "OwningMembership",
+                "target": {
+                  "$type": "MultiplicityRange",
+                  "range": {
+                    "$type": "OwningMembership",
+                    "target": {
+                      "$type": "OperatorExpression",
+                      "operands": [
+                        {
+                          "$type": "LiteralNumber",
+                          "literal": 0,
+                          "$cstNode": {
+                            "text": "0",
+                            "stack": [
+                              "AdditiveExpression",
+                              "RangeExpression"
+                            ]
+                          },
+                          "isNonunique": false,
+                          "isOrdered": false,
+                          "heritage": [],
+                          "isSufficient": false,
+                          "typeRelationships": [],
+                          "children": [],
+                          "prefixes": [],
+                          "$meta": {
+                            "elementId": 113,
+                            "qualifiedName": ""
+                          }
+                        },
+                        {
+                          "$type": "LiteralNumber",
+                          "literal": 2,
+                          "$cstNode": {
+                            "text": "2",
+                            "stack": [
+                              "AdditiveExpression",
+                              "RangeExpression"
+                            ]
+                          },
+                          "isNonunique": false,
+                          "isOrdered": false,
+                          "heritage": [],
+                          "isSufficient": false,
+                          "typeRelationships": [],
+                          "children": [],
+                          "prefixes": [],
+                          "$meta": {
+                            "elementId": 114,
+                            "qualifiedName": ""
+                          }
+                        }
+                      ],
+                      "operator": "..",
+                      "$cstNode": {
+                        "text": "0..2",
+                        "stack": [
+                          "OwnedExpression",
+                          "MultiplicityExpressionMember"
+                        ]
+                      },
+                      "isNonunique": false,
+                      "isOrdered": false,
+                      "heritage": [],
+                      "isSufficient": false,
+                      "typeRelationships": [],
+                      "children": [],
+                      "prefixes": [],
+                      "$meta": {
+                        "elementId": 112,
+                        "qualifiedName": ""
+                      }
+                    },
+                    "$cstNode": {
+                      "text": "0..2",
+                      "stack": [
+                        "MultiplicityExpressionMember",
+                        "MultiplicityRange"
+                      ]
+                    },
+                    "isAlias": false,
+                    "elements": [],
+                    "$meta": {
+                      "elementId": 111,
+                      "qualifiedName": ""
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "[0..2]",
+                    "stack": [
+                      "MultiplicityRange",
+                      "OwnedMultiplicity"
+                    ]
+                  },
+                  "isNonunique": false,
+                  "isOrdered": false,
+                  "heritage": [],
+                  "isSufficient": false,
+                  "typeRelationships": [],
+                  "children": [],
+                  "prefixes": [],
+                  "$meta": {
+                    "elementId": 110,
+                    "qualifiedName": ""
+                  }
+                },
+                "$cstNode": {
+                  "text": "[0..2]",
+                  "stack": [
+                    "OwnedMultiplicity",
+                    "MultiplicityPart"
+                  ]
+                },
+                "isAlias": false,
+                "elements": [],
+                "$meta": {
+                  "elementId": 109,
+                  "qualifiedName": ""
+                }
+              },
+              "declaredName": "ro",
+              "isReadOnly": "readonly",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "heritage": [],
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 108,
+                "qualifiedName": "BooleanTest::ro"
+              }
+            },
+            "$cstNode": {
+              "text": "readonly attribute ro[0..2];",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 107,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "AttributeUsage",
+              "$cstNode": {
+                "text": "derived ref attribute y :> init1;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "heritage": [
+                {
+                  "$type": "Subsetting",
+                  "targetRef": {
+                    "$type": "FeatureReference",
+                    "$cstNode": {
+                      "text": "init1",
+                      "stack": [
+                        "FeatureReference",
+                        "OwnedSubsetting"
+                      ]
+                    },
+                    "text": "init1",
+                    "reference": "BooleanTest::init1",
+                    "parts": [
+                      "BooleanTest::init1"
+                    ]
+                  },
+                  "$cstNode": {
+                    "text": "init1",
+                    "stack": [
+                      "OwnedSubsetting",
+                      "Subsets"
+                    ]
+                  },
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 117,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "declaredName": "y",
+              "isReference": true,
+              "isDerived": "derived",
+              "isIndividual": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 116,
+                "qualifiedName": "BooleanTest::y"
+              }
+            },
+            "$cstNode": {
+              "text": "derived ref attribute y :> init1;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 115,
+              "qualifiedName": ""
+            }
+          }
+        ],
+        "$cstNode": {
+          "text": "package BooleanTest {\n\n    // isReference\n\tprivate part def Referred {\n\t}\n\tpublic item def A {\n\t\tprotected ref part aReference: Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {\n\t}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\t\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro[0..2];\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "BooleanTest",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "BooleanTest"
+        }
+      },
+      "$cstNode": {
+        "text": "package BooleanTest {\n\n    // isReference\n\tprivate part def Referred {\n\t}\n\tpublic item def A {\n\t\tprotected ref part aReference: Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {\n\t}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\t\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro[0..2];\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
+      }
+    }
+  ],
+  "$cstNode": {
+    "text": "package BooleanTest {\n\n    // isReference\n\tprivate part def Referred {\n\t}\n\tpublic item def A {\n\t\tprotected ref part aReference: Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {\n\t}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\t\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro[0..2];\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
+}

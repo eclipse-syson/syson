@@ -1,0 +1,500 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "Package",
+              "children": [
+                {
+                  "$type": "MembershipImport",
+                  "$cstNode": {
+                    "text": "private import Pkg2::Pkg21::Pkg211::P211;",
+                    "stack": [
+                      "Import",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "targetRef": {
+                    "$type": "MembershipReference",
+                    "$cstNode": {
+                      "text": "Pkg2::Pkg21::Pkg211::P211",
+                      "stack": [
+                        "ElementReference",
+                        "ImportedReference"
+                      ]
+                    },
+                    "text": "Pkg2::Pkg21::Pkg211::P211",
+                    "reference": "",
+                    "parts": [
+                      "ImportTest::Pkg2",
+                      "ImportTest::Pkg2::Pkg21",
+                      "ImportTest::Pkg2::Pkg21::Pkg211",
+                      ""
+                    ]
+                  },
+                  "visibility": "private",
+                  "importsAll": false,
+                  "isRecursive": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 5,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "NamespaceImport",
+                  "$cstNode": {
+                    "text": "private import Pkg2::Pkg21::*;",
+                    "stack": [
+                      "Import",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "targetRef": {
+                    "$type": "NamespaceReference",
+                    "$cstNode": {
+                      "text": "Pkg2::Pkg21",
+                      "stack": [
+                        "ElementReference",
+                        "ImportedReference"
+                      ]
+                    },
+                    "text": "Pkg2::Pkg21",
+                    "reference": "ImportTest::Pkg2::Pkg21",
+                    "parts": [
+                      "ImportTest::Pkg2",
+                      "ImportTest::Pkg2::Pkg21"
+                    ]
+                  },
+                  "visibility": "private",
+                  "importsAll": false,
+                  "isRecursive": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 7,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "NamespaceImport",
+                  "$cstNode": {
+                    "text": "private import Pkg211::*::**;",
+                    "stack": [
+                      "Import",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "targetRef": {
+                    "$type": "NamespaceReference",
+                    "$cstNode": {
+                      "text": "Pkg211",
+                      "stack": [
+                        "ElementReference",
+                        "ImportedReference"
+                      ]
+                    },
+                    "text": "Pkg211",
+                    "reference": "ImportTest::Pkg2::Pkg21::Pkg211",
+                    "parts": [
+                      "ImportTest::Pkg2::Pkg21::Pkg211"
+                    ]
+                  },
+                  "isRecursive": true,
+                  "visibility": "private",
+                  "importsAll": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 9,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "OwningMembership",
+                  "target": {
+                    "$type": "PartUsage",
+                    "$cstNode": {
+                      "text": "part p11 : Pkg211::P211;",
+                      "stack": [
+                        "UsageElement",
+                        "UsageMember"
+                      ]
+                    },
+                    "heritage": [
+                      {
+                        "$type": "FeatureTyping",
+                        "targetRef": {
+                          "$type": "TypeReference",
+                          "$cstNode": {
+                            "text": "Pkg211::P211",
+                            "stack": [
+                              "TypeReference",
+                              "FeatureType"
+                            ]
+                          },
+                          "text": "Pkg211::P211",
+                          "reference": "ImportTest::Pkg2::Pkg21::Pkg211::P211",
+                          "parts": [
+                            "ImportTest::Pkg2::Pkg21::Pkg211",
+                            "ImportTest::Pkg2::Pkg21::Pkg211::P211"
+                          ]
+                        },
+                        "$cstNode": {
+                          "text": "Pkg211::P211",
+                          "stack": [
+                            "FeatureTyping",
+                            "TypedBy"
+                          ]
+                        },
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 13,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "declaredName": "p11",
+                    "isIndividual": false,
+                    "isReference": false,
+                    "isVariation": false,
+                    "isNonunique": false,
+                    "isOrdered": false,
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 12,
+                      "qualifiedName": "ImportTest::Pkg1::p11"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "part p11 : Pkg211::P211;",
+                    "stack": [
+                      "UsageMember",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 11,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "OwningMembership",
+                  "target": {
+                    "$type": "PartDefinition",
+                    "$cstNode": {
+                      "text": "part def P12;",
+                      "stack": [
+                        "DefinitionElement",
+                        "DefinitionMember"
+                      ]
+                    },
+                    "declaredName": "P12",
+                    "isIndividual": false,
+                    "isVariation": false,
+                    "heritage": [],
+                    "isSufficient": false,
+                    "typeRelationships": [],
+                    "children": [],
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 16,
+                      "qualifiedName": "ImportTest::Pkg1::P12"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "part def P12;",
+                    "stack": [
+                      "DefinitionMember",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 15,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "package Pkg1 {\n    \tprivate import Pkg2::Pkg21::Pkg211::P211;\n    \tprivate import Pkg2::Pkg21::*;\n    \tprivate import Pkg211::*::**;\n        part p11 : Pkg211::P211;\n        part def P12;\n    }",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "Pkg1",
+              "prefixes": [],
+              "$meta": {
+                "elementId": 4,
+                "qualifiedName": "ImportTest::Pkg1"
+              }
+            },
+            "$cstNode": {
+              "text": "package Pkg1 {\n    \tprivate import Pkg2::Pkg21::Pkg211::P211;\n    \tprivate import Pkg2::Pkg21::*;\n    \tprivate import Pkg211::*::**;\n        part p11 : Pkg211::P211;\n        part def P12;\n    }",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
+            }
+          },
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "Package",
+              "children": [
+                {
+                  "$type": "NamespaceImport",
+                  "$cstNode": {
+                    "text": "private import Pkg1::*;",
+                    "stack": [
+                      "Import",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "targetRef": {
+                    "$type": "NamespaceReference",
+                    "$cstNode": {
+                      "text": "Pkg1",
+                      "stack": [
+                        "ElementReference",
+                        "ImportedReference"
+                      ]
+                    },
+                    "text": "Pkg1",
+                    "reference": "ImportTest::Pkg1",
+                    "parts": [
+                      "ImportTest::Pkg1"
+                    ]
+                  },
+                  "visibility": "private",
+                  "importsAll": false,
+                  "isRecursive": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 22,
+                    "qualifiedName": ""
+                  }
+                },
+                {
+                  "$type": "OwningMembership",
+                  "target": {
+                    "$type": "Package",
+                    "children": [
+                      {
+                        "$type": "OwningMembership",
+                        "target": {
+                          "$type": "Package",
+                          "children": [
+                            {
+                              "$type": "OwningMembership",
+                              "target": {
+                                "$type": "PartDefinition",
+                                "$cstNode": {
+                                  "text": "part def P211 :> P12;",
+                                  "stack": [
+                                    "DefinitionElement",
+                                    "DefinitionMember"
+                                  ]
+                                },
+                                "heritage": [
+                                  {
+                                    "$type": "Subclassification",
+                                    "targetRef": {
+                                      "$type": "ClassifierReference",
+                                      "$cstNode": {
+                                        "text": "P12",
+                                        "stack": [
+                                          "ClassifierReference",
+                                          "OwnedSubclassification"
+                                        ]
+                                      },
+                                      "text": "P12",
+                                      "reference": "ImportTest::Pkg1::P12",
+                                      "parts": [
+                                        "ImportTest::Pkg1::P12"
+                                      ]
+                                    },
+                                    "$cstNode": {
+                                      "text": "P12",
+                                      "stack": [
+                                        "OwnedSubclassification",
+                                        "SubclassificationPart"
+                                      ]
+                                    },
+                                    "elements": [],
+                                    "$meta": {
+                                      "elementId": 33,
+                                      "qualifiedName": ""
+                                    }
+                                  }
+                                ],
+                                "declaredName": "P211",
+                                "isIndividual": false,
+                                "isVariation": false,
+                                "isSufficient": false,
+                                "typeRelationships": [],
+                                "children": [],
+                                "prefixes": [],
+                                "$meta": {
+                                  "elementId": 29,
+                                  "qualifiedName": "ImportTest::Pkg2::Pkg21::Pkg211::P211"
+                                }
+                              },
+                              "$cstNode": {
+                                "text": "part def P211 :> P12;",
+                                "stack": [
+                                  "DefinitionMember",
+                                  "PackageBodyElement"
+                                ]
+                              },
+                              "isAlias": false,
+                              "elements": [],
+                              "$meta": {
+                                "elementId": 28,
+                                "qualifiedName": ""
+                              }
+                            }
+                          ],
+                          "$cstNode": {
+                            "text": "package Pkg211 {\n        \t\tpart def P211 :> P12;\n        \t}",
+                            "stack": [
+                              "DefinitionElement",
+                              "DefinitionMember"
+                            ]
+                          },
+                          "declaredName": "Pkg211",
+                          "prefixes": [],
+                          "$meta": {
+                            "elementId": 27,
+                            "qualifiedName": "ImportTest::Pkg2::Pkg21::Pkg211"
+                          }
+                        },
+                        "$cstNode": {
+                          "text": "package Pkg211 {\n        \t\tpart def P211 :> P12;\n        \t}",
+                          "stack": [
+                            "DefinitionMember",
+                            "PackageBodyElement"
+                          ]
+                        },
+                        "isAlias": false,
+                        "elements": [],
+                        "$meta": {
+                          "elementId": 26,
+                          "qualifiedName": ""
+                        }
+                      }
+                    ],
+                    "$cstNode": {
+                      "text": "package Pkg21 {\n        \tpackage Pkg211 {\n        \t\tpart def P211 :> P12;\n        \t}\n        }",
+                      "stack": [
+                        "DefinitionElement",
+                        "DefinitionMember"
+                      ]
+                    },
+                    "declaredName": "Pkg21",
+                    "prefixes": [],
+                    "$meta": {
+                      "elementId": 25,
+                      "qualifiedName": "ImportTest::Pkg2::Pkg21"
+                    }
+                  },
+                  "$cstNode": {
+                    "text": "package Pkg21 {\n        \tpackage Pkg211 {\n        \t\tpart def P211 :> P12;\n        \t}\n        }",
+                    "stack": [
+                      "DefinitionMember",
+                      "PackageBodyElement"
+                    ]
+                  },
+                  "isAlias": false,
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 24,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "$cstNode": {
+                "text": "package Pkg2 {\n        private import Pkg1::*;\n        package Pkg21 {\n        \tpackage Pkg211 {\n        \t\tpart def P211 :> P12;\n        \t}\n        }\n    }",
+                "stack": [
+                  "DefinitionElement",
+                  "DefinitionMember"
+                ]
+              },
+              "declaredName": "Pkg2",
+              "prefixes": [],
+              "$meta": {
+                "elementId": 21,
+                "qualifiedName": "ImportTest::Pkg2"
+              }
+            },
+            "$cstNode": {
+              "text": "package Pkg2 {\n        private import Pkg1::*;\n        package Pkg21 {\n        \tpackage Pkg211 {\n        \t\tpart def P211 :> P12;\n        \t}\n        }\n    }",
+              "stack": [
+                "DefinitionMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 20,
+              "qualifiedName": ""
+            }
+          }
+        ],
+        "$cstNode": {
+          "text": "package ImportTest {\n    package Pkg1 {\n    \tprivate import Pkg2::Pkg21::Pkg211::P211;\n    \tprivate import Pkg2::Pkg21::*;\n    \tprivate import Pkg211::*::**;\n        part p11 : Pkg211::P211;\n        part def P12;\n    }\n\n    package Pkg2 {\n        private import Pkg1::*;\n        package Pkg21 {\n        \tpackage Pkg211 {\n        \t\tpart def P211 :> P12;\n        \t}\n        }\n    }\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "ImportTest",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "ImportTest"
+        }
+      },
+      "$cstNode": {
+        "text": "package ImportTest {\n    package Pkg1 {\n    \tprivate import Pkg2::Pkg21::Pkg211::P211;\n    \tprivate import Pkg2::Pkg21::*;\n    \tprivate import Pkg211::*::**;\n        part p11 : Pkg211::P211;\n        part def P12;\n    }\n\n    package Pkg2 {\n        private import Pkg1::*;\n        package Pkg21 {\n        \tpackage Pkg211 {\n        \t\tpart def P211 :> P12;\n        \t}\n        }\n    }\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
+      }
+    }
+  ],
+  "$cstNode": {
+    "text": "package ImportTest {\n    package Pkg1 {\n    \tprivate import Pkg2::Pkg21::Pkg211::P211;\n    \tprivate import Pkg2::Pkg21::*;\n    \tprivate import Pkg211::*::**;\n        part p11 : Pkg211::P211;\n        part def P12;\n    }\n\n    package Pkg2 {\n        private import Pkg1::*;\n        package Pkg21 {\n        \tpackage Pkg211 {\n        \t\tpart def P211 :> P12;\n        \t}\n        }\n    }\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
+}
