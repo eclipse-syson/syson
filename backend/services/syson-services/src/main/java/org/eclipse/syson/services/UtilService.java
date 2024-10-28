@@ -43,6 +43,7 @@ import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
 import org.eclipse.syson.sysml.InterfaceUsage;
+import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -82,6 +83,18 @@ public class UtilService {
     private final ElementInitializerSwitch elementInitializerSwitch = new ElementInitializerSwitch();
 
     private final ElementUtil elementUtil = new ElementUtil();
+
+    /**
+     * Check if the given {@link Element} comes from a standard library (i.e. a {@link LibraryPackage} with its standard
+     * attribute set to true) or not.
+     *
+     * @param element
+     *            the given {@link Element}.
+     * @return <code>true</code> if the given element is contained in a standard library, <code>false</code> otherwise.
+     */
+    public boolean isFromStandardLibrary(Element element) {
+        return ElementUtil.isFromStandardLibrary(element);
+    }
 
     /**
      * Return the {@link Package} containing the given {@link EObject}.

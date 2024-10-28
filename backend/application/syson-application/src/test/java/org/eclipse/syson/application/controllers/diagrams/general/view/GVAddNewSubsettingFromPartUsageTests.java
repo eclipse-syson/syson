@@ -115,11 +115,11 @@ public class GVAddNewSubsettingFromPartUsageTests extends AbstractIntegrationTes
         }
     }
 
-    @DisplayName("Given a SysML Project, when New Subsetting tool is  requested on a PartUsage, then a new PartUsage and a Subsetting edge are created")
+    @DisplayName("Given a SysML Project, when New Subsetting tool is requested on a PartUsage, then a new PartUsage node and a Subsetting edge are created")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void givenASysMLProjectWhenNewSubsettingToolIsRequestedOnAPartUsageThenANewPartUsageAndASubsettingEdgeAreCreated() {
+    public void testApplyTool() {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Subsetting");
         assertThat(creationToolId).as("The tool 'New Subsetting' should exist on a PartUsage").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT,

@@ -3,6 +3,7 @@
 == Key highlights
 
 - *Model conformance to SysMLv2 Beta 2.2 version*: the metamodel has been modified to conform to SysMLv2 and KerML Beta 2.2 specifications released on October 2024.
+All standard libraries have also been updated.
 
 == Breaking changes
 
@@ -80,6 +81,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - Add `New Flow Connection` tool on `PartUsage` in Interconnection View diagram.
 - Add `New Interface` tool on `PartUsage` in Interconnection View diagram.
 - Handle `UseCaseUsage` and `IncludeUseCaseUsage` elements in export to textual SysMLv2.
+- All standard libraries have been updated to comply with the SysML Beta 2.2 specification.
 
 == New features
 

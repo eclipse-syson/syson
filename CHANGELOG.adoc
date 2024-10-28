@@ -77,6 +77,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - https://github.com/eclipse-syson/syson/issues/789[#789] [interconnection-view] Add `New Flow Connection` tool on `PartUsage` in Interconnection View diagram.
 - https://github.com/eclipse-syson/syson/issues/790[#790] [interconnection-view] Add `New Interface` tool on `PartUsage` in Interconnection View diagram.
 - https://github.com/eclipse-syson/syson/issues/799[#799] [export] Handle `UseCaseUsage` and `IncludeUseCaseUsage` elements.
+- https://github.com/eclipse-syson/syson/issues/803[#803] [libraries] All standard libraries have been updated to comply with the SysML Beta 2.2 specification.
 
 === New features
 
