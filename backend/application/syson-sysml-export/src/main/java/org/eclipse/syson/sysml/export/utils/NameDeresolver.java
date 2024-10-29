@@ -28,6 +28,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.UniqueEList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Membership;
@@ -140,7 +141,8 @@ public class NameDeresolver {
             if (cacheValue != null) {
                 return cacheValue;
             }
-            EList<Membership> visibleMemberships = this.getVisibleMemberships(deresolvingNamespace, deresolvingNamespace == sourceNamespace);
+            // should sourceNamespace be context or be contained in context, then private elements should be accessible while deresolving.
+            EList<Membership> visibleMemberships = this.getVisibleMemberships(deresolvingNamespace, isContainerOrIdentity(deresolvingNamespace, sourceNamespace));
             final Stream<Membership> stream;
             // Some element have a lots of elements to checks. In that case use parallel stream
             if (visibleMemberships.size() > 100) {
@@ -150,9 +152,9 @@ public class NameDeresolver {
             }
             Optional<Membership> importedContainer = stream.filter(ancestors::contains)
                     // Get the membership the closest to the element to deresolve
-                    .sorted(Comparator.comparing(m -> this.getPathLenght(element, m))).findFirst();
+                    .sorted(Comparator.comparing(m -> this.getPathLength(element, m))).findFirst();
 
-            if (!importedContainer.isEmpty()) {
+            if (importedContainer.isPresent()) {
                 // We found a visible membership that can reach the element
                 // Try to compute its qualified name
                 qualifiedName = this.buildRelativeQualifiedName(element, deresolvingNamespace, importedContainer.get(), sourceNamespace);
@@ -169,7 +171,7 @@ public class NameDeresolver {
         return qualifiedName;
     }
 
-    private int getPathLenght(Element element, Membership ancestor) {
+    private int getPathLength(Element element, Membership ancestor) {
         int lenght = 0;
         EObject current = element;
         while (current != null && ancestor != current) {
@@ -177,6 +179,14 @@ public class NameDeresolver {
             current = current.eContainer();
         }
         return lenght;
+    }
+
+    private boolean isContainerOrIdentity(Namespace ancestorObjectNamespace, Namespace namespace) {
+        if (ancestorObjectNamespace == namespace) {
+            return true;
+        } else {
+            return EcoreUtil.isAncestor(ancestorObjectNamespace, namespace);
+        }
     }
 
     private EList<Membership> getVisibleMemberships(Namespace deresolvingNamespace, boolean includePrivate) {

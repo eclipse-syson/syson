@@ -53,13 +53,18 @@ public class ImportExportTests extends AbstractIntegrationTests {
     /**
      * Test import/export on test file UseCaseTest.sysml.
      *
-     * @see https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/UseCaseTest.sysml
+     * @see <a href="https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/UseCaseTest.sysml">UseCaseTest</a>
      */
     @Test
     public void checkUseCaseTest() throws IOException {
         /*
-         * The file has been modified because a problem has been detected during the export phase that force us to use
-         * some qualified name. This should be investigated.
+         * The file has been modified because a problem has been detected during the export phase.
+         * Those problem force us to use some full-length qualified name. This should be investigated.
+         *
+         * for exemple:
+                include UseCaseTest::uc2;
+         * instead of
+                include uc2;
          */
         var input = """
                 package UseCaseTest {
@@ -125,6 +130,65 @@ public class ImportExportTests extends AbstractIntegrationTests {
                     part system : System {
                         include uc2;
                         perform u;
+                    }
+                }""";
+
+        this.checker.check(input, expected);
+
+    }
+
+    /**
+     * Test import/export on test file ImportTest.sysml.
+     *
+     * @see <a href="https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/ImportTest.sysml">ImportTest</a>
+     */
+    @Test
+    public void checkImportTest() throws IOException {
+        /*
+         * The file has been modified because a problem has been detected during the export phase.
+         * Those problem force us to use some full-length qualified name. This should be investigated.
+         *
+         * for exemple:
+                private import Pkg2::Pkg21::Pkg211::*::**;
+         * instead of
+                private import Pkg211::*::**;
+         */
+        var input = """
+                package ImportTest {
+                    package Pkg1 {
+                        private import Pkg2::Pkg21::Pkg211::P211;
+                        private import Pkg2::Pkg21::*;
+                        private import Pkg211::*::**;
+                        part p11 : P211;
+                        part def P12;
+                    }
+                    package Pkg2 {
+                        private import Pkg1::*;
+                        package Pkg21 {
+                            package Pkg211 {
+                                part def P211 :> P12;
+                            }
+                        }
+                    }
+                }
+                """;
+
+        var expected = """
+                package ImportTest {
+                    package Pkg1 {
+                        private import Pkg2::Pkg21::Pkg211::P211;
+                        private import Pkg2::Pkg21::*;
+                        private import Pkg2::Pkg21::Pkg211::*::**;
+                        part p11 : P211;
+                        part def P12;
+                    }
+                    package Pkg2 {
+                        private import Pkg1::*;
+                        package Pkg21 {
+                            package Pkg211 {
+                                part def P211 :> P12;
+                            }
+                        }
                     }
                 }""";
 

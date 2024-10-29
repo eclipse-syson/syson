@@ -38,6 +38,7 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
       it("Then we can perform the 'New objects from text' menu entry", () => {
         explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), 'attribute myAttribute');
         cy.getByTestId('insert-textual-sysmlv2-modal').should('not.exist');
+        cy.wait(500);
         explorer.getExplorerView().contains('myAttribute');
       });
 

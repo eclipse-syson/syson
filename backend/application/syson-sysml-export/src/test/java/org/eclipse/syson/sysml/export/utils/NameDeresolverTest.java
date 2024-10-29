@@ -570,7 +570,7 @@ public class NameDeresolverTest {
 
     @DisplayName("Check the deresolved names with a NamespaceImport in intermediate level with recursive import")
     @Test
-    public void omportInterRecursiveNamespaceImpot() {
+    public void importInterRecursiveNamespaceImpot() {
 
         var model = new TestModel();
 
@@ -604,6 +604,22 @@ public class NameDeresolverTest {
         assertEquals("def2x1", this.getDeresolvedName(model.def2x1, model.def1x1x1));
         assertEquals(P2_DEF2, this.getDeresolvedName(model.def2, model.def1x1x1));
 
+    }
+
+    @DisplayName("Check the deresolved names with a private NamespaceImport in parent")
+    @Test
+    public void importAncestorVisibility() {
+
+        var model = new TestModel();
+
+        // import P1 in P2
+        NamespaceImport namespaceImport = this.builder.createIn(NamespaceImport.class, model.p2);
+        namespaceImport.setImportedNamespace(model.p1);
+        namespaceImport.setIsRecursive(false);
+        namespaceImport.setVisibility(VisibilityKind.PRIVATE);
+
+        // create part in P2
+        assertEquals(DEF1, this.getDeresolvedName(model.def1, model.def2x1));
     }
 
     private String getDeresolvedName(Element toDeresolve, Element context) {
