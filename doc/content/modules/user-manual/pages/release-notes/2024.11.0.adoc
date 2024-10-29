@@ -87,6 +87,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - All standard libraries have been updated to comply with the SysML Beta 2.2 specification.
 - Improve import feature non regression tests.
 Added source sysml file and unaltered ast.json result.
+- Fix visibility issue when resolving name of privately imported element during export.
 
 == New features
 
