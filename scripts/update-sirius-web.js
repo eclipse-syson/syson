@@ -35,6 +35,7 @@ projects.set("syson-sysml-metamodel-edit", "metamodel");
 projects.set("syson-siriusweb-customnodes-metamodel", "metamodel");
 projects.set("syson-siriusweb-customnodes-metamodel-edit", "metamodel");
 projects.set("syson-services", "services");
+projects.set("syson-direct-edit-grammar", "services");
 projects.set("syson-diagram-actionflow-view", "views");
 projects.set("syson-diagram-common-view", "views");
 projects.set("syson-diagram-general-view", "views");
