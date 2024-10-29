@@ -88,6 +88,20 @@ jobs:
           PASSWORD: ${{secrets.GITHUB_TOKEN}}
         run: mvn -U -B -e clean verify --settings settings.xml
 
+      - name: Archive the code coverage results
+        run: tar -cf coverage.tar backend/releng/syson-test-coverage/target/site/jacoco-aggregate
+
+      - name: Store code coverage results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jacoco
+          path: coverage.tar
+          retention-days: 5
+
+      - name: Check the global code coverage
+        run: jshell scripts/check-coverage.jsh
+
       - name: Publish the backend
         if: startsWith(github.ref, 'refs/tags/v')
         env:
