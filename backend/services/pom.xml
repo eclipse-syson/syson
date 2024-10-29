@@ -33,5 +33,6 @@
 
 	<modules>
 		<module>syson-services</module>
+		<module>syson-direct-edit-grammar</module>
 	</modules>
 </project>

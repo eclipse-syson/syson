@@ -52,13 +52,13 @@ The changes are:
 - [releng] Switch to Sirius Web 2024.9.8
 - [releng] Switch to `commons-io 2.17` 
 - [releng] Switch to `java-uuid-generator 5.1.0`
+- https://github.com/eclipse-syson/syson/issues/807[#807] [releng] Extract direct edit grammar from services module into separate module (new `syson-direct-edit-grammar` module).
 
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/744[#744] [import] Fix containment of imported Allocation and AllocationDefinition.
 - https://github.com/eclipse-syson/syson/issues/777[#777] [import] Fix import of some boolean attributes (`Type#isAbstract`, `Feature#isDerived`, `Feature#isEnd`, `Feature#isReadOnly`).
 - https://github.com/eclipse-syson/syson/issues/795[#795] [import] Fix an issue where the import failed to resolve `redefinedFeature` references when the `Redefinition` had no name.
-
 
 === Improvements
 

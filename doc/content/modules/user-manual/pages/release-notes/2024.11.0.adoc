@@ -54,6 +54,7 @@ The changes are:
 - Switch to Sirius Web 2024.9.8
 - Switch to `commons-io 2.17`
 - Switch to `java-uuid-generator 5.1.0`
+- Extract direct edit grammar from services module into separate module (new `syson-direct-edit-grammar` module).
 
 == Bug fixes
 
