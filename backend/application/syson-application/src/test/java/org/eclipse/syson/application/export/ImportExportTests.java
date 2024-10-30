@@ -64,7 +64,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
          * The file has been modified because a problem has been detected during the export phase.
          * Those problem force us to use some full-length qualified name. This should be investigated.
          *
-         * for exemple:
+         * for example:
                 include UseCaseTest::uc2;
          * instead of
                 include uc2;
@@ -151,7 +151,7 @@ public class ImportExportTests extends AbstractIntegrationTests {
          * The file has been modified because a problem has been detected during the export phase.
          * Those problem force us to use some full-length qualified name. This should be investigated.
          *
-         * for exemple:
+         * for example:
                 private import Pkg2::Pkg21::Pkg211::*::**;
          * instead of
                 private import Pkg211::*::**;
