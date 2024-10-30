@@ -28,6 +28,8 @@ import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.OccurrenceDefinition;
+import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
@@ -60,6 +62,8 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     private static final String INTERFACE_KEYWORD = "interface";
 
     private static final String ITEM_KEYWORD = "item";
+
+    private static final String OCCURRENCE_KEYWORD = "occurrence";
 
     private static final String ENUM_KEYWORD = "enum";
 
@@ -133,6 +137,16 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     @Override
     public String caseItemUsage(ItemUsage object) {
         return ITEM_KEYWORD;
+    }
+
+    @Override
+    public String caseOccurrenceDefinition(OccurrenceDefinition object) {
+        return OCCURRENCE_KEYWORD;
+    }
+
+    @Override
+    public String caseOccurrenceUsage(OccurrenceUsage object) {
+        return OCCURRENCE_KEYWORD;
     }
 
     @Override

@@ -98,6 +98,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -238,6 +239,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseOccurrenceDefinition(OccurrenceDefinition occDef) {
+        return this.appendDefaultDefinition(this.newAppender(), occDef).toString();
+    }
+
+    @Override
     public String casePortDefinition(PortDefinition portDef) {
         return this.appendDefaultDefinition(this.newAppender(), portDef).toString();
     }
@@ -250,6 +256,28 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String casePartUsage(PartUsage partUsage) {
         return this.appendDefaultUsage(this.newAppender(), partUsage).toString();
+    }
+
+    @Override
+    public String caseOccurrenceUsage(OccurrenceUsage occurrenceUsage) {
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+        this.appendUsagePrefix(builder, occurrenceUsage);
+        this.appendOccurrenceUsagePrefix(builder, occurrenceUsage);
+        if (PortionKind.SNAPSHOT.equals(occurrenceUsage.getPortionKind())) {
+            builder.appendWithSpaceIfNeeded("snapshot");
+        } else if (PortionKind.TIMESLICE.equals(occurrenceUsage.getPortionKind())) {
+            builder.appendWithSpaceIfNeeded("timeslice");
+        } else {
+            builder.appendWithSpaceIfNeeded("occurrence");
+        }
+        this.appendOccurrenceUsageDeclaration(builder, occurrenceUsage);
+        this.appendChildrenContent(builder, occurrenceUsage, occurrenceUsage.getOwnedMembership());
+        return builder.toString();
+    }
+
+    private void appendOccurrenceUsageDeclaration(Appender builder, OccurrenceUsage occurrenceUsage) {
+        this.appendUsageDeclaration(builder, occurrenceUsage);
+        this.appendValuePart(builder, occurrenceUsage);
     }
 
     @Override
@@ -473,10 +501,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private String appendDefaultUsage(Appender builder, Usage usage) {
+        return this.serializeDeclarationWithModifiers(builder, usage, this.getUsageKeyword(usage));
+    }
+
+    private String serializeDeclarationWithModifiers(Appender builder, Usage usage, String keyword) {
 
         this.appendUsagePrefix(builder, usage);
 
-        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
+        builder.appendSpaceIfNeeded().append(keyword);
 
         this.appendUsageDeclaration(builder, usage);
 
@@ -1508,7 +1540,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendBasicUsagePrefix(builder, usage);
 
         final String isRef;
-        if (usage.isIsReference() && !this.isImplicitlyReferencial(usage)) {
+        if (usage.isIsReference() && !this.isImplicitlyReferential(usage)) {
             isRef = "ref";
         } else {
             isRef = "";
@@ -1533,8 +1565,10 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendExtensionKeyword(builder, occUsage);
     }
 
-    private boolean isImplicitlyReferencial(Usage usage) {
-        return usage instanceof AttributeUsage || usage instanceof ReferenceUsage || usage.getOwningMembership() instanceof ActorMembership;
+    private boolean isImplicitlyReferential(Usage usage) {
+        return usage.getOwningMembership() instanceof ActorMembership
+                || usage instanceof AttributeUsage
+                || usage instanceof ReferenceUsage;
     }
 
     private void appendExtensionKeyword(Appender builder, Type type) {
