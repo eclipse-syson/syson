@@ -51,10 +51,12 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     /**
-     * Test import/export on test file UseCaseTest.sysml.
-     * The content of UseCaseTest.sysml that have been copied below is under LGPL-3.0-only license.
-     * The LGPL-3.0-only license is accessible at the root of this repository, in the `LICENSE-LGPL` file.
-     * @see <a href="https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/UseCaseTest.sysml">UseCaseTest</a>
+     * Test import/export on test file UseCaseTest.sysml. The content of UseCaseTest.sysml that have been copied below
+     * is under LGPL-3.0-only license. The LGPL-3.0-only license is accessible at the root of this repository, in the
+     * LICENSE-LGPL file.
+     *
+     * @see <a href=
+     *      "https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/UseCaseTest.sysml">UseCaseTest</a>
      */
     @Test
     public void checkUseCaseTest() throws IOException {

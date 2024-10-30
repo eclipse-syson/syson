@@ -60,6 +60,7 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/744[#744] [import] Fix containment of imported Allocation and AllocationDefinition.
 - https://github.com/eclipse-syson/syson/issues/777[#777] [import] Fix import of some boolean attributes (`Type#isAbstract`, `Feature#isDerived`, `Feature#isEnd`, `Feature#isReadOnly`).
 - https://github.com/eclipse-syson/syson/issues/795[#795] [import] Fix an issue where the import failed to resolve `redefinedFeature` references when the `Redefinition` had no name.
+- https://github.com/eclipse-syson/syson/issues/817[#817] [interconnection-view] Fix an issue where `InterfaceUsage` and `FlowConnectionUsage` elements might be created inside the wrong membership.
 
 === Improvements
 

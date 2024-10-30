@@ -41,16 +41,18 @@ import org.eclipse.syson.sysml.util.ModelBuilder;
 
     }
  * </pre>
- * The content of UseCaseTest.sysml that have been copied below is under LGPL-3.0-only license.
- * The LGPL-3.0-only license is accessible at the root of this repository, in the `LICENSE-LGPL` file.
+ *
+ * The content of UseCaseTest.sysml that have been copied below is under LGPL-3.0-only license. The LGPL-3.0-only
+ * license is accessible at the root of this repository, in the LICENSE-LGPL file.
+ *
  * @see https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Camera%20Example/PictureTaking.sysml
  * @author Arthur Daussy
  */
 public class CameraModel {
 
-    private ModelBuilder builder;
+    private final ModelBuilder builder;
 
-    private PictureTakingModel pictureTakingModel;
+    private final PictureTakingModel pictureTakingModel;
 
     private PartDefinition camera;
 
