@@ -238,6 +238,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseOccurrenceDefinition(OccurrenceDefinition occDef) {
+        return this.appendDefaultDefinition(this.newAppender(), occDef).toString();
+    }
+
+    @Override
     public String casePortDefinition(PortDefinition portDef) {
         return this.appendDefaultDefinition(this.newAppender(), portDef).toString();
     }

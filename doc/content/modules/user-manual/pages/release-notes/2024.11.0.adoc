@@ -94,6 +94,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - Improve import feature non regression tests.
 Added source sysml file and unaltered ast.json result.
 - Changed cardinality of PortionKind on OccurrenceUsage to [0..1], now unsettable. Now default to null.
+- Fix visibility issue when resolving name of privately imported element during export.
 
 == New features
 

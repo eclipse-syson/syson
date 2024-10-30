@@ -55,6 +55,7 @@ import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.NamespaceImport;
 import org.eclipse.syson.sysml.ObjectiveMembership;
+import org.eclipse.syson.sysml.OccurrenceDefinition;
 import org.eclipse.syson.sysml.OccurrenceUsage;
 import org.eclipse.syson.sysml.OperatorExpression;
 import org.eclipse.syson.sysml.OwningMembership;
@@ -358,6 +359,11 @@ public class SysMLElementSerializerTest {
     @Test
     public void interfaceDefinition() {
         this.checkBasicDefinitionDeclaration(InterfaceDefinition.class, "interface def");
+    }
+
+    @Test
+    public void occurrenceDefinition() {
+        this.checkBasicDefinitionDeclaration(OccurrenceDefinition.class, "occurrence def");
     }
 
     private <T extends Definition> void checkBasicDefinitionDeclaration(Class<T> type, String keyword) {
