@@ -2,7 +2,7 @@
 
 This content is produced and maintained by the Eclipse SysON project.
 
-* Project home: https://projects.eclipse.org/projects/modeling.syson
+- Project home: https://projects.eclipse.org/projects/modeling.syson
 
 ## Trademarks
 
@@ -17,18 +17,23 @@ source code repository logs.
 ## Declared Project Licenses
 
 This program and the accompanying materials are made available under the terms
-of the Eclipse Public License v. 2.0 which is available at
-https://www.eclipse.org/legal/epl-2.0.
+of the Eclipse Public License v. 2.0 which is available at https://www.eclipse.org/legal/epl-2.0.
 
 SPDX-License-Identifier: EPL-2.0
+
+The SysMLv2 standard libraries stored in `backend/application/syson-application-configuration/src/main/resources/kerml.libraries` and `backend/application/syson-application-configuration/src/main/resources/sysml.libraries` are under GNU Lesser General Public License v. 3.0.
+You can find this license at the root of this repository, in the `LICENSE-LGPL` file.
+More details are also available at https://www.gnu.org/licenses/lgpl-3.0.
+
+SPDX-License-Identifier: LGPL-3.0-only
 
 ## Source Code
 
 The project maintains the following source code repositories:
 
-* https://github.com/eclipse-syson/eclipse-syson.github.io
-* https://github.com/eclipse-syson/syson
-* https://github.com/eclipse-syson/syson-website
+- https://github.com/eclipse-syson/eclipse-syson.github.io
+- https://github.com/eclipse-syson/syson
+- https://github.com/eclipse-syson/syson-website
 
 ## Cryptography
 
