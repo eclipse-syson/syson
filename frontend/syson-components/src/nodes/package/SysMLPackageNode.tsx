@@ -28,10 +28,10 @@ import {
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@mui/material/styles';
+import { Node, NodeProps, NodeResizer } from '@xyflow/react';
 import React, { memo, useContext } from 'react';
-import { NodeProps, NodeResizer } from 'reactflow';
 
-import { SysMLPackageNodeData } from './SysMLPackageNode.types';
+import { NodeComponentsMap, SysMLPackageNodeData } from './SysMLPackageNode.types';
 
 const sysMLPackageNodeStyle = (
   theme: Theme,
@@ -126,76 +126,78 @@ const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
   };
 };
 
-export const SysMLPackageNode = memo(({ data, id, selected, dragging }: NodeProps<SysMLPackageNodeData>) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const theme: Theme = useTheme();
-  const { onDrop, onDragOver } = useDrop();
-  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+export const SysMLPackageNode: NodeComponentsMap['sysMLPackageNode'] = memo(
+  ({ data, id, selected, dragging }: NodeProps<Node<SysMLPackageNodeData>>) => {
+    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+    const theme: Theme = useTheme();
+    const { onDrop, onDragOver } = useDrop();
+    const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
+    const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
 
-  const handleOnDrop = (event: React.DragEvent) => {
-    onDrop(event, id);
-  };
+    const handleOnDrop = (event: React.DragEvent) => {
+      onDrop(event, id);
+    };
 
-  const label: any = {
-    ...data.insideLabel,
-    style: {
-      ...data?.insideLabel?.style,
-      whiteSpace: 'pre',
-      overflow: 'hidden',
-      paddingRight: '0',
-      justifyContent: 'flex-start',
-      textAlign: 'left',
-    },
-  };
+    const label: any = {
+      ...data.insideLabel,
+      style: {
+        ...data?.insideLabel?.style,
+        whiteSpace: 'pre',
+        overflow: 'hidden',
+        paddingRight: '0',
+        justifyContent: 'flex-start',
+        textAlign: 'left',
+      },
+    };
 
-  useRefreshConnectionHandles(id, data.connectionHandles);
+    useRefreshConnectionHandles(id, data.connectionHandles);
 
-  return (
-    <>
-      {data.nodeDescription?.userResizable && !readOnly ? (
-        <NodeResizer
-          handleStyle={{ ...resizeHandleStyle(theme) }}
-          lineStyle={{ ...resizeLineStyle(theme) }}
-          color={theme.palette.selected}
-          isVisible={selected}
-          shouldResize={() => !data.isBorderNode}
-          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-        />
-      ) : null}
-      <div
-        style={{
-          ...sysMLPackageNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
-        }}
-        onDragOver={onDragOver}
-        onDrop={handleOnDrop}
-        data-testid={`SysMLPackage - ${data?.insideLabel?.text}`}>
-        {selected ? (
-          <DiagramElementPalette
-            diagramElementId={id}
-            targetObjectId={data.targetObjectId}
-            labelId={data.insideLabel ? data.insideLabel.id : null}
+    return (
+      <>
+        {data.nodeDescription?.userResizable && !readOnly ? (
+          <NodeResizer
+            handleStyle={{ ...resizeHandleStyle(theme) }}
+            lineStyle={{ ...resizeLineStyle(theme) }}
+            color={theme.palette.selected}
+            isVisible={selected}
+            shouldResize={() => !data.isBorderNode}
+            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
           />
         ) : null}
-        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
-        <ConnectionHandles connectionHandles={data.connectionHandles} />
         <div
           style={{
-            ...packageHeaderStyle(theme, data.style, selected, data.isHovered, data.faded),
-            ...connectionFeedbackStyle,
-            ...dropFeedbackStyle,
-          }}>
-          {data.insideLabel ? <Label diagramElementId={id} label={label} faded={data.faded} /> : null}
-        </div>
-        <div
-          style={{
-            ...packageContainerStyle(theme, data.style, selected, data.isHovered, data.faded),
-            ...connectionFeedbackStyle,
-            ...dropFeedbackStyle,
+            ...sysMLPackageNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
           }}
-        />
-      </div>
-    </>
-  );
-});
+          onDragOver={onDragOver}
+          onDrop={handleOnDrop}
+          data-testid={`SysMLPackage - ${data?.insideLabel?.text}`}>
+          {selected ? (
+            <DiagramElementPalette
+              diagramElementId={id}
+              targetObjectId={data.targetObjectId}
+              labelId={data.insideLabel ? data.insideLabel.id : null}
+            />
+          ) : null}
+          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
+          <ConnectionHandles connectionHandles={data.connectionHandles} />
+          <div
+            style={{
+              ...packageHeaderStyle(theme, data.style, !!selected, data.isHovered, data.faded),
+              ...connectionFeedbackStyle,
+              ...dropFeedbackStyle,
+            }}>
+            {data.insideLabel ? <Label diagramElementId={id} label={label} faded={data.faded} /> : null}
+          </div>
+          <div
+            style={{
+              ...packageContainerStyle(theme, data.style, !!selected, data.isHovered, data.faded),
+              ...connectionFeedbackStyle,
+              ...dropFeedbackStyle,
+            }}
+          />
+        </div>
+      </>
+    );
+  }
+);

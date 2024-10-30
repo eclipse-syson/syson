@@ -16,6 +16,7 @@ package org.eclipse.syson.diagram.common.view.tools;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -52,20 +53,21 @@ public class PartUsageFeatureTypingNodeToolProvider implements INodeToolProvider
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var creationFeatureTypingServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createPartDefinitionAndFeatureTyping"))
-                .build();
-
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(this.definitionNodeDescription)
-                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext")))
+                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", IDiagramContext.DIAGRAM_CONTEXT)))
                 .semanticElementExpression(AQLConstants.AQL_SELF)
                 .variableName("newView");
 
+        var creationFeatureTypingServiceCall = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("createPartDefinitionAndFeatureTyping"))
+                .children(createView.build())
+                .build();
+
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF)
-                .children(creationFeatureTypingServiceCall, createView.build())
+                .children(creationFeatureTypingServiceCall)
                 .build();
 
         return builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFeatureTyping()))

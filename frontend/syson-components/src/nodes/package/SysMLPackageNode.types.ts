@@ -14,6 +14,8 @@
  * This code has been fully inspired from PackageNode.types.ts in https://github.com/PapyrusSirius/papyrus-web
  */
 import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import { Node, NodeProps } from '@xyflow/react';
+import { FC } from 'react';
 
 export interface SysMLPackageNodeData extends NodeData {}
 
@@ -23,3 +25,10 @@ export interface GQLSysMLPackageNodeStyle extends GQLNodeStyle {
   borderStyle: string;
   borderSize: string;
 }
+
+export interface NodeDataMap {
+  sysMLPackageNode: SysMLPackageNodeData;
+}
+export type NodeComponentsMap = {
+  [K in keyof NodeDataMap]: FC<NodeProps<Node<NodeDataMap[K], K>>>;
+};

@@ -486,15 +486,15 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         var createSection = this.toolDescriptionService.buildCreateSection(
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
                         SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null),
-                new StateTransitionCompartmentNodeToolProvider(false, false).create(null),
-                new StateTransitionCompartmentNodeToolProvider(true, false).create(null),
-                new StateTransitionCompartmentNodeToolProvider(false, true).create(null),
-                new StateTransitionCompartmentNodeToolProvider(true, true).create(null),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(null),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(null),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache),
+                new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache),
+                new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache),
+                new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache),
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(this.cache),
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(this.cache),
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(this.cache),
                 new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache),
-                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(null));
+                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache));
         return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 
@@ -503,15 +503,15 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         var createSection = this.toolDescriptionService.buildCreateSection(
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
                         SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null),
-                new StateTransitionCompartmentNodeToolProvider(false, false).create(null),
-                new StateTransitionCompartmentNodeToolProvider(true, false).create(null),
-                new StateTransitionCompartmentNodeToolProvider(false, true).create(null),
-                new StateTransitionCompartmentNodeToolProvider(true, true).create(null),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(null),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(null),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(null),
+                new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache),
+                new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache),
+                new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache),
+                new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache),
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(this.cache),
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(this.cache),
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(this.cache),
                 new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache),
-                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(null));
+                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache));
         var editSection = this.toolDescriptionService.buildEditSection(
                 new SetAsCompositeToolProvider().create(this.cache),
                 new SetAsRefToolProvider().create(this.cache));

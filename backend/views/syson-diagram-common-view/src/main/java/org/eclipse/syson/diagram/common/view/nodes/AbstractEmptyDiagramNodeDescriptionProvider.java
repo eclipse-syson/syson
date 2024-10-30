@@ -142,12 +142,6 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance.elementInitializer()");
 
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
-
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(nodeDescription)
@@ -155,9 +149,15 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 
+        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
+                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
+                .variableName("newInstance")
+                .children(createView.build(), changeContextNewInstance.build());
+
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newOwningMembership")
-                .children(createEClassInstance.build(), createView.build());
+                .children(createEClassInstance.build());
 
         var createMembership = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getOwningMembership()))

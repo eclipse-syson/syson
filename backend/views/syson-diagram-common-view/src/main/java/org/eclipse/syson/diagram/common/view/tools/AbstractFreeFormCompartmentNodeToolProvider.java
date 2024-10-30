@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -109,8 +111,8 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
         var params = List.of(
                 AQLUtils.aqlString(this.compartmentName),
                 "selectedNode",
-                "editingContext",
-                "diagramContext",
+                IEditingContext.EDITING_CONTEXT,
+                IDiagramContext.DIAGRAM_CONTEXT,
                 "convertedNodes");
         var creationServiceCall = this.viewBuilderHelper.newChangeContext()
                 .expression(this.getCreationServiceCallExpression());
@@ -120,7 +122,7 @@ public abstract class AbstractFreeFormCompartmentNodeToolProvider implements INo
                 .build();
 
         var revealOperation = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("selectedNode", "revealCompartment", List.of("self", "diagramContext", "editingContext", "convertedNodes")))
+                .expression(AQLUtils.getServiceCallExpression("selectedNode", "revealCompartment", List.of("self", IDiagramContext.DIAGRAM_CONTEXT, IEditingContext.EDITING_CONTEXT, "convertedNodes")))
                 .build();
 
         creationServiceCall.children(createViewOperation, revealOperation);

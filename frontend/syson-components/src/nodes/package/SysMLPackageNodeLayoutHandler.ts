@@ -34,7 +34,7 @@ import {
   getWestBorderNodeFootprintHeight,
   setBorderNodesPosition,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Dimensions, Node, Rect } from 'reactflow';
+import { Dimensions, Node, Rect } from '@xyflow/react';
 import { SysMLPackageNodeData } from './SysMLPackageNode.types';
 
 const rectangularNodePadding: number = 8;

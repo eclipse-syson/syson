@@ -20,6 +20,8 @@ import java.util.Map;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
@@ -633,7 +635,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
-                        List.of("droppedNode", "targetElement", "targetNode", "editingContext", "diagramContext", "convertedNodes")));
+                        List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "convertedNodes")));
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")

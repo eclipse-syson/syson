@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.eclipse.acceleo.query.runtime.impl.NullValue;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -164,13 +165,13 @@ public class ViewNodeService {
      *            The content to assemble
      * @return
      */
-    public List<Element> getAllContentsByReferences(Element self, List<Element> contents) {
+    public List<Element> getAllContentsByReferences(Element self, List<Object> contents) {
         List<Element> result = new ArrayList<>();
-        contents.stream().filter(Objects::nonNull).forEach(object -> {
+        contents.stream().filter(Objects::nonNull).filter(elt -> !(elt instanceof NullValue)).forEach(object -> {
             if (object instanceof List<?> l) {
                 l.stream().filter(Element.class::isInstance).map(Element.class::cast).map(result::add);
-            } else {
-                result.add(object);
+            } else if (object instanceof Element elt) {
+                result.add(elt);
             }
         });
         return result;

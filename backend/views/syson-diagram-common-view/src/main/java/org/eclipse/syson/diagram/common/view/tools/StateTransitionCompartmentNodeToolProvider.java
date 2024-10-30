@@ -14,6 +14,8 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.syson.util.AQLUtils;
 
 /**
@@ -36,7 +38,7 @@ public class StateTransitionCompartmentNodeToolProvider extends AbstractCompartm
     @Override
     protected String getServiceCallExpression() {
         return AQLUtils.getSelfServiceCallExpression("createChildState",
-                List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", String.valueOf(this.isParallel), String.valueOf(this.isExhibit)));
+                List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes", String.valueOf(this.isParallel), String.valueOf(this.isExhibit)));
     }
 
     @Override

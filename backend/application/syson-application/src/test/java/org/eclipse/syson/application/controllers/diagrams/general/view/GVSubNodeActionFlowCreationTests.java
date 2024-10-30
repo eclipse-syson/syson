@@ -52,7 +52,6 @@ import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescription
 import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
-import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.services.SemanticRunnableFactory;
 import org.eclipse.syson.services.diagrams.DiagramComparator;
@@ -413,7 +412,7 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName, variables);
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
-            int createdNodesExpectedCount = 2;
+            int createdNodesExpectedCount = 6;
             new CheckDiagramElementCount(this.diagramComparator)
                     .hasNewNodeCount(createdNodesExpectedCount)
                     .check(initialDiagram, newDiagram);
@@ -424,12 +423,12 @@ public class GVSubNodeActionFlowCreationTests extends AbstractIntegrationTests {
                     .hasNodeDescriptionName(listNodeDescription)
                     .hasCompartmentCount(0)
                     .check(initialDiagram, newDiagram);
-            String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(ReferencingPerformActionUsageNodeDescriptionService.REFERENCING_PERFORM_ACTION_NAME);
+            String freeFormNodeDescription = this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPerformActionUsage());
             new CheckNodeInCompartment(this.diagramDescriptionIdProvider, this.diagramComparator)
                     .withParentLabel(parentLabel)
                     .withCompartmentName("action flow")
                     .hasNodeDescriptionName(freeFormNodeDescription)
-                    .hasCompartmentCount(0)
+                    .hasCompartmentCount(4)
                     .check(initialDiagram, newDiagram);
         };
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);

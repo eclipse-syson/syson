@@ -64,13 +64,8 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
                 .children(initializeReferenceSubsetting.build(), changeContextReferenceSubsetting.build());
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"));
-
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getExhibitStateUsage()))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
+                .expression(AQLUtils.getServiceCallExpression("newInstance", "elementInitializer"))
+                .children(createReferenceSubsettingInstance.build());
 
         var nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getExhibitStateUsage())).orElse(null);
 
@@ -80,6 +75,12 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
                 .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentViewExpression", "selectedNode"))
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
+
+        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getExhibitStateUsage()))
+                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
+                .variableName("newInstance")
+                .children(createView.build(), changeContextNewInstance.build());
 
         var domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getStateUsage());
 
@@ -93,7 +94,7 @@ public class ExhibitStateWithReferenceNodeToolProvider implements INodeToolProvi
 
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
-                .children(createEClassInstance.build(), createView.build(), createReferenceSubsettingInstance.build());
+                .children(createEClassInstance.build());
 
         var toolLabel = this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getExhibitStateUsage()) + " with referenced State";
 

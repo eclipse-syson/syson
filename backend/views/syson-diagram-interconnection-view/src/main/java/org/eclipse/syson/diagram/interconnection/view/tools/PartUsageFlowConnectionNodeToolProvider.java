@@ -16,6 +16,7 @@ package org.eclipse.syson.diagram.interconnection.view.tools;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -52,22 +53,23 @@ public class PartUsageFlowConnectionNodeToolProvider implements INodeToolProvide
     public NodeTool create(IViewDiagramElementFinder cache) {
         var builder = this.diagramBuilderHelper.newNodeTool();
 
-        var creationBindingConnectorAsUsageServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createPartUsageAndFlowConnection"))
-                .build();
-
         NodeDescription nodeDescription = cache.getNodeDescription(this.partUsageNodeDescriptionName).get();
 
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(nodeDescription)
-                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext")))
+                .parentViewExpression(AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", IDiagramContext.DIAGRAM_CONTEXT)))
                 .semanticElementExpression(AQLConstants.AQL_SELF)
                 .variableName("newView");
 
+        var creationBindingConnectorAsUsageServiceCall = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("createPartUsageAndFlowConnection"))
+                .children(createView.build())
+                .build();
+
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF)
-                .children(creationBindingConnectorAsUsageServiceCall, createView.build())
+                .children(creationBindingConnectorAsUsageServiceCall)
                 .build();
 
         return builder.name(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getFlowConnectionUsage()))
