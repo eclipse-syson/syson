@@ -62,6 +62,7 @@ The changes are:
 - Fix an issue that prevented the import of `Allocation` and `AllocationDefinition`.
 - Fix import of some boolean attributes (`Type#isAbstract`, `Feature#isDerived`, `Feature#isEnd`, `Feature#isReadOnly`).
 - Fix an issue where the import failed to resolve `redefinedFeature` references when the `Redefinition` had no name.
+- Fix an issue where `InterfaceUsage` and `FlowConnectionUsage` elements might be created inside the wrong membership in the Interconnection View diagram.
 
 == Improvements
 

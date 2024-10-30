@@ -26,41 +26,43 @@ import org.eclipse.syson.sysml.util.ModelBuilder;
 /**
  * Implementation with our meta model of the ItemTest from the examples provided by the OMG (examples/Simple
  * Tests/ItemTest.sysml).
- * 
+ *
  * <pre>
  * package ItemTest {
-    
+
     item f: A;
 
     public item def A {
         item b: B;
         protected ref part c: C;
     }
-    
+
     abstract item def B {
         public abstract part a: A;
     }
-    
+
     private part def C {
         private in ref y: A, B;
     }
-    
+
     port def P {
         in item a1: A;
         out item a2: A;
     }
-    
+
 }
  * </pre>
- * The content of UseCaseTest.sysml that have been copied below is under LGPL-3.0-only license.
- * The LGPL-3.0-only license is accessible at the root of this repository, in the `LICENSE-LGPL` file.
+ *
+ * The content of UseCaseTest.sysml that have been copied below is under LGPL-3.0-only license. The LGPL-3.0-only
+ * license is accessible at the root of this repository, in the LICENSE-LGPL file.
+ *
  * @see https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/ItemTest.sysml
  *
  * @author Arthur Daussy
  */
 public class ItemTest {
 
-    private ModelBuilder builder;
+    private final ModelBuilder builder;
 
     private Package itemTest;
 
@@ -87,82 +89,82 @@ public class ItemTest {
     public ItemTest(ModelBuilder builder) {
         super();
         this.builder = builder;
-        build();
+        this.build();
     }
 
     private void build() {
-        itemTest = builder.createWithName(Package.class, "ItemTest");
+        this.itemTest = this.builder.createWithName(Package.class, "ItemTest");
 
-        f = builder.createInWithName(ItemUsage.class, itemTest, "f");
+        this.f = this.builder.createInWithName(ItemUsage.class, this.itemTest, "f");
 
-        aDef = builder.createInWithName(ItemDefinition.class, itemTest, "A");
-        builder.setType(f, aDef);
+        this.aDef = this.builder.createInWithName(ItemDefinition.class, this.itemTest, "A");
+        this.builder.setType(this.f, this.aDef);
 
-        b = builder.createInWithName(ItemUsage.class, aDef, "b");
+        this.b = this.builder.createInWithName(ItemUsage.class, this.aDef, "b");
 
-        c = builder.createInWithName(PartUsage.class, aDef, "c");
-        c.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
+        this.c = this.builder.createInWithName(PartUsage.class, this.aDef, "c");
+        this.c.getOwningMembership().setVisibility(VisibilityKind.PROTECTED);
 
-        bDef = builder.createInWithName(ItemDefinition.class, itemTest, "B");
-        bDef.setIsAbstract(true);
-        builder.setType(b, bDef);
+        this.bDef = this.builder.createInWithName(ItemDefinition.class, this.itemTest, "B");
+        this.bDef.setIsAbstract(true);
+        this.builder.setType(this.b, this.bDef);
 
-        PartUsage a = builder.createInWithName(PartUsage.class, bDef, "a");
+        PartUsage a = this.builder.createInWithName(PartUsage.class, this.bDef, "a");
         a.setIsAbstract(true);
-        builder.setType(a, aDef);
+        this.builder.setType(a, this.aDef);
 
-        cDef = builder.createInWithName(PartDefinition.class, itemTest, "C");
-        cDef.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
-        builder.setType(c, cDef);
+        this.cDef = this.builder.createInWithName(PartDefinition.class, this.itemTest, "C");
+        this.cDef.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+        this.builder.setType(this.c, this.cDef);
 
-        pDef = builder.createInWithName(PortDefinition.class, itemTest, "P");
+        this.pDef = this.builder.createInWithName(PortDefinition.class, this.itemTest, "P");
 
-        y = builder.createInWithName(ReferenceUsage.class, cDef, "y");
-        y.setDirection(FeatureDirectionKind.IN);
-        y.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
+        this.y = this.builder.createInWithName(ReferenceUsage.class, this.cDef, "y");
+        this.y.setDirection(FeatureDirectionKind.IN);
+        this.y.getOwningMembership().setVisibility(VisibilityKind.PRIVATE);
 
-        a1 = builder.createInWithName(ItemUsage.class, pDef, "a1");
-        a1.setDirection(FeatureDirectionKind.IN);
-        builder.setType(a1, aDef);
-        a2 = builder.createInWithName(ItemUsage.class, pDef, "a2");
-        a2.setDirection(FeatureDirectionKind.OUT);
-        builder.setType(a2, aDef);
+        this.a1 = this.builder.createInWithName(ItemUsage.class, this.pDef, "a1");
+        this.a1.setDirection(FeatureDirectionKind.IN);
+        this.builder.setType(this.a1, this.aDef);
+        this.a2 = this.builder.createInWithName(ItemUsage.class, this.pDef, "a2");
+        this.a2.setDirection(FeatureDirectionKind.OUT);
+        this.builder.setType(this.a2, this.aDef);
 
-        builder.setType(y, aDef);
-        builder.setType(y, bDef);
+        this.builder.setType(this.y, this.aDef);
+        this.builder.setType(this.y, this.bDef);
 
     }
 
     public ModelBuilder getBuilder() {
-        return builder;
+        return this.builder;
     }
 
     public Package getItemTest() {
-        return itemTest;
+        return this.itemTest;
     }
 
     public ItemDefinition getaDef() {
-        return aDef;
+        return this.aDef;
     }
 
     public ItemUsage getB() {
-        return b;
+        return this.b;
     }
 
     public PartUsage getC() {
-        return c;
+        return this.c;
     }
 
     public ItemDefinition getbDef() {
-        return bDef;
+        return this.bDef;
     }
 
     public PartDefinition getcDef() {
-        return cDef;
+        return this.cDef;
     }
 
     public PortDefinition getpDef() {
-        return pDef;
+        return this.pDef;
     }
 
 }

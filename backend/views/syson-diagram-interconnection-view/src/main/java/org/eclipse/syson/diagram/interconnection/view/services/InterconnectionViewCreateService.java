@@ -49,6 +49,14 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         super(viewDiagramDescriptionSearchService, objectService, showDiagramsInheritedMembersService);
     }
 
+    @Override
+    public boolean canCreateDiagram(Element element) {
+        List<EClass> acceptedRootTypes = List.of(
+                SysmlPackage.eINSTANCE.getUsage(),
+                SysmlPackage.eINSTANCE.getDefinition());
+        return super.canCreateDiagram(element) && acceptedRootTypes.stream().anyMatch(rootType -> rootType.isSuperTypeOf(element.eClass()));
+    }
+
     public BindingConnectorAsUsage createBindingConnectorAsUsage(Feature source, Feature target) {
         Namespace bindingContainer = this.getClosestContainingDefinitionOrPackageFrom(source);
         if (bindingContainer == null) {
@@ -89,15 +97,13 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         if (interfaceContainer == null) {
             return null;
         }
-        FeatureMembership featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        interfaceContainer.getOwnedRelationship().add(featureMembership);
 
         InterfaceUsage interfaceUsage = SysmlFactory.eINSTANCE.createInterfaceUsage();
         this.elementInitializer(interfaceUsage);
         // Edges should have an empty default name. This is not the case when using the initializer, because
         // InterfaceUsage can be a node, which requires a default name.
         interfaceUsage.setDeclaredName("");
-        featureMembership.getOwnedRelatedElement().add(interfaceUsage);
+        this.addChildInParent(interfaceContainer, interfaceUsage);
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         interfaceUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
@@ -134,7 +140,7 @@ public class InterconnectionViewCreateService extends ViewCreateService {
 
         FlowConnectionUsage flowConnectionUsage = SysmlFactory.eINSTANCE.createFlowConnectionUsage();
         this.elementInitializer(flowConnectionUsage);
-        featureMembership.getOwnedRelatedElement().add(flowConnectionUsage);
+        this.addChildInParent(flowContainer, flowConnectionUsage);
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         flowConnectionUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
@@ -159,22 +165,6 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         targetReferenceSubsetting.setReferencedFeature(target);
 
         return flowConnectionUsage;
-    }
-
-    private Namespace getClosestContainingDefinitionOrPackageFrom(Element element) {
-        var owner = element.eContainer();
-        while (!(owner instanceof Package || owner instanceof Definition) && owner != null) {
-            owner = owner.eContainer();
-        }
-        return (Namespace) owner;
-    }
-
-    @Override
-    public boolean canCreateDiagram(Element element) {
-        List<EClass> acceptedRootTypes = List.of(
-                SysmlPackage.eINSTANCE.getUsage(),
-                SysmlPackage.eINSTANCE.getDefinition());
-        return super.canCreateDiagram(element) && acceptedRootTypes.stream().anyMatch(rootType -> rootType.isSuperTypeOf(element.eClass()));
     }
 
     public Element createPartUsageAndBindingConnectorAsUsage(PartUsage self) {
@@ -241,6 +231,14 @@ public class InterconnectionViewCreateService extends ViewCreateService {
             return newPartUsage;
         }
         return self;
+    }
+
+    private Namespace getClosestContainingDefinitionOrPackageFrom(Element element) {
+        var owner = element.eContainer();
+        while (!(owner instanceof Package || owner instanceof Definition) && owner != null) {
+            owner = owner.eContainer();
+        }
+        return (Namespace) owner;
     }
 
     private void addChildInParent(Element parent, Element child) {
