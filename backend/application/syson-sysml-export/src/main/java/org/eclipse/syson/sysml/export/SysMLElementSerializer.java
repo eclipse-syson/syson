@@ -137,8 +137,6 @@ import org.eclipse.syson.sysml.util.SysmlSwitch;
  */
 public class SysMLElementSerializer extends SysmlSwitch<String> {
 
-    private static final Predicate<Object> NOT_NULL = s -> s != null;
-
     private final String lineSeparator;
 
     private final String indentation;
@@ -152,7 +150,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     /**
      * Simple constructor.
      *
-     * @param newLine
+     * @param lineSeparator
      *            the string used to separate line
      * @param indentation
      *            the string used to indent the file
@@ -680,10 +678,9 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .map(ParameterMembership.class::cast)
                 .findFirst()
                 .map(ParameterMembership::getOwnedMemberParameter)
-                .filter(NOT_NULL)
                 .map(Feature::getOwnedRelationship)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
+                .stream()
+                .flatMap(Collection::stream)
                 .filter(FeatureValue.class::isInstance)
                 .map(FeatureValue.class::cast)
                 .findFirst()
@@ -768,7 +765,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (ownedActorParameter != null) {
             VisibilityKind visibility = actor.getVisibility();
             if (visibility != VisibilityKind.PUBLIC) {
-                builder.append(this.getVisivilityIndicator(visibility));
+                builder.append(this.getVisibilityIndicator(visibility));
             }
 
             this.appendDefaultUsage(builder, ownedActorParameter);
@@ -785,7 +782,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (ownedSubjectParameter != null && !this.isImplicit(ownedSubjectParameter)) {
             VisibilityKind visibility = subject.getVisibility();
             if (visibility != VisibilityKind.PUBLIC) {
-                builder.append(this.getVisivilityIndicator(visibility));
+                builder.append(this.getVisibilityIndicator(visibility));
             }
             builder.appendWithSpaceIfNeeded("subject");
 
@@ -803,7 +800,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (ownedObjectiveRequirement != null && !this.isImplicit(ownedObjectiveRequirement)) {
             VisibilityKind visibility = objective.getVisibility();
             if (visibility != VisibilityKind.PUBLIC) {
-                builder.append(this.getVisivilityIndicator(visibility));
+                builder.append(this.getVisibilityIndicator(visibility));
             }
 
             builder.append("objective");
@@ -880,7 +877,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (ownedMemberParameter != null && !this.isImplicit(ownedMemberParameter) && ownedMemberParameter instanceof Usage usage) {
             VisibilityKind visibility = parameter.getVisibility();
             if (visibility != VisibilityKind.PUBLIC) {
-                builder.append(this.getVisivilityIndicator(visibility));
+                builder.append(this.getVisibilityIndicator(visibility));
             }
 
             builder.append("return");
@@ -990,8 +987,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .filter(this::nameNotNullAndNotBlank)
                 .toList();
         if (!subSettedDifference.isEmpty()) {
-            String subSettingPart = subSettedDifference.stream()
-                    .collect(Collectors.joining(", "));
+            String subSettingPart = String.join(", ", subSettedDifference);
             if (!subSettingPart.isBlank()) {
                 builder.appendSpaceIfNeeded().append(LabelConstants.SUBSETTING);
                 builder.appendSpaceIfNeeded().append(subSettingPart);
@@ -1007,8 +1003,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .filter(this::nameNotNullAndNotBlank)
                 .toList();
         if (!redefinedFeatures.isEmpty()) {
-            String redefinitionPart = redefinedFeatures.stream()
-                    .collect(Collectors.joining(", "));
+            String redefinitionPart = String.join(", ", redefinedFeatures);
             if (!redefinitionPart.isBlank()) {
                 builder.appendSpaceIfNeeded().append(LabelConstants.REDEFINITION);
                 builder.appendSpaceIfNeeded().append(redefinitionPart);
@@ -1056,8 +1051,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .filter(this::nameNotNullAndNotBlank)
                 .toList();
         if (!types.isEmpty()) {
-            String featureTypePart = types.stream()
-                    .collect(Collectors.joining(", "));
+            String featureTypePart = String.join(", ", types);
             if (!featureTypePart.isBlank()) {
                 builder.appendSpaceIfNeeded().append(LabelConstants.COLON);
                 builder.appendSpaceIfNeeded().append(featureTypePart);
@@ -1139,7 +1133,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         List<FeatureValue> ownedRelationship = usage.getOwnedRelationship().stream()
                 .filter(FeatureValue.class::isInstance)
                 .map(FeatureValue.class::cast)
-                .collect(Collectors.toList());
+                .toList();
 
         for (FeatureValue feature : ownedRelationship) {
             builder.appendSpaceIfNeeded();
@@ -1281,8 +1275,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .map(FeatureValue.class::cast)
                 .toList();
 
-        for (int i = 0; i < featureValueList.size(); i++) {
-            Expression expression = featureValueList.get(i).getValue();
+        for (FeatureValue featureValue : featureValueList) {
+            Expression expression = featureValue.getValue();
             this.appendSequenceExpressionList(builder, expression);
         }
     }
@@ -1341,14 +1335,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendArgumentList(Appender builder, InvocationExpression expression) {
         builder.append(LabelConstants.OPEN_PARENTHESIS);
-        Relationship relationship = expression.getOwnedRelationship().stream()
+        FeatureMembership featureMembership = expression.getOwnedRelationship().stream()
                 .filter(FeatureMembership.class::isInstance)
                 .map(FeatureMembership.class::cast)
                 .findFirst()
                 .orElse(null);
-        if (relationship instanceof ParameterMembership) {
+        if (featureMembership instanceof ParameterMembership) {
             this.appendPositionalArgumentList(builder, expression);
-        } else if (relationship instanceof FeatureMembership) {
+        } else if (featureMembership != null) {
             this.reportConsumer.accept(Status.warning("NamedArgumentList are not handled yet {0}", expression.getElementId()));
         }
         builder.append(LabelConstants.CLOSE_PARENTHESIS);
@@ -1387,7 +1381,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         expression.getOwnedRelationship().stream()
                 .filter(ParameterMembership.class::isInstance)
                 .map(ParameterMembership.class::cast)
-                .filter(param -> param.getOwnedMemberParameter() instanceof Feature)
+                .filter(param -> param.getOwnedMemberParameter() != null)
                 .findFirst()
                 .ifPresent(membership -> this.appendArgumentMember(builder, membership));
 
@@ -1448,7 +1442,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 .toList();
 
         List<Classifier> subClassificationClassifier = subClassification.stream()
-                .map(sub -> sub.getSuperclassifier())
+                .map(Subclassification::getSuperclassifier)
                 .filter(this::isNotNullAndNotAProxy)
                 .toList();
         if (!subClassificationClassifier.isEmpty()) {
@@ -1550,7 +1544,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                         .filter(MetadataUsage.class::isInstance)
                         .map(MetadataUsage.class::cast)
                         .map(MetadataUsage::getMetadataDefinition)
-                        .filter(NOT_NULL)
+                        .filter(Objects::nonNull)
                         .forEach(mDef -> this.appendPrefixMetadataMember(builder, mDef));
             }
         }
@@ -1634,7 +1628,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private String getContent(List<? extends Relationship> children, String prefix) {
-        return children.stream().map(rel -> this.doSwitch(rel)).filter(NOT_NULL).collect(joining(this.lineSeparator, prefix, ""));
+        return children.stream().map(this::doSwitch).filter(Objects::nonNull).collect(joining(this.lineSeparator, prefix, ""));
     }
 
     @Override
@@ -1644,7 +1638,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         VisibilityKind visibility = aImport.getVisibility();
         if (visibility != VisibilityKind.PUBLIC) {
-            builder.append(this.getVisivilityIndicator(visibility));
+            builder.append(this.getVisibilityIndicator(visibility));
         }
         builder.appendSpaceIfNeeded().append("import ");
 
@@ -1811,7 +1805,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         this.appendMembershipPrefix(owningMembership, builder);
 
-        String content = owningMembership.getOwnedRelatedElement().stream().map(rel -> this.doSwitch(rel)).filter(NOT_NULL).collect(joining(builder.getNewLine()));
+        String content = owningMembership.getOwnedRelatedElement().stream().map(this::doSwitch).filter(Objects::nonNull).collect(joining(builder.getNewLine()));
         builder.appendSpaceIfNeeded().append(content);
 
         return builder.toString();
@@ -1868,7 +1862,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     private void appendMembershipPrefix(Membership membership, Appender builder) {
         VisibilityKind visibility = membership.getVisibility();
         if (visibility != VisibilityKind.PUBLIC) {
-            builder.append(this.getVisivilityIndicator(visibility));
+            builder.append(this.getVisibilityIndicator(visibility));
         }
     }
 
@@ -1884,7 +1878,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         Membership importedMembership = membershipImport.getImportedMembership();
         if (importedMembership != null) {
-            String qnName = Stream.concat(Stream.ofNullable(importedMembership.getMemberElement()), importedMembership.getOwnedRelatedElement().stream()).filter(e -> e != null).findFirst()
+            String qnName = Stream.concat(Stream.ofNullable(importedMembership.getMemberElement()), importedMembership.getOwnedRelatedElement().stream()).filter(Objects::nonNull).findFirst()
                     .map(e -> this.buildImportContextRelativeQualifiedName(e, membershipImport)).orElse("");
 
             builder.appendSpaceIfNeeded().append(qnName);
@@ -1897,7 +1891,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (commonAncestor != null) {
             String prefix = commonAncestor.getQualifiedName() + "::";
             if (qualifiedName.startsWith(prefix)) {
-                return qualifiedName.substring(prefix.length(), qualifiedName.length());
+                return qualifiedName.substring(prefix.length());
             }
         }
         return qualifiedName;
@@ -1915,7 +1909,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
-    public String getVisivilityIndicator(VisibilityKind visibility) {
+    public String getVisibilityIndicator(VisibilityKind visibility) {
         if (visibility == null) {
             return "";
         }
