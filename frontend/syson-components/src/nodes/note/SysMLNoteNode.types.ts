@@ -12,7 +12,10 @@
  *******************************************************************************/
 /*
  * This code has been fully inspired from NoteNode.types.ts in https://github.com/PapyrusSirius/papyrus-web
- */ import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+ */
+import { GQLNodeStyle, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import { Node, NodeProps } from '@xyflow/react';
+import { FC } from 'react';
 
 export interface SysMLNoteNodeData extends NodeData {}
 
@@ -22,3 +25,10 @@ export interface GQLSysMLNoteNodeStyle extends GQLNodeStyle {
   borderStyle: string;
   borderSize: string;
 }
+
+export interface NodeDataMap {
+  sysMLNoteNode: SysMLNoteNodeData;
+}
+export type NodeComponentsMap = {
+  [K in keyof NodeDataMap]: FC<NodeProps<Node<NodeDataMap[K], K>>>;
+};

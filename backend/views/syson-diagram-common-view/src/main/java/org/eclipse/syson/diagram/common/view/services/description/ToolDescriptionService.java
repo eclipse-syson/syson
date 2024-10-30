@@ -18,6 +18,8 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.tools.ToolSection;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -103,7 +105,7 @@ public class ToolDescriptionService {
         }
 
         var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression(serviceName, List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "" + recursive)));
+                .expression(AQLUtils.getSelfServiceCallExpression(serviceName, List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes", "" + recursive)));
 
         String iconURL = "/icons/AddExistingElements.svg";
         if (recursive) {
@@ -155,7 +157,7 @@ public class ToolDescriptionService {
      */
     public DropTool createDropFromExplorerTool() {
         var dropElementFromExplorer = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("dropElementFromExplorer", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes")));
+                .expression(AQLUtils.getSelfServiceCallExpression("dropElementFromExplorer", List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes")));
 
         return this.diagramBuilderHelper.newDropTool()
                 .name("Drop from Explorer")
@@ -199,12 +201,6 @@ public class ToolDescriptionService {
             changeContextNewInstance.children(setDirection.build());
         }
 
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName(NEW_INSTANCE)
-                .children(changeContextNewInstance.build());
-
         var createView = this.diagramBuilderHelper.newCreateView()
                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                 .elementDescription(nodeDescription)
@@ -212,9 +208,15 @@ public class ToolDescriptionService {
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 
+        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
+                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
+                .variableName(NEW_INSTANCE)
+                .children(createView.build(), changeContextNewInstance.build());
+
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createMembership"))
-                .children(createEClassInstance.build(), createView.build());
+                .children(createEClassInstance.build());
 
         String toolLabel = this.descriptionNameGenerator.getCreationToolName(eClass);
 
@@ -350,15 +352,9 @@ public class ToolDescriptionService {
             changeContextNewInstance.children(setDirection.build());
         }
 
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName(NEW_INSTANCE)
-                .children(changeContextNewInstance.build());
-
         var parentViewExpression = "aql:selectedNode";
         if (nodeKind == null) {
-            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext"));
+            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", IDiagramContext.DIAGRAM_CONTEXT));
         }
 
         var createView = this.diagramBuilderHelper.newCreateView()
@@ -368,9 +364,15 @@ public class ToolDescriptionService {
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 
+        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
+                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
+                .variableName(NEW_INSTANCE)
+                .children(createView.build(), changeContextNewInstance.build());
+
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newFeatureMembership")
-                .children(createEClassInstance.build(), createView.build());
+                .children(createEClassInstance.build());
 
         var createMembership = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(membershipEClass))

@@ -25,7 +25,7 @@ import {
   findNodeIndex,
   getDefaultOrMinHeight,
 } from '@eclipse-sirius/sirius-components-diagrams';
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 import { SysMLNoteNodeData } from './SysMLNoteNode.types';
 
 export class SysMLNoteNodeLayoutHandler implements INodeLayoutHandler<SysMLNoteNodeData> {

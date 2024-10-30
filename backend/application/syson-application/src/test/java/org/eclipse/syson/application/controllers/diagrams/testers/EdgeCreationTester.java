@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -58,7 +59,8 @@ public class EdgeCreationTester {
                 0,
                 0,
                 0,
-                toolId);
+                toolId,
+                new ArrayList<>());
         var createEdgeResult = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(createEdgeInput);
         String typename = JsonPath.read(createEdgeResult, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());

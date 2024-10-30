@@ -19,6 +19,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -28,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateInitializer;
 import org.eclipse.syson.application.sysmlv2.api.IDefaultSysMLv2ResourceProvider;
 import org.eclipse.syson.sysml.Element;
@@ -53,13 +55,17 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
+    private final IRepresentationMetadataPersistenceService representationMetadataPersistenceService;
+
     private final IDefaultSysMLv2ResourceProvider defaultSysMLv2ResourceProvider;
 
     public SysMLv2ProjectTemplatesInitializer(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramCreationService diagramCreationService,
-            IRepresentationPersistenceService representationPersistenceService, IDefaultSysMLv2ResourceProvider defaultSysMLv2ResourceProvider) {
+            IRepresentationPersistenceService representationPersistenceService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService,
+            IDefaultSysMLv2ResourceProvider defaultSysMLv2ResourceProvider) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.defaultSysMLv2ResourceProvider = Objects.requireNonNull(defaultSysMLv2ResourceProvider);
     }
 
@@ -72,14 +78,14 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
     public Optional<RepresentationMetadata> handle(ICause cause, String projectTemplateId, IEditingContext editingContext) {
         Optional<RepresentationMetadata> project = Optional.empty();
         if (SysMLv2ProjectTemplatesProvider.SYSMLV2_TEMPLATE_ID.equals(projectTemplateId)) {
-            project = this.initializeSysMLv2Project(editingContext);
+            project = this.initializeSysMLv2Project(cause, editingContext);
         } else if (SysMLv2ProjectTemplatesProvider.BATMOBILE_TEMPLATE_ID.equals(projectTemplateId)) {
-            project = this.initializeBatmobileProject(editingContext);
+            project = this.initializeBatmobileProject(cause, editingContext);
         }
         return project;
     }
 
-    private Optional<RepresentationMetadata> initializeSysMLv2Project(IEditingContext editingContext) {
+    private Optional<RepresentationMetadata> initializeSysMLv2Project(ICause cause, IEditingContext editingContext) {
         return this.getResourceSet(editingContext)
                 .flatMap(resourceSet -> {
                     Optional<RepresentationMetadata> result = Optional.empty();
@@ -91,16 +97,28 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
                         var semanticTarget = this.getRootPackage(resource);
                         if (semanticTarget.isPresent()) {
-                            Diagram diagram = this.diagramCreationService.create("General View", semanticTarget.get(), generalViewDiagram, editingContext);
-                            this.representationPersistenceService.save(null, editingContext, diagram);
-                            result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+                            var variableManager = new VariableManager();
+                            variableManager.put(VariableManager.SELF, semanticTarget);
+                            variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
+                            String label = generalViewDiagram.getLabelProvider().apply(variableManager);
+                            Diagram diagram = this.diagramCreationService.create(semanticTarget.get(), generalViewDiagram, editingContext);
+
+                            var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
+                                    .kind(diagram.getKind())
+                                    .label(label)
+                                    .descriptionId(diagram.getDescriptionId())
+                                    .build();
+
+                            this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());
+                            this.representationPersistenceService.save(cause, editingContext, diagram);
+                            result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), label, diagram.getDescriptionId()));
                         }
                     }
                     return result;
                 });
     }
 
-    private Optional<RepresentationMetadata> initializeBatmobileProject(IEditingContext editingContext) {
+    private Optional<RepresentationMetadata> initializeBatmobileProject(ICause cause, IEditingContext editingContext) {
         return this.getResourceSet(editingContext)
                 .flatMap(resourceSet -> {
                     Optional<RepresentationMetadata> result = Optional.empty();
@@ -115,9 +133,21 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                         DiagramDescription generalViewDiagram = optionalGeneralViewDiagram.get();
                         var semanticTarget = this.getRootPackage(resource);
                         if (semanticTarget.isPresent()) {
-                            Diagram diagram = this.diagramCreationService.create("General View", semanticTarget.get(), generalViewDiagram, editingContext);
-                            this.representationPersistenceService.save(null, editingContext, diagram);
-                            result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), diagram.getLabel(), diagram.getDescriptionId()));
+                            var variableManager = new VariableManager();
+                            variableManager.put(VariableManager.SELF, semanticTarget);
+                            variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
+                            String label = generalViewDiagram.getLabelProvider().apply(variableManager);
+                            Diagram diagram = this.diagramCreationService.create(semanticTarget.get(), generalViewDiagram, editingContext);
+
+                            var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
+                                    .kind(diagram.getKind())
+                                    .label(label)
+                                    .descriptionId(diagram.getDescriptionId())
+                                    .build();
+
+                            this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());
+                            this.representationPersistenceService.save(cause, editingContext, diagram);
+                            result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), label, diagram.getDescriptionId()));
                         }
                     }
                     return result;

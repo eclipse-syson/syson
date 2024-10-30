@@ -15,6 +15,8 @@ package org.eclipse.syson.diagram.common.view.tools;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.syson.sysml.StateSubactionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -35,7 +37,7 @@ public class StateTransitionActionCompartmentToolProvider extends AbstractCompar
 
     @Override
     protected String getServiceCallExpression() {
-        return AQLUtils.getSelfServiceCallExpression("createOwnedAction", List.of("editingContext", "diagramContext", "selectedNode", "convertedNodes", "'" + this.getActionKindValue() + "'"));
+        return AQLUtils.getSelfServiceCallExpression("createOwnedAction", List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes", "'" + this.getActionKindValue() + "'"));
     }
 
     private String getActionKindValue() {

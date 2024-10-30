@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -95,23 +91,19 @@ public abstract class AbstractCompartmentNodeToolProvider implements INodeToolPr
         var builder = this.diagramBuilderHelper.newNodeTool();
         builder.dialogDescription(this.getSelectionDialogDescription());
 
-        List<Operation> allOperations = new ArrayList<>();
-
         var creationCompartmentItemServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(this.getServiceCallExpression())
-                .build();
-        allOperations.add(creationCompartmentItemServiceCall);
+                .expression(this.getServiceCallExpression());
 
         if (this.revealOnCreate()) {
             var revealOperation = this.viewBuilderHelper.newChangeContext()
                     .expression("aql:selectedNode.revealCompartment(self, diagramContext, editingContext, convertedNodes)")
                     .build();
-            allOperations.add(revealOperation);
+            creationCompartmentItemServiceCall.children(revealOperation);
         }
 
         var rootChangContext = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLConstants.AQL_SELF)
-                .children(allOperations.toArray(Operation[]::new))
+                .children(creationCompartmentItemServiceCall.build())
                 .build();
 
         return builder.name(this.getNodeToolName())

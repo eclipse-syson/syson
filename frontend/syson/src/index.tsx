@@ -65,11 +65,11 @@ const SysONNavigationBarIcon = ({}: NavigationBarIconProps) => {
 
 const extensionRegistry: ExtensionRegistry = new ExtensionRegistry();
 extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
-  identifier: 'syson_navigationbar#icon',
+  identifier: `syson_${navigationBarIconExtensionPoint.identifier}`,
   Component: SysONNavigationBarIcon,
 });
 extensionRegistry.putData(navigationBarMenuHelpURLExtensionPoint, {
-  identifier: 'syson_navigationBarMenu#helpURL',
+  identifier: `syson_${navigationBarMenuHelpURLExtensionPoint.identifier}`,
   data: 'https://doc.mbse-syson.org',
 });
 

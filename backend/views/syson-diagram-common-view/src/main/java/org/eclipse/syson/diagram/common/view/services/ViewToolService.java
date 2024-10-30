@@ -43,6 +43,7 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
+import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -1029,7 +1030,12 @@ public class ViewToolService extends ToolService {
         ActionUsage childAction = this.utilService.createChildAction(parentState, actionKind);
 
         if (childAction != null) {
-            if (diagramContext.getDiagram().getLabel().equals("General View")) {
+            String representationDescriptionLabel = null;
+            Optional<IRepresentationDescription> representationDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
+            if (representationDescription.isPresent()) {
+                representationDescriptionLabel = representationDescription.get().getLabel();
+            }
+            if (representationDescriptionLabel != null && representationDescriptionLabel.equals("General View")) {
                 this.createView(childAction, editingContext, diagramContext, diagramContext.getDiagram(), convertedNodes);
             } else if (selectedNode.getInsideLabel().getText().equals(AbstractActionsCompartmentNodeDescriptionProvider.ACTIONS_COMPARTMENT_LABEL)) {
                 this.createView(childAction, editingContext, diagramContext, selectedNode, convertedNodes);

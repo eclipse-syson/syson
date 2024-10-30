@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.FreeFormLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
@@ -207,17 +208,11 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance.elementInitializer()");
 
-        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
-                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
-                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
-                .variableName("newInstance")
-                .children(changeContextNewInstance.build());
-
         var parentViewExpression = "aql:selectedNode";
         if (SysmlPackage.eINSTANCE.getComment().equals(eClass)) {
             // when a comment is Created from a Package Node, the new Comment node should be represented outside of the
             // Package
-            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", "diagramContext"));
+            parentViewExpression = AQLUtils.getSelfServiceCallExpression("getParentNode", List.of("selectedNode", IDiagramContext.DIAGRAM_CONTEXT));
         }
 
         var createView = this.diagramBuilderHelper.newCreateView()
@@ -227,9 +222,15 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .semanticElementExpression("aql:newInstance")
                 .variableName("newInstanceView");
 
+        var createEClassInstance = this.viewBuilderHelper.newCreateInstance()
+                .typeName(SysMLMetamodelHelper.buildQualifiedName(eClass))
+                .referenceName(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement().getName())
+                .variableName("newInstance")
+                .children(createView.build(), changeContextNewInstance.build());
+
         var changeContexMembership = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newOwningMembership")
-                .children(createEClassInstance.build(), createView.build());
+                .children(createEClassInstance.build());
 
         var createMembership = this.viewBuilderHelper.newCreateInstance()
                 .typeName(SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getOwningMembership()))

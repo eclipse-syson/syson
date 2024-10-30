@@ -14,6 +14,8 @@ package org.eclipse.syson.diagram.common.view.tools;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -44,11 +46,9 @@ public class ActionFlowCompartmentNodeToolProvider implements INodeToolProvider 
         var params = List.of(
                 AQLUtils.aqlString(ActionFlowCompartmentNodeDescriptionProvider.COMPARTMENT_LABEL),
                 "selectedNode",
-                "editingContext",
-                "diagramContext",
+                IEditingContext.EDITING_CONTEXT,
+                IDiagramContext.DIAGRAM_CONTEXT,
                 "convertedNodes");
-        var creationServiceCall = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("createSubActionUsage"));
 
         var createViewOperation = this.viewBuilderHelper.newChangeContext()
                 .expression(AQLUtils.getSelfServiceCallExpression("createViewInFreeFormCompartment", params))
@@ -58,11 +58,14 @@ public class ActionFlowCompartmentNodeToolProvider implements INodeToolProvider 
                 .expression("aql:selectedNode.revealCompartment(self, diagramContext, editingContext, convertedNodes)")
                 .build();
 
-        creationServiceCall.children(createViewOperation, revealOperation);
+        var creationServiceCall = this.viewBuilderHelper.newChangeContext()
+                .expression(AQLUtils.getSelfServiceCallExpression("createSubActionUsage"))
+                .children(createViewOperation, revealOperation)
+                .build();
 
         return builder.name("New Action")
                 .iconURLsExpression("/icons/full/obj16/ActionUsage.svg")
-                .body(creationServiceCall.build())
+                .body(creationServiceCall)
                 .build();
     }
 }

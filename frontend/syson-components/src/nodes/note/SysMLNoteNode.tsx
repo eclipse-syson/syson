@@ -21,16 +21,19 @@ import {
   DiagramContext,
   DiagramContextValue,
   DiagramElementPalette,
+  EdgeData,
   Label,
+  NodeData,
   useConnectorNodeStyle,
   useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@mui/material/styles';
+import { Edge, Node, NodeProps, NodeResizer, useReactFlow } from '@xyflow/react';
 import React, { memo, useContext } from 'react';
-import { NodeProps, NodeResizer, useReactFlow } from 'reactflow';
-import { SysMLNoteNodeData } from './SysMLNoteNode.types';
+
+import { NodeComponentsMap, SysMLNoteNodeData } from './SysMLNoteNode.types';
 
 const resizeLineStyle = (theme: Theme): React.CSSProperties => {
   return { borderWidth: theme.spacing(0.15) };
@@ -82,94 +85,98 @@ const svgPathStyle = (theme: Theme, style: React.CSSProperties, faded: boolean):
   return svgPathStyle;
 };
 
-export const SysMLNoteNode = memo(({ data, id, selected, dragging }: NodeProps<SysMLNoteNodeData>) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const theme = useTheme();
-  const { onDrop, onDragOver } = useDrop();
-  const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-  const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
-  const { getNodes } = useReactFlow<SysMLNoteNodeData>();
-  const node = getNodes().find((node) => node.id === id);
-  const nodeHeight = node?.height ?? 70;
-  const nodeWidth = node?.width ?? 200;
+export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
+  ({ data, id, selected, dragging }: NodeProps<Node<SysMLNoteNodeData>>) => {
+    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+    const theme = useTheme();
+    const { onDrop, onDragOver } = useDrop();
+    const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
+    const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
 
-  const updatedLabel: any = {
-    ...data.insideLabel,
-    style: {
-      ...data?.insideLabel?.style,
-      paddingLeft: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
-      paddingTop: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
-      paddingRight: parseInt(data.style.borderWidth?.toString() ?? '1') / 2 + 20 + 'px',
-      paddingBottom: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
-      //justifyContent: 'left',
-    },
-  };
+    const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const node = reactFlowInstance.getNodes().find((node) => node.id === id);
+    const nodeHeight = node?.height ?? 70;
+    const nodeWidth = node?.width ?? 200;
 
-  const handleOnDrop = (event: React.DragEvent) => {
-    onDrop(event, id);
-  };
+    const updatedLabel: any = {
+      ...data.insideLabel,
+      style: {
+        ...data?.insideLabel?.style,
+        paddingLeft: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
+        paddingTop: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
+        paddingRight: parseInt(data.style.borderWidth?.toString() ?? '1') / 2 + 20 + 'px',
+        paddingBottom: parseInt(data.style.borderWidth?.toString() ?? '0') + 8 + 'px',
+        //justifyContent: 'left',
+      },
+    };
 
-  useRefreshConnectionHandles(id, data.connectionHandles);
+    const handleOnDrop = (event: React.DragEvent) => {
+      onDrop(event, id);
+    };
 
-  const borderOffset = data.style.borderWidth ? parseInt(data.style.borderWidth.toString()) / 2 : 0;
+    useRefreshConnectionHandles(id, data.connectionHandles);
 
-  return (
-    <>
-      {data.nodeDescription?.userResizable && !readOnly ? (
-        <NodeResizer
-          handleStyle={{ ...resizeHandleStyle(theme) }}
-          lineStyle={{ ...resizeLineStyle(theme) }}
-          color={theme.palette.selected}
-          isVisible={selected}
-          keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-        />
-      ) : null}
-      <div
-        style={{
-          ...sysMLNoteNodeStyle(theme, data.style, selected, data.isHovered, data.faded),
-          ...connectionFeedbackStyle,
-          ...dropFeedbackStyle,
-        }}
-        onDragOver={onDragOver}
-        onDrop={handleOnDrop}
-        data-testid={`SysMLNote - ${data?.insideLabel?.text}`}>
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            top: '0px',
-            left: '0px',
-            zIndex: '-1',
-          }}>
-          <svg viewBox={`0 0 ${nodeWidth} ${nodeHeight}`}>
-            <path
-              style={svgPathStyle(theme, data.style, data.faded)}
-              d={`M ${borderOffset},${borderOffset} H ${nodeWidth - 15} L ${nodeWidth - borderOffset} 15 V ${
-                nodeHeight - borderOffset
-              } H ${borderOffset} Z`}
-            />
-            <path
-              style={{
-                ...svgPathStyle(theme, data.style, data.faded),
-                fillOpacity: 0,
-              }}
-              d={`M ${nodeWidth - 15},${borderOffset} V 15 H ${nodeWidth - borderOffset}`}
-            />
-          </svg>
-        </div>
-        {data.insideLabel ? <Label diagramElementId={id} label={updatedLabel} faded={data.faded} /> : null}
-        {selected ? (
-          <DiagramElementPalette
-            diagramElementId={id}
-            targetObjectId={data.targetObjectId}
-            labelId={data.insideLabel ? data.insideLabel.id : null}
+    const borderOffset = data.style.borderWidth ? parseInt(data.style.borderWidth.toString()) / 2 : 0;
+
+    return (
+      <>
+        {data.nodeDescription?.userResizable && !readOnly ? (
+          <NodeResizer
+            handleStyle={{ ...resizeHandleStyle(theme) }}
+            lineStyle={{ ...resizeLineStyle(theme) }}
+            color={theme.palette.selected}
+            isVisible={selected}
+            shouldResize={() => !data.isBorderNode}
+            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
           />
         ) : null}
-        {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
-        <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
-        <ConnectionHandles connectionHandles={data.connectionHandles} />
-      </div>
-    </>
-  );
-});
+        <div
+          style={{
+            ...sysMLNoteNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
+            ...connectionFeedbackStyle,
+            ...dropFeedbackStyle,
+          }}
+          onDragOver={onDragOver}
+          onDrop={handleOnDrop}
+          data-testid={`SysMLNote - ${data?.insideLabel?.text}`}>
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+              top: '0px',
+              left: '0px',
+              zIndex: '-1',
+            }}>
+            <svg viewBox={`0 0 ${nodeWidth} ${nodeHeight}`}>
+              <path
+                style={svgPathStyle(theme, data.style, data.faded)}
+                d={`M ${borderOffset},${borderOffset} H ${nodeWidth - 15} L ${nodeWidth - borderOffset} 15 V ${
+                  nodeHeight - borderOffset
+                } H ${borderOffset} Z`}
+              />
+              <path
+                style={{
+                  ...svgPathStyle(theme, data.style, data.faded),
+                  fillOpacity: 0,
+                }}
+                d={`M ${nodeWidth - 15},${borderOffset} V 15 H ${nodeWidth - borderOffset}`}
+              />
+            </svg>
+          </div>
+          {data.insideLabel ? <Label diagramElementId={id} label={updatedLabel} faded={data.faded} /> : null}
+          {selected ? (
+            <DiagramElementPalette
+              diagramElementId={id}
+              targetObjectId={data.targetObjectId}
+              labelId={data.insideLabel ? data.insideLabel.id : null}
+            />
+          ) : null}
+          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
+          <ConnectionHandles connectionHandles={data.connectionHandles} />
+        </div>
+      </>
+    );
+  }
+);

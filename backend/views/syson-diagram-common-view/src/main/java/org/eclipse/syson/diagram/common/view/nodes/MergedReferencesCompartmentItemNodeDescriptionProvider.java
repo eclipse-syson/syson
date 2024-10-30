@@ -65,7 +65,7 @@ public class MergedReferencesCompartmentItemNodeDescriptionProvider extends Abst
                 .name(this.descriptionNameGenerator.getCompartmentItemName(this.eClass, this.eReferences.get(0)))
                 .semanticCandidatesExpression(
                         AQLUtils.getSelfServiceCallExpression("getAllContentsByReferences",
-                                "Sequence{" + this.eReferences.stream().map(ref -> "self." + ref.getName()).reduce((a, b) -> a + ',' + b).get() + "})"))
+                                "Sequence{" + this.eReferences.stream().map(ref -> "self." + ref.getName()).reduce((a, b) -> a + ", " + b).get() + "})"))
                 .style(this.createCompartmentItemNodeStyle())
                 .userResizable(UserResizableDirection.NONE)
                 .palette(this.createCompartmentItemNodePalette())
