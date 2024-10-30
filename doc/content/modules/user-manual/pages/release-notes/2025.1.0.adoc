@@ -12,6 +12,7 @@
 
 - `OccurrenceUsage#portionKind` is now `unsettable` and its default value is `null` in the SysMLv2 metamodel to conform to the specification.
 - Improve the code in import module, by making it more generic. It now reports (on the server side) more messages to understand the scope of what is imported and the errors encountered.
+- Add support of `OccurrenceDefinition` and 'OccurrenceUsage` in export from model to textual SysMLv2.
 
 == New features
 
