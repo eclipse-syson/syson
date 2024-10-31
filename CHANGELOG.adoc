@@ -10,6 +10,8 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/829[#829] [metamodel] `OccurrenceUsag#portionKind` is now unsettable and its default value is `null`.
+
 === New features
 
 

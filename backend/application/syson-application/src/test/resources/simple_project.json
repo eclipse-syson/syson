@@ -224,7 +224,7 @@
         "isReference": "false",
         "isVariation": "false",
         "isIndividual": "false",
-        "portionKind": "snapshot",
+        "portionKind": null,
         "documentation": [],
         "ownedAnnotation": [],
         "ownedElement": [],
