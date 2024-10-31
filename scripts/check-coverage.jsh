@@ -36,6 +36,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel-edit", 0.0),
   new ModuleCoverage("syson-direct-edit-grammar", 63.0),
   new ModuleCoverage("syson-services", 61.0),
+  new ModuleCoverage("syson-sysml-rest-api-services", 0.0),
   new ModuleCoverage("syson-sysml-import", 68.0),
   new ModuleCoverage("syson-sysml-export", 87.0),
   new ModuleCoverage("syson-diagram-common-view", 79.0),

@@ -32,7 +32,8 @@
 	</distributionManagement>
 
 	<modules>
-		<module>syson-services</module>
 		<module>syson-direct-edit-grammar</module>
+		<module>syson-services</module>
+		<module>syson-sysml-rest-api-services</module>
 	</modules>
 </project>

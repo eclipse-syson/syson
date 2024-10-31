@@ -99,9 +99,23 @@ Added source sysml file and unaltered ast.json result.
 - https://github.com/eclipse-syson/syson/issues/697[#697] [details] Add Comment property to Core tab of the Details view.
 - https://github.com/eclipse-syson/syson/issues/754[#754] [general-view] Add an edge tool to add target element as nested usage.
 This complements the existing tool that allows to add the source element as a nested usage of the target.
-- [rest-api] Introduce partial support of the standard REST APIs from the OMG [SystemsModelingAPI](https://www.omg.org/spec/SystemsModelingAPI/).
-The firsts APIs to be handled are the project related ones, allowing to create, update, delete and retrieve project(s).
-Please read the [APIs section](https://doc.mbse-syson.org/syson/v2024.11.0/user-manual/integration/api.html) in the official [SysON documentation](https://doc.mbse-syson.org) for more details.
+- https://github.com/eclipse-syson/syson/issues/824[#824] [rest-api] Introduce partial support of the standard REST APIs from the OMG [SystemsModelingAPI](https://www.omg.org/spec/SystemsModelingAPI/).
+In this first implementation we will only implement the following REST APIs, thanks to Sirius Web:
+*Project-related REST APIs:
+** getProjects (GET /api/rest/projects): Get all projects.
+** getProjectById (GET /api/rest/projects/{projectId}): Get project with the given id (projectId).
+** createProject (POST /projects): Create a new project with the given name and description (optional).
+** deleteProject (DELETE /api/rest/projects/{projectId}): Delete the project with the given id (projectId).
+** updateProject (PUT /projects/{projectId}): Update the project with the given id (projectId).
+*Object-related REST APIs.
+** getElements (GET /api/rest/projects/{projectId}/commits/{commitId}/elements): Get all the elements in a given project at the given commit.
+There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
+** getElementById (GET /api/rest/projects/{projectId}/commits/{commitId}/elements/{elementId}): Get element with the given id (elementId) in the given project at the given commit.
+There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
+** getRelationshipsByRelatedElement (GET /api/rest/projects/{projectId}/commits/{commitId}/elements/{elementId}/relationships): Get relationships that are incoming, outgoing, or both relative to the given related element.
+There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
+** getRootElements (GET /api/rest/projects/{projectId}/commits/{commitId}/roots): Get all the root elements in the given project at the given commit.
+There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
 
 == v2024.9.0
 
