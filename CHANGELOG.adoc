@@ -91,7 +91,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 Added source sysml file and unaltered ast.json result.
 - https://github.com/eclipse-syson/syson/issues/829[#829] [metamodel] Changed cardinality of PortionKind on OccurrenceUsage to [0..1], now unsettable. Now default to null.
 - https://github.com/eclipse-syson/syson/issues/812[#812] [export] Fix visibility issue when resolving name of privately imported element during export.
-
+- https://github.com/eclipse-syson/syson/issues/818[#818] [export] Add partial support of `OccurrenceDefinition` in export from model to textual SysMLv2.
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/694[#694] [diagrams] Add a new custom node note among possible node style descriptions.

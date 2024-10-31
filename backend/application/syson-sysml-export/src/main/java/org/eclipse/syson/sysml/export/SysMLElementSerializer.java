@@ -98,6 +98,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -255,6 +256,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String casePartUsage(PartUsage partUsage) {
         return this.appendDefaultUsage(this.newAppender(), partUsage).toString();
+    }
+
+    @Override
+    public String caseOccurrenceUsage(OccurrenceUsage occurrenceUsage) {
+        String selectedKeyword;
+        if (PortionKind.SNAPSHOT.equals(occurrenceUsage.getPortionKind())) {
+            selectedKeyword = this.appendKeywordUsage(this.newAppender(), occurrenceUsage, "snapshot");
+        } else if (PortionKind.TIMESLICE.equals(occurrenceUsage.getPortionKind())) {
+            selectedKeyword = this.appendKeywordUsage(this.newAppender(), occurrenceUsage, "timeslice");
+        } else {
+            selectedKeyword = this.appendDefaultUsage(this.newAppender(), occurrenceUsage);
+        }
+        return selectedKeyword;
     }
 
     @Override
@@ -478,10 +492,14 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private String appendDefaultUsage(Appender builder, Usage usage) {
+        return appendKeywordUsage(builder, usage, this.getUsageKeyword(usage));
+    }
+
+    private String appendKeywordUsage(Appender builder, Usage usage, String keyword) {
 
         this.appendUsagePrefix(builder, usage);
 
-        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(usage));
+        builder.appendSpaceIfNeeded().append(keyword);
 
         this.appendUsageDeclaration(builder, usage);
 
@@ -1513,7 +1531,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendBasicUsagePrefix(builder, usage);
 
         final String isRef;
-        if (usage.isIsReference() && !this.isImplicitlyReferencial(usage)) {
+        if (usage.isIsReference() && !this.isImplicitlyReferential(usage)) {
             isRef = "ref";
         } else {
             isRef = "";
@@ -1538,8 +1556,10 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendExtensionKeyword(builder, occUsage);
     }
 
-    private boolean isImplicitlyReferencial(Usage usage) {
-        return usage instanceof AttributeUsage || usage instanceof ReferenceUsage || usage.getOwningMembership() instanceof ActorMembership;
+    private boolean isImplicitlyReferential(Usage usage) {
+        return usage.getOwningMembership() instanceof ActorMembership
+                || usage instanceof AttributeUsage
+                || usage instanceof ReferenceUsage;
     }
 
     private void appendExtensionKeyword(Appender builder, Type type) {

@@ -67,6 +67,7 @@ import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortConjugation;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.PortionKind;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.ReferenceUsage;
@@ -122,6 +123,8 @@ public class SysMLElementSerializerTest {
     private static final String SUBSETTING2 = "sub2";
 
     private static final String ANNOTATING1 = "Annotating1";
+
+    private static final String OCCURRENCE1 = "occurrence1";
 
     private static final String BODY = "A body";
 
@@ -1594,4 +1597,31 @@ public class SysMLElementSerializerTest {
                     }
                 }""", model.getItemTest());
     }
+
+    @Test
+    public void occurrenceUsage() {
+        OccurrenceUsage occurrenceUsage = this.builder.createWithName(OccurrenceUsage.class, OCCURRENCE1);
+        occurrenceUsage.setIsComposite(true);
+
+        this.assertTextualFormEquals("occurrence occurrence1;", occurrenceUsage);
+    }
+
+    @Test
+    public void occurrenceUsageAsSnapshot() {
+        OccurrenceUsage occurrenceUsage = this.builder.createWithName(OccurrenceUsage.class, OCCURRENCE1);
+        occurrenceUsage.setIsComposite(true);
+        occurrenceUsage.setPortionKind(PortionKind.SNAPSHOT);
+
+        this.assertTextualFormEquals("snapshot occurrence1;", occurrenceUsage);
+    }
+
+    @Test
+    public void occurrenceUsageAsTimeslice() {
+        OccurrenceUsage occurrenceUsage = this.builder.createWithName(OccurrenceUsage.class, OCCURRENCE1);
+        occurrenceUsage.setIsComposite(true);
+        occurrenceUsage.setPortionKind(PortionKind.TIMESLICE);
+
+        this.assertTextualFormEquals("timeslice occurrence1;", occurrenceUsage);
+    }
+
 }
