@@ -71,10 +71,10 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
      * <!-- end-user-doc -->
      *
      * @see #getPortionKind()
-     * @generated
+     * @generated NOT
      * @ordered
      */
-    protected static final PortionKind PORTION_KIND_EDEFAULT = PortionKind.SNAPSHOT;
+    protected static final PortionKind PORTION_KIND_EDEFAULT = null;
 
     /**
      * The cached value of the '{@link #getPortionKind() <em>Portion Kind</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -85,6 +85,14 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
      * @ordered
      */
     protected PortionKind portionKind = PORTION_KIND_EDEFAULT;
+
+    /**
+     * This is true if the Portion Kind attribute has been set. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    protected boolean portionKindESet;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -181,8 +189,35 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
     public void setPortionKind(PortionKind newPortionKind) {
         PortionKind oldPortionKind = this.portionKind;
         this.portionKind = newPortionKind == null ? PORTION_KIND_EDEFAULT : newPortionKind;
+        boolean oldPortionKindESet = this.portionKindESet;
+        this.portionKindESet = true;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND, oldPortionKind, this.portionKind));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND, oldPortionKind, this.portionKind, !oldPortionKindESet));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void unsetPortionKind() {
+        PortionKind oldPortionKind = this.portionKind;
+        boolean oldPortionKindESet = this.portionKindESet;
+        this.portionKind = PORTION_KIND_EDEFAULT;
+        this.portionKindESet = false;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.UNSET, SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND, oldPortionKind, PORTION_KIND_EDEFAULT, oldPortionKindESet));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean isSetPortionKind() {
+        return this.portionKindESet;
     }
 
     /**
@@ -238,7 +273,7 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
                 this.setIsIndividual(IS_INDIVIDUAL_EDEFAULT);
                 return;
             case SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND:
-                this.setPortionKind(PORTION_KIND_EDEFAULT);
+                this.unsetPortionKind();
                 return;
         }
         super.eUnset(featureID);
@@ -255,7 +290,7 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
             case SysmlPackage.OCCURRENCE_USAGE__IS_INDIVIDUAL:
                 return this.isIndividual != IS_INDIVIDUAL_EDEFAULT;
             case SysmlPackage.OCCURRENCE_USAGE__PORTION_KIND:
-                return this.portionKind != PORTION_KIND_EDEFAULT;
+                return this.isSetPortionKind();
             case SysmlPackage.OCCURRENCE_USAGE__INDIVIDUAL_DEFINITION:
                 return this.basicGetIndividualDefinition() != null;
             case SysmlPackage.OCCURRENCE_USAGE__OCCURRENCE_DEFINITION:
@@ -278,7 +313,10 @@ public class OccurrenceUsageImpl extends UsageImpl implements OccurrenceUsage {
         result.append(" (isIndividual: ");
         result.append(this.isIndividual);
         result.append(", portionKind: ");
-        result.append(this.portionKind);
+        if (this.portionKindESet)
+            result.append(this.portionKind);
+        else
+            result.append("<unset>");
         result.append(')');
         return result.toString();
     }

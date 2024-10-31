@@ -10,4 +10,6 @@
 
 == Improvements
 
+- `OccurrenceUsag#portionKind` is now unsettable and its default value is `null` in the SysMLv2 metamodel to conform to the specification.
+
 == New features

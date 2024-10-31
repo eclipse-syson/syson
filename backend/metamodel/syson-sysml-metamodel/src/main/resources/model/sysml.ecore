@@ -1226,7 +1226,7 @@
         lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="portionKind" ordered="false"
-        eType="#//PortionKind"/>
+        eType="#//PortionKind" unsettable="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="individualDefinition" ordered="false"
         eType="#//OccurrenceDefinition" changeable="false" volatile="true" transient="true"
         derived="true">

@@ -84,9 +84,11 @@ public interface OccurrenceUsage extends Usage {
      *
      * @return the value of the '<em>Portion Kind</em>' attribute.
      * @see org.eclipse.syson.sysml.PortionKind
+     * @see #isSetPortionKind()
+     * @see #unsetPortionKind()
      * @see #setPortionKind(PortionKind)
      * @see org.eclipse.syson.sysml.SysmlPackage#getOccurrenceUsage_PortionKind()
-     * @model ordered="false"
+     * @model unsettable="true" ordered="false"
      * @generated
      */
     PortionKind getPortionKind();
@@ -98,9 +100,34 @@ public interface OccurrenceUsage extends Usage {
      * @param value
      *            the new value of the '<em>Portion Kind</em>' attribute.
      * @see org.eclipse.syson.sysml.PortionKind
+     * @see #isSetPortionKind()
+     * @see #unsetPortionKind()
      * @see #getPortionKind()
      * @generated
      */
     void setPortionKind(PortionKind value);
+
+    /**
+     * Unsets the value of the '{@link org.eclipse.syson.sysml.OccurrenceUsage#getPortionKind <em>Portion Kind</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isSetPortionKind()
+     * @see #getPortionKind()
+     * @see #setPortionKind(PortionKind)
+     * @generated
+     */
+    void unsetPortionKind();
+
+    /**
+     * Returns whether the value of the '{@link org.eclipse.syson.sysml.OccurrenceUsage#getPortionKind <em>Portion
+     * Kind</em>}' attribute is set. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return whether the value of the '<em>Portion Kind</em>' attribute is set.
+     * @see #unsetPortionKind()
+     * @see #getPortionKind()
+     * @see #setPortionKind(PortionKind)
+     * @generated
+     */
+    boolean isSetPortionKind();
 
 } // OccurrenceUsage
