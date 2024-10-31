@@ -1,0 +1,141 @@
+[
+    {
+        "@id": "127c38e7-0e15-4232-aa02-76b342e3324a",
+        "@type": "Package",
+        "aliasIds": "[]",
+        "declaredName": "Package1",
+        "declaredShortName": null,
+        "elementId": "d51791b8-6666-46e3-8c60-c975e1f3e490",
+        "isImpliedIncluded": "false",
+        "isLibraryElement": "false",
+        "name": "Package1",
+        "qualifiedName": "Package1",
+        "shortName": null,
+        "documentation": [],
+        "ownedAnnotation": [],
+        "ownedElement": [
+            {
+                "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e"
+            }
+        ],
+        "ownedRelationship": [
+            {
+                "@id": "0642ab55-a317-40c1-aa52-cc16306d937b"
+            },
+            {
+                "@id": "883deb19-59a8-4c58-8887-978bf11fffcd"
+            }
+        ],
+        "owner": {
+            "@id": "686dee81-b94c-4393-b15b-65dd73dfdd24"
+        },
+        "owningMembership": {
+            "@id": "e3c74bf2-55ba-4b0d-a4f5-9ab326f372c4"
+        },
+        "owningNamespace": {
+            "@id": "686dee81-b94c-4393-b15b-65dd73dfdd24"
+        },
+        "owningRelationship": {
+            "@id": "e3c74bf2-55ba-4b0d-a4f5-9ab326f372c4"
+        },
+        "textualRepresentation": [],
+        "importedMembership": [
+            {
+                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+            }
+        ],
+        "member": [
+            {
+                "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e"
+            },
+            {
+                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+            }
+        ],
+        "membership": [
+            {
+                "@id": "883deb19-59a8-4c58-8887-978bf11fffcd"
+            },
+            {
+                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+            }
+        ],
+        "ownedImport": [
+            {
+                "@id": "0642ab55-a317-40c1-aa52-cc16306d937b"
+            }
+        ],
+        "ownedMember": [
+            {
+                "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e"
+            }
+        ],
+        "ownedMembership": [
+            {
+                "@id": "883deb19-59a8-4c58-8887-978bf11fffcd"
+            }
+        ],
+        "filterCondition": []
+    },
+    {
+        "@id": "ec12f223-8639-42a3-96c2-34163c6eccce",
+        "@type": "Package",
+        "aliasIds": "[]",
+        "declaredName": "Package2",
+        "declaredShortName": null,
+        "elementId": "40c37406-f22d-4424-981f-99935f039244",
+        "isImpliedIncluded": "false",
+        "isLibraryElement": "false",
+        "name": "Package2",
+        "qualifiedName": "Package2",
+        "shortName": null,
+        "documentation": [],
+        "ownedAnnotation": [],
+        "ownedElement": [
+            {
+                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+            }
+        ],
+        "ownedRelationship": [
+            {
+                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+            }
+        ],
+        "owner": {
+            "@id": "686dee81-b94c-4393-b15b-65dd73dfdd24"
+        },
+        "owningMembership": {
+            "@id": "13001db6-0353-48ba-8bec-157bbd9a3b57"
+        },
+        "owningNamespace": {
+            "@id": "686dee81-b94c-4393-b15b-65dd73dfdd24"
+        },
+        "owningRelationship": {
+            "@id": "13001db6-0353-48ba-8bec-157bbd9a3b57"
+        },
+        "textualRepresentation": [],
+        "importedMembership": [],
+        "member": [
+            {
+                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+            }
+        ],
+        "membership": [
+            {
+                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+            }
+        ],
+        "ownedImport": [],
+        "ownedMember": [
+            {
+                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+            }
+        ],
+        "ownedMembership": [
+            {
+                "@id": "bbe9c050-d108-4807-8c62-7d20c31817f6"
+            }
+        ],
+        "filterCondition": []
+    }
+]

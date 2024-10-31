@@ -24,6 +24,7 @@ INSERT INTO public.project VALUES ('861bc7ba-defb-400c-982f-d6563f36af48', 'Gene
 INSERT INTO public.project VALUES ('df605b26-43ec-41b4-b30d-a4466d2df609', 'GeneralView-AddExistingElements', '2024-07-05 10:58:27.125531+00', '2024-07-05 10:58:44.172272+00');
 INSERT INTO public.project VALUES ('43df3d33-5cad-447b-a2fb-a31a5d096d92', 'InterconnectionView-Empty', '2024-10-21 15:33:48.12165+00', '2024-10-21 15:34:51.199351+00');
 INSERT INTO public.project VALUES ('411aab7b-892d-41d1-b9e2-ca10f901bb45', 'InterconnectionView-WithTopNodes', '2024-10-21 16:14:50.105313+00', '2024-10-21 16:17:27.434123+00');
+INSERT INTO public.project VALUES ('a427f187-9003-498c-9178-72e8350cc67c', 'SysMLv2-SimpleProject', '2024-11-05 13:55:20.956951+00', '2024-11-05 13:55:38.969023+00');
 
 
 --
@@ -35,6 +36,7 @@ INSERT INTO public.semantic_data VALUES ('cbb4b3b4-af8e-4a05-a419-19dbfd1cc94d',
 INSERT INTO public.semantic_data VALUES ('1b0c2b5c-5bbe-4429-a73b-43ef46c16955', 'c2a70173-cd0d-42d3-b1ea-ed0bb1cb5ffb', '2024-06-12 12:30:26.64237+00', '2024-08-29 12:33:37.242063+00');
 INSERT INTO public.semantic_data VALUES ('5e2327fa-1247-4429-9b26-64b7941965f2', '43df3d33-5cad-447b-a2fb-a31a5d096d92', '2024-10-21 15:33:48.430895+00', '2024-10-21 15:35:43.573574+00');
 INSERT INTO public.semantic_data VALUES ('d7bf64ef-d408-437e-96b1-13b097c87f0e', '411aab7b-892d-41d1-b9e2-ca10f901bb45', '2024-10-21 16:14:50.119871+00', '2024-10-21 16:16:53.469378+00');
+INSERT INTO public.semantic_data VALUES ('4b5adc0c-90a2-48c6-9ae7-c3fc035ff38b', 'a427f187-9003-498c-9178-72e8350cc67c', '2024-11-05 13:55:21.094331+00', '2024-11-05 13:57:15.80357+00');
 
 
 --
@@ -261,6 +263,7 @@ INSERT INTO public.document VALUES ('b945da33-845e-42c4-b2dd-a0aeca6e0996', 'd7b
     }
   ]
 }', '2024-10-21 16:16:53.469378+00', '2024-10-21 16:16:53.469378+00');
+INSERT INTO public.document VALUES ('9a59f836-1df2-4e5d-803c-9eb0ba7031aa', '4b5adc0c-90a2-48c6-9ae7-c3fc035ff38b', 'SysMLv2.sysml', '{"json":{"version":"1.0","encoding":"utf-8"},"ns":{"sysml":"http://www.eclipse.org/syson/sysml"},"content":[{"id":"686dee81-b94c-4393-b15b-65dd73dfdd24","eClass":"sysml:Namespace","data":{"elementId":"bea38691-2169-4b70-87ac-ffa289824fde","ownedRelationship":[{"id":"e3c74bf2-55ba-4b0d-a4f5-9ab326f372c4","eClass":"sysml:OwningMembership","data":{"elementId":"a6fce401-4aaf-47c8-88a6-d75462e3c6db","ownedRelatedElement":[{"id":"127c38e7-0e15-4232-aa02-76b342e3324a","eClass":"sysml:Package","data":{"declaredName":"Package1","elementId":"d51791b8-6666-46e3-8c60-c975e1f3e490","ownedRelationship":[{"id":"0642ab55-a317-40c1-aa52-cc16306d937b","eClass":"sysml:NamespaceImport","data":{"elementId":"9f902e4a-4ca9-4787-92d8-713b3b06c490","importedNamespace":"40c37406-f22d-4424-981f-99935f039244"}},{"id":"883deb19-59a8-4c58-8887-978bf11fffcd","eClass":"sysml:OwningMembership","data":{"elementId":"be359545-8e91-439c-8bdf-0638ab702f9d","ownedRelatedElement":[{"id":"a4f51a38-bfeb-4e0d-a870-55f8fe90405e","eClass":"sysml:PartUsage","data":{"declaredName":"p","elementId":"d99634bb-d4e0-4afa-bbe4-ee553005937d","ownedRelationship":[{"id":"1ba5c6e8-1c6b-44f6-8a05-f82f2c7a2538","eClass":"sysml:FeatureTyping","data":{"elementId":"9bfede6e-a370-451e-aa33-c1102942dcb7","type":"47acdb65-63f9-4bd5-8675-e2596241dc2c","typedFeature":"d99634bb-d4e0-4afa-bbe4-ee553005937d"}}],"isComposite":true}}]}}]}}]}},{"id":"13001db6-0353-48ba-8bec-157bbd9a3b57","eClass":"sysml:OwningMembership","data":{"elementId":"cd1165da-f4a1-4962-90f6-d117e8c7a354","ownedRelatedElement":[{"id":"ec12f223-8639-42a3-96c2-34163c6eccce","eClass":"sysml:Package","data":{"declaredName":"Package2","elementId":"40c37406-f22d-4424-981f-99935f039244","ownedRelationship":[{"id":"bbe9c050-d108-4807-8c62-7d20c31817f6","eClass":"sysml:OwningMembership","data":{"elementId":"c0c5cec5-6606-4145-98c7-eef80964e95a","ownedRelatedElement":[{"id":"0a70220d-707e-4a88-84dc-6aa43aa97269","eClass":"sysml:PartDefinition","data":{"declaredName":"PartDefX","elementId":"47acdb65-63f9-4bd5-8675-e2596241dc2c"}}]}}]}}]}}]}}]}', '2024-11-05 13:57:15.803558+00', '2024-11-05 13:57:15.803558+00');
 
 
 --
@@ -312,6 +315,7 @@ INSERT INTO public.semantic_data_domain VALUES ('cbb4b3b4-af8e-4a05-a419-19dbfd1
 INSERT INTO public.semantic_data_domain VALUES ('1b0c2b5c-5bbe-4429-a73b-43ef46c16955', 'http://www.eclipse.org/syson/sysml');
 INSERT INTO public.semantic_data_domain VALUES ('5e2327fa-1247-4429-9b26-64b7941965f2', 'http://www.eclipse.org/syson/sysml');
 INSERT INTO public.semantic_data_domain VALUES ('d7bf64ef-d408-437e-96b1-13b097c87f0e', 'http://www.eclipse.org/syson/sysml');
+INSERT INTO public.semantic_data_domain VALUES ('4b5adc0c-90a2-48c6-9ae7-c3fc035ff38b', 'http://www.eclipse.org/syson/sysml');
 
 
 --
