@@ -93,6 +93,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - All standard libraries have been updated to comply with the SysML Beta 2.2 specification.
 - Improve import feature non regression tests.
 Added source sysml file and unaltered ast.json result.
+- Changed cardinality of PortionKind on OccurrenceUsage to [0..1], now unsettable. Now default to null.
 
 == New features
 

@@ -89,6 +89,7 @@ This reduces the time required to build SysON, especially when using Spring Tool
 - https://github.com/eclipse-syson/syson/issues/803[#803] [libraries] All standard libraries have been updated to comply with the SysML Beta 2.2 specification.
 - https://github.com/eclipse-syson/syson/issues/805[#805] [import] Improve non regression tests.
 Added source sysml file and unaltered ast.json result.
+- https://github.com/eclipse-syson/syson/issues/829[#829] [metamodel] Changed cardinality of PortionKind on OccurrenceUsage to [0..1], now unsettable. Now default to null.
 
 === New features
 
