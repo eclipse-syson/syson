@@ -34,7 +34,7 @@ jobs:
           node-version: 18.7
           registry-url: https://npm.pkg.github.com/
 
-      - name: Check that the CHANGELOG has been updated
+      - name: Check that the CHANGELOG files have been updated
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
         run: node scripts/check-changelog.js

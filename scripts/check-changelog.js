@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,12 +32,35 @@ const changelog = fs.readFileSync(`${workspace}/CHANGELOG.adoc`, {
   encoding: 'utf8',
 });
 
-const invalidContent =
+const latestTag = childProcess.execSync('git describe --tags --abbrev=0', {
+  encoding: 'utf8',
+});
+
+// Get the next release version based on the latest tag
+const regexpCoordinates = /v(\d{4})\.(\d{1,2})\..*/g;
+const match = regexpCoordinates.exec(latestTag);
+let yearReleaseVersion = Number(match[1]);
+let majorReleaseVersion = Number(match[2]);
+if(majorReleaseVersion === 11) {
+  yearReleaseVersion++;
+}
+majorReleaseVersion = (majorReleaseVersion + 2) % 12;
+const nextReleaseVersion = yearReleaseVersion + '.' + majorReleaseVersion
+const docChangelogPath = `doc/content/modules/user-manual/pages/release-notes/${nextReleaseVersion}.0.adoc`
+const docChangelog = fs.readFileSync(`${workspace}/${docChangelogPath}`);
+
+const invalidChangelogContent =
   changelog.includes('<<<<<<<') ||
   changelog.includes('=======') ||
   changelog.includes('>>>>>>>');
 
+const invalidDocChangelogContent = 
+  docChangelog.includes('<<<<<<<') ||
+  docChangelog.includes('=======') ||
+  docChangelog.includes('>>>>>>>');
+
 const missingIssuesInChangelog = [];
+const missingIssuesInDocChangelog = [];
 for (let index = 0; index < lines.length; index++) {
   const line = lines[index];
   const gitShowCommand = `git rev-list --format=%B --max-count=1 ${line}`;
@@ -62,6 +85,16 @@ for (let index = 0; index < lines.length; index++) {
         if (!changelog.includes(issueURL)) {
           missingIssuesInChangelog.push(issueURL);
         }
+
+        // Check that the documentation changelog has been updated in the commit
+        const gitDescribeCommand = `git diff-tree --no-commit-id --name-only ${line} -r`;
+        const changedFiles = childProcess.execSync(gitDescribeCommand, {
+          encoding: 'utf8',
+        });
+        const changedFilesLines = changedFiles.split(/\r?\n/);
+        if(!changedFilesLines.includes(docChangelogPath)) {
+          missingIssuesInDocChangelog.push(issueURL);
+        }
       }
     }
   }
@@ -73,9 +106,20 @@ if (missingIssuesInChangelog.length > 0) {
   );
   console.log(missingIssuesInChangelog);
   process.exit(1);
-} else if (invalidContent) {
+} else if(missingIssuesInDocChangelog.length > 0) {
+  console.log(
+    `The commits referencing the following issues should contain a modification of the latest documentation changelog (${docChangelogPath})`
+  );
+  console.log(missingIssuesInDocChangelog);
+  process.exit(1);
+} else if (invalidChangelogContent) {
   console.log(
     'The CHANGELOG seems to contain Git conflict markers like "<<<<<<<", "=======" or ">>>>>>>"'
+  );
+  process.exit(1);
+} else if(invalidDocChangelogContent) {
+  console.log(
+    'The documentation changelog seems to contains Git conflict markers like "<<<<<<<", "=======" or ">>>>>>>"'
   );
   process.exit(1);
 }
