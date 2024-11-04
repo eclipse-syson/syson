@@ -10,6 +10,8 @@ For production deployments, obtain a valid certificate from a trusted CA to ensu
 If you intend to install {product} on a local server or machine and allow several users to access it, you must enable HTTPS.
 If you don't have a certificate, you can generate one by using https://docs.oracle.com/en/java/javase/11/tools/keytool.html[keytool] for testing purposes only.
 
+This procedure requires to have the `keytool` application to be installed (the application comes with the Java Runtime Environment as explain in xref:requirements.adoc[prerequisites]:)
+
 . Create a self-signed certificate:
 +
 [source, bash]

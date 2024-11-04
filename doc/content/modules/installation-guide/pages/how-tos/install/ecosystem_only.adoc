@@ -1,0 +1,67 @@
+= How to install {product} ecosystem only ?
+
+This section provides a step-by-step guide on setting up the necessary ecosystem to develop the product locally. By following these instructions, you’ll configure your local environment with all required dependencies, tools, and services, enabling you to develop, test, and troubleshoot the product effectively on your own machine.
+
+== Start the database instance
+
+{product} uses PostgreSQL as its database.
+
+For development or local testing, the simplest approach is to initiate a PostgreSQL instance using Docker.
+
+[source, bash]
+----
+docker run -p 5433:5432 --name syson-postgres \
+                            -e POSTGRES_USER=dbuser \
+                            -e POSTGRES_PASSWORD=dbpwd \
+                            -e POSTGRES_DB=syson-db \
+                            -d postgres
+----
+
+[TIP]
+====
+For Windows users, here is the same command on one line:
+
+[source, bash]
+----
+docker run -p 5433:5432 --name syson-postgres -e POSTGRES_USER=dbuser -e POSTGRES_PASSWORD=dbpwd -e POSTGRES_DB=syson-db -d postgres
+----
+====
+
+[NOTE]
+====
+This may take a while the first time you run this as Docker will first pull the PostgreSQL image.
+====
+
+If you don't have Docker or prefer to use an existing PostgreSQL installation, modify the following command-line parameters and ensure the `POSTGRES_USER` possesses administrative rights on the database.
+These rights are necessary for the automatic creation of the database schema.
+
+[#start-app]
+== Start the application
+
+To run the application, you'll need to use the Java Runtime Environment (JRE) to execute the pre-build JAR ({product-jar}) you xref:how-tos/install.adoc#download[downloaded] earlier.
+
+Go to the folder containing the {product-jar} and run the command:"
+
+[source, bash]
+----
+java -jar path\to\your\syson-application-YEAR.MONTH.0.jar \
+          --spring.datasource.url=jdbc:postgresql://localhost:5433/syson-db \
+          --spring.datasource.username=dbuser \
+          --spring.datasource.password=dbpwd
+----
+
+[#openwebbrowser]
+== Open your web browser
+
+Navigate to `http://localhost:8080` to experience {product}.
+
+[TIP]
+====
+To end your local testing session, ensure you stop the running PostgreSQL Docker container using the command `docker kill syson-postgres`.
+Please note that this will erase all the data you have generated during testing.
+====
+
+If you encounter any issues during the installation process, please refer to the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.
+
+== Other resources
+xref:installation-guide:how-tos/https.adoc[]
