@@ -1,0 +1,60 @@
+= Local installation of {product} for single-user testing purposes
+
+This section provides instructions for installing a local version of the application, intended for testing purposes. This setup is configured for use by the local user only and does not include any security configurations.
+
+== Get {product}
+
+[CAUTION]
+.Stable versions
+====
+Only `YEAR.MONTH.0` versions are stable and suitable for production deployments.
+Other versions, such as intermediate releases, are intended solely for testing purposes.
+They're not recommended for production use due to their potential for further changes and instability.
+Always use the stable `.0` releases for any production environments to ensure reliability and support.
+For more details see xref:user-manual:cycle.adoc[].
+====
+
+[#docker-install]
+== Deploy {product} with Docker Compose
+
+The easiest and most straightforward method to deploy {product} using Docker Compose, which automatically deploy prerequisites.
+
+[INFO]
+====
+Before you proceed with the installation, please ensure you have the following xref:requirements.adoc[Hardware prerequisites]:
+
+* https://www.docker.com/[Docker] installed.
+====
+
+{product} is distributed as a docker container.
+To deploy {product}, just download the https://github.com/eclipse-syson/syson/blob/{syson-tag}/docker-compose.yml[docker-compose] file and run the following docker command in the same folder as the one where is the _docker-compose.yml_ file:
+[source, bash]
+----
+docker compose up
+----
+
+This method deploys {product} (matching the version tagged in this documentation) along with a PostgreSQL database, all within a Docker container.
+
+[INFO]
+====
+To deploy a specific version vYYYY.MM.0, edit the _docker-compose.yml_ file and replace the tagged version with your desired version. For example, update the following line in the _docker-compose.yml_:
+app:
+  image: "${IMAGE_TAG:-eclipsesyson/syson:*vYYYY.MM.0*}"
+====
+
+All accessible versions of {product} as Docker containers are listed in the https://hub.docker.com/r/eclipsesyson/syson/tags[{product} Docker registry].
+
+Once your Docker up, please go directly to the xref:how-tos/install.adoc#openwebbrowser[Open your web browser] section!
+
+[#openwebbrowser]
+== Open your web browser
+
+Navigate to `http://localhost:8080` to experience {product}.
+
+[TIP]
+====
+To end your local testing session, ensure you stop the running PostgreSQL and {product} Docker container and using the command `docker compose down`.
+Please note that this will erase all the data you have generated during testing.
+====
+
+If you encounter any issues during the installation process, please refer to the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.
