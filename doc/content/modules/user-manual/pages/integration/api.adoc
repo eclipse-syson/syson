@@ -15,7 +15,7 @@ As {product} progresses, these future developments in interoperability will furt
 
 The ongoing commitment to incorporating standard REST APIs and {sysmlv2} textual specifications underscores {product}'s dedication to providing users with a versatile and interoperable modeling solution.
 
-The whole list of REST APIs is available on the OMG website, in the [SystemsModelingAPI section](https://www.omg.org/spec/SystemsModelingAPI/).
+The whole list of REST APIs is available on the OMG website, in the https://www.omg.org/spec/SystemsModelingAPI/[SystemsModelingAPI section].
 
 [IMPORTANT]
 ====
