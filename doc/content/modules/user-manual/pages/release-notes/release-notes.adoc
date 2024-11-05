@@ -2,6 +2,7 @@
 
 :sectnums!:
 
+include::user-manual:release-notes/2024.11.0.adoc[leveloffset=+1]
 include::user-manual:release-notes/2024.9.0.adoc[leveloffset=+1]
 include::user-manual:release-notes/2024.7.0.adoc[leveloffset=+1]
 include::user-manual:release-notes/2024.5.0.adoc[leveloffset=+1]
