@@ -46,8 +46,6 @@ describe('Details View Tests', () => {
     });
 
     context('When we select a PartUsage without type', () => {
-      beforeEach(() => explorer.select('Batmobile'));
-
       it('Then the details view contains the extra property "Typed by" even if the PartUsage has no type yet.', () => {
         explorer.createObject(batmobile.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
         cy.wait(400);
