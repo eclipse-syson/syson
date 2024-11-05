@@ -69,7 +69,7 @@ export class Explorer {
   }
 
   public createObject(objectTreeItemLabel: string, childCreationDescriptionLabel: string) {
-    this.getTreeItemByLabel(objectTreeItemLabel).find('button').click();
+    this.getTreeItemByLabel(objectTreeItemLabel).first().find('button').click();
     cy.getByTestId('new-object').click();
 
     cy.getByTestId('childCreationDescription').children('[role="combobox"]').invoke('text').should('have.length.gt', 1);
