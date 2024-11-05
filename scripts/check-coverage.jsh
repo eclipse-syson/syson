@@ -30,13 +30,13 @@ double checkCoverage(String module) {
 
 record ModuleCoverage(String moduleName, double expectedCoverage) {}
 var moduleCoverageData = List.of(
-  new ModuleCoverage("syson-sysml-metamodel", 64.0),
+  new ModuleCoverage("syson-sysml-metamodel", 67.0),
   new ModuleCoverage("syson-sysml-metamodel-edit", 4.0),
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel", 31.0),
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel-edit", 0.0),
   new ModuleCoverage("syson-direct-edit-grammar", 63.0),
   new ModuleCoverage("syson-services", 61.0),
-  new ModuleCoverage("syson-sysml-rest-api-services", 0.0),
+  new ModuleCoverage("syson-sysml-rest-api-services", 100.0),
   new ModuleCoverage("syson-sysml-import", 68.0),
   new ModuleCoverage("syson-sysml-export", 87.0),
   new ModuleCoverage("syson-diagram-common-view", 79.0),
@@ -75,7 +75,7 @@ System.out.println();
 
 // Check global code coverage
 double global = checkCoverage("");
-double expectedGlobalCoverage = 56.0;
+double expectedGlobalCoverage = 57.0;
 boolean isValidCoverage = global >= expectedGlobalCoverage;
 display("total", global, expectedGlobalCoverage);
 

@@ -21,7 +21,7 @@ There are no commits in Sirius Web so you can use the same Id as the projectId f
 There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
 ** getRootElements (GET /api/rest/projects/{projectId}/commits/{commitId}/roots): Get all the root elements in the given project at the given commit.
 There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
-Please read the [APIs section](https://doc.mbse-syson.org/syson/v2024.11.0/user-manual/integration/api.html) in the official [SysON documentation](https://doc.mbse-syson.org) for more details.
+Please read the xref:/integration/api.adoc[APIs section] in this documentation for more details.
 
 == Breaking changes
 
