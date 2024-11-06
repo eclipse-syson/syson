@@ -179,6 +179,7 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.handleMissingAbstractPrefixExpression(ctx);
         this.handleMissingVariationPrefixExpression(ctx);
         this.handleMissingReferenceExpression(ctx);
+        this.handleMissingMultiplicityExpression(ctx);
         this.handleMissingSubclassificationExpression(ctx);
         this.handleMissingSubsettingExpression(ctx);
         this.handleMissingRedefinitionExpression(ctx);
@@ -1044,15 +1045,20 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    private void handleMissingMultiplicityExpression(ListItemExpressionContext ctx) {
+    private void handleMissingMultiplicityExpression(ParserRuleContext ctx) {
         if (this.options.contains(LabelService.MULTIPLICITY_OFF)) {
             return;
         }
-        MultiplicityExpressionContext multiplicityExpression = ctx.multiplicityExpression();
+        MultiplicityExpressionContext multiplicityExpression = null;
+        if (ctx instanceof ListItemExpressionContext listCtx) {
+            multiplicityExpression = listCtx.multiplicityExpression();
+        } else if (ctx instanceof NodeExpressionContext nodeCtx) {
+            multiplicityExpression = nodeCtx.multiplicityExpression();
+        }
         if (this.element instanceof Usage && multiplicityExpression != null && this.isDeleteMultiplicityExpression(multiplicityExpression)) {
             var optMultiplicityRange = this.element.getOwnedRelationship().stream()
-                    .filter(OwningMembership.class::isInstance)
-                    .map(OwningMembership.class::cast)
+                    .filter(Membership.class::isInstance)
+                    .map(Membership.class::cast)
                     .flatMap(m -> m.getOwnedRelatedElement().stream())
                     .filter(MultiplicityRange.class::isInstance)
                     .map(MultiplicityRange.class::cast)

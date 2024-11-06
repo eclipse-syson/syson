@@ -86,6 +86,7 @@ The changes are:
 - Fix an issue where `InterfaceUsage` and `FlowConnectionUsage` elements might be created inside the wrong membership in the Interconnection View diagram.
 - Add `declaredName` attribute in `AnnotatingElement` (if present) in export to textual SysMLv2.
 - Fix visibility issue when resolving name of privately imported element during export.
+- Fix an issue where it was impossible anymore to delete the cardinality of a `Usage` as graphical node through direct edit.
 
 == Improvements
 

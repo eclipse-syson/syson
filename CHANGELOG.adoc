@@ -66,6 +66,7 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/817[#817] [interconnection-view] Fix an issue where `InterfaceUsage` and `FlowConnectionUsage` elements might be created inside the wrong membership.
 - https://github.com/eclipse-syson/syson/issues/740[#740] [export] Fix missing `declaredName` after exporting an `AnnotatingElement`.
 - https://github.com/eclipse-syson/syson/issues/812[#812] [export] Fix visibility issue when resolving name of privately imported element during export.
+- https://github.com/eclipse-syson/syson/issues/836[#836] [services] Fix an issue where it was impossible anymore to delete the cardinality of a `Usage` as graphical node through direct edit.
 
 === Improvements
 
