@@ -70,7 +70,7 @@ The changes are:
 
 - Switch to Spring Boot 3.3.3
 - Migrate the frontend to `react 18.3.1`, `react-dom 18.3.1`, `react-router-dom 6.26.0`, `@xstate/react: 3.0.0` and `@ObeoNetwork/gantt-task-react 0.6.0`
-- Switch to Sirius Web 2024.9.11
+- Switch to Sirius Web 2024.11.0
 - Switch to the final release version of AQL 8.0.2
 - Switch to @ObeoNetwork/gantt-task-react 0.6.1 to benefit for enhancements
 - Add a dependency to `material-react-table "2.13.3"` and `export-to-csv "1.3.0"`
