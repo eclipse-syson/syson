@@ -30,6 +30,7 @@ import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceSubsetting;
 import org.eclipse.syson.sysml.Subclassification;
+import org.eclipse.syson.sysml.Subsetting;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -106,6 +107,15 @@ public class RelatedElementsSwitch extends SysmlSwitch<Set<EObject>> {
     public Set<EObject> caseSubclassification(Subclassification object) {
         Set<EObject> relatedElements = new HashSet<>();
         if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getSubclassification_Superclassifier())) {
+            relatedElements.add(object);
+        }
+        return relatedElements;
+    }
+
+    @Override
+    public Set<EObject> caseSubsetting(Subsetting object) {
+        Set<EObject> relatedElements = new HashSet<>();
+        if (this.eStructuralFeature.equals(SysmlPackage.eINSTANCE.getSubsetting_SubsettedFeature())) {
             relatedElements.add(object);
         }
         return relatedElements;

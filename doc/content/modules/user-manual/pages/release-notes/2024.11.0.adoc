@@ -87,6 +87,7 @@ The changes are:
 - Add `declaredName` attribute in `AnnotatingElement` (if present) in export to textual SysMLv2.
 - Fix visibility issue when resolving name of privately imported element during export.
 - Fix an issue where it was impossible anymore to delete the cardinality of a `Usage` as graphical node through direct edit.
+- Fix an issue where `Subsetting` elements were not deleted at the same time as the deletion of their subsetted `Feature`.
 
 == Improvements
 
