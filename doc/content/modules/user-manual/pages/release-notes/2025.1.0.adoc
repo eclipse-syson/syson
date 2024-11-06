@@ -1,0 +1,13 @@
+= 2025.1.0 (work in progress)
+
+== Key highlights
+
+== Breaking changes
+
+== Dependency update
+
+== Bug fixes
+
+== Improvements
+
+== New features
