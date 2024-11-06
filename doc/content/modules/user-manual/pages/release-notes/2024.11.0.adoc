@@ -4,7 +4,7 @@
 
 - *Model conformance to SysMLv2 Beta 2.2 version*: the metamodel has been modified to conform to SysMLv2 and KerML Beta 2.2 specifications released on October 2024.
 All standard libraries have also been updated.
-- *Introduce SysMLv2 REST APIs*: introduce partial support of the standard REST APIs from the OMG [SystemsModelingAPI](https://www.omg.org/spec/SystemsModelingAPI/).
+- *Introduce SysMLv2 REST APIs*: introduce partial support of the standard REST APIs from the OMG https://www.omg.org/spec/SystemsModelingAPI/[SystemsModelingAPI].
 In this first implementation we will only implement the following REST APIs, thanks to Sirius Web:
 * Project-related REST APIs:
 ** getProjects (GET /api/rest/projects): Get all projects.

@@ -125,7 +125,7 @@ export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
             handleStyle={{ ...resizeHandleStyle(theme) }}
             lineStyle={{ ...resizeLineStyle(theme) }}
             color={theme.palette.selected}
-            isVisible={selected}
+            isVisible={!!selected}
             shouldResize={() => !data.isBorderNode}
             keepAspectRatio={data.nodeDescription?.keepAspectRatio}
           />
@@ -165,14 +165,14 @@ export const SysMLNoteNode: NodeComponentsMap['sysMLNoteNode'] = memo(
             </svg>
           </div>
           {data.insideLabel ? <Label diagramElementId={id} label={updatedLabel} faded={data.faded} /> : null}
-          {selected ? (
+          {!!selected ? (
             <DiagramElementPalette
               diagramElementId={id}
               targetObjectId={data.targetObjectId}
               labelId={data.insideLabel ? data.insideLabel.id : null}
             />
           ) : null}
-          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
         </div>
