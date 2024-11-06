@@ -1,6 +1,6 @@
 {
   "name": "syson-integration-tests",
-  "version": "2024.9.2",
+  "version": "2024.11.0",
   "license": "EPL-2.0",
   "private": true,
   "devDependencies": {

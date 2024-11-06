@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-application</artifactId>
-	<version>2024.9.2</version>
+	<version>2024.11.0</version>
 	<name>syson-application</name>
 	<description>SysON Application</description>
 
@@ -101,62 +101,62 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel-edit</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-frontend</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-application-configuration</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-rest-api-services</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-common-view</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-general-view</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-interconnection-view</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-actionflow-view</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-statetransition-view</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-import</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-export</artifactId>
-			<version>2024.9.2</version>
+			<version>2024.11.0</version>
 		</dependency>
 
 		<!-- Test Dependencies -->
