@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson</artifactId>
-	<version>2024.9.2</version>
+	<version>2024.11.0</version>
 
 	<name>syson</name>
 	<description>SysON</description>
