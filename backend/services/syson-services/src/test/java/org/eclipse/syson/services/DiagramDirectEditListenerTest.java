@@ -233,6 +233,21 @@ public class DiagramDirectEditListenerTest {
         assertEquals(4, lowerBoundLiteral.getValue());
     }
 
+    @DisplayName("Given a PartUsage as graphical node, when it is edited with '[]', then its multiplicity is deleted")
+    @Test
+    public void testDirectEditPartUsageNodeWithMultiplicityDeleted() {
+        PartUsage partUsage = this.createFlashlight();
+        this.doDirectEditOnNode(partUsage, "[]");
+        var optMultiplicityRange = partUsage.getOwnedRelationship().stream()
+                .filter(OwningMembership.class::isInstance)
+                .map(OwningMembership.class::cast)
+                .flatMap(m -> m.getOwnedRelatedElement().stream())
+                .filter(MultiplicityRange.class::isInstance)
+                .map(MultiplicityRange.class::cast)
+                .findFirst();
+        assertTrue(optMultiplicityRange.isEmpty());
+    }
+
     @DisplayName("Given a PartUsage as graphical node, when it is edited with '<1.1>', then its short name is set and its name is unchanged")
     @Test
     public void testDirectEditPartUsageNodeWithShortName() {
