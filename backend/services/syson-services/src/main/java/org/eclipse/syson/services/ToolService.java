@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 
 /**
@@ -232,10 +233,30 @@ public class ToolService {
 
     protected void moveElement(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        this.utilService.moveMembership(droppedElement, targetElement);
+        this.moveSemanticElement(droppedElement, targetElement);
         ViewCreationRequest droppedElementViewCreationRequest = this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
         this.moveSubNodes(droppedElementViewCreationRequest, droppedNode, diagramContext);
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
+    }
+
+    protected void moveSemanticElement(Element element, Element newParent) {
+        if (element instanceof Import imprt) {
+            newParent.getOwnedRelationship().add(0, imprt);
+        } else {
+            this.utilService.moveMembership(element, newParent);
+        }
+    }
+
+    protected Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescription(String descriptionId, DiagramDescription diagramDescription,
+            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
+        return EMFUtils.eAllContentStreamWithSelf(diagramDescription)
+                .filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
+                .map(org.eclipse.sirius.components.view.diagram.NodeDescription.class::cast)
+                .filter(nodeDesc -> {
+                    NodeDescription convertedNodeDesc = convertedNodes.get(nodeDesc);
+                    return convertedNodeDesc != null && descriptionId.equals(convertedNodeDesc.getId());
+                })
+                .findFirst();
     }
 
     /**
@@ -258,7 +279,7 @@ public class ToolService {
      * @param diagramContext
      *            the diagram context
      */
-    private void moveSubNodes(ViewCreationRequest parentViewCreationRequest, Node parentNode, IDiagramContext diagramContext) {
+    protected void moveSubNodes(ViewCreationRequest parentViewCreationRequest, Node parentNode, IDiagramContext diagramContext) {
         for (Node childNode : parentNode.getChildNodes()) {
             ViewCreationRequest childViewCreationRequest = ViewCreationRequest.newViewCreationRequest()
                     .containmentKind(NodeContainmentKind.CHILD_NODE)
@@ -288,17 +309,5 @@ public class ToolService {
                 diagramContext.getDiagramEvents().add(new HideDiagramElementEvent(Set.of(this.getParentElementId(childViewCreationRequest, diagramContext)), true));
             }
         }
-    }
-
-    protected Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescription(String descriptionId, DiagramDescription diagramDescription,
-            Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        return EMFUtils.eAllContentStreamWithSelf(diagramDescription)
-                .filter(org.eclipse.sirius.components.view.diagram.NodeDescription.class::isInstance)
-                .map(org.eclipse.sirius.components.view.diagram.NodeDescription.class::cast)
-                .filter(nodeDesc -> {
-                    NodeDescription convertedNodeDesc = convertedNodes.get(nodeDesc);
-                    return convertedNodeDesc != null && descriptionId.equals(convertedNodeDesc.getId());
-                })
-                .findFirst();
     }
 }

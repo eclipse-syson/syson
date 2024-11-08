@@ -23,6 +23,8 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Unit test for the imported package custom node style.
+ * 
+ * @author jgout
  */
 public class SysMLImportedPackageNodeStyleDescriptionTests {
 
