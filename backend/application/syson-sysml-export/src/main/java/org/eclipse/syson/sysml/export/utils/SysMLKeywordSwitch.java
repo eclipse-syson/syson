@@ -18,6 +18,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AllocationDefinition;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -54,6 +56,8 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
     private static final Logger LOGGER = LoggerFactory.getLogger(SysMLKeywordSwitch.class);
 
     private static final String PART_KEYWORD = "part";
+
+    private static final String ALLOCATION_KEYWORD = "allocation";
 
     private static final String PORT_KEYWORD = "port";
 
@@ -166,6 +170,16 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
             return ACTOR_KEYWORD;
         }
         return PART_KEYWORD;
+    }
+
+    @Override
+    public String caseAllocationDefinition(AllocationDefinition object) {
+        return ALLOCATION_KEYWORD;
+    }
+
+    @Override
+    public String caseAllocationUsage(AllocationUsage object) {
+        return ALLOCATION_KEYWORD;
     }
 
     @Override

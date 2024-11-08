@@ -21,6 +21,8 @@ import java.util.List;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AllocationDefinition;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.Annotation;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
@@ -1254,6 +1256,38 @@ public class SysMLElementSerializerTest {
                     actor partU_1;
                 }""", useCaseDefinition);
 
+    }
+
+    @DisplayName("AllocationDefinition")
+    @Test
+    public void allocationDefinition() {
+        AllocationDefinition allocationDefinition = this.builder.createWithName(AllocationDefinition.class, "ad_1");
+
+        this.assertTextualFormEquals("allocation def ad_1;", allocationDefinition);
+    }
+
+    @DisplayName("AllocationDefinition containing a part")
+    @Test
+    public void allocationDefinitionWithContainedEnd() {
+        AllocationDefinition allocationDefinition = this.builder.createWithName(AllocationDefinition.class, "ad_1");
+        this.builder.createInWithName(PartUsage.class, allocationDefinition, "part_1");
+
+        this.assertTextualFormEquals("""
+                allocation def ad_1 {
+                    ref part part_1;
+                }""", allocationDefinition);
+    }
+
+    @DisplayName("AllocationUsage")
+    @Test
+    public void allocationUsage() {
+        AllocationUsage allocationDefinition = this.builder.createWithName(AllocationUsage.class, "au_1");
+        this.builder.createInWithName(PartUsage.class, allocationDefinition, "part_1");
+
+        this.assertTextualFormEquals("""
+                ref allocation au_1 {
+                    ref part part_1;
+                }""", allocationDefinition);
     }
 
     @DisplayName("ActionUsage with simple succession with owned sub-actions")

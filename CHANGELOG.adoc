@@ -22,6 +22,7 @@
 
 - https://github.com/eclipse-syson/syson/issues/829[#829] [metamodel] `OccurrenceUsag#portionKind` is now unsettable and its default value is `null`.
 - https://github.com/eclipse-syson/syson/issues/796[#796] [import] Improve the code in import module, by making it more generic
+- https://github.com/eclipse-syson/syson/issues/843[#843] [export] Add support of `AllocationDefinition` and 'AllocationUsage` in export from model to textual SysMLv2.
 
 === New features
 
