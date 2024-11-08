@@ -582,7 +582,10 @@ public class ViewToolService extends ToolService {
         } else if (parentElement instanceof Definition definition) {
             childElements = definition.getOwnedUsage();
         } else if (parentElement instanceof Namespace np) {
-            childElements = np.getOwnedMember();
+            List<Element> children = new ArrayList<>();
+            children.addAll(np.getOwnedMember());
+            children.addAll(np.getOwnedImport());
+            childElements = children;
         } else {
             childElements = List.of();
         }
