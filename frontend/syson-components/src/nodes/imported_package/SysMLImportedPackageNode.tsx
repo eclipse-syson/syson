@@ -23,6 +23,7 @@ import {
   DiagramElementPalette,
   Label,
   useConnectorNodeStyle,
+  useDrop,
   useDropNodeStyle,
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams';
@@ -133,8 +134,13 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
   ({ data, id, selected, dragging }: NodeProps<Node<SysMLImportedPackageNodeData>>) => {
     const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme: Theme = useTheme();
+    const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+
+    const handleOnDrop = (event: React.DragEvent) => {
+      onDrop(event, id);
+    };
 
     const label: any = {
       ...data.insideLabel,
@@ -201,6 +207,8 @@ export const SysMLImportedPackageNode: NodeComponentsMap['sysMLImportedPackageNo
           style={{
             ...sysMLImportedPackageNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
           }}
+          onDragOver={onDragOver}
+          onDrop={handleOnDrop}
           data-testid={`SysMLImportedPackage - ${data?.insideLabel?.text}`}>
           {!!selected ? (
             <DiagramElementPalette

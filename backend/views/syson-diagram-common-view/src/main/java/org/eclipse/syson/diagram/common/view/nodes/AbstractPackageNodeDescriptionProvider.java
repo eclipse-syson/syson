@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.FreeFormLayoutStrategyDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
@@ -191,7 +192,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .initialDirectEditLabelExpression(AQLConstants.AQL_SELF + ".getDefaultInitialDirectEditLabel()")
                 .body(callEditService.build());
 
-        var edgeTools = new ArrayList<EdgeTool>(this.getEdgeTools(nodeDescription, cache));
+        var edgeTools = new ArrayList<>(this.getEdgeTools(nodeDescription, cache));
 
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
@@ -209,7 +210,8 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
 
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {
         var dropElementFromDiagram = this.viewBuilderHelper.newChangeContext()
-                .expression("aql:droppedElement.dropElementFromDiagram(droppedNode, targetElement, targetNode, editingContext, diagramContext, convertedNodes)");
+                .expression(AQLUtils.getServiceCallExpression("droppedElement", "dropElementFromDiagram",
+                        List.of("droppedNode", "targetElement", "targetNode", IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "convertedNodes")));
 
         return this.diagramBuilderHelper.newDropNodeTool()
                 .name("Drop from Diagram")
