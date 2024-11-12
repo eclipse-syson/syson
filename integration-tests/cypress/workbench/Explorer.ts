@@ -61,10 +61,10 @@ export class Explorer {
 
     // Use get because Sirius Web doesn't provide a usable data-testid
     cy.get('input[name="suggested"]').should('exist').click();
-    cy.getByTestId('type').click();
+    cy.getByTestId('type').should('not.be.disabled').click();
     // Use get because Sirius Web doesn't provide a usable data-testid
     cy.get(`li[data-value="${childCreationDescriptionLabel}"`).should('exist').click();
-    cy.getByTestId('create-object').click();
+    cy.getByTestId('create-object').should('not.be.disabled').click();
     cy.getByTestId('create-object').should('not.exist');
   }
 
