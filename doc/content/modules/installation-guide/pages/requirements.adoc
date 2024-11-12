@@ -47,12 +47,20 @@ a|To connect your {product} instance to an enterprise database, you must install
 * *PostgreSQL 15*
 
 Verify that the server has a dedicated PostgreSQL database with administrator rights.
+
 |*Java Runtime Environment - `JRE`*
 a|You need to install and configure a separate JRE to run {product}, you have to install a supported version of the Java runtime:
 
 * Use *Java 17* to run the {product} Server.
 
 It's recommended to use the Java runtime provided by the https://adoptium.net/fr/temurin/releases/[Eclipse Temurin] project.
+
+|*Node.js*
+a|Node.js is required for the import module to work. The import module allows to import {sysmlv2} textual files into {product}:
+
+* *Node.js 18.7*
+
+Verify that Node.js has been added to the `PATH` environment variable.
 
 |*Network Connectivity*
 |Stable internet connection for updates and communication with {product} Clients.
