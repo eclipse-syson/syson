@@ -82,6 +82,11 @@ jobs:
           npm ci
           npm run build
 
+      - name: Check that the frontend dependencies are ok
+        env:
+          GITHUB_EVENT: ${{ toJSON(github.event) }}
+        run: node scripts/check-frontend-dependencies.js
+
       - name: Copy frontend artifacts
         run: |
           mkdir -p backend/application/syson-frontend/src/main/resources/static
