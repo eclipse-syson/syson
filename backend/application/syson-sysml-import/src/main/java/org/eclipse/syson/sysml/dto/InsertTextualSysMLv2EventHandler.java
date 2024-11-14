@@ -98,8 +98,11 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
             var parentObjectId = insertTextualInput.objectId();
             var parentElement = this.getParentElement(parentObjectId, emfEditingContext);
             if (parentElement != null) {
-                var resource = this.convert(insertTextualInput, emfEditingContext);
+                var tranformer = new ASTTransformer();
+                var resource = this.convert(insertTextualInput, emfEditingContext, tranformer);
                 if (resource != null && !resource.getContents().isEmpty()) {
+                    // Workaround for https://github.com/eclipse-syson/syson/issues/860
+                    tranformer.logTransformationMessages();
                     var rootElements = this.extractContent(resource);
                     rootElements.forEach(element -> {
                         var membership = this.createMembership(parentElement);
@@ -140,12 +143,11 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
         return null;
     }
 
-    private Resource convert(InsertTextualSysMLv2Input insertTextualInput, IEMFEditingContext emfEditingContext) {
+    private Resource convert(InsertTextualSysMLv2Input insertTextualInput, IEMFEditingContext emfEditingContext, ASTTransformer tranformer) {
         var textualContent = insertTextualInput.textualContent();
         var resourceSet = emfEditingContext.getDomain().getResourceSet();
         var inputStream = new ByteArrayInputStream(textualContent.getBytes());
         var astStream = this.sysmlToAst.convert(inputStream, ".sysml");
-        var tranformer = new ASTTransformer();
         var resource = tranformer.convertResource(astStream, resourceSet);
         return resource;
     }

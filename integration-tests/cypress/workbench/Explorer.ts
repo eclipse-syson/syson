@@ -61,7 +61,10 @@ export class Explorer {
 
     // Use get because Sirius Web doesn't provide a usable data-testid
     cy.get('input[name="suggested"]').should('exist').click();
+    cy.getByTestId('CheckBoxOutlineBlankIcon').should('exist');
+    cy.getByTestId('type').should('not.be.disabled').contains('Accept Action');
     cy.getByTestId('type').should('not.be.disabled').click();
+    cy.getByTestId('type').children('[role="combobox"]').should('have.attr', 'aria-expanded', 'true');
     // Use get because Sirius Web doesn't provide a usable data-testid
     cy.get(`li[data-value="${childCreationDescriptionLabel}"`).should('exist').click();
     cy.getByTestId('create-object').should('not.be.disabled').click();

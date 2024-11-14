@@ -10,7 +10,7 @@
             "$type": "OwningMembership",
             "visibility": "private",
             "$cstNode": {
-              "text": "private part def Referred {\n\t}",
+              "text": "private part def Referred {}",
               "stack": [
                 "DefinitionMember",
                 "PackageBodyElement"
@@ -21,7 +21,7 @@
             "target": {
               "$type": "PartDefinition",
               "$cstNode": {
-                "text": "part def Referred {\n\t}",
+                "text": "part def Referred {}",
                 "stack": [
                   "DefinitionElement",
                   "DefinitionMember"
@@ -49,7 +49,7 @@
             "$type": "OwningMembership",
             "visibility": "public",
             "$cstNode": {
-              "text": "public item def A {\n\t\tprotected ref part aReference: Referred;\n\t}",
+              "text": "public item def A {\n\t\tprotected ref part aReference : Referred;\n\t}",
               "stack": [
                 "DefinitionMember",
                 "PackageBodyElement"
@@ -64,7 +64,7 @@
                   "$type": "FeatureMembership",
                   "visibility": "protected",
                   "$cstNode": {
-                    "text": "protected ref part aReference: Referred;",
+                    "text": "protected ref part aReference : Referred;",
                     "stack": [
                       "OccurrenceUsageMember",
                       "DefinitionBodyItem"
@@ -75,7 +75,7 @@
                   "target": {
                     "$type": "PartUsage",
                     "$cstNode": {
-                      "text": "ref part aReference: Referred;",
+                      "text": "ref part aReference : Referred;",
                       "stack": [
                         "OccurrenceUsageElement",
                         "OccurrenceUsageMember"
@@ -135,7 +135,7 @@
                 }
               ],
               "$cstNode": {
-                "text": "item def A {\n\t\tprotected ref part aReference: Referred;\n\t}",
+                "text": "item def A {\n\t\tprotected ref part aReference : Referred;\n\t}",
                 "stack": [
                   "DefinitionElement",
                   "DefinitionMember"
@@ -1153,7 +1153,7 @@
             "target": {
               "$type": "PartDefinition",
               "$cstNode": {
-                "text": "variation part def V :> A {\n\t}",
+                "text": "variation part def V :> A {}",
                 "stack": [
                   "DefinitionElement",
                   "DefinitionMember"
@@ -1204,7 +1204,7 @@
               }
             },
             "$cstNode": {
-              "text": "variation part def V :> A {\n\t}",
+              "text": "variation part def V :> A {}",
               "stack": [
                 "DefinitionMember",
                 "PackageBodyElement"
@@ -1634,132 +1634,11 @@
             "target": {
               "$type": "AttributeUsage",
               "$cstNode": {
-                "text": "readonly attribute ro[0..2];",
+                "text": "readonly attribute ro;",
                 "stack": [
                   "UsageElement",
                   "UsageMember"
                 ]
-              },
-              "multiplicity": {
-                "$type": "OwningMembership",
-                "target": {
-                  "$type": "MultiplicityRange",
-                  "range": {
-                    "$type": "OwningMembership",
-                    "target": {
-                      "$type": "OperatorExpression",
-                      "operands": [
-                        {
-                          "$type": "LiteralNumber",
-                          "literal": 0,
-                          "$cstNode": {
-                            "text": "0",
-                            "stack": [
-                              "AdditiveExpression",
-                              "RangeExpression"
-                            ]
-                          },
-                          "isNonunique": false,
-                          "isOrdered": false,
-                          "heritage": [],
-                          "isSufficient": false,
-                          "typeRelationships": [],
-                          "children": [],
-                          "prefixes": [],
-                          "$meta": {
-                            "elementId": 113,
-                            "qualifiedName": ""
-                          }
-                        },
-                        {
-                          "$type": "LiteralNumber",
-                          "literal": 2,
-                          "$cstNode": {
-                            "text": "2",
-                            "stack": [
-                              "AdditiveExpression",
-                              "RangeExpression"
-                            ]
-                          },
-                          "isNonunique": false,
-                          "isOrdered": false,
-                          "heritage": [],
-                          "isSufficient": false,
-                          "typeRelationships": [],
-                          "children": [],
-                          "prefixes": [],
-                          "$meta": {
-                            "elementId": 114,
-                            "qualifiedName": ""
-                          }
-                        }
-                      ],
-                      "operator": "..",
-                      "$cstNode": {
-                        "text": "0..2",
-                        "stack": [
-                          "OwnedExpression",
-                          "MultiplicityExpressionMember"
-                        ]
-                      },
-                      "isNonunique": false,
-                      "isOrdered": false,
-                      "heritage": [],
-                      "isSufficient": false,
-                      "typeRelationships": [],
-                      "children": [],
-                      "prefixes": [],
-                      "$meta": {
-                        "elementId": 112,
-                        "qualifiedName": ""
-                      }
-                    },
-                    "$cstNode": {
-                      "text": "0..2",
-                      "stack": [
-                        "MultiplicityExpressionMember",
-                        "MultiplicityRange"
-                      ]
-                    },
-                    "isAlias": false,
-                    "elements": [],
-                    "$meta": {
-                      "elementId": 111,
-                      "qualifiedName": ""
-                    }
-                  },
-                  "$cstNode": {
-                    "text": "[0..2]",
-                    "stack": [
-                      "MultiplicityRange",
-                      "OwnedMultiplicity"
-                    ]
-                  },
-                  "isNonunique": false,
-                  "isOrdered": false,
-                  "heritage": [],
-                  "isSufficient": false,
-                  "typeRelationships": [],
-                  "children": [],
-                  "prefixes": [],
-                  "$meta": {
-                    "elementId": 110,
-                    "qualifiedName": ""
-                  }
-                },
-                "$cstNode": {
-                  "text": "[0..2]",
-                  "stack": [
-                    "OwnedMultiplicity",
-                    "MultiplicityPart"
-                  ]
-                },
-                "isAlias": false,
-                "elements": [],
-                "$meta": {
-                  "elementId": 109,
-                  "qualifiedName": ""
-                }
               },
               "declaredName": "ro",
               "isReadOnly": "readonly",
@@ -1779,7 +1658,7 @@
               }
             },
             "$cstNode": {
-              "text": "readonly attribute ro[0..2];",
+              "text": "readonly attribute ro;",
               "stack": [
                 "UsageMember",
                 "PackageBodyElement"
@@ -1830,7 +1709,7 @@
                   },
                   "elements": [],
                   "$meta": {
-                    "elementId": 117,
+                    "elementId": 111,
                     "qualifiedName": ""
                   }
                 }
@@ -1847,7 +1726,7 @@
               "children": [],
               "prefixes": [],
               "$meta": {
-                "elementId": 116,
+                "elementId": 110,
                 "qualifiedName": "BooleanTest::y"
               }
             },
@@ -1861,13 +1740,13 @@
             "isAlias": false,
             "elements": [],
             "$meta": {
-              "elementId": 115,
+              "elementId": 109,
               "qualifiedName": ""
             }
           }
         ],
         "$cstNode": {
-          "text": "package BooleanTest {\n\n    // isReference\n\tprivate part def Referred {\n\t}\n\tpublic item def A {\n\t\tprotected ref part aReference: Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {\n\t}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\t\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro[0..2];\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
+          "text": "package BooleanTest {\n\t// isReference\n\tprivate part def Referred {}\n\tpublic item def A {\n\t\tprotected ref part aReference : Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro;\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
           "stack": [
             "DefinitionElement",
             "DefinitionMember"
@@ -1881,7 +1760,7 @@
         }
       },
       "$cstNode": {
-        "text": "package BooleanTest {\n\n    // isReference\n\tprivate part def Referred {\n\t}\n\tpublic item def A {\n\t\tprotected ref part aReference: Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {\n\t}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\t\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro[0..2];\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
+        "text": "package BooleanTest {\n\t// isReference\n\tprivate part def Referred {}\n\tpublic item def A {\n\t\tprotected ref part aReference : Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro;\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
         "stack": [
           "DefinitionMember",
           "PackageBodyElement"
@@ -1896,7 +1775,7 @@
     }
   ],
   "$cstNode": {
-    "text": "package BooleanTest {\n\n    // isReference\n\tprivate part def Referred {\n\t}\n\tpublic item def A {\n\t\tprotected ref part aReference: Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {\n\t}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\t\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro[0..2];\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
+    "text": "package BooleanTest {\n\t// isReference\n\tprivate part def Referred {}\n\tpublic item def A {\n\t\tprotected ref part aReference : Referred;\n\t}\n\n\t// isRecursive\n\tprivate import q::**;\n\trequirement def R;\n\tpart p;\n\tpart q {\n\t\trequirement req1 : R;\n\t\tsatisfy req1 by p;\n\t\tassert satisfy req1 by q;\n\t}\n\n\t// isNegated\n\trequirement req2 : R;\n\tnot satisfy req2 by p;\n\n\t// isAlias\n\talias alias1 for q::req1;\n\n\t// isInitial\n\tattribute init1 : ScalarValues::Integer := 0;\n\n\t// isVariation\n\tvariation part def V :> A {}\n\n\t// isIndividual\n\tindividual occurrence def Ind {\n\t\tsnapshot snapshot1;\n\t\ttimeslice timeslice1;\n\t}\n\n\t// isDefault\n\tattribute default1 default = 10;\n\n\t// isParallel\n\tstate s parallel {\n\t\tstate s1;\n\t\tstate s2;\n\t}\n\n\t// isAbstract\n\tabstract item def B;\n\n\t// isEnd\n\tend e1;\n\n\t// isReadOnly\n\treadonly attribute ro;\n\n\t// isDerived\n\tderived ref attribute y :> init1;\n\n\t// No Exemples found:\n\t// * isNonUnique\n\t// * isOrdered\n\t// * isSufficient\n}",
     "stack": []
   },
   "prefixes": [],

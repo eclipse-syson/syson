@@ -77,6 +77,13 @@
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!--Required to be able to load standard libraries for proxy resolution toward element from the libraries in tests-->
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-application-configuration</artifactId>
+			<version>2024.11.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

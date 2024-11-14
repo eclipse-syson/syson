@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.helper;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -60,6 +62,9 @@ public class DeresolvingNamespaceProvider {
         } else {
             result.add(element.getOwningNamespace());
         }
+
+        result = result.stream().filter(Objects::nonNull).collect(toList());
+
         if (result.isEmpty() && element.getOwner() instanceof Namespace ownerNamespace) {
             result.add(ownerNamespace);
         }

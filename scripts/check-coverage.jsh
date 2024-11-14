@@ -38,7 +38,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-direct-edit-grammar", 64.0),
   new ModuleCoverage("syson-services", 62.0),
   new ModuleCoverage("syson-sysml-rest-api-services", 100.0),
-  new ModuleCoverage("syson-sysml-import", 68.0),
+  new ModuleCoverage("syson-sysml-import", 77.0),
   new ModuleCoverage("syson-sysml-export", 87.0),
   new ModuleCoverage("syson-diagram-common-view", 79.0),
   new ModuleCoverage("syson-diagram-general-view", 99.0),

@@ -97,7 +97,7 @@
                   "target": {
                     "$type": "AssignmentActionUsage",
                     "$cstNode": {
-                      "text": "assign count := count + 1;",
+                      "text": "assign count := 1;",
                       "stack": [
                         "ActionNode",
                         "ActionNodeMember"
@@ -141,86 +141,10 @@
                         "value": {
                           "$type": "FeatureValue",
                           "target": {
-                            "$type": "OperatorExpression",
-                            "operands": [
-                              {
-                                "$type": "FeatureReferenceExpression",
-                                "expression": {
-                                  "$type": "Membership",
-                                  "targetRef": {
-                                    "$type": "FeatureReference",
-                                    "$cstNode": {
-                                      "text": "count",
-                                      "stack": [
-                                        "FeatureReference",
-                                        "FeatureReferenceMember"
-                                      ]
-                                    },
-                                    "text": "count",
-                                    "reference": "Assignment2::counter::count",
-                                    "parts": [
-                                      "Assignment2::counter::count"
-                                    ]
-                                  },
-                                  "$cstNode": {
-                                    "text": "count",
-                                    "stack": [
-                                      "FeatureReferenceMember",
-                                      "FeatureReferenceExpression"
-                                    ]
-                                  },
-                                  "isAlias": false,
-                                  "elements": [],
-                                  "$meta": {
-                                    "elementId": 18,
-                                    "qualifiedName": ""
-                                  }
-                                },
-                                "$cstNode": {
-                                  "text": "count",
-                                  "stack": [
-                                    "MultiplicativeExpression",
-                                    "AdditiveExpression"
-                                  ]
-                                },
-                                "isNonunique": false,
-                                "isOrdered": false,
-                                "heritage": [],
-                                "isSufficient": false,
-                                "typeRelationships": [],
-                                "children": [],
-                                "prefixes": [],
-                                "$meta": {
-                                  "elementId": 17,
-                                  "qualifiedName": ""
-                                }
-                              },
-                              {
-                                "$type": "LiteralNumber",
-                                "literal": 1,
-                                "$cstNode": {
-                                  "text": "1",
-                                  "stack": [
-                                    "MultiplicativeExpression",
-                                    "AdditiveExpression"
-                                  ]
-                                },
-                                "isNonunique": false,
-                                "isOrdered": false,
-                                "heritage": [],
-                                "isSufficient": false,
-                                "typeRelationships": [],
-                                "children": [],
-                                "prefixes": [],
-                                "$meta": {
-                                  "elementId": 20,
-                                  "qualifiedName": ""
-                                }
-                              }
-                            ],
-                            "operator": "+",
+                            "$type": "LiteralNumber",
+                            "literal": 1,
                             "$cstNode": {
-                              "text": "count + 1",
+                              "text": "1",
                               "stack": [
                                 "OwnedExpression",
                                 "FeatureBinding"
@@ -239,7 +163,7 @@
                             }
                           },
                           "$cstNode": {
-                            "text": "count + 1",
+                            "text": "1",
                             "stack": [
                               "FeatureBinding",
                               "NodeParameter"
@@ -255,7 +179,7 @@
                           }
                         },
                         "$cstNode": {
-                          "text": "count + 1",
+                          "text": "1",
                           "stack": [
                             "NodeParameter",
                             "NodeParameterMember"
@@ -277,7 +201,7 @@
                         }
                       },
                       "$cstNode": {
-                        "text": "count + 1",
+                        "text": "1",
                         "stack": [
                           "NodeParameterMember",
                           "AssignmentNodeDeclaration"
@@ -306,7 +230,7 @@
                     }
                   },
                   "$cstNode": {
-                    "text": "assign count := count + 1;",
+                    "text": "assign count := 1;",
                     "stack": [
                       "ActionNodeMember",
                       "ActionBodyItem"
@@ -321,7 +245,7 @@
                 }
               ],
               "$cstNode": {
-                "text": "action counter {\n\t\tattribute count default := 0;\n\t\tassign count := count + 1;\n    }",
+                "text": "action counter {\n    attribute count default := 0;\n    assign count := 1;\n  }",
                 "stack": [
                   "UsageElement",
                   "UsageMember"
@@ -343,7 +267,7 @@
               }
             },
             "$cstNode": {
-              "text": "action counter {\n\t\tattribute count default := 0;\n\t\tassign count := count + 1;\n    }",
+              "text": "action counter {\n    attribute count default := 0;\n    assign count := 1;\n  }",
               "stack": [
                 "UsageMember",
                 "PackageBodyElement"
@@ -358,7 +282,7 @@
           }
         ],
         "$cstNode": {
-          "text": "package Assignment2 {\n    action counter {\n\t\tattribute count default := 0;\n\t\tassign count := count + 1;\n    }\n}",
+          "text": "package Assignment2 {\n  action counter {\n    attribute count default := 0;\n    assign count := 1;\n  }\n}",
           "stack": [
             "DefinitionElement",
             "DefinitionMember"
@@ -372,7 +296,7 @@
         }
       },
       "$cstNode": {
-        "text": "package Assignment2 {\n    action counter {\n\t\tattribute count default := 0;\n\t\tassign count := count + 1;\n    }\n}",
+        "text": "package Assignment2 {\n  action counter {\n    attribute count default := 0;\n    assign count := 1;\n  }\n}",
         "stack": [
           "DefinitionMember",
           "PackageBodyElement"
@@ -387,7 +311,7 @@
     }
   ],
   "$cstNode": {
-    "text": "package Assignment2 {\n    action counter {\n\t\tattribute count default := 0;\n\t\tassign count := count + 1;\n    }\n}",
+    "text": "package Assignment2 {\n  action counter {\n    attribute count default := 0;\n    assign count := 1;\n  }\n}",
     "stack": []
   },
   "prefixes": [],

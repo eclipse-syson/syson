@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml.parser;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +28,8 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.DeresolvingNamespaceProvider;
+import org.eclipse.syson.sysml.utils.LogNameProvider;
+import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +41,15 @@ import org.slf4j.LoggerFactory;
 public class ProxyResolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProxyResolver.class);
+
+    private final LogNameProvider logNameProvider = new LogNameProvider();
+
+    private final MessageReporter messageReporter;
+
+    public ProxyResolver(MessageReporter messageReporter) {
+        super();
+        this.messageReporter = messageReporter;
+    }
 
     public boolean resolveProxy(final ProxiedReference proxiedReference) {
         EObject realElement = this.findProxyTarget(proxiedReference.owner(), proxiedReference.targetProxy(), proxiedReference.reference());
@@ -87,7 +99,8 @@ public class ProxyResolver {
 
         EObject target = null;
         if (deresolvingNamespaces.isEmpty()) {
-            LOGGER.error("Unable to find owning Namespace of {}", owner);
+            String errorMessage = MessageFormat.format("Unable to find owning Namespace of {0}", this.logNameProvider.getName(owner));
+            this.messageReporter.error(errorMessage);
         } else {
             for (Namespace deresolvingNamespace : deresolvingNamespaces) {
 

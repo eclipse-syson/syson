@@ -20,13 +20,13 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
   const sysmlv2 = new SysMLv2();
 
   context('Given an empty SysMLv2 project', () => {
-    const explorer = new Explorer();
     const details = new Details();
     let projectId: string = '';
     beforeEach(() =>
       sysmlv2.createSysMLv2Project().then((createdProjectData) => {
         projectId = createdProjectData.projectId;
         new Project().visit(projectId);
+        const explorer = new Explorer();
         explorer.getExplorerView().contains(sysmlv2.getProjectLabel());
         explorer.expand(sysmlv2.getProjectLabel());
       })
@@ -36,13 +36,14 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
 
     context('When we selected a Package in the explorer', () => {
       it("Then we can perform the 'New objects from text' menu entry", () => {
+        const explorer = new Explorer();
         explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), 'attribute myAttribute');
         cy.getByTestId('insert-textual-sysmlv2-modal').should('not.exist');
-        cy.wait(500);
-        explorer.getExplorerView().contains('myAttribute');
+        explorer.getExplorerView().contains('myAttribute', { timeout: 6000 });
       });
 
       it("Then we can perform the 'New objects from text' menu entry and it will references elements from standard libraries (with appropriate imports)", () => {
+        const explorer = new Explorer();
         explorer.insertTextualSysMLv2(
           sysmlv2.getRootElementLabel(),
           'import ScalarValues::*; attribute myAttribute : String;'
@@ -58,6 +59,7 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
       });
 
       it("Then we can perform the 'New objects from text' menu entry with not valid textual sysml", () => {
+        const explorer = new Explorer();
         explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), '£$$`:=;');
         cy.getByTestId('insert-textual-sysmlv2-modal').should('exist');
       });
@@ -65,6 +67,7 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
 
     context('When we selected a Document in the explorer', () => {
       it("Then we can't perform the 'New objects from text' menu entry", () => {
+        const explorer = new Explorer();
         explorer.getTreeItemByLabel(sysmlv2.getProjectLabel()).find('button').click();
         cy.getByTestId('insert-textual-sysmlv2-menu').should('not.exist');
       });
