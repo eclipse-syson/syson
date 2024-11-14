@@ -45,7 +45,7 @@ describe('Diagram Panel in General View Tests', () => {
     // D&D does not work anymore with Cypress APIs
     context.skip('On a diagram with the "item def Hero" node', () => {
       beforeEach(() => {
-        diagram.getDiagramElement(diagramLabel).click();
+        diagram.getDiagramBackground(diagramLabel).click();
         const dataTransferHero = new DataTransfer();
         explorer.dragTreeItem('Hero', dataTransferHero);
         diagram.dropOnDiagram(diagramLabel, dataTransferHero);

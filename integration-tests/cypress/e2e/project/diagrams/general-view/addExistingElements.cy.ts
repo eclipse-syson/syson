@@ -34,9 +34,7 @@ describe('Diagram Panel in General View Tests', () => {
         explorer.getExplorerView().contains(batmobile.getRootElementLabel());
         explorer.expand(batmobile.getRootElementLabel());
         explorer.select(diagramLabel);
-        diagram.getDiagram(diagramLabel).should('exist');
-        // Wait for the diagram to display
-        cy.wait(400);
+        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - Batmobile').should('exist');
       })
     );
 
@@ -44,14 +42,17 @@ describe('Diagram Panel in General View Tests', () => {
 
     context('The add existing elements (recursive) tool have been applied, following by an arrange all', () => {
       beforeEach(() => {
-        diagram.getDiagramElement(diagramLabel).click();
+        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - Batmobile').should('exist').click();
         diagram.getPalette().should('exist').findByTestId('Add').findByTestId('expand').click();
         diagram.getPalette().should('exist').findByTestId('Add existing nested elements (recursive) - Tool').click();
-        // Wait for the elements to display
-        cy.wait(1000);
+        diagram.getPalette().should('not.exist');
+        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - Batmobile').should('not.exist');
         diagram.arrangeAll();
-        // Wait for the arrange all action to complete
-        cy.wait(1000);
+        cy.getByTestId('arrange-all-circular-loading')
+          .should('exist')
+          .then(() => {
+            cy.getByTestId('arrange-all-circular-loading').should('not.exist');
+          });
       });
 
       it('The add existing elements (recursive) tool add elements recursively', () => {
