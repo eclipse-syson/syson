@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.sysml;
 
+import static java.util.stream.Collectors.joining;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,12 +25,15 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.syson.sysml.parser.AstContainmentReferenceParser;
-import org.eclipse.syson.sysml.parser.AstObjectParser;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.sysml.parser.AstTreeParser;
-import org.eclipse.syson.sysml.parser.AstWeakReferenceParser;
+import org.eclipse.syson.sysml.parser.ContainmentReferenceHandler;
+import org.eclipse.syson.sysml.parser.EAttributeHandler;
+import org.eclipse.syson.sysml.parser.NonContainmentReferenceHandler;
 import org.eclipse.syson.sysml.parser.ProxiedReference;
 import org.eclipse.syson.sysml.parser.ProxyResolver;
+import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,13 +48,16 @@ public class ASTTransformer {
 
     private final AstTreeParser astTreeParser;
 
+    private final NonContainmentReferenceHandler nonContainmentReferenceHandler;
+
+    private final MessageReporter messageReporter = new MessageReporter();
+
     public ASTTransformer() {
-        var proxyResolver = new ProxyResolver();
-        var astObjectParser = new AstObjectParser();
-        var astContainmentReferenceParser = new AstContainmentReferenceParser();
-        var astWeakReferenceParser = new AstWeakReferenceParser(astObjectParser);
-        this.astTreeParser = new AstTreeParser(astContainmentReferenceParser, astWeakReferenceParser, proxyResolver, astObjectParser);
-        astContainmentReferenceParser.setAstTreeParser(this.astTreeParser);
+        var proxyResolver = new ProxyResolver(this.messageReporter);
+        var astObjectParser = new EAttributeHandler(this.messageReporter);
+        var astContainmentReferenceParser = new ContainmentReferenceHandler(this.messageReporter);
+        this.nonContainmentReferenceHandler = new NonContainmentReferenceHandler(this.messageReporter);
+        this.astTreeParser = new AstTreeParser(astContainmentReferenceParser, this.nonContainmentReferenceHandler, proxyResolver, astObjectParser, this.messageReporter);
     }
 
     public Resource convertResource(final InputStream input, final ResourceSet resourceSet) {
@@ -63,13 +71,18 @@ public class ASTTransformer {
                 resourceSet.getResources().add(result);
                 result.getContents().addAll(rootSysmlObjects);
                 this.logger.info("File Parsed");
-                List<ProxiedReference> proxiedReferences = this.astTreeParser.collectUnresolvedReferences(result);
+                List<ProxiedReference> proxiedReferences = this.nonContainmentReferenceHandler.getProxiesToResolve();
                 this.logger.info("{} references to resolve.", proxiedReferences.size());
                 this.astTreeParser.resolveAllReference(proxiedReferences);
                 this.logger.info("End of references resolving");
+
             }
         }
         return result;
+    }
+
+    public List<Message> getTransformationMessages() {
+        return this.messageReporter.getReportedMessages();
     }
 
     private JsonNode readAst(final InputStream input) {
@@ -79,7 +92,34 @@ public class ASTTransformer {
             return objectMapper.readTree(input);
         } catch (final IOException e) {
             this.logger.error(e.getMessage());
+            this.messageReporter.error(e.getMessage());
             return null;
         }
+    }
+
+    // Check after resolution of https://github.com/eclipse-syson/syson/issues/860 and
+    // https://github.com/eclipse-sirius/sirius-web/issues/4163 if this method is still required
+    public void logTransformationMessages() {
+        List<Message> messages = this.getTransformationMessages();
+        if (!messages.isEmpty()) {
+            String logMessage = messages.stream().map(this::toLogMessage).collect(joining("\n", "Folling messages have been reported during conversion : \n", ""));
+            boolean isError = messages.stream().anyMatch(m -> m.level() == MessageLevel.WARNING || m.level() == MessageLevel.ERROR);
+            if (isError) {
+                this.logger.error(logMessage);
+            } else {
+                this.logger.info(logMessage);
+            }
+        }
+    }
+
+    private String toLogMessage(Message msg) {
+        String prefix = switch (msg.level()) {
+            case INFO -> "[Info] ";
+            case WARNING -> "[Warning] ";
+            case ERROR -> "[Error] ";
+            case SUCCESS -> "[Success] ";
+            default -> "[??] ";
+        };
+        return prefix + msg.body();
     }
 }

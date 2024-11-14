@@ -1,0 +1,120 @@
+{
+  "$type": "Namespace",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "Package",
+        "children": [
+          {
+            "$type": "OwningMembership",
+            "target": {
+              "$type": "PartUsage",
+              "$cstNode": {
+                "text": "part p : FakeType;",
+                "stack": [
+                  "UsageElement",
+                  "UsageMember"
+                ]
+              },
+              "heritage": [
+                {
+                  "$type": "FeatureTyping",
+                  "targetRef": {
+                    "$type": "TypeReference",
+                    "$cstNode": {
+                      "text": "FakeType",
+                      "stack": [
+                        "TypeReference",
+                        "FeatureType"
+                      ]
+                    },
+                    "text": "FakeType",
+                    "reference": null,
+                    "parts": [
+                      null
+                    ]
+                  },
+                  "$cstNode": {
+                    "text": "FakeType",
+                    "stack": [
+                      "FeatureTyping",
+                      "TypedBy"
+                    ]
+                  },
+                  "elements": [],
+                  "$meta": {
+                    "elementId": 5,
+                    "qualifiedName": ""
+                  }
+                }
+              ],
+              "declaredName": "p",
+              "isIndividual": false,
+              "isReference": false,
+              "isVariation": false,
+              "isNonunique": false,
+              "isOrdered": false,
+              "isSufficient": false,
+              "typeRelationships": [],
+              "children": [],
+              "prefixes": [],
+              "$meta": {
+                "elementId": 4,
+                "qualifiedName": "p1::p"
+              }
+            },
+            "$cstNode": {
+              "text": "part p : FakeType;",
+              "stack": [
+                "UsageMember",
+                "PackageBodyElement"
+              ]
+            },
+            "isAlias": false,
+            "elements": [],
+            "$meta": {
+              "elementId": 3,
+              "qualifiedName": ""
+            }
+          }
+        ],
+        "$cstNode": {
+          "text": "package p1 {\r\n    part p : FakeType;\r\n}",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "p1",
+        "prefixes": [],
+        "$meta": {
+          "elementId": 2,
+          "qualifiedName": "p1"
+        }
+      },
+      "$cstNode": {
+        "text": "package p1 {\r\n    part p : FakeType;\r\n}",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 1,
+        "qualifiedName": ""
+      }
+    }
+  ],
+  "$cstNode": {
+    "text": "package p1 {\r\n    part p : FakeType;\r\n}",
+    "stack": []
+  },
+  "prefixes": [],
+  "$meta": {
+    "elementId": 0,
+    "qualifiedName": ""
+  }
+}

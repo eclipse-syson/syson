@@ -472,7 +472,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public boolean isIsNonunique() {
-        return false;
+        return !isIsUnique();
     }
 
     /**

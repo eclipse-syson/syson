@@ -4,6 +4,16 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/796[#796] [import] Improve the code in the import module to make it more generic:
+* Delete the `AstConstants` class: Constants have been split across several classes.
+* Delete the `LogBook` class (no longer used).
+* Replace `AstContainmentReferencePart` with `ContainmentReferenceHandler`.
+* Replace `AstObjectParser` with `EAttributeHandler`.
+* Replace `AstWeakReferenceParser` with `NonContainmentReferenceHandler`.
+* Delete `ReferenceHelper` (no longer used).
+* Delete `SysMLUploadDocumentReportProvider` as it is not functional.
+* Most components used in the transformation now require a `MessageReporter` instance to collect transformation messages.
+
 === Dependency update
 
 === Bug fixes
@@ -11,6 +21,7 @@
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/829[#829] [metamodel] `OccurrenceUsag#portionKind` is now unsettable and its default value is `null`.
+- https://github.com/eclipse-syson/syson/issues/796[#796] [import] Improve the code in import module, by making it more generic
 
 === New features
 

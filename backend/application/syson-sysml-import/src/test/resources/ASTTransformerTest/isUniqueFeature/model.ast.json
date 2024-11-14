@@ -1,0 +1,128 @@
+{
+  "$type": "Package",
+  "children": [
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "PartDefinition",
+        "$cstNode": {
+          "text": "part def P1;",
+          "stack": [
+            "DefinitionElement",
+            "DefinitionMember"
+          ]
+        },
+        "declaredName": "P1",
+        "isIndividual": false,
+        "isVariation": false,
+        "heritage": [],
+        "isSufficient": false,
+        "typeRelationships": [],
+        "children": [],
+        "prefixes": [],
+        "$meta": {
+          "elementId": 229902,
+          "qualifiedName": "p1::P1"
+        }
+      },
+      "$cstNode": {
+        "text": "part def P1;",
+        "stack": [
+          "DefinitionMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 229901,
+        "qualifiedName": ""
+      }
+    },
+    {
+      "$type": "OwningMembership",
+      "target": {
+        "$type": "PartUsage",
+        "$cstNode": {
+          "text": "part p1 nonunique : P1;",
+          "stack": [
+            "UsageElement",
+            "UsageMember"
+          ]
+        },
+        "heritage": [
+          {
+            "$type": "FeatureTyping",
+            "targetRef": {
+              "$type": "TypeReference",
+              "$cstNode": {
+                "text": "P1",
+                "stack": [
+                  "TypeReference",
+                  "FeatureType"
+                ]
+              },
+              "text": "P1",
+              "reference": "p1::P1",
+              "parts": [
+                "p1::P1"
+              ]
+            },
+            "$cstNode": {
+              "text": "P1",
+              "stack": [
+                "FeatureTyping",
+                "TypedBy"
+              ]
+            },
+            "elements": [],
+            "$meta": {
+              "elementId": 229908,
+              "qualifiedName": ""
+            }
+          }
+        ],
+        "isNonunique": true,
+        "declaredName": "p1",
+        "isIndividual": false,
+        "isReference": false,
+        "isVariation": false,
+        "isOrdered": false,
+        "isSufficient": false,
+        "typeRelationships": [],
+        "children": [],
+        "prefixes": [],
+        "$meta": {
+          "elementId": 229907,
+          "qualifiedName": "p1::p1"
+        }
+      },
+      "$cstNode": {
+        "text": "part p1 nonunique : P1;",
+        "stack": [
+          "UsageMember",
+          "PackageBodyElement"
+        ]
+      },
+      "isAlias": false,
+      "elements": [],
+      "$meta": {
+        "elementId": 229906,
+        "qualifiedName": "p1::p1"
+      }
+    }
+  ],
+  "$cstNode": {
+    "text": "package p1 {\r\n    part def P1;\r\n    part p1 nonunique : P1;\r\n}",
+    "stack": [
+      "DefinitionElement",
+      "DefinitionMember"
+    ]
+  },
+  "declaredName": "p1",
+  "prefixes": [],
+  "$meta": {
+    "elementId": 229900,
+    "qualifiedName": "p1"
+  }
+}

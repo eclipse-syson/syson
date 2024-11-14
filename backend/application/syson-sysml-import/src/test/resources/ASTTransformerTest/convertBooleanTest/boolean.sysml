@@ -1,10 +1,8 @@
 package BooleanTest {
-
-    // isReference
-	private part def Referred {
-	}
+	// isReference
+	private part def Referred {}
 	public item def A {
-		protected ref part aReference: Referred;
+		protected ref part aReference : Referred;
 	}
 
 	// isRecursive
@@ -28,8 +26,7 @@ package BooleanTest {
 	attribute init1 : ScalarValues::Integer := 0;
 
 	// isVariation
-	variation part def V :> A {
-	}
+	variation part def V :> A {}
 
 	// isIndividual
 	individual occurrence def Ind {
@@ -45,7 +42,7 @@ package BooleanTest {
 		state s1;
 		state s2;
 	}
-	
+
 	// isAbstract
 	abstract item def B;
 
@@ -53,7 +50,7 @@ package BooleanTest {
 	end e1;
 
 	// isReadOnly
-	readonly attribute ro[0..2];
+	readonly attribute ro;
 
 	// isDerived
 	derived ref attribute y :> init1;

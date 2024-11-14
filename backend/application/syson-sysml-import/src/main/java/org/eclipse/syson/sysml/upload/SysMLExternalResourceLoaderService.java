@@ -70,13 +70,17 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
 
     @Override
     public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
-        Resource resource = null;
         InputStream astStream = this.sysmlToAst.convert(inputStream, resourceURI.fileExtension());
         ASTTransformer tranformer = new ASTTransformer();
-        resource = tranformer.convertResource(astStream, resourceSet);
+        Resource resource = tranformer.convertResource(astStream, resourceSet);
         if (resource != null) {
             resourceSet.getResources().add(resource);
         }
+        // Need a way to be able to report some messages to the user see
+        // https://github.com/eclipse-sirius/sirius-web/issues/4163
+        // As a workaround log in the console
+        tranformer.logTransformationMessages();
         return Optional.ofNullable(resource);
     }
+
 }
