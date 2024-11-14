@@ -27,7 +27,7 @@ export class Diagram {
     cy.getByTestId('arrange-all').click();
   }
 
-  public getDiagramElement(diagramLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
+  public getDiagramBackground(diagramLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
     return this.getDiagram(diagramLabel).findByTestId('rf__wrapper');
   }
 

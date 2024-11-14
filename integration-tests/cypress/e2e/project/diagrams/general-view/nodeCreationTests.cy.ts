@@ -43,7 +43,7 @@ describe('Node Creation Tests', () => {
 
     context('When we create an AttributeUsage using the diagram palette', () => {
       beforeEach(() => {
-        diagram.getDiagramElement(diagramLabel).click();
+        diagram.getDiagramBackground(diagramLabel).click();
         diagram.getPalette().should('exist').findByTestId('Structure').findByTestId('expand').click();
         diagram.getPalette().should('exist').find('div[role=tooltip]').findByTestId('New Attribute - Tool').click();
       });
@@ -76,7 +76,7 @@ describe('Node Creation Tests', () => {
 
     context('When we create an AttributeDefinition using the diagram palette', () => {
       beforeEach(() => {
-        diagram.getDiagramElement(diagramLabel).click();
+        diagram.getDiagramBackground(diagramLabel).click();
         diagram.getPalette().should('exist').findByTestId('Structure').findByTestId('expand').click();
         diagram
           .getPalette()

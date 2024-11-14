@@ -45,7 +45,7 @@ describe.skip('Direct Edit Tests', () => {
 
     context('On a PartUsage', () => {
       beforeEach(() => {
-        diagram.getDiagramElement(diagramLabel).click();
+        diagram.getDiagramBackground(diagramLabel).click();
         diagram.getPalette().should('exist').findByTestId('Structure').findByTestId('expand').click();
         diagram.getPalette().should('exist').find('div[role=tooltip]').findByTestId('New Part - Tool').click();
       });

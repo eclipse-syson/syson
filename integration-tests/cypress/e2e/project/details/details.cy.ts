@@ -48,9 +48,7 @@ describe('Details View Tests', () => {
     context('When we select a PartUsage without type', () => {
       it('Then the details view contains the extra property "Typed by" even if the PartUsage has no type yet.', () => {
         explorer.createObject(batmobile.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
-        cy.wait(400);
         explorer.select('part');
-        cy.wait(400);
         details.getGroup('Part Properties').should('be.visible');
         details.getReferenceWidget('Typed by').should('exist');
         details.getReferenceWidgetSelectedValue('Typed by', '').should('not.exist');
