@@ -16,14 +16,14 @@ For more details see xref:user-manual:cycle.adoc[].
 
 == Prepare ecosystem
 
-Pay attention to deploy enterprise grade version of the prerequisites. In particular the databse service. Before do deploy manually the databse, we recomend to use managed database instance (provided by the IT service of a corporation or using cloud services)
+Pay attention to deploy enterprise grade version of the prerequisites. In particular the database service. Before do deploy manually the database, we recommend to use managed database instance (provided by the IT service of a corporation or using cloud services)
 
 [INFO]
 ====
-Before you proceed with the installation, please ensure you have the following xref:requirements.adoc[prerequisites]:
+Before you proceed with the installation, please ensure you have  following the xref:requirements.adoc[prerequisites]
 ====
 
-We recommand to provide a dedicated host (server or virtual machine) to serve the syson application and only the application.
+We recommend to provide a dedicated host (server or virtual machine) to serve the {product} application and only the application.
 
 This step provide the following configuration elements :
 
@@ -56,11 +56,11 @@ This process ensures that you get the most recent version of the {product} appli
 [#secure-app]
 == Secure the application
 
-As explain on this xref:installation-guide:how-tos/https.adoc[guide], the {product} application must be secured to ba availlable on a network. For a production grade deployment, certificates used to secure the connexion must be valid and provided by a valid authority.
+As explain on this xref:installation-guide:how-tos/https.adoc[guide], the {product} application must be secured to ba available on a network. For a production grade deployment, certificates used to secure the connection must be valid and provided by a valid authority.
 
-Documentation to generate this kind of certificate is provided by dedicated organism as exemple (https://www.namecheap.com/support/knowledgebase/article.aspx/9422/2290/generating-a-csr-on-tomcat-using-a-keytool/)[Nameship]
+Documentation to generate this kind of certificate is provided by dedicated organism (https://www.namecheap.com/support/knowledgebase/article.aspx/9422/2290/generating-a-csr-on-tomcat-using-a-keytool/[here is an example]).
 
-Following the Autority certification authority, a PKCS12 keystore must be produced.
+Following the certification authority, a PKCS12 keystore must be produced.
 
 This step provide the following configuration elements :
 
@@ -72,7 +72,7 @@ This step provide the following configuration elements :
 [#start-app]
 == Start the application
 
-To run the application, you'll need to use the Java Runtime Environment (JRE) to execute the pre-build JAR ({product-jar}) you xref:how-tos/install.adoc#download[downloaded] earlier.
+To run the application, you'll need to use the Java Runtime Environment (JRE) to execute the pre-build JAR ({product-jar}) you xref:how-tos/install/production_deploy.adoc#download[downloaded] earlier.
 
 Go to the folder containing the {product-jar} and run the command:
 

@@ -44,7 +44,7 @@ app:
 
 All accessible versions of {product} as Docker containers are listed in the https://hub.docker.com/r/eclipsesyson/syson/tags[{product} Docker registry].
 
-Once your Docker up, please go directly to the xref:how-tos/install.adoc#openwebbrowser[Open your web browser] section!
+Once your Docker up, please go directly to the <<openwebbrowser>>[Open your web browser] section!
 
 [#openwebbrowser]
 == Open your web browser

@@ -38,7 +38,7 @@ These rights are necessary for the automatic creation of the database schema.
 [#start-app]
 == Start the application
 
-Before you run the application, please ensure you have following the xref:how-tos/requirements.adoc#serverreq[prerequisites] and downloaded the JAR ({product-jar}) from the xref:production_deploy.adoc#download[download] section.
+Before you run the application, please ensure you have following the xref:requirements.adoc[prerequisites] and downloaded the JAR ({product-jar}) from the xref:how-tos/install/production_deploy.adoc#download[download] section.
 
 Go to the folder containing the {product-jar} and run the command:"
 
