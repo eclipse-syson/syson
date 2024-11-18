@@ -28,6 +28,7 @@ asciidoc:
     projects-list-menu: "Project Options Menu"
     related-elements: "Related Elements"
     representations-view: "Representations"
+    resources-url: "https://mbse-syson.org/#resources"
     source-code-url: "https://github.com/eclipse-syson/syson"
     stv: "State Transition view"
     syson-tag: "v2024.11.0"

@@ -32,4 +32,10 @@ xref:user-manual:best-practices.adoc[Learn more] a|image::best.svg[xref=user-man
 Gain access to enterprise-level support.
 
 xref:user-manual:support.adoc[Find help]
+
+**Resources**
+
+Find videos, articles and presentations about {product}.
+
+xref:user-manual:resources.adoc[Resources] a|image::resources.svg[xref=user-manual:resources.adoc]
 |===

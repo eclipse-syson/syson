@@ -1,0 +1,3 @@
+= Resources
+
+Find videos, articles and presentations about {product} on its official website dedicated section: {resources-url}
