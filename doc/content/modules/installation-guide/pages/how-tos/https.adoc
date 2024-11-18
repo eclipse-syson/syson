@@ -10,7 +10,7 @@ For production deployments, obtain a valid certificate from a trusted CA to ensu
 If you intend to install {product} on a local server or machine and allow several users to access it, you must enable HTTPS.
 If you don't have a certificate, you can generate one by using https://docs.oracle.com/en/java/javase/11/tools/keytool.html[keytool] for testing purposes only.
 
-This procedure requires to have the `keytool` application to be installed (the application comes with the Java Runtime Environment as explain in xref:requirements.adoc[prerequisites]:)
+This procedure requires to have the `keytool` application to be installed (the application comes with the Java Runtime Environment as explain in xref:requirements.adoc[prerequisites])
 
 . Create a self-signed certificate:
 +
@@ -18,7 +18,7 @@ This procedure requires to have the `keytool` application to be installed (the a
 ----
 keytool -genkeypair -alias myalias -keyalg RSA -keysize 2048 -validity 365 -keystore keystore.jks
 ----
-. If you have installed {product} with xref:installation-guide:how-tos/install.adoc#docker-install[docker], just update your docker-compose file as below (otherwise, please go to next instruction): 
+. If you have installed {product} with xref:how-tos/install/local_test.adoc#docker-install[docker], just update your docker-compose file as below (otherwise, please go to next instruction): 
 +
 [source, bash]
 ----
