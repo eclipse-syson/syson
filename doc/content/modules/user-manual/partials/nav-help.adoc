@@ -2,3 +2,4 @@
 * xref:user-manual:contribute.adoc[]
 * xref:user-manual:best-practices.adoc[]
 * xref:user-manual:support.adoc[]
+* xref:user-manual:resources.adoc[]

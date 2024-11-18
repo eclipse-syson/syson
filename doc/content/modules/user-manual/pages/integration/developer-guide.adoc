@@ -44,3 +44,25 @@ image::environment-settings.png[settings file]
 image::environment-java-build-path.png[Java build path]
 +
 . Update Maven project by launching "ALT+F5" shortcut on all modules of your workspace
+
+== Generate a new version of SysIDE CLI
+
+In the _syson-import_ module, you'll found a `syside-cli-.js` file in `src/main/resources`.
+This file is used by the import process, to parse the {sysmlv2} textual files.
+If you want to update the version on SysIDE used to parse textual files, you need to generate a new version of this `syside-cli-.js` file.
+
+Here are the steps to follow:
+
+. Clone the https://github.com/sensmetry/sysml-2ls[SysIDE repository] from github.
+. Install https://pnpm.io/installation[pnpm].
+. Go to the root of your local SysIDE repository.
+. Execute `pnpm install` command.
+. Execute `pnpm run build`command.
+. Execute `pnpm run --dir packages/syside-cli/ esbuild` command.
+. It produces a `your_local_syside_repo/packages/syside-cli/out/index.js` file
+. Get a copy of the `your-local-syside-repo/packages/syside-cli/out/index.js` file.
+. Edit this file:
+.. add `#!/usr/bin/env node` as first line
+.. add `src_default();` as last line
+.. rename it to `syside-cli.js`
+. Copy the renamed file into `your_local_syson_repo/backend/application/syson-import/src/main/resources` (overwrite the existing file).
