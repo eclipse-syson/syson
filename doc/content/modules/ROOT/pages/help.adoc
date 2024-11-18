@@ -11,7 +11,9 @@ a|image::forum.svg[xref=user-manual:forum.adoc]
 
 Meet the {product} community.
 
-xref:user-manual:forum.adoc[Join the forum] a|image::volunteer_activism.svg[xref=user-manual:contribute.adoc]
+xref:user-manual:forum.adoc[Join the forum]
+
+a|image::volunteer_activism.svg[xref=user-manual:contribute.adoc]
 
 **Contribute**
 
@@ -25,7 +27,9 @@ a|image::editor_choice.svg[xref=user-manual:best-practices.adoc]
 
 Make the most out of {product}.
 
-xref:user-manual:best-practices.adoc[Learn more] a|image::best.svg[xref=user-manual:support.adoc]
+xref:user-manual:best-practices.adoc[Learn more]
+
+a|image::best.svg[xref=user-manual:support.adoc]
 
 **Contact support**
 
@@ -33,9 +37,14 @@ Gain access to enterprise-level support.
 
 xref:user-manual:support.adoc[Find help]
 
+a|image::resources.svg[xref=user-manual:resources.adoc]
+
 **Resources**
 
 Find videos, articles and presentations about {product}.
 
-xref:user-manual:resources.adoc[Resources] a|image::resources.svg[xref=user-manual:resources.adoc]
+xref:user-manual:resources.adoc[Resources]
+
+|
+
 |===

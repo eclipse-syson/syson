@@ -14,7 +14,7 @@ If a platform and version isn't listed on this page, it implies that this platfo
 
 include::installation-guide:architecture.adoc[leveloffset=+1]
 
-[#server-req]
+[#serverreq]
 == Server-side installation requirements
 
 To set up the {product} Server, it's crucial to meet the specific prerequisites that lay the groundwork for a stable and reliable server environment.
