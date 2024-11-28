@@ -70,6 +70,7 @@ import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.InvocationExpression;
 import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
+import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralExpression;
 import org.eclipse.syson.sysml.LiteralInfinity;
@@ -206,6 +207,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendNameWithShortName(builder, pack);
         List<Relationship> children = pack.getOwnedRelationship().stream().filter(IS_MEMBERSHIP.and(IS_METADATA_USAGE.negate()).or(IS_IMPORT)).toList();
         this.appendChildrenContent(builder, pack, children);
+        return builder.toString();
+    }
+
+    @Override
+    public String caseLibraryPackage(LibraryPackage libraryPackage) {
+        Appender builder = this.newAppender();
+        if (libraryPackage.isIsStandard()) {
+            builder.append("standard ");
+        }
+        builder.append("library package ");
+        this.appendNameWithShortName(builder, libraryPackage);
+        List<Relationship> children = libraryPackage.getOwnedRelationship().stream().filter(IS_MEMBERSHIP.and(IS_METADATA_USAGE.negate()).or(IS_IMPORT)).toList();
+        this.appendChildrenContent(builder, libraryPackage, children);
         return builder.toString();
     }
 

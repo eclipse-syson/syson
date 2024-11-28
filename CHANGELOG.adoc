@@ -18,6 +18,8 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-syson/syson/issues/868[#868] [export] Fix textual export of `LibraryPackage`
+
 === Improvements
 
 - https://github.com/eclipse-syson/syson/issues/829[#829] [metamodel] `OccurrenceUsag#portionKind` is now unsettable and its default value is `null`.

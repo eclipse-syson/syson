@@ -41,6 +41,7 @@ import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.InterfaceDefinition;
 import org.eclipse.syson.sysml.ItemDefinition;
+import org.eclipse.syson.sysml.LibraryPackage;
 import org.eclipse.syson.sysml.LiteralBoolean;
 import org.eclipse.syson.sysml.LiteralInfinity;
 import org.eclipse.syson.sysml.LiteralInteger;
@@ -114,6 +115,8 @@ public class SysMLElementSerializerTest {
 
     private static final String PACKAGE_2 = "Package 2";
 
+    private static final String PACKAGE_3 = "Package 3";
+
     private static final String PACKAGE1 = "Package1";
 
     private static final String ATTRIBUTE1 = "attribute1";
@@ -182,7 +185,7 @@ public class SysMLElementSerializerTest {
 
         Package pack2 = this.builder.createInWithName(Package.class, pack1, PACKAGE_2);
 
-        this.builder.createInWithName(Package.class, pack2, "Package 3");
+        this.builder.createInWithName(Package.class, pack2, PACKAGE_3);
 
         this.assertTextualFormEquals("""
                 package Package1 {
@@ -203,7 +206,7 @@ public class SysMLElementSerializerTest {
 
         Package pack2 = this.builder.createInWithName(Package.class, pack1, PACKAGE_2);
 
-        Package pack3 = this.builder.createInWithName(Package.class, pack2, "Package 3");
+        Package pack3 = this.builder.createInWithName(Package.class, pack2, PACKAGE_3);
 
         namespaceImport.setImportedNamespace(pack3);
 
@@ -215,6 +218,97 @@ public class SysMLElementSerializerTest {
                         package 'Package 3';
                     }
                 }""", pack1);
+    }
+
+    @Test
+    public void emptyLibraryPackage() {
+        String content = this.convertToText(this.fact.createLibraryPackage());
+        assertEquals("library package ;", content);
+    }
+
+    @Test
+    public void emptyStandardLibraryPackage() {
+        LibraryPackage libraryPackage = this.fact.createLibraryPackage();
+        libraryPackage.setIsStandard(true);
+        this.assertTextualFormEquals("standard library package ;", libraryPackage);
+    }
+
+    @Test
+    public void emptyLibraryPackageWithName() {
+        this.assertTextualFormEquals("library package Package1;", this.builder.createWithName(LibraryPackage.class, PACKAGE1));
+    }
+
+    @Test
+    public void emptyStandardLibraryPackageWithName() {
+        LibraryPackage libraryPackage = this.builder.createWithName(LibraryPackage.class, PACKAGE1);
+        libraryPackage.setIsStandard(true);
+        this.assertTextualFormEquals("standard library package Package1;", libraryPackage);
+    }
+
+    /**
+     *
+     * Check that the name of a library package is quoted when containing spaces.
+     */
+    @Test
+    public void emptyLibraryPackageWithSpaces() {
+        this.assertTextualFormEquals("library package <'T T'> 'Package 1';", this.builder.createInWithFullName(LibraryPackage.class, null, "Package 1", "T T"));
+    }
+
+    /**
+     * A name need escaping if it contains spaces or it first letter is neither a letter or _.
+     */
+    @Test
+    public void libraryPackageWithUnrestrictedName() {
+        // Need to escape name since it starts with a digit
+        // No need to escape short name _ since it is a valid first character
+        this.assertTextualFormEquals("library package <_T> '4Package';", this.builder.createInWithFullName(LibraryPackage.class, null, "4Package", "_T"));
+
+    }
+
+    @Test
+    public void emptyLibraryPackageWithShortName() {
+        this.assertTextualFormEquals("library package <T> Package1;", this.builder.createInWithFullName(LibraryPackage.class, null, "Package1", "T"));
+    }
+
+    @Test
+    public void libraryPackageWithContent() {
+        LibraryPackage libraryPackage1 = this.builder.createWithName(LibraryPackage.class, PACKAGE1);
+
+        Package pack2 = this.builder.createInWithName(Package.class, libraryPackage1, PACKAGE_2);
+
+        this.builder.createInWithName(Package.class, pack2, PACKAGE_3);
+
+        this.assertTextualFormEquals("""
+                library package Package1 {
+                    package 'Package 2' {
+                        package 'Package 3';
+                    }
+                }""", libraryPackage1);
+    }
+
+    @Test
+    public void libraryPackageWithContentWithRootNamespace() {
+
+        Namespace rootnamespace = this.builder.create(Namespace.class);
+
+        LibraryPackage libraryPackage1 = this.builder.createInWithName(LibraryPackage.class, rootnamespace, PACKAGE1);
+
+        NamespaceImport namespaceImport = this.builder.createIn(NamespaceImport.class, libraryPackage1);
+
+        Package pack2 = this.builder.createInWithName(Package.class, libraryPackage1, PACKAGE_2);
+
+        Package pack3 = this.builder.createInWithName(Package.class, pack2, PACKAGE_3);
+
+        namespaceImport.setImportedNamespace(pack3);
+
+        // The root namespace should not be serialized
+        this.assertTextualFormEquals("""
+                library package Package1 {
+                    private import 'Package 2'::'Package 3'::*;
+                    package 'Package 2' {
+                        package 'Package 3';
+                    }
+                }""", libraryPackage1);
     }
 
     @Test
@@ -317,7 +411,7 @@ public class SysMLElementSerializerTest {
         pack2.setDeclaredName(PACKAGE_2);
 
         Package pack3 = this.fact.createPackage();
-        pack3.setDeclaredName("Package 3");
+        pack3.setDeclaredName(PACKAGE_3);
 
         this.addOwnedMembership(pack1, pack2);
         this.addOwnedMembership(pack2, pack3);
@@ -431,7 +525,7 @@ public class SysMLElementSerializerTest {
         pack2.setDeclaredName(PACKAGE_2);
 
         Package pack3 = this.fact.createPackage();
-        pack3.setDeclaredName("Package 3");
+        pack3.setDeclaredName(PACKAGE_3);
 
         this.addOwnedMembership(pack1, pack2);
         this.addOwnedMembership(pack2, pack3);
