@@ -8,6 +8,8 @@
 
 == Bug fixes
 
+- Fix textual export of `LibraryPackage`: the exported file now correctly contains `library package <Package Name>` instead of `package <Package Name>`.
+
 == Improvements
 
 - `OccurrenceUsage#portionKind` is now `unsettable` and its default value is `null` in the SysMLv2 metamodel to conform to the specification.
