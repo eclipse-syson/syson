@@ -10,44 +10,38 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.configuration;
+package org.eclipse.syson.tree.explorer.view.filters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeItemAlteredContentProvider;
-import org.eclipse.syson.services.UtilService;
-import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;
 
 /**
- * An implementation of {@link IExplorerTreeItemAlteredContentProvider} allowing to hide root namespace tree items from
+ * An implementation of {@link IExplorerTreeItemAlteredContentProvider} allowing to hide memberships tree items from
  * Explorer tree without hide their children.
  *
- * @author gdaniel
+ * @author arichard
  */
 @Service
-public class HideRootNamespaceTreeItemAlteredContentProvider implements IExplorerTreeItemAlteredContentProvider {
+public class HideMembershipsTreeItemAlteredContentProvider implements IExplorerTreeItemAlteredContentProvider {
 
-    private final UtilService utilService = new UtilService();
+    private final ISysONExplorerFilterService filterService;
+
+    public HideMembershipsTreeItemAlteredContentProvider(ISysONExplorerFilterService filterService) {
+        this.filterService = filterService;
+    }
 
     @Override
     public boolean canHandle(Object object, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID);
+        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
     }
 
     @Override
     public List<Object> apply(List<Object> computedChildren, VariableManager variableManager) {
-        List<Object> alteredChildren = new ArrayList<>();
-        computedChildren.forEach(child -> {
-            if (child instanceof Namespace namespace && this.utilService.isRootNamespace(namespace)) {
-                alteredChildren.addAll(namespace.getOwnedElement());
-            } else {
-                alteredChildren.add(child);
-            }
-        });
-        return alteredChildren;
+        return this.filterService.hideMemberships(computedChildren);
     }
 
 }

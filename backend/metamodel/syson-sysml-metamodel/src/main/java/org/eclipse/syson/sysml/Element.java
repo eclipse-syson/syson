@@ -13,7 +13,7 @@
 package org.eclipse.syson.sysml;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EModelElement;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Element</b></em>'. <!-- end-user-doc -->
@@ -44,9 +44,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * @see org.eclipse.syson.sysml.SysmlPackage#getElement()
  * @model abstract="true"
+ * @extends EModelElement
  * @generated
  */
-public interface Element extends EObject {
+public interface Element extends EModelElement {
     /**
      * Returns the value of the '<em><b>Alias Ids</b></em>' attribute list. The list contents are of type
      * {@link java.lang.String}. <!-- begin-user-doc --> <!-- end-user-doc -->

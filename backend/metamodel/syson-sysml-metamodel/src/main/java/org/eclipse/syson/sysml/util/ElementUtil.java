@@ -24,7 +24,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Featuring;
@@ -56,6 +58,11 @@ public class ElementUtil {
      * The prefix to prepend to all names for the construction of UUIDs as required in SysMLv2 specification.
      */
     public static final String SYSML_LIBRARY_BASE_URI = "https://www.omg.org/spec/SysML/";
+
+    /**
+     * The source of the {@link EAnnotation} used to flag imported {@link Resource}s.
+     */
+    private static final String IMPORTED_EANNOTATION_SOURCE = "org.eclipse.syson.sysml.imported";
 
     /**
      * Check if the given {@link Element} comes from a library (i.e. a {@link LibraryPackage}) or not.
@@ -135,6 +142,37 @@ public class ElementUtil {
      */
     public static UUID generateUUIDv5(UUID namespaceUUID, String value) {
         return Generators.nameBasedGenerator(namespaceUUID, null).generate(value);
+    }
+
+    /**
+     * Sets the provided {@code resource} as <i>imported</i>.
+     * <p>
+     * An <i>imported</i> {@link Resource} returns {@code true} when calling {@code ElementUtil.isImported(resource)}.
+     * </p>
+     *
+     * @param resource
+     *            the {@link Resource} to set as imported
+     */
+    public static void setIsImported(Resource resource) {
+        resource.getContents().forEach(eObject -> {
+            if (eObject instanceof Element element) {
+                EAnnotation importedEAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
+                importedEAnnotation.setSource(IMPORTED_EANNOTATION_SOURCE);
+                element.getEAnnotations().add(importedEAnnotation);
+            }
+        });
+    }
+
+    /**
+     * Returns {@code true} if the provided {@code resource} is imported.
+     *
+     * @param resource
+     *            the {@link Resource} to check
+     * @return {@code true} if the provided {@code resource} is imported
+     */
+    public static boolean isImported(Resource resource) {
+        return resource.getContents().stream()
+                .anyMatch(eObject -> eObject instanceof Element element && element.getEAnnotation(IMPORTED_EANNOTATION_SOURCE) != null);
     }
 
     /**

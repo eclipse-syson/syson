@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
 import org.eclipse.syson.sysml.ASTTransformer;
 import org.eclipse.syson.sysml.SysmlToAst;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -74,6 +75,7 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
         ASTTransformer tranformer = new ASTTransformer();
         Resource resource = tranformer.convertResource(astStream, resourceSet);
         if (resource != null) {
+            ElementUtil.setIsImported(resource);
             resourceSet.getResources().add(resource);
         }
         // Need a way to be able to report some messages to the user see

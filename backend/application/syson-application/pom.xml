@@ -150,6 +150,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-tree-explorer-view</artifactId>
+			<version>2024.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-import</artifactId>
 			<version>2024.11.0</version>
 		</dependency>
@@ -169,6 +174,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-diagrams-tests</artifactId>
+			<version>${sirius.web.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-trees-tests</artifactId>
 			<version>${sirius.web.version}</version>
 			<scope>test</scope>
 		</dependency>

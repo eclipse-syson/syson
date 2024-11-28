@@ -10,41 +10,38 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.configuration;
+package org.eclipse.syson.tree.explorer.view.filters;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeItemAlteredContentProvider;
-import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;
 
 /**
- * An implementation of {@link IExplorerTreeItemAlteredContentProvider} allowing to hide memberships tree items from
+ * An implementation of {@link IExplorerTreeItemAlteredContentProvider} allowing to hide root namespace tree items from
  * Explorer tree without hide their children.
  *
- * @author arichard
+ * @author gdaniel
  */
 @Service
-public class HideMembershipsTreeItemAlteredContentProvider implements IExplorerTreeItemAlteredContentProvider {
+public class HideRootNamespaceTreeItemAlteredContentProvider implements IExplorerTreeItemAlteredContentProvider {
+
+    private final ISysONExplorerFilterService filterService;
+
+    public HideRootNamespaceTreeItemAlteredContentProvider(ISysONExplorerFilterService filterService) {
+        this.filterService = filterService;
+    }
 
     @Override
     public boolean canHandle(Object object, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID);
+        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID);
     }
 
     @Override
     public List<Object> apply(List<Object> computedChildren, VariableManager variableManager) {
-        List<Object> alteredChildren = new ArrayList<>();
-        computedChildren.forEach(child -> {
-            if (child instanceof Membership membership) {
-                alteredChildren.addAll(membership.getOwnedRelatedElement());
-            } else {
-                alteredChildren.add(child);
-            }
-        });
-        return alteredChildren;
+        return this.filterService.hideRootNamespace(computedChildren);
     }
 
 }

@@ -1,0 +1,105 @@
+/*******************************************************************************
+ * Copyright (c) 2024 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.syson.tree.explorer.view.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
+import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
+import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
+import org.springframework.stereotype.Service;
+
+/**
+ * Services to apply filters on SysON explorer.
+ * 
+ * @author gdaniel
+ */
+@Service
+public class SysONExplorerFilterService implements ISysONExplorerFilterService {
+
+    private final UtilService utilService = new UtilService();
+
+    @Override
+    public boolean isKerMLStandardLibrary(Object object) {
+        return object instanceof Resource res && res.getURI() != null && res.getURI().toString().startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME);
+    }
+
+    @Override
+    public boolean isSysMLStandardLibrary(Object object) {
+        return object instanceof Resource res && res.getURI() != null && res.getURI().toString().startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME);
+    }
+
+    @Override
+    public List<Object> hideKerMLStandardLibraries(List<Object> elements) {
+        return elements.stream()
+                .filter(element -> !this.isKerMLStandardLibrary(element))
+                .toList();
+    }
+
+    @Override
+    public List<Object> hideSysMLStandardLibraries(List<Object> elements) {
+        return elements.stream()
+                .filter(element -> !this.isSysMLStandardLibrary(element))
+                .toList();
+    }
+
+    @Override
+    public List<Object> hideMemberships(List<Object> elements) {
+        List<Object> alteredElements = new ArrayList<>();
+        elements.forEach(child -> {
+            if (child instanceof Membership membership) {
+                alteredElements.addAll(membership.getOwnedRelatedElement());
+            } else {
+                alteredElements.add(child);
+            }
+        });
+        return alteredElements;
+    }
+
+    @Override
+    public List<Object> hideRootNamespace(List<Object> elements) {
+        List<Object> alteredElements = new ArrayList<>();
+        elements.forEach(child -> {
+            if (child instanceof Namespace namespace && this.utilService.isRootNamespace(namespace)) {
+                alteredElements.addAll(namespace.getOwnedElement());
+            } else {
+                alteredElements.add(child);
+            }
+        });
+        return alteredElements;
+    }
+
+    @Override
+    public List<Object> applyFilters(List<?> elements, List<String> activeFilterIds) {
+        List<Object> alteredElements = new ArrayList<>(elements);
+        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID)) {
+            alteredElements = this.hideMemberships(alteredElements);
+        }
+        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
+            alteredElements = this.hideKerMLStandardLibraries(alteredElements);
+        }
+        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
+            alteredElements = this.hideSysMLStandardLibraries(alteredElements);
+        }
+        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID)) {
+            alteredElements = this.hideRootNamespace(alteredElements);
+        }
+        return alteredElements;
+    }
+
+}
