@@ -80,9 +80,6 @@ public class NodeCreationTester {
         var createElementResult = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(createElementInput);
         String typename = JsonPath.read(createElementResult, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-
-        Runnable editLabel = () -> {
-        };
     }
 
     public void renameNode(String projectId, AtomicReference<Diagram> diagram, String nodeName, String newName) {

@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.eclipse.syson.sysml.*;
 
@@ -1329,6 +1330,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         SysmlPackageImpl theSysmlPackage = registeredSysmlPackage instanceof SysmlPackageImpl ? (SysmlPackageImpl) registeredSysmlPackage : new SysmlPackageImpl();
 
         isInited = true;
+
+        // Initialize simple dependencies
+        EcorePackage.eINSTANCE.eClass();
 
         // Create package meta-data objects
         theSysmlPackage.createPackageContents();
@@ -8633,6 +8637,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.setNsPrefix(eNS_PREFIX);
         this.setNsURI(eNS_URI);
 
+        // Obtain other dependent packages
+        EcorePackage theEcorePackage = (EcorePackage) EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
+
         // Create type parameters
 
         // Set bounds for type parameters
@@ -8700,6 +8707,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.differencingEClass.getESuperTypes().add(this.getRelationship());
         this.disjoiningEClass.getESuperTypes().add(this.getRelationship());
         this.documentationEClass.getESuperTypes().add(this.getComment());
+        this.elementEClass.getESuperTypes().add(theEcorePackage.getEModelElement());
         this.elementFilterMembershipEClass.getESuperTypes().add(this.getOwningMembership());
         this.endFeatureMembershipEClass.getESuperTypes().add(this.getFeatureMembership());
         this.enumerationDefinitionEClass.getESuperTypes().add(this.getAttributeDefinition());

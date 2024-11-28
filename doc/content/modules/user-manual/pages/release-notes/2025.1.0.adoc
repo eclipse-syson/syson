@@ -27,6 +27,12 @@
 - `OccurrenceUsage#portionKind` is now `unsettable` and its default value is `null` in the SysMLv2 metamodel to conform to the specification.
 - Improve the code in import module, by making it more generic. It now reports (on the server side) more messages to understand the scope of what is imported and the errors encountered.
 - Add support of `OccurrenceDefinition` and 'OccurrenceUsage` in export from model to textual SysMLv2.
+- Improve the support of libraries in the explorer.
+The explorer now contains 2 directories:
+*  _Standard Libraries_: contains the SysML and KerML libraries
+* _Referenced Libraries_: contains non-standard libraries imported by the user
+
+image::release-note-library-directories.png[Standard and Referenced Libraries in the explorer]
 
 == New features
 

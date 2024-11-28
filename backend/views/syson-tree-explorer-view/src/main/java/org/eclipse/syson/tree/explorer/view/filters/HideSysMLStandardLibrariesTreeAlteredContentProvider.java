@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.syson.application.configuration;
+package org.eclipse.syson.tree.explorer.view.filters;
 
 import java.util.List;
 
@@ -18,26 +18,27 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeAlteredContentProvider;
+import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
 import org.springframework.stereotype.Service;
 
 /**
- * An implementation of {@link IExplorerTreeAlteredContentProvider} allowing to hide KerML standard libraries documents
+ * An implementation of {@link IExplorerTreeAlteredContentProvider} allowing to hide SysML standard libraries documents
  * from Explorer tree.
  *
  * @author arichard
  */
 @Service
-public class HideKerMLStandardLibrariesTreeAlteredContentProvider implements IExplorerTreeAlteredContentProvider {
+public class HideSysMLStandardLibrariesTreeAlteredContentProvider implements IExplorerTreeAlteredContentProvider {
 
     @Override
     public boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
+        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID);
     }
 
     @Override
     public List<Object> apply(List<Object> computedElements, VariableManager variableManager) {
         return computedElements.stream()
-                .filter(element -> !(element instanceof Resource res && res.getURI() != null && res.getURI().toString().startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME)))
+                .filter(element -> !(element instanceof Resource res && res.getURI() != null && res.getURI().toString().startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME)))
                 .toList();
     }
 }

@@ -485,6 +485,27 @@ public class UtilService {
     }
 
     /**
+     * Returns the libraries contained in the root namespace of the provided {@code resource}.
+     *
+     * @param resource
+     *            the {@link Resource} to retrieve the libraries from
+     * @param isStandard
+     *            whether to find standard libraries or not
+     * @return the libraries
+     */
+    public List<LibraryPackage> getLibraries(Resource resource, boolean isStandard) {
+        return resource.getContents().stream()
+                .filter(Namespace.class::isInstance)
+                .map(Namespace.class::cast)
+                .filter(this::isRootNamespace)
+                .flatMap(namespace -> namespace.getOwnedElement().stream())
+                .filter(LibraryPackage.class::isInstance)
+                .map(LibraryPackage.class::cast)
+                .filter(libraryPackage -> libraryPackage.isIsStandard() == isStandard)
+                .toList();
+    }
+
+    /**
      * Create a child Action onto {@code stateDefinition}.
      *
      * @param parentState

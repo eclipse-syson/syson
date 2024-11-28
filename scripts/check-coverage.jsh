@@ -45,6 +45,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-diagram-actionflow-view", 96.0),
   new ModuleCoverage("syson-diagram-statetransition-view", 93.0),
   new ModuleCoverage("syson-diagram-interconnection-view", 95.0),
+  new ModuleCoverage("syson-tree-explorer-view", 10.0),
   new ModuleCoverage("syson-application-configuration", 38.0),
   new ModuleCoverage("syson-application", 37.0)
 );
