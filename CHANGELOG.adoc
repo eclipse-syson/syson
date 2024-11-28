@@ -2,6 +2,10 @@
 
 == v2025.1.0 (work in progress)
 
+=== Shapes
+
+- Improve support for libraries in the explorer
+
 === Breaking changes
 
 - https://github.com/eclipse-syson/syson/issues/796[#796] [import] Improve the code in the import module to make it more generic:
