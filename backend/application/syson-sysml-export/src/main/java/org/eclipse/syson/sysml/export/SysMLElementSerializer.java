@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
+import org.eclipse.syson.sysml.AllocationUsage;
 import org.eclipse.syson.sysml.AnalysisCaseUsage;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
@@ -160,12 +161,8 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.lineSeparator = lineSeparator;
         this.indentation = indentation;
         this.nameDeresolver = nameDeresolver;
-        if (reportConsumer == null) {
-            this.reportConsumer = r -> {
-            };
-        } else {
-            this.reportConsumer = reportConsumer;
-        }
+        this.reportConsumer = Objects.requireNonNullElseGet(reportConsumer, () -> r -> {
+        });
     }
 
     public SysMLElementSerializer(Consumer<Status> reportConsumer) {
@@ -250,6 +247,55 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     @Override
     public String casePartUsage(PartUsage partUsage) {
         return this.appendDefaultUsage(this.newAppender(), partUsage).toString();
+    }
+
+    @Override
+    public String caseAllocationUsage(AllocationUsage allocationUsage) {
+        // Might be quite a bit of shared code with ConnectionUsage once ConnectionUsage is implemented.
+        Appender builder = new Appender(this.lineSeparator, this.indentation);
+
+        if (isStandardAllocationUsage(allocationUsage)) {
+            var source = allocationUsage.getSource().get(0);
+            var target = allocationUsage.getTarget().get(0);
+            if (allocationUsage.getDeclaredName() != null) {
+                resolveAllocationUsagePrefixesAndName(builder, allocationUsage);
+            }
+            if (isBasicAllocationUsage(allocationUsage)) {
+                builder.appendSpaceIfNeeded().append("allocate " + source.getQualifiedName() + " to " + target.getQualifiedName() + ";");
+            } else {
+                var sourceOvercharge = source.getOwnedRelationship().get(0).getDeclaredName();
+                var targetOvercharge = target.getOwnedRelationship().get(0).getDeclaredName();
+                builder.appendSpaceIfNeeded().append("allocate (");
+                builder.newLine().appendIndentedContent(source.getDeclaredName() + " ::> " + sourceOvercharge + ",");
+                builder.newLine().appendIndentedContent(target.getDeclaredName() + " ::> " + targetOvercharge);
+                builder.newLine().appendIndentedContent(this.doSwitch(target));
+                builder.newLine().append(");");
+            }
+        } else {
+            resolveAllocationUsagePrefixesAndName(builder, allocationUsage);
+            this.appendChildrenContent(builder, allocationUsage, allocationUsage.getOwnedMembership());
+        }
+        return builder.toString();
+    }
+
+    private void resolveAllocationUsagePrefixesAndName(Appender builder, AllocationUsage allocationUsage) {
+        this.appendUsagePrefix(builder, allocationUsage);
+        builder.appendSpaceIfNeeded().append(this.getUsageKeyword(allocationUsage));
+        this.appendUsageDeclaration(builder, allocationUsage);
+    }
+
+    private boolean isStandardAllocationUsage(AllocationUsage allocationUsage) {
+        return allocationUsage.getSource().size() == 1 &&
+                allocationUsage.getTarget().size() == 1 &&
+                allocationUsage.getFeatureMembership().isEmpty();
+        //TODO is this sufficient to define a 'standard' allocation?
+    }
+
+    private boolean isBasicAllocationUsage(AllocationUsage allocationUsage) {
+        return isStandardAllocationUsage(allocationUsage) &&
+                allocationUsage.getSource().get(0).getOwnedRelationship().isEmpty() &&
+                allocationUsage.getTarget().get(0).getOwnedRelationship().isEmpty();
+        //TODO find the specific reason an AllocationUsage can be inlined
     }
 
     @Override
@@ -472,7 +518,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return builder.toString();
     }
 
-    private String appendDefaultUsage(Appender builder, Usage usage) {
+    private Appender appendDefaultUsage(Appender builder, Usage usage) {
 
         this.appendUsagePrefix(builder, usage);
 
@@ -482,7 +528,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         this.appendUsageCompletion(builder, usage);
 
-        return builder.toString();
+        return builder;
     }
 
     private void appendDefinitionBody(Appender builder, Usage usage) {
@@ -1897,7 +1943,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         return qualifiedName;
     }
 
-    private String appendNameWithShortName(Appender builder, Element element) {
+    private void appendNameWithShortName(Appender builder, Element element) {
         String shortName = element.getShortName();
         if (!isNullOrEmpty(shortName)) {
             builder.appendSpaceIfNeeded().append("<").appendPrintableName(shortName).append(">");
@@ -1906,7 +1952,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (!isNullOrEmpty(name)) {
             builder.appendSpaceIfNeeded().appendPrintableName(name);
         }
-        return builder.toString();
     }
 
     public String getVisibilityIndicator(VisibilityKind visibility) {
