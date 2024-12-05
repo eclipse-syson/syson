@@ -45,73 +45,43 @@ Here are some key concepts to know before manipulating the REST APIs in {product
 
 Below is the list of REST APIs supported in {product}:
 
-- Project related operations:
+++++
+<link rel="stylesheet" href="/_/css/vendor/swagger-ui.css">
+<div id="swagger-ui"></div>
+<script>
+function DisableTryItOutPlugin() {
+  // this plugin overrides the Topbar component to return nothing
+  return {
+    statePlugins: {
+      spec: {
+        wrapSelectors: {
+          allowTryItOutFor: () => () => false
+        }
+      }
+    },
+    components: {
+      Topbar: function() { return null },
+      Servers: function() { return null },
+      info: function() { return null }
 
-[cols="1,4,2,3"]
-|===
-|Method | Signature |Endpoint |Documentation 
+    }
+  }
+}
 
-|GET
-|getProjectById(projectId : UUID) : Project [0..1]
-|/projects/\{projectId}
-|Get project with the given id (projectId).
-
-4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f
-
-|GET
-|getProjects() : Project [0..*]
-|/projects
-|Get all projects.
-
-4.1+| Example: http://localhost:8080/api/rest/projects
-
-|POST
-|createProject(name : String, description : String [0..1]) : Project
-|/projects?name=\{name}
-|Create a new project with the given name and description (optional).
-
-4.1+| Example: http://localhost:8080/api/rest/projects?name=MyProject. The `description` optional parameter is not handled yet in {product}.
-
-|DELETE
-|deleteProject(projectId : UUID) : Project
-|/projects/\{projectId}
-|Delete the project with the given id (projectId).
-
-4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f
-
-|PUT
-|updateProject( projectId : UUID, name : String [0..1], description : String [0..1], defaultBranch : Branch [0..1] ) : Project
-|/projects/\{projectId}
-|Update the project with the given id (projectId).
-
-4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f?name=MyProjectWithNewName. 
-The `description` and `defaultBranch` optional parameters are not handled yet in {product}.
-
-|GET
-|getElements( projectId : UUID ) : Element [0..*]
-|projects/\{projectId}/commits/\{commitId}/elements
-|Get all the elements in a given project at the given commit. There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
-
-4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f/elements
-
-|GET
-|getElementById( projectId : UUID, elementId : UUID ) : Element
-|projects/\{projectId}/commits/\{commitId}/elements/\{elementId}
-|Get element with the given id (elementId) in the given project at the given commit. There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
-
-4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f/elements/2653e891-9146-4428-a5ce-e7137824bcc7
-
-|GET
-|getRelationshipsByRelatedElement( projectId : UUID, elementId : UUID ) : Relationship [0..*]
-|projects/\{projectId}/commits/\{commitId}/elements/\{elementId}/relationships
-|Get relationships that are incoming, outgoing, or both relative to the given related element. There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
-
-4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f/elements/2653e891-9146-4428-a5ce-e7137824bcc7/relationships
-
-|GET
-|getRootElements( projectId : UUID ) : Element [0..*]
-|projects/\{projectId}/commits/\{commitId}/roots
-|Get all the root elements in the given project at the given commit. There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.
-
-4.1+| Example: http://localhost:8080/api/rest/projects/41da7454-bd86-41b7-9bfd-b56fd431fa7f/roots
-|===
+  window.onload = () => {
+    window.ui = SwaggerUIBundle({
+      url: '../_attachments/sirius-web-openapi.json',
+      dom_id: '#swagger-ui',
+      deepLinking: false,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset // Optionnel : permet un rendu standalone
+      ],
+      plugins: [
+        DisableTryItOutPlugin
+      ],
+      layout: "BaseLayout",
+    });
+  };
+</script>
+++++
