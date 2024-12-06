@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson;
 
-import org.eclipse.sirius.web.infrastructure.persistence.JDBCConfiguration;
+import org.eclipse.sirius.web.infrastructure.configuration.persistence.JDBCConfiguration;
 import org.eclipse.sirius.web.starter.SiriusWebStarterConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;

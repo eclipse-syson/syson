@@ -33,8 +33,8 @@ describe('Node Creation Tests', () => {
         explorer.getExplorerView().contains(sysmlv2.getRootElementLabel());
         explorer.expand(sysmlv2.getRootElementLabel());
         explorer.select(diagramLabel);
-        diagram.getDiagram(diagramLabel).should('exist');
-        // Wait for the arrange all action to complete
+        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - Package 1').should('exist');
+        // Wait for the diagram to display
         cy.wait(400);
       })
     );
@@ -44,8 +44,8 @@ describe('Node Creation Tests', () => {
     context('When we create an AttributeUsage using the diagram palette', () => {
       beforeEach(() => {
         diagram.getDiagramBackground(diagramLabel).click();
-        diagram.getPalette().should('exist').findByTestId('Structure').findByTestId('expand').click();
-        diagram.getPalette().should('exist').find('div[role=tooltip]').findByTestId('New Attribute - Tool').click();
+        diagram.getPalette().should('exist').findByTestId('toolSection-Structure').click();
+        diagram.getPalette().should('exist').findByTestId('tool-New Attribute').click();
       });
 
       it('Then the new AttributeUsage is visible on the diagram and its compartments are not visible', () => {
@@ -56,16 +56,16 @@ describe('Node Creation Tests', () => {
         diagram.getNodes(diagramLabel, 'attribute').find('div').should('have.css', 'border-radius', '10px');
       });
 
-      // unstable test
+      //unstable test
       it.skip('Then we can create a new AttributeUsage inside it', () => {
         diagram.getNodes(diagramLabel, 'attribute').type('AttributeContainer{enter}', { waitForAnimations: true });
         // Make sure the edition is done and the new name is visible
         cy.getByTestId('List - «attribute»\nAttributeContainer').should('exist');
 
         diagram.getNodes(diagramLabel, 'AttributeContainer').click({ waitForAnimations: true });
-        diagram.getPalette().should('exist').findByTestId('Create').findByTestId('expand').click();
-        diagram.getPalette().should('exist').find('div[role=tooltip]').findByTestId('New Attribute - Tool').click();
-        cy.wait(400);
+        diagram.getPalette().should('exist').findByTestId('toolSection-Create').click();
+        diagram.getPalette().should('exist').findByTestId('tool-New Attribute').click();
+        diagram.getPalette().should('not.exist');
         diagram.getNodes(diagramLabel, 'attributes').should('exist');
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
         diagram.isNodeInside('List - attributes', 'List - «attribute»\nAttributeContainer');
@@ -77,13 +77,8 @@ describe('Node Creation Tests', () => {
     context('When we create an AttributeDefinition using the diagram palette', () => {
       beforeEach(() => {
         diagram.getDiagramBackground(diagramLabel).click();
-        diagram.getPalette().should('exist').findByTestId('Structure').findByTestId('expand').click();
-        diagram
-          .getPalette()
-          .should('exist')
-          .find('div[role=tooltip]')
-          .findByTestId('New Attribute Definition - Tool')
-          .click();
+        diagram.getPalette().should('exist').findByTestId('toolSection-Structure').click();
+        diagram.getPalette().should('exist').findByTestId('tool-New Attribute Definition').click();
       });
 
       it('Then the new AttributeDefinition is visible on the diagram and its compartments are not visible', () => {
@@ -92,7 +87,7 @@ describe('Node Creation Tests', () => {
         diagram.getNodes(diagramLabel, 'attribute').find('div').should('have.css', 'border-radius', '0px');
       });
 
-      // unstable test
+      //unstable test
       it.skip('Then we can create a new AttributeUsage inside it', () => {
         diagram
           .getNodes(diagramLabel, 'AttributeDefinition')
@@ -100,9 +95,9 @@ describe('Node Creation Tests', () => {
         // Make sure the edition is done and the new name is visible
         cy.getByTestId('List - «attribute def»\nAttributeContainer').should('exist');
         diagram.getNodes(diagramLabel, 'AttributeContainer').click();
-        diagram.getPalette().should('exist').findByTestId('Create').findByTestId('expand').click();
-        diagram.getPalette().should('exist').find('div[role=tooltip]').findByTestId('New Attribute - Tool').click();
-        cy.wait(400);
+        diagram.getPalette().should('exist').findByTestId('toolSection-Create').click();
+        diagram.getPalette().should('exist').findByTestId('tool-New Attribute').click();
+        diagram.getPalette().should('not.exist');
         diagram.getNodes(diagramLabel, 'attributes').should('exist');
         diagram.getNodes(diagramLabel, 'attribute').should('exist');
         diagram.isNodeInside('List - attributes', 'List - «attribute def»\nAttributeContainer');

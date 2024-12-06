@@ -20,6 +20,7 @@
   "scripts": {
     "build": "turbo run build",
     "start": "turbo run start",
+    "format": "turbo run format",
     "format-lint": "turbo run format-lint"
   },
   "devDependencies": {
