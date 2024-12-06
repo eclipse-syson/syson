@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.application.sysmlv2;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -102,16 +103,18 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                             variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
                             String label = generalViewDiagram.getLabelProvider().apply(variableManager);
                             Diagram diagram = this.diagramCreationService.create(semanticTarget.get(), generalViewDiagram, editingContext);
+                            List<String> iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
 
                             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                                     .kind(diagram.getKind())
                                     .label(label)
                                     .descriptionId(diagram.getDescriptionId())
+                                    .iconURLs(iconURLs)
                                     .build();
 
                             this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());
                             this.representationPersistenceService.save(cause, editingContext, diagram);
-                            result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), label, diagram.getDescriptionId()));
+                            result = Optional.of(representationMetadata);
                         }
                     }
                     return result;
@@ -138,16 +141,18 @@ public class SysMLv2ProjectTemplatesInitializer implements IProjectTemplateIniti
                             variableManager.put(DiagramDescription.LABEL, generalViewDiagram.getLabel());
                             String label = generalViewDiagram.getLabelProvider().apply(variableManager);
                             Diagram diagram = this.diagramCreationService.create(semanticTarget.get(), generalViewDiagram, editingContext);
+                            List<String> iconURLs = generalViewDiagram.getIconURLsProvider().apply(variableManager);
 
                             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(diagram.getId())
                                     .kind(diagram.getKind())
                                     .label(label)
                                     .descriptionId(diagram.getDescriptionId())
+                                    .iconURLs(iconURLs)
                                     .build();
 
                             this.representationMetadataPersistenceService.save(cause, editingContext, representationMetadata, diagram.getTargetObjectId());
                             this.representationPersistenceService.save(cause, editingContext, diagram);
-                            result = Optional.of(new RepresentationMetadata(diagram.getId(), diagram.getKind(), label, diagram.getDescriptionId()));
+                            result = Optional.of(representationMetadata);
                         }
                     }
                     return result;
