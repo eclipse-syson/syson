@@ -16,7 +16,7 @@
 
 == Dependency update
 
-- [releng] Switch to Sirius Web 2024.11.3
+- [releng] Switch to Sirius Web 2024.11.5
 
 == Bug fixes
 
