@@ -189,27 +189,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Configure AWS CLI for SysON
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-3
-
-      - name: Upload the Docker configuration for AWS Elastic Beanstalk
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        env:
-          IMAGE_TAG: eclipsesyson/syson:${{ steps.meta.outputs.version }}
-        run: |
-          sed -e "s|IMAGE_NAME|$IMAGE_TAG|" Dockerrun.aws.json.template > Dockerrun.aws.json
-          aws s3 cp Dockerrun.aws.json s3://syson-deployment/integration/${{ env.git_describe }}/Dockerrun.aws.json
-
-      - name: Create a new ElasticBeanstalk Application Version for SysON Staging
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: aws elasticbeanstalk create-application-version --application-name "SysON" --source-bundle S3Bucket="syson-deployment",S3Key="integration/${{ env.git_describe }}/Dockerrun.aws.json" --version-label "${{ env.git_describe }}" --description "${{ github.sha }}"
-
-      - name: Deploy a new ElasticBeanstalk Application Version for SysON Staging
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: aws elasticbeanstalk update-environment --environment-name "syson-staging" --version-label "${{ env.git_describe }}"
