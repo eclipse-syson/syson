@@ -23,6 +23,7 @@
 - Fix textual export of `LibraryPackage`: the exported file now correctly contains `library package <Package Name>` instead of `package <Package Name>`.
 - Fix an issue that made the expand action of the explorer not work on specific filter combinations.
 The explorer now correctly allows to expand elements when the _Hide Root Namespaces_ filter is disabled and the `Hide KerML/SysML Standard Libraries` filter is enabled.
+- Fix an issue where some error messages were displayed when an element with implicit Specialization was selected and the Related Elements View was displayed.
 
 == Improvements
 
