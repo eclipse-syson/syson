@@ -56,7 +56,7 @@ import graphql.execution.DataFetcherResult;
 import reactor.test.StepVerifier;
 
 /**
- * Tests the SysON explorer.
+ * Tests the SysON Explorer View.
  *
  * @author gdaniel
  */
