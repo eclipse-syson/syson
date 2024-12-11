@@ -25,6 +25,8 @@
 === Bug fixes
 
 - https://github.com/eclipse-syson/syson/issues/868[#868] [export] Fix textual export of `LibraryPackage`
+- https://github.com/eclipse-syson/syson/issues/883[#883] [explorer] Fix `getChildren` error with specific filter combinations.
+The explorer now correctly allows to expand elements when the _Hide Root Namespaces_ filter is disabled and the `Hide KerML/SysML Standard Libraries` filter is enabled.
 
 === Improvements
 

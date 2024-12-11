@@ -199,6 +199,38 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
     }
 
+    @DisplayName("Given an empty SysML Project, when the explorer is displayed with its root model expanded and the hide memberships and hide KerML libraries filters, then the root model is visible and is expanded")
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getRootContentWithHideMembershipsAndHideKerMLStandardLibraries() {
+
+        List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL), filters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+
+        var initialExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(3);
+            TreeItem sysmlv2Model = tree.getChildren().get(0);
+            this.assertThatTreeItemHasLabel(sysmlv2Model, "SysMLv2");
+            assertThat(sysmlv2Model.isDeletable()).isTrue();
+            assertThat(sysmlv2Model.isEditable()).isTrue();
+            assertThat(sysmlv2Model.isSelectable()).isTrue();
+            assertThat(sysmlv2Model.isHasChildren()).isTrue();
+            assertThat(sysmlv2Model.isExpanded());
+            assertThat(sysmlv2Model.getChildren()).hasSize(1);
+            TreeItem namespaceItem = sysmlv2Model.getChildren().get(0);
+            this.assertThatTreeItemHasLabel(namespaceItem, "Namespace");
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
     private void assertThatTreeItemHasLabel(TreeItem treeItem, String label) {
         assertThat(treeItem.getLabel().styledStringFragments().stream().map(StyledStringFragment::text).collect(Collectors.joining())).isEqualTo(label);
     }

@@ -30,6 +30,8 @@ public final class SysMLv2Identifiers {
 
     public static final String GENERAL_VIEW_EMPTY_PROJECT = "861bc7ba-defb-400c-982f-d6563f36af48";
 
+    public static final String GENERAL_VIEW_EMPTY_MODEL = "82b6c2a2-43ab-4a8d-baa6-920652fd963f";
+
     public static final String GENERAL_VIEW_EMPTY_DIAGRAM = "e92f36f4-48ea-4a57-89b1-0acf98f86f6d";
 
     public static final String GENERAL_VIEW_EMPTY_DIAGRAM_OBJECT = "528fae42-60c2-40c8-baa3-684d874a950d";
