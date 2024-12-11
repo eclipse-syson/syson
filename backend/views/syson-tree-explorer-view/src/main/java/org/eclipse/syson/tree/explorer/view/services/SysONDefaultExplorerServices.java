@@ -160,9 +160,9 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         result = this.filterService.applyFilters(result, activeFilterIds);
 
         // Remove annotations: they aren't part of the SysML standard and shouldn't be visible to the user.
-        result.removeIf(element -> element instanceof EAnnotation);
-
-        return result;
+        return result.stream()
+                .filter(element -> !(element instanceof EAnnotation))
+                .toList();
     }
 
     @Override
