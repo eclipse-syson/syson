@@ -20,7 +20,7 @@
 
 === Dependency update
 
-- [releng] Switch to Sirius Web 2024.11.5
+- [releng] Switch to Sirius Web 2024.11.7
 
 === Bug fixes
 
