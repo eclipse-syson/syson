@@ -29,9 +29,7 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.util.ElementUtil;
-import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
-import org.eclipse.syson.tree.explorer.view.fragments.ReferencedLibraryDirectory;
-import org.eclipse.syson.tree.explorer.view.fragments.StandardLibraryDirectory;
+import org.eclipse.syson.tree.explorer.view.fragments.LibrariesDirectory;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
@@ -71,12 +69,11 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
                     .filter(r -> !this.filterService.isKerMLStandardLibrary(r))
                     .filter(r -> !ElementUtil.isImported(r) || new UtilService().getLibraries(r, false).isEmpty())
                     .forEach(results::add);
-            if (!activeFilterIds.contains(SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)
-                    || !activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
-                // Do not display the standard libraries directory if all its content is hidden by filters.
-                results.add(new StandardLibraryDirectory("Standard Libraries", this.filterService));
+            LibrariesDirectory librariesDirectory = new LibrariesDirectory("Libraries", this.filterService);
+            if (librariesDirectory.hasChildren(editingContext, List.of(), activeFilterIds)) {
+                // Do not display the libraries directory if is has no children.
+                results.add(librariesDirectory);
             }
-            results.add(new ReferencedLibraryDirectory("Referenced Libraries", this.filterService));
         }
         return results;
     }
@@ -182,43 +179,29 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             result = fragment.isEditable();
         } else if (self instanceof Namespace namespace) {
             if (new UtilService().isRootNamespace(namespace)) {
-                namespace.getOwnedElement().stream().noneMatch(ownedElement -> ElementUtil.isFromStandardLibrary(ownedElement));
+                result = !ElementUtil.isImported(namespace.eResource())
+                        && namespace.getOwnedElement().stream().noneMatch(ownedElement -> ElementUtil.isFromStandardLibrary(ownedElement));
             } else {
-                result = !ElementUtil.isFromStandardLibrary(namespace);
+                result = !ElementUtil.isFromStandardLibrary(namespace)
+                        && !ElementUtil.isImported(namespace.eResource());
             }
         } else if (self instanceof Element element) {
-            result = !ElementUtil.isFromStandardLibrary(element);
+            result = !ElementUtil.isFromStandardLibrary(element)
+                    && !ElementUtil.isImported(element.eResource());
         } else if (self instanceof Resource resource) {
-            result = resource.getContents().stream()
-                    .filter(Namespace.class::isInstance)
-                    .map(Namespace.class::cast)
-                    .flatMap(namespace -> namespace.getOwnedElement().stream())
-                    .noneMatch(ElementUtil::isFromStandardLibrary);
+            result = !ElementUtil.isImported(resource)
+                    && resource.getContents().stream()
+                            .filter(Namespace.class::isInstance)
+                            .map(Namespace.class::cast)
+                            .flatMap(namespace -> namespace.getOwnedElement().stream())
+                            .noneMatch(ElementUtil::isFromStandardLibrary);
         }
         return result;
     }
 
     @Override
     public boolean isDeletable(Object self) {
-        boolean result = true;
-        if (self instanceof ISysONExplorerFragment fragment) {
-            result = fragment.isDeletable();
-        } else if (self instanceof Namespace namespace) {
-            if (new UtilService().isRootNamespace(namespace)) {
-                namespace.getOwnedElement().stream().noneMatch(ownedElement -> ElementUtil.isFromStandardLibrary(ownedElement));
-            } else {
-                result = !ElementUtil.isFromStandardLibrary(namespace);
-            }
-        } else if (self instanceof Element element) {
-            result = !ElementUtil.isFromStandardLibrary(element);
-        } else if (self instanceof Resource resource) {
-            result = resource.getContents().stream()
-                    .filter(Namespace.class::isInstance)
-                    .map(Namespace.class::cast)
-                    .flatMap(namespace -> namespace.getOwnedElement().stream())
-                    .noneMatch(ElementUtil::isFromStandardLibrary);
-        }
-        return result;
+        return this.isEditable(self);
     }
 
     @Override

@@ -35,6 +35,8 @@ public class SysONTreeFilterProvider implements ITreeFilterProvider {
 
     public static final String HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID = UUID.nameUUIDFromBytes("SysONTreeSysMLStandardLibrariesFilter".getBytes()).toString();
 
+    public static final String HIDE_USER_LIBRARIES_TREE_FILTER_ID = UUID.nameUUIDFromBytes("SysONTreeUserLibrariesFilter".getBytes()).toString();
+
     public static final String HIDE_ROOT_NAMESPACES_ID = UUID.nameUUIDFromBytes("SysONTreeRootNamespacesFilter".getBytes()).toString();
 
     @Override
@@ -43,6 +45,7 @@ public class SysONTreeFilterProvider implements ITreeFilterProvider {
         filters.add(new TreeFilter(HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, "Hide Memberships", true));
         filters.add(new TreeFilter(HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID, "Hide KerML Standard Libraries", false));
         filters.add(new TreeFilter(HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID, "Hide SysML Standard Libraries", false));
+        filters.add(new TreeFilter(HIDE_USER_LIBRARIES_TREE_FILTER_ID, "Hide User Libraries", false));
         filters.add(new TreeFilter(HIDE_ROOT_NAMESPACES_ID, "Hide Root Namespaces", true));
         return filters;
     }

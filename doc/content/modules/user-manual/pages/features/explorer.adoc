@@ -9,8 +9,7 @@ image::editor-left-sidebar-explorer.png[{editor} Left sidebar Explorer]
 * *Models*: Represented by the models existing in the specific project.
 * *Semantic Elements*: Located within the models, these are instances of your business domain concepts, each with its own set of children.
 * *Representations*: If a particular semantic element has an associated representation, such as a diagram, it appears as a child of the semantic element.
-* *Standard Libraries*: A directory containing the SysML and KerML standard libraries.
-* *Referenced Libraries*: A directory containing User-imported libraries.
+* *Libraries*: A directory containing the standard libraries (SysML and KerML), as well as user-imported libraries.
 
 == {explorer} Toolbar
 

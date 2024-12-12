@@ -4,7 +4,7 @@
 
 == Breaking changes
 
-- https://github.com/eclipse-syson/syson/issues/796[#796] [import] Improve the code in the import module to make it more generic:
+- Improve the code in the import module to make it more generic:
 * Delete the `AstConstants` class: Constants have been split across several classes.
 * Delete the `LogBook` class (no longer used).
 * Replace `AstContainmentReferencePart` with `ContainmentReferenceHandler`.
@@ -13,6 +13,9 @@
 * Delete `ReferenceHelper` (no longer used).
 * Delete `SysMLUploadDocumentReportProvider` as it is not functional.
 * Most components used in the transformation now require a `MessageReporter` instance to collect transformation messages.
+- Rework the structure of standard and user libraries in the explorer, the following classes have been renamed to reflect their new usage:
+* Rename `StandardLibraryDirectory` to `LibrariesDirectory`.
+* Rename `ReferencedLibraryDirectory` to `UserLibrariesDirectory`.
 
 == Dependency update
 
@@ -35,7 +38,18 @@ The explorer now contains 2 directories:
 *  _Standard Libraries_: contains the SysML and KerML libraries
 * _Referenced Libraries_: contains non-standard libraries imported by the user
 
-image::release-note-library-directories.png[Standard and Referenced Libraries in the explorer]
+image::release-notes-standard-library-directories.png[Standard and Referenced Libraries in the explorer]
+
+- Rework the structure of standard and user libraries in the explorer.
+The explorer now contains the following directories for libraries:
+* _Libraries_: top-level container for all the libraries used in the project
+** _KerML_: KerML standard libraries
+** _SysML_: SysML standard libraries
+** _User Libraries_: User-imported libraries
+
+image::release-notes-libraries-directories.png[Libraries Directories in the explorer]
+
+
 
 == New features
 

@@ -20,6 +20,7 @@ import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfigu
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,13 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     }
 
     @Override
+    public boolean isUserLibrary(Object object) {
+        return object instanceof Resource res
+                && ElementUtil.isImported(res)
+                && !new UtilService().getLibraries(res, false).isEmpty();
+    }
+
+    @Override
     public List<Object> hideKerMLStandardLibraries(List<Object> elements) {
         return elements.stream()
                 .filter(element -> !this.isKerMLStandardLibrary(element))
@@ -55,6 +63,13 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
     public List<Object> hideSysMLStandardLibraries(List<Object> elements) {
         return elements.stream()
                 .filter(element -> !this.isSysMLStandardLibrary(element))
+                .toList();
+    }
+
+    @Override
+    public List<Object> hideUserLibraries(List<Object> elements) {
+        return elements.stream()
+                .filter(element -> !this.isUserLibrary(element))
                 .toList();
     }
 
@@ -95,6 +110,9 @@ public class SysONExplorerFilterService implements ISysONExplorerFilterService {
         }
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
             alteredElements = this.hideSysMLStandardLibraries(alteredElements);
+        }
+        if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
+            alteredElements = this.hideUserLibraries(alteredElements);
         }
         if (activeFilterIds.contains(SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID)) {
             alteredElements = this.hideRootNamespace(alteredElements);

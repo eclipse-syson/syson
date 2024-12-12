@@ -21,27 +21,27 @@ import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterSer
 import org.springframework.stereotype.Service;
 
 /**
- * An implementation of {@link IExplorerTreeAlteredContentProvider} allowing to hide SysML standard libraries documents
- * from Explorer tree.
+ * An implementation of {@link IExplorerTreeAlteredContentProvider} allowing to hide user libraries documents from
+ * Explorer tree.
  *
- * @author arichard
+ * @author gdaniel
  */
 @Service
-public class HideSysMLStandardLibrariesTreeAlteredContentProvider implements IExplorerTreeAlteredContentProvider {
+public class HideUserLibrariesTreeAlteredContentProvider implements IExplorerTreeAlteredContentProvider {
 
     private final ISysONExplorerFilterService filterService;
 
-    public HideSysMLStandardLibrariesTreeAlteredContentProvider(ISysONExplorerFilterService filterService) {
+    public HideUserLibrariesTreeAlteredContentProvider(ISysONExplorerFilterService filterService) {
         this.filterService = filterService;
     }
 
     @Override
     public boolean canHandle(IEditingContext editingContext, List<String> activeFilterIds) {
-        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID);
+        return activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID);
     }
 
     @Override
     public List<Object> apply(List<Object> computedElements, VariableManager variableManager) {
-        return this.filterService.hideSysMLStandardLibraries(computedElements);
+        return this.filterService.hideUserLibraries(computedElements);
     }
 }

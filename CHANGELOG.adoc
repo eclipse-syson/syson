@@ -17,6 +17,9 @@
 * Delete `ReferenceHelper` (no longer used).
 * Delete `SysMLUploadDocumentReportProvider` as it is not functional.
 * Most components used in the transformation now require a `MessageReporter` instance to collect transformation messages.
+- https://github.com/eclipse-syson/syson/issues/887[#887] [explorer] Rework the structure of standard and user libraries in the explorer:
+* Rename `StandardLibraryDirectory` to `LibrariesDirectory`.
+* Rename `ReferencedLibraryDirectory` to `UserLibrariesDirectory`.
 
 === Dependency update
 
@@ -38,6 +41,12 @@ The explorer now correctly allows to expand elements when the _Hide Root Namespa
 The explorer now contains 2 directories:
 *  _Standard Libraries_: contains the SysML and KerML libraries
 * _Referenced Libraries_: contains non-standard libraries imported by the user
+- https://github.com/eclipse-syson/syson/issues/887[#887] [explorer] Rework the structure of standard and user libraries in the explorer.
+The explorer now contains the following directories for libraries:
+* _Libraries_: top-level container for all the libraries used in the project
+** _KerML_: KerML standard libraries
+** _SysML_: SysML standard libraries
+** _User Libraries_: User-imported libraries
 
 === New features
 
