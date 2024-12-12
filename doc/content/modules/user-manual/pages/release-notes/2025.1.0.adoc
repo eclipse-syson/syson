@@ -51,6 +51,8 @@ image::release-notes-libraries-directories.png[Libraries Directories in the expl
 
 
 
+- Remove 'New objects from text' contextual menu entry for libraries.
+
 == New features
 
 - Handle imported package elements in diagrams.

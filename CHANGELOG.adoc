@@ -47,6 +47,7 @@ The explorer now contains the following directories for libraries:
 ** _KerML_: KerML standard libraries
 ** _SysML_: SysML standard libraries
 ** _User Libraries_: User-imported libraries
+- https://github.com/eclipse-syson/syson/issues/888[#888] [explorer] Remove 'New objects from text' contextual menu entry for libraries.
 
 === New features
 
