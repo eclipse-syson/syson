@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-metamodel-parent</artifactId>
-	<version>2024.11.1</version>
+	<version>2024.11.2</version>
 
 	<name>syson-metamodel-parent</name>
 	<description>SysON Metamodel Parent</description>
