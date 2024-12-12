@@ -52,10 +52,13 @@ import { httpOrigin, wsOrigin } from './core/URL';
 import { referenceWidgetDocumentTransform } from './extensions/ReferenceWidgetDocumentTransform';
 import { SysONFooter } from './extensions/SysONFooter';
 import { sysonTheme } from './theme/sysonTheme';
+import { SysONObjectTreeItemContextMenuContribution } from './extensions/SysONObjectTreeItemContextMenuContribution';
+import { SysONDocumentTreeItemContextMenuContribution } from './extensions/SysONDocumentTreeItemContextMenuContribution';
 
 import './fonts.css';
 import './reset.css';
 import './variables.css';
+import { SysONExtensionRegistryMergeStrategy } from './extensions/SysONExtensionRegistryMergeStrategy';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
@@ -110,6 +113,16 @@ extensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
 });
 
 extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_object`,
+  Component: SysONObjectTreeItemContextMenuContribution,
+});
+
+extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
+  identifier: `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_document`,
+  Component: SysONDocumentTreeItemContextMenuContribution,
+});
+
+extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
   identifier: `syson${treeItemContextMenuEntryExtensionPoint.identifier}_insertTextualSysML`,
   Component: InsertTextualSysMLMenuContribution,
 });
@@ -147,6 +160,7 @@ root.render(
     httpOrigin={httpOrigin}
     wsOrigin={wsOrigin}
     theme={sysonTheme}
+    extensionRegistryMergeStrategy={new SysONExtensionRegistryMergeStrategy()}
     extensionRegistry={extensionRegistry}>
     <DiagramRepresentationConfiguration nodeTypeRegistry={nodeTypeRegistry} />
   </SiriusWebApplication>

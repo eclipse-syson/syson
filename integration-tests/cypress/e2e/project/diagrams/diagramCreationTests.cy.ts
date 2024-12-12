@@ -102,5 +102,56 @@ describe('Diagram Creation Tests', () => {
         diagram.getDiagram('actionFlowView').should('exist');
       });
     });
+
+    context('When we select the Libraries directory in the explorer', () => {
+      it('Then we cannot create a new representation in it', () => {
+        const explorer = new Explorer();
+        explorer.getTreeItemByLabel(sysmlv2.getLibrariesLabel()).first().find('button').click();
+        cy.getByTestId('new-representation').should('not.exist');
+      });
+    });
+
+    context('When we select the KerML directory in the explorer', () => {
+      it('Then we cannot create a new representation in it', () => {
+        const explorer = new Explorer();
+        explorer.expand(sysmlv2.getLibrariesLabel());
+        explorer.getTreeItemByLabel(sysmlv2.getKerMLLabel()).first().find('button').click();
+        cy.getByTestId('new-representation').should('not.exist');
+      });
+    });
+
+    context('When we select the SysML directory in the explorer', () => {
+      it('Then we cannot create a new representation in it', () => {
+        const explorer = new Explorer();
+        explorer.expand(sysmlv2.getLibrariesLabel());
+        explorer.getTreeItemByLabel(sysmlv2.getSysMLLabel()).first().find('button').click();
+        cy.getByTestId('new-representation').should('not.exist');
+      });
+    });
+
+    context('When we select the Base KerML model in the explorer', () => {
+      it('Then we cannot create a new representation in it', () => {
+        const explorer = new Explorer();
+        explorer.expand(sysmlv2.getLibrariesLabel());
+        explorer.expand(sysmlv2.getKerMLLabel());
+        explorer.getTreeItemByLabel('Base').first().find('button').click();
+        cy.getByTestId('new-representation').should('not.exist');
+      });
+    });
+
+    context('When we select the Base KerML model top-level element in the explorer', () => {
+      it('Then we cannot create a new representation in it', () => {
+        const explorer = new Explorer();
+        explorer.expand(sysmlv2.getLibrariesLabel());
+        explorer.expand(sysmlv2.getKerMLLabel());
+        explorer.expand('Base');
+        explorer
+          .getTreeItemByLabelAndKind('Base', 'siriusComponents://semantic?domain=sysml&entity=LibraryPackage')
+          .first()
+          .find('button')
+          .click();
+        cy.getByTestId('new-representation').should('not.exist');
+      });
+    });
   });
 });

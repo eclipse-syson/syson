@@ -71,6 +71,7 @@ image::release-notes-libraries-directories.png[Libraries Directories in the expl
 
 - Remove 'New objects from text' contextual menu entry for libraries.
 - Allow to import `.kerml` textual files.
+- Remove 'New object' and 'New representation' contextual menu entries for libraries.
 
 == New features
 

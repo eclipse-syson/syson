@@ -39,4 +39,16 @@ export class SysMLv2 {
   public getRootElementLabel(): string {
     return 'Package 1';
   }
+
+  public getLibrariesLabel(): string {
+    return 'Libraries';
+  }
+
+  public getKerMLLabel(): string {
+    return 'KerML';
+  }
+
+  public getSysMLLabel(): string {
+    return 'SysML';
+  }
 }
