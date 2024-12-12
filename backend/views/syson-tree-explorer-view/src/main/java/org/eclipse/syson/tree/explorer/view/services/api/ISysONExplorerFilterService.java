@@ -25,9 +25,13 @@ public interface ISysONExplorerFilterService {
 
     boolean isSysMLStandardLibrary(Object object);
 
+    boolean isUserLibrary(Object object);
+
     List<Object> hideKerMLStandardLibraries(List<Object> elements);
 
     List<Object> hideSysMLStandardLibraries(List<Object> elements);
+
+    List<Object> hideUserLibraries(List<Object> elements);
 
     List<Object> hideMemberships(List<Object> elements);
 
