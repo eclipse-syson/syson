@@ -20,8 +20,6 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.syson.services.UtilService;
-import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
 
@@ -65,7 +63,7 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
             hasChildren = this.filterService.applyFilters(siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
                     .filter(Resource.class::isInstance)
                     .map(Resource.class::cast)
-                    .anyMatch(resource -> ElementUtil.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty());
+                    .anyMatch(resource -> this.filterService.isUserLibrary(resource));
         }
         return hasChildren;
     }
@@ -77,7 +75,7 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
             this.filterService.applyFilters(siriusWebEditingContext.getDomain().getResourceSet().getResources(), activeFilterIds).stream()
                     .filter(Resource.class::isInstance)
                     .map(Resource.class::cast)
-                    .filter(resource -> ElementUtil.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty())
+                    .filter(resource -> this.filterService.isUserLibrary(resource))
                     .forEach(result::add);
         }
         return result;

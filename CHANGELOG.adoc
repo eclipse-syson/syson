@@ -31,6 +31,9 @@
 - https://github.com/eclipse-syson/syson/issues/883[#883] [explorer] Fix `getChildren` error with specific filter combinations.
 The explorer now correctly allows to expand elements when the _Hide Root Namespaces_ filter is disabled and the `Hide KerML/SysML Standard Libraries` filter is enabled.
 - https://github.com/eclipse-syson/syson/issues/884[#884] [related-elements] Fix an issue where some error messages were displayed when an element with implicit Specialization was selected and the Related Elements View was displayed.
+- https://github.com/eclipse-syson/syson/issues/895[#895] [explorer] Fix deletion of imported models from the explorer.
+Users can now delete imported library _models_ (i.e. models with a `LibraryPackage` element), but they cannot edit them nor delete elements inside them.
+Imported models that do not contain libraries can be modified as regular models created in the project.
 
 === Improvements
 

@@ -50,7 +50,9 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     private final IExplorerServices explorerServices;
 
-    private ISysONExplorerFilterService filterService;
+    private final ISysONExplorerFilterService filterService;
+
+    private final UtilService utilService = new UtilService();
 
     public SysONDefaultExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices,
             ISysONExplorerFilterService filterService) {
@@ -67,7 +69,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             siriusWebContext.getDomain().getResourceSet().getResources().stream()
                     .filter(r -> !this.filterService.isSysMLStandardLibrary(r))
                     .filter(r -> !this.filterService.isKerMLStandardLibrary(r))
-                    .filter(r -> !ElementUtil.isImported(r) || new UtilService().getLibraries(r, false).isEmpty())
+                    .filter(r -> !ElementUtil.isImported(r) || this.utilService.getLibraries(r, false).isEmpty())
                     .forEach(results::add);
             LibrariesDirectory librariesDirectory = new LibrariesDirectory("Libraries", this.filterService);
             if (librariesDirectory.hasChildren(editingContext, List.of(), activeFilterIds)) {
@@ -178,18 +180,18 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         if (self instanceof ISysONExplorerFragment fragment) {
             result = fragment.isEditable();
         } else if (self instanceof Namespace namespace) {
-            if (new UtilService().isRootNamespace(namespace)) {
-                result = !ElementUtil.isImported(namespace.eResource())
+            if (this.utilService.isRootNamespace(namespace)) {
+                result = !(this.filterService.isUserLibrary(namespace.eResource()))
                         && namespace.getOwnedElement().stream().noneMatch(ownedElement -> ElementUtil.isFromStandardLibrary(ownedElement));
             } else {
                 result = !ElementUtil.isFromStandardLibrary(namespace)
-                        && !ElementUtil.isImported(namespace.eResource());
+                        && !(this.filterService.isUserLibrary(namespace.eResource()));
             }
         } else if (self instanceof Element element) {
             result = !ElementUtil.isFromStandardLibrary(element)
-                    && !ElementUtil.isImported(element.eResource());
+                    && !(this.filterService.isUserLibrary(element.eResource()));
         } else if (self instanceof Resource resource) {
-            result = !ElementUtil.isImported(resource)
+            result = !(this.filterService.isUserLibrary(resource))
                     && resource.getContents().stream()
                             .filter(Namespace.class::isInstance)
                             .map(Namespace.class::cast)
@@ -201,7 +203,30 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     @Override
     public boolean isDeletable(Object self) {
-        return this.isEditable(self);
+        boolean result = true;
+        if (self instanceof ISysONExplorerFragment fragment) {
+            result = fragment.isEditable();
+        } else if (self instanceof Namespace namespace) {
+            if (this.utilService.isRootNamespace(namespace)) {
+                result = !(this.filterService.isUserLibrary(namespace.eResource()))
+                        && namespace.getOwnedElement().stream().noneMatch(ownedElement -> ElementUtil.isFromStandardLibrary(ownedElement));
+            } else {
+                result = !ElementUtil.isFromStandardLibrary(namespace)
+                        && !(this.filterService.isUserLibrary(namespace.eResource()));
+            }
+        } else if (self instanceof Element element) {
+            result = !ElementUtil.isFromStandardLibrary(element)
+                    && !(this.filterService.isUserLibrary(element.eResource()));
+        } else if (self instanceof Resource resource) {
+            // Allow to delete resources containing user libraries, users may want to remove an imported library from
+            // their project.
+            result = resource.getContents().stream()
+                    .filter(Namespace.class::isInstance)
+                    .map(Namespace.class::cast)
+                    .flatMap(namespace -> namespace.getOwnedElement().stream())
+                    .noneMatch(ElementUtil::isFromStandardLibrary);
+        }
+        return result;
     }
 
     @Override
