@@ -64,7 +64,7 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
             canHandle = false;
         }
         if (canHandle) {
-            canHandle = resourceURI != null && resourceURI.toString().endsWith(".sysml");
+            canHandle = resourceURI != null && (resourceURI.toString().endsWith(".sysml") || resourceURI.toString().endsWith(".kerml"));
         }
         return canHandle;
     }
