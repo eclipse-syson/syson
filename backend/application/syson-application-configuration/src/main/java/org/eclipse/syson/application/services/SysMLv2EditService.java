@@ -40,6 +40,7 @@ import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 import org.springframework.stereotype.Service;
 
@@ -147,6 +148,9 @@ public class SysMLv2EditService implements IEditServiceDelegate {
             } else if (container instanceof Membership membership && eObject instanceof Element newElement) {
                 membership.getOwnedRelatedElement().add(newElement);
             }
+            // Updating an element in an imported model removes its imported flag. This ensures that creating a library
+            // model from an imported SysML file does not make it an imported user library.
+            ElementUtil.setIsImported(eObject.eResource(), false);
             new ElementInitializerSwitch().doSwitch(eObject);
             return Optional.of(eObject);
         }
