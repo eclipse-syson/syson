@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,10 @@ package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
@@ -23,6 +26,7 @@ import org.eclipse.syson.diagram.common.view.nodes.AbstractCompartmentNodeDescri
 import org.eclipse.syson.diagram.common.view.tools.ActorCompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.springframework.util.Assert;
 
 /**
  * Requirement definition actor Compartment node description.
@@ -32,7 +36,13 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
 public class RequirementDefinitionActorsCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
     public RequirementDefinitionActorsCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
-        super(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, descriptionNameGenerator);
+        this(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, descriptionNameGenerator);
+    }
+
+    public RequirementDefinitionActorsCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, eReference, colorProvider, descriptionNameGenerator);
+        Assert.isTrue(Stream.concat(Stream.of(eClass), eClass.getEAllSuperTypes().stream()).anyMatch(eClassOrSuper -> eClassOrSuper == SysmlPackage.eINSTANCE.getRequirementDefinition()),
+                () -> "'%s' is not a sub-type of RequirementDefinition".formatted(eClass.getName()));
     }
 
     @Override
