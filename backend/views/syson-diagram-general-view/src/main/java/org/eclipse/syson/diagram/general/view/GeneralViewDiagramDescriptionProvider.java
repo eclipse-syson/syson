@@ -106,7 +106,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
     public static final String DESCRIPTION_NAME = "General View";
 
-    public static  final List<EClass> DEFINITIONS = List.of(
+    public static final List<EClass> DEFINITIONS = List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getActionDefinition(),
             SysmlPackage.eINSTANCE.getAllocationDefinition(),
             SysmlPackage.eINSTANCE.getAttributeDefinition(),
@@ -122,9 +124,12 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getRequirementDefinition(),
             SysmlPackage.eINSTANCE.getUseCaseDefinition(),
             SysmlPackage.eINSTANCE.getStateDefinition()
+            // @formatter:on
             );
 
-    public static  final List<EClass> USAGES = List.of(
+    public static final List<EClass> USAGES = List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getAcceptActionUsage(),
             SysmlPackage.eINSTANCE.getActionUsage(),
             SysmlPackage.eINSTANCE.getAssignmentActionUsage(),
@@ -142,12 +147,20 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getRequirementUsage(),
             SysmlPackage.eINSTANCE.getUseCaseUsage(),
             SysmlPackage.eINSTANCE.getStateUsage()
+            // @formatter:on
             );
 
-    public static final List<EClass> ANNOTATINGS = List.of(
-            SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getComment());
+    public static final List<EClass> ANNOTATINGS = List
+            .of(
+            // @formatter:off
+            SysmlPackage.eINSTANCE.getDocumentation(),
+            SysmlPackage.eINSTANCE.getComment()
+            // @formatter:on
+            );
 
-    public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
+    public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map
+            .ofEntries(
+            // @formatter:off
             Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
             Map.entry(SysmlPackage.eINSTANCE.getAllocationDefinition(),  List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
             Map.entry(SysmlPackage.eINSTANCE.getAttributeDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
@@ -179,16 +192,21 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())),
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),            List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
             Map.entry(SysmlPackage.eINSTANCE.getUseCaseUsage(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation()))
+            // @formatter:on
             );
 
-    public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_MERGED_LIST_ITEMS = Map.ofEntries(
+    public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_MERGED_LIST_ITEMS = Map
+            .ofEntries(
+            // @formatter:off
             Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),    List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction())),
             Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),      List.of(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction(), SysmlPackage.eINSTANCE.getStateDefinition_DoAction(), SysmlPackage.eINSTANCE.getStateDefinition_ExitAction())),
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
-
+            // @formatter:on
             );
 
-    public static final ToolSectionDescription STRUCTURE_TOOL_SECTIONS = new ToolSectionDescription("Structure", List.of(
+    public static final ToolSectionDescription STRUCTURE_TOOL_SECTIONS = new ToolSectionDescription("Structure", List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getAttributeUsage(),
             SysmlPackage.eINSTANCE.getAttributeDefinition(),
             SysmlPackage.eINSTANCE.getEnumerationDefinition(),
@@ -197,53 +215,78 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getPackage(),
             SysmlPackage.eINSTANCE.getPartUsage(),
             SysmlPackage.eINSTANCE.getPartDefinition()
+            // @formatter:on
             ));
 
-    public static final ToolSectionDescription INTERCONNECTION_TOOL_SECTIONS = new ToolSectionDescription("Interconnection", List.of(
+    public static final ToolSectionDescription INTERCONNECTION_TOOL_SECTIONS = new ToolSectionDescription("Interconnection", List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getAllocationUsage(),
             SysmlPackage.eINSTANCE.getAllocationDefinition(),
             SysmlPackage.eINSTANCE.getInterfaceUsage(),
             SysmlPackage.eINSTANCE.getInterfaceDefinition(),
             SysmlPackage.eINSTANCE.getPortUsage(),
             SysmlPackage.eINSTANCE.getPortDefinition()
+            // @formatter:on
             ));
 
-    public static final ToolSectionDescription ACTION_FLOW_TOOL_SECTIONS = new ToolSectionDescription("ActionFlow", List.of(
+    public static final ToolSectionDescription ACTION_FLOW_TOOL_SECTIONS = new ToolSectionDescription("ActionFlow", List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getAcceptActionUsage(),
             SysmlPackage.eINSTANCE.getActionUsage(),
             SysmlPackage.eINSTANCE.getActionDefinition(),
             SysmlPackage.eINSTANCE.getAssignmentActionUsage()
+            // @formatter:on
             ));
 
-    public static final ToolSectionDescription REQUIREMENT_TOOL_SECTIONS =  new ToolSectionDescription("Requirement", List.of(
+    public static final ToolSectionDescription REQUIREMENT_TOOL_SECTIONS = new ToolSectionDescription("Requirement", List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getConstraintUsage(),
             SysmlPackage.eINSTANCE.getConstraintDefinition(),
             SysmlPackage.eINSTANCE.getRequirementUsage(),
             SysmlPackage.eINSTANCE.getRequirementDefinition()
+            // @formatter:on
             ));
 
-    public static final ToolSectionDescription ANALYSIS_TOOL_SECTIONS = new ToolSectionDescription("Analysis", List.of(
+    public static final ToolSectionDescription ANALYSIS_TOOL_SECTIONS = new ToolSectionDescription("Analysis", List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getCaseUsage(),
             SysmlPackage.eINSTANCE.getCaseDefinition(),
             SysmlPackage.eINSTANCE.getUseCaseUsage(),
             SysmlPackage.eINSTANCE.getUseCaseDefinition()
+            // @formatter:on
             ));
 
-    public static final ToolSectionDescription TEMPORAL_TOOL_SECTIONS = new ToolSectionDescription("Temporal", List.of(
+    public static final ToolSectionDescription TEMPORAL_TOOL_SECTIONS = new ToolSectionDescription("Temporal", List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getOccurrenceUsage(),
             SysmlPackage.eINSTANCE.getOccurrenceDefinition()
+            // @formatter:on
             ));
 
-    public static final ToolSectionDescription EXTENSION_TOOL_SECTIONS = new ToolSectionDescription("Extension", List.of(
+    public static final ToolSectionDescription EXTENSION_TOOL_SECTIONS = new ToolSectionDescription("Extension", List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getMetadataDefinition()
+            // @formatter:on
             ));
 
-    public static final ToolSectionDescription STATE_TRANSITION_TOOL_SECTIONS = new ToolSectionDescription("StateTransition", List.of(
+    public static final ToolSectionDescription STATE_TRANSITION_TOOL_SECTIONS = new ToolSectionDescription("StateTransition", List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getExhibitStateUsage(),
             SysmlPackage.eINSTANCE.getStateDefinition(),
-            SysmlPackage.eINSTANCE.getStateUsage()));
+            SysmlPackage.eINSTANCE.getStateUsage()
+            // @formatter:on
+            ));
 
-    public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
+    public static final List<ToolSectionDescription> TOOL_SECTIONS = List
+            .of(
+            // @formatter:off
             STRUCTURE_TOOL_SECTIONS,
             INTERCONNECTION_TOOL_SECTIONS,
             ACTION_FLOW_TOOL_SECTIONS,
@@ -251,14 +294,20 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             ANALYSIS_TOOL_SECTIONS,
             TEMPORAL_TOOL_SECTIONS,
             EXTENSION_TOOL_SECTIONS,
-            STATE_TRANSITION_TOOL_SECTIONS);
+            STATE_TRANSITION_TOOL_SECTIONS
+            // @formatter:on
+            );
 
     /**
      * Following elements have additional creation tools one for each direction (in, out, and inout).
      */
-    public static final List<EClass> DIRECTIONAL_ELEMENTS = List.of(
+    public static final List<EClass> DIRECTIONAL_ELEMENTS = List
+            .of(
+            // @formatter:off
             SysmlPackage.eINSTANCE.getItemUsage(),
-            SysmlPackage.eINSTANCE.getPortUsage());
+            SysmlPackage.eINSTANCE.getPortUsage()
+            // @formatter:on
+            );
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
@@ -587,8 +636,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
     private void linkAllocationDefinitionEndsCompartment(IViewDiagramElementFinder cache) {
         NodeDescription allocationDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getAllocationDefinition())).get();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
-            .ifPresent(allocationDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
+                .ifPresent(allocationDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     private void linkStatesCompartment(IViewDiagramElementFinder cache) {
