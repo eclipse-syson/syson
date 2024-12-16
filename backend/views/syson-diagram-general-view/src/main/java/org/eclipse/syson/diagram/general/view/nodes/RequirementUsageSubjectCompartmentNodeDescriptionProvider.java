@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,10 @@ package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -26,6 +29,7 @@ import org.eclipse.syson.diagram.common.view.tools.SubjectCompartmentNodeToolPro
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
+import org.springframework.util.Assert;
 
 /**
  * Requirement Subject Compartment node description.
@@ -35,7 +39,13 @@ import org.eclipse.syson.util.IDescriptionNameGenerator;
 public class RequirementUsageSubjectCompartmentNodeDescriptionProvider extends AbstractCompartmentNodeDescriptionProvider {
 
     public RequirementUsageSubjectCompartmentNodeDescriptionProvider(IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
-        super(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, descriptionNameGenerator);
+        this(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, descriptionNameGenerator);
+    }
+
+    public RequirementUsageSubjectCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
+        super(eClass, eReference, colorProvider, descriptionNameGenerator);
+        Assert.isTrue(Stream.concat(Stream.of(eClass), eClass.getEAllSuperTypes().stream()).anyMatch(eClassOrSuper -> eClassOrSuper == SysmlPackage.eINSTANCE.getRequirementUsage()),
+                () -> "'%s' is not a sub-type of RequirementUsage".formatted(eClass.getName()));
     }
 
     @Override
