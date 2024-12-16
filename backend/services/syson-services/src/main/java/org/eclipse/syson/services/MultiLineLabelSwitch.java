@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.CaseDefinition;
 import org.eclipse.syson.sysml.CaseUsage;
 import org.eclipse.syson.sysml.Comment;
 import org.eclipse.syson.sysml.ConcernDefinition;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintDefinition;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.Definition;
@@ -291,6 +292,25 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(LabelConstants.CR)
                 .append(this.caseElement(object))
                 .append(this.labelService.getSubclassificationLabel(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseConcernUsage(ConcernUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.getBasicNamePrefix(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
+                .append("concern")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.labelService.getTypingLabel(object))
+                .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getSubsettingLabel(object))
+                .append(this.labelService.getValueLabel(object));
         return label.toString();
     }
 

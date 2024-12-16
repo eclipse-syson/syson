@@ -66,6 +66,8 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
 
     private static final String DEFAULT_CONCERN_DEFINITION_LABEL = LabelConstants.OPEN_QUOTE + "concern def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
+    private static final String DEFAULT_CONCERN_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "concern" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
+
     private static final String DEFAULT_CONSTRAINT_DEFINITION_LABEL = LabelConstants.OPEN_QUOTE + "constraint def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
     private static final String DEFAULT_CONSTRAINT_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "constraint" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
@@ -132,6 +134,7 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
                 Arguments.of(SYSML.getAssignmentActionUsage(), DEFAULT_ASSIGNMENT_ACTION_USAGE_LABEL),
                 Arguments.of(SYSML.getComment(), DEFAULT_COMMENT_LABEL),
                 Arguments.of(SYSML.getConcernDefinition(), DEFAULT_CONCERN_DEFINITION_LABEL),
+                Arguments.of(SYSML.getConcernUsage(), DEFAULT_CONCERN_USAGE_LABEL),
                 Arguments.of(SYSML.getConstraintDefinition(), DEFAULT_CONSTRAINT_DEFINITION_LABEL),
                 Arguments.of(SYSML.getConstraintUsage(), DEFAULT_CONSTRAINT_USAGE_LABEL),
                 Arguments.of(SYSML.getDocumentation(), DEFAULT_DOCUMENTATION_LABEL),
@@ -169,6 +172,7 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
                 Arguments.of(SYSML.getAttributeUsage(), DEFAULT_ATTRIBUTE_USAGE_LABEL),
                 Arguments.of(SYSML.getAssignmentActionUsage(), DEFAULT_ASSIGNMENT_ACTION_USAGE_LABEL),
                 Arguments.of(SYSML.getConcernDefinition(), DEFAULT_CONCERN_DEFINITION_LABEL),
+                Arguments.of(SYSML.getConcernUsage(), DEFAULT_CONCERN_USAGE_LABEL),
                 Arguments.of(SYSML.getConstraintDefinition(), DEFAULT_CONSTRAINT_DEFINITION_LABEL),
                 Arguments.of(SYSML.getConstraintUsage(), DEFAULT_CONSTRAINT_USAGE_LABEL),
                 Arguments.of(SYSML.getEnumerationDefinition(), DEFAULT_ENUMERATION_DEFINITION_LABEL),
