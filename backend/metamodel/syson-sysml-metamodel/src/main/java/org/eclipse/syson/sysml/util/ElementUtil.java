@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Featuring;
 import org.eclipse.syson.sysml.Import;
@@ -145,20 +146,30 @@ public class ElementUtil {
     }
 
     /**
-     * Sets the provided {@code resource} as <i>imported</i>.
+     * Sets the provided {@code resource} with the provided {@code isImported} flag.
      * <p>
      * An <i>imported</i> {@link Resource} returns {@code true} when calling {@code ElementUtil.isImported(resource)}.
      * </p>
      *
      * @param resource
      *            the {@link Resource} to set as imported
+     * @param isImported
+     *            the imported flag to set
      */
-    public static void setIsImported(Resource resource) {
+    public static void setIsImported(Resource resource, boolean isImported) {
         resource.getContents().forEach(eObject -> {
             if (eObject instanceof Element element) {
-                EAnnotation importedEAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
-                importedEAnnotation.setSource(IMPORTED_EANNOTATION_SOURCE);
-                element.getEAnnotations().add(importedEAnnotation);
+                if (isImported) {
+                    if (element.getEAnnotation(IMPORTED_EANNOTATION_SOURCE) == null) {
+                        EAnnotation importedEAnnotation = EcoreFactory.eINSTANCE.createEAnnotation();
+                        importedEAnnotation.setSource(IMPORTED_EANNOTATION_SOURCE);
+                        element.getEAnnotations().add(importedEAnnotation);
+                    }
+                } else {
+                    if (element.getEAnnotation(IMPORTED_EANNOTATION_SOURCE) != null) {
+                        EcoreUtil.remove(element.getEAnnotation(IMPORTED_EANNOTATION_SOURCE));
+                    }
+                }
             }
         });
     }

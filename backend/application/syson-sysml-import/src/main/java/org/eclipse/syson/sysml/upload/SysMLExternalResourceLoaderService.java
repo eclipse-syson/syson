@@ -75,7 +75,7 @@ public class SysMLExternalResourceLoaderService implements IExternalResourceLoad
         ASTTransformer tranformer = new ASTTransformer();
         Resource resource = tranformer.convertResource(astStream, resourceSet);
         if (resource != null) {
-            ElementUtil.setIsImported(resource);
+            ElementUtil.setIsImported(resource, true);
             resourceSet.getResources().add(resource);
         }
         // Need a way to be able to report some messages to the user see
