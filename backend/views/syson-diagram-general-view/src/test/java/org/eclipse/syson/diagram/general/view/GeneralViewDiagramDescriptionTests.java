@@ -167,6 +167,21 @@ public class GeneralViewDiagramDescriptionTests {
     }
 
     @Test
+    @DisplayName("Every reused Node Description has a container")
+    public void allReusedNodeDescriptionsHaveAContainer() {
+        EMFUtils.allContainedObjectOfType(this.diagramDescription, NodeDescription.class).forEach(nodeDescription -> {
+            nodeDescription.getReusedChildNodeDescriptions().forEach(reusedChildNodeDescription -> {
+                assertThat(reusedChildNodeDescription.eContainer()).as("Reused child Node Description '%s' of '%s' has no container. At the very least, FakeNodeDescriptionProvider could contain it."
+                        .formatted(reusedChildNodeDescription.getName(), nodeDescription.getName())).isNotNull();
+            });
+            nodeDescription.getReusedBorderNodeDescriptions().forEach(reusedBorderNodeDescription -> {
+                assertThat(reusedBorderNodeDescription.eContainer()).as("Reused border Node Description '%s' of '%s' has no container. At the very least, FakeNodeDescriptionProvider could contain it."
+                        .formatted(reusedBorderNodeDescription.getName(), nodeDescription.getName())).isNotNull();
+            });
+        });
+    }
+
+    @Test
     @DisplayName("Diagram has a semantic drag & drop tool")
     public void diagramHasSemanticDragAndDropTool() {
         new DiagramDescriptionHasDropToolChecker().check(this.diagramDescription);
