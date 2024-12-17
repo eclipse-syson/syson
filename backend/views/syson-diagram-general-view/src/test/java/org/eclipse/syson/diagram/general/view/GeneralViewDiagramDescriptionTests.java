@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -164,6 +164,21 @@ public class GeneralViewDiagramDescriptionTests {
         assertThat(optFakeNode).as("A diagram should have a fake node").isPresent();
         new NodeDescriptionReusesChecker().withExpectedReuseCount(0).check(optFakeNode.get());
 
+    }
+
+    @Test
+    @DisplayName("Every reused Node Description has a container")
+    public void allReusedNodeDescriptionsHaveAContainer() {
+        EMFUtils.allContainedObjectOfType(this.diagramDescription, NodeDescription.class).forEach(nodeDescription -> {
+            nodeDescription.getReusedChildNodeDescriptions().forEach(reusedChildNodeDescription -> {
+                assertThat(reusedChildNodeDescription.eContainer()).as("Reused child Node Description '%s' of '%s' has no container. At the very least, FakeNodeDescriptionProvider could contain it."
+                        .formatted(reusedChildNodeDescription.getName(), nodeDescription.getName())).isNotNull();
+            });
+            nodeDescription.getReusedBorderNodeDescriptions().forEach(reusedBorderNodeDescription -> {
+                assertThat(reusedBorderNodeDescription.eContainer()).as("Reused border Node Description '%s' of '%s' has no container. At the very least, FakeNodeDescriptionProvider could contain it."
+                        .formatted(reusedBorderNodeDescription.getName(), nodeDescription.getName())).isNotNull();
+            });
+        });
     }
 
     @Test
