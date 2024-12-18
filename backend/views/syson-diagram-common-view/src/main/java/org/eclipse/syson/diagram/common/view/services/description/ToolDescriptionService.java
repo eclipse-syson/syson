@@ -12,8 +12,10 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.services.description;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.ecore.EClass;
@@ -44,18 +46,97 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public class ToolDescriptionService {
 
-    private static final String SERVICE_ELEMENT_INITIALIZER = "elementInitializer";
+    protected static final String SERVICE_ELEMENT_INITIALIZER = "elementInitializer";
 
-    private static final String NEW_INSTANCE = "newInstance";
+    protected static final String NEW_INSTANCE = "newInstance";
 
     protected final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     protected final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
-    private final IDescriptionNameGenerator descriptionNameGenerator;
+    protected final NodeToolSectionNameSwitch nodeToolSectionNameSwitch = new NodeToolSectionNameSwitch();
+
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
 
     public ToolDescriptionService(IDescriptionNameGenerator descriptionNameGenerator) {
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+    }
+
+    /**
+     * Create default node tool sections.
+     *
+     * @return an ordered list of {@link NodeToolSection}.
+     */
+    public LinkedList<NodeToolSection> createDefaultNodeToolSections() {
+        var allToolSections = new LinkedList<NodeToolSection>();
+        allToolSections.add(this.buildRequirementsSection());
+        allToolSections.add(this.buildStructureSection());
+        allToolSections.add(this.buildBehaviorSection());
+        allToolSections.add(this.buildAnalysisSection());
+        allToolSections.add(this.buildExtensionSection());
+        return allToolSections;
+    }
+
+    /**
+     * Remove all empty node tool sections for the given list of node tool sections.
+     *
+     * @param toolSections
+     *            a list of {@link NodeToolSection}.
+     */
+    public void removeEmptyNodeToolSections(List<NodeToolSection> toolSections) {
+        toolSections.removeIf(nts -> nts.getNodeTools().isEmpty());
+    }
+
+    /**
+     * Get the node tool section with the given name among the given list of node tool sections.
+     *
+     * @param toolSections
+     *            a list of {@link NodeToolSection}.
+     * @param toolSectionName
+     *            the name of the node tool section to find.
+     * @return an optional {@link NodeToolSection}.
+     */
+    public Optional<NodeToolSection> getNodeToolSection(List<NodeToolSection> toolSections, String toolSectionName) {
+        return toolSections.stream().filter(nts -> Objects.equals(nts.getName(), toolSectionName)).findFirst();
+    }
+
+    /**
+     * Add the given node tool to the node tool section with the given name among the given list of node tool sections.
+     *
+     * @param toolSections
+     *            a list of {@link NodeToolSection}.
+     * @param toolSectionName
+     *            the name of the node tool section to find.
+     * @param nodeTool
+     *            the {@link NodeTool} to add.
+     */
+    public void addNodeTool(List<NodeToolSection> toolSections, String toolSectionName, NodeTool nodeTool) {
+        toolSections.stream().filter(nts -> nts.getName().equals(toolSectionName)).findFirst().ifPresent(nts -> nts.getNodeTools().add(nodeTool));
+    }
+
+    /**
+     * Get the tool section name for the given {@link EClass}.
+     *
+     * @param eClass
+     *            the given {@link EClass}.
+     * @return the tool section name.
+     */
+    public String getToolSectionName(EClass eClass) {
+        return this.nodeToolSectionNameSwitch.doSwitch(eClass);
+    }
+
+    /**
+     * Get the tool section name for the given {@link EClass}.
+     *
+     * @param eClass
+     *            the given {@link EClass}.
+     * @return the tool section name.
+     */
+    public String getToolSectionName(EClassifier eClassifier) {
+        if (eClassifier instanceof EClass eClass) {
+            return this.nodeToolSectionNameSwitch.doSwitch(eClass);
+        }
+        return "";
     }
 
     /**
@@ -63,9 +144,9 @@ public class ToolDescriptionService {
      *
      * @return The created {@link DiagramToolSection}
      */
-    public DiagramToolSection addElementsDiagramToolSection() {
+    public DiagramToolSection relatedElementsDiagramToolSection() {
         return this.diagramBuilderHelper.newDiagramToolSection()
-                .name("Add")
+                .name("Related Elements")
                 .nodeTools(this.addExistingElementsTool(false, false), this.addExistingElementsTool(true, false))
                 .build();
     }
@@ -77,9 +158,9 @@ public class ToolDescriptionService {
      *            Whether the created tools adds nested elements
      * @return The created {@link NodeToolSection}
      */
-    public NodeToolSection addElementsNodeToolSection(boolean nested) {
+    public NodeToolSection relatedElementsNodeToolSection(boolean nested) {
         return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Add")
+                .name("Related Elements")
                 .nodeTools(this.addExistingElementsTool(false, nested), this.addExistingElementsTool(true, nested))
                 .build();
     }
@@ -105,7 +186,8 @@ public class ToolDescriptionService {
         }
 
         var addExistingelements = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression(serviceName, List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes", "" + recursive)));
+                .expression(AQLUtils.getSelfServiceCallExpression(serviceName,
+                        List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes", "" + recursive)));
 
         String iconURL = "/icons/AddExistingElements.svg";
         if (recursive) {
@@ -121,16 +203,76 @@ public class ToolDescriptionService {
     }
 
     /**
-     * Return a tool section used to new children creation.
+     * Return a tool section used to store Requirements related tools.
      *
      * @param nodeTools
      *            optional list of {@link NodeTool}
      *
-     * @return the {@link ToolSection} grouping all creations of children.
+     * @return the {@link ToolSection}.
      */
-    public NodeToolSection buildCreateSection(NodeTool... nodeTools) {
+    public NodeToolSection buildRequirementsSection(NodeTool... nodeTools) {
         return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Create")
+                .name(ToolConstants.REQUIREMENTS)
+                .nodeTools(nodeTools)
+                .build();
+    }
+
+    /**
+     * Return a tool section used to store Structure related tools.
+     *
+     * @param nodeTools
+     *            optional list of {@link NodeTool}
+     *
+     * @return the {@link ToolSection}.
+     */
+    public NodeToolSection buildStructureSection(NodeTool... nodeTools) {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name(ToolConstants.STRUCTURE)
+                .nodeTools(nodeTools)
+                .build();
+    }
+
+    /**
+     * Return a tool section used to store Behavior related tools.
+     *
+     * @param nodeTools
+     *            optional list of {@link NodeTool}
+     *
+     * @return the {@link ToolSection}.
+     */
+    public NodeToolSection buildBehaviorSection(NodeTool... nodeTools) {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name(ToolConstants.BEHAVIOR)
+                .nodeTools(nodeTools)
+                .build();
+    }
+
+    /**
+     * Return a tool section used to store Analysis related tools.
+     *
+     * @param nodeTools
+     *            optional list of {@link NodeTool}
+     *
+     * @return the {@link ToolSection}.
+     */
+    public NodeToolSection buildAnalysisSection(NodeTool... nodeTools) {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name(ToolConstants.ANALYSIS)
+                .nodeTools(nodeTools)
+                .build();
+    }
+
+    /**
+     * Return a tool section used to store Extension related tools.
+     *
+     * @param nodeTools
+     *            optional list of {@link NodeTool}
+     *
+     * @return the {@link ToolSection}.
+     */
+    public NodeToolSection buildExtensionSection(NodeTool... nodeTools) {
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name(ToolConstants.EXTENSION)
                 .nodeTools(nodeTools)
                 .build();
     }
@@ -157,7 +299,8 @@ public class ToolDescriptionService {
      */
     public DropTool createDropFromExplorerTool() {
         var dropElementFromExplorer = this.viewBuilderHelper.newChangeContext()
-                .expression(AQLUtils.getSelfServiceCallExpression("dropElementFromExplorer", List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes")));
+                .expression(
+                        AQLUtils.getSelfServiceCallExpression("dropElementFromExplorer", List.of(IEditingContext.EDITING_CONTEXT, IDiagramContext.DIAGRAM_CONTEXT, "selectedNode", "convertedNodes")));
 
         return this.diagramBuilderHelper.newDropTool()
                 .name("Drop from Explorer")

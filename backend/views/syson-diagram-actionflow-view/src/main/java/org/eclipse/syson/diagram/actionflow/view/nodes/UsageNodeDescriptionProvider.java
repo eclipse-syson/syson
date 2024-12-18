@@ -21,9 +21,11 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.actionflow.view.ActionFlowViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewNodeToolSectionSwitch;
+import org.eclipse.syson.diagram.actionflow.view.services.ActionFlowViewNodeToolsWithoutSectionSwitch;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DoneActionNodeDescriptionProvider;
@@ -89,5 +91,11 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         ActionFlowViewNodeToolSectionSwitch toolSectionSwitch = new ActionFlowViewNodeToolSectionSwitch(cache, this.getAllNodeDescriptions(cache));
         return toolSectionSwitch.doSwitch(this.eClass);
+    }
+
+    @Override
+    protected List<NodeTool> getToolsWithoutSection(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
+        ActionFlowViewNodeToolsWithoutSectionSwitch toolsWithoutSectionSwitch = new ActionFlowViewNodeToolsWithoutSectionSwitch(cache, this.getAllNodeDescriptions(cache));
+        return toolsWithoutSectionSwitch.doSwitch(this.eClass);
     }
 }

@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.DecisionActionNodeDescriptionProvider;
@@ -33,6 +34,7 @@ import org.eclipse.syson.diagram.common.view.services.description.ReferencingPer
 import org.eclipse.syson.diagram.general.view.GVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.general.view.GeneralViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.services.GeneralViewNodeToolSectionSwitch;
+import org.eclipse.syson.diagram.general.view.services.GeneralViewNodeToolsWithoutSectionSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
 
@@ -117,5 +119,11 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
     protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
         GeneralViewNodeToolSectionSwitch toolSectionSwitch = new GeneralViewNodeToolSectionSwitch(cache, this.getAllNodeDescriptions(cache));
         return toolSectionSwitch.doSwitch(this.eClass);
+    }
+
+    @Override
+    protected List<NodeTool> getToolsWithoutSection(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
+        GeneralViewNodeToolsWithoutSectionSwitch toolsWithoutSectionSwitch = new GeneralViewNodeToolsWithoutSectionSwitch(cache, this.getAllNodeDescriptions(cache));
+        return toolsWithoutSectionSwitch.doSwitch(this.eClass);
     }
 }

@@ -19,16 +19,15 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.services.AbstractViewNodeToolSectionSwitch;
-import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
-import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionCompartmentToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
+import org.eclipse.syson.diagram.statetransition.view.STVDescriptionNameGenerator;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.Definition;
 import org.eclipse.syson.sysml.Element;
@@ -36,7 +35,6 @@ import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
-import org.eclipse.syson.util.IDescriptionNameGenerator;
 
 /**
  * Switch retrieving the list of NodeToolSections for each SysMLv2 concept represented in the State Transition View
@@ -50,13 +48,69 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
 
     private final List<NodeDescription> allNodeDescriptions;
 
-    private final ToolDescriptionService toolDescriptionService;
-
-    public StateTransitionViewNodeToolSectionSwitch(IViewDiagramElementFinder cache, List<NodeDescription> allNodeDescriptions, IDescriptionNameGenerator descriptionNameGenerator) {
-        super(descriptionNameGenerator);
+    public StateTransitionViewNodeToolSectionSwitch(IViewDiagramElementFinder cache, List<NodeDescription> allNodeDescriptions) {
+        super(new STVDescriptionNameGenerator());
         this.cache = Objects.requireNonNull(cache);
         this.allNodeDescriptions = Objects.requireNonNull(allNodeDescriptions);
-        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
+    }
+
+    @Override
+    public List<NodeToolSection> caseDefinition(Definition object) {
+        var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.createToolsForCompartmentItems(object, sections, this.cache);
+        this.toolDescriptionService.removeEmptyNodeToolSections(sections);
+        return sections;
+    }
+
+    @Override
+    public List<NodeToolSection> caseStateDefinition(StateDefinition object) {
+        var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache));
+        sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
+        this.toolDescriptionService.removeEmptyNodeToolSections(sections);
+        return sections;
+    }
+
+    @Override
+    public List<NodeToolSection> caseStateUsage(StateUsage object) {
+        var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR,
+                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.BEHAVIOR, new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
+        sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
+        this.toolDescriptionService.removeEmptyNodeToolSections(sections);
+        return sections;
+    }
+
+    @Override
+    public List<NodeToolSection> caseUsage(Usage object) {
+        var sections = this.toolDescriptionService.createDefaultNodeToolSections();
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
+        this.createToolsForCompartmentItems(object, sections, this.cache);
+        sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
+        this.toolDescriptionService.removeEmptyNodeToolSections(sections);
+        return sections;
     }
 
     @Override
@@ -70,76 +124,12 @@ public class StateTransitionViewNodeToolSectionSwitch extends AbstractViewNodeTo
         if (refs != null) {
             compartmentRefs.addAll(refs);
         }
+        compartmentRefs.removeIf(ref -> Objects.equals(ref, SysmlPackage.eINSTANCE.getElement_Documentation()));
         return compartmentRefs;
-    }
-
-    @Override
-    protected List<NodeTool> createToolsForCompartmentItems(Element object) {
-        List<NodeTool> compartmentNodeTools = new ArrayList<>();
-        this.getElementCompartmentReferences(object).forEach(eReference -> {
-            CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
-            compartmentNodeTools.add(provider.create(this.cache));
-        });
-        return compartmentNodeTools;
     }
 
     @Override
     protected List<NodeDescription> getAllNodeDescriptions() {
         return this.allNodeDescriptions;
-    }
-
-    @Override
-    public List<NodeToolSection> caseDefinition(Definition object) {
-        var createSection = this.toolDescriptionService.buildCreateSection();
-        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
-        return List.of(createSection);
-    }
-
-    @Override
-    public List<NodeToolSection> caseStateDefinition(StateDefinition object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(
-                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()), SysmlPackage.eINSTANCE.getComment(),
-                        SysmlPackage.eINSTANCE.getOwningMembership(), null),
-                new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache),
-                new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache),
-                new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache),
-                new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_EntryAction()).create(this.cache),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_DoAction()).create(this.cache),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateDefinition_ExitAction()).create(this.cache),
-                new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache),
-                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache));
-        return List.of(createSection, this.toolDescriptionService.addElementsNodeToolSection(true));
-    }
-
-    @Override
-    public List<NodeToolSection> caseStateUsage(StateUsage object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(
-                this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()), SysmlPackage.eINSTANCE.getComment(),
-                        SysmlPackage.eINSTANCE.getOwningMembership(), null),
-                new StateTransitionCompartmentNodeToolProvider(false, false).create(this.cache),
-                new StateTransitionCompartmentNodeToolProvider(true, false).create(this.cache),
-                new StateTransitionCompartmentNodeToolProvider(false, true).create(this.cache),
-                new StateTransitionCompartmentNodeToolProvider(true, true).create(this.cache),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_EntryAction()).create(this.cache),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_DoAction()).create(this.cache),
-                new StateTransitionActionCompartmentToolProvider(SysmlPackage.eINSTANCE.getStateUsage_ExitAction()).create(this.cache),
-                new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(this.cache),
-                new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(this.cache));
-        var editSection = this.toolDescriptionService.buildEditSection(
-                new SetAsCompositeToolProvider().create(this.cache),
-                new SetAsRefToolProvider().create(this.cache));
-        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
-    }
-
-    @Override
-    public List<NodeToolSection> caseUsage(Usage object) {
-        var createSection = this.toolDescriptionService.buildCreateSection(this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getComment()),
-                SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getOwningMembership(), null));
-        createSection.getNodeTools().addAll(this.createToolsForCompartmentItems(object));
-        var editSection = this.toolDescriptionService.buildEditSection(
-                new SetAsCompositeToolProvider().create(this.cache),
-                new SetAsRefToolProvider().create(this.cache));
-        return List.of(createSection, editSection, this.toolDescriptionService.addElementsNodeToolSection(true));
     }
 }

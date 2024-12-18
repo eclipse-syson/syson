@@ -43,9 +43,14 @@ describe('Diagram Panel in General View Tests', () => {
     context('The add existing elements (recursive) tool have been applied, following by an arrange all', () => {
       beforeEach(() => {
         diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - Batmobile').should('exist').click();
-        diagram.getPalette().should('exist').findByTestId('toolSection-Add').click();
-        diagram.getPalette().should('exist').findByTestId('tool-Add existing nested elements (recursive)').click();
-        diagram.getPalette().should('not.exist');
+        diagram.getPalette().should('exist').findByTestId('toolSection-Related Elements').should('exist').click();
+        diagram
+          .getPalette()
+          .should('exist')
+          .findByTestId('tool-Add existing nested elements (recursive)')
+          .should('exist')
+          .click();
+        diagram.getPalette().should('not.exist', { timeout: 10000 });
         diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - Batmobile').should('not.exist');
         diagram.arrangeAll();
         cy.getByTestId('arrange-all-circular-loading')

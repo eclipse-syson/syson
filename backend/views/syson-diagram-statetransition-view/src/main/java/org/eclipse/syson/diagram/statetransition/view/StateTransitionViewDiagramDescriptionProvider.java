@@ -223,7 +223,7 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
         });
 
         // add extra section for existing elements
-        sections.add(this.toolDescriptionService.addElementsDiagramToolSection());
+        sections.add(this.toolDescriptionService.relatedElementsDiagramToolSection());
 
         return sections.toArray(DiagramToolSection[]::new);
     }

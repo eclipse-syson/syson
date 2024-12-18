@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.ToolSection;
@@ -96,6 +97,18 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
      * @return the list of {@link ToolSection} of this Definition node.
      */
     protected abstract List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache);
+
+    /**
+     * Implementers should provide the list of {@link NodeTool} (without ToolSection) defined on the given
+     * {@link NodeDescription}.
+     *
+     * @param nodeDescription
+     *            the actual Usage node description
+     * @param cache
+     *            the cache used to retrieve node descriptions.
+     * @return the list of {@link NodeTool} of this Usage node.
+     */
+    protected abstract List<NodeTool> getToolsWithoutSection(NodeDescription nodeDescription, IViewDiagramElementFinder cache);
 
     /**
      * Implementers should provide the expression used to retrieve all semantic candidates.<br>
@@ -206,11 +219,15 @@ public abstract class AbstractDefinitionNodeDescriptionProvider extends Abstract
         this.orderToolSectionsTools(toolSections);
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
+        var toolsWithoutSection = new ArrayList<NodeTool>();
+        toolsWithoutSection.addAll(this.getToolsWithoutSection(nodeDescription, cache));
+
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
+                .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }

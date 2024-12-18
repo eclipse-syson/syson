@@ -194,11 +194,17 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
 
         var edgeTools = new ArrayList<>(this.getEdgeTools(nodeDescription, cache));
 
+        var nodesWithoutSection = new ArrayList<>();
+        cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getComment())).ifPresent(nodeComment -> {
+            nodesWithoutSection.add(this.createNodeTool(nodeComment, SysmlPackage.eINSTANCE.getComment()));
+        });
+
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .labelEditTool(editTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .toolSections(this.createToolSections(cache))
+                .nodeTools(nodesWithoutSection.toArray(NodeTool[]::new))
                 .edgeTools(edgeTools.toArray(EdgeTool[]::new))
                 .build();
     }
@@ -218,6 +224,38 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .acceptedNodeTypes(this.getDroppableNodes(cache).toArray(NodeDescription[]::new))
                 .body(dropElementFromDiagram.build())
                 .build();
+    }
+
+    private NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
+        var sections = new ArrayList<NodeToolSection>();
+
+        this.getToolSections().forEach(sectionTool -> {
+            NodeToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newNodeToolSection()
+                    .name(sectionTool.name())
+                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.name(), sectionTool.elements()));
+            sections.add(sectionBuilder.build());
+        });
+
+        sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
+        sections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+
+        return sections.toArray(NodeToolSection[]::new);
+    }
+
+    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, String toolSectionName, List<EClass> elements) {
+        var nodeTools = new ArrayList<NodeTool>();
+
+        elements.forEach(definition -> {
+            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(nodeDescription -> {
+                nodeTools.add(this.createNodeTool(nodeDescription, definition));
+            });
+        });
+
+        nodeTools.addAll(this.addCustomTools(cache, toolSectionName));
+
+        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
+
+        return nodeTools.toArray(NodeTool[]::new);
     }
 
     private NodeTool createNodeTool(NodeDescription nodeDescription, EClass eClass) {
@@ -263,37 +301,5 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
                 .build();
-    }
-
-    private NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
-        var sections = new ArrayList<NodeToolSection>();
-
-        this.getToolSections().forEach(sectionTool -> {
-            NodeToolSectionBuilder sectionBuilder = this.diagramBuilderHelper.newNodeToolSection()
-                    .name(sectionTool.name())
-                    .nodeTools(this.createElementsOfToolSection(cache, sectionTool.name(), sectionTool.elements()));
-            sections.add(sectionBuilder.build());
-        });
-
-        sections.add(this.toolDescriptionService.addElementsNodeToolSection(true));
-        sections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
-
-        return sections.toArray(NodeToolSection[]::new);
-    }
-
-    private NodeTool[] createElementsOfToolSection(IViewDiagramElementFinder cache, String toolSectionName, List<EClass> elements) {
-        var nodeTools = new ArrayList<NodeTool>();
-
-        elements.forEach(definition -> {
-            cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(definition)).ifPresent(nodeDescription -> {
-                nodeTools.add(this.createNodeTool(nodeDescription, definition));
-            });
-        });
-
-        nodeTools.addAll(this.addCustomTools(cache, toolSectionName));
-
-        nodeTools.sort((nt1, nt2) -> nt1.getName().compareTo(nt2.getName()));
-
-        return nodeTools.toArray(NodeTool[]::new);
     }
 }

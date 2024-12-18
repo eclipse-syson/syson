@@ -182,7 +182,7 @@ public abstract class AbstractEmptyDiagramNodeDescriptionProvider extends Abstra
             sections.add(sectionBuilder.build());
         });
 
-        sections.add(this.toolDescriptionService.addElementsNodeToolSection(true));
+        sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
 
         return sections.toArray(NodeToolSection[]::new);
     }
