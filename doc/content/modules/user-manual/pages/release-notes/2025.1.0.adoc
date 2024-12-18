@@ -2,6 +2,20 @@
 
 == Key highlights
 
+- *New palette in diagrams*: A new palette is available in SysON, all tools have been organized in sections.
+
+image::release-notes-new-palette.png[New palette tool]
+
+- *New explorer view*: Rework the structure of standard and user libraries in the Explorer view.
+The Explorer view now contains the following directories for libraries:
+* _Libraries_: top-level container for all the libraries used in the project
+** _KerML_: KerML standard libraries
+** _SysML_: SysML standard libraries
+** _User Libraries_: User-imported libraries
+
+image::release-notes-libraries-directories.png[Libraries Directories in the explorer]
+
+
 == Breaking changes
 
 - Improve the code in the import module to make it more generic:
@@ -39,15 +53,15 @@ Imported models that do not contain libraries can be modified as regular models 
 - `OccurrenceUsage#portionKind` is now `unsettable` and its default value is `null` in the SysMLv2 metamodel to conform to the specification.
 - Improve the code in import module, by making it more generic. It now reports (on the server side) more messages to understand the scope of what is imported and the errors encountered.
 - Add support of `OccurrenceDefinition` and 'OccurrenceUsage` in export from model to textual SysMLv2.
-- Improve the support of libraries in the explorer.
-The explorer now contains 2 directories:
+- Improve the support of libraries in the Explorer view.
+The Explorer view now contains 2 directories:
 *  _Standard Libraries_: contains the SysML and KerML libraries
 * _Referenced Libraries_: contains non-standard libraries imported by the user
 
 image::release-notes-standard-library-directories.png[Standard and Referenced Libraries in the explorer]
 
-- Rework the structure of standard and user libraries in the explorer.
-The explorer now contains the following directories for libraries:
+- Rework the structure of standard and user libraries in the Explorer view.
+The Explorer view now contains the following directories for libraries:
 * _Libraries_: top-level container for all the libraries used in the project
 ** _KerML_: KerML standard libraries
 ** _SysML_: SysML standard libraries
@@ -62,4 +76,16 @@ image::release-notes-libraries-directories.png[Libraries Directories in the expl
 
 - Handle imported package elements in diagrams.
 
-image::namesapce-import.png[Namespace import node]
+image::release-notes-namespace-import.png[Namespace import node]
+
+- A new palette is available in SysON, all tools have been organized in sections.
+
+image::release-notes-new-palette.png[New palette tool]
+
+This new palette contains a search bar, allowing to easily retrieve tools by their name.
+
+image::release-notes-new-palette-search-bar.png[New palette tool - search bar]
+
+Some actions (delete, edit, ...) are also available as shortcuts.
+
+image::release-notes-new-palette-shortcuts.png[New palette tool - shortcuts]

@@ -2,11 +2,20 @@
 
 === Create element
 
-User can create element **from the background** of the diagram from a simple click that displays toolbar.
-In this toolbar, element creation tool are grouped by type in tool section according to their type.
-User can expand the tool section and then user can click on the desired creation tool
+User can create element **from the background** of the diagram from a simple click that displays palette.
+In this palette, element creation tool are grouped by type in tool sections according to their type.
+User can click on the tool section and then click on the desired creation tool.
 
-image::manage-elements-fromBackground-creation.png[Creation from Diagram Background]
+[cols="1,1", frame=none]  
+|=== 
+|image::manage-elements-fromBackground-creation.png[Creation from Diagram Background]
+|image::manage-elements-fromBackground-creation-2.png[Creation from Diagram Background]
+
+|=== 
+
+The palette has a search field allowing to search in all tool sections.
+
+image::manage-elements-creation-search.png[Creation search]
 
 User can also create element **in other element**.
 User just clicks on the element to display the toolbar and then click on the desired creation tool.
@@ -15,12 +24,12 @@ image::manage-elements-fromElement-creation.png[Creation from Diagram Element]
 
 All created element are collapsed by default, it means that if a node with compartment is created, compartment are hidden.
 
-If node contains **compartment**, user can add element in the desired compartment by clicking in the compartment and display the toolbar.
+If node contains **compartment**, user can add element in the desired compartment by clicking in the compartment and display the palette.
 
 image::manage-elements-fromCompartment-creation.png[Creation from Compartment]
 
 An other way is to click on the parent node header of the compartment.
-A toolbar will be display and the user can click on the desired creation tool, new element will be created in the appropriate compartment.
+A palette will be display and the user can click on the desired creation tool (inside tool sections), new element will be created in the appropriate compartment.
 
 image::manage-elements-fromParentCompartment-creation.png[Creation from Parent Compartment]
 

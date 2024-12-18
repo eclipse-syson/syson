@@ -70,7 +70,7 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
                 Feature feature = referencedFeature.get();
                 if (feature instanceof PortUsage || feature instanceof ItemUsage) {
                     sourcePort = (Usage) feature;
-                } else {
+                } else if (!feature.getOwnedFeatureChaining().isEmpty()) {
                     EList<FeatureChaining> ownedFeatureChaining = feature.getOwnedFeatureChaining();
                     FeatureChaining lastFeatureChaining = ownedFeatureChaining.get(Math.max(0, ownedFeatureChaining.size() - 1));
                     Feature chainingFeature = lastFeatureChaining.getChainingFeature();
@@ -108,7 +108,7 @@ public class InterconnectionViewEdgeService extends ViewEdgeService {
                 Feature feature = referencedFeature.get();
                 if (feature instanceof PortUsage || feature instanceof ItemUsage) {
                     targetPort = (Usage) feature;
-                } else {
+                } else if (!feature.getOwnedFeatureChaining().isEmpty()) {
                     EList<FeatureChaining> ownedFeatureChaining = feature.getOwnedFeatureChaining();
                     FeatureChaining lastFeatureChaining = ownedFeatureChaining.get(Math.max(0, ownedFeatureChaining.size() - 1));
                     Feature chainingFeature = lastFeatureChaining.getChainingFeature();

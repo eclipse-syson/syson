@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeStyleDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
@@ -44,6 +45,7 @@ import org.eclipse.syson.diagram.interconnection.view.IVDescriptionNameGenerator
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.interconnection.view.services.ChildUsageCreationNodeToolsProvider;
 import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewNodeToolSectionSwitch;
+import org.eclipse.syson.diagram.interconnection.view.services.InterconnectionViewNodeToolsWithoutSectionSwitch;
 import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
@@ -182,17 +184,26 @@ public class ChildUsageNodeDescriptionProvider extends AbstractNodeDescriptionPr
         this.orderToolSectionsTools(toolSections);
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
+        List<NodeTool> toolsWithoutSection = new ArrayList<>();
+        toolsWithoutSection.addAll(this.createNodeToolsWithoutSection(cache));
+
         return this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(deleteTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
                 .labelEditTool(editTool.build())
                 .toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .edgeTools(this.getEdgeTools(nodeDescription, cache).toArray(EdgeTool[]::new))
+                .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
                 .build();
     }
 
     private List<NodeToolSection> createNodeToolSections(IViewDiagramElementFinder cache) {
         InterconnectionViewNodeToolSectionSwitch toolSectionSwitch = new InterconnectionViewNodeToolSectionSwitch(cache, new ChildUsageCreationNodeToolsProvider());
+        return toolSectionSwitch.doSwitch(this.eClass);
+    }
+
+    private List<NodeTool> createNodeToolsWithoutSection(IViewDiagramElementFinder cache) {
+        InterconnectionViewNodeToolsWithoutSectionSwitch toolSectionSwitch = new InterconnectionViewNodeToolsWithoutSectionSwitch(cache, cache.getNodeDescriptions());
         return toolSectionSwitch.doSwitch(this.eClass);
     }
 

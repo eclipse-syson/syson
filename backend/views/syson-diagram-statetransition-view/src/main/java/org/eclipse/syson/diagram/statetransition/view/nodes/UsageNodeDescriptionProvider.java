@@ -21,10 +21,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.syson.diagram.common.view.nodes.AbstractUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.StateTransitionViewDiagramDescriptionProvider;
 import org.eclipse.syson.diagram.statetransition.view.services.StateTransitionViewNodeToolSectionSwitch;
+import org.eclipse.syson.diagram.statetransition.view.services.StateTransitionViewNodeToolsWithoutSectionSwitch;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
 
@@ -90,7 +92,13 @@ public class UsageNodeDescriptionProvider extends AbstractUsageNodeDescriptionPr
 
     @Override
     protected List<NodeToolSection> getToolSections(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
-        StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch(cache, this.getAllNodeDescriptions(cache), this.getDescriptionNameGenerator());
+        StateTransitionViewNodeToolSectionSwitch toolSectionSwitch = new StateTransitionViewNodeToolSectionSwitch(cache, this.getAllNodeDescriptions(cache));
         return toolSectionSwitch.doSwitch(this.eClass);
+    }
+
+    @Override
+    protected List<NodeTool> getToolsWithoutSection(NodeDescription nodeDescription, IViewDiagramElementFinder cache) {
+        StateTransitionViewNodeToolsWithoutSectionSwitch toolsWithoutSectionSwitch = new StateTransitionViewNodeToolsWithoutSectionSwitch(cache, this.getAllNodeDescriptions(cache));
+        return toolsWithoutSectionSwitch.doSwitch(this.eClass);
     }
 }

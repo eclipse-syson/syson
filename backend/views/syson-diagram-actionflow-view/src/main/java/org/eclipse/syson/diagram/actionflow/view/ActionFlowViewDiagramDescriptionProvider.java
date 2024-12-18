@@ -207,7 +207,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
         });
 
         // add extra section for existing elements
-        sections.add(this.toolDescriptionService.addElementsDiagramToolSection());
+        sections.add(this.toolDescriptionService.relatedElementsDiagramToolSection());
 
         return sections.toArray(DiagramToolSection[]::new);
     }

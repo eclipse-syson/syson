@@ -127,7 +127,7 @@ public class ImportedPackageNodeDescriptionProvider extends AbstractNodeDescript
     private NodeToolSection[] createToolSections(IViewDiagramElementFinder cache) {
         var sections = new ArrayList<NodeToolSection>();
 
-        sections.add(this.toolDescriptionService.addElementsNodeToolSection(true));
+        sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
         sections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
 
         return sections.toArray(NodeToolSection[]::new);

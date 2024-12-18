@@ -13,10 +13,8 @@
 package org.eclipse.syson.diagram.general.view.nodes;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -79,24 +77,18 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
 
     @Override
     protected List<ToolSectionDescription> getToolSections() {
-        List<EClass> structureElementsGV = GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS.elements();
-        List<EClass> structureElementsPackage = new ArrayList<>(structureElementsGV);
-        structureElementsPackage.add(SysmlPackage.eINSTANCE.getComment());
         return List.of(
-                new ToolSectionDescription(GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS.name(), Collections.unmodifiableList(structureElementsPackage)),
-                GeneralViewDiagramDescriptionProvider.INTERCONNECTION_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.ACTION_FLOW_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.REQUIREMENT_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.REQUIREMENTS_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.BEHAVIOUR_TOOL_SECTIONS,
                 GeneralViewDiagramDescriptionProvider.ANALYSIS_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.TEMPORAL_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.EXTENSION_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS);
+                GeneralViewDiagramDescriptionProvider.EXTENSION_TOOL_SECTIONS);
     }
 
     @Override
     protected List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
-        if (GeneralViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS.name().equals(sectionName)) {
+        if (GeneralViewDiagramDescriptionProvider.BEHAVIOUR_TOOL_SECTIONS.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(cache));
         } else if (GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);

@@ -13,6 +13,7 @@
 package org.eclipse.syson.diagram.interconnection.view.nodes;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
@@ -152,26 +153,37 @@ public class RootNodeDescriptionProvider extends AbstractNodeDescriptionProvider
         return this.diagramBuilderHelper.newNodePalette()
                 .labelEditTool(editTool.build())
                 .dropNodeTool(this.createDropFromDiagramTool(cache))
-                .toolSections(this.createNodeToolSection(cache), this.toolDescriptionService.addElementsNodeToolSection(true))
+                .toolSections(this.createNodeToolSections(cache).toArray(NodeToolSection[]::new))
                 .build();
     }
 
-    private NodeToolSection createNodeToolSection(IViewDiagramElementFinder cache) {
-        NodeDescription portNodeDescription = cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).get();
-        return this.diagramBuilderHelper.newNodeToolSection()
-                .name("Create")
-                .nodeTools(
-                        this.toolDescriptionService.createNodeTool(cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage())).get(),
-                                SysmlPackage.eINSTANCE.getPartUsage(),
-                                NodeContainmentKind.CHILD_NODE),
-                        this.toolDescriptionService.createNodeTool(cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getActionUsage())).get(),
-                                SysmlPackage.eINSTANCE.getActionUsage(),
-                                NodeContainmentKind.CHILD_NODE),
-                        this.toolDescriptionService.createNodeTool(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE),
-                        this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN),
-                        this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.INOUT),
-                        this.toolDescriptionService.createNodeToolWithDirection(portNodeDescription, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT))
-                .build();
+    private List<NodeToolSection> createNodeToolSections(IViewDiagramElementFinder cache) {
+        List<NodeToolSection> nodeToolSections = new ArrayList<>();
+        var structureSection = this.toolDescriptionService.buildStructureSection();
+        var behaviorSection = this.toolDescriptionService.buildBehaviorSection();
+        var relatedElementsNodeToolSection = this.toolDescriptionService.relatedElementsNodeToolSection(true);
+
+        cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage())).ifPresent(partND -> {
+            structureSection.getNodeTools().add(this.toolDescriptionService.createNodeTool(partND, SysmlPackage.eINSTANCE.getPartUsage(), NodeContainmentKind.CHILD_NODE));
+        });
+        cache.getNodeDescription(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getActionUsage())).ifPresent(actionND -> {
+            behaviorSection.getNodeTools().add(this.toolDescriptionService.createNodeTool(actionND, SysmlPackage.eINSTANCE.getActionUsage(), NodeContainmentKind.CHILD_NODE));
+        });
+        cache.getNodeDescription(RootPortUsageBorderNodeDescriptionProvider.NAME).ifPresent(portND -> {
+            structureSection.getNodeTools().add(this.toolDescriptionService.createNodeTool(portND, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE));
+            structureSection.getNodeTools()
+                    .add(this.toolDescriptionService.createNodeToolWithDirection(portND, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.IN));
+            structureSection.getNodeTools()
+                    .add(this.toolDescriptionService.createNodeToolWithDirection(portND, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.INOUT));
+            structureSection.getNodeTools()
+                    .add(this.toolDescriptionService.createNodeToolWithDirection(portND, SysmlPackage.eINSTANCE.getPortUsage(), NodeContainmentKind.BORDER_NODE, FeatureDirectionKind.OUT));
+
+        });
+
+        nodeToolSections.add(structureSection);
+        nodeToolSections.add(behaviorSection);
+        nodeToolSections.add(relatedElementsNodeToolSection);
+        return nodeToolSections;
     }
 
     private DropNodeTool createDropFromDiagramTool(IViewDiagramElementFinder cache) {

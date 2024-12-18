@@ -12,17 +12,17 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
-import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.util.IDescriptionNameGenerator;
@@ -41,10 +41,13 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
 
     protected final DiagramBuilders diagramBuilderHelper;
 
+    protected final ToolDescriptionService toolDescriptionService;
+
     public AbstractViewNodeToolSectionSwitch(IDescriptionNameGenerator descriptionNameGenerator) {
         this.viewBuilderHelper = new ViewBuilders();
         this.diagramBuilderHelper = new DiagramBuilders();
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }
 
     /**
@@ -63,15 +66,18 @@ public abstract class AbstractViewNodeToolSectionSwitch extends SysmlEClassSwitc
      */
     protected abstract List<NodeDescription> getAllNodeDescriptions();
 
-    protected List<NodeTool> createToolsForCompartmentItems(Element object) {
-        return this.getElementCompartmentReferences(object).stream().flatMap(ref -> this.createToolsForCompartmentItem(ref).stream()).toList();
+    protected void createToolsForCompartmentItems(Element element, List<NodeToolSection> sections, IViewDiagramElementFinder cache) {
+        var elementCompartmentReferences = this.getElementCompartmentReferences(element);
+        for (EReference eReference : elementCompartmentReferences) {
+            this.createToolsForCompartmentItem(eReference, sections, cache);
+        }
     }
 
-    protected List<NodeTool> createToolsForCompartmentItem(EReference eReference) {
-        List<NodeTool> compartmentNodeTools = new ArrayList<>();
-        CompartmentNodeToolProvider provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
-        compartmentNodeTools.add(provider.create(null));
-        return compartmentNodeTools;
+    protected void createToolsForCompartmentItem(EReference eReference, List<NodeToolSection> sections, IViewDiagramElementFinder cache) {
+        var eType = eReference.getEType();
+        var toolSectionName = this.toolDescriptionService.getToolSectionName(eType);
+        var provider = new CompartmentNodeToolProvider(eReference, this.descriptionNameGenerator);
+        this.toolDescriptionService.addNodeTool(sections, toolSectionName, provider.create(cache));
     }
 
     protected NodeDescription getNodeDescription(EClass eClass) {
