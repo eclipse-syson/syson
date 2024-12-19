@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>2024.5.0 :: SysON Docs</title>
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+<link rel="icon" href="../../../../_/img/favicon.ico" type="image/x-icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <img class="icon" src="../../../../_/img/favicon.svg" alt="SysON"/>
+      </div>
+      <a class="navbar-item" href="../../../..">SysON Docs</a>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson">
+          <img class="icon" src="../../../../_/img/github-mark-white.svg" alt="GitHub"/>
+        </a>
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson/discussions">
+          <img class="icon" src="../../../../_/img/chat.svg" alt="Chat"/>
+        </a>
+
+        <div class="navbar-item search hide-for-print">
+          <div id="search-field" class="field">
+            <input id="search-input" type="text" placeholder="Search the docs">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="syson" data-version="v2024.11.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../../index.html">SysON</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../what-is.html">SysON Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../key-features.html">Key features in SysON</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../installation-guide/index.html">Getting started with SysON</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/requirements.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../installation-guide/how-tos/install.html">How to install SysON?</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/local_test.html">Basic Local Test Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/multi_user_test.html">Multi-User Local Test Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/production_deploy.html">Production-Grade Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/ecosystem_only.html">Ecosystem-Only Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/https.html">HTTPS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/troubleshooting.html">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/migration-process.html">Migration process</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../user-interface-overview.html">User interface overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tour.html">Tour the interface</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on/hands-on.html">How-Tos and Tutorials</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">How-Tos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/project-management.html">Project management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/model-management.html">Model management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/representation-operations.html">Representation operations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/user-interface-navigation.html">User Interface Navigation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/explorer.html">Project Explorer</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/representations-view.html">Representations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on/tutorials/tutorials.html">Hands-On Starter Guides</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/tutorials/batmobile.html">Create Your First Model</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../features/features.html">Features and capabilities</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../key-features.html">Key features in SysON</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/sysmlv2-overview.html">Overview of SysML v2</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts.html">Key concepts and terminology</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Diagramming Tools</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Projects Management</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/homepage.html">Projects Browser</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Editor</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/editor.html">Project Editor</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/details.html">Details</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/related-elements.html">Related Elements</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/representations-view.html">Representations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/validation.html">Validation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/keyboard-shortcuts.html">Keyboard shortcuts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/general-view.html">General view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/interconnection-view.html">Interconnection view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/action-flow-view.html">Action Flow View</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/state-transition-view.html">State transition view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/other-views.html">Other views</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/mbse-capability.html">MBSE capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/requirement-management.html">Requirements management and traceability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/parametric-modeling.html">Parametric modeling and constraints</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/simulation.html">Simulation and validation tools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/cm.html">Version control and change management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Advanced</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/scaling-limits.html">Scaling limits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/security.html">Security and compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../integration.html">Integration with other tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/developer-guide.html">Developer guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/interoperability.html">Interoperability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/capella.html">Integrating with Capella</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/api.html">APIs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../help.html">Support and resources</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../forum.html">Forum</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute.html">Contribute</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../best-practices.html">SysON best practices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../support.html">Professional support</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../updates.html">Release notes and updates</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="release-notes.html">Release notes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cycle.html">SysON development cycle</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../faq/faq.html">Frequently Asked Questions</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../product-legal/index.html">Legal Information</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">SysON</span>
+    <span class="version">v2024.11.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../../../main/index.html">SysON</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../main/index.html">main</a>
+        </li>
+        <li class="version is-current">
+          <a href="../../index.html">v2024.11.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../v2024.9.0/index.html">v2024.9.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../v2024.7.0/index.html">v2024.7.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">SysON</a></li>
+    <li><a href="2024.5.0.html">2024.5.0</a></li>
+  </ul>
+</nav>
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">v2024.11.0</button>
+  <div class="version-menu">
+    <a class="version" href="../../../main/user-manual/release-notes/2024.5.0.html">main</a>
+    <a class="version is-current" href="2024.5.0.html">v2024.11.0</a>
+    <a class="version" href="../../../v2024.9.0/user-manual/release-notes/2024.5.0.html">v2024.9.0</a>
+    <a class="version" href="../../../v2024.7.0/user-manual/release-notes/2024.5.0.html">v2024.7.0</a>
+  </div>
+</div>
+
+<div class="edit-this-page"><a href="https://github.com/eclipse-syson/syson/blob/v2024.11.0/doc/content/modules/user-manual/pages/release-notes/2024.5.0.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<div class="spacer"></div>
+<article class="doc">
+<h1 class="page">2024.5.0</h1>
+<div class="sect1">
+<h2 id="_key_highlights">1. Key highlights</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Expanded Diagram and Model Support</strong>: We&#8217;ve significantly expanded our support for various views, including the addition of representations for use cases, occurrences, and allocations.
+This enhancement provides more comprehensive tools to visualize and manage SysML v2 models.
+This includes the addition of diagrams for use cases, occurrences, and allocations.</p>
+</li>
+<li>
+<p><strong>Improved User Experience</strong>: We&#8217;ve improved how elements are displayed, particularly in terms of ports and compartments.
+These enhancements ensure a clearer and more intuitive user interface.</p>
+</li>
+<li>
+<p><strong>Increased Stability and Reliability</strong>: We&#8217;ve addressed several key bugs and stability issues including fixing problems with diagrams and import capabilities.
+These improvements help maintain the integrity and accuracy of semantic data.</p>
+</li>
+<li>
+<p><strong>First Export Capability</strong>:  Our enhanced integration of SysIDE now supports better integration of the SysML v2 format.
+We&#8217;re now able to export projects in the standard textual format, facilitating easier data sharing and compatibility with other industry-standard tools.
+This promotes better data exchange and collaboration.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_breaking_changes">2. Breaking changes</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>requirement-view</code> diagram has been introduced by error in the last release.
+This diagram isn&#8217;t defined in the SysMLv2 specification.
+It has been deleted in this release.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dependencies_update">3. Dependencies update</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Switch to <a href="https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.5.0">Sirius Web v2024.5.0</a></p>
+</li>
+<li>
+<p>Switch to @ObeoNetwork/gantt-task-react 0.4.9</p>
+</li>
+<li>
+<p>Add dependency to org.apache.commons.commons-text 1.10.0</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_bug_fixes">4. Bug fixes</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>The "Add existing elements (recursive)" has been modified to work on <code>PartUsage</code>.</p>
+</li>
+<li>
+<p>From Interconnection view diagram, attributes compartment has been added in children <code>PartUsage</code> nodes.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-attribut-compartmen-interconnection-view.png" alt="Attribute compartment from Interconnection view">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>No error is raised anymore when setting a valid new value (with primitive type) in the Details view.</p>
+</li>
+<li>
+<p>The body feature of a <code>Comment</code> remove now the "/*" and "*/" characters while importing a model from SysML textual format.</p>
+</li>
+<li>
+<p>All <code>Memberships</code> are now contained in their parent through <code>ownedRelatedElement</code> instead of <code>ownedRelationship</code> reference.</p>
+</li>
+<li>
+<p>Rename action from explorer is now renaming tree items as expected.</p>
+</li>
+<li>
+<p><code>EnumerationDefinition</code> is now created with a default name.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-enumeration-definition.png" alt="Enumeration definition node">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"Add existing element (recursive)" action has been updated to create child nodes for nested and owned usages at the root of the diagram.</p>
+</li>
+<li>
+<p>While importing some of the standard examples, there are no more exception mainly when some of examples are linked to non resolved elements.</p>
+</li>
+<li>
+<p>Hide capabilities have been restored and improved in the palette.
+It&#8217;s now possible to hide a node but also all its content (recursive) or simply direct content (Show valued content action).</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-hide-capabilities.png" alt="Restore and Improve hide capabilities">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Namespace.getImportedMemberships</code> method now prevents name collisions as stated in the specification (KerML 7.2.5.4 Imports).</p>
+</li>
+<li>
+<p>Non end Usages have been removed from AllocationDefinition ends compartment.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-ends-compartment-AllocationDefinition.png" alt="Ends compartment from AllocationDefinition">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Circular containment of nested parts including self containment are now forbidden.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-avoid-nestedPart-cycle.png" alt="Avoid nested part cycle">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Time performance has been improved when using <code>Become nested part</code> edge creation tool.</p>
+</li>
+<li>
+<p><code>state transition</code> and <code>actions</code> compartments are now available on <code>StateDefinition</code> and <code>StateUsage</code> node.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-state-transition-cpt.png" alt="State transition compartment">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Inherited features in compartments don&#8217;t display itself anymore.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-inherited-feature-cpt.png" alt="Inherited features in compartments">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Add existing element (recursive)</code> behavior has been modified to be more robust and avoid potential exception, mainly the display of nested domain-based edge on State transition view diagram.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_improvements">5. Improvements</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Composite usages are now forbidden inside <code>PortDefinition</code>/<code>PortUsage</code>.</p>
+</li>
+<li>
+<p>Composite usages are now forbidden inside <code>AttributeDefinition</code>/<code>AttributeUsage</code>.</p>
+</li>
+<li>
+<p>Explicit usage of <code>node</code> to call SysIDE JavaScript file has been added.</p>
+</li>
+<li>
+<p><code>Membership</code>#visibility attribute has been added to <code>Core</code> properties in the Details view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-membership-visibility.png" alt="Membership visibility in Details view">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>PortUsage</code>#direction attribute has been added to <code>Core</code> properties in the Details view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-port-direction.png" alt="Port direction in Details view">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Definition</code>/<code>Usage</code> node are now collapsed by default in General view &amp; Action Flow View diagrams.</p>
+</li>
+<li>
+<p><code>Definition</code>/<code>Usage</code> nodes are expanded in all diagrams when a compartment item is created.</p>
+</li>
+<li>
+<p>All elements are now represented with their icon.</p>
+</li>
+<li>
+<p>Label is now positioned from inside to outside for <code>Ports</code> (Border Nodes).</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-port-label.png" alt="Port label">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>General view diagrams can now be created on any <code>Namespace</code> element.</p>
+</li>
+<li>
+<p>Instead of revealing all compartments of a node when user creates a child in one compartment, only the compartment parent of the child to create is revealed.
+Other compartments visibility doesn&#8217;t change.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-reveal-compartments.png" alt="Reveal compartment">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It&#8217;s now possible to create Interconnection view diagrams on any <code>Usage</code>/<code>Definition</code> element.</p>
+</li>
+<li>
+<p>A new compartment with a free-form layout inside the <code>ActionUsage</code> and <code>ActionDefinition</code> nodes is now available.
+Thanks to this compartment, user can separate <code>Action</code> nodes and connect them by using edges.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-action-in-compartment.png" alt="Action in compartment">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove button is now available on containment edges.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-delete-containment-edge.png" alt="Remove containment edge">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"Add existing elements" tools have been added on <code>State</code> and <code>StateDefinition</code> graphical elements.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-add-existing-element-on-state.png" alt="Add existing elements on state">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_new_features">6. New features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Compartments of <code>RequirementDefinition</code> and <code>RequirementUsage</code> have been redesigned to better fit the specification and examples.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-requirements.png" alt="Requirements">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"Become nested" edge creation tools has been added for <code>AttributeUsage</code>, <code>ItemUsage</code>, <code>PartUsage</code> and <code>PortUsage</code> nodes.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-become-nested-attribute.png" alt="Become nested attribute edge tool">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Creation tools (mainly <code>AttributeUsage</code>, <code>PartUsage</code>, <code>PortUsage</code> <code>ItemUsage</code>) have been added in <code>ActionUsage</code>, <code>ConstraintUsage</code>, <code>InterfaceDefinition</code>, <code>RequirementDefinition</code> and <code>PortUsage</code>.</p>
+</li>
+<li>
+<p><code>UseCaseDefinition</code> and <code>UseCaseUsage</code> elements are now handled in General view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-handle-usecase.png" alt="Handle Usecase elements">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Composite edges between <code>Usage</code> and compartment content have been added to link nested <code>Actions</code> with its <code>Action</code>, nested <code>Constraints</code> with its <code>Constraints</code> and nested <code>Constraints</code> with its <code>Requirement</code>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-nested-composite-edge.png" alt="Nested composite edge">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>OccurrenceDefinition</code> and <code>OccurrenceUsage</code> elements are now handled in General view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-handle-occurence.png" alt="Handle occurrence elements">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Reconnection tools have been added for composition edges.</p>
+</li>
+<li>
+<p><code>AllocationDefinition</code> and <code>AllocationUsage</code> elements are now handled in General view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-handle-allocation.png" alt="Handle allocation elements">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A service that serializes a SysML element to its textual representation defined by the OMG Standard is now available and used in export capability.</p>
+</li>
+<li>
+<p><code>ConjugatedPortDefinition</code> is now handled in diagrams, <code>Explorer</code> and Details View.</p>
+</li>
+<li>
+<p>It&#8217;s now possible to create and manipulate Interface edges in Interconnection view diagram.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-interface-usage.png" alt="Interface Usage">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>State Transition view diagrams are now available on <code>Package</code> elements.</p>
+</li>
+<li>
+<p>Inherited features are now taken into account in features compartments.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-inherited-feature.png" alt="Inherited feature">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>AcceptAction</code> elements are now handled in General view diagram.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-accept-action.png" alt="Accept Action Usage">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>PortUsage</code> in Interconnection View are now represented with rotative image.
+Whatever its border support, the <code>PortUsage</code> node is always represented by an arrow pointing inside the parent node.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-rotative-image.png" alt="Rotative image">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It&#8217;s now possible to represent and handle <code>Succession</code> edges between <code>Actions</code> in General view diagram, from background diagram but also from action flow compartment.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-succession-edge.png" alt="Succession">
+</div>
+</div>
+</div>
+</div>
+</article>
+<div class="spacer"></div>
+<aside class="toc sidebar" data-title="Contents" data-levels="3">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <div class="footer-container">
+      <p><a href="http://www.eclipse.org/"  target="_blank"><img width="200" src="https://www.eclipse.org/eclipse.org-common/themes/solstice/public/images/logo/eclipse-foundation-white-orange.svg" alt="Eclipse Foundation logo"></a></p>
+      <p id="copyright">Copyright © Eclipse Foundation, Inc.<br>All Rights Reserved.</p>
+  </div>
+
+  <div class="footer-container">
+      <h6>Eclipse Foundation</h6>
+      <ul>
+          <li><a href="http://www.eclipse.org/legal/privacy.php" target="_blank">Privacy Policy</a></li>
+          <li><a href="http://eclipse.org/" target="_blank">Eclipse</a></li>
+          <li><a href="http://www.eclipse.org/legal/termsofuse.php" target="_blank">Terms of Use</a></li>
+          <li><a href="http://www.eclipse.org/legal/copyright.php" target="_blank">Copyright Agent</a></li>
+          <li><a href="http://www.eclipse.org/legal/" target="_blank">Legal</a></li>
+          <li><a href="http://www.eclipse.org/org/foundation/contact.php" target="_blank"> Contact Us</a></li>
+      </ul>
+  </div>
+
+  <div class="footer-container">
+      <h6>Project Links</h6>
+      <ul>
+          <li><a href="https://projects.eclipse.org/projects/modeling.syson" target="_blank">About this project</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson" target="_blank">Source Code</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson/discussions" target="_blank">Discussion</a></li>           
+      </ul>
+  </div>
+</footer><script id="site-script" src="../../../../_/js/site.js" data-ui-root-path="../../../../_"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../_/js/vendor/swagger-ui.js"></script>
+<script src="../../../../_/js/vendor/lunr.js"></script>
+<script src="../../../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../../.." data-snippet-length="100" data-stylesheet="../../../../_/css/search.css"></script>
+<script async src="../../../../search-index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Model management :: SysON Docs</title>
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../../../_/css/site.css">
+<link rel="icon" href="../../../../../_/img/favicon.ico" type="image/x-icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <img class="icon" src="../../../../../_/img/favicon.svg" alt="SysON"/>
+      </div>
+      <a class="navbar-item" href="../../../../..">SysON Docs</a>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson">
+          <img class="icon" src="../../../../../_/img/github-mark-white.svg" alt="GitHub"/>
+        </a>
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson/discussions">
+          <img class="icon" src="../../../../../_/img/chat.svg" alt="Chat"/>
+        </a>
+
+        <div class="navbar-item search hide-for-print">
+          <div id="search-field" class="field">
+            <input id="search-input" type="text" placeholder="Search the docs">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="syson" data-version="v2024.9.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../../../index.html">SysON</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../what-is.html">SysON Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../key-features.html">Key features in SysON</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../installation-guide/index.html">Getting started with SysON</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/requirements.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/how-tos/install.html">How to install SysON?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/how-tos/https.html">Configuring HTTPS for local server deployment of SysON for testing purposes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/troubleshooting.html">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/migration-process.html">Migration process</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../user-interface-overview.html">User interface overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../tour.html">Tour the interface</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on.html">How-Tos and Tutorials</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">How-Tos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="project-management.html">Project management</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="model-management.html">Model management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="representation-operations.html">Representation operations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="user-interface-navigation.html">User Interface Navigation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="explorer.html">Project Explorer</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="representations-view.html">Representations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../tutorials/tutorials.html">Hands-On Starter Guides</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../tutorials/batmobile.html">Create Your First Model</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/features.html">Features and capabilities</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../key-features.html">Key features in SysON</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/sysmlv2-overview.html">Overview of SysML v2</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../concepts.html">Key concepts and terminology</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Diagramming Tools</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Projects Management</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/homepage.html">Projects Browser</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Editor</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/editor.html">Project Editor</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/details.html">Details</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/related-elements.html">Related Elements</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/representations-view.html">Representations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/validation.html">Validation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/keyboard-shortcuts.html">Keyboard shortcuts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/general-view.html">General view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/interconnection-view.html">Interconnection view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/action-flow-view.html">Action Flow View</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/state-transition-view.html">State transition view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/other-views.html">Other views</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/mbse-capability.html">MBSE capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/requirement-management.html">Requirements management and traceability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/parametric-modeling.html">Parametric modeling and constraints</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/simulation.html">Simulation and validation tools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/cm.html">Version control and change management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Advanced</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/scaling-limits.html">Scaling limits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/security.html">Security and compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../integration.html">Integration with other tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../integration/developer-guide.html">Developer guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../integration/interoperability.html">Interoperability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../integration/capella.html">Integrating with Capella</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../integration/api.html">APIs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../help.html">Support and resources</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../forum.html">Forum</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../contribute.html">Contribute</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../best-practices.html">SysON best practices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../support.html">Professional support</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../updates.html">Release notes and updates</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../release-notes/release-notes.html">Release notes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../cycle.html">SysON development cycle</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../faq/faq.html">Frequently Asked Questions</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../product-legal/index.html">Legal Information</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">SysON</span>
+    <span class="version">v2024.9.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../../../../main/index.html">SysON</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../../main/index.html">main</a>
+        </li>
+        <li class="version">
+          <a href="../../../../v2024.11.0/index.html">v2024.11.0</a>
+        </li>
+        <li class="version is-current">
+          <a href="../../../index.html">v2024.9.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../../v2024.7.0/index.html">v2024.7.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../../v2024.11.0/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../../index.html">SysON</a></li>
+    <li><a href="../../user-interface-overview.html">User interface overview</a></li>
+    <li><a href="../hands-on.html">How-Tos and Tutorials</a></li>
+    <li>How-Tos</li>
+    <li><a href="model-management.html">Model management</a></li>
+  </ul>
+</nav>
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">v2024.9.0</button>
+  <div class="version-menu">
+    <a class="version" href="../../../../main/user-manual/hands-on/how-tos/model-management.html">main</a>
+    <a class="version" href="../../../../v2024.11.0/user-manual/hands-on/how-tos/model-management.html">v2024.11.0</a>
+    <a class="version is-current" href="model-management.html">v2024.9.0</a>
+    <a class="version" href="../../../../v2024.7.0/user-manual/hands-on/how-tos/model-management.html">v2024.7.0</a>
+  </div>
+</div>
+
+<div class="edit-this-page"><a href="https://github.com/eclipse-syson/syson/blob/v2024.9.0/doc/content/modules/user-manual/pages/hands-on/how-tos/model-management.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<div class="spacer"></div>
+<article class="doc">
+<h1 class="page">Model management</h1>
+<div class="sect1">
+<h2 id="create-model">1. Create a new model</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>To create a model, follow these steps from the explorer toolbar:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the Project Editor.</p>
+</li>
+<li>
+<p>Click the <code>New model</code> action in the explorer toolbar.</p>
+</li>
+<li>
+<p>Complete the model name.</p>
+</li>
+<li>
+<p>Choose the model type.</p>
+</li>
+<li>
+<p>Click the <code>Create</code> button.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-new-model.png" alt="Create New Model">
+</div>
+</div>
+<div class="paragraph">
+<p>Upon creation, the new model appears in the Project Explorer.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-new-model-result.png" alt="New Model result">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="upload-model">2. Upload a model</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>SysON is able to upload SysML v2 textual files and JSON files.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+
+</div>
+</div>
+<div class="paragraph">
+<p>For SysML v2 textual files, only files with ".sysml" extension will be processed as SysML v2 textual files and uploaded successfully.</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>For JSON models, only models exported in the specific JSON format recognized by SysON can be re-uploaded by using the upload action.
+Ensure that your models are exported using the <a href="#download-model">Download Model</a> action to enable successful re-uploading to SysON.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To upload a model from a file previously exported, follow these steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Go to the Project Editor.</p>
+</li>
+<li>
+<p>Open the Project Explorer view.</p>
+</li>
+<li>
+<p>Click the <code>Upload</code> button at the top of the Project Explorer in the toolbar.</p>
+</li>
+<li>
+<p>It opens the <code>Upload Model</code> modal.</p>
+</li>
+<li>
+<p>Select a model from your file system.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-upload-model.png" alt="Upload model">
+</div>
+</div>
+</li>
+<li>
+<p>The uploaded model is automatically created and opened.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="rename-model">3. Rename a model</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>You can update the model name from the Project Explorer:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click the Element Options Menu next to the model in the Project Explorer.</p>
+</li>
+<li>
+<p>Select the <code>Rename</code> option.</p>
+</li>
+<li>
+<p>Update the name in the editable field.</p>
+</li>
+<li>
+<p>Click <code>Rename</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="delete-model">4. Delete a model</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Deleting a model and its content is a significant action, and it&#8217;s important to note that the entire model, along with its contents, is permanently removed.
+This includes all associated semantic elements, representations, and any other data within the model.
+Exercise caution when performing this operation, as it can&#8217;t be reversed.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The deletion affects everyone.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To delete a model, follow these steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the model in the Project Explorer.</p>
+</li>
+<li>
+<p>Open the Element Options Menu next to the model.</p>
+</li>
+<li>
+<p>Click <code>Delete</code>.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-delete-model.png" alt="Delete model">
+</div>
+</div>
+<div class="paragraph">
+<p>A confirmation dialog appears when the model is deleted via the Model Explorer.
+This behavior can be disabled by checking the "Disable this confirmation dialog" checkbox in the dialog.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/manage-elements-semantic-deletion.png" alt="Semantic Deletion">
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This preference is stored in the local storage of the browser.
+You can reset it by deleting the SysON data in cache of your browser.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="download-model">5. Download a model</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>You can download a model from the Project Explorer:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click the Element Options Menu next to the model in the Project Explorer.</p>
+</li>
+<li>
+<p>Select the <code>Download</code> option.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-download-model.png" alt="Download model">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The model is downloaded in JSON format.
+The JSON format used by SysON is specific to the tool.
+If you want the model to be exported as a SysML v2 textual file, you just have to suffix your model with ".sysml". (e.g. <code>myNewModel.sysml</code> instead of <code>myNewModel</code> in th example above.)</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="create-element">6. Create a new element</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The process to create a new element in a model involves the following steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the Element Options Menu next to the parent element.</p>
+</li>
+<li>
+<p>Click <code>New object</code>.</p>
+</li>
+<li>
+<p>Select the desired type of object to create.</p>
+</li>
+<li>
+<p>Click <code>Create</code>.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-new-element.png" alt="Create New Element">
+</div>
+</div>
+<div class="paragraph">
+<p>Upon completion, the newly created element is automatically selected in the Project Explorer.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_read_an_element">7. Read an element</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>To navigate through the details of a semantic element, use the Project Explorer to navigate through the model and locate the needed element.</p>
+</li>
+<li>
+<p>Select the element in the Project Explorer.</p>
+</li>
+<li>
+<p>On the right sidebar, access the Details view.
+This view presents all the available properties for the selected element, providing a comprehensive overview of its characteristics.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-read-element.png" alt="Read element">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="rename-element">8. Rename an element</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s possible to rename an element either from the Project Explorer, the Details view or a representation.</p>
+</div>
+<div class="sect2">
+<h3 id="_from_the_project_explorer">8.1. From the Project Explorer</h3>
+<div class="paragraph">
+<p>You can update the element name from the Project Explorer:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click the Element Options Menu next to the element in the Project Explorer.</p>
+</li>
+<li>
+<p>Select the <code>Rename</code> option.</p>
+</li>
+<li>
+<p>Update the name in the editable field.</p>
+</li>
+<li>
+<p>Click <code>Rename</code>.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-rename-element-from-project-editor.png" alt="Rename element from project explorer">
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, cancel the operation by pressing the <code>ESC</code> key.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_from_the_details_view">8.2. From the Details view</h3>
+<div class="paragraph">
+<p>You can update the element properties from the Details view:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the property in the Details view.</p>
+</li>
+<li>
+<p>Update the value in the editable field.</p>
+</li>
+<li>
+<p>Validate the changes by pressing the <code>RETURN</code> key or clicking anywhere.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-rename-element-from-details.png" alt="Rename element from Details">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_from_a_representation">8.3. From a representation</h3>
+<div class="paragraph">
+<p>You can update the element name from a representation (diagram&#8230;&#8203;):</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the element in the representation.</p>
+</li>
+<li>
+<p>Select the <code>Edit</code> tool in the Contextual Toolbar.</p>
+</li>
+<li>
+<p>Validate the changes by pressing the <code>RETURN</code> key or clicking anywhere.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-rename-element-from-representation.png" alt="Rename element from representation">
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, cancel the operation by pressing the <code>ESC</code> key.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Instead of using the tool in the toolbar, you can press <code>F2</code> key or start typing the new value directly to efficiently update the element name.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="update-element">9. Update an element</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>It&#8217;s possible to update element properties either from the Details view or a representation.</p>
+</div>
+<div class="sect2">
+<h3 id="details">9.1. From the Details view</h3>
+<div class="paragraph">
+<p>You can update the element properties from the Details view:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the property in the Details view.</p>
+</li>
+<li>
+<p>Update the value in the editable field.</p>
+</li>
+<li>
+<p>Validate the changes by pressing the <code>RETURN</code> key or clicking anywhere.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="representation">9.2. From a representation</h3>
+<div class="paragraph">
+<p>You can update the element name from a representation (diagram&#8230;&#8203;):</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the element in the representation.</p>
+</li>
+<li>
+<p>Select the <code>Edit</code> tool in the Contextual Toolbar.</p>
+</li>
+<li>
+<p>Validate the changes by pressing the <code>RETURN</code> key or clicking anywhere.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Instead of using the tool in the toolbar, you can press <code>F2</code> key or start typing the new value directly to efficiently update the element name.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>A powerful syntax exists for editing element properties directly through the direct edit tool; refer to <a href="#direct-edit">Direct Edit Tool and Shortcuts</a> for details.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="delete-element">10. Delete an element</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This operation is irreversible, once done there is no mean to get the element back.
+The element and its children - semantic element and representations - are deleted.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The deletion affects everyone.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To delete an element, follow these steps:</p>
+</div>
+<div class="sect2">
+<h3 id="_from_the_project_explorer_2">10.1. From the Project Explorer</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the Element Options Menu next to the element.</p>
+</li>
+<li>
+<p>Click <code>Delete</code>.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-delete-element-from-explorer.png" alt="Delete element from explorer">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_from_a_representation_2">10.2. From a representation</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the element in the representation.</p>
+</li>
+<li>
+<p>Click the <code>Delete</code> tool in the Contextual Toolbar or press the <code>DEL</code> key on your keyboard.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/hands-on-delete-element-from-representation.png" alt="Delete element from representation">
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+Use the <code>DEL</code> key cautiously, as it&#8217;s a direct shortcut for the delete operation.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A confirmation dialog appears when an element is deleted via the <em>Delete from model</em> tool in the palette or via the Element Options Menu.
+This behavior can be disabled by checking the "Disable this confirmation dialog" checkbox in the dialog.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/manage-elements-semantic-deletion.png" alt="Semantic Deletion">
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This preference is stored in the local storage of the browser.
+You can reset it by deleting the SysON data in cache of your browser.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="direct-edit">11. Direct edit tool and shortcuts</h2>
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>The SysON supports a subset of the SysML v2 textual syntax, which allows you to update several elements simultaneously.
+This makes it more efficient to edit models.</p>
+</div>
+<div class="paragraph">
+<p>In general, you can edit the label of a shape in a diagram, and the diagram editor tries to interpret your input and update the corresponding element properties.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If an element has a complex name such as <code>someElementName[x]:someTypeName:&gt;someElement</code>, when editing, you must retain all the written parts; otherwise, you risk unsetting some values.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Here are some shortcuts for efficiently editing SysON models:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Typing <code>someName</code> updates the name of the selected element.</p>
+</li>
+<li>
+<p>Typing <code>:SomeTypeName</code>, sets the type of the selected element to <em>SomeTypeName</em>.
+If <em>SomeTypeName</em> doesn&#8217;t exist, it&#8217;s created as an appropriate type element (for example <code>Item Definition</code>, <code>Part Definition</code>, &#8230;&#8203;) within the same parent container as the selected element.</p>
+</li>
+<li>
+<p>Typing <code>[x]</code> on an element or a relationship sets its cardinality to <em>x</em>.</p>
+</li>
+<li>
+<p>Typing <code>[1..x]</code> on an element or a relationship sets its cardinality to <em>1..x</em>.</p>
+</li>
+<li>
+<p>Typing <code>[x..*]</code> on an element or a relationship sets its cardinality to <em>x..*</em>.</p>
+</li>
+<li>
+<p>Typing <code>someElement:&gt;otherElement</code> on a element sets <em>someElement</em> as a <code>subsetting</code> of the <em>otherElement</em> if both element are of the same type.
+Otherwise, it creates a <code>specialization</code> relationship between <em>someElement</em> and <em>otherElement</em>.</p>
+</li>
+<li>
+<p>Typing <code>someElement:&gt;&gt;otherElement</code> on an element sets <em>someElement</em> as a <code>redefinition</code> of <em>otherElement</em>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These shortcuts offer a convenient way to update model elements efficiently.</p>
+</div>
+</div>
+</div>
+</article>
+<div class="spacer"></div>
+<aside class="toc sidebar" data-title="Contents" data-levels="3">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <div class="footer-container">
+      <p><a href="http://www.eclipse.org/"  target="_blank"><img width="200" src="https://www.eclipse.org/eclipse.org-common/themes/solstice/public/images/logo/eclipse-foundation-white-orange.svg" alt="Eclipse Foundation logo"></a></p>
+      <p id="copyright">Copyright © Eclipse Foundation, Inc.<br>All Rights Reserved.</p>
+  </div>
+
+  <div class="footer-container">
+      <h6>Eclipse Foundation</h6>
+      <ul>
+          <li><a href="http://www.eclipse.org/legal/privacy.php" target="_blank">Privacy Policy</a></li>
+          <li><a href="http://eclipse.org/" target="_blank">Eclipse</a></li>
+          <li><a href="http://www.eclipse.org/legal/termsofuse.php" target="_blank">Terms of Use</a></li>
+          <li><a href="http://www.eclipse.org/legal/copyright.php" target="_blank">Copyright Agent</a></li>
+          <li><a href="http://www.eclipse.org/legal/" target="_blank">Legal</a></li>
+          <li><a href="http://www.eclipse.org/org/foundation/contact.php" target="_blank"> Contact Us</a></li>
+      </ul>
+  </div>
+
+  <div class="footer-container">
+      <h6>Project Links</h6>
+      <ul>
+          <li><a href="https://projects.eclipse.org/projects/modeling.syson" target="_blank">About this project</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson" target="_blank">Source Code</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson/discussions" target="_blank">Discussion</a></li>           
+      </ul>
+  </div>
+</footer><script id="site-script" src="../../../../../_/js/site.js" data-ui-root-path="../../../../../_"></script>
+<script async src="../../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../../_/js/vendor/swagger-ui.js"></script>
+<script src="../../../../../_/js/vendor/lunr.js"></script>
+<script src="../../../../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../../../.." data-snippet-length="100" data-stylesheet="../../../../../_/css/search.css"></script>
+<script async src="../../../../../search-index.js"></script>
+  </body>
+</html>

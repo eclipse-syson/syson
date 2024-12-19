@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>2024.7.0 :: SysON Docs</title>
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+<link rel="icon" href="../../../../_/img/favicon.ico" type="image/x-icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <img class="icon" src="../../../../_/img/favicon.svg" alt="SysON"/>
+      </div>
+      <a class="navbar-item" href="../../../..">SysON Docs</a>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson">
+          <img class="icon" src="../../../../_/img/github-mark-white.svg" alt="GitHub"/>
+        </a>
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson/discussions">
+          <img class="icon" src="../../../../_/img/chat.svg" alt="Chat"/>
+        </a>
+
+        <div class="navbar-item search hide-for-print">
+          <div id="search-field" class="field">
+            <input id="search-input" type="text" placeholder="Search the docs">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="syson" data-version="v2024.11.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../../index.html">SysON</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../what-is.html">SysON Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../key-features.html">Key features in SysON</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../installation-guide/index.html">Getting started with SysON</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/requirements.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../installation-guide/how-tos/install.html">How to install SysON?</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/local_test.html">Basic Local Test Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/multi_user_test.html">Multi-User Local Test Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/production_deploy.html">Production-Grade Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/ecosystem_only.html">Ecosystem-Only Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/https.html">HTTPS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/troubleshooting.html">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/migration-process.html">Migration process</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../user-interface-overview.html">User interface overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tour.html">Tour the interface</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on/hands-on.html">How-Tos and Tutorials</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">How-Tos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/project-management.html">Project management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/model-management.html">Model management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/representation-operations.html">Representation operations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/user-interface-navigation.html">User Interface Navigation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/explorer.html">Project Explorer</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/representations-view.html">Representations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on/tutorials/tutorials.html">Hands-On Starter Guides</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/tutorials/batmobile.html">Create Your First Model</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../features/features.html">Features and capabilities</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../key-features.html">Key features in SysON</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/sysmlv2-overview.html">Overview of SysML v2</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts.html">Key concepts and terminology</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Diagramming Tools</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Projects Management</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/homepage.html">Projects Browser</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Editor</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/editor.html">Project Editor</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/details.html">Details</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/related-elements.html">Related Elements</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/representations-view.html">Representations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/validation.html">Validation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/keyboard-shortcuts.html">Keyboard shortcuts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/general-view.html">General view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/interconnection-view.html">Interconnection view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/action-flow-view.html">Action Flow View</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/state-transition-view.html">State transition view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/other-views.html">Other views</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/mbse-capability.html">MBSE capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/requirement-management.html">Requirements management and traceability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/parametric-modeling.html">Parametric modeling and constraints</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/simulation.html">Simulation and validation tools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/cm.html">Version control and change management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Advanced</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/scaling-limits.html">Scaling limits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/security.html">Security and compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../integration.html">Integration with other tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/developer-guide.html">Developer guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/interoperability.html">Interoperability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/capella.html">Integrating with Capella</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/api.html">APIs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../help.html">Support and resources</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../forum.html">Forum</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute.html">Contribute</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../best-practices.html">SysON best practices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../support.html">Professional support</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../updates.html">Release notes and updates</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="release-notes.html">Release notes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cycle.html">SysON development cycle</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../faq/faq.html">Frequently Asked Questions</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../product-legal/index.html">Legal Information</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">SysON</span>
+    <span class="version">v2024.11.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../../../main/index.html">SysON</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../main/index.html">main</a>
+        </li>
+        <li class="version is-current">
+          <a href="../../index.html">v2024.11.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../v2024.9.0/index.html">v2024.9.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../v2024.7.0/index.html">v2024.7.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">SysON</a></li>
+    <li><a href="2024.7.0.html">2024.7.0</a></li>
+  </ul>
+</nav>
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">v2024.11.0</button>
+  <div class="version-menu">
+    <a class="version" href="../../../main/user-manual/release-notes/2024.7.0.html">main</a>
+    <a class="version is-current" href="2024.7.0.html">v2024.11.0</a>
+    <a class="version" href="../../../v2024.9.0/user-manual/release-notes/2024.7.0.html">v2024.9.0</a>
+    <a class="version is-missing" href="../../../v2024.7.0/index.html">v2024.7.0</a>
+  </div>
+</div>
+
+<div class="edit-this-page"><a href="https://github.com/eclipse-syson/syson/blob/v2024.11.0/doc/content/modules/user-manual/pages/release-notes/2024.7.0.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<div class="spacer"></div>
+<article class="doc">
+<h1 class="page">2024.7.0</h1>
+<div class="sect1">
+<h2 id="_key_highlights">1. Key highlights</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Expanded Diagram and Model Support</strong>: We&#8217;ve significantly expanded our support for various elements and tools.</p>
+</li>
+<li>
+<p><strong>Increased Stability and Reliability</strong>: We&#8217;ve addressed several key bugs and stability issues including fixing problems with diagrams and import capabilities.
+These improvements help maintain the integrity and accuracy of semantic data.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_breaking_changes">2. Breaking changes</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Add standard libraries and new models now have a root Namespace to conform with KerML/SysML specifications.</p>
+</li>
+<li>
+<p>Generalization of StateTransition descriptions.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename <code>AbstractDiagramDescriptionProvider</code> <code>nameGenerator</code> as <code>descriptionNameGenerator</code>. Impacted concrete implementations: <code>ActionFlowViewDiagramDescriptionProvider</code>, <code>GeneralViewDiagramDescriptionProvider</code>,  <code>InterconnectionViewForDefinitionDiagramDescriptionProvider</code>, <code>InterconnectionViewForUsageDiagramDescriptionProvider</code>, <code>StateTransitionViewDiagramDescriptionProvider</code>.</p>
+</li>
+<li>
+<p>Rename <code>syson-diagram-statetransition-view</code> <code>CompartmentNodeDescriptionProvider</code> as <code>StateTransitionActionsCompartmentNodeDescriptionProvider</code>.</p>
+</li>
+<li>
+<p><code>StateTransitionViewEdgeService</code> removed, services moved to <code>ViewEdgeService</code> and <code>ViewLabelService</code>.</p>
+</li>
+<li>
+<p><code>StateTransitionActionToolProvider</code> moved to <code>syson-diagram-common-view</code></p>
+</li>
+<li>
+<p><code>StateTransitionCompartmentNodeToolProvider</code> moved to <code>syson-diagram-common-view</code></p>
+</li>
+<li>
+<p><code>createState</code> and <code>createOwnedAction</code> services moved to <code>ViewToolService</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Switch to sirius-web domain driven design architecture.
+Please download your existing SysON projects before moving to this new version.
+A reset of the database is needed.</p>
+</li>
+<li>
+<p>Code refactoring:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>AbstractDiagramDescriptionProvider#createNodeToolFromDiagramBackground(NodeDescription, EClassifier)</code> to new <code>ToolDescriptionService</code></p>
+</li>
+<li>
+<p>Move <code>AbstractViewElementDescriptionProvider#addExistingElementsTool(boolean)</code> to new <code>ToolDescriptionService</code></p>
+</li>
+<li>
+<p>Remove <code>AbstractViewElementDescriptionProvider</code></p>
+</li>
+<li>
+<p>Move <code>createDropFromExplorerTool</code> to new <code>ToolDescriptionService</code></p>
+</li>
+<li>
+<p>Move and rename <code>AbstractDiagramDescriptionProvider.addElementsToolSection(IViewDiagramElementFinder)</code> to <code>ToolDescriptionService#addElementsDiagramToolSection()</code></p>
+</li>
+<li>
+<p>Move and rename <code>AbstractNodeDescriptionProvider#addExistingElementsTool()</code> to <code>ToolDescriptionService#addElementsNodeToolSection()</code></p>
+</li>
+<li>
+<p>Remove <code>AbstractDiagramDescriptionProvider</code></p>
+</li>
+<li>
+<p>Rename <code>StateTransitionActionToolProvider</code> to <code>StateTransitionActionCompartmentToolProvider</code></p>
+</li>
+<li>
+<p>Move <code>AbstractViewNodeToolSectionSwitch#buildCreateSection(NodeTool&#8230;&#8203;)</code> to <code>ToolDescriptionService#buildCreateSection(NodeTool&#8230;&#8203;)</code></p>
+</li>
+<li>
+<p>Merge <code>AbstractViewNodeToolSectionSwitch#addElementsToolSection()</code> and <code>AbstractViewNodeToolSectionSwitch#addExistingNestedElementsTool()</code> in <code>ToolDescriptionService#addElementsNodeToolSection(boolean)</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>ViewLabelService#getCompartmentItemUsageLabel</code> has been renamed to <code>ViewLabelService#getCompartmentItemLabel</code>.</p>
+</li>
+<li>
+<p><code>ViewLabelService#getUsageInitialDirectEditLabel</code> has been renamed to <code>ViewLabelService#getInitialDirectEditLabel</code>.</p>
+</li>
+<li>
+<p><code>AbstractViewNodeToolSectionSwitch#createNestedUsageNodeTool</code> has been deleted. Please use <code>ToolDescriptionService#createNodeTool</code> instead</p>
+</li>
+<li>
+<p><code>AbstractCompartmentNodeDescriptionProvider#getItemCreationToolProvider</code> has been renamed to <code>getItemCreationToolProviders</code> and now returns a list of <code>INodeToolProvider</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_dependencies_update">3. Dependencies update</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Switch to <a href="https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.7.0">Sirius Web v2024.7.0</a></p>
+</li>
+<li>
+<p>Switch to @ObeoNetwork/gantt-task-react 0.4.19</p>
+</li>
+<li>
+<p>Switch to EMF Json 2.3.12</p>
+</li>
+<li>
+<p>Switch to Spring Boot 3.2.5</p>
+</li>
+<li>
+<p>Switch to <code>@apollo/client</code> 3.10.4</p>
+</li>
+<li>
+<p>Switch to <code>graphql</code> 16.8.1</p>
+</li>
+<li>
+<p>Switch to <code>vite</code> 5.2.11, <code>vitest</code> 1.6.0, <code>@vitest/coverage-v8</code> 1.6.0 and <code>@vitejs/plugin-react</code> 4.3.0</p>
+</li>
+<li>
+<p>Switch to <code>typescript</code> 5.4.5</p>
+</li>
+<li>
+<p>Switch to <code>turbo</code> 1.13.3</p>
+</li>
+<li>
+<p>Switch to <code>jacoco</code> 0.8.12</p>
+</li>
+<li>
+<p>Switch to <code>maven-checkstyle-plugin</code> 3.3.1</p>
+</li>
+<li>
+<p>Switch to <code>subscriptions-transport-ws</code> 0.11.0</p>
+</li>
+<li>
+<p>Remove the dependency to <code>reflect-metadata</code></p>
+</li>
+<li>
+<p>Add test dependency to Cypress 12.11.0 (only required to execute integration tests)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_bug_fixes">4. Bug fixes</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Fix an issue where the direct edit of single digit cardinalities were not taken into account.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-direct-edit-cardinality.png" alt="Direct edit cardinality">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix an issue where <em>Allocate</em> edges were not displayed in the Action Flow View diagram.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-afv-allocate.png" alt="Action Flow View - Allocate edges">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix an issue where the computation of <em>Succession</em> was sometimes wrong.</p>
+</li>
+<li>
+<p>Fix the owner <em>Membership</em> of dropped elements.</p>
+</li>
+<li>
+<p>Fix names used during textual export of <em>FeatureValue</em> elements.</p>
+</li>
+<li>
+<p>Fix names used during textual export of <em>MetadataDefinition</em> elements.</p>
+</li>
+<li>
+<p>Fix names used during textual export of <em>FeatureChainExpression</em> elements.</p>
+</li>
+<li>
+<p>Fix missing parts of <em>InvocationExpression</em> elements during textual export.</p>
+</li>
+<li>
+<p>Fix missing element names in the <em>Expression</em> element during textual export.</p>
+</li>
+<li>
+<p>Fix an issue where the simple quotes were not escaped when exporting as textual files.</p>
+</li>
+<li>
+<p>Fix an issue where models were exported with a global indentation instead of no indentation.</p>
+</li>
+<li>
+<p>Fix textual import of <em>Documentation</em> elements by removing /* */ around texts.</p>
+</li>
+<li>
+<p>Fix an issue where the <em>Adjust size</em> tool had no effect on Packages nodes.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-diagrams-package-adjust-size.png" alt="Package Adjust size tool">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix an issue where the double quotes were set along with the string value in case of a direct edit of the value part.</p>
+</li>
+<li>
+<p>Allow the creation of sub-Packages in the model explorer</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_improvements">5. Improvements</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Add root <em>Namespace</em> to SysON models and libraries to conform to SysMLv2 specification.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-root-namespace.png" alt="Root Namespace">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Improve support for whitespace, quotes, and special characters in direct edit.</p>
+</li>
+<li>
+<p>Handle start and done actions in Action Flow View &amp; General View diagrams.</p>
+</li>
+<li>
+<p>Add <em>State</em> and <em>StateDefinition</em> in the General View diagram.</p>
+</li>
+<li>
+<p>Add Transition source and target to Core properties in the Details view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-details-view-transition.png" alt="Details View Transition">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All <em>redefines</em> references of the SysMLv2 metamodel have been implemented.</p>
+</li>
+<li>
+<p>The textual import running process have been improved.
+By default, end users don&#8217;t have to copy <em>syside-cli.js</em> near the <em>syson-application</em> jar anymore.
+The embedded <em>syside-cli.js</em> is copied in a system temp folder and executed from there (with node).
+But, if you encounter execution rights problem, you can still copy <em>syside-cli.js</em> in a place where you have the appropriate rights and use the <em>org.eclipse.syson.syside.path</em> application option.</p>
+</li>
+<li>
+<p>Property "Typed by" is now always visible in the Details view for <em>Feature</em> elements, even if the <em>Feature</em> doesn&#8217;t have a type yet.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-details-view-typed-by-property.png" alt="Details View Typed by">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename creation tools for Start and Done actions (from Add Start/Done to New Start/Done)</p>
+</li>
+<li>
+<p>Reduce the default height of the Package node in diagrams</p>
+</li>
+<li>
+<p>Move Feature#direction in Core properties tab of the Details view</p>
+</li>
+<li>
+<p>Sort New Object menu entries</p>
+</li>
+<li>
+<p>Add Direct Edit tool in <em>Control</em> (<em>ForkNode</em>, <em>JoinNode</em>&#8230;&#8203;) nodes palettes</p>
+</li>
+<li>
+<p>Allow multiple occurrences of Start and Done actions in actions compartments.</p>
+</li>
+<li>
+<p>Rewrite textual import. It is still an experimental feature but should now be faster and accurate.</p>
+</li>
+<li>
+<p>Rewrite the <em>addExistingElement</em> tool.
+The tool now works correctly on packages, and doesn&#8217;t render sibling elements when their semantic element has been rendered by another node (e.g. in a compartment).</p>
+</li>
+<li>
+<p>The empty/null values for <em>Subsetting</em>/<em>Redefinition</em>/<em>Subclassification</em>/<em>FeatureTyping</em> are not displayed anymore in diagram node labels.</p>
+</li>
+<li>
+<p>Add tools for creating Ports with direction</p>
+</li>
+<li>
+<p>Add tools for creation Items with direction</p>
+</li>
+<li>
+<p>Change the default name of the transition element to <em>source_to_target</em></p>
+</li>
+<li>
+<p>Provide new icons for State, Conjugation, Port (in,in/out,out) and Item (in,in/out,out).</p>
+</li>
+<li>
+<p>Add tools to create Items and Parts in Port and PortDefinition</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-port-item-tool.png" alt="Create Items and Parts in Port and PortDefinition">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add tool to create Requirements in RequirementDefinition</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-reqdef-req-tool.png" alt="Create Requirements in RequirementDefinition">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add tools for creating <em>Items</em> on <em>ActionDefinition</em> in GeneralView and ActionFlowView.</p>
+</li>
+<li>
+<p>AcceptAction is now available inside an Action body</p>
+</li>
+<li>
+<p>Add private and protected visibility decorators on all elements</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-visibility-icons.png" alt="Visibility icons">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_new_features">6. New features</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Add Cypress test infrastructure and execute the Cypress tests as part of pull request checks.</p>
+</li>
+<li>
+<p>Add integration test infrastructure</p>
+</li>
+<li>
+<p>Initial contribution of this documentation</p>
+</li>
+<li>
+<p>Handle the <em>JoinNode</em>, <em>MergeNode</em>, <em>ForkNode</em>, <em>DecisionNode</em> elements in actions compartments.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-afv-control-nodes.png" alt="Control nodes">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Handle the <em>ExhibitState</em> elements in diagrams</p>
+</li>
+<li>
+<p>Add new documentation compartment on all existing nodes in all diagrams.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-doc-compartment.png" alt="Doc compartment">
+</div>
+</div>
+</div>
+</div>
+</article>
+<div class="spacer"></div>
+<aside class="toc sidebar" data-title="Contents" data-levels="3">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <div class="footer-container">
+      <p><a href="http://www.eclipse.org/"  target="_blank"><img width="200" src="https://www.eclipse.org/eclipse.org-common/themes/solstice/public/images/logo/eclipse-foundation-white-orange.svg" alt="Eclipse Foundation logo"></a></p>
+      <p id="copyright">Copyright © Eclipse Foundation, Inc.<br>All Rights Reserved.</p>
+  </div>
+
+  <div class="footer-container">
+      <h6>Eclipse Foundation</h6>
+      <ul>
+          <li><a href="http://www.eclipse.org/legal/privacy.php" target="_blank">Privacy Policy</a></li>
+          <li><a href="http://eclipse.org/" target="_blank">Eclipse</a></li>
+          <li><a href="http://www.eclipse.org/legal/termsofuse.php" target="_blank">Terms of Use</a></li>
+          <li><a href="http://www.eclipse.org/legal/copyright.php" target="_blank">Copyright Agent</a></li>
+          <li><a href="http://www.eclipse.org/legal/" target="_blank">Legal</a></li>
+          <li><a href="http://www.eclipse.org/org/foundation/contact.php" target="_blank"> Contact Us</a></li>
+      </ul>
+  </div>
+
+  <div class="footer-container">
+      <h6>Project Links</h6>
+      <ul>
+          <li><a href="https://projects.eclipse.org/projects/modeling.syson" target="_blank">About this project</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson" target="_blank">Source Code</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson/discussions" target="_blank">Discussion</a></li>           
+      </ul>
+  </div>
+</footer><script id="site-script" src="../../../../_/js/site.js" data-ui-root-path="../../../../_"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../_/js/vendor/swagger-ui.js"></script>
+<script src="../../../../_/js/vendor/lunr.js"></script>
+<script src="../../../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../../.." data-snippet-length="100" data-stylesheet="../../../../_/css/search.css"></script>
+<script async src="../../../../search-index.js"></script>
+  </body>
+</html>

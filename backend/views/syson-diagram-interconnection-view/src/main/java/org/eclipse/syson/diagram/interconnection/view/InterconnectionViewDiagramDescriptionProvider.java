@@ -65,10 +65,13 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
  */
 public class InterconnectionViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
+    public static final String DESCRIPTION_NAME = "Interconnection View";
+
+    // @formatter:off
+
     public static final List<EClass> ANNOTATINGS = List.of(
             SysmlPackage.eINSTANCE.getComment(), SysmlPackage.eINSTANCE.getDocumentation());
 
-    public static final String DESCRIPTION_NAME = "Interconnection View";
 
     public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getPartUsage(), List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute())),
@@ -77,6 +80,8 @@ public class InterconnectionViewDiagramDescriptionProvider implements IRepresent
     public static final Map<EClass, List<EReference>> COMPARTMENTS_WITH_FREE_FORM_ITEMS = Map.ofEntries(
             Map.entry(SysmlPackage.eINSTANCE.getPartUsage(), List.of(SysmlPackage.eINSTANCE.getUsage_NestedPart())),
             Map.entry(SysmlPackage.eINSTANCE.getActionUsage(), List.of(SysmlPackage.eINSTANCE.getUsage_NestedAction())));
+
+    // @formatter:on
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 

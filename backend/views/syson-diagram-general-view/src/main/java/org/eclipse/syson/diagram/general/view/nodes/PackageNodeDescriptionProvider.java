@@ -80,7 +80,7 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
         return List.of(
                 GeneralViewDiagramDescriptionProvider.REQUIREMENTS_TOOL_SECTIONS,
                 GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS,
-                GeneralViewDiagramDescriptionProvider.BEHAVIOUR_TOOL_SECTIONS,
+                GeneralViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTIONS,
                 GeneralViewDiagramDescriptionProvider.ANALYSIS_TOOL_SECTIONS,
                 GeneralViewDiagramDescriptionProvider.EXTENSION_TOOL_SECTIONS);
     }
@@ -88,7 +88,7 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
     @Override
     protected List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
-        if (GeneralViewDiagramDescriptionProvider.BEHAVIOUR_TOOL_SECTIONS.name().equals(sectionName)) {
+        if (GeneralViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTIONS.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(cache));
         } else if (GeneralViewDiagramDescriptionProvider.STRUCTURE_TOOL_SECTIONS.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);

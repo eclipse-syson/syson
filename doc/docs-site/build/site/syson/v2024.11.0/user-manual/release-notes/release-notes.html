@@ -1,0 +1,2716 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Release notes :: SysON Docs</title>
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+<link rel="icon" href="../../../../_/img/favicon.ico" type="image/x-icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <img class="icon" src="../../../../_/img/favicon.svg" alt="SysON"/>
+      </div>
+      <a class="navbar-item" href="../../../..">SysON Docs</a>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson">
+          <img class="icon" src="../../../../_/img/github-mark-white.svg" alt="GitHub"/>
+        </a>
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson/discussions">
+          <img class="icon" src="../../../../_/img/chat.svg" alt="Chat"/>
+        </a>
+
+        <div class="navbar-item search hide-for-print">
+          <div id="search-field" class="field">
+            <input id="search-input" type="text" placeholder="Search the docs">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="syson" data-version="v2024.11.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../../index.html">SysON</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../what-is.html">SysON Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../key-features.html">Key features in SysON</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../installation-guide/index.html">Getting started with SysON</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/requirements.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../installation-guide/how-tos/install.html">How to install SysON?</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/local_test.html">Basic Local Test Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/multi_user_test.html">Multi-User Local Test Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/production_deploy.html">Production-Grade Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/ecosystem_only.html">Ecosystem-Only Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/https.html">HTTPS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/troubleshooting.html">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/migration-process.html">Migration process</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../user-interface-overview.html">User interface overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tour.html">Tour the interface</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on/hands-on.html">How-Tos and Tutorials</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">How-Tos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/project-management.html">Project management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/model-management.html">Model management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/representation-operations.html">Representation operations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/user-interface-navigation.html">User Interface Navigation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/explorer.html">Project Explorer</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/representations-view.html">Representations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on/tutorials/tutorials.html">Hands-On Starter Guides</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/tutorials/batmobile.html">Create Your First Model</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../features/features.html">Features and capabilities</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../key-features.html">Key features in SysON</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/sysmlv2-overview.html">Overview of SysML v2</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts.html">Key concepts and terminology</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Diagramming Tools</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Projects Management</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/homepage.html">Projects Browser</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Editor</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/editor.html">Project Editor</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/details.html">Details</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/related-elements.html">Related Elements</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/representations-view.html">Representations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/validation.html">Validation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../features/keyboard-shortcuts.html">Keyboard shortcuts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/general-view.html">General view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/interconnection-view.html">Interconnection view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/action-flow-view.html">Action Flow View</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/state-transition-view.html">State transition view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/other-views.html">Other views</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/mbse-capability.html">MBSE capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/requirement-management.html">Requirements management and traceability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/parametric-modeling.html">Parametric modeling and constraints</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/simulation.html">Simulation and validation tools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../features/cm.html">Version control and change management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Advanced</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/scaling-limits.html">Scaling limits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../features/security.html">Security and compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../integration.html">Integration with other tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/developer-guide.html">Developer guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/interoperability.html">Interoperability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/capella.html">Integrating with Capella</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/api.html">APIs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../help.html">Support and resources</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../forum.html">Forum</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute.html">Contribute</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../best-practices.html">SysON best practices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../support.html">Professional support</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../updates.html">Release notes and updates</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="release-notes.html">Release notes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cycle.html">SysON development cycle</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../faq/faq.html">Frequently Asked Questions</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../product-legal/index.html">Legal Information</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">SysON</span>
+    <span class="version">v2024.11.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../../../main/index.html">SysON</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../main/index.html">main</a>
+        </li>
+        <li class="version is-current">
+          <a href="../../index.html">v2024.11.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../v2024.9.0/index.html">v2024.9.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../v2024.7.0/index.html">v2024.7.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">SysON</a></li>
+    <li><a href="../updates.html">Release notes and updates</a></li>
+    <li><a href="release-notes.html">Release notes</a></li>
+  </ul>
+</nav>
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">v2024.11.0</button>
+  <div class="version-menu">
+    <a class="version" href="../../../main/user-manual/release-notes/release-notes.html">main</a>
+    <a class="version is-current" href="release-notes.html">v2024.11.0</a>
+    <a class="version" href="../../../v2024.9.0/user-manual/release-notes/release-notes.html">v2024.9.0</a>
+    <a class="version" href="../../../v2024.7.0/user-manual/release-notes/release-notes.html">v2024.7.0</a>
+  </div>
+</div>
+
+<div class="edit-this-page"><a href="https://github.com/eclipse-syson/syson/blob/v2024.11.0/doc/content/modules/user-manual/pages/release-notes/release-notes.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<div class="spacer"></div>
+<article class="doc">
+<h1 class="page">Release notes</h1>
+<div class="sect1">
+<h2 id="_2024_11_0">2024.11.0</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_key_highlights">Key highlights</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Model conformance to SysMLv2 Beta 2.2 version</strong>: the metamodel has been modified to conform to SysMLv2 and KerML Beta 2.2 specifications released on October 2024.
+All standard libraries have also been updated.</p>
+</li>
+<li>
+<p><strong>Introduce SysMLv2 REST APIs</strong>: introduce partial support of the standard REST APIs from the OMG <a href="https://www.omg.org/spec/SystemsModelingAPI/">SystemsModelingAPI</a>.
+In this first implementation we have implemented Project-related &amp; Object-related REST APIs.
+Please read the <a href="../integration/api.html" class="xref page">APIs section</a> in this documentation for more details.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_breaking_changes">Breaking changes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add CaseUsage and CaseDefinition in General View diagram, the following classes have been renamed to reflect their new usage:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename <code>UseCaseDefinitionActorsCompartmentNodeDescriptionProvider</code> to <code>CaseDefinitionActorsCompartmentNodeDescriptionProvider</code></p>
+</li>
+<li>
+<p>Rename <code>UseCaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider</code> to <code>CaseDefinitionObjectiveRequirementCompartmentNodeDescriptionProvider</code></p>
+</li>
+<li>
+<p>Rename <code>UseCaseDefinitionSubjectCompartmentNodeDescriptionProvider</code> to <code>CaseDefinitionSubjectCompartmentNodeDescriptionProvider</code></p>
+</li>
+<li>
+<p>Rename <code>UseCaseUsageActorsCompartmentNodeDescriptionProvider</code> to <code>CaseUsageActorsCompartmentNodeDescriptionProvider</code></p>
+</li>
+<li>
+<p>Rename <code>UseCaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider</code> to <code>CaseUsageObjectiveRequirementCompartmentNodeDescriptionProvider</code></p>
+</li>
+<li>
+<p>Rename <code>UseCaseUsageSubjectCompartmentNodeDescriptionProvider</code> to <code>CaseUsageSubjectCompartmentNodeDescriptionProvider</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Handle of aliases and external references have been improved for textual import, the following methods have been deleted:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Deleted <code>AstTreeParser#resolveAllImport</code></p>
+</li>
+<li>
+<p>Deleted <code>AstTreeParser#resolveAllReference</code></p>
+</li>
+<li>
+<p>Deleted <code>ProxyResolver#resolveAllProxy</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Add an edge tool to add target element as nested usage.
+The following methods have been moved from <code>NodeCreationTestsService</code> to <code>SemanticCheckerService</code> to better separate testing concerns:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>getElementInParentSemanticChecker</code></p>
+</li>
+<li>
+<p><code>checkEditingContext</code>
+The following methods have been moved from <code>NodeCreationTestsService</code> to <code>DiagramCheckerService</code> to better separate testing concerns:</p>
+</li>
+<li>
+<p><code>getChildNodeGraphicalChecker</code></p>
+</li>
+<li>
+<p><code>getCompartmentNodeGraphicalChecker</code></p>
+</li>
+<li>
+<p><code>getSiblingNodeGraphicalChecker</code></p>
+</li>
+<li>
+<p><code>checkDiagram</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Remove default name of relationships and improve edge labels.
+The method <code>getSuccessionLabel</code> in <code>ViewLabelService</code> has been deleted, succession labels are now computed with the generic <code>getEdgeLabel</code> method.</p>
+</li>
+<li>
+<p>Allow the drop of elements on empty diagram nodes.
+Rename the class <code>SemanticCheckerFactory</code> to <code>SemanticRunnableFactory</code> to reflect the new use cases of the class.</p>
+</li>
+<li>
+<p>Align metamodel to SysMLv2 and KerML Beta 2.2 specifications.
+The changes are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Import</p>
+<div class="ulist">
+<ul>
+<li>
+<p>visibility attribute default value is now <code>private</code> instead of <code>public</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Type</p>
+<div class="ulist">
+<ul>
+<li>
+<p>inheritedMemberships operation now have a second parameter, <code>excludeImplied : boolean</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Feature</p>
+<div class="ulist">
+<ul>
+<li>
+<p>new <code>featureTarget : Feature</code> derived reference</p>
+</li>
+<li>
+<p>new <code>typingFeatures : List&lt;Feature&gt;</code> operation</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>InvocationExpression</p>
+<div class="ulist">
+<ul>
+<li>
+<p>new <code>operand : List&gt;Expression&gt;</code> derived reference</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>AnalysisCaseUsage</p>
+<div class="ulist">
+<ul>
+<li>
+<p>remove <code>analysisAction : ActionUsage</code> reference</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>AnalysisCaseDefinition</p>
+<div class="ulist">
+<ul>
+<li>
+<p>remove <code>analysisAction : ActionUsage</code> reference</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Extract direct edit grammar from services module into separate module (new <code>syson-direct-edit-grammar</code> module).</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependencies_update">Dependencies update</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Switch to Spring Boot 3.3.3</p>
+</li>
+<li>
+<p>Migrate the frontend to <code>react 18.3.1</code>, <code>react-dom 18.3.1</code>, <code>react-router-dom 6.26.0</code>, <code>@xstate/react: 3.0.0</code> and <code>@ObeoNetwork/gantt-task-react 0.6.0</code></p>
+</li>
+<li>
+<p>Switch to Sirius Web 2024.11.0</p>
+</li>
+<li>
+<p>Switch to the final release version of AQL 8.0.2</p>
+</li>
+<li>
+<p>Switch to @ObeoNetwork/gantt-task-react 0.6.1 to benefit for enhancements</p>
+</li>
+<li>
+<p>Add a dependency to <code>material-react-table "2.13.3"</code> and <code>export-to-csv "1.3.0"</code></p>
+</li>
+<li>
+<p>Switch to <code>commons-io 2.17</code></p>
+</li>
+<li>
+<p>Switch to <code>java-uuid-generator 5.1.0</code></p>
+</li>
+<li>
+<p>Switch to SysIDE 0.6.2</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bug_fixes">Bug fixes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix an issue that prevented the import of <code>Allocation</code> and <code>AllocationDefinition</code>.</p>
+</li>
+<li>
+<p>Fix import of some boolean attributes (<code>Type#isAbstract</code>, <code>Feature#isDerived</code>, <code>Feature#isEnd</code>, <code>Feature#isReadOnly</code>).</p>
+</li>
+<li>
+<p>Fix an issue where the import failed to resolve <code>redefinedFeature</code> references when the <code>Redefinition</code> had no name.</p>
+</li>
+<li>
+<p>Fix an issue where <code>InterfaceUsage</code> and <code>FlowConnectionUsage</code> elements might be created inside the wrong membership in the Interconnection View diagram.</p>
+</li>
+<li>
+<p>Add <code>declaredName</code> attribute in <code>AnnotatingElement</code> (if present) in export to textual SysMLv2.</p>
+</li>
+<li>
+<p>Fix visibility issue when resolving name of privately imported element during export.</p>
+</li>
+<li>
+<p>Fix an issue where it was impossible anymore to delete the cardinality of a <code>Usage</code> as graphical node through direct edit.</p>
+</li>
+<li>
+<p>Fix an issue where <code>Subsetting</code> elements were not deleted at the same time as the deletion of their subsetted <code>Feature</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improvements">Improvements</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add CaseUsage and CaseDefinition representations in the General View diagram.</p>
+</li>
+<li>
+<p>Update Batmobile template.</p>
+</li>
+<li>
+<p>Handle of aliases and external references have been improved for textual import.</p>
+</li>
+<li>
+<p>Add support for short name in container and compartment item labels.</p>
+</li>
+<li>
+<p>Allow to set short name via the direct edit.</p>
+</li>
+<li>
+<p>Make Declared Short Name accessible from the Core tab instead of the Advanced tab in the details view.</p>
+</li>
+<li>
+<p>Remove default name of relationships and improve edge labels.</p>
+</li>
+<li>
+<p>Allow to create dependencies from the Explorer view.</p>
+</li>
+<li>
+<p>Allow the drop of elements on empty diagram nodes.
+It is now possible to drop elements from the explorer on the information box visible on empty diagrams.
+The dropped element is displayed on the diagram, the same way element creation tools on the information box display them on the diagram.</p>
+</li>
+<li>
+<p>Exclude <code>src/test/resources</code> from checkstyle.
+This reduces the time required to build SysON, especially when using Spring Tool Suite.</p>
+</li>
+<li>
+<p>Add <code>New Subsetting</code> tool on <code>PartUsage</code> to create a <code>Subsetting</code> edge and a <code>PartUsage</code> that is subset.</p>
+</li>
+<li>
+<p>Add <code>New Feature Typing</code> tool on <code>PartUsage</code> to create a <code>FeatureTyping</code> edge and a <code>PartDefinition</code>.</p>
+</li>
+<li>
+<p>Add <code>New Binding Connector As Usage</code> tool on <code>PartUsage</code> in Interconnection View diagram.</p>
+</li>
+<li>
+<p>Add <code>New Flow Connection</code> tool on <code>PartUsage</code> in Interconnection View diagram.</p>
+</li>
+<li>
+<p>Add <code>New Interface</code> tool on <code>PartUsage</code> in Interconnection View diagram.</p>
+</li>
+<li>
+<p>Handle <code>UseCaseUsage</code> and <code>IncludeUseCaseUsage</code> elements in export to textual SysMLv2.</p>
+</li>
+<li>
+<p>All standard libraries have been updated to comply with the SysML Beta 2.2 specification.</p>
+</li>
+<li>
+<p>Improve import feature non regression tests.
+Added source sysml file and unaltered ast.json result.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_new_features">New features</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add a new Custom node representing à <em>Note</em> among possible node style descriptions available.
+The custom node is resizable and the text content is wrapped (back to the line) if it is too long compare to the node size.</p>
+</li>
+<li>
+<p>Represent <code>Documentation</code> as <em>Note</em> graphical node.
+The <code>Documentation</code> graphical node can appear when user drag and drop <code>Documentation</code> element from explorer on the diagram.
+The <code>Documentation</code> graphical node is linked to its documented element by an edge and the node can only appear if the documented element is represented on the diagram.</p>
+</li>
+<li>
+<p>Display prefix keywords in labels of <code>Documentation</code> graphical nodes.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-documentation-note.png" alt="Documentation note node">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allow creation of <code>Comment</code> from the Explorer view.</p>
+</li>
+<li>
+<p>Add <code>Comment</code> representation in graphical views.
+The <code>Comment</code> graphical node can appear when user drag and drop <code>Comment</code> element from explorer on the diagram but also when user handle creation tool from the palette.
+The <code>Comment</code> graphical node is linked to its annotated element by an edge and the node can only appear if the annotated element is represented on the diagram.</p>
+</li>
+<li>
+<p>Display prefix keywords in labels of <code>Comment</code> graphical nodes.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-comment-note.png" alt="Comment note node">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add <code>Comment</code> property to Core tab of the Details view, allowing to add/edit a <code>Comment</code> for the selected element.
+This property widget will only handle the first <code>Comment</code> associated to the selected element.
+If no <code>Comment</code> is associated to the selected element, then a new value in this widget will also create a <code>Comment</code> element and will associate it to the selected element.</p>
+</li>
+<li>
+<p>Add an edge tool to add target element as nested usage.
+This complements the existing tool that allows to add the source element as a nested usage of the target.</p>
+</li>
+<li>
+<p>Introduce SysMLv2 REST APIs.
+In this first implementation we will only implement the following REST APIs, thanks to Sirius Web:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Project-related REST APIs:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>getProjects (GET /api/rest/projects): Get all projects.</p>
+</li>
+<li>
+<p>getProjectById (GET /api/rest/projects/{projectId}): Get project with the given id (projectId).</p>
+</li>
+<li>
+<p>createProject (POST /projects): Create a new project with the given name and description (optional).</p>
+</li>
+<li>
+<p>deleteProject (DELETE /api/rest/projects/{projectId}): Delete the project with the given id (projectId).</p>
+</li>
+<li>
+<p>updateProject (PUT /projects/{projectId}): Update the project with the given id (projectId).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Object-related REST APIs.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>getElements (GET /api/rest/projects/{projectId}/commits/{commitId}/elements): Get all the elements in a given project at the given commit.
+There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.</p>
+</li>
+<li>
+<p>getElementById (GET /api/rest/projects/{projectId}/commits/{commitId}/elements/{elementId}): Get element with the given id (elementId) in the given project at the given commit.
+There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.</p>
+</li>
+<li>
+<p>getRelationshipsByRelatedElement (GET /api/rest/projects/{projectId}/commits/{commitId}/elements/{elementId}/relationships): Get relationships that are incoming, outgoing, or both relative to the given related element.
+There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.</p>
+</li>
+<li>
+<p>getRootElements (GET /api/rest/projects/{projectId}/commits/{commitId}/roots): Get all the root elements in the given project at the given commit.
+There are no commits in Sirius Web so you can use the same Id as the projectId for the commitId.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2024_9_0">2024.9.0</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_key_highlights_2">Key highlights</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Model conformance to SysMLv2 Beta 2 version</strong>: the metamodel has been modified to conform to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see <a href="https://www.omg.org/spec/SysML/" class="bare">https://www.omg.org/spec/SysML/</a> for more details) and KerML Beta 2 specification released on the 17the of February 2024(see <a href="https://www.omg.org/spec/KerML/" class="bare">https://www.omg.org/spec/KerML/</a> for more details).</p>
+</li>
+<li>
+<p><strong>New "New objects from text" menu entry</strong>: from elements in <em>Explorer</em> view, allow to insert textual SysMLv2 as objects under the selected element.
+The menu entry shows a dialog with a textarea allowing to write or paste textual SysMLv2.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-insert-textual-sysmlv2-menu.png" alt="New objects from text menu">
+</div>
+</div>
+<div class="paragraph">
+<p>A click on the <em>Insert</em> button converts the textual SysMLv2 into model elements and add them under the selected element.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-insert-textual-sysmlv2-dialog.png" alt="New objects from text dialog">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>New "Show/Hide Icons in Diagrams" diagram panel entry</strong>: from panel in <em>Diagrams</em>, allow to show or hide the icons of diagrams elements.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-show-hide-icons-in-diagram.png" alt="Show/Hide Icons in Diagram">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>New "Show/Hide Inherited Members in Diagrams" diagram panel entry</strong>: from panel in <em>Diagrams</em>, allow to show or hide the inherited members from users models in diagrams.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-show-hide-inherited-members-in-diagram.png" alt="Show/Hide Inherited Members in Diagram">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>New "Show/Hide Inherited Members from Standard Libraries in Diagrams" diagram panel entry</strong>: from panel in <em>Diagrams</em>, allow to show or hide the inherited members from standard libraries in diagrams.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-show-hide-inherited-members-from-standard-libraries-in-diagram.png" alt="Show/Hide Inherited Members from Standard Libraries in Diagram">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_breaking_changes_2">Breaking changes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <em>StateTransitionCompartmentNodeDescriptionProvider</em> from syson-diagram-statetransition-view to module syson-diagram-common-view.</p>
+</li>
+<li>
+<p>Code refactoring:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename <code>ExhibitStatesCompartmentItemNodeDescriptionProvider</code> to <code>StatesCompartmentItemNodeDescriptionProvider</code>.</p>
+</li>
+<li>
+<p><em>StatesCompartmentNodeDescriptionProvider</em> now handles both exhibit and non-exhibit states.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Align metamodel to SysMLv2 Beta 2 specification released on the 3rd of February 2024(see <a href="https://www.omg.org/spec/SysML/" class="bare">https://www.omg.org/spec/SysML/</a> for more details) and KerML Beta 2 specification released on the 17the of February 2024(see <a href="https://www.omg.org/spec/KerML/" class="bare">https://www.omg.org/spec/KerML/</a> for more details).
+You may have to fix your existing SysON models/projects by your own means to still be able to open them with SysON.
+Please download all your models/projects before upgrading to 2024.9.0.
+The changes are:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>AnnotatingElement</p>
+<div class="ulist">
+<ul>
+<li>
+<p>add derived reference "ownedAnnotatingRelationship : Annotation"</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Annotation</p>
+<div class="ulist">
+<ul>
+<li>
+<p>add derived reference "owningAnnotatingElement : AnnotatingElement"</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Connector</p>
+<div class="ulist">
+<ul>
+<li>
+<p>remove attribute "isDirected : boolean"</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>OperatorExpression</p>
+<div class="ulist">
+<ul>
+<li>
+<p>remove derived reference "operand : Expression"</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>ParameterMembership</p>
+<div class="ulist">
+<ul>
+<li>
+<p>add operation "parameterDirection()  : FeatureDirectionKind"</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Type</p>
+<div class="ulist">
+<ul>
+<li>
+<p>add operation "directionOfExcluding(Feature, Type[0..\*]) : FeatureDirectionKind"</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Refactor and simplify the implementation of the Interconnection View diagram, the following classes have been deleted, renamed, or merged:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Deleted <code>InterconnectionViewForDefinitionDescriptionProvider</code></p>
+</li>
+<li>
+<p>Deleted <code>InterconnectionViewForDefinitionDiagramDescriptionProvider</code></p>
+</li>
+<li>
+<p>Deleted <code>InterconnectionViewForUsageDiagramDescriptionProvider</code></p>
+</li>
+<li>
+<p>Merged <code>RootUsageNodeDescriptionProvider</code> and <code>RootDefinitionNodeDescriptionProvider</code> into <code>RootNodeDescriptionProvider</code></p>
+</li>
+<li>
+<p>Renamed <code>FirstLevelChildPartUsageNodeDescriptionProvider</code> to <code>FirstLevelChildUsageNodeDescriptionProvider</code></p>
+</li>
+<li>
+<p>Renamed <code>ChildPartUsageNodeDescriptionProvider</code> to <code>ChildUsageNodeDescriptionProvider</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Switch to Sirius Web 2024.7.1: all diagrams must be deleted and created again, due to the fix of this Sirius Web <a href="https://github.com/eclipse-sirius/sirius-web/issues/1470">bug</a>.</p>
+</li>
+<li>
+<p>Add tool to create an ExhibitState from a StateUsage, the following classes &amp; methods have been deleted or modified to simplify the handling of <em>ExhibitStates</em></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Deleted <code>StateTransitionToggleExhibitStateToolProvider</code></p>
+</li>
+<li>
+<p>Deleted <code>UtilService#canBeExhibitedStateUsage</code></p>
+</li>
+<li>
+<p>Deleted <code>UtilService#setUnsetAsExhibit</code></p>
+</li>
+<li>
+<p>Deleted <code>UtilService#isExhibitedStateUsage</code></p>
+</li>
+<li>
+<p>Deleted <code>UtilService#getAllReachableStatesWithoutReferencialExhibitExpression</code></p>
+</li>
+<li>
+<p>Deleted <code>ViewNodeService#isHiddenByDefaultExhibitStates</code></p>
+</li>
+<li>
+<p>Deleted <code>ViewNodeService#isHiddenByDefaultNonExhibitStates</code></p>
+</li>
+<li>
+<p>Add new <code>IViewDiagramElementFinder</code> parameter to <code>StateTransitionViewNodeToolSectionSwitch</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Migrate frontend to MUI 5, if you contributed React components that use MUI, you should upgrade them to use MUI 5.</p>
+</li>
+<li>
+<p>Ensure that dropped nodes are always collapsed, the following methods have been moved to support this feature</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The method <code>ToolService#dropElementFromExplorer</code> has been moved to <code>ViewToolService</code> since it now requires view-related imports that motivated this refactoring.</p>
+</li>
+<li>
+<p>The method <code>ToolService#dropElementFromDiagram</code> has been moved to <code>ViewToolService</code> for the sake of consistency.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Fix <em>Add Existing Elements</em> tool for start and done actions, the following methods have been moved to <code>UtilService</code> to make them reusable by different services (they are now used by <code>ViewNodeService</code> and <code>ViewToolService</code>):</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>ViewNodeService#getAllStandardStartActions</code></p>
+</li>
+<li>
+<p><code>ViewNodeService#getAllStandardDoneActions</code></p>
+</li>
+<li>
+<p><code>ViewNodeService#isAction</code></p>
+</li>
+<li>
+<p><code>ViewNodeService#isPart</code></p>
+</li>
+<li>
+<p>Split <code>DiagramDirectEditListener#exitExpression</code> directEdit service into two services : <code>exitNodeExpression</code> and <code>exitListItemExpression</code> to specify the grahical context of use .</p>
+</li>
+<li>
+<p>Add new boolean parameter <code>isCompartmentItem</code> to the <code>LabelService#directEdit</code> service to clarify the graphical element type to edit.</p>
+</li>
+<li>
+<p>Rename <code>LabelService#getUsagePrefix</code> into <code>getUsageListItemPrefix</code> to specify the computation of this prefix on list item elements.</p>
+</li>
+<li>
+<p>Rename <code>ViewLabelService#getInitialDirectEditLabel</code> service into <code>getInitialDirectEditListItemLabel</code> to specify the computation of the initial label on list item elements.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Fix an issue that revealed the <em>documentation</em> compartment when dropping an element on itself, the following method&#8217;s contract has been updated as part of the fix:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>EMFUtils#isAncestor(parent, eObject)</code> now returns <code>true</code> if <code>parent == eObject</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Allow to create an Action Flow View diagram on an ActionDefinition or ActionUsage in addition to Package, the tool <em>Create Package</em> is not available in Action Flow View diagrams anymore.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependencies_update_2">Dependencies update</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Switch to Sirius Web 2024.9.0</p>
+</li>
+<li>
+<p>Migrate frontend to MUI 5</p>
+</li>
+<li>
+<p>Switch to <code>maven-checkstyle-plugin</code> 3.4.0</p>
+</li>
+<li>
+<p>Switch to Spring Boot 3.3.1</p>
+</li>
+<li>
+<p>Add a dependency to <code>CycloneDX</code> to compute the backend software bill of materials during the build</p>
+</li>
+<li>
+<p>Add a dependency to <code>pathfinding</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bug_fixes_2">Bug fixes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Prevent nested part to be rendered as border nodes in the Interconnection View diagram.</p>
+</li>
+<li>
+<p>Fix an issue where a click on inherited members inside compartments was raising an error instead of displaying the palette.</p>
+</li>
+<li>
+<p>Fix an issue where non-containment references in standard libraries weren&#8217;t correctly imported into the project&#8217;s editing context.</p>
+</li>
+<li>
+<p>Remove owning Usage memberships from inherited memberships of Usages.
+Memberships of a Type are inherited via <em>Specialization</em> or <em>Conjugation</em>, not by composition.</p>
+</li>
+<li>
+<p>Fix an issue that allowed to drop an element from the explorer or the diagram on one of its children.
+Doing so deleted both the dropped element and its children from the diagram, and could delete the representation if one of the element was the root element of the representation.</p>
+</li>
+<li>
+<p>Fix an issue that made the direct edit not working on Constraint and Requirement elements.</p>
+</li>
+<li>
+<p>Fix an issue that made the <em>addExistingElements</em> not work properly for <em>start</em> and <em>done</em> actions inside actions and parts.</p>
+</li>
+<li>
+<p>Fix an issue on constraint expression name resolution that prevented from referencing elements in other containing namespaces than the direct owner of the constraint.
+It is now possible to reference an element in any of the containing namespaces of the constraint.</p>
+</li>
+<li>
+<p>Fix an issue that deleted the content of an action when it was dropped from the diagram to an action flow compartment.</p>
+</li>
+<li>
+<p>Fix an issue where it was impossible anymore to set the cardinality of an <code>Element</code> as graphical node through direct edit.</p>
+</li>
+<li>
+<p>Fix an issue where ConjugatedPortDefinition labels were rendered as <code>null</code> instead of their actual name.</p>
+</li>
+<li>
+<p>Fix an issue that made direct edit of names not working on nodes in the Interconnection View diagram.</p>
+</li>
+<li>
+<p>Fix an issue that revealed the <em>documentation</em> compartment when dropping an element on itself.
+The drop isn&#8217;t allowed anymore, and a warning message is displayed.</p>
+</li>
+<li>
+<p>Fix an issue that deleted feature typing specialization when nesting a PartUsage in a PartDefinition.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The tool <em>Add Part as nested Part</em> now correctly keeps the existing relationships of the PartUsage after its owner is changed.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Fix an issue that prevented the drop of the root element of a diagram on its background.</p>
+</li>
+<li>
+<p>Fix an issue that made all the elements references when imported by the SysMLParser.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improvements_2">Improvements</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add actions in <em>PartUsage</em> and <em>PartDefinition</em></p>
+</li>
+<li>
+<p>Add states in <em>PartUsage</em> and <em>PartDefinition</em></p>
+</li>
+<li>
+<p>Add <em>ExhibitStates</em> on General View diagram</p>
+</li>
+<li>
+<p>Allow the creation of a StateTransitionView diagram on a <em>PartUsage</em>/<em>PartDefinition</em></p>
+</li>
+<li>
+<p>Allow the creation of a StateTransitionView diagram on a <em>StateUsage</em>/<em>StateDefinition</em></p>
+</li>
+<li>
+<p>The <em>InterfaceUsage</em> created by the New Interface edge tool in the Interconnection View diagram are now created under closest containing <em>Definition</em>/<em>Package</em>.</p>
+</li>
+<li>
+<p>Simplify the implementation of the Interconnection View diagram and remove duplicated code</p>
+</li>
+<li>
+<p>Add action node in Interconnection View diagram</p>
+</li>
+<li>
+<p>Add documentation and action flow compartments for action nodes in the Interconnection View diagram</p>
+</li>
+<li>
+<p>Add label support for referential Usages</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Nodes that are references now correctly contain the "ref" keyword</p>
+</li>
+<li>
+<p>Elements in lists that are references now correctly contain the "ref" keyword</p>
+</li>
+<li>
+<p>AttributeUsage do not contain the "ref" keyword since they are always referential</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Add support for "ref" keyword in direct edit</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Prefixing the name of an Usage with "ref" sets it as a reference</p>
+</li>
+<li>
+<p>Not setting the "ref" prefix of an Usage sets it as a composite (non-reference)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Use empty diamond source style for nested reference usage edge</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Nested usages that are composite are connected by a filled diamond edge</p>
+</li>
+<li>
+<p>Nested usages that are references are connected by an empty diamond edge</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-reference-nested-usages.png" alt="Nested Usage edge for composite and reference Usage">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Modify the creation of an <em>ExhibitState</em> from a <em>StateUsage</em> or <em>StateDefinition</em>.
+There is now several tools for creating an <em>ExhibitState</em>.
+The first one called "New ExhibitState" creates a simple <em>ExhibitState</em>.
+The second one called "New ExhibitState with referenced State" shows a dialog allowing to select an existing <em>State</em> to associate to the new <em>ExhibitState</em>.</p>
+</li>
+<li>
+<p>Display qualified names in diagrams nodes' labels in case of standard libraries elements.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-diagram-standard-libraries-elements-qualified-names.png" alt="Qualified names for standard libraries elements">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Allow to select existing Action on Perform tool.</p>
+</li>
+<li>
+<p>Allow to set measurement units via direct edit.
+It is now possible to configure the measurement unit for the value of an element, e.g. <code>mass = 10 [kg]</code>.</p>
+</li>
+<li>
+<p>Allow to select existing <em>Type</em> on Subject tool.</p>
+</li>
+<li>
+<p>Display prefix keywords in label for Usage compartment element</p>
+</li>
+<li>
+<p>Display multiplicity suffix property keywords in label for Usage element</p>
+</li>
+<li>
+<p>Allow direct edit of prefix keywords and multiplicity suffix for Usage elements</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Prefixing or not the name of an Usage attribute with direction or "abstract" or "variation" or "readonly" or "derived" or "end" (this order counts) sets its matching property with the correct value</p>
+</li>
+<li>
+<p>Suffixing or not the name of an Usage attribute with "ordered" or "nonunique" (this order counts) sets its matching property with the correct value</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Add support for constraint expressions in the general view.
+Constraints with expressions such as <code>mass &gt;= 10 [kg]</code> are now correctly parsed and the corresponding semantic objects are created in the constraint.</p>
+</li>
+<li>
+<p>Add <em>actors</em> compartment in UseCase and Requirement in the General View diagram.</p>
+</li>
+<li>
+<p>Handle the representation of <em>actors</em> on the General View diagram.
+Actors are represented with a stick figure image, with their label displayed below the image.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-actor-representation.png" alt="Actor node on the General View diagram">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add support for edges between actors and their containing UseCase/Requirement in the General View diagram.
+The source of the edge (the UseCase or Requirement) can be reconnected to another UseCase or Requirement, but the target (Actor) cannot be reconnected.</p>
+</li>
+<li>
+<p>Allow to select existing <em>RequirementUsage</em> and <em>RequirementDefinition</em> on Objective tool.</p>
+</li>
+<li>
+<p>Add a check to make the build fail if a Cypress test contains <code>it.only</code>.</p>
+</li>
+<li>
+<p>Add support for public import in direct edit specializations.
+It is now possible to specialize an element with a qualified name containing namespaces importing the required features.
+For example, <code>myAttribute : ISQ::MassValue</code> now correctly types the attribute with <code>ISQBase::MassValue</code>.</p>
+</li>
+<li>
+<p>Improve the support of root <code>Namespaces</code> in SysON documents.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Root <code>Namespaces</code> are now implicitly created at the root of SysON documents.</p>
+</li>
+<li>
+<p>Creating an element at the root of a SysON document now creates it in its root <code>Namespace</code>.</p>
+</li>
+<li>
+<p>A new filter is available to hide root <code>Namespaces</code> and is enabled by default.</p>
+</li>
+<li>
+<p>It is no longer possible to create <code>Namespace</code> from the explorer.</p>
+</li>
+<li>
+<p>It is no longer possible to create a representation on a root <code>Namespace</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Improve the drop from the explorer to ensure that dropped nodes are always collapsed.</p>
+</li>
+<li>
+<p>Display prefix keywords in labels of <code>Definitions</code> and <code>Usages</code> graphical nodes.</p>
+</li>
+<li>
+<p>Ensure that dropping an element from the explorer on the diagram reveals the corresponding node if it is already on the diagram and hidden.
+A warning message is now displayed when attempting to drop an element which is already displayed and visible in the target container.</p>
+</li>
+<li>
+<p>Ignore keywords order during direct edit of prefixes labels of <code>Definitions</code> and <code>Usages</code> graphical elements.</p>
+</li>
+<li>
+<p>DirectEdit on graphical node or list item authorized only to modify keywords which can be displayed in each label.</p>
+</li>
+<li>
+<p>Allow to drop a Definition from the explorer on an Usage on a diagram or in a list compartment to type it.</p>
+</li>
+<li>
+<p>Allow to create an Action Flow View diagram on an ActionDefinition or ActionUsage in addition to Package.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_new_features_2">New features</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add "Show/Hide Icons in Diagrams" action in Diagram Panel, allowing to show/hide icons in the  diagrams (icons are not part of the SysMLv2 specification).</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-show-hide-icons-in-diagram.png" alt="Show/Hide Icons in Diagram">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add new tools allowing to create an <em>ExhibitState</em> at the root of General View and StateTransition View.
+The first one called "New ExhibitState" creates a simple <em>ExhibitState</em>.
+The second one called "New ExhibitState with referenced State" shows a dialog allowing to select an existing <em>State</em> to associate to the new <em>ExhibitState</em>.
+The selected <em>State</em> will be added to the diagram, not the new <em>ExhibitState</em>.</p>
+</li>
+<li>
+<p>Handle <em>FlowConnectionUsage</em> between <em>PortUsages</em> in Interconnection View.
+A new edge tool allows to create a flow between two ports.</p>
+</li>
+<li>
+<p>Add tools to set a <em>Feature</em> as composite or reference.</p>
+</li>
+<li>
+<p>Handle <em>ItemUsage</em> in Interconnection View and <em>FlowConnectionUsage</em> using items as their source/target.</p>
+</li>
+<li>
+<p>Add documentation property to Core tab of the Details view, allowing to add/edit a documentation for the selected element.
+This property widget will only handle the first documentation associated to the selected element.
+If no documentation is associated to the selected element, then a new value in this widget will also create a <em>Documentation</em> element and will associate it to the selected element.</p>
+</li>
+<li>
+<p>Add new "New objects from text" menu entry on elements in <em>Explorer</em> view, allowing to insert textual SysMLv2 as objects under the selected element.
+The menu entry shows a dialog with a textarea allowing to write or paste textual SysMLv2.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-insert-textual-sysmlv2-menu.png" alt="New objects from text menu">
+</div>
+</div>
+<div class="paragraph">
+<p>A click on the <em>Insert</em> button converts the textual SysMLv2 into model elements and add them under the selected element.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-insert-textual-sysmlv2-dialog.png" alt="New objects from text dialog">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Improve the drag and drop of container elements to move their content.</p>
+</li>
+<li>
+<p>Handle implicit specializations from standard libraries for Usages/Definitions.</p>
+</li>
+<li>
+<p>Add "Show/Hide Inherited Members in Diagrams" action in Diagram Panel, allowing to show/hide inherited members from users models in diagrams.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-show-hide-inherited-members-in-diagram.png" alt="Show/Hide Inherited Members in Diagram">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add "Show/Hide Inherited Members from Standard Libraries in Diagrams" action in Diagram Panel, allowing to show/hide inherited members from standard libraries in diagrams.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-show-hide-inherited-members-from-standard-libraries-in-diagram.png" alt="Show/Hide Inherited Members from Standard Libraries in Diagram">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2024_7_0">2024.7.0</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_key_highlights_3">Key highlights</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Expanded Diagram and Model Support</strong>: We&#8217;ve significantly expanded our support for various elements and tools.</p>
+</li>
+<li>
+<p><strong>Increased Stability and Reliability</strong>: We&#8217;ve addressed several key bugs and stability issues including fixing problems with diagrams and import capabilities.
+These improvements help maintain the integrity and accuracy of semantic data.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_breaking_changes_3">Breaking changes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add standard libraries and new models now have a root Namespace to conform with KerML/SysML specifications.</p>
+</li>
+<li>
+<p>Generalization of StateTransition descriptions.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename <code>AbstractDiagramDescriptionProvider</code> <code>nameGenerator</code> as <code>descriptionNameGenerator</code>. Impacted concrete implementations: <code>ActionFlowViewDiagramDescriptionProvider</code>, <code>GeneralViewDiagramDescriptionProvider</code>,  <code>InterconnectionViewForDefinitionDiagramDescriptionProvider</code>, <code>InterconnectionViewForUsageDiagramDescriptionProvider</code>, <code>StateTransitionViewDiagramDescriptionProvider</code>.</p>
+</li>
+<li>
+<p>Rename <code>syson-diagram-statetransition-view</code> <code>CompartmentNodeDescriptionProvider</code> as <code>StateTransitionActionsCompartmentNodeDescriptionProvider</code>.</p>
+</li>
+<li>
+<p><code>StateTransitionViewEdgeService</code> removed, services moved to <code>ViewEdgeService</code> and <code>ViewLabelService</code>.</p>
+</li>
+<li>
+<p><code>StateTransitionActionToolProvider</code> moved to <code>syson-diagram-common-view</code></p>
+</li>
+<li>
+<p><code>StateTransitionCompartmentNodeToolProvider</code> moved to <code>syson-diagram-common-view</code></p>
+</li>
+<li>
+<p><code>createState</code> and <code>createOwnedAction</code> services moved to <code>ViewToolService</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Switch to sirius-web domain driven design architecture.
+Please download your existing SysON projects before moving to this new version.
+A reset of the database is needed.</p>
+</li>
+<li>
+<p>Code refactoring:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Move <code>AbstractDiagramDescriptionProvider#createNodeToolFromDiagramBackground(NodeDescription, EClassifier)</code> to new <code>ToolDescriptionService</code></p>
+</li>
+<li>
+<p>Move <code>AbstractViewElementDescriptionProvider#addExistingElementsTool(boolean)</code> to new <code>ToolDescriptionService</code></p>
+</li>
+<li>
+<p>Remove <code>AbstractViewElementDescriptionProvider</code></p>
+</li>
+<li>
+<p>Move <code>createDropFromExplorerTool</code> to new <code>ToolDescriptionService</code></p>
+</li>
+<li>
+<p>Move and rename <code>AbstractDiagramDescriptionProvider.addElementsToolSection(IViewDiagramElementFinder)</code> to <code>ToolDescriptionService#addElementsDiagramToolSection()</code></p>
+</li>
+<li>
+<p>Move and rename <code>AbstractNodeDescriptionProvider#addExistingElementsTool()</code> to <code>ToolDescriptionService#addElementsNodeToolSection()</code></p>
+</li>
+<li>
+<p>Remove <code>AbstractDiagramDescriptionProvider</code></p>
+</li>
+<li>
+<p>Rename <code>StateTransitionActionToolProvider</code> to <code>StateTransitionActionCompartmentToolProvider</code></p>
+</li>
+<li>
+<p>Move <code>AbstractViewNodeToolSectionSwitch#buildCreateSection(NodeTool&#8230;&#8203;)</code> to <code>ToolDescriptionService#buildCreateSection(NodeTool&#8230;&#8203;)</code></p>
+</li>
+<li>
+<p>Merge <code>AbstractViewNodeToolSectionSwitch#addElementsToolSection()</code> and <code>AbstractViewNodeToolSectionSwitch#addExistingNestedElementsTool()</code> in <code>ToolDescriptionService#addElementsNodeToolSection(boolean)</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>ViewLabelService#getCompartmentItemUsageLabel</code> has been renamed to <code>ViewLabelService#getCompartmentItemLabel</code>.</p>
+</li>
+<li>
+<p><code>ViewLabelService#getUsageInitialDirectEditLabel</code> has been renamed to <code>ViewLabelService#getInitialDirectEditLabel</code>.</p>
+</li>
+<li>
+<p><code>AbstractViewNodeToolSectionSwitch#createNestedUsageNodeTool</code> has been deleted. Please use <code>ToolDescriptionService#createNodeTool</code> instead</p>
+</li>
+<li>
+<p><code>AbstractCompartmentNodeDescriptionProvider#getItemCreationToolProvider</code> has been renamed to <code>getItemCreationToolProviders</code> and now returns a list of <code>INodeToolProvider</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependencies_update_3">Dependencies update</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Switch to <a href="https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.7.0">Sirius Web v2024.7.0</a></p>
+</li>
+<li>
+<p>Switch to @ObeoNetwork/gantt-task-react 0.4.19</p>
+</li>
+<li>
+<p>Switch to EMF Json 2.3.12</p>
+</li>
+<li>
+<p>Switch to Spring Boot 3.2.5</p>
+</li>
+<li>
+<p>Switch to <code>@apollo/client</code> 3.10.4</p>
+</li>
+<li>
+<p>Switch to <code>graphql</code> 16.8.1</p>
+</li>
+<li>
+<p>Switch to <code>vite</code> 5.2.11, <code>vitest</code> 1.6.0, <code>@vitest/coverage-v8</code> 1.6.0 and <code>@vitejs/plugin-react</code> 4.3.0</p>
+</li>
+<li>
+<p>Switch to <code>typescript</code> 5.4.5</p>
+</li>
+<li>
+<p>Switch to <code>turbo</code> 1.13.3</p>
+</li>
+<li>
+<p>Switch to <code>jacoco</code> 0.8.12</p>
+</li>
+<li>
+<p>Switch to <code>maven-checkstyle-plugin</code> 3.3.1</p>
+</li>
+<li>
+<p>Switch to <code>subscriptions-transport-ws</code> 0.11.0</p>
+</li>
+<li>
+<p>Remove the dependency to <code>reflect-metadata</code></p>
+</li>
+<li>
+<p>Add test dependency to Cypress 12.11.0 (only required to execute integration tests)</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bug_fixes_3">Bug fixes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix an issue where the direct edit of single digit cardinalities were not taken into account.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-direct-edit-cardinality.png" alt="Direct edit cardinality">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix an issue where <em>Allocate</em> edges were not displayed in the Action Flow View diagram.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-afv-allocate.png" alt="Action Flow View - Allocate edges">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix an issue where the computation of <em>Succession</em> was sometimes wrong.</p>
+</li>
+<li>
+<p>Fix the owner <em>Membership</em> of dropped elements.</p>
+</li>
+<li>
+<p>Fix names used during textual export of <em>FeatureValue</em> elements.</p>
+</li>
+<li>
+<p>Fix names used during textual export of <em>MetadataDefinition</em> elements.</p>
+</li>
+<li>
+<p>Fix names used during textual export of <em>FeatureChainExpression</em> elements.</p>
+</li>
+<li>
+<p>Fix missing parts of <em>InvocationExpression</em> elements during textual export.</p>
+</li>
+<li>
+<p>Fix missing element names in the <em>Expression</em> element during textual export.</p>
+</li>
+<li>
+<p>Fix an issue where the simple quotes were not escaped when exporting as textual files.</p>
+</li>
+<li>
+<p>Fix an issue where models were exported with a global indentation instead of no indentation.</p>
+</li>
+<li>
+<p>Fix textual import of <em>Documentation</em> elements by removing /* */ around texts.</p>
+</li>
+<li>
+<p>Fix an issue where the <em>Adjust size</em> tool had no effect on Packages nodes.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-diagrams-package-adjust-size.png" alt="Package Adjust size tool">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fix an issue where the double quotes were set along with the string value in case of a direct edit of the value part.</p>
+</li>
+<li>
+<p>Allow the creation of sub-Packages in the model explorer</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improvements_3">Improvements</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add root <em>Namespace</em> to SysON models and libraries to conform to SysMLv2 specification.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-root-namespace.png" alt="Root Namespace">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Improve support for whitespace, quotes, and special characters in direct edit.</p>
+</li>
+<li>
+<p>Handle start and done actions in Action Flow View &amp; General View diagrams.</p>
+</li>
+<li>
+<p>Add <em>State</em> and <em>StateDefinition</em> in the General View diagram.</p>
+</li>
+<li>
+<p>Add Transition source and target to Core properties in the Details view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-details-view-transition.png" alt="Details View Transition">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>All <em>redefines</em> references of the SysMLv2 metamodel have been implemented.</p>
+</li>
+<li>
+<p>The textual import running process have been improved.
+By default, end users don&#8217;t have to copy <em>syside-cli.js</em> near the <em>syson-application</em> jar anymore.
+The embedded <em>syside-cli.js</em> is copied in a system temp folder and executed from there (with node).
+But, if you encounter execution rights problem, you can still copy <em>syside-cli.js</em> in a place where you have the appropriate rights and use the <em>org.eclipse.syson.syside.path</em> application option.</p>
+</li>
+<li>
+<p>Property "Typed by" is now always visible in the Details view for <em>Feature</em> elements, even if the <em>Feature</em> doesn&#8217;t have a type yet.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-details-view-typed-by-property.png" alt="Details View Typed by">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Rename creation tools for Start and Done actions (from Add Start/Done to New Start/Done)</p>
+</li>
+<li>
+<p>Reduce the default height of the Package node in diagrams</p>
+</li>
+<li>
+<p>Move Feature#direction in Core properties tab of the Details view</p>
+</li>
+<li>
+<p>Sort New Object menu entries</p>
+</li>
+<li>
+<p>Add Direct Edit tool in <em>Control</em> (<em>ForkNode</em>, <em>JoinNode</em>&#8230;&#8203;) nodes palettes</p>
+</li>
+<li>
+<p>Allow multiple occurrences of Start and Done actions in actions compartments.</p>
+</li>
+<li>
+<p>Rewrite textual import. It is still an experimental feature but should now be faster and accurate.</p>
+</li>
+<li>
+<p>Rewrite the <em>addExistingElement</em> tool.
+The tool now works correctly on packages, and doesn&#8217;t render sibling elements when their semantic element has been rendered by another node (e.g. in a compartment).</p>
+</li>
+<li>
+<p>The empty/null values for <em>Subsetting</em>/<em>Redefinition</em>/<em>Subclassification</em>/<em>FeatureTyping</em> are not displayed anymore in diagram node labels.</p>
+</li>
+<li>
+<p>Add tools for creating Ports with direction</p>
+</li>
+<li>
+<p>Add tools for creation Items with direction</p>
+</li>
+<li>
+<p>Change the default name of the transition element to <em>source_to_target</em></p>
+</li>
+<li>
+<p>Provide new icons for State, Conjugation, Port (in,in/out,out) and Item (in,in/out,out).</p>
+</li>
+<li>
+<p>Add tools to create Items and Parts in Port and PortDefinition</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-port-item-tool.png" alt="Create Items and Parts in Port and PortDefinition">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add tool to create Requirements in RequirementDefinition</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-reqdef-req-tool.png" alt="Create Requirements in RequirementDefinition">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add tools for creating <em>Items</em> on <em>ActionDefinition</em> in GeneralView and ActionFlowView.</p>
+</li>
+<li>
+<p>AcceptAction is now available inside an Action body</p>
+</li>
+<li>
+<p>Add private and protected visibility decorators on all elements</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-visibility-icons.png" alt="Visibility icons">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_new_features_3">New features</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add Cypress test infrastructure and execute the Cypress tests as part of pull request checks.</p>
+</li>
+<li>
+<p>Add integration test infrastructure</p>
+</li>
+<li>
+<p>Initial contribution of this documentation</p>
+</li>
+<li>
+<p>Handle the <em>JoinNode</em>, <em>MergeNode</em>, <em>ForkNode</em>, <em>DecisionNode</em> elements in actions compartments.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-afv-control-nodes.png" alt="Control nodes">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Handle the <em>ExhibitState</em> elements in diagrams</p>
+</li>
+<li>
+<p>Add new documentation compartment on all existing nodes in all diagrams.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-doc-compartment.png" alt="Doc compartment">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2024_5_0">2024.5.0</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_key_highlights_4">Key highlights</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Expanded Diagram and Model Support</strong>: We&#8217;ve significantly expanded our support for various views, including the addition of representations for use cases, occurrences, and allocations.
+This enhancement provides more comprehensive tools to visualize and manage SysML v2 models.
+This includes the addition of diagrams for use cases, occurrences, and allocations.</p>
+</li>
+<li>
+<p><strong>Improved User Experience</strong>: We&#8217;ve improved how elements are displayed, particularly in terms of ports and compartments.
+These enhancements ensure a clearer and more intuitive user interface.</p>
+</li>
+<li>
+<p><strong>Increased Stability and Reliability</strong>: We&#8217;ve addressed several key bugs and stability issues including fixing problems with diagrams and import capabilities.
+These improvements help maintain the integrity and accuracy of semantic data.</p>
+</li>
+<li>
+<p><strong>First Export Capability</strong>:  Our enhanced integration of SysIDE now supports better integration of the SysML v2 format.
+We&#8217;re now able to export projects in the standard textual format, facilitating easier data sharing and compatibility with other industry-standard tools.
+This promotes better data exchange and collaboration.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_breaking_changes_4">Breaking changes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>requirement-view</code> diagram has been introduced by error in the last release.
+This diagram isn&#8217;t defined in the SysMLv2 specification.
+It has been deleted in this release.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependencies_update_4">Dependencies update</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Switch to <a href="https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.5.0">Sirius Web v2024.5.0</a></p>
+</li>
+<li>
+<p>Switch to @ObeoNetwork/gantt-task-react 0.4.9</p>
+</li>
+<li>
+<p>Add dependency to org.apache.commons.commons-text 1.10.0</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_bug_fixes_4">Bug fixes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>The "Add existing elements (recursive)" has been modified to work on <code>PartUsage</code>.</p>
+</li>
+<li>
+<p>From Interconnection view diagram, attributes compartment has been added in children <code>PartUsage</code> nodes.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-attribut-compartmen-interconnection-view.png" alt="Attribute compartment from Interconnection view">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>No error is raised anymore when setting a valid new value (with primitive type) in the Details view.</p>
+</li>
+<li>
+<p>The body feature of a <code>Comment</code> remove now the "/*" and "*/" characters while importing a model from SysML textual format.</p>
+</li>
+<li>
+<p>All <code>Memberships</code> are now contained in their parent through <code>ownedRelatedElement</code> instead of <code>ownedRelationship</code> reference.</p>
+</li>
+<li>
+<p>Rename action from explorer is now renaming tree items as expected.</p>
+</li>
+<li>
+<p><code>EnumerationDefinition</code> is now created with a default name.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-enumeration-definition.png" alt="Enumeration definition node">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"Add existing element (recursive)" action has been updated to create child nodes for nested and owned usages at the root of the diagram.</p>
+</li>
+<li>
+<p>While importing some of the standard examples, there are no more exception mainly when some of examples are linked to non resolved elements.</p>
+</li>
+<li>
+<p>Hide capabilities have been restored and improved in the palette.
+It&#8217;s now possible to hide a node but also all its content (recursive) or simply direct content (Show valued content action).</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-hide-capabilities.png" alt="Restore and Improve hide capabilities">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Namespace.getImportedMemberships</code> method now prevents name collisions as stated in the specification (KerML 7.2.5.4 Imports).</p>
+</li>
+<li>
+<p>Non end Usages have been removed from AllocationDefinition ends compartment.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-ends-compartment-AllocationDefinition.png" alt="Ends compartment from AllocationDefinition">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Circular containment of nested parts including self containment are now forbidden.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-avoid-nestedPart-cycle.png" alt="Avoid nested part cycle">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Time performance has been improved when using <code>Become nested part</code> edge creation tool.</p>
+</li>
+<li>
+<p><code>state transition</code> and <code>actions</code> compartments are now available on <code>StateDefinition</code> and <code>StateUsage</code> node.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-state-transition-cpt.png" alt="State transition compartment">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Inherited features in compartments don&#8217;t display itself anymore.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-inherited-feature-cpt.png" alt="Inherited features in compartments">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Add existing element (recursive)</code> behavior has been modified to be more robust and avoid potential exception, mainly the display of nested domain-based edge on State transition view diagram.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improvements_4">Improvements</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Composite usages are now forbidden inside <code>PortDefinition</code>/<code>PortUsage</code>.</p>
+</li>
+<li>
+<p>Composite usages are now forbidden inside <code>AttributeDefinition</code>/<code>AttributeUsage</code>.</p>
+</li>
+<li>
+<p>Explicit usage of <code>node</code> to call SysIDE JavaScript file has been added.</p>
+</li>
+<li>
+<p><code>Membership</code>#visibility attribute has been added to <code>Core</code> properties in the Details view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-membership-visibility.png" alt="Membership visibility in Details view">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>PortUsage</code>#direction attribute has been added to <code>Core</code> properties in the Details view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-port-direction.png" alt="Port direction in Details view">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Definition</code>/<code>Usage</code> node are now collapsed by default in General view &amp; Action Flow View diagrams.</p>
+</li>
+<li>
+<p><code>Definition</code>/<code>Usage</code> nodes are expanded in all diagrams when a compartment item is created.</p>
+</li>
+<li>
+<p>All elements are now represented with their icon.</p>
+</li>
+<li>
+<p>Label is now positioned from inside to outside for <code>Ports</code> (Border Nodes).</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-port-label.png" alt="Port label">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>General view diagrams can now be created on any <code>Namespace</code> element.</p>
+</li>
+<li>
+<p>Instead of revealing all compartments of a node when user creates a child in one compartment, only the compartment parent of the child to create is revealed.
+Other compartments visibility doesn&#8217;t change.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-reveal-compartments.png" alt="Reveal compartment">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It&#8217;s now possible to create Interconnection view diagrams on any <code>Usage</code>/<code>Definition</code> element.</p>
+</li>
+<li>
+<p>A new compartment with a free-form layout inside the <code>ActionUsage</code> and <code>ActionDefinition</code> nodes is now available.
+Thanks to this compartment, user can separate <code>Action</code> nodes and connect them by using edges.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-action-in-compartment.png" alt="Action in compartment">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Remove button is now available on containment edges.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-delete-containment-edge.png" alt="Remove containment edge">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"Add existing elements" tools have been added on <code>State</code> and <code>StateDefinition</code> graphical elements.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-add-existing-element-on-state.png" alt="Add existing elements on state">
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_new_features_4">New features</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Compartments of <code>RequirementDefinition</code> and <code>RequirementUsage</code> have been redesigned to better fit the specification and examples.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-requirements.png" alt="Requirements">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>"Become nested" edge creation tools has been added for <code>AttributeUsage</code>, <code>ItemUsage</code>, <code>PartUsage</code> and <code>PortUsage</code> nodes.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-become-nested-attribute.png" alt="Become nested attribute edge tool">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Creation tools (mainly <code>AttributeUsage</code>, <code>PartUsage</code>, <code>PortUsage</code> <code>ItemUsage</code>) have been added in <code>ActionUsage</code>, <code>ConstraintUsage</code>, <code>InterfaceDefinition</code>, <code>RequirementDefinition</code> and <code>PortUsage</code>.</p>
+</li>
+<li>
+<p><code>UseCaseDefinition</code> and <code>UseCaseUsage</code> elements are now handled in General view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-handle-usecase.png" alt="Handle Usecase elements">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Composite edges between <code>Usage</code> and compartment content have been added to link nested <code>Actions</code> with its <code>Action</code>, nested <code>Constraints</code> with its <code>Constraints</code> and nested <code>Constraints</code> with its <code>Requirement</code>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-nested-composite-edge.png" alt="Nested composite edge">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>OccurrenceDefinition</code> and <code>OccurrenceUsage</code> elements are now handled in General view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-handle-occurence.png" alt="Handle occurrence elements">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Reconnection tools have been added for composition edges.</p>
+</li>
+<li>
+<p><code>AllocationDefinition</code> and <code>AllocationUsage</code> elements are now handled in General view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-handle-allocation.png" alt="Handle allocation elements">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A service that serializes a SysML element to its textual representation defined by the OMG Standard is now available and used in export capability.</p>
+</li>
+<li>
+<p><code>ConjugatedPortDefinition</code> is now handled in diagrams, <code>Explorer</code> and Details View.</p>
+</li>
+<li>
+<p>It&#8217;s now possible to create and manipulate Interface edges in Interconnection view diagram.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-interface-usage.png" alt="Interface Usage">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>State Transition view diagrams are now available on <code>Package</code> elements.</p>
+</li>
+<li>
+<p>Inherited features are now taken into account in features compartments.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-inherited-feature.png" alt="Inherited feature">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>AcceptAction</code> elements are now handled in General view diagram.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-accept-action.png" alt="Accept Action Usage">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>PortUsage</code> in Interconnection View are now represented with rotative image.
+Whatever its border support, the <code>PortUsage</code> node is always represented by an arrow pointing inside the parent node.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-rotative-image.png" alt="Rotative image">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It&#8217;s now possible to represent and handle <code>Succession</code> edges between <code>Actions</code> in General view diagram, from background diagram but also from action flow compartment.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-succession-edge.png" alt="Succession">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2024_3_0">2024.3.0</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_key_highlights_5">Key highlights</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Improved User Interactivity</strong>: New features such as direct editing allow users to change element details seamlessly, without data loss.
+This enhances the overall user experience by making it more intuitive and reducing the time required to make changes.</p>
+</li>
+<li>
+<p><strong>Expanded Library and Standard Support</strong>: All KerML and SysML v2 standard libraries are now included by default.
+This expands the tool&#8217;s capabilities and ensures compatibility with industry standards, making it easier to integrate and reference standard elements in projects.</p>
+</li>
+<li>
+<p><strong>Advanced Filtering</strong>: New filters have been added to the Explorer view, allowing users to hide specific elements and libraries, which simplifies the interface and focuses on relevant data.</p>
+</li>
+<li>
+<p><strong>Import Capabilities</strong>: Additionally, SysML v2 textual files can now be imported directly, enhancing data integration and compatibility with other tools.</p>
+</li>
+<li>
+<p><strong>Enhanced Diagram Development</strong>: We&#8217;ve restructured and streamlined our diagrams implementation, including the introduction of specific modules and tools for better cross-diagram functionality.
+This ensures that all graphical representations are more cohesive and easier to maintain.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_breaking_changes_5">Breaking changes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Node Descriptions Providers in General View has been modified with mainly rename of these providers to match with all <code>Definitions</code> and <code>Usages</code> Node Descriptions.</p>
+</li>
+<li>
+<p>After switch to <a href="https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.3.0">Sirius Web v2024.3.0</a>, <code>GeneralViewRegistryConfigurer</code> has been renamed to <code>GeneralViewDescriptionProvider</code>.
+<code>SysMLv2ObjectService</code> has been renamed into <code>SysMLv2LabelService</code> as it now implements <code>ILabelServiceDelegate</code> instead of <code>IObjectServiceDelegate</code>.</p>
+</li>
+<li>
+<p>Refactor diagrams code with creation of the diagram-common-view module to gather all cross diagram tools and there is now one name generator per diagram owning the diagram prefix used to prefix all descriptions for this diagram.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependencies_update_5">Dependencies update</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><code>commons-io 2.11.0</code> dependency has been explicitly added in <code>syson-application-configuration</code>.</p>
+</li>
+<li>
+<p>Switch to <a href="https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.3.0">Sirius Web v2024.3.0</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_improvements_5">Improvements</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>By activating direct Edit, User can now change the name/type/value/range of an element without any lost.
+The direct edit of labels in diagrams now handles partial edition.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-direct-edit.png" alt="Direct edit">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>When user wants to create new elements under a selected element, only provides candidates that will make sense are proposed among new objects candidates in Explorer view menu.
+The creation of elements with their containing <code>Membership</code> is now done in one click.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-new-object.png" alt="Create new Object">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A recursive version of the <code>Add existing elements</code> tool is now available to display all the cluster of objects contained in a selected node.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-add-existing-elements.png" alt="Add existing elements (recursive)">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Package</code> node headers' width has been improved to better handle longer labels.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-package-header.png" alt="Package header">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>It&#8217;s now impossible to have Package children overlapping the <code>Package</code> node body&#8217;s west border.</p>
+</li>
+<li>
+<p>All KerML and SysML standard libraries have been added in project definition.
+These libraries aren&#8217;t visible in the Explorer.
+Users can reference these libraries elements from the Details view or through the direct edit of elements in diagrams.</p>
+</li>
+<li>
+<p>Tools names have been renamed by adding spaces between type words and removing "Usage" from tool names.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-tools-name.png" alt="Tools name">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>User can now create elements inside list compartments via the containing node&#8217;s palette and the new element is created inside the correct compartment.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-compartment-creation.png" alt="Creation in compartment">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>General View diagram palette has been reorganized.
+New tool sections have been added to group semantically node tools by creation concept.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-gv-tool-bar.png" alt="Tool sections">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>In the Details view, standard libraries are now displayed in Reference Widget&#8217;s model browser dialog.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-libraries-in-ref-widget.png" alt="Standard libraries in Reference Widget">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>getAllReachable()</code> util service used to retrieve the elements of a given type has been improved to reduce its time execution.</p>
+</li>
+<li>
+<p>FeatureTyping Edge creation tool has been added to set the type of a Usage.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-feature-typing-tool.png" alt="Feature typing tool">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add kind property from RequirementConstraintMembership on Constraint core properties.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_new_features_5">New features</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>A new filter <code>Hide Memberships</code> has been added in Explorer view toolbar to hide membership elements in the Explorer view.</p>
+</li>
+<li>
+<p>A new filter <code>Hide KerML Standard Libraries</code> has been added in Explorer view toolbar to hide KerML/SysML libraries in the Explorer view.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-filters.png" alt="Explorer filters">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Action Flow View</code> diagrams are now available on Package elements.</p>
+</li>
+<li>
+<p><code>Requirement view</code> diagrams are now available on Package elements.</p>
+</li>
+<li>
+<p>It&#8217;s now possible to import SysMLv2 textual files into SysON, through the existing document upload modal.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2024_1_0">2024.1.0</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_key_highlights_6">Key highlights</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Expanded Library Access: We now support a wider range of standard libraries.</p>
+</li>
+<li>
+<p>User-Friendly Diagrams: We&#8217;ve introduced helpful background messages for empty diagrams, making it easier for users to understand and use the tool right from the start.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_breaking_changes_6">Breaking changes</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>All <code>findUsageByName</code> and <code>findDefinitionByName</code> method have been replaced by the new <code>findByNameAndType</code> in <code>org.eclipse.syson.services.UtilService</code>.</p>
+</li>
+<li>
+<p>Delete useless fork of <code>UploadDocumentEventHandler</code> and <code>DocumentController</code> from Sirius Web.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependencies_update_6">Dependencies update</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Switch to <a href="https://github.com/eclipse-sirius/sirius-web/releases/tag/v2024.1.1">Sirius Web v2024.1.1</a></p>
+</li>
+<li>
+<p>SysON SysMLv2 metamodel module now depends on <code>org.eclipse.emf.ecore.xmi</code> and <code>java-uuid-generator</code>.</p>
+</li>
+<li>
+<p>Switch to vite 4.5.2</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_new_features_6">New features</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Display help background message on empty general-view diagram.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/release-notes-help-background.png" alt="Diagram help background">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Add support for SysMLv2 standard libraries.
+Some KerML libraries have been added:
+<code>Base</code>, <code>BooleanFunctions</code>, <code>Clocks</code>, <code>CollectionFunctions</code>, <code>Collections</code>, <code>ComplexFunctions</code>, <code>ControlFunctions</code>, <code>DataFunctions</code>, <code>IntegerFunctions</code>, <code>KerML</code>, <code>Links</code>, <code>NaturalFunctions</code>, <code>NumericalFunctions</code>, <code>RationalFunctions</code>, <code>RealFunctions</code>, <code>ScalarFunctions</code>, <code>ScalarValues</code>, <code>SequenceFunctions</code>, <code>StringFunctions</code>, <code>TrigFunctions</code>, <code>VectorFunctions</code>, <code>VectorValues</code>.
+Some of these libraries might have partial content.</p>
+</li>
+<li>
+<p>Add support for automatic imports.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_2023_12_0">2023.12.0</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_key_highlights_7">Key highlights</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>🏆 Initial release!</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dependencies_update_7">Dependencies update</h3>
+<div class="paragraph">
+<p>SysON is based on:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/eclipse-sirius/sirius-web/releases/tag/v2023.12.4">Sirius Web v2023.12.4</a></p>
+</li>
+<li>
+<p><a href="https://github.com/Systems-Modeling/SysML-v2-Release/blob/2023-11/doc/2a-OMG_Systems_Modeling_Language.pdf">OMG SysML v2 Language Specification Preliminary Revision 2023-11</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_new_and_improved">New and improved</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Key features</strong>: Basic SysML v2 views (General view, Interconnection view), see the <a href="../key-features.html" class="xref page">Key features</a> section.</p>
+</li>
+<li>
+<p><strong>Installation Instructions</strong>: Detailed <a href="../../installation-guide/index.html" class="xref page">installation guideline</a> is provided in the project&#8217;s documentation, guiding users through the setup process.</p>
+</li>
+<li>
+<p><strong>Documentation</strong>: Comprehensive <a href="../../index.html" class="xref page">documentation</a> is readily available, covering installation and usage of SysON.</p>
+</li>
+<li>
+<p><strong>Contributing Guidelines</strong>: Guidelines are outlined for <a href="../contribute.html" class="xref page">contributing</a> to the project, including <a href="../../help.html" class="xref page">submitting bug reports and feature requests</a>.</p>
+</li>
+<li>
+<p><strong>Contact us</strong>: The project&#8217;s GitHub repository, issue tracker, and discussion serve as primary channels for communication and <a href="../../help.html" class="xref page">support</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We warmly invite users to explore SysON, experiment with its features, and provide valuable feedback to assist us in its continuous improvement.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_know_issues">Know issues</h3>
+<div class="paragraph">
+<p>You can find a list of the known issues (with workaround where relevant) being investigated by our engineering team on the <a href="https://github.com/eclipse-syson/syson/issues">SysON Issue Tracker</a>.
+A detailed list of all project changes is available at: <a href="https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc" class="bare">https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</article>
+<div class="spacer"></div>
+<aside class="toc sidebar" data-title="Contents" data-levels="3">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <div class="footer-container">
+      <p><a href="http://www.eclipse.org/"  target="_blank"><img width="200" src="https://www.eclipse.org/eclipse.org-common/themes/solstice/public/images/logo/eclipse-foundation-white-orange.svg" alt="Eclipse Foundation logo"></a></p>
+      <p id="copyright">Copyright © Eclipse Foundation, Inc.<br>All Rights Reserved.</p>
+  </div>
+
+  <div class="footer-container">
+      <h6>Eclipse Foundation</h6>
+      <ul>
+          <li><a href="http://www.eclipse.org/legal/privacy.php" target="_blank">Privacy Policy</a></li>
+          <li><a href="http://eclipse.org/" target="_blank">Eclipse</a></li>
+          <li><a href="http://www.eclipse.org/legal/termsofuse.php" target="_blank">Terms of Use</a></li>
+          <li><a href="http://www.eclipse.org/legal/copyright.php" target="_blank">Copyright Agent</a></li>
+          <li><a href="http://www.eclipse.org/legal/" target="_blank">Legal</a></li>
+          <li><a href="http://www.eclipse.org/org/foundation/contact.php" target="_blank"> Contact Us</a></li>
+      </ul>
+  </div>
+
+  <div class="footer-container">
+      <h6>Project Links</h6>
+      <ul>
+          <li><a href="https://projects.eclipse.org/projects/modeling.syson" target="_blank">About this project</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson" target="_blank">Source Code</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson/discussions" target="_blank">Discussion</a></li>           
+      </ul>
+  </div>
+</footer><script id="site-script" src="../../../../_/js/site.js" data-ui-root-path="../../../../_"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../_/js/vendor/swagger-ui.js"></script>
+<script src="../../../../_/js/vendor/lunr.js"></script>
+<script src="../../../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../../.." data-snippet-length="100" data-stylesheet="../../../../_/css/search.css"></script>
+<script async src="../../../../search-index.js"></script>
+  </body>
+</html>
