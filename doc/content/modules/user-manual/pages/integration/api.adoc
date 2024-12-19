@@ -21,6 +21,12 @@ The whole list of REST APIs is available on the OMG website, in the https://www.
 ====
 All REST APIs start by `/api/rest/`.
 ====
+[IMPORTANT]
+====
+With the current version of {product}, there is only one commit and branch by project.
+The commit ID and branch ID are the same than their project ID.
+The API allowing to create a commit do nothing.
+====
 
 Below is the list of REST APIs supported in {product}, and a description of key concepts used in REST APIs:
 
