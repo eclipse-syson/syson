@@ -4,7 +4,7 @@
 
 - *New palette in diagrams*: A new palette is available in SysON, all tools have been organized in sections.
 
-image::release-notes-new-palette.png[New palette tool]
+image::release-notes-new-palette.png[New palette tool, width=50%,height=50%]
 
 - *New explorer view*: Rework the structure of standard and user libraries in the Explorer view.
 The Explorer view now contains the following directories for libraries:
@@ -76,16 +76,23 @@ image::release-notes-libraries-directories.png[Libraries Directories in the expl
 
 - Handle imported package elements in diagrams.
 
-image::release-notes-namespace-import.png[Namespace import node]
+image::release-notes-namespace-import.png[Namespace import node, width=50%,height=50%]
 
 - A new palette is available in SysON, all tools have been organized in sections.
 
-image::release-notes-new-palette.png[New palette tool]
+image::release-notes-new-palette.png[New palette tool, width=50%,height=50%]
 
 This new palette contains a search bar, allowing to easily retrieve tools by their name.
 
-image::release-notes-new-palette-search-bar.png[New palette tool - search bar]
+image::release-notes-new-palette-search-bar.png[New palette tool - search bar, width=50%,height=50%]
 
 Some actions (delete, edit, ...) are also available as shortcuts.
 
-image::release-notes-new-palette-shortcuts.png[New palette tool - shortcuts]
+image::release-notes-new-palette-shortcuts.png[New palette tool - shortcuts, width=50%,height=50%]
+
+- New SysMLv2 Project Data Versioning-related REST APIs. The new endpoints are:
+* getCommits (`GET /api/rest/projects/{projectId}/commits`): Get all commits in the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
+* createCommit (`POST /api/rest/projects/{projectId}/commits`): Create a commit in the given project. There is only one commit per project in SysON for now, so the default implementation of this method does nothing.
+* getCommitById (`GET /api/rest/projects/{projectId}/commits/{commitId}`): Get the commit represented by its Id for the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
+* getCommitChange (`GET /api/rest/projects/{projectId}/commits/{commitId}/changes`): Get all changes of the commit represented by its Id for the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. The default implementation retrieves all elements containing in the project, without taking care of data created/updated/deleted since the creation of the project.
+* getCommitChangeById (`GET /api/rest/projects/{projectId}/commits/{commitId}/changes/{changeId}`): Get the changes associated to the given change Id for the commit represented by its Id for the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. The default implementation retrieves all changes containing in the project, without taking care of data created/updated/deleted since the creation of the project. The change Id parameter should be randomly generated but constant for an unlimited period. We decided to generate this Id from it's commit Id and element Id, to be able to compute it.

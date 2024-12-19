@@ -69,6 +69,6 @@ Here are the steps to follow:
 
 == Generate a new OpenAPI documentation of REST API
 
-. Build and Run the syson server locally (using docker compose as exemple) on `localhost:8080`.
-. Downloas the documentation at the url http://localhost:8080/v3/api-docs/rest-apis
-. The swagger-ui user interface is a : `http://localhost:8080/swagger-ui/index.html#/`
+. Build and run the syson server locally (using docker compose as example) on `localhost:8080`.
+. Download the documentation at the url http://localhost:8080/v3/api-docs/rest-apis
+. The swagger-ui user interface is `http://localhost:8080/swagger-ui/index.html#/`
