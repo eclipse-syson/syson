@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Project Editor :: SysON Docs</title>
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../../_/css/site.css">
+<link rel="icon" href="../../../../_/img/favicon.ico" type="image/x-icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <img class="icon" src="../../../../_/img/favicon.svg" alt="SysON"/>
+      </div>
+      <a class="navbar-item" href="../../../..">SysON Docs</a>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson">
+          <img class="icon" src="../../../../_/img/github-mark-white.svg" alt="GitHub"/>
+        </a>
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson/discussions">
+          <img class="icon" src="../../../../_/img/chat.svg" alt="Chat"/>
+        </a>
+
+        <div class="navbar-item search hide-for-print">
+          <div id="search-field" class="field">
+            <input id="search-input" type="text" placeholder="Search the docs">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="syson" data-version="v2024.11.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../../index.html">SysON</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../what-is.html">SysON Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../key-features.html">Key features in SysON</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../installation-guide/index.html">Getting started with SysON</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/requirements.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../installation-guide/how-tos/install.html">How to install SysON?</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/local_test.html">Basic Local Test Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/multi_user_test.html">Multi-User Local Test Setup</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/production_deploy.html">Production-Grade Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/install/ecosystem_only.html">Ecosystem-Only Deployment</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../installation-guide/how-tos/https.html">HTTPS</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/troubleshooting.html">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../installation-guide/migration-process.html">Migration process</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../user-interface-overview.html">User interface overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../tour.html">Tour the interface</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on/hands-on.html">How-Tos and Tutorials</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">How-Tos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/project-management.html">Project management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/model-management.html">Model management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/representation-operations.html">Representation operations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/user-interface-navigation.html">User Interface Navigation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/explorer.html">Project Explorer</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/how-tos/representations-view.html">Representations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on/tutorials/tutorials.html">Hands-On Starter Guides</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../hands-on/tutorials/batmobile.html">Create Your First Model</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="features.html">Features and capabilities</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../key-features.html">Key features in SysON</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sysmlv2-overview.html">Overview of SysML v2</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../concepts.html">Key concepts and terminology</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Diagramming Tools</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Projects Management</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="homepage.html">Projects Browser</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Editor</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="editor.html">Project Editor</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="details.html">Details</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="related-elements.html">Related Elements</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="representations-view.html">Representations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="validation.html">Validation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="keyboard-shortcuts.html">Keyboard shortcuts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="general-view.html">General view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="interconnection-view.html">Interconnection view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="action-flow-view.html">Action Flow View</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="state-transition-view.html">State transition view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="other-views.html">Other views</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="mbse-capability.html">MBSE capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="requirement-management.html">Requirements management and traceability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="parametric-modeling.html">Parametric modeling and constraints</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="simulation.html">Simulation and validation tools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cm.html">Version control and change management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Advanced</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="scaling-limits.html">Scaling limits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="security.html">Security and compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../integration.html">Integration with other tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/developer-guide.html">Developer guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/interoperability.html">Interoperability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/capella.html">Integrating with Capella</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../integration/api.html">APIs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../help.html">Support and resources</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../forum.html">Forum</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../contribute.html">Contribute</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../best-practices.html">SysON best practices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../support.html">Professional support</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../updates.html">Release notes and updates</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../release-notes/release-notes.html">Release notes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../cycle.html">SysON development cycle</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../faq/faq.html">Frequently Asked Questions</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../product-legal/index.html">Legal Information</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">SysON</span>
+    <span class="version">v2024.11.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../../../main/index.html">SysON</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../main/index.html">main</a>
+        </li>
+        <li class="version is-current">
+          <a href="../../index.html">v2024.11.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../v2024.9.0/index.html">v2024.9.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../v2024.7.0/index.html">v2024.7.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../index.html">SysON</a></li>
+    <li><a href="features.html">Features and capabilities</a></li>
+    <li>Diagramming Tools</li>
+    <li>Editor</li>
+    <li><a href="editor.html">Project Editor</a></li>
+  </ul>
+</nav>
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">v2024.11.0</button>
+  <div class="version-menu">
+    <a class="version" href="../../../main/user-manual/features/editor.html">main</a>
+    <a class="version is-current" href="editor.html">v2024.11.0</a>
+    <a class="version" href="../../../v2024.9.0/user-manual/features/editor.html">v2024.9.0</a>
+    <a class="version" href="../../../v2024.7.0/user-manual/features/editor.html">v2024.7.0</a>
+  </div>
+</div>
+
+<div class="edit-this-page"><a href="https://github.com/eclipse-syson/syson/blob/v2024.11.0/doc/content/modules/user-manual/pages/features/editor.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<div class="spacer"></div>
+<article class="doc">
+<h1 class="page">Project Editor</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="exampleblock">
+<div class="title">Before you Start</div>
+<div class="content">
+<div class="paragraph">
+<p>🔥 This feature is currently considered experimental.
+Try it out and give feedback by reporting bugs and suggesting new features.
+It&#8217;s not recommended for production use.</p>
+</div>
+<div class="paragraph">
+<p>👥 This feature is available to all users.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_whats_the_project_editor">1. What&#8217;s the Project Editor?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <strong>Project Editor</strong> page serves as the primary workspace for editing project content.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_find_your_way_around">2. Find your way around</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For those new to SysON, the initial experience with the application might feel a bit challenging.
+To help you navigate seamlessly and Kickstart collaboration with your team, we provide a guided tour for you to familiarize yourself with the platform.</p>
+</div>
+<div class="paragraph">
+<p>The Project Editor features four distinct regions: a <a href="#_toolbar">Toolbar</a>, a <a href="#_left_sidebar">Left sidebar</a>, a main <a href="#_editor">Editor</a>, and a <a href="#_right_sidebar">Right sidebar</a>.
+The layout has been simplified to ensure a clear understanding of the content within each section.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/editor.png" alt="Project Editor">
+</div>
+</div>
+<div class="sect2">
+<h3 id="_toolbar">2.1. Toolbar</h3>
+<div class="paragraph">
+<p>The toolbar houses a selection of actions categorized into three groups: <em>Homepage</em>, <em>Project Actions</em> (with the name of the project) and <em>Help</em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/editor-toolbar.png" alt="Project Editor Toolbar">
+</div>
+</div>
+<div class="sect3">
+<h4 id="_homepage">2.1.1. Homepage</h4>
+<div class="paragraph">
+<p>The <em>Homepage</em> action, visible on all pages of the application, provides a convenient way to navigate back to the Projects Browser, serving as the application&#8217;s main homepage.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="project-actions">2.1.2. Projects actions</h4>
+<div class="paragraph">
+<p>Access project-level actions such as <em><a href="../hands-on/how-tos/project-management.html#rename-project" class="xref page">rename</a></em>, <em><a href="../hands-on/how-tos/project-management.html#download-project" class="xref page">download</a></em>, access project <em><a href="../hands-on/how-tos/project-management.html#project-settings" class="xref page">settings</a></em>, <em><a href="../hands-on/how-tos/project-management.html#delete-project" class="xref page">delete</a></em>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/editor-projectActions.png" alt="Project Editor Project Actions">
+</div>
+</div>
+<div class="paragraph">
+<p>For further actions, see: <a href="../hands-on/hands-on.html" class="xref page">How-Tos and Tutorials</a>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_help">2.1.3. Help</h4>
+<div class="paragraph">
+<p>The <em>Help</em> action, accessible on every page of the application, offers a convenient pathway to navigate to the online help resources for SysON.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_left_sidebar">2.2. Left sidebar</h3>
+<div class="paragraph">
+<p>The left sidebar has different views such as the <a href="explorer.html" class="xref page">Project Explorer</a> and the <a href="validation.html" class="xref page">Validation</a> to assist you working on your project.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The left sidebar provides information related to the project.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="../_images/editor-left-sidebar-explorer.png" alt="Project Editor Left sidebar Explorer">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="../_images/editor-left-sidebar-explorer.png" alt="Project Editor Left sidebar Validation">
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><a href="../hands-on/how-tos/user-interface-navigation.html#switch-left-sidebar" class="xref page">Explore the left sidebar&#8230;&#8203;</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_editor">2.3. Editor</h3>
+<div class="paragraph">
+<p>The main area to edit your models and representations.
+You can open as many editors as you like.
+The Project Editor area has one or more editors.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../_images/editor-editor.png" alt="Project Editor Main Editor">
+</div>
+</div>
+<div class="paragraph">
+<p>Discover the diverse range of representation options available and find the most suitable ones for your specific modeling needs.</p>
+</div>
+<div class="paragraph">
+<p><a href="features.html#sysmlv2-views" class="xref page">Explore various types of representations&#8230;&#8203;</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_right_sidebar">2.4. Right sidebar</h3>
+<div class="paragraph">
+<p>The right sidebar contains different views such as the <a href="details.html" class="xref page">Details</a>, the <a href="representations-view.html" class="xref page">Representations</a> and the <a href="related-elements.html" class="xref page">Related Elements</a> views to &#8230;&#8203;</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The content of the right sidebar depends on the current selection.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="../_images/editor-right-sidebar-details.png" alt="Project Editor Right sidebar Details">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="../_images/editor-right-sidebar-representations.png" alt="Project Editor Right sidebar Representations">
+</div>
+</div></div></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock">
+<div class="content">
+<img src="../_images/editor-right-sidebar-related-elements.png" alt="Project Editor Right sidebar Related Elements">
+</div>
+</div></div></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p><a href="../hands-on/how-tos/user-interface-navigation.html#switch-right-sidebar" class="xref page">Explore the right sidebar&#8230;&#8203;</a></p>
+</div>
+</div>
+</div>
+</div>
+</article>
+<div class="spacer"></div>
+<aside class="toc sidebar" data-title="Contents" data-levels="3">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <div class="footer-container">
+      <p><a href="http://www.eclipse.org/"  target="_blank"><img width="200" src="https://www.eclipse.org/eclipse.org-common/themes/solstice/public/images/logo/eclipse-foundation-white-orange.svg" alt="Eclipse Foundation logo"></a></p>
+      <p id="copyright">Copyright © Eclipse Foundation, Inc.<br>All Rights Reserved.</p>
+  </div>
+
+  <div class="footer-container">
+      <h6>Eclipse Foundation</h6>
+      <ul>
+          <li><a href="http://www.eclipse.org/legal/privacy.php" target="_blank">Privacy Policy</a></li>
+          <li><a href="http://eclipse.org/" target="_blank">Eclipse</a></li>
+          <li><a href="http://www.eclipse.org/legal/termsofuse.php" target="_blank">Terms of Use</a></li>
+          <li><a href="http://www.eclipse.org/legal/copyright.php" target="_blank">Copyright Agent</a></li>
+          <li><a href="http://www.eclipse.org/legal/" target="_blank">Legal</a></li>
+          <li><a href="http://www.eclipse.org/org/foundation/contact.php" target="_blank"> Contact Us</a></li>
+      </ul>
+  </div>
+
+  <div class="footer-container">
+      <h6>Project Links</h6>
+      <ul>
+          <li><a href="https://projects.eclipse.org/projects/modeling.syson" target="_blank">About this project</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson" target="_blank">Source Code</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson/discussions" target="_blank">Discussion</a></li>           
+      </ul>
+  </div>
+</footer><script id="site-script" src="../../../../_/js/site.js" data-ui-root-path="../../../../_"></script>
+<script async src="../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../_/js/vendor/swagger-ui.js"></script>
+<script src="../../../../_/js/vendor/lunr.js"></script>
+<script src="../../../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../../.." data-snippet-length="100" data-stylesheet="../../../../_/css/search.css"></script>
+<script async src="../../../../search-index.js"></script>
+  </body>
+</html>

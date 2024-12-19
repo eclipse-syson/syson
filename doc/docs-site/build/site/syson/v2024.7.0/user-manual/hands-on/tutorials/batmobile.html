@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Create Your First Model :: SysON Docs</title>
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../../../../../_/css/site.css">
+<link rel="icon" href="../../../../../_/img/favicon.ico" type="image/x-icon">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <div class="navbar-item">
+        <img class="icon" src="../../../../../_/img/favicon.svg" alt="SysON"/>
+      </div>
+      <a class="navbar-item" href="../../../../..">SysON Docs</a>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Toggle main menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson">
+          <img class="icon" src="../../../../../_/img/github-mark-white.svg" alt="GitHub"/>
+        </a>
+        <a class="navbar-item" target="_blank" href="https://github.com/eclipse-syson/syson/discussions">
+          <img class="icon" src="../../../../../_/img/chat.svg" alt="Chat"/>
+        </a>
+
+        <div class="navbar-item search hide-for-print">
+          <div id="search-field" class="field">
+            <input id="search-input" type="text" placeholder="Search the docs">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="syson" data-version="v2024.7.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../../../index.html">SysON</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../index.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../what-is.html">SysON Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../key-features.html">Key features in SysON</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../../installation-guide/index.html">Getting started with SysON</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/requirements.html">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/how-tos/install.html">How to install SysON?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/how-tos/https.html">Configuring HTTPS for local server deployment of SysON for testing purposes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/troubleshooting.html">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../installation-guide/migration-process.html">Migration process</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../user-interface-overview.html">User interface overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../tour.html">Tour the interface</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on.html">How-Tos and Tutorials</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">How-Tos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../how-tos/project-management.html">Project management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../how-tos/model-management.html">Model management</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../how-tos/representation-operations.html">Representation operations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../how-tos/user-interface-navigation.html">User Interface Navigation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../how-tos/explorer.html">Project Explorer</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../how-tos/representations-view.html">Representations</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="tutorials.html">Hands-On Starter Guides</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="4">
+    <a class="nav-link" href="batmobile.html">Create Your First Model</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../features/features.html">Features and capabilities</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../key-features.html">Key features in SysON</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/sysmlv2-overview.html">Overview of SysML v2</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../concepts.html">Key concepts and terminology</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Diagramming Tools</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Projects Management</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/homepage.html">Projects Browser</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Editor</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/editor.html">Project Editor</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/details.html">Details</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/related-elements.html">Related Elements</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/representations-view.html">Representations</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/validation.html">Validation</a>
+  </li>
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="../../features/keyboard-shortcuts.html">Keyboard shortcuts</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/general-view.html">General view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/interconnection-view.html">Interconnection view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/action-flow-view.html">Action Flow View</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/state-transition-view.html">State transition view</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/other-views.html">Other views</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/mbse-capability.html">MBSE capabilities</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/requirement-management.html">Requirements management and traceability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/parametric-modeling.html">Parametric modeling and constraints</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/simulation.html">Simulation and validation tools</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../features/cm.html">Version control and change management</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Advanced</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/scaling-limits.html">Scaling limits</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="../../features/security.html">Security and compliance</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../integration.html">Integration with other tools</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../integration/developer-guide.html">Developer guide</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../../developer-guide/extend.html">Customization and extensions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../integration/interoperability.html">Interoperability</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../integration/capella.html">Integrating with Capella</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../integration/api.html">APIs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../help.html">Support and resources</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../forum.html">Forum</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../contribute.html">Contribute</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../best-practices.html">SysON best practices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../support.html">Professional support</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../../updates.html">Release notes and updates</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../release-notes/release-notes.html">Release notes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../../cycle.html">SysON development cycle</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../faq/faq.html">Frequently Asked Questions</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../../../product-legal/index.html">Legal Information</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">SysON</span>
+    <span class="version">v2024.7.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../../../../main/index.html">SysON</a></div>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../../../../main/index.html">main</a>
+        </li>
+        <li class="version">
+          <a href="../../../../v2024.11.0/index.html">v2024.11.0</a>
+        </li>
+        <li class="version">
+          <a href="../../../../v2024.9.0/index.html">v2024.9.0</a>
+        </li>
+        <li class="version is-current">
+          <a href="../../../index.html">v2024.7.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../../../../v2024.11.0/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../../../index.html">SysON</a></li>
+    <li><a href="../../user-interface-overview.html">User interface overview</a></li>
+    <li><a href="../hands-on.html">How-Tos and Tutorials</a></li>
+    <li><a href="tutorials.html">Hands-On Starter Guides</a></li>
+    <li><a href="batmobile.html">Create Your First Model</a></li>
+  </ul>
+</nav>
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">v2024.7.0</button>
+  <div class="version-menu">
+    <a class="version" href="../../../../main/user-manual/hands-on/tutorials/batmobile.html">main</a>
+    <a class="version" href="../../../../v2024.11.0/user-manual/hands-on/tutorials/batmobile.html">v2024.11.0</a>
+    <a class="version" href="../../../../v2024.9.0/user-manual/hands-on/tutorials/batmobile.html">v2024.9.0</a>
+    <a class="version is-current" href="batmobile.html">v2024.7.0</a>
+  </div>
+</div>
+
+<div class="edit-this-page"><a href="https://github.com/eclipse-syson/syson/blob/v2024.7.0/doc/content/modules/user-manual/pages/hands-on/tutorials/batmobile.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<div class="spacer"></div>
+<article class="doc">
+<h1 class="page">Create Your First Model</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This tutorial provides a beginner-friendly guide on creating your first SysML v2 model with SysON, adapted from the example in the <a href="https://github.com/MBSE4U/dont-panic-batmobile">Don&#8217;t Panic - The Absolute Beginner&#8217;s Guide to SysML v2</a> book by Tim Weilkiens and Christian Muggeo.
+The focus is on representing the Batmobile system, the iconic car of Batman.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_1_create_a_project">1. Step 1: Create a Project</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the Projects Browser and <a href="../how-tos/project-management.html#create-template-project" class="xref page">create a new SysML v2 project</a> by clicking on the SysML v2 card.</p>
+</li>
+<li>
+<p>The Project Editor automatically opens, creating a new project named <code>SysML v2</code> with a package <code>Package1</code>.
+A default <code>General view</code> representation associated with the package is opened in the main editor area.</p>
+</li>
+<li>
+<p>From the project toolbar, <a href="../how-tos/project-management.html#rename-project" class="xref page">rename the project</a> to <code>Batmobile</code>.</p>
+</li>
+<li>
+<p>From the Project Explorer, <a href="../how-tos/model-management.html#rename-model" class="xref page">rename the model</a> to <code>Batmobile</code> and the <a href="../how-tos/model-management.html#rename-element" class="xref page">package</a> to <code>User Model</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_2_create_elements_from_a_diagram">2. Step 2: Create Elements from a Diagram</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_using_the_contextual_toolbar">2.1. Using the Contextual Toolbar</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the main editor area, click on the diagram background to open the Contextual Toolbar.</p>
+</li>
+<li>
+<p>Click on the <code>New Part Definition</code> tool to create a new part definition.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The new elements created from the Contextual Toolbar are visible either from the Project Explorer or the Project Editor main central area.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Rename the part definition to <code>Vehicle</code> using the <a href="../how-tos/model-management.html#representation" class="xref page">direct-edit action</a> or the <a href="../how-tos/model-management.html#update-element#details" class="xref page">Details view</a>.</p>
+</li>
+<li>
+<p>Select the <code>Vehicle</code> part definition and click on the <code>New Item</code> tool to create an item usage.</p>
+</li>
+<li>
+<p>Rename the item usage to <code>driver</code>.</p>
+</li>
+<li>
+<p>Select the <code>Vehicle</code> part definition and click on the <code>New Part</code> tool to create a new part usage.</p>
+</li>
+<li>
+<p>Rename the part usage to <code>engine</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_setting_multiplicity">2.2. Setting Multiplicity</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the <code>Vehicle</code> part definition and click on the <code>New Part</code> tool in the Contextual Toolbar to create a new part usage</p>
+</li>
+<li>
+<p>Rename the part usage to <code>wheels</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_using_drag_and_drop">2.3. Using Drag and Drop</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the <code>wheels</code> part usage, type "F2" and rename it <code>wheels[4] : Wheel</code>.</p>
+</li>
+<li>
+<p>A new <code>Wheel</code> part definition is created in the model.</p>
+</li>
+<li>
+<p>Drag and drop the <code>Wheel</code> element from the Project Explorer onto the diagram background.</p>
+</li>
+<li>
+<p>The <code>Wheel</code> part definition appears on the diagram within the <code>Typed By</code> relationship between the <code>Wheel</code> and the <code>wheels</code> part usage.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_3_edit_the_model_elements">3. Step 3: Edit the Model Elements</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_adding_attributes">3.1. Adding Attributes</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Select the <code>Vehicle</code> part definition and click on the <code>New Attribute</code> tool in the Contextual Toolbar.</p>
+</li>
+<li>
+<p>A new attribute usage is created.</p>
+</li>
+<li>
+<p>Select the attribute and use the direct-edit tool to rename it to <code>actualSpeed : SpeedUnit</code></p>
+</li>
+<li>
+<p>A new import element appears in model which refers to the library <code>ISQSpaceTime</code> that contains <code>SpeedUnit</code></p>
+</li>
+<li>
+<p>The attribute usage <code>actualSpeed</code> is typed with the new attribute definition.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_specialization">3.2. Creating Specialization</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click on the diagram background and click on the <code>New Part Definition</code> tool.</p>
+</li>
+<li>
+<p>A new part definition is created.</p>
+</li>
+<li>
+<p>Rename it <code>Batmobile:&gt; Vehicle</code>.</p>
+</li>
+<li>
+<p>A new <code>specialization</code> relationship is created between the <code>Batmobile</code> part definition and the <code>Vehicle</code> part definition.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_subsetting">3.3. Creating Subsetting</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click on the diagram background and select the <code>New Part</code> tool.</p>
+</li>
+<li>
+<p>A new part usage is created.</p>
+</li>
+<li>
+<p>Rename it to <code>frontRightWheel :&gt; wheels</code>.</p>
+</li>
+<li>
+<p>A new <code>subsetting</code> relationship appears between the two parts usages <code>frontRightWheel</code> and <code>wheels</code>.</p>
+</li>
+<li>
+<p>Redo same actions by creating new part <code>frontLeftWheel :&gt; wheels</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_redefinition">3.4. Creating Redefinition</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click on the diagram background and click on the <code>New Part</code> tool.</p>
+</li>
+<li>
+<p>A new part usage is created.</p>
+</li>
+<li>
+<p>Rename it to <code>bulletProofWheels[4]:&gt;&gt;wheels</code>.</p>
+</li>
+<li>
+<p>A new <code>redefines</code> relationship appears between the <code>bulletProofWheels</code> part definition and the`wheels` part usage.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_4_create_relationship">4. Step 4: Create Relationship</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_creating_specialization_relationship">4.1. Creating specialization relationship</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click on the diagram background and click on the <code>New Part Definition</code> tool.</p>
+</li>
+<li>
+<p>A new part definition is created.</p>
+</li>
+<li>
+<p>Rename it <code>BatmobileNG</code></p>
+</li>
+<li>
+<p>Click on node <code>BatmobileNG</code>.</p>
+</li>
+<li>
+<p>Click on arrow border and hold down until <code>Batmobile:&gt; Vehicle</code> node.</p>
+</li>
+<li>
+<p>Select the <code>Subclassification</code> tool.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_creating_containment_relationships">4.2. Creating containment relationships</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click on node <code>frontRightWheel :&gt; wheels</code>.</p>
+</li>
+<li>
+<p>Click on arrow border and hold down until <code>Batmobile:&gt; Vehicle</code> node.</p>
+</li>
+<li>
+<p>Select the <code>Become nested part</code> tool.</p>
+</li>
+<li>
+<p>A new containment edge is created and element <code>frontRightWheel</code> is moved under <code>Batmobile</code> in model</p>
+</li>
+<li>
+<p>Redo same actions with <code>frontLeftWheel :&gt; wheels</code>.</p>
+</li>
+<li>
+<p>Click on node <code>bulletProofWheels[4] :&gt;&gt; wheels</code>.</p>
+</li>
+<li>
+<p>Click on arrow border and hold down until <code>BatmobileNG:&gt; Batmobile</code> node.</p>
+</li>
+<li>
+<p>Select the <code>Become nested part</code> tool.</p>
+</li>
+<li>
+<p>A new containment edge is created and element <code>bulletProofWheels</code> is moved under <code>BatmobileNG</code> in model</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>To explore a larger Batmobile example, use the Batmobile template available on the Projects Browser.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../../_images/tutorial-result.png" alt="Tutorial result">
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<div class="spacer"></div>
+<aside class="toc sidebar" data-title="Contents" data-levels="3">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <div class="footer-container">
+      <p><a href="http://www.eclipse.org/"  target="_blank"><img width="200" src="https://www.eclipse.org/eclipse.org-common/themes/solstice/public/images/logo/eclipse-foundation-white-orange.svg" alt="Eclipse Foundation logo"></a></p>
+      <p id="copyright">Copyright © Eclipse Foundation, Inc.<br>All Rights Reserved.</p>
+  </div>
+
+  <div class="footer-container">
+      <h6>Eclipse Foundation</h6>
+      <ul>
+          <li><a href="http://www.eclipse.org/legal/privacy.php" target="_blank">Privacy Policy</a></li>
+          <li><a href="http://eclipse.org/" target="_blank">Eclipse</a></li>
+          <li><a href="http://www.eclipse.org/legal/termsofuse.php" target="_blank">Terms of Use</a></li>
+          <li><a href="http://www.eclipse.org/legal/copyright.php" target="_blank">Copyright Agent</a></li>
+          <li><a href="http://www.eclipse.org/legal/" target="_blank">Legal</a></li>
+          <li><a href="http://www.eclipse.org/org/foundation/contact.php" target="_blank"> Contact Us</a></li>
+      </ul>
+  </div>
+
+  <div class="footer-container">
+      <h6>Project Links</h6>
+      <ul>
+          <li><a href="https://projects.eclipse.org/projects/modeling.syson" target="_blank">About this project</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson" target="_blank">Source Code</a></li>
+          <li><a href="https://github.com/eclipse-syson/syson/discussions" target="_blank">Discussion</a></li>           
+      </ul>
+  </div>
+</footer><script id="site-script" src="../../../../../_/js/site.js" data-ui-root-path="../../../../../_"></script>
+<script async src="../../../../../_/js/vendor/highlight.js"></script>
+<script async src="../../../../../_/js/vendor/swagger-ui.js"></script>
+<script src="../../../../../_/js/vendor/lunr.js"></script>
+<script src="../../../../../_/js/vendor/lunr-languages.js"></script>
+<script src="../../../../../_/js/search-ui.js" id="search-ui-script" data-site-root-path="../../../../.." data-snippet-length="100" data-stylesheet="../../../../../_/css/search.css"></script>
+<script async src="../../../../../search-index.js"></script>
+  </body>
+</html>

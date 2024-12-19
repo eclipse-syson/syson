@@ -41,6 +41,7 @@ import org.eclipse.syson.diagram.common.view.nodes.MergedReferencesCompartmentIt
 import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
@@ -69,6 +70,8 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
 
     public static final String DESCRIPTION_NAME = "State Transition View";
 
+    // @formatter:off
+
     public static  final List<EClass> DEFINITIONS = List.of(
             SysmlPackage.eINSTANCE.getStateDefinition()
             );
@@ -90,14 +93,18 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
             Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),    List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
             );
 
-    public static final ToolSectionDescription STATE_TRANSITION_TOOL_SECTIONS = new ToolSectionDescription("State Transition",
+    public static final ToolSectionDescription STRUCTURE_TOOL_SECTION = new ToolSectionDescription(ToolConstants.STRUCTURE,
+            List.of(SysmlPackage.eINSTANCE.getPackage()));
+
+    public static final ToolSectionDescription BEHAVIOR_TOOL_SECTION = new ToolSectionDescription(ToolConstants.BEHAVIOR,
             List.of(SysmlPackage.eINSTANCE.getExhibitStateUsage(),
                     SysmlPackage.eINSTANCE.getStateDefinition(),
-                    SysmlPackage.eINSTANCE.getStateUsage(),
-                    SysmlPackage.eINSTANCE.getPackage()
+                    SysmlPackage.eINSTANCE.getStateUsage()
             ));
 
-    public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(STATE_TRANSITION_TOOL_SECTIONS);
+    public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(STRUCTURE_TOOL_SECTION, BEHAVIOR_TOOL_SECTION);
+
+    // @formatter:on
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
@@ -253,7 +260,7 @@ public class StateTransitionViewDiagramDescriptionProvider implements IRepresent
 
     private List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
-        if (STATE_TRANSITION_TOOL_SECTIONS.name().equals(sectionName)) {
+        if (BEHAVIOR_TOOL_SECTION.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
             NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.getDescriptionNameGenerator()).create(cache));

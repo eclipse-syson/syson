@@ -54,6 +54,7 @@ import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionPro
 import org.eclipse.syson.diagram.common.view.nodes.StateTransitionCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentItemNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StatesCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ExhibitStateWithReferenceNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.NamespaceImportNodeToolProvider;
@@ -105,6 +106,8 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 public class GeneralViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
     public static final String DESCRIPTION_NAME = "General View";
+
+    // @formatter:off
 
     public static  final List<EClass> DEFINITIONS = List.of(
             SysmlPackage.eINSTANCE.getActionDefinition(),
@@ -187,14 +190,14 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),           List.of(SysmlPackage.eINSTANCE.getStateUsage_EntryAction(), SysmlPackage.eINSTANCE.getStateUsage_DoAction(), SysmlPackage.eINSTANCE.getStateUsage_ExitAction()))
             );
 
-    public static final ToolSectionDescription REQUIREMENTS_TOOL_SECTIONS = new ToolSectionDescription("Requirements", List.of(
+    public static final ToolSectionDescription REQUIREMENTS_TOOL_SECTIONS = new ToolSectionDescription(ToolConstants.REQUIREMENTS, List.of(
             SysmlPackage.eINSTANCE.getRequirementUsage(),
             SysmlPackage.eINSTANCE.getRequirementDefinition(),
             SysmlPackage.eINSTANCE.getConstraintUsage(),
             SysmlPackage.eINSTANCE.getConstraintDefinition()
             ));
 
-    public static final ToolSectionDescription STRUCTURE_TOOL_SECTIONS = new ToolSectionDescription("Structure", List.of(
+    public static final ToolSectionDescription STRUCTURE_TOOL_SECTIONS = new ToolSectionDescription(ToolConstants.STRUCTURE, List.of(
             SysmlPackage.eINSTANCE.getAttributeUsage(),
             SysmlPackage.eINSTANCE.getAttributeDefinition(),
             SysmlPackage.eINSTANCE.getEnumerationDefinition(),
@@ -209,7 +212,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getPortDefinition()
             ));
 
-    public static final ToolSectionDescription BEHAVIOUR_TOOL_SECTIONS = new ToolSectionDescription("Behaviour", List.of(
+    public static final ToolSectionDescription BEHAVIOR_TOOL_SECTIONS = new ToolSectionDescription(ToolConstants.BEHAVIOR, List.of(
             SysmlPackage.eINSTANCE.getAllocationUsage(),
             SysmlPackage.eINSTANCE.getAllocationDefinition(),
             SysmlPackage.eINSTANCE.getAcceptActionUsage(),
@@ -223,21 +226,21 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getStateDefinition()
             ));
 
-    public static final ToolSectionDescription ANALYSIS_TOOL_SECTIONS = new ToolSectionDescription("Analysis", List.of(
+    public static final ToolSectionDescription ANALYSIS_TOOL_SECTIONS = new ToolSectionDescription(ToolConstants.ANALYSIS, List.of(
             SysmlPackage.eINSTANCE.getCaseUsage(),
             SysmlPackage.eINSTANCE.getCaseDefinition(),
             SysmlPackage.eINSTANCE.getUseCaseUsage(),
             SysmlPackage.eINSTANCE.getUseCaseDefinition()
             ));
 
-    public static final ToolSectionDescription EXTENSION_TOOL_SECTIONS = new ToolSectionDescription("Extension", List.of(
+    public static final ToolSectionDescription EXTENSION_TOOL_SECTIONS = new ToolSectionDescription(ToolConstants.EXTENSION, List.of(
             SysmlPackage.eINSTANCE.getMetadataDefinition()
             ));
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
             REQUIREMENTS_TOOL_SECTIONS,
             STRUCTURE_TOOL_SECTIONS,
-            BEHAVIOUR_TOOL_SECTIONS,
+            BEHAVIOR_TOOL_SECTIONS,
             ANALYSIS_TOOL_SECTIONS,
             EXTENSION_TOOL_SECTIONS);
 
@@ -247,6 +250,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     public static final List<EClass> DIRECTIONAL_ELEMENTS = List.of(
             SysmlPackage.eINSTANCE.getItemUsage(),
             SysmlPackage.eINSTANCE.getPortUsage());
+
+    // @formatter:on
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
@@ -684,7 +689,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
     private List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
-        if (BEHAVIOUR_TOOL_SECTIONS.name().equals(sectionName)) {
+        if (BEHAVIOR_TOOL_SECTIONS.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.getDescriptionNameGenerator()).create(cache));
         } else if (STRUCTURE_TOOL_SECTIONS.name().equals(sectionName)) {
             NodeDescription nodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);

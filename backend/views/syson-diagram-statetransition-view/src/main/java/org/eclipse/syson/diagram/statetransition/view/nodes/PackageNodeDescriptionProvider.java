@@ -78,17 +78,17 @@ public class PackageNodeDescriptionProvider extends AbstractPackageNodeDescripti
 
     @Override
     protected List<ToolSectionDescription> getToolSections() {
-        List<EClass> stateTransitionElementsSV = StateTransitionViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS.elements();
+        List<EClass> stateTransitionElementsSV = StateTransitionViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION.elements();
         List<EClass> stateTransitionElementsPackage = new ArrayList<>(stateTransitionElementsSV);
         stateTransitionElementsPackage.add(SysmlPackage.eINSTANCE.getComment());
         return List.of(
-                new ToolSectionDescription(StateTransitionViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS.name(), Collections.unmodifiableList(stateTransitionElementsPackage)));
+                new ToolSectionDescription(StateTransitionViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION.name(), Collections.unmodifiableList(stateTransitionElementsPackage)));
     }
 
     @Override
     protected List<NodeTool> addCustomTools(IViewDiagramElementFinder cache, String sectionName) {
         var nodeTools = new ArrayList<NodeTool>();
-        if (StateTransitionViewDiagramDescriptionProvider.STATE_TRANSITION_TOOL_SECTIONS.name().equals(sectionName)) {
+        if (StateTransitionViewDiagramDescriptionProvider.BEHAVIOR_TOOL_SECTION.name().equals(sectionName)) {
             nodeTools.add(new ExhibitStateWithReferenceNodeToolProvider(this.descriptionNameGenerator).create(cache));
             NodeDescription nodeDescription = cache.getNodeDescription(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getNamespaceImport())).orElse(null);
             nodeTools.add(new NamespaceImportNodeToolProvider(nodeDescription, this.descriptionNameGenerator).create(cache));

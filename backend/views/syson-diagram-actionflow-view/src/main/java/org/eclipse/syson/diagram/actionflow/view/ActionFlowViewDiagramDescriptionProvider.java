@@ -56,6 +56,7 @@ import org.eclipse.syson.diagram.common.view.nodes.ForkActionNodeDescriptionProv
 import org.eclipse.syson.diagram.common.view.nodes.JoinActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.MergeActionNodeDescriptionProvider;
 import org.eclipse.syson.diagram.common.view.nodes.StartActionNodeDescriptionProvider;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.ToolSectionDescription;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -71,6 +72,8 @@ import org.eclipse.syson.util.SysMLMetamodelHelper;
 public class ActionFlowViewDiagramDescriptionProvider implements IRepresentationDescriptionProvider {
 
     public static final String DESCRIPTION_NAME = "Action Flow View";
+
+    // @formatter:off
 
     public static final List<EClass> DEFINITIONS = List.of(
             SysmlPackage.eINSTANCE.getActionDefinition()
@@ -94,7 +97,7 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
             );
 
     public static final List<ToolSectionDescription> TOOL_SECTIONS = List.of(
-            new ToolSectionDescription("Action Flow", List.of(
+            new ToolSectionDescription(ToolConstants.BEHAVIOR, List.of(
                     SysmlPackage.eINSTANCE.getAcceptActionUsage(),
                     SysmlPackage.eINSTANCE.getActionUsage(),
                     SysmlPackage.eINSTANCE.getActionDefinition(),
@@ -106,6 +109,8 @@ public class ActionFlowViewDiagramDescriptionProvider implements IRepresentation
      */
     public static final List<EClass> DIRECTIONAL_ELEMENTS = List.of(
                     SysmlPackage.eINSTANCE.getItemUsage());
+
+    // @formatter:on
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 

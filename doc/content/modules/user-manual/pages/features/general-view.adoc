@@ -160,7 +160,7 @@ image::gv-containment-edge.png[{gv} Containment Edge]
 
 * Succession.
 
-image::gv-succession-edge.png[{gv} Succession Edge]
+image::gv-succession-edge.png[{gv} Succession Edge, width=60%,height=60%]
 
 include::user-manual:partial$manage-elements-diagram.adoc[]
 
