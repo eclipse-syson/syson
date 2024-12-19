@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,6 +112,16 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
 
     private SemanticCheckerService semanticCheckerService;
 
+    private static Stream<Arguments> concernDefinitionChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), ATTRIBUTES_COMPARTMENT, SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), null),
+                Arguments.of(SysmlPackage.eINSTANCE.getDocumentation(), DOC_COMPARTMENT, SysmlPackage.eINSTANCE.getElement_Documentation(), null),
+                Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), "requirements", SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), null),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "assume constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), "New Assumed constraint"),
+                Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), "require constraints", SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint(), "New Required constraint"))
+                .map(TestNameGenerator::namedArguments);
+    }
+
     private static Stream<Arguments> constraintUsageSiblingNodeParameters() {
         return Stream.of(
                 Arguments.of(SysmlPackage.eINSTANCE.getAttributeUsage(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), 3),
@@ -187,6 +197,28 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
             this.verifier.thenCancel()
                     .verify(Duration.ofSeconds(10));
         }
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("concernDefinitionChildNodeParameters")
+    public void createConcernDefinitionChildNodes(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolNameParameter) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getConcernDefinition();
+        String parentLabel = "ConcernDefinition";
+
+        final String creationToolName;
+        if (creationToolNameParameter != null) {
+            creationToolName = creationToolNameParameter;
+        } else {
+            creationToolName = this.descriptionNameGenerator.getCreationToolName(childEClass);
+        }
+
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName);
+        this.diagramCheckerService.checkDiagram(
+                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
+                this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }
 
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
