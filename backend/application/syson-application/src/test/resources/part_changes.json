@@ -1,0 +1,155 @@
+{
+    "identity": {
+        "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e",
+        "@type": "DataIdentity"
+    },
+    "payload": {
+        "@id": "a4f51a38-bfeb-4e0d-a870-55f8fe90405e",
+        "@type": "PartUsage",
+        "aliasIds": "[]",
+        "declaredName": "p",
+        "declaredShortName": null,
+        "elementId": "d99634bb-d4e0-4afa-bbe4-ee553005937d",
+        "isImpliedIncluded": "false",
+        "isLibraryElement": "false",
+        "name": "p",
+        "qualifiedName": "Package1::p",
+        "shortName": null,
+        "isAbstract": "false",
+        "isConjugated": "false",
+        "isSufficient": "false",
+        "direction": null,
+        "isComposite": "true",
+        "isDerived": "false",
+        "isEnd": "false",
+        "isNonunique": "false",
+        "isOrdered": "false",
+        "isPortion": "false",
+        "isReadOnly": "false",
+        "isUnique": "true",
+        "isReference": "false",
+        "isVariation": "false",
+        "isIndividual": "false",
+        "portionKind": null,
+        "eAnnotations": [],
+        "documentation": [],
+        "ownedAnnotation": [],
+        "ownedElement": [],
+        "ownedRelationship": [
+            {
+                "@id": "1ba5c6e8-1c6b-44f6-8a05-f82f2c7a2538"
+            }
+        ],
+        "owner": {
+            "@id": "127c38e7-0e15-4232-aa02-76b342e3324a"
+        },
+        "owningMembership": {
+            "@id": "883deb19-59a8-4c58-8887-978bf11fffcd"
+        },
+        "owningNamespace": {
+            "@id": "127c38e7-0e15-4232-aa02-76b342e3324a"
+        },
+        "owningRelationship": {
+            "@id": "883deb19-59a8-4c58-8887-978bf11fffcd"
+        },
+        "textualRepresentation": [],
+        "importedMembership": [],
+        "member": [],
+        "membership": [],
+        "ownedImport": [],
+        "ownedMember": [],
+        "ownedMembership": [],
+        "differencingType": [],
+        "directedFeature": [],
+        "endFeature": [],
+        "feature": [],
+        "featureMembership": [],
+        "inheritedFeature": [],
+        "inheritedMembership": [],
+        "input": [],
+        "intersectingType": [],
+        "multiplicity": null,
+        "output": [],
+        "ownedConjugator": null,
+        "ownedDifferencing": [],
+        "ownedDisjoining": [],
+        "ownedEndFeature": [],
+        "ownedFeature": [],
+        "ownedFeatureMembership": [],
+        "ownedIntersecting": [],
+        "ownedSpecialization": [
+            {
+                "@id": "1ba5c6e8-1c6b-44f6-8a05-f82f2c7a2538"
+            }
+        ],
+        "ownedUnioning": [],
+        "unioningType": [],
+        "chainingFeature": [],
+        "endOwningType": null,
+        "featureTarget": null,
+        "featuringType": [],
+        "ownedFeatureChaining": [],
+        "ownedFeatureInverting": [],
+        "ownedRedefinition": [],
+        "ownedReferenceSubsetting": null,
+        "ownedSubsetting": [],
+        "ownedTypeFeaturing": [],
+        "ownedTyping": [
+            {
+                "@id": "1ba5c6e8-1c6b-44f6-8a05-f82f2c7a2538"
+            }
+        ],
+        "owningFeatureMembership": null,
+        "owningType": null,
+        "type": [
+            {
+                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+            }
+        ],
+        "valuation": null,
+        "definition": [],
+        "directedUsage": [],
+        "nestedAction": [],
+        "nestedAllocation": [],
+        "nestedAnalysisCase": [],
+        "nestedAttribute": [],
+        "nestedCalculation": [],
+        "nestedCase": [],
+        "nestedConcern": [],
+        "nestedConnection": [],
+        "nestedConstraint": [],
+        "nestedEnumeration": [],
+        "nestedFlow": [],
+        "nestedInterface": [],
+        "nestedItem": [],
+        "nestedMetadata": [],
+        "nestedOccurrence": [],
+        "nestedPart": [],
+        "nestedPort": [],
+        "nestedReference": [],
+        "nestedRendering": [],
+        "nestedRequirement": [],
+        "nestedState": [],
+        "nestedTransition": [],
+        "nestedUsage": [],
+        "nestedUseCase": [],
+        "nestedVerificationCase": [],
+        "nestedView": [],
+        "nestedViewpoint": [],
+        "owningDefinition": null,
+        "owningUsage": null,
+        "usage": [],
+        "variant": [],
+        "variantMembership": [],
+        "individualDefinition": null,
+        "occurrenceDefinition": [],
+        "itemDefinition": [],
+        "partDefinition": [
+            {
+                "@id": "0a70220d-707e-4a88-84dc-6aa43aa97269"
+            }
+        ]
+    },
+    "@id": "9101be49-227d-3c8b-acc6-f122441edba1",
+    "@type": "DataVersion"
+}
