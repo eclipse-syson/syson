@@ -22,28 +22,7 @@ The whole list of REST APIs is available on the OMG website, in the https://www.
 All REST APIs start by `/api/rest/`.
 ====
 
-Here are some key concepts to know before manipulating the REST APIs in {product}: 
-
-- `Record`: a `Record` represents any data that is consumed (input) or produced (output) by the Systems Modeling API and Services. A `Record` is an abstract concept from which other concrete concepts inherit. A `Record` has the following attributes:
-** `id` is the UUID assigned to the `Record`
-** `resourceIdentifier` is an URI for the record (*This attribute is not supported in {product}*)
-** `alias` is a collection of other identifiers for this record, especially if the record was created or represented in other software applications and systems (*This attribute is not supported in {product}*)
-** `humanIdentifier` is a human-friendly unique identifier for this record (*This attribute is not supported in {product}*)
-** `description` is a statement that provides details about the record (*This attribute is not supported in {product}*)
-
-- `Project`: a `Project` is a specialized `Record` that represents a container for other `Records` and an entry point for version management and data navigation. The `Project` record has the following attributes:
-** `name` is the name of the project.
-** `identifiedData` is a derived attribute that is the set of Data Identity records corresponding to the Data contained in the project (*This attribute is not supported in {product}*)
-** `commit` is the set of all commits in the `Project` (*This attribute is not supported in {product}*)
-** `commitReference` is the set of all commit references in the `Project` (*This attribute is not supported in {product}*)
-** `branch` is the set of all the branches in the `Project` and a subset of commitReference (*This attribute is not supported in {product}*)
-** `defaultBranch` is the default branch in the `Project` and a subset of branch (*This attribute is not supported in {product}*)
-** `tag` is the set of all the tags in the `Project` and a subset of commitReference (*This attribute is not supported in {product}*)
-** `usage` is the set of `Project` Usage records representing all other `Projects` being used by the given `Project` (`Project` Usage.usedProject) (*This attribute is not supported in {product}*)
-** `queries` is the set of Query records owned by the project. Each Query record represents a saved query for the given project. See Query for details. (*This attribute is not supported in {product}*)
-** `created` is the creation timestamp for the project, in ISO8601DateTIme format (*This attribute is not supported in {product}*)
-
-Below is the list of REST APIs supported in {product}:
+Below is the list of REST APIs supported in {product}, and a description of key concepts used in REST APIs:
 
 ++++
 <link rel="stylesheet" href="/_/css/vendor/swagger-ui.css">
