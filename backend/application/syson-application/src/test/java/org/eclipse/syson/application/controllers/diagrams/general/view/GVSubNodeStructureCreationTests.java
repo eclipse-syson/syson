@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -189,6 +189,7 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), ownedMember, 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), ownedMember, 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), ownedMember, 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), ownedMember, 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), ownedMember, 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), ownedMember, 6),

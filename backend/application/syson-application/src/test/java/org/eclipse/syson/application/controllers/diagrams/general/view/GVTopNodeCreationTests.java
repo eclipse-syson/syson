@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -162,6 +162,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                 Arguments.of(SysmlPackage.eINSTANCE.getActionUsage(), 4),
                 Arguments.of(SysmlPackage.eINSTANCE.getActionDefinition(), 3),
                 Arguments.of(SysmlPackage.eINSTANCE.getAssignmentActionUsage(), 0),
+                Arguments.of(SysmlPackage.eINSTANCE.getConcernDefinition(), 7),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintUsage(), 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getConstraintDefinition(), 2),
                 Arguments.of(SysmlPackage.eINSTANCE.getRequirementUsage(), 6),
