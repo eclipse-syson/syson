@@ -60,9 +60,9 @@ The explorer now contains the following directories for libraries:
 === New features
 
 - https://github.com/eclipse-syson/syson/issues/802[#802] [diagrams] Handle imported package elements in diagrams.
-- https://github.com/eclipse-syson/syson/issues/908[#908] [diagrams] Organize palette tools.
+- https://github.com/eclipse-syson/syson/issues/908[#908] [diagrams] Organize all palette tools.
 A new palette is available in SysON, all tools have been organized in sections.
-This new palette contains a search bar, allowing to easily retrieve tools by their name.
+This new palette is draggable, and contains a search bar, allowing to easily retrieve tools by their name.
 
 == v2024.11.0
 

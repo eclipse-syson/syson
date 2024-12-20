@@ -21,7 +21,6 @@ import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeToolProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
-import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -33,6 +32,7 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 import org.eclipse.syson.diagram.common.view.services.description.ReferencingPerformActionUsageNodeDescriptionService;
+import org.eclipse.syson.diagram.common.view.services.description.ToolConstants;
 import org.eclipse.syson.diagram.common.view.tools.AcceptActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.ActionFlowCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.DecisionActionNodeToolProvider;
@@ -107,28 +107,29 @@ public class ActionFlowCompartmentNodeDescriptionProvider extends AbstractCompar
         var palette = this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
 
-        return palette.toolSections(this.createCreationToolSection(cache),
-                this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
-                .build();
-    }
-
-    private NodeToolSection createCreationToolSection(IViewDiagramElementFinder cache) {
-        NodeToolSection nodeToolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
-        nodeToolSection.setName("Create Section");
+        var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
 
         this.getItemCreationToolProviders().forEach(toolProvider -> {
-            nodeToolSection.getNodeTools().add(toolProvider.create(cache));
+            var nodeTool = toolProvider.create(cache);
+            var eType = this.eReference.getEType();
+            var toolSectionName = this.toolDescriptionService.getToolSectionName(eType);
+            this.toolDescriptionService.addNodeTool(toolSections, toolSectionName, nodeTool);
         });
-        nodeToolSection.getNodeTools().add(new StartActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new AcceptActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new DecisionActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new ForkActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new JoinActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new MergeActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new DoneActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new ReferencingPerformActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        nodeToolSection.getNodeTools().add(new PerformActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
-        return nodeToolSection;
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new StartActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new AcceptActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new DecisionActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ForkActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new JoinActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new MergeActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new DoneActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new ReferencingPerformActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+        this.toolDescriptionService.addNodeTool(toolSections, ToolConstants.BEHAVIOR, new PerformActionNodeToolProvider(this.eClass, this.getDescriptionNameGenerator()).create(cache));
+
+        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
+
+        return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))
+                .build();
     }
 
     @Override

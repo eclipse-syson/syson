@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
-import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
@@ -57,30 +56,28 @@ public class StateTransitionActionsCompartmentNodeDescriptionProvider extends Ab
 
         return acceptedNodeTypes;
     }
-    
+
     @Override
     protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
         var palette = this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
 
-        return palette.toolSections(this.createActionCreationToolSection(cache),
-                this.defaultToolsFactory.createDefaultHideRevealNodeToolSection())
+        var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
+        List<EReference> refList = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(this.eClass);
+        if (refList != null) {
+            refList.forEach(eRef -> {
+                var eType = eRef.getEType();
+                var toolSectionName = this.toolDescriptionService.getToolSectionName(eType);
+                this.toolDescriptionService.addNodeTool(toolSections, toolSectionName, new StateTransitionActionCompartmentToolProvider(eRef).create(cache));
+            });
+        }
+        toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
+
+        return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))
                 .build();
     }
 
-    private NodeToolSection createActionCreationToolSection(IViewDiagramElementFinder cache) {
-        NodeToolSection nodeToolSection = DiagramFactory.eINSTANCE.createNodeToolSection();
-        nodeToolSection.setName("Create Actions Section");
-        
-        List<EReference> refList = StateTransitionViewDiagramDescriptionProvider.COMPARTMENTS_WITH_MERGED_LIST_ITEMS.get(eClass);
-        if (refList != null) {
-            refList.stream().map(eReference -> new StateTransitionActionCompartmentToolProvider(eReference).create(cache)).forEach(nodeTool -> {
-                nodeToolSection.getNodeTools().add(nodeTool);
-            });
-        }
-        return nodeToolSection;
-    }
-    
     @Override
     protected String isHiddenByDefaultExpression() {
         return AQLUtils.getSelfServiceCallExpression("isHiddenByDefault", "Sequence{'entryAction', 'doAction', 'exitAction'}");
