@@ -88,6 +88,6 @@ image::release-notes-new-palette-shortcuts.png[New palette tool - shortcuts, wid
 
 - [releng] Switch to Sirius Web 2024.11.9
 
-== Techinical details
+== Technical details
 
 * For technical details on this {product} release please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

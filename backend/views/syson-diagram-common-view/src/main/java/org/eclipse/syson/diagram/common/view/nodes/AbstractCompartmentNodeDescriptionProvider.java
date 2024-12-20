@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
+import org.eclipse.syson.diagram.common.view.services.description.ToolDescriptionService;
 import org.eclipse.syson.diagram.common.view.tools.CompartmentNodeToolProvider;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLConstants;
@@ -57,13 +58,16 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
 
     protected final EReference eReference;
 
-    private final IDescriptionNameGenerator descriptionNameGenerator;
+    protected final IDescriptionNameGenerator descriptionNameGenerator;
+
+    protected final ToolDescriptionService toolDescriptionService;
 
     public AbstractCompartmentNodeDescriptionProvider(EClass eClass, EReference eReference, IColorProvider colorProvider, IDescriptionNameGenerator descriptionNameGenerator) {
         super(colorProvider);
         this.eClass = Objects.requireNonNull(eClass);
         this.eReference = Objects.requireNonNull(eReference);
         this.descriptionNameGenerator = Objects.requireNonNull(descriptionNameGenerator);
+        this.toolDescriptionService = new ToolDescriptionService(descriptionNameGenerator);
     }
 
     @Override
@@ -113,7 +117,9 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
      */
     protected List<INodeToolProvider> getItemCreationToolProviders() {
         List<INodeToolProvider> creationToolProviders = new ArrayList<>();
-        creationToolProviders.add(new CompartmentNodeToolProvider(this.eReference, this.getDescriptionNameGenerator()));
+        if (!Objects.equals(this.eReference, SysmlPackage.eINSTANCE.getElement_Documentation())) {
+            creationToolProviders.add(new CompartmentNodeToolProvider(this.eReference, this.getDescriptionNameGenerator()));
+        }
         return creationToolProviders;
     }
 
@@ -179,29 +185,36 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
     }
 
     protected NodePalette createCompartmentPalette(IViewDiagramElementFinder cache) {
-
         var palette = this.diagramBuilderHelper.newNodePalette()
                 .dropNodeTool(this.createCompartmentDropFromDiagramTool(cache));
 
-        List<NodeToolSection> toolSections = new ArrayList<>();
+        var toolSections = this.toolDescriptionService.createDefaultNodeToolSections();
 
-        List<INodeToolProvider> itemCreationToolProviders = this.getItemCreationToolProviders();
-        if (!itemCreationToolProviders.isEmpty()) {
-            List<NodeTool> nodeTools = new ArrayList<>();
-            itemCreationToolProviders.forEach(toolProvider -> {
-                nodeTools.add(toolProvider.create(cache));
-            });
-            var nodeToolSection = this.diagramBuilderHelper.newNodeToolSection()
-                    .name("Create Section")
-                    .nodeTools(nodeTools.toArray(NodeTool[]::new))
-                    .build();
-            toolSections.add(nodeToolSection);
+        var itemCreationToolProviders = this.getItemCreationToolProviders();
+        for (var iNodeToolProvider : itemCreationToolProviders) {
+            var nodeTool = iNodeToolProvider.create(cache);
+            var eType = this.eReference.getEType();
+            var toolSectionName = this.toolDescriptionService.getToolSectionName(eType);
+            this.toolDescriptionService.addNodeTool(toolSections, toolSectionName, nodeTool);
         }
 
         toolSections.add(this.defaultToolsFactory.createDefaultHideRevealNodeToolSection());
+        this.toolDescriptionService.removeEmptyNodeToolSections(toolSections);
+
+        var toolsWithoutSection = new ArrayList<NodeTool>();
+        toolsWithoutSection.addAll(this.getToolsWithoutSection(cache));
 
         return palette.toolSections(toolSections.toArray(NodeToolSection[]::new))
+                .nodeTools(toolsWithoutSection.toArray(NodeTool[]::new))
                 .build();
+    }
+
+    protected List<NodeTool> getToolsWithoutSection(IViewDiagramElementFinder cache) {
+        if (Objects.equals(this.eReference, SysmlPackage.eINSTANCE.getElement_Documentation())) {
+            var documentationNodeTool = new CompartmentNodeToolProvider(SysmlPackage.eINSTANCE.getElement_Documentation(), this.descriptionNameGenerator).create(cache);
+            return List.of(documentationNodeTool);
+        }
+        return List.of();
     }
 
     protected DropNodeTool createCompartmentDropFromDiagramTool(IViewDiagramElementFinder cache) {
@@ -219,7 +232,7 @@ public abstract class AbstractCompartmentNodeDescriptionProvider extends Abstrac
         return this.descriptionNameGenerator;
     }
 
-    private String getCompartmentLabel() {
+    protected String getCompartmentLabel() {
         String customLabel = this.getCustomCompartmentLabel();
         if (customLabel != null) {
             return customLabel;
