@@ -56,6 +56,8 @@ The explorer now contains the following directories for libraries:
 - https://github.com/eclipse-syson/syson/issues/888[#888] [explorer] Remove 'New objects from text' contextual menu entry for libraries.
 - https://github.com/eclipse-syson/syson/issues/901[#901] [import] Allow to import `.kerml` textual files.
 - https://github.com/eclipse-syson/syson/issues/889[#889] [explorer] Remove 'New object' and 'New representation' contextual menu entries for libraries.
+- https://github.com/eclipse-syson/syson/issues/919[#919] [explorer] Remove Sirius Web default explorer.
+The SysON Explorer is now the default explorer for SysON, and the Sirius Web explorer cannot be used anymore.
 
 === New features
 

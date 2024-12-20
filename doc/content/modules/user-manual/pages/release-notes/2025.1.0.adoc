@@ -82,6 +82,8 @@ image::release-notes-new-palette-shortcuts.png[New palette tool - shortcuts, wid
 - Remove 'New objects from text' contextual menu entry for libraries.
 - Allow to import `.kerml` textual files.
 - Remove 'New object' and 'New representation' contextual menu entries for libraries.
+- Remove Sirius Web default explorer.
+The SysON Explorer is now the default explorer for SysON, and the Sirius Web explorer cannot be used anymore.
 
 
 == Dependency update

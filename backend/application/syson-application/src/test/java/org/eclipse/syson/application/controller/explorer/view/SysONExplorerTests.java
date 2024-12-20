@@ -33,7 +33,6 @@ import org.eclipse.sirius.components.core.api.labels.StyledStringFragment;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
-import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.tests.graphql.ExplorerDescriptionsQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
@@ -108,9 +107,8 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 "editingContextId", SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
-        assertThat(explorerIds).hasSize(2);
+        assertThat(explorerIds).hasSize(1);
         assertThat(explorerIds).contains(this.treeDescriptionId);
-        assertThat(explorerIds).contains(ExplorerDescriptionProvider.DESCRIPTION_ID);
     }
 
     @DisplayName("Given an empty SysML Project, when the explorer is displayed, then the libraries are visible and the root namespace and memberships are not visible")
