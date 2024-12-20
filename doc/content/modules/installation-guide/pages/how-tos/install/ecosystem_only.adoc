@@ -27,6 +27,16 @@ docker run -p 5433:5432 --name syson-postgres -e POSTGRES_USER=dbuser -e POSTGRE
 ----
 ====
 
+[TIP]
+====
+Docker images are build to run on x86_64 architecture.
+If you need to run {product} docker image on a Mac Silicon architecture, please execute the following command in your terminal before executing the docker image:
+[source, bash]
+----
+export DOCKER_DEFAULT_PLATFORM=linux/amd64 
+----
+====
+
 [NOTE]
 ====
 This may take a while the first time you run this as Docker will first pull the PostgreSQL image.

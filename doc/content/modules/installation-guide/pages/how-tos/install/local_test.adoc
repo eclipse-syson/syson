@@ -35,6 +35,16 @@ docker compose up
 
 This method deploys {product} (matching the version tagged in this documentation) along with a PostgreSQL database, all within a Docker container.
 
+[TIP]
+====
+Docker images are build to run on x86_64 architecture.
+If you need to run {product} docker image on a Mac Silicon architecture, please execute the following command in your terminal before executing the docker image:
+[source, bash]
+----
+export DOCKER_DEFAULT_PLATFORM=linux/amd64 
+----
+====
+
 [INFO]
 ====
 To deploy a specific version vYYYY.MM.0, edit the _docker-compose.yml_ file and replace the tagged version with your desired version. For example, update the following line in the _docker-compose.yml_:
