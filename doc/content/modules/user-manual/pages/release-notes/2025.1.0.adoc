@@ -6,7 +6,7 @@
 
 * draggable it.
 * "Search Tool" section allowing you to quickly search and found element/tool you want to use
-* quick acces to the latest element/tool used.
+* quick access to the latest element/tool used.
 * all elements/tools are organized in sections by their name.
 
 
@@ -86,7 +86,7 @@ image::release-notes-new-palette-shortcuts.png[New palette tool - shortcuts, wid
 
 == Dependency update
 
-- [releng] Switch to Sirius Web 2024.11.9
+- Switch to Sirius Web 2024.11.10
 
 == Technical details
 
