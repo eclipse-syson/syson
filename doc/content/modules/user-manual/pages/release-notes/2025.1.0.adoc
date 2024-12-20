@@ -2,9 +2,26 @@
 
 == Key highlights
 
-- *New palette in diagrams*: A new palette is available in SysON, all tools have been organized in sections.
+- *New palette in diagrams*: The complete redesign of this contextual palette brings:
+
+* draggable it.
+* "Search Tool" section allowing you to quickly search and found element/tool you want to use
+* quick acces to the latest element/tool used.
+* all elements/tools are organized in sections by their name.
+
 
 image::release-notes-new-palette.png[New palette tool, width=50%,height=50%]
+
+
+- *New command palette*: With "CTRL + k" or on the top right side of SysON, a search command window will be displayed to help you to quickly process any tool command.
+
+[NOTE]
+====
+For the moment, only "search element" command is available.
+But this will help you to quickly found any element in your model
+====
+
+image::release-notes-command-palette-search.png[Command Palette, width=80%,height=80%]
 
 - *New explorer view*: Rework the structure of standard and user libraries in the Explorer view.
 The Explorer view now contains the following directories for libraries:
@@ -18,24 +35,7 @@ image::release-notes-libraries-directories.png[Libraries Directories in the expl
 
 == Breaking changes
 
-- Improve the code in the import module to make it more generic:
-* Delete the `AstConstants` class: Constants have been split across several classes.
-* Delete the `LogBook` class (no longer used).
-* Replace `AstContainmentReferencePart` with `ContainmentReferenceHandler`.
-* Replace `AstObjectParser` with `EAttributeHandler`.
-* Replace `AstWeakReferenceParser` with `NonContainmentReferenceHandler`.
-* Delete `ReferenceHelper` (no longer used).
-* Delete `SysMLUploadDocumentReportProvider` as it is not functional.
-* Most components used in the transformation now require a `MessageReporter` instance to collect transformation messages.
-- Rework the structure of standard and user libraries in the explorer, the following classes have been renamed to reflect their new usage:
-* Rename `StandardLibraryDirectory` to `LibrariesDirectory`.
-* Rename `ReferencedLibraryDirectory` to `UserLibrariesDirectory`.
-- Ensure that a non-library imported model is not moved into the _User libraries_ directory when a _LibraryPackage_ is created in it.
-`ElementUtil#setIsImported(Resource)` has been updated to `ElementUtil#setIsImported(Resource, boolean)` to reflect this change.
-
-== Dependency update
-
-- [releng] Switch to Sirius Web 2024.11.9
+No breaking changes.
 
 == Bug fixes
 
@@ -48,30 +48,6 @@ Users can now delete imported library _models_ (i.e. models with a `LibraryPacka
 Imported models that do not contain libraries can be modified as regular models created in the project.
 - Ensure that a non-library imported model is not moved into the _User libraries_ directory when a _LibraryPackage_ is created in it.
 
-== Improvements
-
-- `OccurrenceUsage#portionKind` is now `unsettable` and its default value is `null` in the SysMLv2 metamodel to conform to the specification.
-- Improve the code in import module, by making it more generic. It now reports (on the server side) more messages to understand the scope of what is imported and the errors encountered.
-- Add support of `OccurrenceDefinition` and 'OccurrenceUsage` in export from model to textual SysMLv2.
-- Improve the support of libraries in the Explorer view.
-The Explorer view now contains 2 directories:
-*  _Standard Libraries_: contains the SysML and KerML libraries
-* _Referenced Libraries_: contains non-standard libraries imported by the user
-
-image::release-notes-standard-library-directories.png[Standard and Referenced Libraries in the explorer]
-
-- Rework the structure of standard and user libraries in the Explorer view.
-The Explorer view now contains the following directories for libraries:
-* _Libraries_: top-level container for all the libraries used in the project
-** _KerML_: KerML standard libraries
-** _SysML_: SysML standard libraries
-** _User Libraries_: User-imported libraries
-
-image::release-notes-libraries-directories.png[Libraries Directories in the explorer]
-
-- Remove 'New objects from text' contextual menu entry for libraries.
-- Allow to import `.kerml` textual files.
-- Remove 'New object' and 'New representation' contextual menu entries for libraries.
 
 == New features
 
@@ -97,3 +73,21 @@ image::release-notes-new-palette-shortcuts.png[New palette tool - shortcuts, wid
 * getCommitById (`GET /api/rest/projects/{projectId}/commits/{commitId}`): Get the commit represented by its Id for the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. It represents the current state of the project, without taking care of data created/updated/deleted since the creation of the project.
 * getCommitChange (`GET /api/rest/projects/{projectId}/commits/{commitId}/changes`): Get all changes of the commit represented by its Id for the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. The default implementation retrieves all elements containing in the project, without taking care of data created/updated/deleted since the creation of the project.
 * getCommitChangeById (`GET /api/rest/projects/{projectId}/commits/{commitId}/changes/{changeId}`): Get the changes associated to the given change Id for the commit represented by its Id for the given project. There is only one commit per project in SysON for now, and its Id is the same as the project Id. The default implementation retrieves all changes containing in the project, without taking care of data created/updated/deleted since the creation of the project. The change Id parameter should be randomly generated but constant for an unlimited period. We decided to generate this Id from it's commit Id and element Id, to be able to compute it.
+
+== Improvements
+
+- `OccurrenceUsage#portionKind` is now `unsettable` and its default value is `null` in the SysMLv2 metamodel to conform to the specification.
+- Improve the code in import module, by making it more generic. It now reports (on the server side) more messages to understand the scope of what is imported and the errors encountered.
+- Add support of `OccurrenceDefinition` and `OccurrenceUsage` in export from model to textual SysMLv2.
+- Remove 'New objects from text' contextual menu entry for libraries.
+- Allow to import `.kerml` textual files.
+- Remove 'New object' and 'New representation' contextual menu entries for libraries.
+
+
+== Dependency update
+
+- [releng] Switch to Sirius Web 2024.11.9
+
+== Techinical details
+
+* For technical details on this {product} release please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
