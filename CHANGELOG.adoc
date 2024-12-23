@@ -23,6 +23,8 @@ A new drop node tool is available on the diagram, allowing representing `Concern
 - https://github.com/eclipse-syson/syson/issues/899[#899] [general-view] Add `Concern Usage` to General View diagram.
 A new node creation tool is available in the `Requirements` section of the palette, allowing the creation of `Concern Usage` objects.
 A new drop node tool is available on the diagram, allowing representing `Concern Usage` objects as nodes of the diagram.
+- https://github.com/eclipse-syson/syson/issues/936[#936] [general-view] Add compartment for the 'StakeholderParameter' of `Concern Definition`, `Concern Usage`, `Requirement Definition`, `Requirement Usage` to the General View diagram.
+In the palette of the 'stakeholders' compartment, the creation tool 'New Stakeholder' allows selecting an `Item Usage` or `Item Definition` to add as stakeholder.
 - https://github.com/eclipse-syson/syson/issues/941[#941] [details] Prevent edition of imported user libraries from the details view.
 - https://github.com/eclipse-syson/syson/issues/946[#946] [metamodel] Align metamodel to SysMLv2 and KerML Beta 2.3 specifications.
 The changes are:

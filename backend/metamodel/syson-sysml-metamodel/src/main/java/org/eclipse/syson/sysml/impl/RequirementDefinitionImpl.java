@@ -28,6 +28,7 @@ import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
 import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementDefinition;
+import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.Usage;
@@ -190,8 +191,12 @@ public class RequirementDefinitionImpl extends ConstraintDefinitionImpl implemen
      */
     @Override
     public EList<PartUsage> getStakeholderParameter() {
-        List<Usage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), data.size(), data.toArray());
+        final List<PartUsage> stakeholders = this.getParameter().stream()
+                .filter(PartUsage.class::isInstance)
+                .filter(parameter -> parameter.getOwningMembership() instanceof StakeholderMembership)
+                .map(PartUsage.class::cast)
+                .toList();
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), stakeholders.size(), stakeholders.toArray());
     }
 
     /**

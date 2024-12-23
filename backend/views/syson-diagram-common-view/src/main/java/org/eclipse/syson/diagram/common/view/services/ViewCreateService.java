@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,6 +61,7 @@ import org.eclipse.syson.sysml.RequirementConstraintMembership;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
@@ -328,6 +329,42 @@ public class ViewCreateService {
             }
         }
         return result;
+    }
+
+    /**
+     * Service to create a new <b>stakeholder</b> {@link PartUsage} for a {@link RequirementUsage} or
+     * {@link RequirementDefinition}.
+     *
+     * @param self
+     *            a {@link RequirementUsage} or {@link RequirementDefinition}, otherwise no {@link PartUsage} will be
+     *            created.
+     * @param selectedObject
+     *            a {@link ItemUsage} or {@link ItemDefinition} that will be subsetted by (respectively that will type)
+     *            the created {@link PartUsage}.
+     * @return the newly-created {@link PartUsage}, contained by {@code self} through a {@link StakeholderMembership}.
+     *         If {@code self} was neither a {@link RequirementUsage} nor a {@link RequirementDefinition}, {@code self}
+     *         is returned as-is.
+     */
+    public Element createPartUsageAsStakeholder(Element self, Element selectedObject) {
+        Objects.requireNonNull(self);
+        Objects.requireNonNull(selectedObject);
+
+        if ((self instanceof RequirementUsage || self instanceof RequirementDefinition) && (selectedObject instanceof ItemUsage || selectedObject instanceof ItemDefinition)) {
+            final PartUsage createdPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+            final var stakeholderMembership = this.createMembership(self, SysmlPackage.eINSTANCE.getStakeholderMembership());
+            stakeholderMembership.getOwnedRelatedElement().add(createdPartUsage);
+            this.elementInitializerSwitch.doSwitch(createdPartUsage);
+
+            if (selectedObject instanceof ItemUsage selectedItemUsage) {
+                this.utilService.setSubsetting(createdPartUsage, selectedItemUsage);
+            } else if (selectedObject instanceof ItemDefinition selectedItemDefinition) {
+                this.utilService.setFeatureTyping(createdPartUsage, selectedItemDefinition);
+            }
+
+            return createdPartUsage;
+        } else {
+            return self;
+        }
     }
 
     /**
