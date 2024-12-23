@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,7 @@ import org.eclipse.syson.diagram.common.view.tools.PerformActionNodeToolProvider
 import org.eclipse.syson.diagram.common.view.tools.ReferencingPerformActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsCompositeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.SetAsRefToolProvider;
+import org.eclipse.syson.diagram.common.view.tools.StakeholdersCompartmentNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StartActionNodeToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionActionCompartmentToolProvider;
 import org.eclipse.syson.diagram.common.view.tools.StateTransitionCompartmentNodeToolProvider;
@@ -589,6 +590,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
                 this.toolDescriptionService.createNodeTool(this.getNodeDescription(SysmlPackage.eINSTANCE.getRequirementUsage()), SysmlPackage.eINSTANCE.getRequirementUsage()));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewSubjectNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActorNodeTool());
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewStakeholderNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsCompositeToolProvider().create(this.cache));
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, new SetAsRefToolProvider().create(this.cache));
         this.createToolsForCompartmentItems(object, sections, this.cache);
@@ -602,6 +604,7 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
         var sections = this.toolDescriptionService.createDefaultNodeToolSections();
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewSubjectNodeTool());
         this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewActorNodeTool());
+        this.toolDescriptionService.addNodeTool(sections, ToolConstants.STRUCTURE, this.createNewStakeholderNodeTool());
         this.createToolsForCompartmentItems(object, sections, this.cache);
         sections.add(this.toolDescriptionService.relatedElementsNodeToolSection(true));
         this.toolDescriptionService.removeEmptyNodeToolSections(sections);
@@ -747,6 +750,11 @@ public class GeneralViewNodeToolSectionSwitch extends AbstractViewNodeToolSectio
     private NodeTool createNewActorNodeTool() {
         var actorsCompartmentNodeToolProvider = new ActorCompartmentNodeToolProvider();
         return actorsCompartmentNodeToolProvider.create(this.cache);
+    }
+
+    private NodeTool createNewStakeholderNodeTool() {
+        var stakeholdersCompartmentNodeToolProvider = new StakeholdersCompartmentNodeToolProvider();
+        return stakeholdersCompartmentNodeToolProvider.create(this.cache);
     }
 
     private NodeTool createRequirementUsageAsObjectiveRequirementNodeTool() {
