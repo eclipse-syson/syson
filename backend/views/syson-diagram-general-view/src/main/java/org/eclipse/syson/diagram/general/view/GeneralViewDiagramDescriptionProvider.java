@@ -88,8 +88,10 @@ import org.eclipse.syson.diagram.general.view.nodes.GeneralViewEmptyDiagramNodeD
 import org.eclipse.syson.diagram.general.view.nodes.GeneralViewNodeDescriptionProviderSwitch;
 import org.eclipse.syson.diagram.general.view.nodes.ReferencingPerformActionUsageNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementDefinitionActorsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.RequirementDefinitionStakeholdersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementDefinitionSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageActorsCompartmentNodeDescriptionProvider;
+import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageStakeholdersCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.diagram.general.view.nodes.RequirementUsageSubjectCompartmentNodeDescriptionProvider;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.SysmlPackage;
@@ -295,8 +297,10 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         // defined after regular ones.
         this.linkRequirementSubjectCompartment(cache);
         this.linkRequirementActorsCompartment(cache);
+        this.linkRequirementStakeholdersCompartment(cache);
         this.linkConcernSubjectCompartment(cache);
         this.linkConcernActorsCompartment(cache);
+        this.linkConcernStakeholdersCompartment(cache);
         this.linkCaseSubjectCompartment(cache);
         this.linkCaseActorsCompartment(cache);
         this.linkCaseObjectiveRequirementCompartment(cache);
@@ -355,6 +359,10 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         // Compartment "actors" (ActorParameter) is defined for:
         // CaseDefinition, CaseUsage, ConcernDefinition, ConcernUsage, RequirementDefinition, RequirementUsage
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForActorParameter(colorProvider));
+
+        // Compartment "stakeholders" (StakeholderParameter) is defined for:
+        // ConcernDefinition, ConcernUsage, RequirementDefinition, RequirementUsage
+        compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForStakeholderParameter(colorProvider));
 
         // Compartment "objective" (ObjectiveRequirement) is defined for:
         // CaseDefinition, CaseUsage
@@ -540,6 +548,30 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         return compartmentNodeDescriptionProviders;
     }
 
+    private List<IDiagramElementDescriptionProvider<?>> createCompartmentsForStakeholderParameter(IColorProvider colorProvider) {
+        final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
+
+        compartmentNodeDescriptionProviders.add(new RequirementDefinitionStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(),
+                SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernDefinition(),
+                SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequirementUsageStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequirementDefinitionStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
+                SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
+                SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequirementUsageStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders
+                .add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(),
+                        colorProvider, this.getDescriptionNameGenerator()));
+
+        return compartmentNodeDescriptionProviders;
+    }
+
     private List<IDiagramElementDescriptionProvider<?>> createAllCustomNodeDescriptionProviders(IColorProvider colorProvider) {
         final var customNodeDescriptionProviders = new ArrayList<IDiagramElementDescriptionProvider<?>>();
 
@@ -648,7 +680,13 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider,
                         this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(
                 new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider,
                         this.getDescriptionNameGenerator()));
 
         return usageCompositeEdgeDescriptionProviders;
@@ -674,6 +712,16 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
+    private void linkRequirementStakeholdersCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription requirementUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementUsage())).get();
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+                .ifPresent(requirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+        NodeDescription requirementDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getRequirementDefinition())).get();
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter()))
+                .ifPresent(requirementDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+    }
+
     private void linkConcernSubjectCompartment(IViewDiagramElementFinder cache) {
         NodeDescription concernUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernUsage())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
@@ -692,6 +740,17 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         cache.getNodeDescription(
                 this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(),
                         SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
+                .ifPresent(concernDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+    }
+
+    private void linkConcernStakeholdersCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription concernUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernUsage())).get();
+        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+                .ifPresent(concernUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+        NodeDescription concernDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernDefinition())).get();
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(),
+                        SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
                 .ifPresent(concernDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
