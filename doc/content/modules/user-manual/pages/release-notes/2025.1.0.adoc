@@ -1,4 +1,4 @@
-= 2025.1.0 (work in progress)
+= 2025.1.0
 
 == Key highlights
 
@@ -88,7 +88,7 @@ The SysON Explorer is now the default explorer for SysON, and the Sirius Web exp
 
 == Dependency update
 
-- Switch to Sirius Web 2024.11.10
+- Switch to Sirius Web 2025.1.0
 
 == Technical details
 

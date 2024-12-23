@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-diagram-general-view</artifactId>
-	<version>2024.11.3</version>
+	<version>2025.1.0</version>
 	<name>syson-diagram-general-view</name>
 	<description>SysON Sirius Web diagram description of the SysMLv2 General View</description>
 
@@ -93,27 +93,27 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2024.11.3</version>
+			<version>2025.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-siriusweb-customnodes-metamodel</artifactId>
-			<version>2024.11.3</version>
+			<version>2025.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-siriusweb-customnodes-metamodel-edit</artifactId>
-			<version>2024.11.3</version>
+			<version>2025.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-services</artifactId>
-			<version>2024.11.3</version>
+			<version>2025.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-common-view</artifactId>
-			<version>2024.11.3</version>
+			<version>2025.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
@@ -128,7 +128,7 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-tests</artifactId>
-			<version>2024.11.3</version>
+			<version>2025.1.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

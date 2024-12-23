@@ -31,7 +31,7 @@ asciidoc:
     resources-url: "https://mbse-syson.org/#resources"
     source-code-url: "https://github.com/eclipse-syson/syson"
     stv: "State Transition view"
-    syson-tag: "v2024.11.3"
+    syson-tag: "v2025.1.0"
     sysml: "SysML"
     sysmlv1: "{sysml} v1"
     sysmlv2: "{sysml} v2"
