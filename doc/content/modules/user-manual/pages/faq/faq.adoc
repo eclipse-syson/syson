@@ -1,7 +1,7 @@
 = Frequently Asked Questions
 
 Here are answers to questions we're often asked.
-If you have a question not addressed here, please xref:ROOT:help.adoc[contact us].
+If you have a question not addressed here, xref:ROOT:help.adoc[contact us].
 
 == General questions
 
@@ -85,7 +85,7 @@ The project provides updates and fixes on a best-effort basis, specifically targ
 For those requiring professional support, we recommend referring to the xref:user-manual:support.adoc[Professional support] page for information about how to obtain customized solutions and services that meet your specific needs.
 ====
 
-.*Will other software products be needed to use the {sysmlv2} tool?*
+.*Will other software products be needed to use the {product} tool?*
 [%collapsible%open]
 ====
 No.
@@ -109,33 +109,33 @@ For hands-on learning, check out the xref:user-manual:hands-on/hands-on.adoc[{pr
 .*Is there a mobile version of {product} available?*
 [%collapsible%open]
 ====
-{product} is a web application that can be accessed from mobile devices; however,it's optimized for use with a minimum screen resolution of 1024 * 768 in a maximized browser window.
-See xref:installation-guide:requirements.adoc[] for more details.
+{product} is a web application that can be accessed from mobile devices; however, it's optimized for use with a minimum screen resolution of 1024 * 768 in a maximized browser window.
+See xref:installation-guide:requirements.adoc[Prerequisites] for more details.
 ====
 
 .*How does version control work in {product}?*
 [%collapsible%open]
 ====
 {product} doesn't include built-in version control, allowing users to integrate their preferred solutions.
-For more details, see xref:user-manual:features/cm.adoc[].
+For more details, see xref:user-manual:features/cm.adoc[Version control and change management].
 ====
 
 .*Is there a limit to the number of projects or models I can create in {product}?*
 [%collapsible%open]
 ====
-Yes, refer to the xref:user-manual:features/scaling-limits.adoc[scaling limits] page for more details.
+Yes, see the xref:user-manual:features/scaling-limits.adoc[scaling limits] page for more details.
 ====
 
 .*How do I import and export models in {product}?*
 [%collapsible%open]
 ====
-Read the xref:user-manual:integration/interoperability.adoc#import-export[] section of the documentation.
+Read the xref:user-manual:integration/interoperability.adoc#import-export[Import and Export] section of the documentation.
 ====
 
 .*What collaboration features are available in {product}?*
 [%collapsible%open]
 ====
-Read the xref:user-manual:features/collaboration.adoc[] page of the documentation.
+Read the xref:user-manual:features/collaboration.adoc[Collaborative modeling] page of the documentation.
 ====
 
 == Integration with other tools
@@ -151,19 +151,19 @@ The team is currently working on integrating {product} with `SysIDE`, an open so
 .*How do I import and export models?*
 [%collapsible%open]
 ====
-To import /export models, read the xref:user-manual:integration/interoperability.adoc[Interoperability] section in the user manual.
+To import or export models, read the xref:user-manual:integration/interoperability.adoc[Interoperability] section in the user manual.
 ====
 
 .*How do I collaborate with others on models?*
 [%collapsible%open]
 ====
-Read the xref:user-manual:features/collaboration.adoc[] section to learn more about how to collaborate using {product}.
+Read the xref:user-manual:features/collaboration.adoc[Collaborative modeling] section to learn more about how to work together by using {product}.
 ====
 
 .*How will models developed in your tool, be shared with other vendor {sysmlv2} tools? Are there any limitations we should be aware of?*
 [%collapsible%open]
 ====
-The intent is to be fully compatible with the {sysmlv2} standard ensuring that models can be shared using the {sysmlv2} textual notation and the {sysmlv2} API.
+The intent is to be fully compatible with the {sysmlv2} standard ensuring that models can be shared by using the {sysmlv2} textual notation and the {sysmlv2} API.
 ====
 
 .*How will models in {sysmlv2} and models in {sysmlv1} co-exist?*
@@ -176,7 +176,7 @@ Currently, {sysmlv1} models can't coexist within {product}, but coexistence migh
 .*How do I integrate {product} with other tools or systems?*
 [%collapsible%open]
 ====
-{product} is a specialized tool for {sysmlv2}, focusing on the latest standards and methodologies, offering robust compatibility with {sysmlv2} through features such as textual notation support for model import/export, full compliance with the {sysmlv2} API for seamless integration with other tools, and ongoing integration efforts with Capella for enhanced model interoperability.
+{product} is a specialized tool for {sysmlv2}, focusing on the latest standards and methodologies, offering robust compatibility with {sysmlv2} through features such as textual notation support for model import or export, full compliance with the {sysmlv2} API for seamless integration with other tools, and ongoing integration efforts with Capella for enhanced model interoperability.
 ====
 
 .*How's your {sysmlv2} tool integrated with other products you offer?*
@@ -186,7 +186,7 @@ Currently, {sysmlv1} models can't coexist within {product}, but coexistence migh
 Currently, as an open source product, {product} is primarily focused on ensuring robust compatibility within the {sysmlv2} ecosystem.
 This includes integration capabilities such as:
 
-* Textual Notation Support: {product} supports importing and exporting models using the {sysmlv2} textual notation.
+* Textual Notation Support: {product} supports importing and exporting models by using the {sysmlv2} textual notation.
 This facilitates sharing and integration with other {sysmlv2} compatible tools.
 * {sysmlv2} API:  We're working on making {product} fully compatible with the xref:user-manual:integration/api.adoc[{sysmlv2} API], allowing seamless interaction with other tools and systems that adhere to this standard.
 * Integration with Capella: We're working on establishing xref:user-manual:integration/capella.adoc[integration pathways with Capella], a comprehensive model-based engineering solution.
@@ -207,11 +207,11 @@ We invite those who share our vision and are committed to enhancing {product}'s 
 .*How do I access professional support for {product}?*
 [%collapsible%open]
 ====
-To access professional support for {product}, refer to the xref:user-manual:support.adoc[] page in the documentation, which provides comprehensive information about how to get help and the services available.
+To access professional support for {product}, see the xref:user-manual:support.adoc[Professional support] page in the documentation, which provides comprehensive information about how to get help and the services available.
 ====
 
 * xref:installation-guide:requirements.adoc[What are the recommended system requirements for {product}?]
-* xref:installation-guide:how-tos/https.adoc[]
+* xref:installation-guide:how-tos/https.adoc[Configuring HTTPS for local server deployment of {product} for testing purposes]
 * xref:user-manual:contribute.adoc#reporting-issues[How do I report bugs or submit feature requests?]
 
 == Extend {product}
