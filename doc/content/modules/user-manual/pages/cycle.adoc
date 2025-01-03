@@ -3,27 +3,30 @@
 {product}, as an open source project, follows a well-defined development cycle to ensure regular and structured updates.
 The cycle spans 8 weeks and includes three main phases:
 
-* Development (4 Weeks):
-  * Focus: This phase is dedicated to actively working on new features, bug fixes, and enhancements.
-  * Activities: Contributors, including community members and core developers, work together to develop new functionalities, perform code reviews, and integrate changes.
+* Development - 4 Weeks:
+** Focus: This phase is dedicated to actively working on new features, bug fixes, and enhancements.
+** Activities: Contributors, including community members and core developers, work together to develop new functionalities, perform code reviews, and integrate changes.
   Collaboration and transparency are key during this phase.
+* Stabilization and Feature Freeze - 2 Weeks:
+** Focus: The product enters a feature freeze period where no new features are introduced.
+** Activities: During this time, the focus shifts to thorough testing and stabilization of the new features.
+This ensures the software's quality and reliability.
+Any remaining issues or bugs are addressed to prepare for the release.
+* Cool Down and Planning - 2 Weeks:
+** Focus: This phase involves wrapping up the current cycle and preparing for the next one.
+** Activities: Contributors work on upgrading dependencies, resolving minor issues, and documenting the latest changes.
+Additionally, the team discusses and plans the features and tasks for the next cycle, ensuring a smooth transition.
+The General Availability - GA - release of {product} occurs on the eighth week of each development cycle.
 
-* Stabilization and Feature Freeze (2 Weeks):
-  * Focus: We enter a feature freeze period where no new features are introduced.
-  * Activities: During this time, the focus shifts to thorough testing and stabilization of the new features.
-  This ensures the software's quality and reliability.
-  Any remaining issues or bugs are addressed to prepare for the release.
-
-* Cool Down and Planning (2 Weeks):
-  * Focus: This phase involves wrapping up the current cycle and preparing for the next one.
-  * Activities: Contributors work on upgrading dependencies, resolving minor issues, and documenting the latest changes.
-  Additionally, the team discusses and plans the features and tasks for the next cycle, ensuring a smooth transition.
-  The General Availability (GA) release of {product} occurs on the eighteenth week of each development cycle.
+You can track the progress of each phase and upcoming milestones for {product} on the https://github.com/eclipse-syson/syson/milestones[GitHub milestones page].
+This page provides a detailed overview of planned milestones, helping you stay informed about the product's development stages, upcoming features, and releases.
+It serves as a key resource to understand the ongoing development cycle and to follow the project's progress as it moves through each phase.
 
 == Team Organization
 
 Being an open source project, {product} thrives on community participation and collaboration.
 Here's how the team is organized:
+
 * Core Developers: these are the primary maintainers who oversee the project's direction, manage releases, and ensure code quality.
 * Contributors: this includes anyone from the community who contributes code, documentation, or ideas.
 Contributions are reviewed and merged by core developers.
@@ -34,16 +37,16 @@ If you're interested in contributing or have any questions, feel free to join th
 
 == Version and release policies
 
-{product} adheres to a CalVer (Calendar Versioning) strategy to communicate the timeline and stability of its releases.
+{product} adheres to a CalVer - Calendar Versioning - strategy to communicate the timeline and stability of its releases.
 The versioning follows a `YEAR.MONTH.PATCH` format, where:
 
 * `YEAR.MONTH.0`: These are the stable releases, marking significant milestones or major updates.
-For example, a version like 2024.5.0 indicates a stable release from May 2024.
-* Intermediate Releases: Between the .0 versions, there may be multiple intermediate releases, denoted by increasing the `PATCH` number (for example 2024.5.1, 2024.5.2).
+For example, a version such as 2024.5.0 indicates a stable release from May 2024.
+* Intermediate Releases: Between the .0 versions, there might be several intermediate releases, denoted by increasing the `PATCH` number, for example 2024.5.1, 2024.5.2.
 These are intended to provide updates, fixes, and incremental improvements leading up to the next stable release.
 
-Stable versions (.0 versions) are recommended for production environments, while intermediate versions offer early access to new features and fixes but might undergo further changes before the next stable release.
+Stable versions - `.0` versions are recommended for production environments, while intermediate versions offer early access to new features and fixes but might undergo further changes before the next stable release.
 
 This strategy ensures that users can rely on a predictable and transparent update cycle, aligning with the continuous evolution and enhancement of {product}.
 
-For all details about the different versions, see the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc:`CHANGELOG`.
+For all details about the different versions, see the https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[`CHANGELOG`].
