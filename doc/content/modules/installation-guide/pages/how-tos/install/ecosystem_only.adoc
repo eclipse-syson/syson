@@ -1,12 +1,13 @@
-= How to install {product} ecosystem only ?
+= Install {product} ecosystem
 
-This section provides a step-by-step guide on setting up the necessary ecosystem to develop the product locally. By following these instructions, you’ll configure your local environment with all required dependencies, tools, and services, enabling you to develop, test, and troubleshoot the product effectively on your own machine.
+This guide provides step-by-step instructions for setting up the ecosystem needed to develop the product locally.
+Following these steps configures your local environment with all required dependencies, tools, and services, enabling you to develop, test, and troubleshoot the product on your own machine.
 
 == Start the database instance
 
 {product} uses PostgreSQL as its database.
 
-For development or local testing, the simplest approach is to initiate a PostgreSQL instance using Docker.
+For development or local testing, the simplest approach is to start a PostgreSQL instance by using Docker.
 
 [source, bash]
 ----
@@ -30,27 +31,27 @@ docker run -p 5433:5432 --name syson-postgres -e POSTGRES_USER=dbuser -e POSTGRE
 [TIP]
 ====
 Docker images are build to run on x86_64 architecture.
-If you need to run {product} docker image on a Mac Silicon architecture, please execute the following command in your terminal before executing the docker image:
+If you need to run {product} Docker image on a Mac Silicon architecture, run the following command in your terminal before executing the Docker image:
 [source, bash]
 ----
-export DOCKER_DEFAULT_PLATFORM=linux/amd64 
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
 ----
 ====
 
 [NOTE]
 ====
-This may take a while the first time you run this as Docker will first pull the PostgreSQL image.
+This take a while the first time you run this as Docker first pulls the PostgreSQL image.
 ====
 
-If you don't have Docker or prefer to use an existing PostgreSQL installation, modify the following command-line parameters and ensure the `POSTGRES_USER` possesses administrative rights on the database.
+If you don't have Docker or prefer to use an existing PostgreSQL installation, change the following command-line parameters and confirm the `POSTGRES_USER` possesses administrative rights on the database.
 These rights are necessary for the automatic creation of the database schema.
 
 [#start-app]
 == Start the application
 
-Before you run the application, please ensure you have following the xref:requirements.adoc[prerequisites] and downloaded the JAR ({product-jar}) from the xref:how-tos/install/production_deploy.adoc#download[download] section.
+Before you run the application, confirm you have following the xref:requirements.adoc[prerequisites] and downloaded the JAR ({product-jar}) from the xref:how-tos/install/production_deploy.adoc#download[download] section.
 
-Go to the folder containing the {product-jar} and run the command:"
+Go to the folder containing the {product-jar} and run the command:
 
 [source, bash]
 ----
@@ -67,11 +68,11 @@ Navigate to `http://localhost:8080` to experience {product}.
 
 [TIP]
 ====
-To end your local testing session, ensure you stop the running PostgreSQL Docker container using the command `docker kill syson-postgres`.
-Please note that this will erase all the data you have generated during testing.
+To end your local testing session, confirm you stop the running PostgreSQL Docker container by using the command `docker kill syson-postgres`.
+Note that this erases all the data you have generated during testing.
 ====
 
-If you encounter any issues during the installation process, please refer to the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.
+If you meet any issues during the installation process, see the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.
 
 == Other resources
 xref:installation-guide:how-tos/https.adoc[]

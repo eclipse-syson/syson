@@ -4,13 +4,14 @@
 ====
 Enabling HTTPS with a self-signed certificate is intended for testing purposes only and shouldn't be used in a production environment.
 Self-signed certificates don't provide the same level of security and trust as certificates issued by a trusted Certificate Authority (CA).
-For production deployments, obtain a valid certificate from a trusted CA to ensure secure and reliable communication.
+For production deployments, get a valid certificate from a trusted CA to ensure secure and reliable communication.
 ====
 
 If you intend to install {product} on a local server or machine and allow several users to access it, you must enable HTTPS.
 If you don't have a certificate, you can generate one by using https://docs.oracle.com/en/java/javase/11/tools/keytool.html[keytool] for testing purposes only.
 
-This procedure requires to have the `keytool` application to be installed (the application comes with the Java Runtime Environment as explain in xref:requirements.adoc[prerequisites])
+This procedure requires installing the `keytool` application.
+The application includes the Java Runtime Environment, as explained in the xref:requirements.adoc[prerequisites] section.
 
 . Create a self-signed certificate:
 +
@@ -18,7 +19,8 @@ This procedure requires to have the `keytool` application to be installed (the a
 ----
 keytool -genkeypair -alias myalias -keyalg RSA -keysize 2048 -validity 365 -keystore keystore.jks
 ----
-. If you have installed {product} with xref:how-tos/install/local_test.adoc#docker-install[docker], just update your docker-compose file as below (otherwise, please go to next instruction): 
+. If you have installed {product} with xref:how-tos/install/local_test.adoc#docker-install[docker], update your docker-compose file as shown below/.
+Otherwise, proceed to the next instruction:
 +
 [source, bash]
 ----
@@ -41,10 +43,10 @@ services:
       - --server.ssl.key-password=PASSWORD_USED_IN_STEP_1
 networks:
   ... no need to change anything in the networks section
----- 
+----
 
 . If you have installed {product} manually, place the certificate file next to your `{product}-application` JAR file
-. Launch your JAR (as explained in the xref:installation-guide:how-tos/install.adoc#start-app[start the application section] with the following extra properties:
+. Launch your JAR as explained in the xref:installation-guide:how-tos/install.adoc#start-app[start the application section] with the following extra properties:
 +
 [source, bash]
 ----
@@ -54,5 +56,4 @@ networks:
   --server.ssl.key-alias=myalias \
   --server.ssl.key-password=PASSWORD_USED_IN_STEP_1
 ----
-. Every user in your local network can now access the application at:
-`https://{product}_SERVER_IP:8080`
+. Every user in your local network can now access the application at: `https://{product}_SERVER_IP:8080`

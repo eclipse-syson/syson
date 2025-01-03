@@ -1,6 +1,7 @@
 = Local installation of {product} for single-user testing purposes
 
-This section provides instructions for installing a local version of the application, intended for testing purposes. This setup is configured for use by the local user only and does not include any security configurations.
+Follow these instructions to install a local version of the application, intended for testing purposes.
+This setup is configured for use by the local user only and doesn't include any security configurations.
 
 == Get {product}
 
@@ -19,52 +20,63 @@ For more details see xref:user-manual:cycle.adoc[].
 
 The easiest and most straightforward method to deploy {product} using Docker Compose, which automatically deploy prerequisites.
 
-[INFO]
+[NOTE]
 ====
-Before you proceed with the installation, please ensure you have the following xref:requirements.adoc[Hardware prerequisites]:
+Before you proceed with the installation, confirm you have the following xref:requirements.adoc[Hardware prerequisites]:
 
-* https://www.docker.com/[Docker] installed.
+* https://www.docker.com/[Docker] installed and running.
 ====
 
-{product} is distributed as a docker container.
-To deploy {product}, just download the https://github.com/eclipse-syson/syson/blob/{syson-tag}/docker-compose.yml[docker-compose] file and run the following docker command in the same folder as the one where is the _docker-compose.yml_ file:
+{product} is distributed as a Docker container.
+To deploy {product}, just download the https://github.com/eclipse-syson/syson/blob/{syson-tag}/docker-compose.yml[docker-compose] file and run the following docker command in the same folder as the one where's the _docker-compose.yml_ file:
 [source, bash]
 ----
 docker compose up
 ----
 
-This method deploys {product} (matching the version tagged in this documentation) along with a PostgreSQL database, all within a Docker container.
+[IMPORTANT]
+====
+To run Docker Compose confirm your Docker is running.
+====
+
+This method deploys {product} matching the version tagged in this documentation with a PostgreSQL database, all within a Docker container.
 
 [TIP]
 ====
 Docker images are build to run on x86_64 architecture.
-If you need to run {product} docker image on a Mac Silicon architecture, please execute the following command in your terminal before executing the docker image:
+If you need to run {product} Docker image on a Mac Silicon architecture, run the following command in your terminal before executing the Docker image:
+
 [source, bash]
 ----
-export DOCKER_DEFAULT_PLATFORM=linux/amd64 
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
 ----
 ====
 
-[INFO]
+[NOTE]
 ====
-To deploy a specific version vYYYY.MM.0, edit the _docker-compose.yml_ file and replace the tagged version with your desired version. For example, update the following line in the _docker-compose.yml_:
+To deploy a specific version `vYYYY.MM.0`, edit the `docker-compose.yml` file and replace the tagged version with your required version.
+For example, update the following line in the `docker-compose.yml`:
+
+[source,docker]
+----
 app:
   image: "${IMAGE_TAG:-eclipsesyson/syson:*vYYYY.MM.0*}"
+----
 ====
 
-All accessible versions of {product} as Docker containers are listed in the https://hub.docker.com/r/eclipsesyson/syson/tags[{product} Docker registry].
+All available versions of {product} as Docker containers are listed in the https://hub.docker.com/r/eclipsesyson/syson/tags[{product} Docker registry].
 
-Once your Docker up, please go directly to the <<openwebbrowser>>[Open your web browser] section!
+Once your Docker up, go directly to the <<openwebbrowser>>[Open your web browser] section.
 
 [#openwebbrowser]
 == Open your web browser
 
 Navigate to `http://localhost:8080` to experience {product}.
 
-[TIP]
+[CAUTION]
 ====
-To end your local testing session, ensure you stop the running PostgreSQL and {product} Docker container and using the command `docker compose down`.
-Please note that this will erase all the data you have generated during testing.
+To end your local testing session, confirm you stop the running PostgreSQL and {product} Docker container and by using the command `docker compose down`.
+Note that this erases all the data you have generated during testing.
 ====
 
-If you encounter any issues during the installation process, please refer to the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.
+If you meet any issues during the installation process, see the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.

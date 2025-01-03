@@ -1,9 +1,9 @@
 = How to install {product}?
 
-This section delves into the detailed step-by-step instructions for installing {product}.
+The following provides detailed step-by-step instructions for installing {product}.
 Detailed explanations walk you through each step.
 
-{product} can be installed following several different patterns :
+You can install {product} following several different patterns :
 
 * xref:installation-guide:how-tos/install/local_test.adoc[Basic Local Test Setup: Ideal for quick, standalone testing of {product} on a single machine to evaluate core features.]
 * xref:installation-guide:how-tos/install/multi_user_test.adoc[Local test of {product} with multiple users]

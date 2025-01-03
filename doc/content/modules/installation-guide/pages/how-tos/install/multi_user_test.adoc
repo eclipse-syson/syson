@@ -1,14 +1,15 @@
 = Local installation of {product} for multi-user testing purposes
 
-This section provides instructions for installing a multi-user version of the application, intended for testing in an environment with multiple users. This setup includes configurations to allow access by different users within the same local network but does not apply any specific security configurations.
+Follow these instructions to install a multi-user version of the application, intended for testing in an environment with several users.
+This setup includes configurations to allow access by different users within the same local network but doesn't apply any specific security configurations.
 
-To be used by multiples users, the {product} serveur must be availlable using the network to all users.
-The require to have HTTPS configured on the {product} serveur.
+To be used by multiples users, the {product} server must be available by using the network to all users.
+The require to have HTTPS configured on the {product} server.
 
 
 == Prepare single user deployment
 
-This procedure is an extantion of the basic installation procedure xref:installation-guide:how-tos/install/local_test.adoc[single user]
+This procedure is an extension of the basic installation procedure xref:installation-guide:how-tos/install/local_test.adoc[single user]
 
 == Prepare certificates
 
@@ -16,11 +17,11 @@ Detailed instructions to generate SSL certificates are explained xref:installati
 
 == Share the {product} server access
 
-By following the two previous procedure, the {product} server is now availlable on the network, hosted by your local computer and secured using a self-signed HTTPS certificate.
+By following the two previous procedure, the {product} server is now available on the network, hosted by your local computer and secured by using a self-signed HTTPS certificate.
 
-To share the server acces with other people on the same network, the IP adrress of the local computer must be share.
+To share the server access with other people on the same network, the IP address of the local computer must be share.
 
-The {product} server must be availlable ont the url https://<localComputerIp>:8080/[]
+The {product} server must be available on the URL https://<localComputerIp>:8080/[]
 
 
 [WARNING]
@@ -29,4 +30,4 @@ Some enterprise networks can be secured or configured to block this kind of traf
 ====
 
 
-If you encounter any issues during the installation process, please refer to the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.
+If you meet any issues during the installation process, see the xref:troubleshooting.adoc[troubleshooting guide] for detailed solutions.
