@@ -59,4 +59,8 @@ Once you have configured the {sysmlv2} API access, you can start testing the xre
 
 include::project_commit_branch_tag_recipe.adoc[leveloffset=+2]
 
+include::element_create_update_delete_recipe.adoc[leveloffset=+2]
+
 include::element_owned_elements.adoc[leveloffset=+2]
+
+include::queries.adoc[leveloffset=+2]

@@ -1,0 +1,103 @@
+= Queries
+
+Learn how to queries projects and retrieve related elements programmatically.
+Each recipe includes a detailed explanation, step-by-step instructions, and code snippets.
+
+Recipes covered:
+
+* xref:queries_recipe.adoc#_get_projects[Get All Part Usages]: Fetch and display all part usages currently available in a project.
+
+== Find elements of a type
+
+This code example demonstrates how to interact with a {sysmlv2} API server to retrieve and display `PartUsage` elements for a specific project.
+
+Example script to find elements of a specified type:
+
+[source,python]
+.get_all_part_usages.py
+----
+include::example$get_all_part_usages.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+* `init_api`: Used for initializing the connection to the {sysmlv2}  API server.
+* `pandas`: Used for data visualization.
+
+<2> *Define the `get_all_part_usages` function* with two parameters:
+
+* `host`: The base API address.
+* `project_id`: The project ID.
+
+<3> Constructs the *API endpoint* address for queries.
+
+<4> *Sends a `POST` request* to the API, passing the {product} address and the query as parameters.
+
+<5> *Handles the API response*:
+
+* If the elements are successfully fetched - HTTP status `200`, the function prints all the elements ID and name.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+----
+$ python get_all_part_usages.py
+----
+
+Output:
+
+[source,bash]
+----
+TODO
+----
+
+== Find an element
+This code example demonstrates how to interact with a {sysmlv2} API server to retrieve and display a `PartUsage` element from its name.
+
+Example script to find an element of a specified type from its name:
+
+[source,python]
+.get_part_usage.py
+----
+include::example$get_part_usage.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+* `init_api`: Used for initializing the connection to the {sysmlv2}  API server.
+
+<2> *Define the `get_part_usage` function* with two parameters:
+
+* `host`: The base API address.
+* `project_id`: The project ID.
+* `part_usage_name`: The name of the searched Part Usage.
+
+<3> Constructs the *API endpoint* address for queries.
+
+<4> *Sends a `POST` request* to the API, passing the {product} address and the query as parameters.
+
+<5> *Handles the API response*:
+
+* If the element is successfully fetched - HTTP status `200`, the function prints the element ID and name.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+----
+$ python get_part_usage.py
+----
+
+Output:
+
+[source,bash]
+----
+TODO
+----

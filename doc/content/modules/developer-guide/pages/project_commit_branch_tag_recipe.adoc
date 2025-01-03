@@ -8,6 +8,12 @@ Recipes covered:
 * xref:project_commit_branch_tag_recipe.adoc#_get_projects[Get Projects]: Fetch and display all projects currently available on the server.
 * xref:project_commit_branch_tag_recipe.adoc#_create_a_new_project[Create a New Project]: Create a new project with a unique name.
 * xref:project_commit_branch_tag_recipe.adoc#_get_commits[Get Commits]: Retrieve a list of commits for a specific project.
+* xref:project_commit_branch_tag_recipe.adoc#_get_branches[Get branches]: Fetch and display the branch currently available for the specified project.
+* xref:project_commit_branch_tag_recipe.adoc#_create_a_new_branch[Create a New Branch]: New branch creation isn't supported in {product}, so it returns the branch currently available for the specified project.
+* xref:project_commit_branch_tag_recipe.adoc#_get_tags[Get tags]: Fetch and display the tag currently available for the specified project.
+* xref:project_commit_branch_tag_recipe.adoc#_create_a_new_tag[Create a New Tag]: New tag creation isn't supported in {product}, so it returns the tag currently available for the specified project.
+* xref:project_commit_branch_tag_recipe.adoc#_get_commits[Get Commits]: Retrieve a list of commits for a specific project.
+* xref:project_commit_branch_tag_recipe.adoc#_create_a_new_commit[Create a New Commit]: New commit creation isn't supported in {product}, so it applies the change and returns the commit currently available for the specified project.
 
 == Get projects
 This code example demonstrates how to use Python's requests library to interact with the {product} API and retrieve a list of projects.
@@ -106,6 +112,211 @@ Project Name: Batmobile, ID: 63a03bd8-a81a-4818-801a-01790ce8a086
 Project Name: New Project - 2024-12-31 10:52:56, ID: d967b937-304f-43a9-8af6-b1f3a9d6adbe
 ----
 
+== Get branches
+
+[IMPORTANT]
+====
+{product} always returns a *single branch* with a *single commit* and a *single tag*.
+====
+
+This example fetches and prints the single branch ID for a specific project using the {product} API.
+It sends a GET request to the project’s branches endpoint and prints the branch ID if the request succeeds.
+
+Example script to fetch branches:
+
+[source,python]
+.get_branches.py
+----
+include::example$get_branches.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `fetch_branches` function* with two parameters:
+
+* `host`: The base API URL.
+* `project_id`: The project ID.
+
+<3> Constructs the *API endpoint* URL for fetching branches.
+
+<4> *Sends a `GET` request* to the API, passing the {product} address and the project ID as a query parameter.
+
+<5> *Handles the API response*:
+
+* If the branches are successfully fetched - HTTP status `200`, the function prints all the branches ID and name.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+.fetch_branches.py
+----
+$ python fetch_branches.py your-project-id
+----
+
+Output:
+
+[source,bash]
+----
+Branch ID: 10a5a88a-956c-4e47-9fda-7a67c22ac2f9
+----
+
+== Create a new branch
+
+[IMPORTANT]
+====
+{product} always returns a *single branch* with a *single commit* and a *single tag*.
+====
+
+This example shows how to call the API to fetch the only existing branch in a project, as the {product} API does not support creating new branches.
+It retrieves the latest commit as the branch head, sends a POST request with the branch details, and verifies the response.
+However, instead of creating a new branch, the API returns the existing single branch in the {product} implementation.
+
+Example script to call the create new branch aPI:
+
+[source,python]
+.create_branch.py
+----
+include::example$create_branch.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `create_new_branch` function* with two parameters:
+
+* `host`: The base API URL.
+* `project_id`: The project ID.
+
+<3> Constructs the *API endpoint* URL for creating a new branch.
+
+<4> *Sends a `POST` request* to the API, passing the {product} address and the project ID as a query parameter.
+
+<5> *Handles the API response*:
+
+* If the branch is successfully created - HTTP status `200`, the function prints the branch ID and name.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+----
+$ python create_new_branch.py your-project-id
+----
+
+Output:
+
+[source,bash]
+----
+TODO
+----
+
+== Get tags
+
+[IMPORTANT]
+====
+{product} always returns a *single branch* with a *single commit* and a *single tag*.
+====
+
+This example fetches and prints tag IDs for a specific project using the {product} API.
+It sends a GET request to the project’s tags endpoint and prints the tag ID if the request succeeds.
+
+Example script to fetch tags:
+
+[source,python]
+.get_tags.py
+----
+include::example$get_tags.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `fetch_tags` function* with two parameters:
+
+* `host`: The base API URL.
+* `project_id`: The project ID.
+
+<3> Constructs the *API endpoint* URL for fetching tags.
+
+<4> *Sends a `GET` request* to the API, passing the {product} address and the project ID as a query parameter.
+
+<5> *Handles the API response*:
+
+* If the tags are successfully fetched - HTTP status `200`, the function prints all the tags ID and name.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+----
+$ python fetch_tags.py  your-project-id
+----
+
+Output:
+
+[source,bash]
+----
+TODO
+----
+
+== Create a new tag
+
+[IMPORTANT]
+====
+{product} always returns a *single branch* with a *single commit* and a *single tag*.
+====
+
+This example shows how to call the API to fetch the only existing tag in a project, as the {product} API does not support creating new tags.
+
+Example script to call the create new branch aPI:
+
+[source,python]
+.create_tag.py
+----
+include::example$create_tag.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `create_new_branch` function* with two parameters:
+
+* `host`: The base API URL.
+* `project_id`: The project ID.
+
+<3> Constructs the *API endpoint* URL for creating a new branch.
+
+<4> *Sends a `POST` request* to the API, passing the {product} address and the project ID as a query parameter.
+
+<5> *Handles the API response*:
+
+* If the tag is successfully created - HTTP status `200`, the function prints the branch ID and name.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+----
+$ python create_new_tag.py
+----
+
+Output:
+
+[source,bash]
+----
+TODO
+----
+
 == Get commits
 
 [IMPORTANT]
@@ -155,4 +366,55 @@ Output:
 [source,bash]
 ----
 Commit ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+----
+
+== Create a new commit
+
+[IMPORTANT]
+====
+{product} always returns a *single branch* with a *single commit* and a *single tag*.
+====
+
+This example demonstrates how to create a commit and fetch elements from a project using the {product} API.
+
+Example script to create commits:
+
+[source,python]
+.create_commit.py
+----
+include::example$create_commit.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `fetch_commits` Function* with two parameters:
+
+* `host`: The base API URL.
+* `project_id`: The project ID.
+* `commit_body: The commit contains two new elements: "Spacecraft System" and "Payload System."
+
+<3> Constructs the *API endpoint* URL for creating commits.
+
+<4> *Sends a `GET` request* to the API, passing the {product} address and the commit body as a parameter.
+
+<5> *Handles the API response*:
+
+* If the elements are successfully created - HTTP status `200`, the function prints all the commit ID.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+----
+$ python create_commit.py your-project-id
+----
+
+Output:
+
+[source,bash]
+----
+TODO
 ----

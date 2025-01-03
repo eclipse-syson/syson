@@ -1,0 +1,140 @@
+= Element create, update, delete recipes
+
+Learn how to programmatically create, update, and delete elements.
+Each recipe includes a detailed explanation, step-by-step instructions, and sample code.
+
+Recipes covered:
+
+* xref:element_create_update_delete_recipe.adoc#_create_elements[Create Elements]: Demonstrates how to create elements.
+* xref:element_create_update_delete_recipe.adoc#_update_elements[Update an Existing Elements]: Explains how to update elements.
+* xref:element_create_update_delete_recipe.adoc#_delete_elements[Delete an Existing Elements]: Guides you on deleting elements.
+
+== Create elements
+
+This recipe demonstrates how to add new elements (e.g., Spacecraft System, Payload System) to a project by creating a commit.
+
+Example script to create elements:
+
+[source,python]
+.create_elements.py
+----
+include::example$create_elements.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+* `json`: Constructs the request payload.
+
+<2> *Define the `create_elements` Function* with two parameters:
+
+* `host`: The base API URL.
+* `project_id: The ID of the project to be modified.
+
+<3> *Construct the commit body*: Specifies two elements (Spacecraft System and Payload System) to be created.
+
+<4> *Sends a `POST` request*: Creates a new commit containing the new elements.
+
+<5> *Handles the API response*:
+
+* If successful (HTTP status 200), prints the commit ID and the created elements.
+* If unsuccessful, displays an error message.
+
+Run the script:
+
+[source,bash]
+----
+$ python create_elements.py
+----
+
+Output:
+
+[source,bash]
+----
+TODO
+----
+
+=== Update the name of an element
+
+This recipe demonstrates how to modify an existing element's properties, such as its name, using a new commit.
+
+Example script to update an element:
+
+[source,python]
+.update_element.py
+----
+include::example$update_element.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*
+
+* `requests` and `json`: Handle HTTP requests and payloads.
+* `init_sysmlv2_api`, `fetch_elements`, and `create_commit`: Utility functions for initialization, fetching data, and creating commits.
+
+<2> *Define the `update_element` function* with four parameters:
+
+* `host`: The base API URL.
+* `project_id`: The ID of the project to be modified.
+* `element_id`: The ID of the element to be modified.
+* `element_new_name`: The new name for the element.
+
+<3> *Construct the commit body*: Specifies the updated name for the element.
+
+<4> *Send a POST request*: Creates a commit with the updated element details.
+
+Run the script:
+
+[source,bash]
+----
+$ python update_element.py
+----
+
+Output:
+
+[source,bash]
+----
+TODO
+----
+
+=== Delete an element
+
+This recipe demonstrates how to remove an existing element from a project via a commit.
+
+Example script to update an element:
+
+[source,python]
+.delete_element.py
+----
+include::example$delete_element.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*: `requests`, `json`, and custom utility modules:`init_sysmlv2_api`, `fetch_elements`, and `create_commit`.
+<2> *Define the `delete_element` function* with three parameters:
+
+* `host`: The base API URL.
+* `project_id`: The ID of the project to be modified.
+* `element_id`: The ID of the element to delete.
+
+<3> *Constructs the commit body*: Specifies the deletion of the target element.
+
+<4> *Send a POST request*: Creates a commit marking the element for deletion.
+
+Run the script:
+
+[source,bash]
+----
+$ python update_element.py
+----
+
+Output:
+
+[source,bash]
+----
+TODO
+----
