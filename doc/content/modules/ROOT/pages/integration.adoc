@@ -18,7 +18,7 @@ a|image::tap_app.svg[xref=user-manual:key-features.adoc]
 
 Standard APIs support for seamless connections.
 
-xref:user-manual:integration/api.adoc[Delve into]
+xref:developer-guide:api.adoc[Delve into]
 
 a|image::globe.svg[xref=user-manual:what-is.adoc]
 

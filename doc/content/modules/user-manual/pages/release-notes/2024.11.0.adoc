@@ -6,7 +6,7 @@
 All standard libraries have also been updated.
 - *Introduce SysMLv2 REST APIs*: introduce partial support of the standard REST APIs from the OMG https://www.omg.org/spec/SystemsModelingAPI/[SystemsModelingAPI].
 In this first implementation we have implemented Project-related & Object-related REST APIs.
-Please read the xref:/integration/api.adoc[APIs section] in this documentation for more details.
+Please read the xref:developer-guide:api.adoc[APIs section] in this documentation for more details.
 
 == Breaking changes
 
@@ -101,9 +101,9 @@ Added source sysml file and unaltered ast.json result.
 
 == New features
 
-- Add a new Custom node representing à _Note_ among possible node style descriptions available. 
+- Add a new Custom node representing à _Note_ among possible node style descriptions available.
 The custom node is resizable and the text content is wrapped (back to the line) if it is too long compare to the node size.
-- Represent `Documentation` as _Note_ graphical node. 
+- Represent `Documentation` as _Note_ graphical node.
 The `Documentation` graphical node can appear when user drag and drop `Documentation` element from explorer on the diagram.
 The `Documentation` graphical node is linked to its documented element by an edge and the node can only appear if the documented element is represented on the diagram.
 - Display prefix keywords in labels of `Documentation` graphical nodes.
@@ -111,7 +111,7 @@ The `Documentation` graphical node is linked to its documented element by an edg
 image::release-notes-documentation-note.png[Documentation note node]
 
 - Allow creation of `Comment` from the Explorer view.
-- Add `Comment` representation in graphical views. 
+- Add `Comment` representation in graphical views.
 The `Comment` graphical node can appear when user drag and drop `Comment` element from explorer on the diagram but also when user handle creation tool from the palette.
 The `Comment` graphical node is linked to its annotated element by an edge and the node can only appear if the annotated element is represented on the diagram.
 - Display prefix keywords in labels of `Comment` graphical nodes.
