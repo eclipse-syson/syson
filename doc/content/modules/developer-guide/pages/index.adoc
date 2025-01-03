@@ -66,3 +66,9 @@ Here are the steps to follow:
 .. add `src_default();` as last line
 .. rename it to `syside-cli.js`
 . Copy the renamed file into `your_local_syson_repo/backend/application/syson-import/src/main/resources` (overwrite the existing file).
+
+== Generate a new OpenAPI documentation of REST API
+
+. Build and run the syson server locally (using docker compose as example) on `http://localhost:8080`.
+. Download the documentation at the url: `http://localhost:8080/v3/api-docs/rest-apis`.
+. The swagger-ui user interface is `http://localhost:8080/swagger-ui/index.html`.
