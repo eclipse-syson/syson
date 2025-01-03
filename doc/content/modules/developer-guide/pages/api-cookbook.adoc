@@ -1,0 +1,62 @@
+= APIs cookbook
+The APIs cookbook offers a collection of practical examples and step-by-step instructions to help you interact with {product}’s REST APIs.
+It includes ready-to-use code snippets and explanations, allowing you to integrate with other tools, automate tasks, and explore advanced features efficiently.
+Each recipe aims for clarity, ease of use, and customizability for different use cases.
+
+== Setup instructions
+To get started with the examples, Python is used to interact with {product}’s features and data.
+Python offers a powerful way to automate tasks, handle API calls, and process data, making it an ideal choice for this purpose.
+Follow the steps after to set up your environment and get everything ready to run the provided code snippets.
+
+=== Step 1: Install required Python libraries
+Confirm you have the following Python libraries installed before running the code snippets:
+
+* `requests`: For making HTTP requests to the {sysmlv2} API.
+* `pandas`: For organizing and manipulating data.
+* `json`: For handling JSON responses.
+
+To install these libraries, run:
+
+`pip install requests pandas`
+
+=== Step 2: Configure {sysmlv2} API access
+
+[source,python]
+.init_api.py
+----
+include::example$init_api.py[]
+----
+
+TIP: Replace `http://localhost:8080` with the actual URL of your API server if hosted elsewhere.
+
+*What this code does*:
+
+<1> Define the base host: Assigns the variable `host` with the base URL of the {sysmlv2} API server.
+<2> Define the API endpoint: Specifies the starting point for all REST APIs in {product}, which is `/api/rest/`.
+<3> Construct the full API URL: Combines the base host and the {product} API endpoint into a complete URL for API interaction.
+
+[NOTE]
+====
+In the examples, the {product} server uses a randomization function to generate unique IDs, so outputs can differ when you run the examples on your project.
+====
+
+=== Step 3: Test code snippets
+Once you have configured the {sysmlv2} API access, you can start testing the xref:api-cookbook.adoc#_recipes[recipes].
+
+=== Troubleshooting
+
+. *Error Handling*:
+** Check endpoint URLs, `project_id`, `commit_id`, and `authentication` tokens if the API returns errors: for example, 400 or 500 status codes.
+** Confirm the API is running.
+. *Empty Responses*:
+** Verify that queried elements exist within the specified project and commit.
+** Use the {product} web interface for visual inspection.
+. *Recursive Function Depth*:
+** For large models, manage recursion depth appropriately.
+** Change the logic to handle large datasets by limiting recursion depth.
+
+== Recipes
+
+include::project_commit_branch_tag_recipe.adoc[leveloffset=+2]
+
+include::element_owned_elements.adoc[leveloffset=+2]

@@ -1,0 +1,158 @@
+= Project and commit recipe
+
+Learn how to manage projects and retrieve related commits programmatically.
+Each recipe includes a detailed explanation, step-by-step instructions, and code snippets.
+
+Recipes covered:
+
+* xref:project_commit_branch_tag_recipe.adoc#_get_projects[Get Projects]: Fetch and display all projects currently available on the server.
+* xref:project_commit_branch_tag_recipe.adoc#_create_a_new_project[Create a New Project]: Create a new project with a unique name.
+* xref:project_commit_branch_tag_recipe.adoc#_get_commits[Get Commits]: Retrieve a list of commits for a specific project.
+
+== Get projects
+This code example demonstrates how to use Python's requests library to interact with the {product} API and retrieve a list of projects.
+It sends a `GET` request to the API endpoint for projects, processes the response, and prints the name and ID of each project.
+
+Example script to fetch projects:
+
+[source,python]
+.fetch_projects.py
+----
+include::example$fetch_projects.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `fetch_projects` function* with one parameter:
+
+* `host`: The base API address.
+
+<3> Constructs the *API endpoint* address for fetching projects.
+
+<4> *Sends a `GET` request* to the API, passing the {product} address as a query parameter.
+
+<5> *Handles the API response*:
+
+* If the projects are successfully fetched - HTTP status `200`, the function prints all the projects ID and name.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+----
+$ python fetch_projects.py
+----
+
+Output:
+
+[source,bash]
+----
+Project Name: Batmobile, ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+----
+
+== Create a new project
+This recipe demonstrates how to create a new project in {product} using Python.
+It sends a `POST` request to the `/projects` endpoint to create a new project with a unique name and description.
+
+Example script to create a new project:
+
+[source,python]
+.create_project.py
+----
+include::example$create_project.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+* `datetime`: Used to generate a timestamp for unique project naming.
+<2> *Define the `create_project` function* with two parameters:
+
+* `host`: The base API URL.
+* `project_name`: The name of the project to be created.
+
+<3> Constructs the *API endpoint* URL of project creation.
+
+<4> *Sends a `POST` request* to the API, passing the project name as a query parameter.
+
+<5> *Handles the API response*:
+
+* If the project is successfully created - HTTP status `201`, the function extracts and prints the project ID and name.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+----
+$ python create_project.py
+----
+
+Output:
+
+[source,bash]
+----
+Fetching the list of projects currently available on the server:
+Project Name: Batmobile, ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+Project created successfully:
+Project ID: d967b937-304f-43a9-8af6-b1f3a9d6adbe
+Project Name: New Project - 2024-12-31 10:52:56
+Fetching the updated list of projects after creating a new project:
+Project Name: Batmobile, ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+Project Name: New Project - 2024-12-31 10:52:56, ID: d967b937-304f-43a9-8af6-b1f3a9d6adbe
+----
+
+== Get commits
+
+[IMPORTANT]
+====
+{product} always returns a *single branch* with a *single commit*.
+====
+
+This example extends the functionality by fetching the commit associated with a specific project ID.
+It constructs an address based on the host and project ID, sends a `GET` request, and prints the ID of the retrieved commit.
+
+Example script to fetch commits:
+
+[source,python]
+.fetch_commits.py
+----
+include::example$fetch_commits.py[]
+----
+
+*What this code does*:
+
+<1> *Import required libraries*:
+
+* `requests`: Used for sending HTTP requests.
+<2> *Define the `fetch_commits` Function* with two parameters:
+
+* `host`: The base API URL.
+* `project_id`: The project ID.
+
+<3> Constructs the *API endpoint* URL for fetching commits.
+
+<4> *Sends a `GET` request* to the API, passing the {product} address and the project ID as a query parameter.
+
+<5> *Handles the API response*:
+
+* If the projects are successfully fetched - HTTP status `200`, the function prints all the projects ID and name.
+* If an error occurs, the status code and error message are displayed.
+
+Run the script:
+
+[source,bash]
+----
+$ python fetch_commits.py your-project-id
+----
+
+Output:
+
+[source,bash]
+----
+Commit ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+----

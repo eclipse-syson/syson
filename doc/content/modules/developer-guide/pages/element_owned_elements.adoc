@@ -1,0 +1,79 @@
+= Element owned elements recipe
+
+Learn how to retrieve owned elements programmatically.
+Each recipe includes a detailed explanation, step-by-step instructions, and sample code.
+
+Recipes covered:
+
+* xref:element_owned_element_recipe.adoc#_get_owned_elements[Get Owned Elements]: Retrieve owned elements.
+
+== Get owned elements
+This example demonstrates how to recursively navigate through the hierarchical structure of elements by using the {product} API.
+The script starts from a specific element identified by its ID and retrieves its details along with any "owned elements."
+The function calls itself recursively to explore all child elements in the hierarchy, printing their names, IDs, and types in an indented format to show the hierarchy visually.
+
+Example script to get owned elements:
+
+[source,python]
+.get_owned_element.py
+----
+include::example$get_owned_elements.py[]
+----
+
+*What this code does*:
+
+<1> *Fetches an Element*: Sends a `GET` request to the {product} API to retrieve details about an element specified by its ID.
+
+<2> *Prints Element Details*: Displays the element's name, ID, and type in a formatted, indented way.
+
+<3> *Processes Owned Elements*: Checks for owned elements and calls itself recursively for each one.
+
+<4> *Recursive Traversal*: Continues recursing through hierarchical levels until it explores and prints all owned elements.
+
+This approach helps visualize the structure of complex models or systems, where elements are organized hierarchically.
+It highlights how to navigate relationships between elements efficiently by using the {product} API.
+
+Run the script:
+[source,bash]
+----
+$ python get_owned_elements.py
+----
+
+Output example:
+[source,bash]
+----
+Commit ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+Last Commit ID: 63a03bd8-a81a-4818-801a-01790ce8a086
+Immediate Owned Elements:
+ - Batmobile (Definition)
+   - problemStatement (ReferenceUsage)
+   - systemIdea (ReferenceUsage)
+   - seat (PartUsage)
+   - body (PartUsage)
+   - wheels (PartUsage)
+   - frontLeftWheel (PartUsage)
+   - frontRightWheel (PartUsage)
+   - rearLeftWheel (PartUsage)
+   - rearRightWheel (PartUsage)
+   - battery (PartUsage)
+   - batmobileEngine (PartUsage)
+
+Recursive Owned Elements:
+ - Batmobile (Definition)
+  - problemStatement (ReferenceUsage)
+   - N/A (LiteralString)
+  - systemIdea (ReferenceUsage)
+   - N/A (LiteralString)
+  - seat (PartUsage)
+  - body (PartUsage)
+  - wheels (PartUsage)
+  - frontLeftWheel (PartUsage)
+  - frontRightWheel (PartUsage)
+  - rearLeftWheel (PartUsage)
+  - rearRightWheel (PartUsage)
+  - battery (PartUsage)
+   - powerPort (PortUsage)
+   - capacity (AttributeUsage)
+  - batmobileEngine (PartUsage)
+   - enginePort (PortUsage)
+----
