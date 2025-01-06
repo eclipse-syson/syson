@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ public class NodeDescriptionHasChildrenChecker extends AbstractChecker<NodeDescr
     public void check(NodeDescription nodeDescription) {
         Stream<NodeDescription> children = Stream.concat(nodeDescription.getChildrenDescriptions().stream(), nodeDescription.getReusedChildNodeDescriptions().stream());
         assertThat(children)
-                .as("NodeDescription %s should contain or reuse at least %s NodeDescription as its child", this.expectedChildCountLowerBound, nodeDescription.getName())
+                .as("NodeDescription '%s' should contain or reuse at least %d NodeDescriptions", nodeDescription.getName(), this.expectedChildCountLowerBound)
                 .hasSizeGreaterThanOrEqualTo(this.expectedChildCountLowerBound);
     }
 }
