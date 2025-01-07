@@ -18,6 +18,7 @@ A new drop node tool is available on the diagram, allowing representing `Concern
 - https://github.com/eclipse-syson/syson/issues/899[#899] [general-view] Add `Concern Usage` to General View diagram.
 A new node creation tool is available in the `Requirements` section of the palette, allowing the creation of `Concern Usage` objects.
 A new drop node tool is available on the diagram, allowing representing `Concern Usage` objects as nodes of the diagram.
+- https://github.com/eclipse-syson/syson/issues/941[#941] [details] Prevent edition of imported user libraries from the details view.
  
 === New features
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,7 @@ import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfigu
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
+import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Annotation;
@@ -69,6 +70,7 @@ import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Type;
+import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
  * Java services needed to execute the AQL expressions used in the {@link SysMLv2PropertiesConfigurer}.
@@ -161,9 +163,15 @@ public class DetailsViewService {
         Resource resource = element.eResource();
         if (resource != null) {
             String uri = resource.getURI().toString();
-            isReadOnly = uri.startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME) || uri.startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME);
+            isReadOnly = uri.startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME)
+                    || uri.startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME)
+                    || this.isImportedLibrary(resource);
         }
         return isReadOnly;
+    }
+
+    private boolean isImportedLibrary(Resource resource) {
+        return resource != null && ElementUtil.isImported(resource) && !new UtilService().getLibraries(resource, false).isEmpty();
     }
 
     /**
