@@ -74,13 +74,13 @@ public class TerminateActionUsageItemProvider extends ActionUsageItemProvider {
     }
 
     /**
-     * This returns TerminateActionUsage.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns TerminateActionUsage.svg. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TerminateActionUsage"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TerminateActionUsage.svg"));
     }
 
     /**
