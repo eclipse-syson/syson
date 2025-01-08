@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -102,8 +102,9 @@ public class PortConjugationImpl extends ConjugationImpl implements PortConjugat
             InternalEObject oldOriginalPortDefinition = (InternalEObject) this.originalPortDefinition;
             this.originalPortDefinition = (PortDefinition) this.eResolveProxy(oldOriginalPortDefinition);
             if (this.originalPortDefinition != oldOriginalPortDefinition) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.PORT_CONJUGATION__ORIGINAL_PORT_DEFINITION, oldOriginalPortDefinition, this.originalPortDefinition));
+                }
             }
         }
         return this.originalPortDefinition;
@@ -127,8 +128,9 @@ public class PortConjugationImpl extends ConjugationImpl implements PortConjugat
     public void setOriginalPortDefinition(PortDefinition newOriginalPortDefinition) {
         PortDefinition oldOriginalPortDefinition = this.originalPortDefinition;
         this.originalPortDefinition = newOriginalPortDefinition;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.PORT_CONJUGATION__ORIGINAL_PORT_DEFINITION, oldOriginalPortDefinition, this.originalPortDefinition));
+        }
     }
 
     /**
@@ -140,12 +142,14 @@ public class PortConjugationImpl extends ConjugationImpl implements PortConjugat
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.PORT_CONJUGATION__CONJUGATED_PORT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getConjugatedPortDefinition();
+                }
                 return this.basicGetConjugatedPortDefinition();
             case SysmlPackage.PORT_CONJUGATION__ORIGINAL_PORT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getOriginalPortDefinition();
+                }
                 return this.basicGetOriginalPortDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

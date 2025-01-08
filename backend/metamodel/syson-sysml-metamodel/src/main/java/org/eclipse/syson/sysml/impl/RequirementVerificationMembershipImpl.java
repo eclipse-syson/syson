@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -109,12 +109,14 @@ public class RequirementVerificationMembershipImpl extends RequirementConstraint
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__OWNED_REQUIREMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedRequirement();
+                }
                 return this.basicGetOwnedRequirement();
             case SysmlPackage.REQUIREMENT_VERIFICATION_MEMBERSHIP__VERIFIED_REQUIREMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getVerifiedRequirement();
+                }
                 return this.basicGetVerifiedRequirement();
         }
         return super.eGet(featureID, resolve, coreType);

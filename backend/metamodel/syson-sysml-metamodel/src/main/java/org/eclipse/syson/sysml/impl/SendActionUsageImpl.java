@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -130,16 +130,19 @@ public class SendActionUsageImpl extends ActionUsageImpl implements SendActionUs
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SEND_ACTION_USAGE__PAYLOAD_ARGUMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getPayloadArgument();
+                }
                 return this.basicGetPayloadArgument();
             case SysmlPackage.SEND_ACTION_USAGE__RECEIVER_ARGUMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getReceiverArgument();
+                }
                 return this.basicGetReceiverArgument();
             case SysmlPackage.SEND_ACTION_USAGE__SENDER_ARGUMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getSenderArgument();
+                }
                 return this.basicGetSenderArgument();
         }
         return super.eGet(featureID, resolve, coreType);

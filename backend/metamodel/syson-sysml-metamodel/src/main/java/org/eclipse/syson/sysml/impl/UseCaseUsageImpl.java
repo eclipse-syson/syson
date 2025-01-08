@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -102,8 +102,9 @@ public class UseCaseUsageImpl extends CaseUsageImpl implements UseCaseUsage {
             case SysmlPackage.USE_CASE_USAGE__INCLUDED_USE_CASE:
                 return this.getIncludedUseCase();
             case SysmlPackage.USE_CASE_USAGE__USE_CASE_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getUseCaseDefinition();
+                }
                 return this.basicGetUseCaseDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

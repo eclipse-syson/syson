@@ -2437,8 +2437,9 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      */
     public FeatureDirectionKind createFeatureDirectionKindFromString(EDataType eDataType, String initialValue) {
         FeatureDirectionKind result = FeatureDirectionKind.get(initialValue);
-        if (result == null)
+        if (result == null) {
             throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        }
         return result;
     }
 
@@ -2458,8 +2459,9 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      */
     public PortionKind createPortionKindFromString(EDataType eDataType, String initialValue) {
         PortionKind result = PortionKind.get(initialValue);
-        if (result == null)
+        if (result == null) {
             throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        }
         return result;
     }
 
@@ -2479,8 +2481,9 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      */
     public RequirementConstraintKind createRequirementConstraintKindFromString(EDataType eDataType, String initialValue) {
         RequirementConstraintKind result = RequirementConstraintKind.get(initialValue);
-        if (result == null)
+        if (result == null) {
             throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        }
         return result;
     }
 
@@ -2500,8 +2503,9 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      */
     public StateSubactionKind createStateSubactionKindFromString(EDataType eDataType, String initialValue) {
         StateSubactionKind result = StateSubactionKind.get(initialValue);
-        if (result == null)
+        if (result == null) {
             throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        }
         return result;
     }
 
@@ -2521,8 +2525,9 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      */
     public TransitionFeatureKind createTransitionFeatureKindFromString(EDataType eDataType, String initialValue) {
         TransitionFeatureKind result = TransitionFeatureKind.get(initialValue);
-        if (result == null)
+        if (result == null) {
             throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        }
         return result;
     }
 
@@ -2542,8 +2547,9 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      */
     public TriggerKind createTriggerKindFromString(EDataType eDataType, String initialValue) {
         TriggerKind result = TriggerKind.get(initialValue);
-        if (result == null)
+        if (result == null) {
             throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        }
         return result;
     }
 
@@ -2563,8 +2569,9 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
      */
     public VisibilityKind createVisibilityKindFromString(EDataType eDataType, String initialValue) {
         VisibilityKind result = VisibilityKind.get(initialValue);
-        if (result == null)
+        if (result == null) {
             throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        }
         return result;
     }
 

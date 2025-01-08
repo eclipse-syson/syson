@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -91,8 +91,9 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
             InternalEObject oldFeatureInverted = (InternalEObject) this.featureInverted;
             this.featureInverted = (Feature) this.eResolveProxy(oldFeatureInverted);
             if (this.featureInverted != oldFeatureInverted) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_INVERTING__FEATURE_INVERTED, oldFeatureInverted, this.featureInverted));
+                }
             }
         }
         return this.featureInverted;
@@ -116,8 +117,9 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
     public void setFeatureInverted(Feature newFeatureInverted) {
         Feature oldFeatureInverted = this.featureInverted;
         this.featureInverted = newFeatureInverted;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_INVERTING__FEATURE_INVERTED, oldFeatureInverted, this.featureInverted));
+        }
     }
 
     /**
@@ -131,8 +133,9 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
             InternalEObject oldInvertingFeature = (InternalEObject) this.invertingFeature;
             this.invertingFeature = (Feature) this.eResolveProxy(oldInvertingFeature);
             if (this.invertingFeature != oldInvertingFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_INVERTING__INVERTING_FEATURE, oldInvertingFeature, this.invertingFeature));
+                }
             }
         }
         return this.invertingFeature;
@@ -156,8 +159,9 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
     public void setInvertingFeature(Feature newInvertingFeature) {
         Feature oldInvertingFeature = this.invertingFeature;
         this.invertingFeature = newInvertingFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_INVERTING__INVERTING_FEATURE, oldInvertingFeature, this.invertingFeature));
+        }
     }
 
     /**
@@ -192,16 +196,19 @@ public class FeatureInvertingImpl extends RelationshipImpl implements FeatureInv
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURE_INVERTING__FEATURE_INVERTED:
-                if (resolve)
+                if (resolve) {
                     return this.getFeatureInverted();
+                }
                 return this.basicGetFeatureInverted();
             case SysmlPackage.FEATURE_INVERTING__INVERTING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getInvertingFeature();
+                }
                 return this.basicGetInvertingFeature();
             case SysmlPackage.FEATURE_INVERTING__OWNING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningFeature();
+                }
                 return this.basicGetOwningFeature();
         }
         return super.eGet(featureID, resolve, coreType);

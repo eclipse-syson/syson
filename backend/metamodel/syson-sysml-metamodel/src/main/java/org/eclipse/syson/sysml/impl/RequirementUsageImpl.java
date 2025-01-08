@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -162,8 +162,9 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
     public void setReqId(String newReqId) {
         String oldReqId = this.reqId;
         this.reqId = newReqId;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_USAGE__REQ_ID, oldReqId, this.reqId));
+        }
     }
 
     /**
@@ -284,14 +285,16 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
             case SysmlPackage.REQUIREMENT_USAGE__REQUIRED_CONSTRAINT:
                 return this.getRequiredConstraint();
             case SysmlPackage.REQUIREMENT_USAGE__REQUIREMENT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getRequirementDefinition();
+                }
                 return this.basicGetRequirementDefinition();
             case SysmlPackage.REQUIREMENT_USAGE__STAKEHOLDER_PARAMETER:
                 return this.getStakeholderParameter();
             case SysmlPackage.REQUIREMENT_USAGE__SUBJECT_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getSubjectParameter();
+                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -365,8 +368,9 @@ public class RequirementUsageImpl extends ConstraintUsageImpl implements Require
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (reqId: ");

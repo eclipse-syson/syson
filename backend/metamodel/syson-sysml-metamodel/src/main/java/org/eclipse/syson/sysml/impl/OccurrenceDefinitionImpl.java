@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -92,8 +92,9 @@ public class OccurrenceDefinitionImpl extends DefinitionImpl implements Occurren
     public void setIsIndividual(boolean newIsIndividual) {
         boolean oldIsIndividual = this.isIndividual;
         this.isIndividual = newIsIndividual;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OCCURRENCE_DEFINITION__IS_INDIVIDUAL, oldIsIndividual, this.isIndividual));
+        }
     }
 
     /**
@@ -130,8 +131,9 @@ public class OccurrenceDefinitionImpl extends DefinitionImpl implements Occurren
             case SysmlPackage.OCCURRENCE_DEFINITION__IS_INDIVIDUAL:
                 return this.isIsIndividual();
             case SysmlPackage.OCCURRENCE_DEFINITION__LIFE_CLASS:
-                if (resolve)
+                if (resolve) {
                     return this.getLifeClass();
+                }
                 return this.basicGetLifeClass();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -190,8 +192,9 @@ public class OccurrenceDefinitionImpl extends DefinitionImpl implements Occurren
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isIndividual: ");

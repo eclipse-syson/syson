@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -162,16 +162,19 @@ public class CaseUsageImpl extends CalculationUsageImpl implements CaseUsage {
             case SysmlPackage.CASE_USAGE__ACTOR_PARAMETER:
                 return this.getActorParameter();
             case SysmlPackage.CASE_USAGE__CASE_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getCaseDefinition();
+                }
                 return this.basicGetCaseDefinition();
             case SysmlPackage.CASE_USAGE__OBJECTIVE_REQUIREMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getObjectiveRequirement();
+                }
                 return this.basicGetObjectiveRequirement();
             case SysmlPackage.CASE_USAGE__SUBJECT_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getSubjectParameter();
+                }
                 return this.basicGetSubjectParameter();
         }
         return super.eGet(featureID, resolve, coreType);

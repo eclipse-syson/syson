@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -90,8 +90,9 @@ public class LibraryPackageImpl extends PackageImpl implements LibraryPackage {
     public void setIsStandard(boolean newIsStandard) {
         boolean oldIsStandard = this.isStandard;
         this.isStandard = newIsStandard;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.LIBRARY_PACKAGE__IS_STANDARD, oldIsStandard, this.isStandard));
+        }
     }
 
     /**
@@ -169,8 +170,9 @@ public class LibraryPackageImpl extends PackageImpl implements LibraryPackage {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isStandard: ");

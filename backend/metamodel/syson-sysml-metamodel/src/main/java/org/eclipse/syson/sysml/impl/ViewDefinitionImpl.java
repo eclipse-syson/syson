@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -133,8 +133,9 @@ public class ViewDefinitionImpl extends PartDefinitionImpl implements ViewDefini
             case SysmlPackage.VIEW_DEFINITION__VIEW_CONDITION:
                 return this.getViewCondition();
             case SysmlPackage.VIEW_DEFINITION__VIEW_RENDERING:
-                if (resolve)
+                if (resolve) {
                     return this.getViewRendering();
+                }
                 return this.basicGetViewRendering();
         }
         return super.eGet(featureID, resolve, coreType);

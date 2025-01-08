@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -149,8 +149,9 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
     public void setIsImplied(boolean newIsImplied) {
         boolean oldIsImplied = this.isImplied;
         this.isImplied = newIsImplied;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR__IS_IMPLIED, oldIsImplied, this.isImplied));
+        }
     }
 
     /**
@@ -173,8 +174,9 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
      */
     @Override
     public Element getOwningRelatedElement() {
-        if (this.eContainerFeatureID() != SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT)
+        if (this.eContainerFeatureID() != SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT) {
             return null;
+        }
         return (Element) this.eInternalContainer();
     }
 
@@ -196,18 +198,23 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
     @Override
     public void setOwningRelatedElement(Element newOwningRelatedElement) {
         if (newOwningRelatedElement != this.eInternalContainer() || (this.eContainerFeatureID() != SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT && newOwningRelatedElement != null)) {
-            if (EcoreUtil.isAncestor(this, newOwningRelatedElement))
+            if (EcoreUtil.isAncestor(this, newOwningRelatedElement)) {
                 throw new IllegalArgumentException("Recursive containment not allowed for " + this.toString());
+            }
             NotificationChain msgs = null;
-            if (this.eInternalContainer() != null)
+            if (this.eInternalContainer() != null) {
                 msgs = this.eBasicRemoveFromContainer(msgs);
-            if (newOwningRelatedElement != null)
+            }
+            if (newOwningRelatedElement != null) {
                 msgs = ((InternalEObject) newOwningRelatedElement).eInverseAdd(this, SysmlPackage.ELEMENT__OWNED_RELATIONSHIP, Element.class, msgs);
+            }
             msgs = this.basicSetOwningRelatedElement(newOwningRelatedElement, msgs);
-            if (msgs != null)
+            if (msgs != null) {
                 msgs.dispatch();
-        } else if (this.eNotificationRequired())
+            }
+        } else if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT, newOwningRelatedElement, newOwningRelatedElement));
+        }
     }
 
     /**
@@ -319,8 +326,9 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
             case SysmlPackage.CONNECTOR__OWNED_RELATED_ELEMENT:
                 return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getOwnedRelatedElement()).basicAdd(otherEnd, msgs);
             case SysmlPackage.CONNECTOR__OWNING_RELATED_ELEMENT:
-                if (this.eInternalContainer() != null)
+                if (this.eInternalContainer() != null) {
                     msgs = this.eBasicRemoveFromContainer(msgs);
+                }
                 return this.basicSetOwningRelatedElement((Element) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -383,8 +391,9 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
             case SysmlPackage.CONNECTOR__RELATED_FEATURE:
                 return this.getRelatedFeature();
             case SysmlPackage.CONNECTOR__SOURCE_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getSourceFeature();
+                }
                 return this.basicGetSourceFeature();
             case SysmlPackage.CONNECTOR__TARGET_FEATURE:
                 return this.getTargetFeature();
@@ -547,8 +556,9 @@ public class ConnectorImpl extends FeatureImpl implements Connector {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isImplied: ");

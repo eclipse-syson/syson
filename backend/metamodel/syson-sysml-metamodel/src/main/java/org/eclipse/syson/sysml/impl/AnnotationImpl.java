@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -94,8 +94,9 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
             InternalEObject oldAnnotatedElement = (InternalEObject) this.annotatedElement;
             this.annotatedElement = (Element) this.eResolveProxy(oldAnnotatedElement);
             if (this.annotatedElement != oldAnnotatedElement) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.ANNOTATION__ANNOTATED_ELEMENT, oldAnnotatedElement, this.annotatedElement));
+                }
             }
         }
         return this.annotatedElement;
@@ -119,8 +120,9 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
     public void setAnnotatedElement(Element newAnnotatedElement) {
         Element oldAnnotatedElement = this.annotatedElement;
         this.annotatedElement = newAnnotatedElement;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.ANNOTATION__ANNOTATED_ELEMENT, oldAnnotatedElement, this.annotatedElement));
+        }
     }
 
     /**
@@ -134,8 +136,9 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
             InternalEObject oldAnnotatingElement = (InternalEObject) this.annotatingElement;
             this.annotatingElement = (AnnotatingElement) this.eResolveProxy(oldAnnotatingElement);
             if (this.annotatingElement != oldAnnotatingElement) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT, oldAnnotatingElement, this.annotatingElement));
+                }
             }
         }
         return this.annotatingElement;
@@ -160,10 +163,11 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
         this.annotatingElement = newAnnotatingElement;
         if (this.eNotificationRequired()) {
             ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT, oldAnnotatingElement, newAnnotatingElement);
-            if (msgs == null)
+            if (msgs == null) {
                 msgs = notification;
-            else
+            } else {
                 msgs.add(notification);
+            }
         }
         return msgs;
     }
@@ -177,15 +181,19 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
     public void setAnnotatingElement(AnnotatingElement newAnnotatingElement) {
         if (newAnnotatingElement != this.annotatingElement) {
             NotificationChain msgs = null;
-            if (this.annotatingElement != null)
+            if (this.annotatingElement != null) {
                 msgs = ((InternalEObject) this.annotatingElement).eInverseRemove(this, SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION, AnnotatingElement.class, msgs);
-            if (newAnnotatingElement != null)
+            }
+            if (newAnnotatingElement != null) {
                 msgs = ((InternalEObject) newAnnotatingElement).eInverseAdd(this, SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION, AnnotatingElement.class, msgs);
+            }
             msgs = this.basicSetAnnotatingElement(newAnnotatingElement, msgs);
-            if (msgs != null)
+            if (msgs != null) {
                 msgs.dispatch();
-        } else if (this.eNotificationRequired())
+            }
+        } else if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT, newAnnotatingElement, newAnnotatingElement));
+        }
     }
 
     /**
@@ -243,8 +251,9 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT:
-                if (this.annotatingElement != null)
+                if (this.annotatingElement != null) {
                     msgs = ((InternalEObject) this.annotatingElement).eInverseRemove(this, SysmlPackage.ANNOTATING_ELEMENT__ANNOTATION, AnnotatingElement.class, msgs);
+                }
                 return this.basicSetAnnotatingElement((AnnotatingElement) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -273,20 +282,24 @@ public class AnnotationImpl extends RelationshipImpl implements Annotation {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.ANNOTATION__ANNOTATED_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getAnnotatedElement();
+                }
                 return this.basicGetAnnotatedElement();
             case SysmlPackage.ANNOTATION__ANNOTATING_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getAnnotatingElement();
+                }
                 return this.basicGetAnnotatingElement();
             case SysmlPackage.ANNOTATION__OWNING_ANNOTATED_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningAnnotatedElement();
+                }
                 return this.basicGetOwningAnnotatedElement();
             case SysmlPackage.ANNOTATION__OWNING_ANNOTATING_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningAnnotatingElement();
+                }
                 return this.basicGetOwningAnnotatingElement();
         }
         return super.eGet(featureID, resolve, coreType);

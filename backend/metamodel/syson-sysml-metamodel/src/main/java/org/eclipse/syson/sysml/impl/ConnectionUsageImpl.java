@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -165,8 +165,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
     public void setIsIndividual(boolean newIsIndividual) {
         boolean oldIsIndividual = this.isIndividual;
         this.isIndividual = newIsIndividual;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_USAGE__IS_INDIVIDUAL, oldIsIndividual, this.isIndividual));
+        }
     }
 
     /**
@@ -201,8 +202,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
         this.portionKind = newPortionKind == null ? PORTION_KIND_EDEFAULT : newPortionKind;
         boolean oldPortionKindESet = this.portionKindESet;
         this.portionKindESet = true;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONNECTION_USAGE__PORTION_KIND, oldPortionKind, this.portionKind, !oldPortionKindESet));
+        }
     }
 
     /**
@@ -216,8 +218,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
         boolean oldPortionKindESet = this.portionKindESet;
         this.portionKind = PORTION_KIND_EDEFAULT;
         this.portionKindESet = false;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.UNSET, SysmlPackage.CONNECTION_USAGE__PORTION_KIND, oldPortionKind, PORTION_KIND_EDEFAULT, oldPortionKindESet));
+        }
     }
 
     /**
@@ -276,8 +279,9 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
             case SysmlPackage.CONNECTION_USAGE__PORTION_KIND:
                 return this.getPortionKind();
             case SysmlPackage.CONNECTION_USAGE__INDIVIDUAL_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getIndividualDefinition();
+                }
                 return this.basicGetIndividualDefinition();
             case SysmlPackage.CONNECTION_USAGE__OCCURRENCE_DEFINITION:
                 return this.getOccurrenceDefinition();
@@ -441,17 +445,19 @@ public class ConnectionUsageImpl extends ConnectorAsUsageImpl implements Connect
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isIndividual: ");
         result.append(this.isIndividual);
         result.append(", portionKind: ");
-        if (this.portionKindESet)
+        if (this.portionKindESet) {
             result.append(this.portionKind);
-        else
+        } else {
             result.append("<unset>");
+        }
         result.append(')');
         return result.toString();
     }

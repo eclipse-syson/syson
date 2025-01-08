@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -259,20 +259,24 @@ public class ConstraintUsageImpl extends OccurrenceUsageImpl implements Constrai
             case SysmlPackage.CONSTRAINT_USAGE__IS_MODEL_LEVEL_EVALUABLE:
                 return this.isIsModelLevelEvaluable();
             case SysmlPackage.CONSTRAINT_USAGE__FUNCTION:
-                if (resolve)
+                if (resolve) {
                     return this.getFunction();
+                }
                 return this.basicGetFunction();
             case SysmlPackage.CONSTRAINT_USAGE__RESULT:
-                if (resolve)
+                if (resolve) {
                     return this.getResult();
+                }
                 return this.basicGetResult();
             case SysmlPackage.CONSTRAINT_USAGE__PREDICATE:
-                if (resolve)
+                if (resolve) {
                     return this.getPredicate();
+                }
                 return this.basicGetPredicate();
             case SysmlPackage.CONSTRAINT_USAGE__CONSTRAINT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getConstraintDefinition();
+                }
                 return this.basicGetConstraintDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

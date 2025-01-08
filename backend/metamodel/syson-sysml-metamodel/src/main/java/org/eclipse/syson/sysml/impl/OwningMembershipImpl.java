@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -188,8 +188,9 @@ public class OwningMembershipImpl extends MembershipImpl implements OwningMember
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_SHORT_NAME:
                 return this.getOwnedMemberShortName();
             case SysmlPackage.OWNING_MEMBERSHIP__OWNED_MEMBER_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedMemberElement();
+                }
                 return this.basicGetOwnedMemberElement();
         }
         return super.eGet(featureID, resolve, coreType);

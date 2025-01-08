@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -80,8 +80,9 @@ public class FeatureChainingImpl extends RelationshipImpl implements FeatureChai
             InternalEObject oldChainingFeature = (InternalEObject) this.chainingFeature;
             this.chainingFeature = (Feature) this.eResolveProxy(oldChainingFeature);
             if (this.chainingFeature != oldChainingFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_CHAINING__CHAINING_FEATURE, oldChainingFeature, this.chainingFeature));
+                }
             }
         }
         return this.chainingFeature;
@@ -105,8 +106,9 @@ public class FeatureChainingImpl extends RelationshipImpl implements FeatureChai
     public void setChainingFeature(Feature newChainingFeature) {
         Feature oldChainingFeature = this.chainingFeature;
         this.chainingFeature = newChainingFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_CHAINING__CHAINING_FEATURE, oldChainingFeature, this.chainingFeature));
+        }
     }
 
     /**
@@ -141,12 +143,14 @@ public class FeatureChainingImpl extends RelationshipImpl implements FeatureChai
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURE_CHAINING__CHAINING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getChainingFeature();
+                }
                 return this.basicGetChainingFeature();
             case SysmlPackage.FEATURE_CHAINING__FEATURE_CHAINED:
-                if (resolve)
+                if (resolve) {
                     return this.getFeatureChained();
+                }
                 return this.basicGetFeatureChained();
         }
         return super.eGet(featureID, resolve, coreType);
