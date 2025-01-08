@@ -4,6 +4,8 @@
 
 === Shapes
 
+- Add support for library publication
+
 === Breaking changes
 
 === Dependency update
