@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,6 +55,8 @@ public final class SysMLv2Identifiers {
     public static final String INTERCONNECTION_VIEW_WITH_TOP_NODES_DIAGRAM = "ea522a25-80fd-4e16-8256-5a34e4cb687b";
 
     public static final String INTERCONNECTION_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT = "5465efdc-f100-4854-9f86-d09f63de1d3b";
+
+    public static final String SYSON_STUDIO_PROJECT = "86f60dca-c918-4d16-b508-0221af030652";
 
 
     private SysMLv2Identifiers() {

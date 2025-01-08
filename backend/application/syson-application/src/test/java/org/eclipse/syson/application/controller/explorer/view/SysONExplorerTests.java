@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.labels.StyledStringFragment;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.tests.graphql.ExplorerDescriptionsQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
@@ -49,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.execution.DataFetcherResult;
@@ -98,17 +100,36 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .toList();
     }
 
-    @DisplayName("Given an empty SysML Project, when the available explorers are requested, then all the explorers are returned")
+    @DisplayName("Given an empty SysML Project, when the available explorers are requested, then the SysON explorer is returned")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void getAvailableExplorers() {
+    public void getAvailableExplorersForSysMLv2Project() {
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
         Map<String, Object> explorerVariables = Map.of(
                 "editingContextId", SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(1);
         assertThat(explorerIds).contains(this.treeDescriptionId);
+    }
+
+    @DisplayName("Given a SysON Studio Project, when the available explorers are requested, then the Sirius Web explorer is returned")
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getAvailableExplorersForStudioProject() {
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+        Map<String, Object> explorerVariables = Map.of(
+                "editingContextId", SysMLv2Identifiers.SYSON_STUDIO_PROJECT);
+        var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
+        List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
+        assertThat(explorerIds).hasSize(1);
+        assertThat(explorerIds).contains(ExplorerDescriptionProvider.DESCRIPTION_ID);
     }
 
     @DisplayName("Given an empty SysML Project, when the explorer is displayed, then the libraries are visible and the root namespace and memberships are not visible")
