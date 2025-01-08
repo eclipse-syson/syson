@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -109,8 +109,9 @@ public class CommentImpl extends AnnotatingElementImpl implements Comment {
     public void setBody(String newBody) {
         String oldBody = this.body;
         this.body = newBody;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.COMMENT__BODY, oldBody, this.body));
+        }
     }
 
     /**
@@ -132,8 +133,9 @@ public class CommentImpl extends AnnotatingElementImpl implements Comment {
     public void setLocale(String newLocale) {
         String oldLocale = this.locale;
         this.locale = newLocale;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.COMMENT__LOCALE, oldLocale, this.locale));
+        }
     }
 
     /**
@@ -211,8 +213,9 @@ public class CommentImpl extends AnnotatingElementImpl implements Comment {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (body: ");

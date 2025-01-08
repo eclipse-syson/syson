@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -96,8 +96,9 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
     public void setKind(TransitionFeatureKind newKind) {
         TransitionFeatureKind oldKind = this.kind;
         this.kind = newKind == null ? KIND_EDEFAULT : newKind;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__KIND, oldKind, this.kind));
+        }
     }
 
     /**
@@ -136,8 +137,9 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__KIND:
                 return this.getKind();
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP__TRANSITION_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getTransitionFeature();
+                }
                 return this.basicGetTransitionFeature();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -196,8 +198,9 @@ public class TransitionFeatureMembershipImpl extends FeatureMembershipImpl imple
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (kind: ");

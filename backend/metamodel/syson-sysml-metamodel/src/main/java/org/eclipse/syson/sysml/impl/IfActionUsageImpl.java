@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -131,16 +131,19 @@ public class IfActionUsageImpl extends ActionUsageImpl implements IfActionUsage 
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.IF_ACTION_USAGE__ELSE_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getElseAction();
+                }
                 return this.basicGetElseAction();
             case SysmlPackage.IF_ACTION_USAGE__IF_ARGUMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getIfArgument();
+                }
                 return this.basicGetIfArgument();
             case SysmlPackage.IF_ACTION_USAGE__THEN_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getThenAction();
+                }
                 return this.basicGetThenAction();
         }
         return super.eGet(featureID, resolve, coreType);

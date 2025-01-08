@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -198,20 +198,23 @@ public class ItemFlowImpl extends ConnectorImpl implements ItemFlow {
             case SysmlPackage.ITEM_FLOW__INTERACTION:
                 return this.getInteraction();
             case SysmlPackage.ITEM_FLOW__ITEM_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getItemFeature();
+                }
                 return this.basicGetItemFeature();
             case SysmlPackage.ITEM_FLOW__ITEM_FLOW_END:
                 return this.getItemFlowEnd();
             case SysmlPackage.ITEM_FLOW__ITEM_TYPE:
                 return this.getItemType();
             case SysmlPackage.ITEM_FLOW__SOURCE_OUTPUT_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getSourceOutputFeature();
+                }
                 return this.basicGetSourceOutputFeature();
             case SysmlPackage.ITEM_FLOW__TARGET_INPUT_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getTargetInputFeature();
+                }
                 return this.basicGetTargetInputFeature();
         }
         return super.eGet(featureID, resolve, coreType);

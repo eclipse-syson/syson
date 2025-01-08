@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -126,8 +126,9 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
     public void setKind(StateSubactionKind newKind) {
         StateSubactionKind oldKind = this.kind;
         this.kind = newKind == null ? KIND_EDEFAULT : newKind;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.STATE_SUBACTION_MEMBERSHIP__KIND, oldKind, this.kind));
+        }
     }
 
     /**
@@ -141,8 +142,9 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
             case SysmlPackage.STATE_SUBACTION_MEMBERSHIP__KIND:
                 return this.getKind();
             case SysmlPackage.STATE_SUBACTION_MEMBERSHIP__ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getAction();
+                }
                 return this.basicGetAction();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -201,8 +203,9 @@ public class StateSubactionMembershipImpl extends FeatureMembershipImpl implemen
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (kind: ");

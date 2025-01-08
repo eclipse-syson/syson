@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -88,8 +88,9 @@ public class InvariantImpl extends BooleanExpressionImpl implements Invariant {
     public void setIsNegated(boolean newIsNegated) {
         boolean oldIsNegated = this.isNegated;
         this.isNegated = newIsNegated;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.INVARIANT__IS_NEGATED, oldIsNegated, this.isNegated));
+        }
     }
 
     /**
@@ -157,8 +158,9 @@ public class InvariantImpl extends BooleanExpressionImpl implements Invariant {
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isNegated: ");

@@ -1329,8 +1329,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     public static SysmlPackage init() {
-        if (isInited)
+        if (isInited) {
             return (SysmlPackage) EPackage.Registry.INSTANCE.getEPackage(SysmlPackage.eNS_URI);
+        }
 
         // Obtain or create and register package
         Object registeredSysmlPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
@@ -7829,8 +7830,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     public void createPackageContents() {
-        if (this.isCreated)
+        if (this.isCreated) {
             return;
+        }
         this.isCreated = true;
 
         // Create classes and their features
@@ -8669,8 +8671,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     public void initializePackageContents() {
-        if (this.isInitialized)
+        if (this.isInitialized) {
             return;
+        }
         this.isInitialized = true;
 
         // Initialize package

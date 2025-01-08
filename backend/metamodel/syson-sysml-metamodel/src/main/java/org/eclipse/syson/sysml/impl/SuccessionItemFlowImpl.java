@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -130,8 +130,9 @@ public class SuccessionItemFlowImpl extends ItemFlowImpl implements SuccessionIt
             case SysmlPackage.SUCCESSION_ITEM_FLOW__GUARD_EXPRESSION:
                 return this.getGuardExpression();
             case SysmlPackage.SUCCESSION_ITEM_FLOW__TRANSITION_STEP:
-                if (resolve)
+                if (resolve) {
                     return this.getTransitionStep();
+                }
                 return this.basicGetTransitionStep();
             case SysmlPackage.SUCCESSION_ITEM_FLOW__TRIGGER_STEP:
                 return this.getTriggerStep();

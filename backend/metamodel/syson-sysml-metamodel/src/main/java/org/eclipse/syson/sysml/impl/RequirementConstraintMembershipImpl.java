@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,8 +97,9 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
     public void setKind(RequirementConstraintKind newKind) {
         RequirementConstraintKind oldKind = this.kind;
         this.kind = newKind == null ? KIND_EDEFAULT : newKind;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND, oldKind, this.kind));
+        }
     }
 
     /**
@@ -159,12 +160,14 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__KIND:
                 return this.getKind();
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__OWNED_CONSTRAINT:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedConstraint();
+                }
                 return this.basicGetOwnedConstraint();
             case SysmlPackage.REQUIREMENT_CONSTRAINT_MEMBERSHIP__REFERENCED_CONSTRAINT:
-                if (resolve)
+                if (resolve) {
                     return this.getReferencedConstraint();
+                }
                 return this.basicGetReferencedConstraint();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -225,8 +228,9 @@ public class RequirementConstraintMembershipImpl extends FeatureMembershipImpl i
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (kind: ");

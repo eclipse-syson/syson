@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -106,8 +106,9 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
             InternalEObject oldSubclassifier = (InternalEObject) this.subclassifier;
             this.subclassifier = (Classifier) this.eResolveProxy(oldSubclassifier);
             if (this.subclassifier != oldSubclassifier) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SUBCLASSIFICATION__SUBCLASSIFIER, oldSubclassifier, this.subclassifier));
+                }
             }
         }
         return this.subclassifier;
@@ -131,8 +132,9 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
     public void setSubclassifier(Classifier newSubclassifier) {
         Classifier oldSubclassifier = this.subclassifier;
         this.subclassifier = newSubclassifier;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SUBCLASSIFICATION__SUBCLASSIFIER, oldSubclassifier, this.subclassifier));
+        }
     }
 
     /**
@@ -146,8 +148,9 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
             InternalEObject oldSuperclassifier = (InternalEObject) this.superclassifier;
             this.superclassifier = (Classifier) this.eResolveProxy(oldSuperclassifier);
             if (this.superclassifier != oldSuperclassifier) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SUBCLASSIFICATION__SUPERCLASSIFIER, oldSuperclassifier, this.superclassifier));
+                }
             }
         }
         return this.superclassifier;
@@ -171,8 +174,9 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
     public void setSuperclassifier(Classifier newSuperclassifier) {
         Classifier oldSuperclassifier = this.superclassifier;
         this.superclassifier = newSuperclassifier;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SUBCLASSIFICATION__SUPERCLASSIFIER, oldSuperclassifier, this.superclassifier));
+        }
     }
 
     /**
@@ -184,16 +188,19 @@ public class SubclassificationImpl extends SpecializationImpl implements Subclas
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SUBCLASSIFICATION__OWNING_CLASSIFIER:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningClassifier();
+                }
                 return this.basicGetOwningClassifier();
             case SysmlPackage.SUBCLASSIFICATION__SUBCLASSIFIER:
-                if (resolve)
+                if (resolve) {
                     return this.getSubclassifier();
+                }
                 return this.basicGetSubclassifier();
             case SysmlPackage.SUBCLASSIFICATION__SUPERCLASSIFIER:
-                if (resolve)
+                if (resolve) {
                     return this.getSuperclassifier();
+                }
                 return this.basicGetSuperclassifier();
         }
         return super.eGet(featureID, resolve, coreType);

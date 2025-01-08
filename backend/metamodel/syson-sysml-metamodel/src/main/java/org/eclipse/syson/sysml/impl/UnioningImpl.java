@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -102,8 +102,9 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
             InternalEObject oldUnioningType = (InternalEObject) this.unioningType;
             this.unioningType = (Type) this.eResolveProxy(oldUnioningType);
             if (this.unioningType != oldUnioningType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.UNIONING__UNIONING_TYPE, oldUnioningType, this.unioningType));
+                }
             }
         }
         return this.unioningType;
@@ -127,8 +128,9 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
     public void setUnioningType(Type newUnioningType) {
         Type oldUnioningType = this.unioningType;
         this.unioningType = newUnioningType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.UNIONING__UNIONING_TYPE, oldUnioningType, this.unioningType));
+        }
     }
 
     /**
@@ -140,12 +142,14 @@ public class UnioningImpl extends RelationshipImpl implements Unioning {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.UNIONING__TYPE_UNIONED:
-                if (resolve)
+                if (resolve) {
                     return this.getTypeUnioned();
+                }
                 return this.basicGetTypeUnioned();
             case SysmlPackage.UNIONING__UNIONING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getUnioningType();
+                }
                 return this.basicGetUnioningType();
         }
         return super.eGet(featureID, resolve, coreType);

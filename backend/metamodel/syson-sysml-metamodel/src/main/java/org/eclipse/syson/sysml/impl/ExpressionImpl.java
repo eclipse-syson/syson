@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -175,12 +175,14 @@ public class ExpressionImpl extends StepImpl implements Expression {
             case SysmlPackage.EXPRESSION__IS_MODEL_LEVEL_EVALUABLE:
                 return this.isIsModelLevelEvaluable();
             case SysmlPackage.EXPRESSION__FUNCTION:
-                if (resolve)
+                if (resolve) {
                     return this.getFunction();
+                }
                 return this.basicGetFunction();
             case SysmlPackage.EXPRESSION__RESULT:
-                if (resolve)
+                if (resolve) {
                     return this.getResult();
+                }
                 return this.basicGetResult();
         }
         return super.eGet(featureID, resolve, coreType);

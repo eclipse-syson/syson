@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -84,8 +84,9 @@ public abstract class FeaturingImpl extends RelationshipImpl implements Featurin
             InternalEObject oldFeature = (InternalEObject) this.feature;
             this.feature = (Feature) this.eResolveProxy(oldFeature);
             if (this.feature != oldFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURING__FEATURE, oldFeature, this.feature));
+                }
             }
         }
         return this.feature;
@@ -109,8 +110,9 @@ public abstract class FeaturingImpl extends RelationshipImpl implements Featurin
     public void setFeature(Feature newFeature) {
         Feature oldFeature = this.feature;
         this.feature = newFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURING__FEATURE, oldFeature, this.feature));
+        }
     }
 
     /**
@@ -124,8 +126,9 @@ public abstract class FeaturingImpl extends RelationshipImpl implements Featurin
             InternalEObject oldType = (InternalEObject) this.type;
             this.type = (Type) this.eResolveProxy(oldType);
             if (this.type != oldType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURING__TYPE, oldType, this.type));
+                }
             }
         }
         return this.type;
@@ -149,8 +152,9 @@ public abstract class FeaturingImpl extends RelationshipImpl implements Featurin
     public void setType(Type newType) {
         Type oldType = this.type;
         this.type = newType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURING__TYPE, oldType, this.type));
+        }
     }
 
     /**
@@ -162,12 +166,14 @@ public abstract class FeaturingImpl extends RelationshipImpl implements Featurin
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURING__FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getFeature();
+                }
                 return this.basicGetFeature();
             case SysmlPackage.FEATURING__TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getType();
+                }
                 return this.basicGetType();
         }
         return super.eGet(featureID, resolve, coreType);

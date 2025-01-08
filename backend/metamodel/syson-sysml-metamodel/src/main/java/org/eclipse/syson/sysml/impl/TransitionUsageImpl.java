@@ -311,16 +311,19 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
             case SysmlPackage.TRANSITION_USAGE__GUARD_EXPRESSION:
                 return this.getGuardExpression();
             case SysmlPackage.TRANSITION_USAGE__SOURCE:
-                if (resolve)
+                if (resolve) {
                     return this.getSource();
+                }
                 return this.basicGetSource();
             case SysmlPackage.TRANSITION_USAGE__SUCCESSION:
-                if (resolve)
+                if (resolve) {
                     return this.getSuccession();
+                }
                 return this.basicGetSuccession();
             case SysmlPackage.TRANSITION_USAGE__TARGET:
-                if (resolve)
+                if (resolve) {
                     return this.getTarget();
+                }
                 return this.basicGetTarget();
             case SysmlPackage.TRANSITION_USAGE__TRIGGER_ACTION:
                 return this.getTriggerAction();

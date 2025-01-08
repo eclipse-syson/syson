@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1100,7 +1100,8 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         // A composite TransitionUsage whose owningType is a ActionDefinition or ActionUsage, but not a StateDefinition
         // or StateUsage, must directly or indirectly specialize the ActionUsage Actions::Action::decisionTransitions
         // from the Systems Model Library.
-        // A composite TransitionUsage whose owningType is a StateDefinition or StateUsage must directly or indirectly specialize the ActionUsage States::State::stateTransitions from the Systems Model Library.
+        // A composite TransitionUsage whose owningType is a StateDefinition or StateUsage must directly or indirectly
+        // specialize the ActionUsage States::State::stateTransitions from the Systems Model Library.
         var owningType = object.getOwningType();
         if (object.isIsComposite() && (owningType instanceof ActionDefinition || owningType instanceof ActionUsage)) {
             if (!(owningType instanceof StateDefinition || owningType instanceof StateUsage)) {
