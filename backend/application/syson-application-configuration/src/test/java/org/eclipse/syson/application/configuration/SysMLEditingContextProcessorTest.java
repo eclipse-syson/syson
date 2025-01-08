@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.syson.application.configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
@@ -33,6 +34,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.syson.util.SysONEContentAdapter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -41,12 +43,12 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 /**
  * Tests about loading of SysML Standard libraries.
- * 
+ *
  * @author arichard
  */
 public class SysMLEditingContextProcessorTest {
 
-    
+
     private static ResourceSet resourceSet;
 
     @BeforeAll
@@ -63,7 +65,7 @@ public class SysMLEditingContextProcessorTest {
         resourceSet.setPackageRegistry(ePackageRegistry);
         resourceSet.eAdapters().add(new ECrossReferenceAdapter());
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
-        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysMLStandardLibrariesConfiguration());
+        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysMLStandardLibrariesConfiguration(), e -> false);
         editingContextProcessor.preProcess(editingContext);
         assertNotNull(resourceSet);
     }
@@ -94,5 +96,25 @@ public class SysMLEditingContextProcessorTest {
             Resource emfResource = resourceSet.getResource(uri, false);
             assertNotNull(emfResource, "Unable to load " + libraryFilePath);
         }
+    }
+
+    @Test
+    public void preProcessStudioEditingContext() {
+        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory();
+        composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
+        composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
+
+        EPackage.Registry ePackageRegistry = new EPackageRegistryImpl();
+        ePackageRegistry.put(EcorePackage.eINSTANCE.getNsURI(), EcorePackage.eINSTANCE);
+
+        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack());
+        ResourceSet rSet = editingDomain.getResourceSet();
+        rSet.setPackageRegistry(ePackageRegistry);
+        rSet.eAdapters().add(new ECrossReferenceAdapter());
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysMLStandardLibrariesConfiguration(), e -> true);
+        editingContextProcessor.preProcess(editingContext);
+
+        assertThat(editingContext.getDomain().getResourceSet().eAdapters()).noneMatch(adapter -> adapter instanceof SysONEContentAdapter);
     }
 }

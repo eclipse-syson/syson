@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.eclipse.syson.util.SysONEContentAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,13 +48,18 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
 
     private final SysMLStandardLibrariesConfiguration standardLibraries;
 
-    public SysMLEditingContextProcessor(SysMLStandardLibrariesConfiguration standardLibraries) {
+    private final IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate;
+
+    public SysMLEditingContextProcessor(SysMLStandardLibrariesConfiguration standardLibraries, IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate) {
         this.standardLibraries = Objects.requireNonNull(standardLibraries);
+        this.studioCapableEditingContextPredicate = Objects.requireNonNull(studioCapableEditingContextPredicate);
     }
 
     @Override
     public void preProcess(IEditingContext editingContext) {
-        if (editingContext instanceof IEMFEditingContext siriusWebEditingContext) {
+        if (editingContext instanceof IEMFEditingContext siriusWebEditingContext
+                && !this.studioCapableEditingContextPredicate.test(editingContext)) {
+            // Do not initialize the editing context as a SysON editing context if it contains a studio.
             siriusWebEditingContext.getDomain().getResourceSet().eAdapters().add(new SysONEContentAdapter());
 
             Instant start = Instant.now();

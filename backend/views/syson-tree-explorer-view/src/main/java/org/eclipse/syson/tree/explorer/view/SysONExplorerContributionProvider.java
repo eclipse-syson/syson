@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.syson.tree.explorer.view;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -20,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.tree.ITreeIdProvider;
+import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeDescriptionProvider;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +37,13 @@ public class SysONExplorerContributionProvider implements IExplorerTreeDescripti
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
+    private final IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate;
+
     public SysONExplorerContributionProvider(IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
-        this.representationDescriptionSearchService = representationDescriptionSearchService;
-        this.viewRepresentationDescriptionSearchService = viewRepresentationDescriptionSearchService;
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate) {
+        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
+        this.studioCapableEditingContextPredicate = Objects.requireNonNull(studioCapableEditingContextPredicate);
     }
 
     @Override
@@ -51,12 +56,18 @@ public class SysONExplorerContributionProvider implements IExplorerTreeDescripti
     }
 
     private Optional<TreeDescription> getSysONExplorerTreeDescription(IEditingContext editingContext) {
-        return this.representationDescriptionSearchService
-                .findAll(editingContext).values().stream()
-                .filter(TreeDescription.class::isInstance)
-                .map(TreeDescription.class::cast)
-                .filter(td -> this.isSysONExplorerView(td, editingContext))
-                .findFirst();
+        Optional<TreeDescription> result = Optional.empty();
+        if (!this.studioCapableEditingContextPredicate.test(editingContext)) {
+            // Do not use the custom SysON Explorer in studio project: they should be managed by the Sirius Web
+            // explorer.
+            result = this.representationDescriptionSearchService
+                    .findAll(editingContext).values().stream()
+                    .filter(TreeDescription.class::isInstance)
+                    .map(TreeDescription.class::cast)
+                    .filter(td -> this.isSysONExplorerView(td, editingContext))
+                    .findFirst();
+        }
+        return result;
     }
 
     private boolean isSysONExplorerView(TreeDescription treeDescription, IEditingContext editingContext) {
