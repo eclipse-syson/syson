@@ -31,9 +31,10 @@ image::release-notes-gv-concern-usage.png[Concern Usage node creation tool, widt
 - Align metamodel to SysMLv2 and KerML Beta 2.3 specifications.
 The changes are:
 * TransitionUsage
-** new derived operation `sourceFeature() : Feature``
+** new operation `sourceFeature() : Feature`
 * New class TerminateActionUsage
 ** with new derived reference `terminatedOccurrenceArgument : Expression`
+- All standard libraries have been updated to comply with the SysML Beta 2.3 specification.
 
 == Dependency update
 
