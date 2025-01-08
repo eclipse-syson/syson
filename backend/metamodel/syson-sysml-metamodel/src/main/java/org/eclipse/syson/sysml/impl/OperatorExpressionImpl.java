@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -89,8 +89,9 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
     public void setOperator(String newOperator) {
         String oldOperator = this.operator;
         this.operator = newOperator;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.OPERATOR_EXPRESSION__OPERATOR, oldOperator, this.operator));
+        }
     }
 
     /**
@@ -159,8 +160,9 @@ public class OperatorExpressionImpl extends InvocationExpressionImpl implements 
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (operator: ");

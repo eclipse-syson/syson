@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -89,8 +89,9 @@ public class LiteralRationalImpl extends LiteralExpressionImpl implements Litera
     public void setValue(double newValue) {
         double oldValue = this.value;
         this.value = newValue;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.LITERAL_RATIONAL__VALUE, oldValue, this.value));
+        }
     }
 
     /**
@@ -158,8 +159,9 @@ public class LiteralRationalImpl extends LiteralExpressionImpl implements Litera
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (value: ");

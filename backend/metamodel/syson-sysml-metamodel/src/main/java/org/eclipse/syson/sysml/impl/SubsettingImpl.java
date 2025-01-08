@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -110,8 +110,9 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
             InternalEObject oldSubsettedFeature = (InternalEObject) this.subsettedFeature;
             this.subsettedFeature = (Feature) this.eResolveProxy(oldSubsettedFeature);
             if (this.subsettedFeature != oldSubsettedFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SUBSETTING__SUBSETTED_FEATURE, oldSubsettedFeature, this.subsettedFeature));
+                }
             }
         }
         return this.subsettedFeature;
@@ -135,8 +136,9 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
     public void setSubsettedFeature(Feature newSubsettedFeature) {
         Feature oldSubsettedFeature = this.subsettedFeature;
         this.subsettedFeature = newSubsettedFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SUBSETTING__SUBSETTED_FEATURE, oldSubsettedFeature, this.subsettedFeature));
+        }
     }
 
     /**
@@ -150,8 +152,9 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
             InternalEObject oldSubsettingFeature = (InternalEObject) this.subsettingFeature;
             this.subsettingFeature = (Feature) this.eResolveProxy(oldSubsettingFeature);
             if (this.subsettingFeature != oldSubsettingFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.SUBSETTING__SUBSETTING_FEATURE, oldSubsettingFeature, this.subsettingFeature));
+                }
             }
         }
         return this.subsettingFeature;
@@ -175,8 +178,9 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
     public void setSubsettingFeature(Feature newSubsettingFeature) {
         Feature oldSubsettingFeature = this.subsettingFeature;
         this.subsettingFeature = newSubsettingFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.SUBSETTING__SUBSETTING_FEATURE, oldSubsettingFeature, this.subsettingFeature));
+        }
     }
 
     /**
@@ -188,16 +192,19 @@ public class SubsettingImpl extends SpecializationImpl implements Subsetting {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.SUBSETTING__OWNING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningFeature();
+                }
                 return this.basicGetOwningFeature();
             case SysmlPackage.SUBSETTING__SUBSETTED_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getSubsettedFeature();
+                }
                 return this.basicGetSubsettedFeature();
             case SysmlPackage.SUBSETTING__SUBSETTING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getSubsettingFeature();
+                }
                 return this.basicGetSubsettingFeature();
         }
         return super.eGet(featureID, resolve, coreType);

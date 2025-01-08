@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -78,8 +78,9 @@ public class MetadataAccessExpressionImpl extends ExpressionImpl implements Meta
             InternalEObject oldReferencedElement = (InternalEObject) this.referencedElement;
             this.referencedElement = (Element) this.eResolveProxy(oldReferencedElement);
             if (this.referencedElement != oldReferencedElement) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.METADATA_ACCESS_EXPRESSION__REFERENCED_ELEMENT, oldReferencedElement, this.referencedElement));
+                }
             }
         }
         return this.referencedElement;
@@ -103,8 +104,9 @@ public class MetadataAccessExpressionImpl extends ExpressionImpl implements Meta
     public void setReferencedElement(Element newReferencedElement) {
         Element oldReferencedElement = this.referencedElement;
         this.referencedElement = newReferencedElement;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.METADATA_ACCESS_EXPRESSION__REFERENCED_ELEMENT, oldReferencedElement, this.referencedElement));
+        }
     }
 
     /**
@@ -128,8 +130,9 @@ public class MetadataAccessExpressionImpl extends ExpressionImpl implements Meta
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.METADATA_ACCESS_EXPRESSION__REFERENCED_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getReferencedElement();
+                }
                 return this.basicGetReferencedElement();
         }
         return super.eGet(featureID, resolve, coreType);

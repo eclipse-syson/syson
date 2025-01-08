@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -84,8 +84,9 @@ public class StakeholderMembershipImpl extends ParameterMembershipImpl implement
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.STAKEHOLDER_MEMBERSHIP__OWNED_STAKEHOLDER_PARAMETER:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedStakeholderParameter();
+                }
                 return this.basicGetOwnedStakeholderParameter();
         }
         return super.eGet(featureID, resolve, coreType);

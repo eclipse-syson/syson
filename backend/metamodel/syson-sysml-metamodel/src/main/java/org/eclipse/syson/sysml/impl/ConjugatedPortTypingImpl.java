@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -77,9 +77,10 @@ public class ConjugatedPortTypingImpl extends FeatureTypingImpl implements Conju
             InternalEObject oldConjugatedPortDefinition = (InternalEObject) this.conjugatedPortDefinition;
             this.conjugatedPortDefinition = (ConjugatedPortDefinition) this.eResolveProxy(oldConjugatedPortDefinition);
             if (this.conjugatedPortDefinition != oldConjugatedPortDefinition) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.CONJUGATED_PORT_TYPING__CONJUGATED_PORT_DEFINITION, oldConjugatedPortDefinition,
                             this.conjugatedPortDefinition));
+                }
             }
         }
         return this.conjugatedPortDefinition;
@@ -103,8 +104,9 @@ public class ConjugatedPortTypingImpl extends FeatureTypingImpl implements Conju
     public void setConjugatedPortDefinition(ConjugatedPortDefinition newConjugatedPortDefinition) {
         ConjugatedPortDefinition oldConjugatedPortDefinition = this.conjugatedPortDefinition;
         this.conjugatedPortDefinition = newConjugatedPortDefinition;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.CONJUGATED_PORT_TYPING__CONJUGATED_PORT_DEFINITION, oldConjugatedPortDefinition, this.conjugatedPortDefinition));
+        }
     }
 
     /**
@@ -139,12 +141,14 @@ public class ConjugatedPortTypingImpl extends FeatureTypingImpl implements Conju
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.CONJUGATED_PORT_TYPING__CONJUGATED_PORT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getConjugatedPortDefinition();
+                }
                 return this.basicGetConjugatedPortDefinition();
             case SysmlPackage.CONJUGATED_PORT_TYPING__PORT_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getPortDefinition();
+                }
                 return this.basicGetPortDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

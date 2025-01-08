@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -130,8 +130,9 @@ public class FunctionImpl extends BehaviorImpl implements Function {
             case SysmlPackage.FUNCTION__EXPRESSION:
                 return this.getExpression();
             case SysmlPackage.FUNCTION__RESULT:
-                if (resolve)
+                if (resolve) {
                     return this.getResult();
+                }
                 return this.basicGetResult();
         }
         return super.eGet(featureID, resolve, coreType);

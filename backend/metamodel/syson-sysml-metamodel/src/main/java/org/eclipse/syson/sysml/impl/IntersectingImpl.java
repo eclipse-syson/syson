@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -79,8 +79,9 @@ public class IntersectingImpl extends RelationshipImpl implements Intersecting {
             InternalEObject oldIntersectingType = (InternalEObject) this.intersectingType;
             this.intersectingType = (Type) this.eResolveProxy(oldIntersectingType);
             if (this.intersectingType != oldIntersectingType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.INTERSECTING__INTERSECTING_TYPE, oldIntersectingType, this.intersectingType));
+                }
             }
         }
         return this.intersectingType;
@@ -104,8 +105,9 @@ public class IntersectingImpl extends RelationshipImpl implements Intersecting {
     public void setIntersectingType(Type newIntersectingType) {
         Type oldIntersectingType = this.intersectingType;
         this.intersectingType = newIntersectingType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.INTERSECTING__INTERSECTING_TYPE, oldIntersectingType, this.intersectingType));
+        }
     }
 
     /**
@@ -140,12 +142,14 @@ public class IntersectingImpl extends RelationshipImpl implements Intersecting {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.INTERSECTING__INTERSECTING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getIntersectingType();
+                }
                 return this.basicGetIntersectingType();
             case SysmlPackage.INTERSECTING__TYPE_INTERSECTED:
-                if (resolve)
+                if (resolve) {
                     return this.getTypeIntersected();
+                }
                 return this.basicGetTypeIntersected();
         }
         return super.eGet(featureID, resolve, coreType);

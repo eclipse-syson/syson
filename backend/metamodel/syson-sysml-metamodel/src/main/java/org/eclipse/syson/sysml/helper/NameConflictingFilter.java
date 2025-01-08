@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,31 +23,31 @@ import org.eclipse.syson.sysml.Membership;
 /**
  * Filter in charge of checking if element has a conflicting name or short name with a set a previously checked
  * elements.
- * 
+ *
  * <p>
  * This filter only checks for elements that has at least an {@link Element#effectiveName()} or an
  * {@link Element#effectiveShortName()}. If an element has neither, it matches the given element since it can not create
  * any name conflict.
  * </p>
- * 
+ *
  * @author Arthur Daussy
  */
 public class NameConflictingFilter implements Predicate<Membership> {
 
-    private Set<String> usedNames = new HashSet<>();
+    private final Set<String> usedNames = new HashSet<>();
 
     @Override
     public boolean test(Membership member) {
         if (member != null) {
             if (member.getMemberName() != null
-                && member.getMemberElement() != null
-                && member.getMemberName() != member.getMemberElement().getName()) {
-                boolean result = checkConflictingNames(member.getMemberName());
+                    && member.getMemberElement() != null
+                    && member.getMemberName() != member.getMemberElement().getName()) {
+                boolean result = this.checkConflictingNames(member.getMemberName());
                 return result;
             } else {
                 Element memberElement = member.getMemberElement();
                 if (memberElement != null) {
-                    return checkConflictingElement(memberElement);
+                    return this.checkConflictingElement(memberElement);
                 }
             }
         }
@@ -56,20 +56,20 @@ public class NameConflictingFilter implements Predicate<Membership> {
     }
 
     public boolean checkConflictingElement(Element memberElement) {
-        return checkConflictingNames(memberElement.effectiveName()) && checkConflictingNames(memberElement.effectiveShortName());
+        return this.checkConflictingNames(memberElement.effectiveName()) && this.checkConflictingNames(memberElement.effectiveShortName());
     }
-    
+
     public boolean checkConflictingNames(String name) {
 
         boolean hasName = name != null;
         if (hasName) {
-            boolean hasConflictingName = hasName && usedNames.contains(name);
+            boolean hasConflictingName = hasName && this.usedNames.contains(name);
 
             boolean noConflict = !hasConflictingName;
             if (noConflict) {
                 // Only add to forbidden names if the element is not conflicting on both the shortname and the
                 // name
-                usedNames.add(name);
+                this.usedNames.add(name);
             }
             return noConflict;
         } // Else if the element has neither a name or a short name it can not create name conflict
@@ -83,10 +83,10 @@ public class NameConflictingFilter implements Predicate<Membership> {
                 String name = memberElement.effectiveName();
                 String shortName = memberElement.effectiveShortName();
                 if (name != null) {
-                    usedNames.add(name);
+                    this.usedNames.add(name);
                 }
                 if (shortName != null) {
-                    usedNames.add(shortName);
+                    this.usedNames.add(shortName);
                 }
             }
         }

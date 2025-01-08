@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -82,8 +82,9 @@ public abstract class LoopActionUsageImpl extends ActionUsageImpl implements Loo
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.LOOP_ACTION_USAGE__BODY_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getBodyAction();
+                }
                 return this.basicGetBodyAction();
         }
         return super.eGet(featureID, resolve, coreType);

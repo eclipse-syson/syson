@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -188,8 +188,9 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
     public void setIsParallel(boolean newIsParallel) {
         boolean oldIsParallel = this.isParallel;
         this.isParallel = newIsParallel;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.STATE_DEFINITION__IS_PARALLEL, oldIsParallel, this.isParallel));
+        }
     }
 
     /**
@@ -214,16 +215,19 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
             case SysmlPackage.STATE_DEFINITION__IS_PARALLEL:
                 return this.isIsParallel();
             case SysmlPackage.STATE_DEFINITION__DO_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getDoAction();
+                }
                 return this.basicGetDoAction();
             case SysmlPackage.STATE_DEFINITION__ENTRY_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getEntryAction();
+                }
                 return this.basicGetEntryAction();
             case SysmlPackage.STATE_DEFINITION__EXIT_ACTION:
-                if (resolve)
+                if (resolve) {
                     return this.getExitAction();
+                }
                 return this.basicGetExitAction();
             case SysmlPackage.STATE_DEFINITION__STATE:
                 return this.getState();
@@ -291,8 +295,9 @@ public class StateDefinitionImpl extends ActionDefinitionImpl implements StateDe
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (isParallel: ");

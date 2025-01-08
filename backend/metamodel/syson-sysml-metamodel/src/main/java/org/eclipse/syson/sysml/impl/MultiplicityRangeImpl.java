@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -175,12 +175,14 @@ public class MultiplicityRangeImpl extends MultiplicityImpl implements Multiplic
             case SysmlPackage.MULTIPLICITY_RANGE__BOUND:
                 return this.getBound();
             case SysmlPackage.MULTIPLICITY_RANGE__LOWER_BOUND:
-                if (resolve)
+                if (resolve) {
                     return this.getLowerBound();
+                }
                 return this.basicGetLowerBound();
             case SysmlPackage.MULTIPLICITY_RANGE__UPPER_BOUND:
-                if (resolve)
+                if (resolve) {
                     return this.getUpperBound();
+                }
                 return this.basicGetUpperBound();
         }
         return super.eGet(featureID, resolve, coreType);

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -79,8 +79,9 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
             InternalEObject oldDifferencingType = (InternalEObject) this.differencingType;
             this.differencingType = (Type) this.eResolveProxy(oldDifferencingType);
             if (this.differencingType != oldDifferencingType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE, oldDifferencingType, this.differencingType));
+                }
             }
         }
         return this.differencingType;
@@ -104,8 +105,9 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
     public void setDifferencingType(Type newDifferencingType) {
         Type oldDifferencingType = this.differencingType;
         this.differencingType = newDifferencingType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE, oldDifferencingType, this.differencingType));
+        }
     }
 
     /**
@@ -140,12 +142,14 @@ public class DifferencingImpl extends RelationshipImpl implements Differencing {
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.DIFFERENCING__DIFFERENCING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getDifferencingType();
+                }
                 return this.basicGetDifferencingType();
             case SysmlPackage.DIFFERENCING__TYPE_DIFFERENCED:
-                if (resolve)
+                if (resolve) {
                     return this.getTypeDifferenced();
+                }
                 return this.basicGetTypeDifferenced();
         }
         return super.eGet(featureID, resolve, coreType);

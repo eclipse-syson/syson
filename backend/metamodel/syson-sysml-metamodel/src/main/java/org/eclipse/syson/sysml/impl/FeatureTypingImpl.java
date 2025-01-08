@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -110,8 +110,9 @@ public class FeatureTypingImpl extends SpecializationImpl implements FeatureTypi
             InternalEObject oldType = (InternalEObject) this.type;
             this.type = (Type) this.eResolveProxy(oldType);
             if (this.type != oldType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_TYPING__TYPE, oldType, this.type));
+                }
             }
         }
         return this.type;
@@ -135,8 +136,9 @@ public class FeatureTypingImpl extends SpecializationImpl implements FeatureTypi
     public void setType(Type newType) {
         Type oldType = this.type;
         this.type = newType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_TYPING__TYPE, oldType, this.type));
+        }
     }
 
     /**
@@ -150,8 +152,9 @@ public class FeatureTypingImpl extends SpecializationImpl implements FeatureTypi
             InternalEObject oldTypedFeature = (InternalEObject) this.typedFeature;
             this.typedFeature = (Feature) this.eResolveProxy(oldTypedFeature);
             if (this.typedFeature != oldTypedFeature) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_TYPING__TYPED_FEATURE, oldTypedFeature, this.typedFeature));
+                }
             }
         }
         return this.typedFeature;
@@ -175,8 +178,9 @@ public class FeatureTypingImpl extends SpecializationImpl implements FeatureTypi
     public void setTypedFeature(Feature newTypedFeature) {
         Feature oldTypedFeature = this.typedFeature;
         this.typedFeature = newTypedFeature;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_TYPING__TYPED_FEATURE, oldTypedFeature, this.typedFeature));
+        }
     }
 
     /**
@@ -188,16 +192,19 @@ public class FeatureTypingImpl extends SpecializationImpl implements FeatureTypi
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURE_TYPING__OWNING_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningFeature();
+                }
                 return this.basicGetOwningFeature();
             case SysmlPackage.FEATURE_TYPING__TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getType();
+                }
                 return this.basicGetType();
             case SysmlPackage.FEATURE_TYPING__TYPED_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getTypedFeature();
+                }
                 return this.basicGetTypedFeature();
         }
         return super.eGet(featureID, resolve, coreType);

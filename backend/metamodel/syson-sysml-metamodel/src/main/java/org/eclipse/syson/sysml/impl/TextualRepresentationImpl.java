@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -117,8 +117,9 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
     public void setBody(String newBody) {
         String oldBody = this.body;
         this.body = newBody;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TEXTUAL_REPRESENTATION__BODY, oldBody, this.body));
+        }
     }
 
     /**
@@ -140,8 +141,9 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
     public void setLanguage(String newLanguage) {
         String oldLanguage = this.language;
         this.language = newLanguage;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.TEXTUAL_REPRESENTATION__LANGUAGE, oldLanguage, this.language));
+        }
     }
 
     /**
@@ -180,8 +182,9 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
             case SysmlPackage.TEXTUAL_REPRESENTATION__LANGUAGE:
                 return this.getLanguage();
             case SysmlPackage.TEXTUAL_REPRESENTATION__REPRESENTED_ELEMENT:
-                if (resolve)
+                if (resolve) {
                     return this.getRepresentedElement();
+                }
                 return this.basicGetRepresentedElement();
         }
         return super.eGet(featureID, resolve, coreType);
@@ -248,8 +251,9 @@ public class TextualRepresentationImpl extends AnnotatingElementImpl implements 
      */
     @Override
     public String toString() {
-        if (this.eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (body: ");

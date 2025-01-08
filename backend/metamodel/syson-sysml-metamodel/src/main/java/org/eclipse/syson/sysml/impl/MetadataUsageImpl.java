@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -255,12 +255,14 @@ public class MetadataUsageImpl extends ItemUsageImpl implements MetadataUsage {
             case SysmlPackage.METADATA_USAGE__OWNED_ANNOTATING_RELATIONSHIP:
                 return this.getOwnedAnnotatingRelationship();
             case SysmlPackage.METADATA_USAGE__METACLASS:
-                if (resolve)
+                if (resolve) {
                     return this.getMetaclass();
+                }
                 return this.basicGetMetaclass();
             case SysmlPackage.METADATA_USAGE__METADATA_DEFINITION:
-                if (resolve)
+                if (resolve) {
                     return this.getMetadataDefinition();
+                }
                 return this.basicGetMetadataDefinition();
         }
         return super.eGet(featureID, resolve, coreType);

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -110,8 +110,9 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
             InternalEObject oldType = (InternalEObject) this.type;
             this.type = (Type) this.eResolveProxy(oldType);
             if (this.type != oldType) {
-                if (this.eNotificationRequired())
+                if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, SysmlPackage.FEATURE_MEMBERSHIP__TYPE, oldType, this.type));
+                }
             }
         }
         return this.type;
@@ -135,8 +136,9 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     public void setType(Type newType) {
         Type oldType = this.type;
         this.type = newType;
-        if (this.eNotificationRequired())
+        if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET, SysmlPackage.FEATURE_MEMBERSHIP__TYPE, oldType, this.type));
+        }
     }
 
     /**
@@ -218,20 +220,24 @@ public class FeatureMembershipImpl extends OwningMembershipImpl implements Featu
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case SysmlPackage.FEATURE_MEMBERSHIP__FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getFeature();
+                }
                 return this.basicGetFeature();
             case SysmlPackage.FEATURE_MEMBERSHIP__TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getType();
+                }
                 return this.basicGetType();
             case SysmlPackage.FEATURE_MEMBERSHIP__OWNED_MEMBER_FEATURE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwnedMemberFeature();
+                }
                 return this.basicGetOwnedMemberFeature();
             case SysmlPackage.FEATURE_MEMBERSHIP__OWNING_TYPE:
-                if (resolve)
+                if (resolve) {
                     return this.getOwningType();
+                }
                 return this.basicGetOwningType();
         }
         return super.eGet(featureID, resolve, coreType);
