@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -752,6 +752,9 @@ public class ConnectorAsUsageItemProvider extends UsageItemProvider {
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createSuccessionItemFlow()));
+
+        newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
+                SysmlFactory.eINSTANCE.createTerminateActionUsage()));
 
         newChildDescriptors.add(this.createChildParameter(SysmlPackage.eINSTANCE.getRelationship_OwnedRelatedElement(),
                 SysmlFactory.eINSTANCE.createTextualRepresentation()));

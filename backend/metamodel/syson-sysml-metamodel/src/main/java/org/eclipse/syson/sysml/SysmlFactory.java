@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -1199,6 +1199,14 @@ public interface SysmlFactory extends EFactory {
      * @generated
      */
     SuccessionItemFlow createSuccessionItemFlow();
+
+    /**
+     * Returns a new object of class '<em>Terminate Action Usage</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Terminate Action Usage</em>'.
+     * @generated
+     */
+    TerminateActionUsage createTerminateActionUsage();
 
     /**
      * Returns a new object of class '<em>Textual Representation</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

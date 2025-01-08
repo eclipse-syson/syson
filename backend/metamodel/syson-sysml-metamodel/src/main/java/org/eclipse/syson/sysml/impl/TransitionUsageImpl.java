@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -270,6 +270,18 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
     }
 
     /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Feature sourceFeature() {
+        // TODO: implement this method
+        // Ensure that you remove @generated or mark it @generated NOT
+        return null;
+    }
+
+    /**
      * <!-- begin-user-doc --> Return the payloadParameter of the triggerAction of this TransitionUsage, if it has one.
      *
      * body: if triggerAction->isEmpty() then null else triggerAction->first().payloadParameter endif <!-- end-user-doc
@@ -348,6 +360,8 @@ public class TransitionUsageImpl extends ActionUsageImpl implements TransitionUs
     @Override
     public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
         switch (operationID) {
+            case SysmlPackage.TRANSITION_USAGE___SOURCE_FEATURE:
+                return this.sourceFeature();
             case SysmlPackage.TRANSITION_USAGE___TRIGGER_PAYLOAD_PARAMETER:
                 return this.triggerPayloadParameter();
         }

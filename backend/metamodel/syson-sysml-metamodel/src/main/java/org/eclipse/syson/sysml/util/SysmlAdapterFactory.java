@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.util;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.*;
 
@@ -835,6 +836,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseTerminateActionUsage(TerminateActionUsage object) {
+            return SysmlAdapterFactory.this.createTerminateActionUsageAdapter();
+        }
+
+        @Override
         public Adapter caseTextualRepresentation(TextualRepresentation object) {
             return SysmlAdapterFactory.this.createTextualRepresentationAdapter();
         }
@@ -927,6 +933,11 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseWhileLoopActionUsage(WhileLoopActionUsage object) {
             return SysmlAdapterFactory.this.createWhileLoopActionUsageAdapter();
+        }
+
+        @Override
+        public Adapter caseEModelElement(EModelElement object) {
+            return SysmlAdapterFactory.this.createEModelElementAdapter();
         }
 
         @Override
@@ -2972,6 +2983,20 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TerminateActionUsage <em>Terminate
+     * Action Usage</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
+     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
+     * -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.syson.sysml.TerminateActionUsage
+     * @generated
+     */
+    public Adapter createTerminateActionUsageAdapter() {
+        return null;
+    }
+
+    /**
      * Creates a new adapter for an object of class '{@link org.eclipse.syson.sysml.TextualRepresentation <em>Textual
      * Representation</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
      * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
@@ -3222,6 +3247,19 @@ public class SysmlAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createWhileLoopActionUsageAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.emf.ecore.EModelElement <em>EModel
+     * Element</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.emf.ecore.EModelElement
+     * @generated
+     */
+    public Adapter createEModelElementAdapter() {
         return null;
     }
 

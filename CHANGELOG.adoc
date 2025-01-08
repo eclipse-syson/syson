@@ -19,8 +19,14 @@ A new drop node tool is available on the diagram, allowing representing `Concern
 A new node creation tool is available in the `Requirements` section of the palette, allowing the creation of `Concern Usage` objects.
 A new drop node tool is available on the diagram, allowing representing `Concern Usage` objects as nodes of the diagram.
 - https://github.com/eclipse-syson/syson/issues/941[#941] [details] Prevent edition of imported user libraries from the details view.
-- https://github.com/eclipse-syson/syson/issues/943[#943] [explorer] Use Sirius Web's default explorer for studio projects.
- 
+- https://github.com/eclipse-syson/syson/issues/946[#946] [metamodel] Align metamodel to SysMLv2 and KerML Beta 2.3 specifications.
+The changes are:
+* TransitionUsage
+** new derived operation `sourceFeature() : Feature``
+* New class TerminateActionUsage
+** with new derived reference `terminatedOccurrenceArgument : Expression`
+
+
 === New features
 
 
