@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -1101,6 +1101,13 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     private EClass successionItemFlowEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass terminateActionUsageEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6434,6 +6441,26 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
+    public EClass getTerminateActionUsage() {
+        return this.terminateActionUsageEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getTerminateActionUsage_TerminatedOccurrenceArgument() {
+        return (EReference) this.terminateActionUsageEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTextualRepresentation() {
         return this.textualRepresentationEClass;
     }
@@ -6574,8 +6601,18 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
      * @generated
      */
     @Override
-    public EOperation getTransitionUsage__TriggerPayloadParameter() {
+    public EOperation getTransitionUsage__SourceFeature() {
         return this.transitionUsageEClass.getEOperations().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EOperation getTransitionUsage__TriggerPayloadParameter() {
+        return this.transitionUsageEClass.getEOperations().get(1);
     }
 
     /**
@@ -8458,6 +8495,9 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
 
         this.successionItemFlowEClass = this.createEClass(SUCCESSION_ITEM_FLOW);
 
+        this.terminateActionUsageEClass = this.createEClass(TERMINATE_ACTION_USAGE);
+        this.createEReference(this.terminateActionUsageEClass, TERMINATE_ACTION_USAGE__TERMINATED_OCCURRENCE_ARGUMENT);
+
         this.textualRepresentationEClass = this.createEClass(TEXTUAL_REPRESENTATION);
         this.createEAttribute(this.textualRepresentationEClass, TEXTUAL_REPRESENTATION__BODY);
         this.createEAttribute(this.textualRepresentationEClass, TEXTUAL_REPRESENTATION__LANGUAGE);
@@ -8474,6 +8514,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.createEReference(this.transitionUsageEClass, TRANSITION_USAGE__SUCCESSION);
         this.createEReference(this.transitionUsageEClass, TRANSITION_USAGE__TARGET);
         this.createEReference(this.transitionUsageEClass, TRANSITION_USAGE__TRIGGER_ACTION);
+        this.createEOperation(this.transitionUsageEClass, TRANSITION_USAGE___SOURCE_FEATURE);
         this.createEOperation(this.transitionUsageEClass, TRANSITION_USAGE___TRIGGER_PAYLOAD_PARAMETER);
 
         this.triggerInvocationExpressionEClass = this.createEClass(TRIGGER_INVOCATION_EXPRESSION);
@@ -8835,6 +8876,7 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
         this.successionFlowConnectionUsageEClass.getESuperTypes().add(this.getSuccessionItemFlow());
         this.successionItemFlowEClass.getESuperTypes().add(this.getItemFlow());
         this.successionItemFlowEClass.getESuperTypes().add(this.getSuccession());
+        this.terminateActionUsageEClass.getESuperTypes().add(this.getActionUsage());
         this.textualRepresentationEClass.getESuperTypes().add(this.getAnnotatingElement());
         this.transitionFeatureMembershipEClass.getESuperTypes().add(this.getFeatureMembership());
         this.transitionUsageEClass.getESuperTypes().add(this.getActionUsage());
@@ -10119,6 +10161,11 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
 
         this.initEClass(this.successionItemFlowEClass, SuccessionItemFlow.class, "SuccessionItemFlow", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
+        this.initEClass(this.terminateActionUsageEClass, TerminateActionUsage.class, "TerminateActionUsage", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getTerminateActionUsage_TerminatedOccurrenceArgument(), this.getExpression(), null, "terminatedOccurrenceArgument", null, 0, 1, TerminateActionUsage.class,
+                IS_TRANSIENT,
+                IS_VOLATILE, !IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+
         this.initEClass(this.textualRepresentationEClass, TextualRepresentation.class, "TextualRepresentation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTextualRepresentation_Body(), this.ecorePackage.getEString(), "body", null, 1, 1, TextualRepresentation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID,
@@ -10152,6 +10199,8 @@ public class SysmlPackageImpl extends EPackageImpl implements SysmlPackage {
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
         this.initEReference(this.getTransitionUsage_TriggerAction(), this.getAcceptActionUsage(), null, "triggerAction", null, 0, -1, TransitionUsage.class, IS_TRANSIENT, IS_VOLATILE, !IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, IS_DERIVED, !IS_ORDERED);
+
+        this.initEOperation(this.getTransitionUsage__SourceFeature(), this.getFeature(), "sourceFeature", 0, 1, IS_UNIQUE, !IS_ORDERED);
 
         this.initEOperation(this.getTransitionUsage__TriggerPayloadParameter(), this.getReferenceUsage(), "triggerPayloadParameter", 0, 1, IS_UNIQUE, !IS_ORDERED);
 

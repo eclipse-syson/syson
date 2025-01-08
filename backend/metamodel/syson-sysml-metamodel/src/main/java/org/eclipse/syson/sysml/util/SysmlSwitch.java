@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
 *******************************************************************************/
 package org.eclipse.syson.sysml.util;
 
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
@@ -88,6 +89,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(acceptActionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(acceptActionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -111,6 +114,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(actionDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(actionDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -132,6 +137,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(actionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(actionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -152,6 +159,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(actorMembership);
                 if (result == null)
                     result = this.caseElement(actorMembership);
+                if (result == null)
+                    result = this.caseEModelElement(actorMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -188,6 +197,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(allocationDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(allocationDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -218,6 +229,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(allocationUsage);
                 if (result == null)
                     result = this.caseElement(allocationUsage);
+                if (result == null)
+                    result = this.caseEModelElement(allocationUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -250,6 +263,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(analysisCaseDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(analysisCaseDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -279,6 +294,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(analysisCaseUsage);
                 if (result == null)
+                    result = this.caseEModelElement(analysisCaseUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -287,6 +304,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 T result = this.caseAnnotatingElement(annotatingElement);
                 if (result == null)
                     result = this.caseElement(annotatingElement);
+                if (result == null)
+                    result = this.caseEModelElement(annotatingElement);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -298,6 +317,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(annotation);
                 if (result == null)
                     result = this.caseElement(annotation);
+                if (result == null)
+                    result = this.caseEModelElement(annotation);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -328,6 +349,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(assertConstraintUsage);
                 if (result == null)
+                    result = this.caseEModelElement(assertConstraintUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -351,6 +374,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(assignmentActionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(assignmentActionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -367,6 +392,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(association);
                 if (result == null)
                     result = this.caseElement(association);
+                if (result == null)
+                    result = this.caseEModelElement(association);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -391,6 +418,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(associationStructure);
                 if (result == null)
+                    result = this.caseEModelElement(associationStructure);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -410,6 +439,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(attributeDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(attributeDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -427,6 +458,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(attributeUsage);
                 if (result == null)
+                    result = this.caseEModelElement(attributeUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -443,6 +476,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(behavior);
                 if (result == null)
                     result = this.caseElement(behavior);
+                if (result == null)
+                    result = this.caseEModelElement(behavior);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -462,6 +497,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(bindingConnector);
                 if (result == null)
                     result = this.caseElement(bindingConnector);
+                if (result == null)
+                    result = this.caseEModelElement(bindingConnector);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -488,6 +525,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(bindingConnectorAsUsage);
                 if (result == null)
+                    result = this.caseEModelElement(bindingConnectorAsUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -506,6 +545,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(booleanExpression);
                 if (result == null)
                     result = this.caseElement(booleanExpression);
+                if (result == null)
+                    result = this.caseEModelElement(booleanExpression);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -534,6 +575,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(calculationDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(calculationDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -558,6 +601,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(calculationUsage);
                 if (result == null)
                     result = this.caseElement(calculationUsage);
+                if (result == null)
+                    result = this.caseEModelElement(calculationUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -588,6 +633,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(caseDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(caseDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -615,6 +662,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(caseUsage);
                 if (result == null)
+                    result = this.caseEModelElement(caseUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -630,6 +679,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(class_);
                 if (result == null)
+                    result = this.caseEModelElement(class_);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -642,6 +693,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(classifier);
                 if (result == null)
                     result = this.caseElement(classifier);
+                if (result == null)
+                    result = this.caseEModelElement(classifier);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -666,6 +719,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(collectExpression);
                 if (result == null)
+                    result = this.caseEModelElement(collectExpression);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -676,6 +731,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseAnnotatingElement(comment);
                 if (result == null)
                     result = this.caseElement(comment);
+                if (result == null)
+                    result = this.caseEModelElement(comment);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -708,6 +765,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(concernDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(concernDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -737,6 +796,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(concernUsage);
                 if (result == null)
+                    result = this.caseEModelElement(concernUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -762,6 +823,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(conjugatedPortDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(conjugatedPortDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -777,6 +840,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(conjugatedPortTyping);
                 if (result == null)
+                    result = this.caseEModelElement(conjugatedPortTyping);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -787,6 +852,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(conjugation);
                 if (result == null)
                     result = this.caseElement(conjugation);
+                if (result == null)
+                    result = this.caseEModelElement(conjugation);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -821,6 +888,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(connectionDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(connectionDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -850,6 +919,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(connectionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(connectionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -866,6 +937,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(connector);
                 if (result == null)
                     result = this.caseElement(connector);
+                if (result == null)
+                    result = this.caseEModelElement(connector);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -887,6 +960,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(connectorAsUsage);
                 if (result == null)
                     result = this.caseElement(connectorAsUsage);
+                if (result == null)
+                    result = this.caseEModelElement(connectorAsUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -915,6 +990,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(constraintDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(constraintDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -940,6 +1017,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(constraintUsage);
                 if (result == null)
+                    result = this.caseEModelElement(constraintUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -963,6 +1042,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(controlNode);
                 if (result == null)
+                    result = this.caseEModelElement(controlNode);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -977,6 +1058,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(dataType);
                 if (result == null)
                     result = this.caseElement(dataType);
+                if (result == null)
+                    result = this.caseEModelElement(dataType);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1003,6 +1086,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(decisionNode);
                 if (result == null)
+                    result = this.caseEModelElement(decisionNode);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1018,6 +1103,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(definition);
                 if (result == null)
+                    result = this.caseEModelElement(definition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1028,6 +1115,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(dependency);
                 if (result == null)
                     result = this.caseElement(dependency);
+                if (result == null)
+                    result = this.caseEModelElement(dependency);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1040,6 +1129,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(differencing);
                 if (result == null)
+                    result = this.caseEModelElement(differencing);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1050,6 +1141,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(disjoining);
                 if (result == null)
                     result = this.caseElement(disjoining);
+                if (result == null)
+                    result = this.caseEModelElement(disjoining);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1064,12 +1157,16 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(documentation);
                 if (result == null)
+                    result = this.caseEModelElement(documentation);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
             case SysmlPackage.ELEMENT: {
                 Element element = (Element) theEObject;
                 T result = this.caseElement(element);
+                if (result == null)
+                    result = this.caseEModelElement(element);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1085,6 +1182,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(elementFilterMembership);
                 if (result == null)
                     result = this.caseElement(elementFilterMembership);
+                if (result == null)
+                    result = this.caseEModelElement(elementFilterMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1104,6 +1203,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(endFeatureMembership);
                 if (result == null)
                     result = this.caseElement(endFeatureMembership);
+                if (result == null)
+                    result = this.caseEModelElement(endFeatureMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1126,6 +1227,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(enumerationDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(enumerationDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1145,6 +1248,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(enumerationUsage);
                 if (result == null)
+                    result = this.caseEModelElement(enumerationUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1163,6 +1268,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(eventOccurrenceUsage);
                 if (result == null)
                     result = this.caseElement(eventOccurrenceUsage);
+                if (result == null)
+                    result = this.caseEModelElement(eventOccurrenceUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1193,6 +1300,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(exhibitStateUsage);
                 if (result == null)
+                    result = this.caseEModelElement(exhibitStateUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1205,6 +1314,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(expose);
                 if (result == null)
                     result = this.caseElement(expose);
+                if (result == null)
+                    result = this.caseEModelElement(expose);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1223,6 +1334,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(expression);
                 if (result == null)
+                    result = this.caseEModelElement(expression);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1235,6 +1348,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(feature);
                 if (result == null)
                     result = this.caseElement(feature);
+                if (result == null)
+                    result = this.caseEModelElement(feature);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1259,6 +1374,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(featureChainExpression);
                 if (result == null)
+                    result = this.caseEModelElement(featureChainExpression);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1270,6 +1387,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(featureChaining);
                 if (result == null)
+                    result = this.caseEModelElement(featureChaining);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1280,6 +1399,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(featureInverting);
                 if (result == null)
                     result = this.caseElement(featureInverting);
+                if (result == null)
+                    result = this.caseEModelElement(featureInverting);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1297,6 +1418,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(featureMembership);
                 if (result == null)
                     result = this.caseElement(featureMembership);
+                if (result == null)
+                    result = this.caseEModelElement(featureMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1317,6 +1440,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(featureReferenceExpression);
                 if (result == null)
+                    result = this.caseEModelElement(featureReferenceExpression);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1329,6 +1454,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(featureTyping);
                 if (result == null)
                     result = this.caseElement(featureTyping);
+                if (result == null)
+                    result = this.caseEModelElement(featureTyping);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1345,6 +1472,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(featureValue);
                 if (result == null)
+                    result = this.caseEModelElement(featureValue);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1355,6 +1484,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(featuring);
                 if (result == null)
                     result = this.caseElement(featuring);
+                if (result == null)
+                    result = this.caseEModelElement(featuring);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1397,6 +1528,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(flowConnectionDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(flowConnectionDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1434,6 +1567,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(flowConnectionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(flowConnectionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1458,6 +1593,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(forkNode);
                 if (result == null)
                     result = this.caseElement(forkNode);
+                if (result == null)
+                    result = this.caseEModelElement(forkNode);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1484,6 +1621,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(forLoopActionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(forLoopActionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1505,6 +1644,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(framedConcernMembership);
                 if (result == null)
+                    result = this.caseEModelElement(framedConcernMembership);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1523,6 +1664,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(function);
                 if (result == null)
                     result = this.caseElement(function);
+                if (result == null)
+                    result = this.caseEModelElement(function);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1547,6 +1690,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(ifActionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(ifActionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1557,6 +1702,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(import_);
                 if (result == null)
                     result = this.caseElement(import_);
+                if (result == null)
+                    result = this.caseEModelElement(import_);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1593,6 +1740,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(includeUseCaseUsage);
                 if (result == null)
+                    result = this.caseEModelElement(includeUseCaseUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1615,6 +1764,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(interaction);
                 if (result == null)
                     result = this.caseElement(interaction);
+                if (result == null)
+                    result = this.caseEModelElement(interaction);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1651,6 +1802,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(interfaceDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(interfaceDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1682,6 +1835,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(interfaceUsage);
                 if (result == null)
+                    result = this.caseEModelElement(interfaceUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1692,6 +1847,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(intersecting);
                 if (result == null)
                     result = this.caseElement(intersecting);
+                if (result == null)
+                    result = this.caseEModelElement(intersecting);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1714,6 +1871,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(invariant);
                 if (result == null)
+                    result = this.caseEModelElement(invariant);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1732,6 +1891,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(invocationExpression);
                 if (result == null)
                     result = this.caseElement(invocationExpression);
+                if (result == null)
+                    result = this.caseEModelElement(invocationExpression);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1756,6 +1917,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(itemDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(itemDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1770,6 +1933,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(itemFeature);
                 if (result == null)
                     result = this.caseElement(itemFeature);
+                if (result == null)
+                    result = this.caseEModelElement(itemFeature);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1792,6 +1957,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(itemFlow);
                 if (result == null)
+                    result = this.caseEModelElement(itemFlow);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1806,6 +1973,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(itemFlowEnd);
                 if (result == null)
                     result = this.caseElement(itemFlowEnd);
+                if (result == null)
+                    result = this.caseEModelElement(itemFlowEnd);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1825,6 +1994,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(itemUsage);
                 if (result == null)
                     result = this.caseElement(itemUsage);
+                if (result == null)
+                    result = this.caseEModelElement(itemUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1851,6 +2022,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(joinNode);
                 if (result == null)
+                    result = this.caseEModelElement(joinNode);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1863,6 +2036,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(libraryPackage);
                 if (result == null)
                     result = this.caseElement(libraryPackage);
+                if (result == null)
+                    result = this.caseEModelElement(libraryPackage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1880,6 +2055,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(lifeClass);
                 if (result == null)
                     result = this.caseElement(lifeClass);
+                if (result == null)
+                    result = this.caseEModelElement(lifeClass);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1902,6 +2079,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(literalBoolean);
                 if (result == null)
+                    result = this.caseEModelElement(literalBoolean);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1920,6 +2099,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(literalExpression);
                 if (result == null)
                     result = this.caseElement(literalExpression);
+                if (result == null)
+                    result = this.caseEModelElement(literalExpression);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1942,6 +2123,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(literalInfinity);
                 if (result == null)
+                    result = this.caseEModelElement(literalInfinity);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -1962,6 +2145,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(literalInteger);
                 if (result == null)
                     result = this.caseElement(literalInteger);
+                if (result == null)
+                    result = this.caseEModelElement(literalInteger);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1984,6 +2169,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(literalRational);
                 if (result == null)
+                    result = this.caseEModelElement(literalRational);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2004,6 +2191,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(literalString);
                 if (result == null)
                     result = this.caseElement(literalString);
+                if (result == null)
+                    result = this.caseEModelElement(literalString);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2028,6 +2217,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(loopActionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(loopActionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2038,6 +2229,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(membership);
                 if (result == null)
                     result = this.caseElement(membership);
+                if (result == null)
+                    result = this.caseEModelElement(membership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2056,6 +2249,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(membershipExpose);
                 if (result == null)
+                    result = this.caseEModelElement(membershipExpose);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2068,6 +2263,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(membershipImport);
                 if (result == null)
                     result = this.caseElement(membershipImport);
+                if (result == null)
+                    result = this.caseEModelElement(membershipImport);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2094,6 +2291,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(mergeNode);
                 if (result == null)
+                    result = this.caseEModelElement(mergeNode);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2113,6 +2312,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(metaclass);
                 if (result == null)
+                    result = this.caseEModelElement(metaclass);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2131,6 +2332,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(metadataAccessExpression);
                 if (result == null)
                     result = this.caseElement(metadataAccessExpression);
+                if (result == null)
+                    result = this.caseEModelElement(metadataAccessExpression);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2159,6 +2362,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(metadataDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(metadataDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2175,6 +2380,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(metadataFeature);
                 if (result == null)
                     result = this.caseElement(metadataFeature);
+                if (result == null)
+                    result = this.caseEModelElement(metadataFeature);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2201,6 +2408,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(metadataUsage);
                 if (result == null)
+                    result = this.caseEModelElement(metadataUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2215,6 +2424,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(multiplicity);
                 if (result == null)
                     result = this.caseElement(multiplicity);
+                if (result == null)
+                    result = this.caseEModelElement(multiplicity);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2233,6 +2444,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(multiplicityRange);
                 if (result == null)
+                    result = this.caseEModelElement(multiplicityRange);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2241,6 +2454,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 T result = this.caseNamespace(namespace);
                 if (result == null)
                     result = this.caseElement(namespace);
+                if (result == null)
+                    result = this.caseEModelElement(namespace);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2259,6 +2474,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(namespaceExpose);
                 if (result == null)
+                    result = this.caseEModelElement(namespaceExpose);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2271,6 +2488,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(namespaceImport);
                 if (result == null)
                     result = this.caseElement(namespaceImport);
+                if (result == null)
+                    result = this.caseEModelElement(namespaceImport);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2291,6 +2510,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(nullExpression);
                 if (result == null)
+                    result = this.caseEModelElement(nullExpression);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2309,6 +2530,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(objectiveMembership);
                 if (result == null)
                     result = this.caseElement(objectiveMembership);
+                if (result == null)
+                    result = this.caseEModelElement(objectiveMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2329,6 +2552,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(occurrenceDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(occurrenceDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2345,6 +2570,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(occurrenceUsage);
                 if (result == null)
                     result = this.caseElement(occurrenceUsage);
+                if (result == null)
+                    result = this.caseEModelElement(occurrenceUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2367,6 +2594,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(operatorExpression);
                 if (result == null)
+                    result = this.caseEModelElement(operatorExpression);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2380,6 +2609,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(owningMembership);
                 if (result == null)
+                    result = this.caseEModelElement(owningMembership);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2390,6 +2621,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(package_);
                 if (result == null)
                     result = this.caseElement(package_);
+                if (result == null)
+                    result = this.caseEModelElement(package_);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2409,6 +2642,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(parameterMembership);
                 if (result == null)
                     result = this.caseElement(parameterMembership);
+                if (result == null)
+                    result = this.caseEModelElement(parameterMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2435,6 +2670,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(partDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(partDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2455,6 +2692,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(partUsage);
                 if (result == null)
                     result = this.caseElement(partUsage);
+                if (result == null)
+                    result = this.caseEModelElement(partUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2481,6 +2720,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(performActionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(performActionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2493,6 +2734,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(portConjugation);
                 if (result == null)
                     result = this.caseElement(portConjugation);
+                if (result == null)
+                    result = this.caseEModelElement(portConjugation);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2517,6 +2760,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(portDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(portDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2535,6 +2780,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(portUsage);
                 if (result == null)
                     result = this.caseElement(portUsage);
+                if (result == null)
+                    result = this.caseEModelElement(portUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2557,6 +2804,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(predicate);
                 if (result == null)
+                    result = this.caseEModelElement(predicate);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2572,6 +2821,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(redefinition);
                 if (result == null)
+                    result = this.caseEModelElement(redefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2586,6 +2837,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(referenceSubsetting);
                 if (result == null)
                     result = this.caseElement(referenceSubsetting);
+                if (result == null)
+                    result = this.caseEModelElement(referenceSubsetting);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2604,6 +2857,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(referenceUsage);
                 if (result == null)
+                    result = this.caseEModelElement(referenceUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2612,6 +2867,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 T result = this.caseRelationship(relationship);
                 if (result == null)
                     result = this.caseElement(relationship);
+                if (result == null)
+                    result = this.caseEModelElement(relationship);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2640,6 +2897,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(renderingDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(renderingDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2663,6 +2922,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(renderingUsage);
                 if (result == null)
+                    result = this.caseEModelElement(renderingUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2681,6 +2942,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(requirementConstraintMembership);
                 if (result == null)
                     result = this.caseElement(requirementConstraintMembership);
+                if (result == null)
+                    result = this.caseEModelElement(requirementConstraintMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2711,6 +2974,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(requirementDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(requirementDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2738,6 +3003,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(requirementUsage);
                 if (result == null)
+                    result = this.caseEModelElement(requirementUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2759,6 +3026,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(requirementVerificationMembership);
                 if (result == null)
+                    result = this.caseEModelElement(requirementVerificationMembership);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2777,6 +3046,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(resultExpressionMembership);
                 if (result == null)
                     result = this.caseElement(resultExpressionMembership);
+                if (result == null)
+                    result = this.caseEModelElement(resultExpressionMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2798,6 +3069,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(returnParameterMembership);
                 if (result == null)
                     result = this.caseElement(returnParameterMembership);
+                if (result == null)
+                    result = this.caseEModelElement(returnParameterMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2832,6 +3105,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(satisfyRequirementUsage);
                 if (result == null)
+                    result = this.caseEModelElement(satisfyRequirementUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2854,6 +3129,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(selectExpression);
                 if (result == null)
                     result = this.caseElement(selectExpression);
+                if (result == null)
+                    result = this.caseEModelElement(selectExpression);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2878,6 +3155,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(sendActionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(sendActionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2888,6 +3167,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(specialization);
                 if (result == null)
                     result = this.caseElement(specialization);
+                if (result == null)
+                    result = this.caseEModelElement(specialization);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2909,6 +3190,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(stakeholderMembership);
                 if (result == null)
                     result = this.caseElement(stakeholderMembership);
+                if (result == null)
+                    result = this.caseEModelElement(stakeholderMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2935,6 +3218,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(stateDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(stateDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2953,6 +3238,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(stateSubactionMembership);
                 if (result == null)
                     result = this.caseElement(stateSubactionMembership);
+                if (result == null)
+                    result = this.caseEModelElement(stateSubactionMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -2977,6 +3264,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(stateUsage);
                 if (result == null)
+                    result = this.caseEModelElement(stateUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -2991,6 +3280,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(step);
                 if (result == null)
                     result = this.caseElement(step);
+                if (result == null)
+                    result = this.caseEModelElement(step);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3009,6 +3300,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(structure);
                 if (result == null)
+                    result = this.caseEModelElement(structure);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3021,6 +3314,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(subclassification);
                 if (result == null)
                     result = this.caseElement(subclassification);
+                if (result == null)
+                    result = this.caseEModelElement(subclassification);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3043,6 +3338,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(subjectMembership);
                 if (result == null)
+                    result = this.caseEModelElement(subjectMembership);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3055,6 +3352,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(subsetting);
                 if (result == null)
                     result = this.caseElement(subsetting);
+                if (result == null)
+                    result = this.caseEModelElement(subsetting);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3074,6 +3373,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(succession);
                 if (result == null)
                     result = this.caseElement(succession);
+                if (result == null)
+                    result = this.caseEModelElement(succession);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3099,6 +3400,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(successionAsUsage);
                 if (result == null)
                     result = this.caseElement(successionAsUsage);
+                if (result == null)
+                    result = this.caseEModelElement(successionAsUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3143,6 +3446,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(successionFlowConnectionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(successionFlowConnectionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3168,6 +3473,33 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(successionItemFlow);
                 if (result == null)
+                    result = this.caseEModelElement(successionItemFlow);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case SysmlPackage.TERMINATE_ACTION_USAGE: {
+                TerminateActionUsage terminateActionUsage = (TerminateActionUsage) theEObject;
+                T result = this.caseTerminateActionUsage(terminateActionUsage);
+                if (result == null)
+                    result = this.caseActionUsage(terminateActionUsage);
+                if (result == null)
+                    result = this.caseOccurrenceUsage(terminateActionUsage);
+                if (result == null)
+                    result = this.caseStep(terminateActionUsage);
+                if (result == null)
+                    result = this.caseUsage(terminateActionUsage);
+                if (result == null)
+                    result = this.caseFeature(terminateActionUsage);
+                if (result == null)
+                    result = this.caseType(terminateActionUsage);
+                if (result == null)
+                    result = this.caseNamespace(terminateActionUsage);
+                if (result == null)
+                    result = this.caseElement(terminateActionUsage);
+                if (result == null)
+                    result = this.caseEModelElement(terminateActionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3178,6 +3510,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseAnnotatingElement(textualRepresentation);
                 if (result == null)
                     result = this.caseElement(textualRepresentation);
+                if (result == null)
+                    result = this.caseEModelElement(textualRepresentation);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3197,6 +3531,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(transitionFeatureMembership);
                 if (result == null)
                     result = this.caseElement(transitionFeatureMembership);
+                if (result == null)
+                    result = this.caseEModelElement(transitionFeatureMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3221,6 +3557,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(transitionUsage);
                 if (result == null)
+                    result = this.caseEModelElement(transitionUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3242,6 +3580,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(triggerInvocationExpression);
                 if (result == null)
+                    result = this.caseEModelElement(triggerInvocationExpression);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3252,6 +3592,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(type);
                 if (result == null)
                     result = this.caseElement(type);
+                if (result == null)
+                    result = this.caseEModelElement(type);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3266,6 +3608,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(typeFeaturing);
                 if (result == null)
+                    result = this.caseEModelElement(typeFeaturing);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3276,6 +3620,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(unioning);
                 if (result == null)
                     result = this.caseElement(unioning);
+                if (result == null)
+                    result = this.caseEModelElement(unioning);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3291,6 +3637,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(usage);
                 if (result == null)
                     result = this.caseElement(usage);
+                if (result == null)
+                    result = this.caseEModelElement(usage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3323,6 +3671,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(useCaseDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(useCaseDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3352,6 +3702,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(useCaseUsage);
                 if (result == null)
+                    result = this.caseEModelElement(useCaseUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3366,6 +3718,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(variantMembership);
                 if (result == null)
                     result = this.caseElement(variantMembership);
+                if (result == null)
+                    result = this.caseEModelElement(variantMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3398,6 +3752,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(verificationCaseDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(verificationCaseDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3427,6 +3783,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(verificationCaseUsage);
                 if (result == null)
+                    result = this.caseEModelElement(verificationCaseUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3453,6 +3811,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(viewDefinition);
                 if (result == null)
                     result = this.caseElement(viewDefinition);
+                if (result == null)
+                    result = this.caseEModelElement(viewDefinition);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3485,6 +3845,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(viewpointDefinition);
                 if (result == null)
+                    result = this.caseEModelElement(viewpointDefinition);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3514,6 +3876,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseElement(viewpointUsage);
                 if (result == null)
+                    result = this.caseEModelElement(viewpointUsage);
+                if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
             }
@@ -3532,6 +3896,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseRelationship(viewRenderingMembership);
                 if (result == null)
                     result = this.caseElement(viewRenderingMembership);
+                if (result == null)
+                    result = this.caseEModelElement(viewRenderingMembership);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3555,6 +3921,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(viewUsage);
                 if (result == null)
                     result = this.caseElement(viewUsage);
+                if (result == null)
+                    result = this.caseEModelElement(viewUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -3580,6 +3948,8 @@ public class SysmlSwitch<T> extends Switch<T> {
                     result = this.caseNamespace(whileLoopActionUsage);
                 if (result == null)
                     result = this.caseElement(whileLoopActionUsage);
+                if (result == null)
+                    result = this.caseEModelElement(whileLoopActionUsage);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -5832,6 +6202,21 @@ public class SysmlSwitch<T> extends Switch<T> {
     }
 
     /**
+     * Returns the result of interpreting the object as an instance of '<em>Terminate Action Usage</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Terminate Action Usage</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseTerminateActionUsage(TerminateActionUsage object) {
+        return null;
+    }
+
+    /**
      * Returns the result of interpreting the object as an instance of '<em>Textual Representation</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
      * end-user-doc -->
@@ -6109,6 +6494,21 @@ public class SysmlSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseWhileLoopActionUsage(WhileLoopActionUsage object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>EModel Element</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>EModel Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEModelElement(EModelElement object) {
         return null;
     }
 

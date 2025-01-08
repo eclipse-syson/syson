@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -351,6 +351,8 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
                 return this.createSuccessionFlowConnectionUsage();
             case SysmlPackage.SUCCESSION_ITEM_FLOW:
                 return this.createSuccessionItemFlow();
+            case SysmlPackage.TERMINATE_ACTION_USAGE:
+                return this.createTerminateActionUsage();
             case SysmlPackage.TEXTUAL_REPRESENTATION:
                 return this.createTextualRepresentation();
             case SysmlPackage.TRANSITION_FEATURE_MEMBERSHIP:
@@ -2186,6 +2188,18 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
         SuccessionItemFlowImpl successionItemFlow = new SuccessionItemFlowImpl();
         successionItemFlow.setElementId(ElementUtil.generateUUID(successionItemFlow).toString());
         return successionItemFlow;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public TerminateActionUsage createTerminateActionUsage() {
+        TerminateActionUsageImpl terminateActionUsage = new TerminateActionUsageImpl();
+        terminateActionUsage.setElementId(ElementUtil.generateUUID(terminateActionUsage).toString());
+        return terminateActionUsage;
     }
 
     /**

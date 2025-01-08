@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -3426,6 +3426,29 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.TerminateActionUsage} instances.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected TerminateActionUsageItemProvider terminateActionUsageItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.syson.sysml.TerminateActionUsage}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createTerminateActionUsageAdapter() {
+        if (this.terminateActionUsageItemProvider == null) {
+            this.terminateActionUsageItemProvider = new TerminateActionUsageItemProvider(this);
+        }
+
+        return this.terminateActionUsageItemProvider;
+    }
+
+    /**
      * This keeps track of the one adapter used for all {@link org.eclipse.syson.sysml.TextualRepresentation} instances.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4280,6 +4303,8 @@ public class SysmlItemProviderAdapterFactory extends SysmlAdapterFactory impleme
             this.successionFlowConnectionUsageItemProvider.dispose();
         if (this.successionItemFlowItemProvider != null)
             this.successionItemFlowItemProvider.dispose();
+        if (this.terminateActionUsageItemProvider != null)
+            this.terminateActionUsageItemProvider.dispose();
         if (this.textualRepresentationItemProvider != null)
             this.textualRepresentationItemProvider.dispose();
         if (this.transitionFeatureMembershipItemProvider != null)

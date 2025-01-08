@@ -1665,6 +1665,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="SuccessionAsUsage" eSuperTypes="#//ConnectorAsUsage #//Succession"/>
   <eClassifiers xsi:type="ecore:EClass" name="SuccessionFlowConnectionUsage" eSuperTypes="#//FlowConnectionUsage #//SuccessionItemFlow"/>
   <eClassifiers xsi:type="ecore:EClass" name="SuccessionItemFlow" eSuperTypes="#//ItemFlow #//Succession"/>
+  <eClassifiers xsi:type="ecore:EClass" name="TerminateActionUsage" eSuperTypes="#//ActionUsage">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="terminatedOccurrenceArgument"
+        ordered="false" eType="#//Expression" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TextualRepresentation" eSuperTypes="#//AnnotatingElement">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" ordered="false" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -1692,6 +1697,7 @@
     </eStructuralFeatures>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TransitionUsage" eSuperTypes="#//ActionUsage">
+    <eOperations name="sourceFeature" ordered="false" eType="#//Feature"/>
     <eOperations name="triggerPayloadParameter" ordered="false" eType="#//ReferenceUsage"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="effectAction" ordered="false"
         upperBound="-1" eType="#//ActionUsage" changeable="false" volatile="true"

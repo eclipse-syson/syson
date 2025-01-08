@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2023, 2024 Obeo.
+* Copyright (c) 2023, 2025 Obeo.
 * This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v2.0
 * which accompanies this distribution, and is available at
@@ -98,6 +98,14 @@ public interface TransitionUsage extends ActionUsage {
      * @generated
      */
     EList<AcceptActionUsage> getTriggerAction();
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model ordered="false"
+     * @generated
+     */
+    Feature sourceFeature();
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

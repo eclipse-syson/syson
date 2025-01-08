@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2023 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;    Obeo - initial API and implementation"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" copyrightText="Copyright (c) 2023, 2025 Obeo.&#xA;This program and the accompanying materials&#xA;are made available under the terms of the Eclipse Public License v2.0&#xA;which accompanies this distribution, and is available at&#xA;https://www.eclipse.org/legal/epl-2.0/&#xA;&#xA;SPDX-License-Identifier: EPL-2.0&#xA;&#xA;Contributors:&#xA;    Obeo - initial API and implementation"
     modelDirectory="/syson-sysml-metamodel/src/main/java" editDirectory="/syson-sysml-metamodel-edit/src/main/java"
     editorDirectory="/syson-sysml-metamodel-editor/src/main/java" modelPluginID="syson-sysml-metamodel"
     modelName="Sysml" rootExtendsInterface="org.eclipse.emf.ecore.EModelElement" rootExtendsClass="org.eclipse.emf.ecore.impl.EModelElementImpl"
@@ -730,6 +730,9 @@
     <genClasses ecoreClass="sysml.ecore#//SuccessionAsUsage"/>
     <genClasses ecoreClass="sysml.ecore#//SuccessionFlowConnectionUsage"/>
     <genClasses ecoreClass="sysml.ecore#//SuccessionItemFlow"/>
+    <genClasses ecoreClass="sysml.ecore#//TerminateActionUsage">
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference sysml.ecore#//TerminateActionUsage/terminatedOccurrenceArgument"/>
+    </genClasses>
     <genClasses ecoreClass="sysml.ecore#//TextualRepresentation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysml.ecore#//TextualRepresentation/body"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute sysml.ecore#//TextualRepresentation/language"/>
@@ -746,6 +749,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//TransitionUsage/succession"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//TransitionUsage/target"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference sysml.ecore#//TransitionUsage/triggerAction"/>
+      <genOperations ecoreOperation="sysml.ecore#//TransitionUsage/sourceFeature"/>
       <genOperations ecoreOperation="sysml.ecore#//TransitionUsage/triggerPayloadParameter"/>
     </genClasses>
     <genClasses ecoreClass="sysml.ecore#//TriggerInvocationExpression">
