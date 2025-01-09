@@ -8,7 +8,12 @@
 
 === Dependency update
 
+- https://github.com/eclipse-syson/syson/issues/953[#953] [rest-apis] Backend module `syson-sysml-rest-api-services` now depends on `jackson-datatype-jsr310` for JSON dates serialization
+
 === Bug fixes
+
+- https://github.com/eclipse-syson/syson/issues/953[#953] [rest-apis] Fix an issue where the server could crash when successive REST APIs calls are executed.
+More precisely, the dates fields were not serialized correctly.
 
 === Improvements
 

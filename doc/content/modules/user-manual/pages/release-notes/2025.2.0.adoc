@@ -9,6 +9,8 @@
 
 == Bug fixes
 
+- Fix an issue where the server could crash when successive REST APIs calls are executed.
+More precisely, the dates fields were not serialized correctly.
 
 == New features
 
