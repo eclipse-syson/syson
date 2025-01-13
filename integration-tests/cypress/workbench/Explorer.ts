@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,6 +95,7 @@ export class Explorer {
   public select(treeItemLabel: string, multiSelection: boolean = false): void {
     this.getTreeItemByLabel(treeItemLabel).should('exist');
     this.getTreeItemByLabel(treeItemLabel).click({ ctrlKey: multiSelection });
+    this.getTreeItemByLabel(treeItemLabel).should('have.attr', 'data-testid', 'selected');
   }
 
   public createRepresentation(

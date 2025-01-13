@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,29 +64,29 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         }
 
         BindingConnectorAsUsage bindingConnectorAsUsage = SysmlFactory.eINSTANCE.createBindingConnectorAsUsage();
-        this.elementInitializer(bindingConnectorAsUsage);
         this.addChildInParent(bindingContainer, bindingConnectorAsUsage);
+        this.elementInitializer(bindingConnectorAsUsage);
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         bindingConnectorAsUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
         Feature sourceFeature = SysmlFactory.eINSTANCE.createFeature();
-        this.elementInitializer(sourceFeature);
         sourceFeature.setIsEnd(true);
         sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
+        this.elementInitializer(sourceFeature);
         ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        this.elementInitializer(sourceReferenceSubsetting);
         sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
+        this.elementInitializer(sourceReferenceSubsetting);
         sourceReferenceSubsetting.setReferencedFeature(source);
 
         EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         bindingConnectorAsUsage.getOwnedRelationship().add(targetEndFeatureMembership);
         Feature targetFeature = SysmlFactory.eINSTANCE.createFeature();
-        this.elementInitializer(sourceFeature);
         targetFeature.setIsEnd(true);
         targetEndFeatureMembership.getOwnedRelatedElement().add(targetFeature);
+        this.elementInitializer(sourceFeature);
         ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        this.elementInitializer(targetReferenceSubsetting);
         targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
+        this.elementInitializer(targetReferenceSubsetting);
         targetReferenceSubsetting.setReferencedFeature(target);
 
         return bindingConnectorAsUsage;
@@ -99,32 +99,32 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         }
 
         InterfaceUsage interfaceUsage = SysmlFactory.eINSTANCE.createInterfaceUsage();
+        this.addChildInParent(interfaceContainer, interfaceUsage);
         this.elementInitializer(interfaceUsage);
         // Edges should have an empty default name. This is not the case when using the initializer, because
         // InterfaceUsage can be a node, which requires a default name.
         interfaceUsage.setDeclaredName("");
-        this.addChildInParent(interfaceContainer, interfaceUsage);
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         interfaceUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
         Feature sourceFeature = SysmlFactory.eINSTANCE.createFeature();
-        this.elementInitializer(sourceFeature);
         sourceFeature.setIsEnd(true);
         sourceEndFeatureMembership.getOwnedRelatedElement().add(sourceFeature);
+        this.elementInitializer(sourceFeature);
         ReferenceSubsetting sourceReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        this.elementInitializer(sourceReferenceSubsetting);
         sourceFeature.getOwnedRelationship().add(sourceReferenceSubsetting);
+        this.elementInitializer(sourceReferenceSubsetting);
         sourceReferenceSubsetting.setReferencedFeature(sourcePort);
 
         EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         interfaceUsage.getOwnedRelationship().add(targetEndFeatureMembership);
         Feature targetFeature = SysmlFactory.eINSTANCE.createFeature();
-        this.elementInitializer(targetFeature);
         targetFeature.setIsEnd(true);
         targetEndFeatureMembership.getOwnedRelatedElement().add(targetFeature);
+        this.elementInitializer(targetFeature);
         ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        this.elementInitializer(targetReferenceSubsetting);
         targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
+        this.elementInitializer(targetReferenceSubsetting);
         targetReferenceSubsetting.setReferencedFeature(targetPort);
 
         return interfaceUsage;
@@ -139,8 +139,8 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         flowContainer.getOwnedRelationship().add(featureMembership);
 
         FlowConnectionUsage flowConnectionUsage = SysmlFactory.eINSTANCE.createFlowConnectionUsage();
-        this.elementInitializer(flowConnectionUsage);
         this.addChildInParent(flowContainer, flowConnectionUsage);
+        this.elementInitializer(flowConnectionUsage);
 
         EndFeatureMembership sourceEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         flowConnectionUsage.getOwnedRelationship().add(sourceEndFeatureMembership);
@@ -156,12 +156,12 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         EndFeatureMembership targetEndFeatureMembership = SysmlFactory.eINSTANCE.createEndFeatureMembership();
         flowConnectionUsage.getOwnedRelationship().add(targetEndFeatureMembership);
         Feature targetFeature = SysmlFactory.eINSTANCE.createFeature();
-        this.elementInitializer(targetFeature);
         targetFeature.setIsEnd(true);
         targetEndFeatureMembership.getOwnedRelatedElement().add(targetFeature);
+        this.elementInitializer(targetFeature);
         ReferenceSubsetting targetReferenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
-        this.elementInitializer(targetReferenceSubsetting);
         targetFeature.getOwnedRelationship().add(targetReferenceSubsetting);
+        this.elementInitializer(targetReferenceSubsetting);
         targetReferenceSubsetting.setReferencedFeature(target);
 
         return flowConnectionUsage;
@@ -172,16 +172,16 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         if (parent != null) {
             // create a new port on given part usage
             var newSelfPort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.elementInitializer(newSelfPort);
             this.addChildInParent(self, newSelfPort);
+            this.elementInitializer(newSelfPort);
             // create a new part usage as a self sibling
             var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            this.elementInitializer(newPartUsage);
             this.addChildInParent(parent, newPartUsage);
+            this.elementInitializer(newPartUsage);
             // create a new port on the new part usage
             var newPartUsagePort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.elementInitializer(newPartUsagePort);
             this.addChildInParent(newPartUsage, newPartUsagePort);
+            this.elementInitializer(newPartUsagePort);
             // create binding connector as usage edge between both new ports
             this.createBindingConnectorAsUsage(newSelfPort, newPartUsagePort);
             return newPartUsage;
@@ -194,16 +194,16 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         if (parent != null) {
             // create a new port on given part usage
             var newSelfPort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.elementInitializer(newSelfPort);
             this.addChildInParent(self, newSelfPort);
+            this.elementInitializer(newSelfPort);
             // create a new part usage as a self sibling
             var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            this.elementInitializer(newPartUsage);
             this.addChildInParent(parent, newPartUsage);
+            this.elementInitializer(newPartUsage);
             // create a new port on the new part usage
             var newPartUsagePort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.elementInitializer(newPartUsagePort);
             this.addChildInParent(newPartUsage, newPartUsagePort);
+            this.elementInitializer(newPartUsagePort);
             // create flow connection edge between both new ports
             this.createFlowConnectionUsage(newSelfPort, newPartUsagePort);
             return newPartUsage;
@@ -216,16 +216,16 @@ public class InterconnectionViewCreateService extends ViewCreateService {
         if (parent != null) {
             // create a new port on given part usage
             var newSelfPort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.elementInitializer(newSelfPort);
             this.addChildInParent(self, newSelfPort);
+            this.elementInitializer(newSelfPort);
             // create a new part usage as a self sibling
             var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            this.elementInitializer(newPartUsage);
             this.addChildInParent(parent, newPartUsage);
+            this.elementInitializer(newPartUsage);
             // create a new port on the new part usage
             var newPartUsagePort = SysmlFactory.eINSTANCE.createPortUsage();
-            this.elementInitializer(newPartUsagePort);
             this.addChildInParent(newPartUsage, newPartUsagePort);
+            this.elementInitializer(newPartUsagePort);
             // create interface edge between both new ports
             this.createInterfaceUsage(newSelfPort, newPartUsagePort);
             return newPartUsage;

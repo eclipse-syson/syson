@@ -14,6 +14,8 @@
 
 - https://github.com/eclipse-syson/syson/issues/953[#953] [rest-apis] Fix an issue where the server could crash when successive REST APIs calls are executed.
 More precisely, the dates fields were not serialized correctly.
+- https://github.com/eclipse-syson/syson/issues/961[#961] [core] Fix an issue where default names of Elements were sometimes invalid because corresponding to SysMLv2 keywords.
+New default names now includes a number, this number corresponding to the count of Elements of the same kind in the scope.
 
 === Improvements
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -136,9 +136,9 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
 
     private static Stream<Arguments> partUsageNodeParameters() {
         return Stream.of(
-                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "part", 7),
-                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocation", 2),
-                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface", 4)
+                Arguments.of(SysmlPackage.eINSTANCE.getPartUsage(), "part1", 7),
+                Arguments.of(SysmlPackage.eINSTANCE.getAllocationUsage(), "allocation1", 2),
+                Arguments.of(SysmlPackage.eINSTANCE.getInterfaceUsage(), "interface1", 4)
                 );
     }
 
@@ -156,7 +156,7 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
 
         var diagramAfterAddingElement = this.givenDiagram.getDiagram(this.verifier);
 
-        this.verifier.then(() -> this.nodeCreationTester.renameNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.verifier.then(() -> this.nodeCreationTester.renameRootNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
                 diagramAfterAddingElement,
                 nodeName,
                 this.getNewName(nodeName)));

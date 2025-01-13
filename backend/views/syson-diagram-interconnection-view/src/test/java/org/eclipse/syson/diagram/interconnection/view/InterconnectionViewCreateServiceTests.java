@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.syson.sysml.InterfaceUsage;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
+import org.eclipse.syson.sysml.PartDefinition;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.util.ModelBuilder;
@@ -51,6 +52,8 @@ public class InterconnectionViewCreateServiceTests {
     private ModelBuilder builder;
 
     private Package rootPkg;
+
+    private PartDefinition partDef1;
 
     private PartUsage part1;
 
@@ -94,7 +97,7 @@ public class InterconnectionViewCreateServiceTests {
         BindingConnectorAsUsage bindingConnectorAsUsage = this.interconnectionViewCreateService.createBindingConnectorAsUsage(this.port2, this.port3);
         assertNotNull(bindingConnectorAsUsage);
         var owningNamespace = bindingConnectorAsUsage.getOwningNamespace();
-        assertSame(this.rootPkg, owningNamespace);
+        assertSame(this.partDef1, owningNamespace);
         var owningMembership = bindingConnectorAsUsage.getOwningMembership();
         assertInstanceOf(OwningMembership.class, owningMembership);
     }
@@ -105,7 +108,7 @@ public class InterconnectionViewCreateServiceTests {
         InterfaceUsage interfaceUsage = this.interconnectionViewCreateService.createInterfaceUsage(this.port2, this.port3);
         assertNotNull(interfaceUsage);
         var owningNamespace = interfaceUsage.getOwningNamespace();
-        assertSame(this.rootPkg, owningNamespace);
+        assertSame(this.partDef1, owningNamespace);
         var owningMembership = interfaceUsage.getOwningMembership();
         assertInstanceOf(OwningMembership.class, owningMembership);
     }
@@ -116,7 +119,7 @@ public class InterconnectionViewCreateServiceTests {
         FlowConnectionUsage flowConnectionUsage = this.interconnectionViewCreateService.createFlowConnectionUsage(this.port2, this.port3);
         assertNotNull(flowConnectionUsage);
         var owningNamespace = flowConnectionUsage.getOwningNamespace();
-        assertSame(this.rootPkg, owningNamespace);
+        assertSame(this.partDef1, owningNamespace);
         var owningMembership = flowConnectionUsage.getOwningMembership();
         assertInstanceOf(OwningMembership.class, owningMembership);
     }
@@ -124,7 +127,8 @@ public class InterconnectionViewCreateServiceTests {
     private void build() {
         Namespace rootNamespace = this.builder.createRootNamespace();
         this.rootPkg = this.builder.createInWithName(org.eclipse.syson.sysml.Package.class, rootNamespace, "RootPkg");
-        this.part1 = this.builder.createInWithName(PartUsage.class, this.rootPkg, "part1");
+        this.partDef1 = this.builder.createInWithName(PartDefinition.class, this.rootPkg, "PartDefinition1");
+        this.part1 = this.builder.createInWithName(PartUsage.class, this.partDef1, "part1");
         this.part2 = this.builder.createInWithName(PartUsage.class, this.part1, "part2");
         this.port2 = this.builder.createInWithName(PortUsage.class, this.part2, "port2");
         this.part3 = this.builder.createInWithName(PartUsage.class, this.part1, "part3");

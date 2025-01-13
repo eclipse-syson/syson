@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,12 +55,12 @@ describe('Diagram Creation Tests', () => {
       beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-PartUsage'));
 
       it('Then we can create a General View diagram', () => {
-        explorer.createRepresentation('part', 'General View', 'generalView');
+        explorer.createRepresentation('part1', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
       });
 
       it('Then we can create an Interconnection View diagram', () => {
-        explorer.createRepresentation('part', 'Interconnection View', 'interconnectionView');
+        explorer.createRepresentation('part1', 'Interconnection View', 'interconnectionView');
         diagram.getDiagram('interconnectionView').should('exist');
       });
     });
@@ -69,17 +69,17 @@ describe('Diagram Creation Tests', () => {
       beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionUsage'));
 
       it('Then we can create a General View diagram', () => {
-        explorer.createRepresentation('action', 'General View', 'generalView');
+        explorer.createRepresentation('action1', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
       });
 
       it('Then we can create an Interconnection View diagram', () => {
-        explorer.createRepresentation('action', 'Interconnection View', 'interconnectionView');
+        explorer.createRepresentation('action1', 'Interconnection View', 'interconnectionView');
         diagram.getDiagram('interconnectionView').should('exist');
       });
 
       it('Then we can create an Action Flow View diagram', () => {
-        explorer.createRepresentation('action', 'Action Flow View', 'actionFlowView');
+        explorer.createRepresentation('action1', 'Action Flow View', 'actionFlowView');
         diagram.getDiagram('actionFlowView').should('exist');
       });
     });
@@ -88,17 +88,17 @@ describe('Diagram Creation Tests', () => {
       beforeEach(() => explorer.createObject(sysmlv2.getRootElementLabel(), 'SysMLv2EditService-ActionDefinition'));
 
       it('Then we can create a General View diagram', () => {
-        explorer.createRepresentation('ActionDefinition', 'General View', 'generalView');
+        explorer.createRepresentation('ActionDefinition1', 'General View', 'generalView');
         diagram.getDiagram('generalView').should('exist');
       });
 
       it('Then we can create an Interconnection View diagram', () => {
-        explorer.createRepresentation('ActionDefinition', 'Interconnection View', 'interconnectionView');
+        explorer.createRepresentation('ActionDefinition1', 'Interconnection View', 'interconnectionView');
         diagram.getDiagram('interconnectionView').should('exist');
       });
 
       it('Then we can create an Action Flow View diagram', () => {
-        explorer.createRepresentation('ActionDefinition', 'Action Flow View', 'actionFlowView');
+        explorer.createRepresentation('ActionDefinition1', 'Action Flow View', 'actionFlowView');
         diagram.getDiagram('actionFlowView').should('exist');
       });
     });

@@ -220,10 +220,10 @@ public class ViewCreateService {
         if (feature.getEType() instanceof EClass itemEClass) {
             var item = SysmlFactory.eINSTANCE.create(itemEClass);
             if (item instanceof Element elementItem) {
-                result = elementItem;
                 var membership = this.createAppropriateMembership(feature);
-                membership.getOwnedRelatedElement().add(this.elementInitializer(elementItem));
                 element.getOwnedRelationship().add(membership);
+                membership.getOwnedRelatedElement().add(elementItem);
+                result = this.elementInitializer(elementItem);
             }
         }
         return result;
@@ -235,14 +235,14 @@ public class ViewCreateService {
         if (structuralFeature.getEType() instanceof EClass itemEClass) {
             var item = SysmlFactory.eINSTANCE.create(itemEClass);
             if (item instanceof Element elementItem) {
-                result = this.elementInitializer(elementItem);
+                var membership = this.createAppropriateMembership(structuralFeature);
+                element.getOwnedRelationship().add(membership);
+                membership.getOwnedRelatedElement().add(result);
                 if (directionLiteral != null && item instanceof Feature feature) {
                     feature.setDirection(FeatureDirectionKind.get(directionLiteral));
                     result.setDeclaredName(result.getName() + StringUtils.capitalize(directionLiteral));
                 }
-                var membership = this.createAppropriateMembership(structuralFeature);
-                membership.getOwnedRelatedElement().add(result);
-                element.getOwnedRelationship().add(membership);
+                result = this.elementInitializer(elementItem);
             }
         }
         return result;
@@ -588,10 +588,10 @@ public class ViewCreateService {
     public Element createAcceptAction(Element ownerElement) {
         if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
-            var acceptAction = SysmlFactory.eINSTANCE.createAcceptActionUsage();
-            this.elementInitializerSwitch.doSwitch(acceptAction);
-            featureMember.getOwnedRelatedElement().add(acceptAction);
             ownerElement.getOwnedRelationship().add(featureMember);
+            var acceptAction = SysmlFactory.eINSTANCE.createAcceptActionUsage();
+            featureMember.getOwnedRelatedElement().add(acceptAction);
+            this.elementInitializerSwitch.doSwitch(acceptAction);
             return acceptAction;
         }
         return ownerElement;
@@ -751,7 +751,9 @@ public class ViewCreateService {
     private Element createSuccessionEdge(Element successionSource, Element successionTarget, EObject successionOwner) {
         if (successionOwner instanceof Element ownerElement) {
             var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
+            ownerElement.getOwnedRelationship().add(featureMembership);
             var succession = SysmlFactory.eINSTANCE.createSuccessionAsUsage();
+            featureMembership.getOwnedRelatedElement().add(succession);
             this.elementInitializerSwitch.doSwitch(succession);
             var sourceEnd = this.createEndFeatureMembershipFor(successionSource);
             var targetEnd = this.createEndFeatureMembershipFor(successionTarget);
@@ -761,8 +763,6 @@ public class ViewCreateService {
             // to be able to retrieve Membership element holding standard actions.
             succession.getSource().add(successionSource);
             succession.getTarget().add(successionTarget);
-            featureMembership.getOwnedRelatedElement().add(succession);
-            ownerElement.getOwnedRelationship().add(featureMembership);
         }
         return successionSource;
     }
@@ -829,11 +829,11 @@ public class ViewCreateService {
      * @return the newly created action usage.
      */
     public ActionUsage createSubActionUsage(Element ownerElement) {
-        var newActionUsage = SysmlFactory.eINSTANCE.createActionUsage();
-        this.elementInitializerSwitch.doSwitch(newActionUsage);
         var featureMembership = SysmlFactory.eINSTANCE.createFeatureMembership();
-        featureMembership.getOwnedRelatedElement().add(newActionUsage);
         ownerElement.getOwnedRelationship().add(featureMembership);
+        var newActionUsage = SysmlFactory.eINSTANCE.createActionUsage();
+        featureMembership.getOwnedRelatedElement().add(newActionUsage);
+        this.elementInitializerSwitch.doSwitch(newActionUsage);
         return newActionUsage;
     }
 
@@ -890,10 +890,10 @@ public class ViewCreateService {
     public Element createForkAction(Element ownerElement) {
         if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
-            var fork = SysmlFactory.eINSTANCE.createForkNode();
-            this.elementInitializerSwitch.doSwitch(fork);
-            featureMember.getOwnedRelatedElement().add(fork);
             ownerElement.getOwnedRelationship().add(featureMember);
+            var fork = SysmlFactory.eINSTANCE.createForkNode();
+            featureMember.getOwnedRelatedElement().add(fork);
+            this.elementInitializerSwitch.doSwitch(fork);
             return fork;
         }
         return ownerElement;
@@ -928,10 +928,10 @@ public class ViewCreateService {
     public Element createDecisionAction(Element ownerElement) {
         if (this.isPart(ownerElement) || this.isAction(ownerElement)) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
-            var decision = SysmlFactory.eINSTANCE.createDecisionNode();
-            this.elementInitializerSwitch.doSwitch(decision);
-            featureMember.getOwnedRelatedElement().add(decision);
             ownerElement.getOwnedRelationship().add(featureMember);
+            var decision = SysmlFactory.eINSTANCE.createDecisionNode();
+            featureMember.getOwnedRelatedElement().add(decision);
+            this.elementInitializerSwitch.doSwitch(decision);
             return decision;
         }
         return ownerElement;
@@ -947,10 +947,10 @@ public class ViewCreateService {
     public Element createAssignmentAction(Element ownerElement) {
         if (ownerElement instanceof ActionUsage || ownerElement instanceof ActionDefinition) {
             var featureMember = SysmlFactory.eINSTANCE.createFeatureMembership();
-            var assignmentAction = SysmlFactory.eINSTANCE.createAssignmentActionUsage();
-            this.elementInitializerSwitch.doSwitch(assignmentAction);
-            featureMember.getOwnedRelatedElement().add(assignmentAction);
             ownerElement.getOwnedRelationship().add(featureMember);
+            var assignmentAction = SysmlFactory.eINSTANCE.createAssignmentActionUsage();
+            featureMember.getOwnedRelatedElement().add(assignmentAction);
+            this.elementInitializerSwitch.doSwitch(assignmentAction);
             return assignmentAction;
         }
         return ownerElement;
@@ -958,32 +958,32 @@ public class ViewCreateService {
 
     public Element createPerform(Element ownerElement) {
         // create an action usage as the performed action of this perform action
+        var performedFeatureMember = this.createMembership(ownerElement);
+        ownerElement.getOwnedRelationship().add(performedFeatureMember);
         var performedAction = SysmlFactory.eINSTANCE.createActionUsage();
+        performedFeatureMember.getOwnedRelatedElement().add(performedAction);
         this.elementInitializerSwitch.doSwitch(performedAction);
         performedAction.setDeclaredName("performedAction");
-        var performedFeatureMember = this.createMembership(ownerElement);
-        performedFeatureMember.getOwnedRelatedElement().add(performedAction);
-        ownerElement.getOwnedRelationship().add(performedFeatureMember);
         // create the perform action
+        var featureMember = this.createMembership(ownerElement);
+        ownerElement.getOwnedRelationship().add(featureMember);
         var perform = SysmlFactory.eINSTANCE.createPerformActionUsage();
+        featureMember.getOwnedRelatedElement().add(perform);
         this.elementInitializerSwitch.doSwitch(perform);
         // set the reference subsetting relationship to the performed action
         var referenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
         referenceSubsetting.setReferencedFeature(performedAction);
         perform.getOwnedRelationship().add(referenceSubsetting);
-        var featureMember = this.createMembership(ownerElement);
-        featureMember.getOwnedRelatedElement().add(perform);
-        ownerElement.getOwnedRelationship().add(featureMember);
         return perform;
     }
 
     public Element createPerformAction(Element ownerElement) {
-        var perform = SysmlFactory.eINSTANCE.createPerformActionUsage();
-        this.elementInitializerSwitch.doSwitch(perform);
         // no subsetting relationship for the performed action since it is the same as the perform action
         var featureMember = this.createMembership(ownerElement);
-        featureMember.getOwnedRelatedElement().add(perform);
         ownerElement.getOwnedRelationship().add(featureMember);
+        var perform = SysmlFactory.eINSTANCE.createPerformActionUsage();
+        featureMember.getOwnedRelatedElement().add(perform);
+        this.elementInitializerSwitch.doSwitch(perform);
         return perform;
     }
 
@@ -1006,11 +1006,11 @@ public class ViewCreateService {
         var parent = self.getOwner();
         if (parent != null) {
             // create a new part usage
-            var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
-            this.elementInitializer(newPartUsage);
             var membership = SysmlFactory.eINSTANCE.createOwningMembership();
-            membership.getOwnedRelatedElement().add(newPartUsage);
             parent.getOwnedRelationship().add(membership);
+            var newPartUsage = SysmlFactory.eINSTANCE.createPartUsage();
+            membership.getOwnedRelatedElement().add(newPartUsage);
+            this.elementInitializer(newPartUsage);
             // create subsetting edge between self and new part usage
             this.utilService.setSubsetting(self, newPartUsage);
             return newPartUsage;
@@ -1029,11 +1029,11 @@ public class ViewCreateService {
         var parent = self.getOwner();
         if (parent != null) {
             // create a new definition associated to the given part usage
-            var newPartDefinition = this.utilService.createPartDefinitionFrom(self);
-            this.elementInitializerSwitch.doSwitch(newPartDefinition);
             var membership = SysmlFactory.eINSTANCE.createOwningMembership();
-            membership.getOwnedRelatedElement().add(newPartDefinition);
             parent.getOwnedRelationship().add(membership);
+            var newPartDefinition = this.utilService.createPartDefinitionFrom(self);
+            membership.getOwnedRelatedElement().add(newPartDefinition);
+            this.elementInitializerSwitch.doSwitch(newPartDefinition);
             // create feature typing edge between self and new part definition
             this.utilService.setFeatureTyping(self, newPartDefinition);
             return newPartDefinition;
@@ -1044,9 +1044,9 @@ public class ViewCreateService {
     public Element createNamespaceImport(Element self, Namespace importedNamespace) {
         if (self instanceof Namespace namespace) {
             var namespaceImport = SysmlFactory.eINSTANCE.createNamespaceImport();
+            namespace.getOwnedRelationship().add(namespaceImport);
             this.elementInitializer(namespaceImport);
             namespaceImport.setImportedNamespace(importedNamespace);
-            self.getOwnedRelationship().add(namespaceImport);
             return namespaceImport;
         }
         return self;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -146,10 +146,12 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
     public void givenASysMLProjectWhenNewFlowConnectionToolOfNestedElementIsRequestedOnAPartUsageThenANewPartUsageAndAFlowConnectionEdgeAreCreated() {
         String creationPartToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
         assertThat(creationPartToolId).as("The tool 'New Part' should exist on a first level PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
-                this.diagram,
-                "part1",
-                creationPartToolId));
+
+        this.verifier.then(() -> this.nodeCreationTester.renameNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT, this.diagram, "part1", "firstLevelPart"));
+
+        var diagramAfterRenaming = this.givenDiagram.getDiagram(this.verifier);
+
+        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT, diagramAfterRenaming, "firstLevelPart", creationPartToolId));
 
         var diagramAfterNestedPartUsageCreation = this.givenDiagram.getDiagram(this.verifier);
 
@@ -157,7 +159,7 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
         assertThat(creationToolId).as("The tool 'New Flow Connection' should exist on a nested PartUsage").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
                 diagramAfterNestedPartUsageCreation,
-                "part",
+                "part1",
                 creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {
