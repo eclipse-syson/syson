@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,7 @@ describe('Details View Tests', () => {
     context('When we select a PartUsage without type', () => {
       it('Then the details view contains the extra property "Typed by" even if the PartUsage has no type yet.', () => {
         explorer.createObject(batmobile.getRootElementLabel(), 'SysMLv2EditService-PartUsage');
-        explorer.select('part');
+        explorer.select('part2');
         details.getGroup('Part Properties').should('be.visible');
         details.getReferenceWidget('Typed by').should('exist');
         details.getReferenceWidgetSelectedValue('Typed by', '').should('not.exist');

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -114,13 +114,13 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
         }
     }
 
-    @DisplayName("Given a SysML Project, when New Interface tool of first level element is requested on a PartUsage, then a new PartUsage and a Interface edge are created")
+    @DisplayName("Given a SysML Project, when New Interface tool of first level element is requested on a PartUsage, then a new PartUsage and an Interface edge are created")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
     public void givenASysMLProjectWhenNewInterfaceToolIsRequestedOnAPartUsageThenANewPartUsageAndAInterfaceEdgeAreCreated() {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Interface");
-        assertThat(creationToolId).as("The tool 'New Interface' should exist on a PartUsage").isNotNull();
+        assertThat(creationToolId).as("The tool 'New Interface' should exist on a first level PartUsage").isNotNull();
         this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
                 this.diagram,
                 "part1",
@@ -139,25 +139,28 @@ public class IVAddNewInterfaceFromPartUsageTests extends AbstractIntegrationTest
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
     }
 
-    @DisplayName("Given a SysML Project, when New Interface tool of nested element is requested on a PartUsage, then a new PartUsage and a Interface edge are created")
+    @DisplayName("Given a SysML Project, when New Interface tool of nested element is requested on a PartUsage, then a new PartUsage and an Interface edge are created")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     @Test
-    public void givenASysMLProjectWhenNewFlowConnectionToolOfNestedElementIsRequestedOnAPartUsageThenANewPartUsageAndAFlowConnectionEdgeAreCreated() {
+    public void givenASysMLProjectWhenNewInterfaceToolOfNestedElementIsRequestedOnAPartUsageThenANewPartUsageAndAnInterfaceEdgeAreCreated() {
         String creationPartToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
         assertThat(creationPartToolId).as("The tool 'New Part' should exist on a first level PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
-                this.diagram,
-                "part1",
-                creationPartToolId));
+
+        this.verifier.then(() -> this.nodeCreationTester.renameNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT, this.diagram, "part1", "firstLevelPart"));
+
+        var diagramAfterRenaming = this.givenDiagram.getDiagram(this.verifier);
+
+        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT, diagramAfterRenaming, "firstLevelPart", creationPartToolId));
 
         var diagramAfterNestedPartUsageCreation = this.givenDiagram.getDiagram(this.verifier);
 
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Interface");
         assertThat(creationToolId).as("The tool 'New Interface' should exist on a nested PartUsage").isNotNull();
+
         this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
                 diagramAfterNestedPartUsageCreation,
-                "part",
+                "part1",
                 creationToolId));
 
         IDiagramChecker diagramChecker = (initialDiagram, newDiagram) -> {

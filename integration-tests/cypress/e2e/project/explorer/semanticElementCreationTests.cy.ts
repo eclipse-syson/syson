@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,14 +45,14 @@ describe('Semantic Element Creation Tests', () => {
         explorer.createRootObject(sysmlv2.getProjectLabel(), 'SysMLv2EditService-PartUsage');
         // Check that the created part is a child of the root document
         explorer
-          .getTreeItemByLabel('part')
+          .getTreeItemByLabel('part1')
           .parents('ul')
           .first()
           .siblings()
           .contains(sysmlv2.getProjectLabel())
           .should('exist');
         // Check that the created part is a sibling of Package 1
-        explorer.getTreeItemByLabel('part').parents('li').first().siblings().contains('Package 1').should('exist');
+        explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package 1').should('exist');
       });
 
       it('Then we can create a PartUsage in it and it will be set as a child of the root namespace (when root namespaces are visible)', () => {
@@ -61,14 +61,14 @@ describe('Semantic Element Creation Tests', () => {
         explorer.createRootObject(sysmlv2.getProjectLabel(), 'SysMLv2EditService-PartUsage');
         // Check that the created part is a child of the root Namespace
         explorer
-          .getTreeItemByLabel('part')
+          .getTreeItemByLabel('part1')
           .parents('ul')
           .first()
           .siblings()
           .contains(sysmlv2.getRootNamespaceLabel())
           .should('exist');
         // Check that the created part is a sibling of Package 1
-        explorer.getTreeItemByLabel('part').parents('li').first().siblings().contains('Package 1').should('exist');
+        explorer.getTreeItemByLabel('part1').parents('li').first().siblings().contains('Package 1').should('exist');
       });
     });
 

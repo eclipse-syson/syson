@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.jayway.jsonpath.JsonPath;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -82,8 +83,26 @@ public class NodeCreationTester {
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
     }
 
-    public void renameNode(String projectId, AtomicReference<Diagram> diagram, String nodeName, String newName) {
+    public void renameRootNode(String projectId, AtomicReference<Diagram> diagram, String nodeName, String newName) {
         Optional<Node> optionalNode = diagram.get().getNodes().stream().filter(n -> n.getTargetObjectLabel().equals(nodeName)).findFirst();
+
+        assertThat(optionalNode).as("the node " + nodeName + " is not present in the diagram").isNotEmpty();
+
+        var input = new EditLabelInput(UUID.randomUUID(), projectId, diagram.get().getId(), optionalNode.get().getInsideLabel().getId(), newName);
+        var invokeSingleClickOnDiagramElementToolResult = this.editLabelMutationRunner.run(input);
+
+        String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.editLabel.__typename");
+        assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
+    }
+
+    public void renameNode(String projectId, AtomicReference<Diagram> diagram, String nodeName, String newName) {
+        List<Node> nodes = new ArrayList<>();
+        List<Node> rootNodes = diagram.get().getNodes();
+        nodes.addAll(rootNodes);
+        for (Node node : rootNodes) {
+            nodes.addAll(node.getChildNodes());
+        }
+        Optional<Node> optionalNode = nodes.stream().filter(n -> n.getTargetObjectLabel().equals(nodeName)).findFirst();
 
         assertThat(optionalNode).as("the node " + nodeName + " is not present in the diagram").isNotEmpty();
 

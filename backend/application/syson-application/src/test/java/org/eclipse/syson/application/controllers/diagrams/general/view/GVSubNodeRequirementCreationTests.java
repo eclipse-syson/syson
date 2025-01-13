@@ -439,7 +439,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
             final Element semanticRootElement = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).filter(Element.class::isInstance)
                     .map(Element.class::cast).orElseGet(() -> Assertions.fail("Could not find the expected root semantic object."));
             final List<PartUsage> allStakeholderPartUsages = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
-                    .filter(element -> Objects.equals(element.getName(), "stakeholder")).toList();
+                    .filter(element -> Objects.equals(element.getName(), "stakeholder1")).toList();
             assertEquals(1, allStakeholderPartUsages.size());
 
             final PartUsage stakeholderPartUsage = allStakeholderPartUsages.get(0);

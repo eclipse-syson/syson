@@ -27,6 +27,7 @@ import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.FeatureDirectionKind;
 import org.eclipse.syson.sysml.FeatureTyping;
 import org.eclipse.syson.sysml.FlowConnectionUsage;
+import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.ObjectiveMembership;
 import org.eclipse.syson.sysml.OwningMembership;
 import org.eclipse.syson.sysml.Package;
@@ -102,7 +103,8 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element caseDefinition(Definition object) {
-        object.setDeclaredName(object.eClass().getName());
+        var existingElements = this.existingElementsCount(object);
+        object.setDeclaredName(object.eClass().getName() + existingElements);
         return object;
     }
 
@@ -120,7 +122,8 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     @Override
     public Element caseEnumerationDefinition(EnumerationDefinition object) {
         object.setIsVariation(true);
-        object.setDeclaredName(object.eClass().getName());
+        var existingElements = this.existingElementsCount(object);
+        object.setDeclaredName(object.eClass().getName() + existingElements);
         return object;
     }
 
@@ -136,7 +139,8 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element casePackage(Package object) {
-        object.setDeclaredName(object.eClass().getName());
+        var existingElements = this.existingElementsCount(object);
+        object.setDeclaredName(object.eClass().getName() + existingElements);
         return object;
     }
 
@@ -144,9 +148,23 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
     public Element casePartUsage(PartUsage object) {
         this.caseUsage(object);
         if (object.getOwningMembership() instanceof ActorMembership) {
-            object.setDeclaredName("actor");
+            long existingElements = 0;
+            Namespace owningNamespace = object.getOwningNamespace();
+            if (owningNamespace != null) {
+                existingElements = owningNamespace.getOwnedMember().stream()
+                        .filter(member -> object.eClass().equals(member.eClass()) && object.getOwningMembership() instanceof ActorMembership)
+                        .count();
+            }
+            object.setDeclaredName("actor" + existingElements);
         } else if (object.getOwningMembership() instanceof StakeholderMembership) {
-            object.setDeclaredName("stakeholder");
+            long existingElements = 0;
+            Namespace owningNamespace = object.getOwningNamespace();
+            if (owningNamespace != null) {
+                existingElements = owningNamespace.getOwnedMember().stream()
+                        .filter(member -> object.eClass().equals(member.eClass()) && object.getOwningMembership() instanceof StakeholderMembership)
+                        .count();
+            }
+            object.setDeclaredName("stakeholder" + existingElements);
         }
         return object;
     }
@@ -159,7 +177,8 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
 
     @Override
     public Element casePortDefinition(PortDefinition object) {
-        object.setDeclaredName(object.eClass().getName());
+        var existingElements = this.existingElementsCount(object);
+        object.setDeclaredName(object.eClass().getName() + existingElements);
         OwningMembership owningMembership = SysmlFactory.eINSTANCE.createOwningMembership();
         object.getOwnedRelationship().add(owningMembership);
         // No need to set the declaredName for the ConjugatedPortDefinition here, it is always the same than its
@@ -236,9 +255,22 @@ public class ElementInitializerSwitch extends SysmlSwitch<Element> {
         if (defaultName.endsWith("Usage")) {
             defaultName = defaultName.substring(0, defaultName.length() - 5);
         }
-        object.setDeclaredName(defaultName);
+
+        var existingElements = this.existingElementsCount(object);
+
+        object.setDeclaredName(defaultName + existingElements);
         object.setIsComposite(true);
         return object;
+    }
+
+    private long existingElementsCount(Element element) {
+        Namespace owningNamespace = element.getOwningNamespace();
+        if (owningNamespace != null) {
+            return owningNamespace.getOwnedMember().stream()
+                    .filter(member -> element.eClass().equals(member.eClass()))
+                    .count();
+        }
+        return 0;
     }
 
     private ParameterMembership createParameterMembershipWithReferenceUsage(String refName, FeatureDirectionKind direction) {

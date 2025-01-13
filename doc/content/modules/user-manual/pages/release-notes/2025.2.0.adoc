@@ -11,6 +11,9 @@
 
 - Fix an issue where the server could crash when successive REST APIs calls are executed.
 More precisely, the dates fields were not serialized correctly.
+- Fix an issue where default names of `Elements` were sometimes invalid because corresponding to SysMLv2 keywords.
+New default names now includes a number, this number corresponding to the count of `Elements` of the same kind in the scope.
+For example, if a `PartDefinition` already define 5 parts, then a new `Part` created under this `PartDefinition` would have _part6_ for name.
 
 == New features
 
