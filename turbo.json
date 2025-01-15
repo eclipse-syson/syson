@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.v1.json",
-  "pipeline": {
+  "tasks": {
     "format": {
       "outputs": []
     },
@@ -20,8 +20,12 @@
     "publish:local": {
       "dependsOn": ["build"]
     },
+    "build-dev": {
+      "dependsOn": ["format-lint", "^build-dev"]
+    },
     "start": {
-      "dependsOn": ["format-lint", "^start"]
+      "dependsOn": ["format-lint", "^build-dev"],
+      "persistent": true
     }
   }
 }

@@ -65,6 +65,9 @@ The changes are:
 === Dependency update
 
 - [releng] Switch to Sirius Web 2025.1.0
+- [releng] Upgrade `turbo` to version 2.3.3 (from 1.13.3 before)
+The `start` task used in our turbo configuration is now marked as `persistent` and as a result we have separated the `start` script from `syson` used to run the frontend in dev from from the `start` script from other packages used to build them in development mode by renaming the later to `build-dev`.
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.1[Spring Boot 3.4.1].
 
 === Bug fixes
 
