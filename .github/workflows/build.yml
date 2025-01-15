@@ -157,7 +157,7 @@ jobs:
         with:
           build: docker compose -f docker-compose-integration-tests.yml up -d
           start: docker compose -f docker-compose-integration-tests.yml ps
-          wait-on: "http://localhost:8080/login"
+          wait-on: "http://localhost:8080"
           wait-on-timeout: 180
           working-directory: integration-tests
           record: false
