@@ -19,7 +19,7 @@ For example, if a `PartDefinition` already define 5 parts, then a new `Part` cre
 
 - A new experimental view named _Query_ is available in SysON, allowing to query the models.
 
-image::release-notes-query-view.png[Query View, width=75%,height=75%]
+image::release-notes-query-view.png[Query View, width=85%,height=85%]
 
 This view allows to write some AQL queries (see AQL documentation for more details) and get the result of the queries written.
 [WARNING]
@@ -29,10 +29,12 @@ It will be improved release after release, with new variables and services, but 
 ====
 Only one variable is accessible for now, `editingContext` which represent the current project.
 From this context, you can use the following services:
+
 - `Collection<Object> allContents()`: allows to retrieve all contents recursively (documents, and each element of all models) present in your editing context.
 Please use this service very carefully as it can retrieve thousands elements very easily and may also lead to performance issues.
 - `Collection<Object> contents()`: allows to retrieve all contents (documents) present in your editing context.
 - `Object getObjectById(String id)`: from its ID, allows to retrieve an object (a document or a SysMLv2 model Element) present in your editing context.
+
 [WARNING]
 ====
 The use of this _Query_ view requires knowledge of AQL and also a good knowledge of the SysMLv2 language (attributes, references, operations).
@@ -40,13 +42,13 @@ The use of this _Query_ view requires knowledge of AQL and also a good knowledge
 Here are some examples of AQL queries applied on a simple project:
 - The following example uses the `getObjectById` service with an ID as parameter, corresponding to the _Package 1_ element (its ID has been retrieved from the _Advanced_ tab in _Details_ view).
 
-image::release-notes-query-view-getObjectById.png[Query View getObjectById, width=75%,height=75%]
+image::release-notes-query-view-getObjectById.png[Query View getObjectById, width=85%,height=85%]
 
 The result is _Package 1_.
 
 - The following example uses the `ownedMember` reference from the SysMLv2 language, applied on _Package 1_ element.
 
-image::release-notes-query-view-ownedMember.png[Query View ownedMember, width=75%,height=75%]
+image::release-notes-query-view-ownedMember.png[Query View ownedMember, width=85%,height=85%]
 
 The result is _part1_ and _action1_, you can see also them in the _Explorer_ view on the left side, as members of _Package 1_.
 
