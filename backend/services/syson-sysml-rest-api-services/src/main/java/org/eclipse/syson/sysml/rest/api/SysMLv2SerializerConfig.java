@@ -28,11 +28,14 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 /**
  * Custom JSON ResponseBodyAdvice for SysMLv2 Elements.
  *
  * @author arichard
  */
+@Hidden
 @ControllerAdvice("org.eclipse.sirius.web.application.object.controllers")
 public class SysMLv2SerializerConfig implements ResponseBodyAdvice<Object> {
 
