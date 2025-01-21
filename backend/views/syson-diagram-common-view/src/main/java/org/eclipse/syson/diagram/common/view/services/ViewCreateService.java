@@ -238,11 +238,11 @@ public class ViewCreateService {
                 var membership = this.createAppropriateMembership(structuralFeature);
                 element.getOwnedRelationship().add(membership);
                 membership.getOwnedRelatedElement().add(result);
+                result = this.elementInitializer(elementItem);
                 if (directionLiteral != null && item instanceof Feature feature) {
                     feature.setDirection(FeatureDirectionKind.get(directionLiteral));
                     result.setDeclaredName(result.getName() + StringUtils.capitalize(directionLiteral));
                 }
-                result = this.elementInitializer(elementItem);
             }
         }
         return result;

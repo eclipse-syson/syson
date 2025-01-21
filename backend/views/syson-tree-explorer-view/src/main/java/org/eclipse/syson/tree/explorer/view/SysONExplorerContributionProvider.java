@@ -57,7 +57,7 @@ public class SysONExplorerContributionProvider implements IExplorerTreeDescripti
 
     private Optional<TreeDescription> getSysONExplorerTreeDescription(IEditingContext editingContext) {
         Optional<TreeDescription> result = Optional.empty();
-        if (!this.studioCapableEditingContextPredicate.test(editingContext)) {
+        if (!this.studioCapableEditingContextPredicate.test(editingContext.getId())) {
             // Do not use the custom SysON Explorer in studio project: they should be managed by the Sirius Web
             // explorer.
             result = this.representationDescriptionSearchService

@@ -79,11 +79,13 @@ The changes are:
 * New class `TerminateActionUsage`
 ** with new derived reference `terminatedOccurrenceArgument : Expression`
 - All standard libraries have been updated to comply with the SysML Beta 2.3 specification.
+- In addition to the export as SVG, you can now export diagrams as PNG images.
 
+image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%,height=50%]
 
 == Dependency update
 
-- Switch to Sirius Web 2025.1.1
+- Switch to Sirius Web 2025.1.2
 
 == Technical details
 
