@@ -23,7 +23,7 @@
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
 	<artifactId>syson-sysml-rest-api-services</artifactId>
-	<version>2025.1.1</version>
+	<version>2025.1.2</version>
 	<name>syson-sysml-rest-api-services</name>
 	<description>SysON SysML REST API Services</description>
 
@@ -68,12 +68,12 @@
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-sysml-metamodel</artifactId>
-			<version>2025.1.1</version>
+			<version>2025.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-services</artifactId>
-			<version>2025.1.1</version>
+			<version>2025.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
