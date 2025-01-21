@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -134,14 +133,8 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     }
 
     private boolean hasRepresentation(EObject self, IEditingContext editingContext) {
-        var optionalEditingContextId = new UUIDParser().parse(editingContext.getId());
-        if (optionalEditingContextId.isPresent()) {
-            var projectId = optionalEditingContextId.get();
-            String id = this.objectService.getId(self);
-            return this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(projectId), id);
-        }
-
-        return false;
+        String id = this.objectService.getId(self);
+        return this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id);
     }
 
     @Override

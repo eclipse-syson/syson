@@ -58,7 +58,7 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
     @Override
     public void preProcess(IEditingContext editingContext) {
         if (editingContext instanceof IEMFEditingContext siriusWebEditingContext
-                && !this.studioCapableEditingContextPredicate.test(editingContext)) {
+                && !this.studioCapableEditingContextPredicate.test(editingContext.getId())) {
             // Do not initialize the editing context as a SysON editing context if it contains a studio.
             siriusWebEditingContext.getDomain().getResourceSet().eAdapters().add(new SysONEContentAdapter());
 
