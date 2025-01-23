@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,8 +42,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String SIMPLE_PROJECT = "a427f187-9003-498c-9178-72e8350cc67c";
 
     private static final String INVALID_PROJECT = "55555555-5555-5555-5555-555555555555";
 
@@ -82,7 +81,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/elements", SIMPLE_PROJECT, SIMPLE_PROJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/elements", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
@@ -126,7 +125,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s", SIMPLE_PROJECT, SIMPLE_PROJECT, SIMPLE_PROJECT_PACKAGE1);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT, SIMPLE_PROJECT_PACKAGE1);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
@@ -169,7 +168,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s/relationships", SIMPLE_PROJECT, SIMPLE_PROJECT, SIMPLE_PROJECT_PART);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/elements/%s/relationships", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT, SIMPLE_PROJECT_PART);
         webTestClient.get()
                 .uri(uri.toString())
                 .exchange()
@@ -213,7 +212,7 @@ public class ObjectRestControllerIntegrationTests extends AbstractIntegrationTes
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/roots", SIMPLE_PROJECT, SIMPLE_PROJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/roots", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT);
         webTestClient.get()
                 .uri(uri.toString())
                 .exchange()

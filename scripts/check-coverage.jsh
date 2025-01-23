@@ -40,6 +40,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-sysml-rest-api-services", 73.0),
   new ModuleCoverage("syson-sysml-import", 77.0),
   new ModuleCoverage("syson-sysml-export", 88.0),
+  new ModuleCoverage("syson-sysml-validation", 0.0),
   new ModuleCoverage("syson-diagram-common-view", 80.0),
   new ModuleCoverage("syson-diagram-general-view", 99.0),
   new ModuleCoverage("syson-diagram-actionflow-view", 96.0),

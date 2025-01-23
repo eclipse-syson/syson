@@ -87,6 +87,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
+			<artifactId>syson-sysml-validation</artifactId>
+			<version>2025.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.syson</groupId>
 			<artifactId>syson-diagram-common-view</artifactId>
 			<version>2025.1.3</version>
 		</dependency>

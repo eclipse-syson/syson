@@ -21,6 +21,7 @@ import java.util.UUID;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -43,8 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProjectDataVersioningRestControllerIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String SIMPLE_PROJECT = "a427f187-9003-498c-9178-72e8350cc67c";
 
     private static final String INVALID_PROJECT = "55555555-5555-5555-5555-555555555555";
 
@@ -83,7 +82,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
             fail(e);
         }
 
-        var uri = String.format("/api/rest/projects/%s/commits/%s/changes", SIMPLE_PROJECT, SIMPLE_PROJECT);
+        var uri = String.format("/api/rest/projects/%s/commits/%s/changes", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
@@ -128,8 +127,8 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
             fail(e);
         }
 
-        var computedChangeId = UUID.nameUUIDFromBytes((SIMPLE_PROJECT + SIMPLE_PROJECT_PART).getBytes()).toString();
-        var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", SIMPLE_PROJECT, SIMPLE_PROJECT, computedChangeId);
+        var computedChangeId = UUID.nameUUIDFromBytes((SysMLv2Identifiers.SIMPLE_PROJECT + SIMPLE_PROJECT_PART).getBytes()).toString();
+        var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT, computedChangeId);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
