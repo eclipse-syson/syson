@@ -58,6 +58,7 @@ public final class SysMLv2Identifiers {
 
     public static final String SYSON_STUDIO_PROJECT = "86f60dca-c918-4d16-b508-0221af030652";
 
+    public static final String SIMPLE_PROJECT = "a427f187-9003-498c-9178-72e8350cc67c";
 
     private SysMLv2Identifiers() {
         // Prevent instantiation

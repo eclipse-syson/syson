@@ -4,6 +4,9 @@
 
 - *Model conformance to SysMLv2 Beta 2.3 version*: the metamodel has been modified to conform to SysMLv2 and KerML Beta 2.3 specifications released on December 2024 (see https://www.omg.org/spec/SysML/ for more details).
 
+- *Add validation rules*: SysON now implements the constraints (a.k.a. validation rules) from the SysMLv2 specification.
+The _Validation_ view show the results of the execution of the constraints on your models.
+
 == Breaking changes
 
 
@@ -52,6 +55,8 @@ image::release-notes-query-view-ownedMember.png[Query View ownedMember, width=85
 
 The result is visible in the _Evaluation result_ part of the _Query_ view (_part1_ and _action1_).
 In this case it corresponds to the members of _Package 1_ that you can also see in the _Explorer_ view on the left side of the screenshot above.
+
+- The _Validation_ view now displays the result of the execution of the constraints (a.k.a. validation rules) from the SysMLv2 specification.
 
 == Improvements
 

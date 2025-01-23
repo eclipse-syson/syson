@@ -14,6 +14,7 @@ package org.eclipse.syson.application.controllers.rest;
 
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,8 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RestControllerIntegrationTests extends AbstractIntegrationTests {
-
-    private static final String SIMPLE_PROJECT = "a427f187-9003-498c-9178-72e8350cc67c";
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
@@ -68,7 +67,7 @@ public class RestControllerIntegrationTests extends AbstractIntegrationTests {
                 .expectStatus()
                 .isOk();
 
-        uri = String.format("/api/rest/projects/%s/commits/%s/elements", SIMPLE_PROJECT, SIMPLE_PROJECT);
+        uri = String.format("/api/rest/projects/%s/commits/%s/elements", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT);
         webTestClient.get()
                 .uri(uri)
                 .exchange()
