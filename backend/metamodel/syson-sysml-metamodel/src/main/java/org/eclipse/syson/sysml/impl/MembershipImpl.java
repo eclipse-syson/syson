@@ -15,6 +15,7 @@ package org.eclipse.syson.sysml.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
@@ -300,13 +301,31 @@ public class MembershipImpl extends RelationshipImpl implements Membership {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> not (memberElement.oclKindOf(other.memberElement.oclType()) or
+     * other.memberElement.oclKindOf(memberElement.oclType())) or (shortMemberName = null or (shortMemberName <>
+     * other.shortMemberName and shortMemberName <> other.memberName)) and (memberName = null or (memberName <>
+     * other.shortMemberName and memberName <> other.memberName)))<!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public boolean isDistinguishableFrom(Membership other) {
-        return false;
+        boolean isDistinguishableFrom = true;
+        var member = this.getMemberElement();
+        var otherMember = other.getMemberElement();
+        if (member != null && otherMember != null) {
+            var memberElementClass = member.eClass();
+            var otherMemberElementClass = otherMember.eClass();
+            var memberElementSuperClasses = memberElementClass.getEAllSuperTypes();
+            var otherMemberElementSuperClasses = otherMemberElementClass.getEAllSuperTypes();
+            boolean compatibleMembers = Objects.equals(memberElementClass, otherMemberElementClass) || memberElementSuperClasses.contains(otherMemberElementClass)
+                    || otherMemberElementSuperClasses.contains(memberElementClass);
+            boolean diffMemberShortName = this.getMemberShortName() == null
+                    || (!this.getMemberShortName().equals(other.getMemberShortName()) && !this.getMemberShortName().equals(other.getMemberName()));
+            boolean diffMemberName = this.getMemberName() == null || (!this.getMemberName().equals(other.getMemberShortName()) && !this.getMemberName().equals(other.getMemberName()));
+            isDistinguishableFrom = !compatibleMembers || (diffMemberShortName && diffMemberName);
+        }
+        return isDistinguishableFrom;
     }
 
     /**

@@ -88,6 +88,9 @@ The changes are:
 
 image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%,height=50%]
 
+- `Membership#isDistinguishableFrom` derived attribute has been implemented in the metamodel.
+
+
 == Dependency update
 
 - Switch to Sirius Web 2025.1.3
