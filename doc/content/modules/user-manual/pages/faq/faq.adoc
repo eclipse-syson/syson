@@ -11,6 +11,14 @@ If you have a question not addressed here, xref:ROOT:help.adoc[contact us].
 To understand the intent of {product}, see the xref:user-manual:what-is.adoc[What's?] section in the user manual.
 ====
 
+.*Why is the project named {product}? What does "ON" mean in {product}?*
+[%collapsible%open]
+====
+The name {product} is a play on words that sounds such as "season" symbolizing a new season for system engineering tools and reflecting progress in the field.
+While "ON" doesn't have a single predefined meaning, it evokes activation and readiness—like “you’re ON.”
+It can also be interpreted as “Systems ON,” highlighting its role as an enabler for digital engineering, or “SysML ON,” reinforcing its connection to SysML.
+====
+
 .*What's the difference between {product} and other {sysml} modeling tools?*
 [%collapsible%open]
 ====
