@@ -85,7 +85,7 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 
 == Dependency update
 
-- Switch to Sirius Web 2025.1.2
+- Switch to Sirius Web 2025.1.3
 
 == Technical details
 

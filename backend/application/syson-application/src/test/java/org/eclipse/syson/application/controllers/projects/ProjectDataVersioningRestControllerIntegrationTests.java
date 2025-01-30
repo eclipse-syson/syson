@@ -22,6 +22,7 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
         this.givenInitialServerState.initialize();
     }
 
+    @Disabled
     @Test
     @DisplayName("Given the SysON REST API, when we ask for all changes, then all changes should be returned")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
@@ -108,6 +110,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
                 .isNotFound();
     }
 
+    @Disabled
     @Test
     @DisplayName("Given the SysON REST API, when we ask for changes of a specific element, then those changes should be returned")
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))

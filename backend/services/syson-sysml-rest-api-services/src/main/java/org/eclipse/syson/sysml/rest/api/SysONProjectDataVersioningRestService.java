@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.ChangeType;
+import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommit;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataIdentity;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataVersion;
@@ -104,4 +105,23 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
         return dataVersion;
     }
 
+    @Override
+    public List<RestBranch> getBranches(IEditingContext editingContext) {
+        return this.defaultProjectDataVersioningRestService.getBranches(editingContext);
+    }
+
+    @Override
+    public RestBranch createBranch(IEditingContext editingContext, String branchName, UUID commitId) {
+        return this.defaultProjectDataVersioningRestService.createBranch(editingContext, branchName, commitId);
+    }
+
+    @Override
+    public RestBranch getBranchById(IEditingContext editingContext, UUID branchId) {
+        return this.defaultProjectDataVersioningRestService.getBranchById(editingContext, branchId);
+    }
+
+    @Override
+    public RestBranch deleteBranch(IEditingContext editingContext, UUID branchId) {
+        return this.defaultProjectDataVersioningRestService.getBranchById(editingContext, branchId);
+    }
 }

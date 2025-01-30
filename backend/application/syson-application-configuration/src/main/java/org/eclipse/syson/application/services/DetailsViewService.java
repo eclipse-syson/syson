@@ -120,7 +120,7 @@ public class DetailsViewService {
                     valueToSet = newListValue.get(0);
                 }
             }
-            if (eStructuralFeature.getEType() instanceof EEnum eDataType && eStructuralFeature.isUnsettable() && !(valueToSet instanceof Enumerator)) {
+            if (eStructuralFeature.getEType() instanceof EEnum && eStructuralFeature.isUnsettable() && !(valueToSet instanceof Enumerator)) {
                 element.eUnset(eStructuralFeature);
             } else {
                 if (eStructuralFeature.getEType() instanceof EDataType eDataType && newValue instanceof String stringValue) {
