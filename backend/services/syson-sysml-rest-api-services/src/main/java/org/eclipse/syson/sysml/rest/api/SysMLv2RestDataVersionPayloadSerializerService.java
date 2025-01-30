@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.web.application.project.data.versioning.services.api.IRestDataVersionPayloadSerializerService;
 import org.eclipse.syson.sysml.Element;
 import org.springframework.stereotype.Service;
@@ -43,6 +42,10 @@ public class SysMLv2RestDataVersionPayloadSerializerService implements IRestData
 
     @Override
     public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        this.sysMLv2JsonSerializer.serialize((EObject) value, gen, serializers);
+        if (value instanceof Element element) {
+            this.sysMLv2JsonSerializer.serialize(element, gen, serializers);
+        } else {
+            gen.writeNull();
+        }
     }
 }

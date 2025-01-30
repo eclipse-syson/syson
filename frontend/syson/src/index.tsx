@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,6 @@ import {
   DiagramRepresentationConfiguration,
   footerExtensionPoint,
   navigationBarIconExtensionPoint,
-  NavigationBarIconProps,
   navigationBarMenuHelpURLExtensionPoint,
   NodeTypeRegistry,
   SiriusWebApplication,
@@ -47,29 +46,26 @@ import {
 } from '@eclipse-syson/syson-components';
 import { createRoot } from 'react-dom/client';
 
-import { SysONIcon } from './core/SysONIcon';
 import { httpOrigin, wsOrigin } from './core/URL';
 import { referenceWidgetDocumentTransform } from './extensions/ReferenceWidgetDocumentTransform';
-import { SysONFooter } from './extensions/SysONFooter';
-import { sysonTheme } from './theme/sysonTheme';
-import { SysONObjectTreeItemContextMenuContribution } from './extensions/SysONObjectTreeItemContextMenuContribution';
 import { SysONDocumentTreeItemContextMenuContribution } from './extensions/SysONDocumentTreeItemContextMenuContribution';
+import { SysONExtensionRegistryMergeStrategy } from './extensions/SysONExtensionRegistryMergeStrategy';
+import { SysONFooter } from './extensions/SysONFooter';
+import { SysONNavigationBarIcon } from './extensions/SysONNavigationBarIcon';
+import { SysONObjectTreeItemContextMenuContribution } from './extensions/SysONObjectTreeItemContextMenuContribution';
+import { sysonTheme } from './theme/sysonTheme';
 
 import './fonts.css';
 import './reset.css';
 import './variables.css';
-import { SysONExtensionRegistryMergeStrategy } from './extensions/SysONExtensionRegistryMergeStrategy';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
   loadErrorMessages();
 }
 
-const SysONNavigationBarIcon = ({}: NavigationBarIconProps) => {
-  return <SysONIcon />;
-};
-
 const extensionRegistry: ExtensionRegistry = new ExtensionRegistry();
+
 extensionRegistry.addComponent(navigationBarIconExtensionPoint, {
   identifier: `syson_${navigationBarIconExtensionPoint.identifier}`,
   Component: SysONNavigationBarIcon,
