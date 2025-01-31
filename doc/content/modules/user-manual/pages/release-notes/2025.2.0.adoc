@@ -17,6 +17,9 @@ More precisely, the dates fields were not serialized correctly.
 - Fix an issue where default names of `Elements` were sometimes invalid because corresponding to SysMLv2 keywords.
 New default names now includes a number, this number corresponding to the count of `Elements` of the same kind in the scope.
 For example, if a `PartDefinition` already define 5 parts, then a new `Part` created under this `PartDefinition` would have _part6_ for name.
+- Fix an issue where downloading of standard libraries pointed at 404 error.
+They are now properly downloaded.
+Export to textual SysMLv2 is not fully implemented yet so there are still unhandled cases.
 
 == New features
 
@@ -93,7 +96,7 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 
 == Dependency update
 
-- Switch to Sirius Web 2025.1.3
+- Switch to Sirius Web 2025.1.4
 
 == Technical details
 
