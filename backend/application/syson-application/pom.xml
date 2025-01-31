@@ -29,7 +29,6 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<eef.version>2.1.5-SNAPSHOT</eef.version>
 		<sirius.web.version>2025.1.3</sirius.web.version>
 	</properties>
 	
@@ -46,14 +45,6 @@
 			<id>github-sirius-web</id>
 			<name>Apache Maven Packages</name>
 			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
-		</repository>
-		<repository>
-			<id>Eclipse EEF</id>
-			<name>EEF Repository - Snapshots</name>
-			<url>https://repo.eclipse.org/content/repositories/eef-snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
 		</repository>
 	</repositories>
 
@@ -87,16 +78,6 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-starter</artifactId>
 			<version>${sirius.web.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.eef</groupId>
-			<artifactId>org.eclipse.eef.core</artifactId>
-			<version>${eef.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.eef</groupId>
-			<artifactId>org.eclipse.eef.common</artifactId>
-			<version>${eef.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.syson</groupId>
