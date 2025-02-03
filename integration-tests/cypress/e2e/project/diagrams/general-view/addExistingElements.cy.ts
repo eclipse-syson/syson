@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,13 @@ describe('Diagram Panel in General View Tests', () => {
 
     context('The add existing elements (recursive) tool have been applied, following by an arrange all', () => {
       beforeEach(() => {
-        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - Batmobile').should('exist').click();
+        diagram
+          .getDiagram(diagramLabel)
+          .should('exist')
+          .findByTestId('FreeForm - Batmobile')
+          .should('exist')
+          .rightclick()
+          .rightclick();
         diagram.getPalette().should('exist').findByTestId('toolSection-Related Elements').should('exist').click();
         diagram
           .getPalette()
@@ -51,7 +57,11 @@ describe('Diagram Panel in General View Tests', () => {
           .should('exist')
           .click();
         diagram.getPalette().should('not.exist', { timeout: 10000 });
-        diagram.getDiagram(diagramLabel).should('exist').findByTestId('FreeForm - Batmobile').should('not.exist');
+        diagram
+          .getDiagram(diagramLabel)
+          .should('exist')
+          .findByTestId('FreeForm - Batmobile')
+          .should('not.exist', { timeout: 10000 });
         diagram.arrangeAll();
         cy.getByTestId('arrange-all-circular-loading')
           .should('exist')
