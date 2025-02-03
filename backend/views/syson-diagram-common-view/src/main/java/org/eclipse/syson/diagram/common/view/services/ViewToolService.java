@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,6 +61,7 @@ import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.NodeDescriptionService;
 import org.eclipse.syson.services.ToolService;
 import org.eclipse.syson.services.UtilService;
+import org.eclipse.syson.services.api.ISysMLMoveElementService;
 import org.eclipse.syson.sysml.ActionDefinition;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.ActorMembership;
@@ -123,8 +124,8 @@ public class ViewToolService extends ToolService {
     private final NodeDescriptionService nodeDescriptionService;
 
     public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
-        super(objectService, representationDescriptionSearchService, feedbackMessageService);
+            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
+        super(objectService, representationDescriptionSearchService, feedbackMessageService, moveService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
@@ -669,7 +670,7 @@ public class ViewToolService extends ToolService {
             this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
             this.logger.warn(message);
         } else {
-            this.utilService.moveMembership(usage, newContainer);
+            this.moveService.moveSemanticElement(usage, newContainer);
             usage.setIsComposite(true);
         }
         return usage;
@@ -824,7 +825,8 @@ public class ViewToolService extends ToolService {
             this.feedbackMessageService.addFeedbackMessage(new Message(message, MessageLevel.WARNING));
             this.logger.warn(message);
         } else {
-            result = this.utilService.moveMembership(otherEnd, newSource);
+            this.moveService.moveSemanticElement(otherEnd, newSource);
+            result = otherEnd;
         }
         return result;
     }
@@ -871,7 +873,7 @@ public class ViewToolService extends ToolService {
      */
     public Element reconnnectTargetAnnotatedEdge(Element self, Element newTarget) {
         if (!(newTarget instanceof Comment) && !(newTarget instanceof Documentation)) {
-            return this.utilService.moveMembership(self, newTarget);
+            this.moveService.moveSemanticElement(self, newTarget);
         }
         return self;
     }
@@ -1107,7 +1109,7 @@ public class ViewToolService extends ToolService {
      * @return the real parent {@link Node} given the current object and the selectedNode.
      */
     public Object getParentViewExpression(Object self, Object selectedNode) {
-        if (self instanceof StateUsage state && selectedNode instanceof Node node) {
+        if (self instanceof StateUsage && selectedNode instanceof Node node) {
             var realParentNode = node.getChildNodes().stream().filter(childNode -> childNode.getInsideLabel().getText().contains(STATE_TRANSITION_COMPARTMENT_NAME)).findFirst();
             if (realParentNode.isPresent()) {
                 return realParentNode.get();

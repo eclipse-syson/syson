@@ -46,8 +46,6 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
 
     private static final String INVALID_PROJECT = "55555555-5555-5555-5555-555555555555";
 
-    private static final String SIMPLE_PROJECT_PART = "a4f51a38-bfeb-4e0d-a870-55f8fe90405e";
-
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -124,7 +122,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
             fail(e);
         }
 
-        var computedChangeId = UUID.nameUUIDFromBytes((SysMLv2Identifiers.SIMPLE_PROJECT + SIMPLE_PROJECT_PART).getBytes()).toString();
+        var computedChangeId = UUID.nameUUIDFromBytes((SysMLv2Identifiers.SIMPLE_PROJECT + SysMLv2Identifiers.SIMPLE_PROJECT_PART).getBytes()).toString();
         var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", SysMLv2Identifiers.SIMPLE_PROJECT, SysMLv2Identifiers.SIMPLE_PROJECT, computedChangeId);
         webTestClient.get()
                 .uri(uri)
@@ -144,7 +142,7 @@ public class ProjectDataVersioningRestControllerIntegrationTests extends Abstrac
                 .baseUrl(this.getHTTPBaseUrl())
                 .build();
 
-        var computedChangeId = UUID.nameUUIDFromBytes((INVALID_PROJECT + SIMPLE_PROJECT_PART).getBytes()).toString();
+        var computedChangeId = UUID.nameUUIDFromBytes((INVALID_PROJECT + SysMLv2Identifiers.SIMPLE_PROJECT_PART).getBytes()).toString();
         var uri = String.format("/api/rest/projects/%s/commits/%s/changes/%s", INVALID_PROJECT, INVALID_PROJECT, computedChangeId);
         webTestClient.get()
                 .uri(uri)
