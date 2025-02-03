@@ -6,6 +6,12 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/987[#987] Implementation of drag and drop in SysOn Explorer view
+* A new service has been added to centralize the behavior of moving semantic elements in _org.eclipse.syson.services.api.ISysMLMoveElementService_.
+It replaces the public methods _UtilService.moveMembership_ and _ToolService.moveSemanticElement_
+* A new service has been added to centralize the verification of read-only elements in _org.eclipse.syson.services.api.ISysMLReadOnlyService_.
+
+
 === Dependency update
 
 - Switch to Sirius Web 2025.1.5
@@ -45,6 +51,7 @@ The changes are:
 
 - https://github.com/eclipse-syson/syson/issues/977[#977] [validation] SysON now implements the constraints (a.k.a. validation rules) from the SysMLv2 specification.
 The _Validation_ view show the results of the execution of the constraints on your models.
+- https://github.com/eclipse-syson/syson/issues/987[#987] Implementation of drag and drop in Explorer view.
 
 
 == v2025.1.0

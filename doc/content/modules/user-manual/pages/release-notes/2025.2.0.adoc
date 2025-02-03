@@ -9,8 +9,14 @@ The _Validation_ view show the results of the execution of the constraints on yo
 
 - *Right-click to display contextual menu (a.k.a. palette)*: In all diagrams, the contextual menu is now available on right-click instead of left-click.
 
+- *Drag and drop in Explorer view* : User can now move semantic elements using a drag and drop operation in the _Explorer_ view.
+
 == Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/987[#987] Implementation of drag and drop in SysOn Explorer view
+* A new service has been added to centralize the behavior of moving semantic elements in _org.eclipse.syson.services.api.ISysMLMoveElementService_.
+It replaces the public methods _UtilService.moveMembership_ and _ToolService.moveSemanticElement_
+* A new service has been added to centralize the verification of read-only elements in _org.eclipse.syson.services.api.ISysMLReadOnlyService_.
 
 == Bug fixes
 
@@ -62,6 +68,8 @@ The result is visible in the _Evaluation result_ part of the _Query_ view (_part
 In this case it corresponds to the members of _Package 1_ that you can also see in the _Explorer_ view on the left side of the screenshot above.
 
 - The _Validation_ view now displays the result of the execution of the constraints (a.k.a. validation rules) from the SysMLv2 specification.
+
+- User can now move semantic elements using the drag and drop operation in the _Explorer_ view.
 
 == Improvements
 

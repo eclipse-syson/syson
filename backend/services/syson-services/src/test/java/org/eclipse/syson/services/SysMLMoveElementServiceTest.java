@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,13 @@
 package org.eclipse.syson.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
@@ -36,21 +39,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for the util service.
+ * Tests for the SysML move element service.
  *
  * @author gdaniel
  */
-public class UtilServiceTest extends AbstractServiceTest {
-
-    private UtilService utilService;
+public class SysMLMoveElementServiceTest extends AbstractServiceTest {
 
     private ResourceSet rSet;
 
     private Resource resource;
 
+    private SysMLMoveElementService moveService;
+
+    private List<EObject> readOnlyElements;
+
     @BeforeEach
     public void setUp() {
-        this.utilService = new UtilService();
+        this.readOnlyElements = new ArrayList<>();
+        this.moveService = new SysMLMoveElementService(e -> this.readOnlyElements.contains(e));
         this.rSet = new ResourceSetImpl();
         // Make sure the resources we manipulate use the Sirius Web CrossReferenceAdapter.
         // This is particularly important when manipulating memberships, where the cross-referencer may produce
@@ -73,13 +79,71 @@ public class UtilServiceTest extends AbstractServiceTest {
         p2.setDeclaredName("p2");
         this.addInPackage(p2, pack);
 
-        this.utilService.moveMembership(p1, p2);
+        this.moveService.moveSemanticElement(p1, p2);
 
         assertThat(pack.getOwnedRelationship()).hasSize(1);
         assertThat(p2.getOwnedRelationship()).hasSize(1);
         assertThat(p2.getOwnedRelationship().get(0))
-            .isInstanceOf(FeatureMembership.class)
+                .isInstanceOf(FeatureMembership.class)
                 .returns(List.of(p1), Relationship::getOwnedRelatedElement);
+    }
+
+    @Test
+    @DisplayName("Given a read only element, when selected as a new parent during a move action, then the move action should fail")
+    public void forbiddenMoveToReadOnlyElement() {
+        Package pack = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(pack);
+        Package p1 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p1, pack);
+        Package p2 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p2, pack);
+
+        this.readOnlyElements.add(p2);
+
+        assertFalse(this.moveService.moveSemanticElement(p1, p2).isSuccess());
+    }
+
+    @Test
+    @DisplayName("Given a read only element, when selected as a moving object during a move action, then the move action should fail")
+    public void forbiddenMoveOfReadOnlyElement() {
+        Package pack = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(pack);
+        Package p1 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p1, pack);
+        Package p2 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p2, pack);
+
+        this.readOnlyElements.add(p2);
+
+        assertFalse(this.moveService.moveSemanticElement(p2, p1).isSuccess());
+    }
+
+    @Test
+    @DisplayName("Given an SysML Element, when selected as a moving object during a move action to a membership, then the move action should fail")
+    public void forbiddenMoveToMembershit() {
+        Package pack = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(pack);
+        Package p1 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p1, pack);
+        Package p2 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p2, pack);
+
+        this.readOnlyElements.add(p2);
+
+        assertFalse(this.moveService.moveSemanticElement(p2, p1.getOwningMembership()).isSuccess());
+    }
+
+    @Test
+    @DisplayName("Check that a elements can't be move to one of its descendant")
+    public void forbiddenMoveDescendantElements() {
+        Package pack = SysmlFactory.eINSTANCE.createPackage();
+        this.resource.getContents().add(pack);
+        Package p1 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p1, pack);
+        Package p2 = SysmlFactory.eINSTANCE.createPackage();
+        this.addInPackage(p2, p1);
+
+        assertFalse(this.moveService.moveSemanticElement(p1, p2).isSuccess());
     }
 
     @Test
@@ -102,12 +166,12 @@ public class UtilServiceTest extends AbstractServiceTest {
         pDef2.setDeclaredName("PDef2");
         this.addInPackage(pDef2, pack);
 
-        this.utilService.moveMembership(p1, pDef2);
+        this.moveService.moveSemanticElement(p1, pDef2);
 
         assertThat(pack.getOwnedRelationship()).hasSize(2);
         assertThat(pDef2.getOwnedRelationship()).hasSize(1);
         assertThat(pDef2.getOwnedRelationship().get(0))
-            .isInstanceOf(FeatureMembership.class)
+                .isInstanceOf(FeatureMembership.class)
                 .returns(List.of(p1), Relationship::getOwnedRelatedElement);
         // Make sure the FeatureTyping hasn't moved. This is typically the case if the memberships aren't created in the
         // right order, and the cross-referencer deleted references to p1.

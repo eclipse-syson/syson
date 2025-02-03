@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,42 +12,107 @@
  *******************************************************************************/
 package org.eclipse.syson.tree.explorer.view.handlers;
 
-import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
-import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.collaborative.trees.api.IDropTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.trees.dto.DropTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.Message;
+import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.trees.Tree;
-import org.eclipse.sirius.components.trees.description.TreeDescription;
-import org.springframework.context.annotation.Primary;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import org.eclipse.syson.services.api.ISysMLMoveElementService;
+import org.eclipse.syson.services.api.MoveStatus;
+import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.springframework.stereotype.Service;
 
-import reactor.core.publisher.Sinks.Many;
-import reactor.core.publisher.Sinks.One;
-
 /**
- * Disable the D&D inside the Explorer view. Sirius Web now allows the D&D of tree items inside the Explorer view, but
- * the default behavior is not suitable for SysON. Indeed, when an Element is D&D, SysON should also D&D its Membership
- * container at the same time.
+ * SysML implementation of the DnD inside the SysON Explorer view.
  *
  * @author arichard
  */
 @Service
-@Primary
-@Order(value = Ordered.HIGHEST_PRECEDENCE)
-public class DropTreeItemHandler implements ITreeEventHandler {
+public class DropTreeItemHandler implements IDropTreeItemHandler {
 
-    @Override
-    public boolean canHandle(ITreeInput treeInput) {
-        return treeInput instanceof DropTreeItemInput;
+    private IObjectService objectService;
+
+    private SysONTreeViewDescriptionProvider treeProvider;
+
+    private ISysMLMoveElementService moveService;
+
+    public DropTreeItemHandler(IObjectService objectService, SysONTreeViewDescriptionProvider treeProvider, ISysMLMoveElementService moveService) {
+        this.objectService = Objects.requireNonNull(objectService);
+        this.treeProvider = Objects.requireNonNull(treeProvider);
+        this.moveService = Objects.requireNonNull(moveService);
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, TreeDescription treeDescription, Tree tree, ITreeInput treeInput) {
-        payloadSink.tryEmitValue(new SuccessPayload(treeInput.id()));
+    public boolean canHandle(IEditingContext editingContext, Tree tree) {
+        return this.treeProvider.getDescriptionId().equals(tree.getDescriptionId());
     }
+
+    @Override
+    public IStatus handle(IEditingContext editingContext, Tree tree, DropTreeItemInput input) {
+
+        Object targetObject = this.objectService.getObject(editingContext, input.targetElementId())
+                .orElse(null);
+
+        boolean atLeastOneSuccessDrop = false;
+        List<String> failingDropMessages = new ArrayList<>();
+
+        if (targetObject instanceof Element targetElement) {
+            List<Object> droppedObjects = input.droppedElementIds().stream()
+                    .map(id -> this.objectService.getObject(editingContext, id))
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+
+                    .toList();
+
+            for (Object droppedObject : droppedObjects) {
+
+                final MoveStatus moveStatus;
+                if (droppedObject == targetObject) {
+                    // DnD is quite sensitive in the frontend, we want to avoid sending a message each time a user do a
+                    // micro DnD on the item itself. Instead we ignore the DnD. Drawbacks: the model is persisted in DB.
+                    moveStatus = MoveStatus.buildSuccess();
+                } else if (droppedObject instanceof Element droppedElement) {
+                    moveStatus = this.moveService.moveSemanticElement(droppedElement, targetElement);
+                } else {
+                    moveStatus = MoveStatus.buildFailure("The dropped element is not a SysML Element");
+                }
+                atLeastOneSuccessDrop = atLeastOneSuccessDrop | moveStatus.isSuccess();
+                if (!moveStatus.isSuccess()) {
+                    failingDropMessages.add(MessageFormat.format("Unable to move {0} in {1}: {2}", this.getLabel(droppedObject), this.getLabel(targetElement), moveStatus.message()));
+                }
+            }
+        } else {
+            failingDropMessages.add("Unable to move the element in selected target");
+        }
+
+        if (atLeastOneSuccessDrop) {
+            // Need a Success to force the model to save in DB
+            return new Success(failingDropMessages.stream().map(m -> new Message(m, MessageLevel.WARNING)).toList());
+        } else {
+            // No semantic change so no need to store the model in DB
+            return new Failure(failingDropMessages.stream().map(m -> new Message(m, MessageLevel.WARNING)).toList());
+        }
+    }
+
+    private String getLabel(Object droppedElement) {
+        String label = this.objectService.getLabel(droppedElement);
+        if ((label == null || label.isEmpty()) && droppedElement instanceof EObject droppedEObject) {
+            label = droppedEObject.eClass().getName();
+        }
+        return label;
+    }
+
 }

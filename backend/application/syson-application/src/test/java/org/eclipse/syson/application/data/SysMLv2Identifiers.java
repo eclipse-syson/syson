@@ -60,6 +60,16 @@ public final class SysMLv2Identifiers {
 
     public static final String SIMPLE_PROJECT = "a427f187-9003-498c-9178-72e8350cc67c";
 
+    public static final String SIMPLE_PROJECT_DOCUMENT = "9a59f836-1df2-4e5d-803c-9eb0ba7031aa";
+
+    public static final String SIMPLE_PROJECT_PACKAGE1 = "127c38e7-0e15-4232-aa02-76b342e3324a";
+
+    public static final String SIMPLE_PROJECT_PART_DEF = "0a70220d-707e-4a88-84dc-6aa43aa97269";
+
+    public static final String SIMPLE_PROJECT_PART = "a4f51a38-bfeb-4e0d-a870-55f8fe90405e";
+
+    public static final String SIMPLE_PROJECT_PACKAGE2 = "ec12f223-8639-42a3-96c2-34163c6eccce";
+
     private SysMLv2Identifiers() {
         // Prevent instantiation
     }

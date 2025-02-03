@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,8 +35,8 @@ import org.eclipse.sirius.components.diagrams.components.NodeIdProvider;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.syson.services.api.ISysMLMoveElementService;
 import org.eclipse.syson.sysml.Element;
-import org.eclipse.syson.sysml.Import;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 
 /**
@@ -52,13 +52,14 @@ public class ToolService {
 
     protected final IFeedbackMessageService feedbackMessageService;
 
-    private final UtilService utilService;
+    protected final ISysMLMoveElementService moveService;
 
-    public ToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService) {
+    public ToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService,
+            ISysMLMoveElementService moveService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.utilService = new UtilService();
+        this.moveService = Objects.requireNonNull(moveService);
     }
 
     /**
@@ -233,19 +234,12 @@ public class ToolService {
 
     protected void moveElement(Element droppedElement, Node droppedNode, Element targetElement, Node targetNode, IEditingContext editingContext, IDiagramContext diagramContext,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {
-        this.moveSemanticElement(droppedElement, targetElement);
+        this.moveService.moveSemanticElement(droppedElement, targetElement);
         ViewCreationRequest droppedElementViewCreationRequest = this.createView(droppedElement, editingContext, diagramContext, targetNode, convertedNodes);
         this.moveSubNodes(droppedElementViewCreationRequest, droppedNode, diagramContext);
         diagramContext.getViewDeletionRequests().add(ViewDeletionRequest.newViewDeletionRequest().elementId(droppedNode.getId()).build());
     }
 
-    protected void moveSemanticElement(Element element, Element newParent) {
-        if (element instanceof Import imprt) {
-            newParent.getOwnedRelationship().add(0, imprt);
-        } else {
-            this.utilService.moveMembership(element, newParent);
-        }
-    }
 
     protected Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> getViewNodeDescription(String descriptionId, DiagramDescription diagramDescription,
             Map<org.eclipse.sirius.components.view.diagram.NodeDescription, NodeDescription> convertedNodes) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Predicate;
@@ -220,6 +221,33 @@ public class EMFUtils {
             current = current.eContainer();
         }
         return results;
+    }
+
+    /**
+     * Gets the first ancestor containing the given object with the expected type. An optional predicate can be
+     * specified to add more constraint on the searched ancestor..
+     *
+     * @param <T>
+     *            the expected type of the ancestor
+     * @param type
+     *            the expected type of the ancestor
+     * @param object
+     *            the source object
+     * @param ancestorPredicate
+     *            an optional predicate than can be used to add another constraint on the searched ancestor (set to
+     *            <code>null</code> if the type constraint is enough)
+     * @return a matching ancestor or {@link Optional#empty()}
+     */
+    public static <T extends EObject> Optional<T> getFirstAncestor(Class<T> type, EObject object, Predicate<EObject> ancestorPredicate) {
+        var current = object;
+        List<T> results = new ArrayList<>();
+        while (current != null) {
+            if (type.isInstance(current) && (ancestorPredicate == null || ancestorPredicate.test(current))) {
+                return Optional.of((T) current);
+            }
+            current = current.eContainer();
+        }
+        return Optional.empty();
     }
 
     /**

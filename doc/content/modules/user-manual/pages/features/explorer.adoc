@@ -52,3 +52,11 @@ This menu provides functionalities based on the selected item:
 == {explorer-filter-bar}
 
 The *{explorer-filter-bar}* in the {explorer} view provides the capability to highlight and xref:hands-on/how-tos/explorer.adoc#filter-explorer[filter tree items].
+
+== Drag and Drop
+
+Users can drag and drop semantic elements into another semantic target.
+This action will move the elements and their owning memberships to the selected target.
+
+In some cases, a warning will be displayed advising that the drag and drop operation is forbidden for semantic or technical reasons.
+For example, dragging to or from a _read-only_ library is forbidden.
