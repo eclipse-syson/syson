@@ -8,7 +8,7 @@
 
 === Dependency update
 
-- Switch to Sirius Web 2025.1.4
+- Switch to Sirius Web 2025.1.5
 - https://github.com/eclipse-syson/syson/issues/953[#953] [rest-apis] Backend module `syson-sysml-rest-api-services` now depends on `jackson-datatype-jsr310` for JSON dates serialization
 
 === Bug fixes
