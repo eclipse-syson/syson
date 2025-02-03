@@ -7,6 +7,8 @@
 - *Add validation rules*: SysON now implements the constraints (a.k.a. validation rules) from the SysMLv2 specification.
 The _Validation_ view show the results of the execution of the constraints on your models.
 
+- *Right-click to display contextual menu (a.k.a. palette)*: In all diagrams, the contextual menu is now available on right-click instead of left-click.
+
 == Breaking changes
 
 
@@ -96,7 +98,7 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 
 == Dependency update
 
-- Switch to Sirius Web 2025.1.4
+- Switch to Sirius Web 2025.1.5
 
 == Technical details
 

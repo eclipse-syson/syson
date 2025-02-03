@@ -13,7 +13,7 @@ This is useful for large diagrams where elements might appear in the background 
 
 == Selection
 
-In a diagram, users can press `Alt` and click on an element to select it without displaying the contextual palette on the node.
+In a diagram, users can left-click on an element to select it without displaying the contextual palette on the node (right-click to display the palette).
 
 == Basic editing
 
