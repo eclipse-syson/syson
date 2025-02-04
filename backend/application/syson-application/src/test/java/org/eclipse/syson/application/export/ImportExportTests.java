@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.syson.application.export.checker.SysmlImportExportChecker;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -198,6 +199,42 @@ public class ImportExportTests extends AbstractIntegrationTests {
         this.checker.check(input, expected);
 
     }
+
+    /**
+     * Checks the import/export of model containing.
+     *
+     * <ul>
+     * <li>ConcernDefintion</li>
+     * <li>ConcerUsage</li>
+     * <li>StakeholderMembership</li>
+     * <li>RequirementUsage</li>
+     * <li>RequirementDefinition</li>
+     * <ul>
+     */
+    @Test
+    @DisplayName("Given a model with ConcernDefinition, ConcernUsage, StakeholderMembership, RequirementUsage, and RequirementDefinition, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    public void checkConcernTest() throws IOException {
+
+        var input = """
+                package root {
+                    part def PartDef1;
+                    concern def ConcernDef1 {
+                        stakeholder s : PartDef1;
+                    }
+                    concern concernUsage1 : ConcernDef1 {
+                        stakeholder s1;
+                    }
+                    requirement def R1Def {
+                        stakeholder s : PartDef1;
+                    }
+                    requirement r1 : R1Def {
+                        stakeholder s1;
+                    }
+                }""";
+
+        this.checker.check(input, input);
+    }
+
     /**
      * Test import/export on test file OccurrenceTest.sysml.
      *

@@ -103,6 +103,11 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 
 - `Membership#isDistinguishableFrom` derived attribute has been implemented in the metamodel.
 
+- The following concepts are now handled by the export to textual SysMLv2 module:
+* `ConcernDefinition`
+* `ConcernUsage`
+* `StakeholderMembership`
+
 
 == Dependency update
 

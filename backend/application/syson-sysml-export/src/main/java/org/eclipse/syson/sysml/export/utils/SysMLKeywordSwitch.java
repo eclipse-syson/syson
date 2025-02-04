@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,8 @@ import org.eclipse.syson.sysml.ActorMembership;
 import org.eclipse.syson.sysml.AssertConstraintUsage;
 import org.eclipse.syson.sysml.AttributeDefinition;
 import org.eclipse.syson.sysml.AttributeUsage;
+import org.eclipse.syson.sysml.ConcernDefinition;
+import org.eclipse.syson.sysml.ConcernUsage;
 import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.EnumerationDefinition;
 import org.eclipse.syson.sysml.EnumerationUsage;
@@ -36,6 +38,7 @@ import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
 import org.eclipse.syson.sysml.SubjectMembership;
 import org.eclipse.syson.sysml.util.SysmlSwitch;
@@ -48,6 +51,8 @@ import org.slf4j.LoggerFactory;
  * @author Arthur Daussy
  */
 public class SysMLKeywordSwitch extends SysmlSwitch<String> {
+
+    private static final String CONCERN_KEYWORD = "concern";
 
     private static final String PERFORM = "perform";
 
@@ -88,6 +93,21 @@ public class SysMLKeywordSwitch extends SysmlSwitch<String> {
             LOGGER.warn(msg);
         }
         return super.defaultCase(object);
+    }
+
+    @Override
+    public String caseConcernDefinition(ConcernDefinition object) {
+        return CONCERN_KEYWORD;
+    }
+
+    @Override
+    public String caseRequirementDefinition(RequirementDefinition object) {
+        return REQUIREMENT_KEYWORD;
+    }
+
+    @Override
+    public String caseConcernUsage(ConcernUsage object) {
+        return CONCERN_KEYWORD;
     }
 
     @Override
