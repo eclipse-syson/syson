@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.syson.application.configuration;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.web.application.project.services.api.IRewriteProxiesResourceFilter;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,12 +31,7 @@ public class SysMLv2RewriteProxiesResourcesFilter implements IRewriteProxiesReso
         if (resource == null) {
             filter = false;
         } else {
-            URI uri = resource.getURI();
-            if (uri != null && uri.toString().startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME)) {
-                filter = false;
-            } else if (uri != null && uri.toString().startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME)) {
-                filter = false;
-            }
+            filter = !ElementUtil.isStandardLibraryResource(resource);
         }
         return filter;
     }

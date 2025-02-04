@@ -36,7 +36,6 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
 import org.eclipse.syson.application.configuration.SysMLv2PropertiesConfigurer;
 import org.eclipse.syson.services.ElementInitializerSwitch;
 import org.eclipse.syson.services.ImportService;
@@ -163,8 +162,8 @@ public class DetailsViewService {
         Resource resource = element.eResource();
         if (resource != null) {
             String uri = resource.getURI().toString();
-            isReadOnly = uri.startsWith(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME)
-                    || uri.startsWith(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME)
+            isReadOnly = uri.startsWith(ElementUtil.SYSML_LIBRARY_SCHEME)
+                    || uri.startsWith(ElementUtil.KERML_LIBRARY_SCHEME)
                     || this.isImportedLibrary(resource);
         }
         return isReadOnly;

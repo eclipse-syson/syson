@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ public class ElementUtilTest {
 
     @Test
     void testGenerateUUID() {
-        URI uri = URI.createURI("kermllibrary:///" + UUID.randomUUID());
+        URI uri = URI.createURI(ElementUtil.KERML_LIBRARY_SCHEME + ":///" + UUID.randomUUID());
         Resource emfResource = new SysmlResourceImpl(uri);
         LibraryPackage libraryPackage = SysmlFactory.eINSTANCE.createLibraryPackage();
         emfResource.getContents().add(libraryPackage);
@@ -67,7 +67,7 @@ public class ElementUtilTest {
         Classifier anything = SysmlFactory.eINSTANCE.createClassifier();
         anything.setDeclaredName("Anything");
         owningMembership.getOwnedRelatedElement().add(anything);
-        
+
         UUID generatedUUID = ElementUtil.generateUUID(anything);
         anything.setElementId(generatedUUID.toString());
         assertEquals("d5b4e7df-e644-5f2f-b95e-cf6f1f6c076d", generatedUUID.toString());

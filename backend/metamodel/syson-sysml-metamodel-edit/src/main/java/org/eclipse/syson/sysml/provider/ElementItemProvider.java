@@ -28,6 +28,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
+import org.eclipse.syson.sysml.util.ElementUtil;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.syson.sysml.Element} object. <!-- begin-user-doc --> <!--
@@ -63,7 +64,7 @@ public class ElementItemProvider
                 if (object instanceof Element element) {
                     return choiceOfValues.stream().filter(candidate -> {
                         if (candidate instanceof Element elt && elt.eResource() != null
-                                && !(elt.eResource().getURI().toString().startsWith("kermllibrary://") || elt.eResource().getURI().toString().startsWith("sysmllibrary://"))) {
+                                && !ElementUtil.isStandardLibraryResource(elt.eResource())) {
                             return true;
                         }
                         return false;

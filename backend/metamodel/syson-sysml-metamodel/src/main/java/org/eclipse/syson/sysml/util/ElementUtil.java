@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -44,6 +45,16 @@ import org.eclipse.syson.sysml.VisibilityKind;
  * @author arichard
  */
 public class ElementUtil {
+
+    /**
+     * Scheme for URI locating standard KerML libraries.
+     */
+    public static final String KERML_LIBRARY_SCHEME = "kermllibrary";
+
+    /**
+     * Scheme for URI locating standard SysML libraries.
+     */
+    public static final String SYSML_LIBRARY_SCHEME = "sysmllibrary";
 
     /**
      * The UUID for NameSpace_URL as required in SysMLv2 specification.
@@ -90,6 +101,21 @@ public class ElementUtil {
             }
         }
         return isFromStandardLibrary;
+    }
+
+    /**
+     * Checks if the given resource is one of KerML or SysML standard libraries.
+     *
+     * @param resource
+     *            a {@link Resource}
+     * @return <code>true</code> is standard resource, <code>false</code> otherwise.
+     */
+    public static boolean isStandardLibraryResource(Resource resource) {
+        if (resource != null && resource.getURI() != null) {
+            URI uri = resource.getURI();
+            return uri.toString().startsWith(KERML_LIBRARY_SCHEME) || uri.toString().startsWith(SYSML_LIBRARY_SCHEME);
+        }
+        return false;
     }
 
     /**

@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.syson.services;
 
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.syson.services.api.ISysMLReadOnlyService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.LibraryPackage;
@@ -36,12 +34,7 @@ public class SysMLReadOnlyService implements ISysMLReadOnlyService {
 
     private boolean isStandardLibrary(Element element) {
         if (element != null) {
-            Resource resource = element.eResource();
-            if (resource != null) {
-                URI uri = resource.getURI();
-
-                return uri != null && (uri.toString().startsWith("kermllibrary") || uri.toString().startsWith("sysmllibrary"));
-            }
+            return ElementUtil.isStandardLibraryResource(element.eResource());
         }
         return false;
     }
