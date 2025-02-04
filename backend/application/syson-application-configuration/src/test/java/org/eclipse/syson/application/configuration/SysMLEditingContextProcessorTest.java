@@ -34,6 +34,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.util.SysONEContentAdapter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -78,7 +79,7 @@ public class SysMLEditingContextProcessorTest {
             String libraryFilePath = resource.getFilename();
             ClassPathResource classPathResource = new ClassPathResource("kerml.libraries/" + libraryFilePath);
             String path = classPathResource.getPath();
-            URI uri = URI.createURI(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME + ":///" + UUID.nameUUIDFromBytes(path.getBytes()));
+            URI uri = URI.createURI(ElementUtil.KERML_LIBRARY_SCHEME + ":///" + UUID.nameUUIDFromBytes(path.getBytes()));
             Resource emfResource = resourceSet.getResource(uri, false);
             assertNotNull(emfResource, "Unable to load " + libraryFilePath);
         }
@@ -92,7 +93,7 @@ public class SysMLEditingContextProcessorTest {
             String libraryFilePath = resource.getFilename();
             ClassPathResource classPathResource = new ClassPathResource("sysml.libraries/" + libraryFilePath);
             String path = classPathResource.getPath();
-            URI uri = URI.createURI(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME + ":///" + UUID.nameUUIDFromBytes(path.getBytes()));
+            URI uri = URI.createURI(ElementUtil.SYSML_LIBRARY_SCHEME + ":///" + UUID.nameUUIDFromBytes(path.getBytes()));
             Resource emfResource = resourceSet.getResource(uri, false);
             assertNotNull(emfResource, "Unable to load " + libraryFilePath);
         }

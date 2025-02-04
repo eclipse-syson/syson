@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,12 +19,12 @@ import java.util.List;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
-import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
 import org.eclipse.syson.sysml.ActionUsage;
 import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.junit.jupiter.api.Test;
 
@@ -124,11 +124,11 @@ public class SysONExplorerFilterServiceTest {
     }
 
     private Resource createKerMLResource() {
-        return this.resourceFactory.createResource(URI.createURI(SysMLStandardLibrariesConfiguration.KERML_LIBRARY_SCHEME + ":///test"));
+        return this.resourceFactory.createResource(URI.createURI(ElementUtil.KERML_LIBRARY_SCHEME + ":///test"));
     }
 
     private Resource createSysMLResource() {
-        return this.resourceFactory.createResource(URI.createURI(SysMLStandardLibrariesConfiguration.SYSML_LIBRARY_SCHEME + ":///test"));
+        return this.resourceFactory.createResource(URI.createURI(ElementUtil.SYSML_LIBRARY_SCHEME + ":///test"));
     }
 
 }

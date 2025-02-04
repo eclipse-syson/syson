@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.helper.EMFUtils;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -46,10 +47,6 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 @Configuration
 public class SysMLStandardLibrariesConfiguration {
 
-    public static final String KERML_LIBRARY_SCHEME = "kermllibrary";
-
-    public static final String SYSML_LIBRARY_SCHEME = "sysmllibrary";
-
     private final Logger logger = LoggerFactory.getLogger(SysMLStandardLibrariesConfiguration.class);
 
     private final ResourceSet librariesResourceSet;
@@ -60,8 +57,8 @@ public class SysMLStandardLibrariesConfiguration {
         EPackageRegistryImpl ePackageRegistry = new EPackageRegistryImpl();
         ePackageRegistry.put(SysmlPackage.eNS_URI, SysmlPackage.eINSTANCE);
         this.librariesResourceSet.setPackageRegistry(ePackageRegistry);
-        this.loadResourcesFrom(this.librariesResourceSet, "kerml.libraries/", KERML_LIBRARY_SCHEME);
-        this.loadResourcesFrom(this.librariesResourceSet, "sysml.libraries/", SYSML_LIBRARY_SCHEME);
+        this.loadResourcesFrom(this.librariesResourceSet, "kerml.libraries/", ElementUtil.KERML_LIBRARY_SCHEME);
+        this.loadResourcesFrom(this.librariesResourceSet, "sysml.libraries/", ElementUtil.SYSML_LIBRARY_SCHEME);
         EMFUtils.resolveAllNonDerived(this.librariesResourceSet);
         Instant finish = Instant.now();
         long timeElapsed = Duration.between(start, finish).toMillis();
@@ -97,7 +94,7 @@ public class SysMLStandardLibrariesConfiguration {
                         resourceSet.getResources().remove(emfResource);
                     }
                 }
-                if (scheme.equals(KERML_LIBRARY_SCHEME)) {
+                if (scheme.equals(ElementUtil.KERML_LIBRARY_SCHEME)) {
                     this.logger.info("Loading {} KerML standard library", currentLibraryName);
                 } else {
                     this.logger.info("Loading {} SysML standard library", currentLibraryName);
