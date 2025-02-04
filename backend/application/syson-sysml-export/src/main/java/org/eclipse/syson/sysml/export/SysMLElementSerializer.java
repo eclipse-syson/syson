@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -110,6 +110,7 @@ import org.eclipse.syson.sysml.ReturnParameterMembership;
 import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.SelectExpression;
 import org.eclipse.syson.sysml.Specialization;
+import org.eclipse.syson.sysml.StakeholderMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.SubjectMembership;
@@ -803,6 +804,28 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
+    public String caseStakeholderMembership(StakeholderMembership stakeholderMembership) {
+        Appender builder = this.newAppender();
+
+        this.appendMembershipPrefix(stakeholderMembership, builder);
+
+        this.appendStakeholderUsage(builder, stakeholderMembership);
+
+        return builder.toString();
+    }
+
+    private void appendStakeholderUsage(Appender builder, StakeholderMembership stakeholderMembership) {
+
+        for (Element relatedElement : stakeholderMembership.getOwnedRelatedElement()) {
+            if (relatedElement instanceof Usage usage) {
+                builder.appendWithSpaceIfNeeded("stakeholder ");
+                this.serializeDeclarationWithModifiers(builder, usage, "");
+            }
+        }
+
+    }
+
+    @Override
     public String caseActorMembership(ActorMembership actor) {
         Appender builder = this.newAppender();
 
@@ -938,7 +961,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         this.appendDefinitionPrefix(builder, requirement);
 
-        builder.appendSpaceIfNeeded().append("requirement def");
+        builder.appendSpaceIfNeeded().append(this.getDefinitionKeyword(requirement));
 
         this.appendDefinitionDeclaration(builder, requirement);
 
