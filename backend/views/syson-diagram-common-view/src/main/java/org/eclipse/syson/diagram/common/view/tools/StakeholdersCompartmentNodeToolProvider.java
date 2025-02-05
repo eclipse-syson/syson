@@ -33,11 +33,13 @@ public class StakeholdersCompartmentNodeToolProvider extends AbstractCompartment
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachableItems"))
+                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getStakeholderSelectionDialogElements"))
+                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getStakeholderSelectionDialogChildren"))
+                .isSelectableExpression("aql:self.oclIsKindOf(sysml::PartUsage)")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing Item as stakeholder:")
+                .selectionMessage("Select an existing Part as stakeholder:")
                 .build();
     }
 
