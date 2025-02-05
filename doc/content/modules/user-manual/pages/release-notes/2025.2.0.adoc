@@ -89,9 +89,13 @@ image::release-notes-gv-concern-usage.png[Concern Usage node creation tool, widt
 
 image::release-notes-gv-stakeholders.png['stakeholders' compartment, width=50%, height=50%]
 
-- In the `General View` diagram, the stakeholder creation tool displays available `Part Usage` in a tree instead of a list.
+- In the `General View` diagram, the stakeholder creation tool displays available `Part Usages` in a tree instead of a list.
 
 image::release-notes-gv-stakeholder-creation-selection-dialog-tree.png['stakeholder creation tool selection dialog tree' compartment, width=50%, height=50%]
+
+- In the `General View` diagram, the actor creation tool displays available `Part Usages` in a tree instead of a list.
+
+image::release-notes-gv-actor-creation-selection-dialog-tree.png['actor creation tool selection dialog tree' compartment, width=50%, height=50%]
 
 - Prevent the edition of imported user libraries from the details view.
 - Align metamodel to SysMLv2 and KerML Beta 2.3 specifications.

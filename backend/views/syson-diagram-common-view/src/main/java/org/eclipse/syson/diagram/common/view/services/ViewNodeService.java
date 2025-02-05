@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -246,15 +246,6 @@ public class ViewNodeService {
                 .toList();
     }
 
-    public List<Element> getAllReachableItems(EObject eObject) {
-        List<EObject> allItemUsage = this.utilService.getAllReachable(eObject, SysmlPackage.eINSTANCE.getItemUsage(), false);
-        List<EObject> allItemDefinition = this.utilService.getAllReachable(eObject, SysmlPackage.eINSTANCE.getItemDefinition(), false);
-        return Stream.concat(allItemUsage.stream(), allItemDefinition.stream())
-                .filter(Element.class::isInstance)
-                .map(Element.class::cast)
-                .toList();
-    }
-
     /**
      * Returns {@code true} if the provided {@code element} is an actor, {@code false} otherwise.
      * <p>
@@ -302,7 +293,7 @@ public class ViewNodeService {
         // the given PerformActionUsage is a referencing PerformActionUsage if it contains a reference subsetting
         // pointing to an action.
         ReferenceSubsetting referenceSubSetting = pau.getOwnedReferenceSubsetting();
-        return referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage perfomedAction;
+        return referenceSubSetting != null && referenceSubSetting.getReferencedFeature() instanceof ActionUsage;
     }
 
     private Node getOneMatchingAnnotatedNodes(Node node, EList<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {

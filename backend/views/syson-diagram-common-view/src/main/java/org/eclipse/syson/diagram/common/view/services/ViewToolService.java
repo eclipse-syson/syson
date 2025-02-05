@@ -1132,10 +1132,10 @@ public class ViewToolService extends ToolService {
                 .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
         var resources = optionalResourceSet.map(resourceSet -> resourceSet.getResources().stream()
-                .filter(resource -> containsDirectlyOrIndirectlyInstancesOf(resource, SysmlPackage.eINSTANCE.getPackage()))
+                .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, SysmlPackage.eINSTANCE.getPackage()))
                         .toList())
                 .orElseGet(ArrayList::new);
-        return resources.stream().sorted((r1, r2) -> getResourceName(r1).compareTo(getResourceName(r2))).toList();
+        return resources.stream().sorted((r1, r2) -> this.getResourceName(r1).compareTo(this.getResourceName(r2))).toList();
     }
 
     /**
@@ -1161,7 +1161,7 @@ public class ViewToolService extends ToolService {
         return result;
     }
 
-    private static boolean containsDirectlyOrIndirectlyInstancesOf(Resource resource, EClassifier eClassifier) {
+    private boolean containsDirectlyOrIndirectlyInstancesOf(Resource resource, EClassifier eClassifier) {
         boolean found = false;
         final Iterator<EObject> allContents = resource.getAllContents();
         while (!found && allContents.hasNext()) {
@@ -1170,7 +1170,7 @@ public class ViewToolService extends ToolService {
         return found;
     }
 
-    private static boolean containsDirectlyOrIndirectlyInstancesOf(EObject eObject, EClassifier eClassifier) {
+    private boolean containsDirectlyOrIndirectlyInstancesOf(EObject eObject, EClassifier eClassifier) {
         boolean found = false;
         final Iterator<EObject> allContents = eObject.eAllContents();
         while (!found && allContents.hasNext()) {
@@ -1179,7 +1179,7 @@ public class ViewToolService extends ToolService {
         return found;
     }
 
-    private static String getResourceName(Resource resource) {
+    private String getResourceName(Resource resource) {
         return resource.eAdapters().stream()
                 .filter(ResourceMetadataAdapter.class::isInstance)
                 .map(ResourceMetadataAdapter.class::cast)
@@ -1212,7 +1212,7 @@ public class ViewToolService extends ToolService {
      * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link PartUsage}.
      */
     public List<Resource> getStakeholderSelectionDialogElements(IEditingContext editingContext) {
-        return getAllResourcesWithInstancesOf(editingContext, SysmlPackage.eINSTANCE.getPartUsage());
+        return this.getAllResourcesWithInstancesOf(editingContext, SysmlPackage.eINSTANCE.getPartUsage());
     }
 
     /**
@@ -1224,10 +1224,33 @@ public class ViewToolService extends ToolService {
      *         {@link PartUsage}.
      */
     public List<? extends Object> getStakeholderSelectionDialogChildren(Object selectionDialogTreeElement) {
-        return getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getPartUsage());
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getPartUsage());
     }
 
-    private static List<Resource> getAllResourcesWithInstancesOf(IEditingContext editingContext, EClassifier eClassifier) {
+    /**
+     * Provides the root elements in the tree of the selection dialog for the ActorParameter creation tool.
+     *
+     * @param editingContext
+     *            the (non-{@code null}) {@link IEditingContext}.
+     * @return the (non-{@code null}) {@link List} of all {@link Resource} that contain at least one {@link PartUsage}.
+     */
+    public List<Resource> getActorSelectionDialogElements(IEditingContext editingContext) {
+        return this.getAllResourcesWithInstancesOf(editingContext, SysmlPackage.eINSTANCE.getPartUsage());
+    }
+
+    /**
+     * Provides the children of element in the tree of the selection dialog for the ActorParameter creation tool.
+     *
+     * @param selectionDialogTreeElement
+     *            a (non-{@code null}) selection dialog tree element.
+     * @return the (non-{@code null}) {@link List} of all children that contain (possibly indirectly) or are
+     *         {@link PartUsage}.
+     */
+    public List<? extends Object> getActorSelectionDialogChildren(Object selectionDialogTreeElement) {
+        return this.getChildrenWithInstancesOf(selectionDialogTreeElement, SysmlPackage.eINSTANCE.getPartUsage());
+    }
+
+    private List<Resource> getAllResourcesWithInstancesOf(IEditingContext editingContext, EClassifier eClassifier) {
         Objects.requireNonNull(editingContext);
 
         var maybeResourceSet = Optional.of(editingContext)
@@ -1236,26 +1259,26 @@ public class ViewToolService extends ToolService {
                 .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
         var resourcesContainingPartUsage = maybeResourceSet.map(resourceSet -> resourceSet.getResources().stream()
-                .filter(resource -> containsDirectlyOrIndirectlyInstancesOf(resource, eClassifier))
+                .filter(resource -> this.containsDirectlyOrIndirectlyInstancesOf(resource, eClassifier))
                 .toList())
                 .orElseGet(ArrayList::new);
-        return resourcesContainingPartUsage.stream().sorted(Comparator.comparing(ViewToolService::getResourceName)).toList();
+        return resourcesContainingPartUsage.stream().sorted(Comparator.comparing(r -> this.getResourceName(r))).toList();
     }
 
-    private static List<? extends Object> getChildrenWithInstancesOf(Object selectionDialogTreeElement, EClassifier eClassifier) {
+    private List<? extends Object> getChildrenWithInstancesOf(Object selectionDialogTreeElement, EClassifier eClassifier) {
         Objects.requireNonNull(selectionDialogTreeElement);
 
         final List<? extends Object> result;
 
         if (selectionDialogTreeElement instanceof Resource resource) {
             result = resource.getContents().stream()
-                    .filter(content -> eClassifier.isInstance(content) || containsDirectlyOrIndirectlyInstancesOf(content, eClassifier)).toList();
+                    .filter(content -> eClassifier.isInstance(content) || this.containsDirectlyOrIndirectlyInstancesOf(content, eClassifier)).toList();
         } else if (selectionDialogTreeElement instanceof Element sysmlElement) {
             return sysmlElement.getOwnedRelationship().stream()
                     .filter(Membership.class::isInstance)
                     .map(Membership.class::cast)
                     .map(Membership::getOwnedRelatedElement).flatMap(List::stream)
-                    .filter(content -> eClassifier.isInstance(content) || containsDirectlyOrIndirectlyInstancesOf(content, eClassifier)).toList();
+                    .filter(content -> eClassifier.isInstance(content) || this.containsDirectlyOrIndirectlyInstancesOf(content, eClassifier)).toList();
         } else {
             result = new ArrayList<>();
         }
