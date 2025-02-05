@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,11 +30,13 @@ public class ActorCompartmentNodeToolProvider extends AbstractCompartmentNodeToo
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachableItems"))
+                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getActorSelectionDialogElements"))
+                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getActorSelectionDialogChildren"))
+                .isSelectableExpression("aql:self.oclIsKindOf(sysml::PartUsage)")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing Item as actor:")
+                .selectionMessage("Select an existing Part as actor:")
                 .build();
     }
 
