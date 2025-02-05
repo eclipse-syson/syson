@@ -47,7 +47,7 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/946[#946] [libraries] All standard libraries have been updated to comply with the SysML Beta 2.3 specification.
 - https://github.com/eclipse-syson/syson/issues/982[#982] [metamodel] `Membership#isDistinguishableFrom` derived attribute has been implemented.
 - https://github.com/eclipse-syson/syson/issues/992[#992] [export] Implement SysML export of `ConcernDefinition`, `ConcernUsage` and `StakeholderMembership`
-- https://github.com/eclipse-syson/syson/issues/960[#960] [general-view] In the selection dialog of the creation tool for 'StakeholderParameter', display possible PartUsage candidates in a tree instead of a list.
+- https://github.com/eclipse-syson/syson/issues/960[#960] [general-view] In the selection dialog of the creation tools for `Stakeholders` and `Actors`, display possible `Part Usage` candidates in a tree instead of a list.
 
 === New features
 
