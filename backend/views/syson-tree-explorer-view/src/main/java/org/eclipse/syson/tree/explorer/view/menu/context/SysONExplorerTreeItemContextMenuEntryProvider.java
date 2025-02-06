@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.syson.tree.explorer.view.menu.context;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeItemContextMenuEntryProvider;
+import org.eclipse.sirius.components.collaborative.trees.dto.ITreeItemContextMenuEntry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.trees.Tree;
@@ -50,6 +52,15 @@ public class SysONExplorerTreeItemContextMenuEntryProvider extends ExplorerTreeI
     public boolean canHandle(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem) {
         return tree.getId().startsWith(ExplorerDescriptionProvider.PREFIX)
                 && Objects.equals(tree.getDescriptionId(), this.sysONTreeViewDescriptionProvider.getDescriptionId());
+    }
+    
+    @Override
+    public List<ITreeItemContextMenuEntry> getTreeItemContextMenuEntries(IEditingContext editingContext, TreeDescription treeDescription, Tree tree, TreeItem treeItem) {
+        // Remove the expandAll entry: it is handled at the view level in SysON
+        // "expandAll" is the ID from Sirius-Web ExplorerTreeItemContextMenuEntryProvider service class
+        return super.getTreeItemContextMenuEntries(editingContext, treeDescription, tree, treeItem).stream()
+                .filter(entry -> !Objects.equals(entry.id(), "expandAll"))
+                .toList();
     }
 
 }

@@ -37,6 +37,7 @@ import {
   NodeTypeRegistry,
   SiriusWebApplication,
   UpdateLibraryTreeItemContextMenuContribution,
+  ExpandAllTreeItemContextMenuContribution,
 } from '@eclipse-sirius/sirius-web-application';
 import {
   InsertTextualSysMLMenuContribution,
@@ -157,6 +158,12 @@ const treeItemContextMenuOverrideContributions: TreeItemContextMenuOverrideContr
       return entry.id.includes('updateLibrary');
     },
     component: UpdateLibraryTreeItemContextMenuContribution,
+  },
+  {
+    canHandle: (entry: GQLTreeItemContextMenuEntry) => {
+      return entry.id.includes('expandAll');
+    },
+    component: ExpandAllTreeItemContextMenuContribution,
   },
 ];
 

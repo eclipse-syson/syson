@@ -15,6 +15,7 @@ package org.eclipse.syson.tree.explorer.view.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
@@ -24,6 +25,8 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
@@ -34,7 +37,10 @@ import org.eclipse.syson.services.api.ISysONResourceService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.Namespace;
 import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.tree.explorer.view.fragments.KerMLStandardLibraryDirectory;
 import org.eclipse.syson.tree.explorer.view.fragments.LibrariesDirectory;
+import org.eclipse.syson.tree.explorer.view.fragments.SysMLStandardLibraryDirectory;
+import org.eclipse.syson.tree.explorer.view.fragments.UserLibrariesDirectory;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
@@ -86,7 +92,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
                     .filter(r -> !this.filterService.isKerMLStandardLibrary(r))
                     .filter(r -> !this.sysONResourceService.isImported(r) || this.utilService.getLibraries(r, false).isEmpty())
                     .forEach(results::add);
-            LibrariesDirectory librariesDirectory = new LibrariesDirectory("Libraries", this.filterService);
+            LibrariesDirectory librariesDirectory = new LibrariesDirectory("Libraries", editingContext, this.filterService);
             if (librariesDirectory.hasChildren(editingContext, List.of(), List.of(), activeFilterIds)) {
                 // Do not display the libraries directory if is has no children.
                 results.add(librariesDirectory);
@@ -108,7 +114,13 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     @Override
     public String getKind(Object self) {
-        return this.explorerServices.getKind(self);
+        final String result;
+        if (self instanceof ISysONExplorerFragment fragment) {
+            result = fragment.getKind();
+        } else {
+            result = this.explorerServices.getKind(self);
+        }
+        return result;
     }
 
     @Override
@@ -183,13 +195,42 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     }
 
     @Override
+    public boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext) {
+        List<String> nonExpandableDirectories = List.of(KerMLStandardLibraryDirectory.class, LibrariesDirectory.class, SysMLStandardLibraryDirectory.class, UserLibrariesDirectory.class)
+                .stream()
+                .map(Class::getSimpleName)
+                .toList();
+        return treeItem.isHasChildren() && !nonExpandableDirectories.contains(treeItem.getKind());
+    }
+
+    @Override
     public Object getParent(Object self, String treeItemId, IEditingContext editingContext) {
-        return this.explorerServices.getParent(self, treeItemId, editingContext);
+        final Object result;
+        if (self instanceof ISysONExplorerFragment fragment) {
+            result = fragment.getParent();
+        } else {
+            result = this.explorerServices.getParent(self, treeItemId, editingContext);
+        }
+        return result;
     }
 
     @Override
     public Object getTreeItemObject(String treeItemId, IEditingContext editingContext) {
-        return this.explorerServices.getTreeItemObject(treeItemId, editingContext);
+        final Object result;
+        Optional<Resource> optionalResource = Optional.ofNullable(editingContext)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .flatMap(emfEditingContext -> {
+                    return emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                            .filter(resource -> resource.getURI().toString().contains(treeItemId))
+                            .findFirst();
+                });
+        if (optionalResource.isPresent()) {
+            result = optionalResource.get();
+        } else {
+            result = this.explorerServices.getTreeItemObject(treeItemId, editingContext);
+        }
+        return result;
     }
 
     @Override

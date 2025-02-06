@@ -32,6 +32,10 @@ public interface ISysONExplorerFragment {
 
     String getLabel();
 
+    String getKind();
+
+    Object getParent();
+
     List<String> getIconURL();
 
     boolean hasChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds);

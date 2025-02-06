@@ -6,14 +6,23 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/893[#893] [explorer] Fix _Expand All_ tool in SysON _Explorer_ view
+* `ISysONExplorerFragment` implementations now need to implement `getKind()` and `getParent()`.
+* The constructors of `KerMLStandardLibraryDirectory`, `LibrariesDirectory`, `SysMLStandardLibraryDirectory`, and `UserLibrariesDirectory` now have a new `parent` parameter.
+* `ISysONExplorerService` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
+* `ISysONExplorerServiceDelegate` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
+
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0]
 - [releng] Switch to https://github.com/eclipse-sirius/sirius-web[Sirius Web 2025.6.1]
 - https://github.com/eclipse-syson/syson/issues/1385[#1385] [releng] Switch to SysIDE 0.9.0
 - [releng] Switch to Sirius EMF-JSON 2.5.2
+- [releng] Switch to Node 22.16.0
 
 === Bug fixes
+
+- https://github.com/eclipse-syson/syson/issues/893[#893] [explorer] Fix _Expand All_ tool in SysON _Explorer_ view
 
 === Improvements
 

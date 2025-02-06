@@ -32,12 +32,15 @@ public class LibrariesDirectory implements ISysONExplorerFragment {
 
     private final String id = UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString();
 
-    private final ISysONExplorerFilterService filterService;
-
     private final String label;
 
-    public LibrariesDirectory(String label, ISysONExplorerFilterService filterService) {
+    private final Object parent;
+
+    private final ISysONExplorerFilterService filterService;
+
+    public LibrariesDirectory(String label, Object parent, ISysONExplorerFilterService filterService) {
         this.label = Objects.requireNonNull(label);
+        this.parent = Objects.requireNonNull(parent);
         this.filterService = Objects.requireNonNull(filterService);
     }
 
@@ -52,6 +55,16 @@ public class LibrariesDirectory implements ISysONExplorerFragment {
     }
 
     @Override
+    public String getKind() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public Object getParent() {
+        return this.parent;
+    }
+
+    @Override
     public List<String> getIconURL() {
         return List.of("icons/LibraryResource.svg");
     }
@@ -63,7 +76,7 @@ public class LibrariesDirectory implements ISysONExplorerFragment {
         if (!result) {
             // Check if the user libraries directory contains children, we don't want to display the libraries directory
             // if it only contains empty directories.
-            UserLibrariesDirectory userLibrariesDirectory = new UserLibrariesDirectory("User Libraries", this.filterService);
+            UserLibrariesDirectory userLibrariesDirectory = new UserLibrariesDirectory("User Libraries", this, this.filterService);
             result = !activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID)
                     && userLibrariesDirectory.hasChildren(editingContext, existingRepresentations, expandedIds, activeFilterIds);
         }
@@ -74,13 +87,13 @@ public class LibrariesDirectory implements ISysONExplorerFragment {
     public List<Object> getChildren(IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds) {
         List<Object> result = new ArrayList<>();
         if (!activeFilterIds.contains(SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
-            result.add(new KerMLStandardLibraryDirectory(this.filterService));
+            result.add(new KerMLStandardLibraryDirectory(this, this.filterService));
         }
         if (!activeFilterIds.contains(SysONTreeFilterProvider.HIDE_SYSML_STANDARD_LIBRARIES_TREE_FILTER_ID)) {
-            result.add(new SysMLStandardLibraryDirectory(this.filterService));
+            result.add(new SysMLStandardLibraryDirectory(this, this.filterService));
         }
         if (!activeFilterIds.contains(SysONTreeFilterProvider.HIDE_USER_LIBRARIES_TREE_FILTER_ID)) {
-            UserLibrariesDirectory userLibrariesDirectory = new UserLibrariesDirectory("User libraries", this.filterService);
+            UserLibrariesDirectory userLibrariesDirectory = new UserLibrariesDirectory("User libraries", this, this.filterService);
             if (userLibrariesDirectory.hasChildren(editingContext, existingRepresentations, expandedIds, activeFilterIds)) {
                 // Add the user libraries directory only if it contains children.
                 result.add(userLibrariesDirectory);
