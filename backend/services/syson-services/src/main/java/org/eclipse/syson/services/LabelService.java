@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -555,11 +555,22 @@ public class LabelService {
             }
             label
                     .append(LabelConstants.SPACE)
-                    .append(LabelConstants.EQUAL)
+                    .append(getFeatureValueRelationshipSymbol(featureValue.get()))
                     .append(LabelConstants.SPACE)
                     .append(valueAsString);
         }
         return label.toString();
+    }
+
+    private String getFeatureValueRelationshipSymbol(FeatureValue featureValueMembership) {
+        final String affectationSymbole;
+
+        if (featureValueMembership.isIsInitial()) {
+            affectationSymbole = ":=";
+        } else {
+            affectationSymbole = LabelConstants.EQUAL;
+        }
+        return affectationSymbole;
     }
 
     /**

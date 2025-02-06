@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,8 +27,10 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
+import org.eclipse.syson.application.configuration.SysMLEditingContextProcessor;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.springframework.http.MediaType;
@@ -45,8 +48,13 @@ public class SysmlImportExportChecker {
 
     private final SysMLv2DocumentExporter exporter;
 
-    public SysmlImportExportChecker(SysMLExternalResourceLoaderService sysmlLoader, IEditingDomainFactory editingDomainFactory, SysMLv2DocumentExporter exporter) {
+    private final SysMLEditingContextProcessor sysMLEditingContextProcessor;
+
+
+
+    public SysmlImportExportChecker(SysMLExternalResourceLoaderService sysmlLoader, IEditingDomainFactory editingDomainFactory, SysMLv2DocumentExporter exporter, SysMLEditingContextProcessor sysMLEditingContextProcessor) {
         super();
+        this.sysMLEditingContextProcessor = Objects.requireNonNull(sysMLEditingContextProcessor);
         this.sysmlLoader = Objects.requireNonNull(sysmlLoader);
         this.editingDomainFactory = editingDomainFactory;
         this.exporter = exporter;
@@ -56,6 +64,8 @@ public class SysmlImportExportChecker {
 
         UUID uuid = UUID.randomUUID();
         AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain(this.createFakeProject(uuid));
+        EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
+        this.sysMLEditingContextProcessor.preProcess(editingContext);
 
         try (var inputStream = new ByteArrayInputStream(importedText.getBytes())) {
             Optional<Resource> optLoadedResources = this.sysmlLoader.getResource(inputStream, this.createFakeURI(uuid), editingDomain.getResourceSet(), false);
