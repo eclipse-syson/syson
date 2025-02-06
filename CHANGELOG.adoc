@@ -54,6 +54,7 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/977[#977] [validation] SysON now implements the constraints (a.k.a. validation rules) from the SysMLv2 specification.
 The _Validation_ view show the results of the execution of the constraints on your models.
 - https://github.com/eclipse-syson/syson/issues/987[#987] Implementation of drag and drop in Explorer view.
+- https://github.com/eclipse-syson/syson/issues/1000[#1000] Add support for semantic undo redo.
 
 
 == v2025.1.0
