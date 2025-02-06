@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerService;
@@ -117,6 +118,13 @@ public class ComposedSysONExplorerService implements ISysONExplorerService {
         return this.getDelegate(self)
                 .map(delegate -> delegate.getChildren(self, editingContext, existingRepresentations, expandedIds, activeFilterIds))
                 .orElseGet(() -> this.defaultExplorerService.getChildren(self, editingContext, existingRepresentations, expandedIds, activeFilterIds));
+    }
+
+    @Override
+    public boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext) {
+        return this.getDelegate(editingContext)
+                .map(delegate -> delegate.canExpandAll(treeItem, editingContext))
+                .orElseGet(() -> this.defaultExplorerService.canExpandAll(treeItem, editingContext));
     }
 
     @Override

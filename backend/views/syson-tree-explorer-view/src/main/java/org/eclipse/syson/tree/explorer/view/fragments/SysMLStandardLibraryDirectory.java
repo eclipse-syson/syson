@@ -20,8 +20,8 @@ import java.util.UUID;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
 
 /**
  * The <i>SysML</i> directory displayed in the explorer.
@@ -30,11 +30,14 @@ import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterSer
  */
 public class SysMLStandardLibraryDirectory implements ISysONExplorerFragment {
 
-    private final String id = UUID.nameUUIDFromBytes("SYSML".getBytes()).toString();
+    private final String id = UUID.nameUUIDFromBytes("SysON_SysML_Directory".getBytes()).toString();
+
+    private final Object parent;
 
     private final ISysONExplorerFilterService filterService;
 
-    public SysMLStandardLibraryDirectory(ISysONExplorerFilterService filterService) {
+    public SysMLStandardLibraryDirectory(Object parent, ISysONExplorerFilterService filterService) {
+        this.parent = Objects.requireNonNull(parent);
         this.filterService = Objects.requireNonNull(filterService);
     }
 
@@ -46,6 +49,16 @@ public class SysMLStandardLibraryDirectory implements ISysONExplorerFragment {
     @Override
     public String getLabel() {
         return "SysML";
+    }
+
+    @Override
+    public String getKind() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public Object getParent() {
+        return this.parent;
     }
 
     @Override

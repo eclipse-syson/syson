@@ -15,6 +15,7 @@ package org.eclipse.syson.tree.explorer.view.services.api;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 
 /**
@@ -45,6 +46,8 @@ public interface ISysONDefaultExplorerService {
     boolean hasChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds);
 
     List<Object> getChildren(Object self, IEditingContext editingContext, List<RepresentationMetadata> existingRepresentations, List<String> expandedIds, List<String> activeFilterIds);
+
+    boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext);
 
     List<Object> getElements(IEditingContext editingContext, List<String> activeFilterIds);
 

@@ -35,10 +35,13 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
 
     private String label;
 
+    private final Object parent;
+
     private final ISysONExplorerFilterService filterService;
 
-    public UserLibrariesDirectory(String label, ISysONExplorerFilterService filterService) {
+    public UserLibrariesDirectory(String label, Object parent, ISysONExplorerFilterService filterService) {
         this.label = Objects.requireNonNull(label);
+        this.parent = Objects.requireNonNull(parent);
         this.filterService = Objects.requireNonNull(filterService);
     }
 
@@ -50,6 +53,16 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
     @Override
     public String getLabel() {
         return this.label;
+    }
+
+    @Override
+    public String getKind() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
+    public Object getParent() {
+        return this.parent;
     }
 
     @Override
