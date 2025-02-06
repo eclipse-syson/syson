@@ -33,7 +33,8 @@ For example, if a `PartDefinition` already defines 5 parts, then a new `Part` cr
 They are now properly downloaded.
 Export to textual SysMLv2 is not fully implemented yet so there are still unhandled cases.
 - Fix `Port Usage` labels in diagrams (feature typing was incorrectly duplicated).
-- In diagrams, labels of `Usages` (e.g.: `Attribute Usages`) with a `FeatureValue` relationship having an _initial_ property set to true now use the ":=" symbole instead of "=".
+- In diagrams, labels of `Usages` (e.g.: `Attribute Usages`) with a `Feature Value` relationship having the _initial_ property set to true now use the ":=" symbol instead of "=".
+- In diagrams, labels of `Usages` (e.g.: `Attribute Usages`) with a `Feature Value` relationship having the _default_ property set to true now display the _default_ keyword.
 
 == New features
 
