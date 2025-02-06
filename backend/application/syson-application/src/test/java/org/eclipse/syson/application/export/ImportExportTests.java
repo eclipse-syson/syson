@@ -142,6 +142,22 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     /**
+     * Test import/export simple PortDef and PortUsage.
+     *
+     * @throws IOException
+     */
+    @DisplayName("Given a model with PortDefinition and PortUsage, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @Test
+    public void checkImportPort() throws IOException {
+        var input = """
+                port def Port1;
+                part part1 {
+                    port port1 : Port1;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    /**
      * Test import/export on test file ImportTest.sysml.
      *
      * @see <a href="https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/ImportTest.sysml">ImportTest</a>

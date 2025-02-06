@@ -26,6 +26,7 @@ New default names now includes a number, this number corresponding to the count 
 - https://github.com/eclipse-syson/syson/issues/965 [export] Fix an issue where downloading of standard libraries pointed at 404 error.
 They are now properly downloaded.
 Export to textual SysMLv2 is not fully implemented yet so there are still unhandled cases.
+- https://github.com/eclipse-syson/syson/issues/998[#998] Fix `Port Usage` labels in diagrams.
 
 === Improvements
 

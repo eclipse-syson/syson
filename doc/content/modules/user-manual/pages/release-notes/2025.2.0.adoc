@@ -5,7 +5,7 @@
 - *Model conformance to SysMLv2 Beta 2.3 version*: the metamodel has been modified to conform to SysMLv2 and KerML Beta 2.3 specifications released on December 2024 (see https://www.omg.org/spec/SysML/ for more details).
 
 - *Add validation rules*: SysON now implements the constraints (a.k.a. validation rules) from the SysMLv2 specification.
-The _Validation_ view show the results of the execution of the constraints on your models.
+The _Validation_ view shows the results of the execution of the constraints on your models.
 
 - *Right-click to display contextual menu (a.k.a. palette)*: In all diagrams, the contextual menu is now available on right-click instead of left-click.
 
@@ -27,15 +27,16 @@ It replaces the public methods _UtilService.moveMembership_ and _ToolService.mov
 - Fix an issue where the server could crash when successive REST APIs calls are executed.
 More precisely, the dates fields were not serialized correctly.
 - Fix an issue where default names of `Elements` were sometimes invalid because corresponding to SysMLv2 keywords.
-New default names now includes a number, this number corresponding to the count of `Elements` of the same kind in the scope.
-For example, if a `PartDefinition` already define 5 parts, then a new `Part` created under this `PartDefinition` would have _part6_ for name.
+New default names now include a number, this number corresponding to the count of `Elements` of the same kind in the scope.
+For example, if a `PartDefinition` already defines 5 parts, then a new `Part` created under this `PartDefinition` would have _part6_ for name.
 - Fix an issue where downloading of standard libraries pointed at 404 error.
 They are now properly downloaded.
 Export to textual SysMLv2 is not fully implemented yet so there are still unhandled cases.
+- Fix `Port Usage` labels in diagrams (feature typing was incorrectly duplicated).
 
 == New features
 
-- A new experimental view named _Query_ is available in SysON, allowing to query the models.
+- A new experimental view named _Query_ is available in SysON, allowing users to query the models.
 
 image::release-notes-query-view.png[Query View, width=85%,height=85%]
 
@@ -119,9 +120,9 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 - `Membership#isDistinguishableFrom` derived attribute has been implemented in the metamodel.
 
 - The following concepts are now handled by the export to textual SysMLv2 module:
-* `ConcernDefinition`
-* `ConcernUsage`
-* `StakeholderMembership`
+* `Concern Definition`
+* `Concern Usage`
+* `Stakeholder Membership`
 
 
 == Dependency update
