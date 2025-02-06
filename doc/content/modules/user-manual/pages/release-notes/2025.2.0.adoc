@@ -9,7 +9,11 @@ The _Validation_ view show the results of the execution of the constraints on yo
 
 - *Right-click to display contextual menu (a.k.a. palette)*: In all diagrams, the contextual menu is now available on right-click instead of left-click.
 
-- *Drag and drop in Explorer view* : User can now move semantic elements using a drag and drop operation in the _Explorer_ view.
+- *Drag and drop in Explorer view* : Users can now move semantic elements using a drag and drop operation in the _Explorer_ view.
+
+- *Undo/redo*: Users can now undo and redo any semantic change (i.e. in _Explorer_ and _Details_ views) with "CTRL + z" and "CTRL + y".
+Undo/redo is not available yet in diagrams.
+
 
 == Breaking changes
 
@@ -69,7 +73,10 @@ In this case it corresponds to the members of _Package 1_ that you can also see 
 
 - The _Validation_ view now displays the result of the execution of the constraints (a.k.a. validation rules) from the SysMLv2 specification.
 
-- User can now move semantic elements using the drag and drop operation in the _Explorer_ view.
+- Users can now move semantic elements using the drag and drop operation in the _Explorer_ view.
+
+- Users can now undo and redo any semantic change (i.e. in _Explorer_ and _Details_ views) with "CTRL + z" and "CTRL + y".
+Undo/redo is not available yet in diagrams.
 
 == Improvements
 

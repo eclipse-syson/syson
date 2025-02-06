@@ -47,7 +47,6 @@ import {
 import { createRoot } from 'react-dom/client';
 
 import { httpOrigin, wsOrigin } from './core/URL';
-import { referenceWidgetDocumentTransform } from './extensions/ReferenceWidgetDocumentTransform';
 import { SysONDocumentTreeItemContextMenuContribution } from './extensions/SysONDocumentTreeItemContextMenuContribution';
 import { SysONExtensionRegistryMergeStrategy } from './extensions/SysONExtensionRegistryMergeStrategy';
 import { SysONFooter } from './extensions/SysONFooter';
@@ -75,18 +74,6 @@ extensionRegistry.putData(navigationBarMenuHelpURLExtensionPoint, {
   data: 'https://doc.mbse-syson.org',
 });
 
-const widgetsApolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
-  const { documentTransform } = currentOptions;
-
-  const newDocumentTransform = documentTransform
-    ? documentTransform.concat(referenceWidgetDocumentTransform)
-    : referenceWidgetDocumentTransform;
-  return {
-    ...currentOptions,
-    documentTransform: newDocumentTransform,
-  };
-};
-
 const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOptions) => {
   const { documentTransform } = currentOptions;
 
@@ -99,8 +86,8 @@ const apolloClientOptionsConfigurer: ApolloClientOptionsConfigurer = (currentOpt
   };
 };
 extensionRegistry.putData(apolloClientOptionsConfigurersExtensionPoint, {
-  identifier: `siriusWeb_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
-  data: [apolloClientOptionsConfigurer, widgetsApolloClientOptionsConfigurer],
+  identifier: `syson_${apolloClientOptionsConfigurersExtensionPoint.identifier}`,
+  data: [apolloClientOptionsConfigurer],
 });
 
 extensionRegistry.addComponent(diagramPanelActionExtensionPoint, {

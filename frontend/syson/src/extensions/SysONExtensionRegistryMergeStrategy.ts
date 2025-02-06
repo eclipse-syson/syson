@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ComponentExtension, ExtensionRegistryMergeStrategy } from '@eclipse-sirius/sirius-components-core';
+import {
+  ComponentExtension,
+  ExtensionRegistryMergeStrategy,
+  DataExtension,
+} from '@eclipse-sirius/sirius-components-core';
 import { DefaultExtensionRegistryMergeStrategy } from '@eclipse-sirius/sirius-web-application';
 import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 
@@ -38,5 +42,26 @@ export class SysONExtensionRegistryMergeStrategy
       );
     }
     return super.mergeComponentExtensions(_identifier, existingValues, newValues);
+  }
+
+  public override mergeDataExtensions(
+    identifier: string,
+    existingValues: DataExtension<any>,
+    newValues: DataExtension<any>
+  ): DataExtension<any> {
+    if (identifier === 'apolloClient#apolloClientOptionsConfigurers') {
+      return this.mergeApolloClientContributions(existingValues, newValues);
+    }
+    return newValues;
+  }
+
+  private mergeApolloClientContributions(
+    existingApolloClientContributions: DataExtension<any>,
+    newApolloClientContributions: DataExtension<any>
+  ): DataExtension<any> {
+    return {
+      identifier: 'syson_apolloClient#apolloClientOptionsConfigurers',
+      data: [...existingApolloClientContributions.data, ...newApolloClientContributions.data],
+    };
   }
 }
