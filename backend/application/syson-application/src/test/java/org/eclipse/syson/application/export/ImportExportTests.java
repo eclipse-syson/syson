@@ -48,7 +48,6 @@ public class ImportExportTests extends AbstractIntegrationTests {
     @Autowired
     private SysMLEditingContextProcessor sysMLEditingContextProcessor;
 
-
     private SysmlImportExportChecker checker;
 
     @BeforeEach
@@ -172,13 +171,13 @@ public class ImportExportTests extends AbstractIntegrationTests {
     public void checkScalarValueAttribute() throws IOException {
         var input = """
                 package Occurrences {
-                  private import ScalarValues::*;
-                  occurrence def Occurrence1 {
-                      attribute a : Integer;
-                      attribute b : Integer default = 1;
-                      attribute c : Integer = 1;
-                      attribute d : Integer := 3;
-                  }
+                    private import ScalarValues::*;
+                    occurrence def Occurrence1 {
+                        attribute a : Integer;
+                        attribute b : Integer default = 1;
+                        attribute c : Integer = 1;
+                        attribute d : Integer := 3;
+                    }
                 }""";
         this.checker.check(input, input);
     }

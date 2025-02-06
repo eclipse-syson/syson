@@ -50,8 +50,6 @@ public class SysmlImportExportChecker {
 
     private final SysMLEditingContextProcessor sysMLEditingContextProcessor;
 
-
-
     public SysmlImportExportChecker(SysMLExternalResourceLoaderService sysmlLoader, IEditingDomainFactory editingDomainFactory, SysMLv2DocumentExporter exporter, SysMLEditingContextProcessor sysMLEditingContextProcessor) {
         super();
         this.sysMLEditingContextProcessor = Objects.requireNonNull(sysMLEditingContextProcessor);

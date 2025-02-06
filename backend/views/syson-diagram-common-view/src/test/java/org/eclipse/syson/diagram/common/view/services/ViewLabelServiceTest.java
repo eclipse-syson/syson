@@ -104,6 +104,30 @@ public class ViewLabelServiceTest {
 
     }
 
+    @DisplayName("Given a FeatureValue to an attribute, when it is a default FeatureValue relationship, then the label should use the symbole ':=' instead of '='")
+    @Test
+    public void testDefaultFeatureValueSymboleLabel() {
+        AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
+        attributeUsage.setDeclaredName(ATTRIBUTE_USAGE_NAME);
+
+        LiteralInteger literal = SysmlFactory.eINSTANCE.createLiteralInteger();
+        literal.setValue(1);
+        FeatureValue featureValue = SysmlFactory.eINSTANCE.createFeatureValue();
+        featureValue.getOwnedRelatedElement().add(literal);
+        attributeUsage.getOwnedRelationship().add(featureValue);
+
+        assertEquals("myAttributeUsage = 1", this.viewLabelService.getCompartmentItemLabel(attributeUsage));
+
+        featureValue.setIsDefault(true);
+
+        assertEquals("myAttributeUsage default = 1", this.viewLabelService.getCompartmentItemLabel(attributeUsage));
+        
+        featureValue.setIsInitial(true);
+        
+        assertEquals("myAttributeUsage default := 1", this.viewLabelService.getCompartmentItemLabel(attributeUsage));
+
+    }
+
     @DisplayName("Check Attribute Usage item label with no name")
     @Test
     void testItemCompartmentLabelWithoutName() {

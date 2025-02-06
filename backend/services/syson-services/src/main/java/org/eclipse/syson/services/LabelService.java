@@ -553,9 +553,15 @@ public class LabelService {
             if (expression != null) {
                 valueAsString = this.getValue(expression);
             }
+
+            if (featureValue.get().isIsDefault()) {
+                label
+                        .append(LabelConstants.SPACE)
+                        .append(LabelConstants.DEFAULT);
+            }
             label
                     .append(LabelConstants.SPACE)
-                    .append(getFeatureValueRelationshipSymbol(featureValue.get()))
+                    .append(this.getFeatureValueRelationshipSymbol(featureValue.get()))
                     .append(LabelConstants.SPACE)
                     .append(valueAsString);
         }

@@ -1206,16 +1206,13 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         for (FeatureValue feature : ownedRelationship) {
             builder.appendSpaceIfNeeded();
+            if (feature.isIsDefault()) {
+                builder.appendWithSpaceIfNeeded(LabelConstants.DEFAULT);
+            }
             if (feature.isIsInitial()) {
-                builder.append(":=");
-            } else if (feature.isIsDefault()) {
-                builder.append("default");
-                if (feature.isIsInitial()) {
-                    builder.append(":");
-                }
-                builder.append("=");
+                builder.appendWithSpaceIfNeeded(":=");
             } else {
-                builder.append("=");
+                builder.appendWithSpaceIfNeeded(LabelConstants.EQUAL);
             }
             this.appendOwnedExpression(builder, feature.getValue());
         }
