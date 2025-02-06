@@ -624,7 +624,6 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(this.caseElement(object))
                 .append(this.multiplicityRange(object))
                 .append(this.labelService.getTypingLabel(object))
-                .append(this.labelService.getTypingLabel(object))
                 .append(this.labelService.getRedefinitionLabel(object))
                 .append(this.labelService.getSubsettingLabel(object))
                 .append(this.labelService.getValueLabel(object));
