@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,11 +107,9 @@ public class JavaServiceIsCalledChecker {
 
         expressions.add(diagramDescription.getPreconditionExpression());
 
-        List<Tool> diagramTools = Optional.ofNullable(diagramDescription.getPalette()).stream()
-                .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, Tool.class))
-                .toList();
+        final List<Tool> allDiagramTools = EMFUtils.allContainedObjectOfType(diagramDescription, Tool.class).toList();
 
-        for (Tool diagramTool : diagramTools) {
+        for (Tool diagramTool : allDiagramTools) {
             expressions.add(diagramTool.getPreconditionExpression());
             for (Operation bodyOperation : diagramTool.getBody()) {
                 EMFUtils.allContainedObjectOfType(bodyOperation, ChangeContext.class)
@@ -210,11 +208,9 @@ public class JavaServiceIsCalledChecker {
         Optional.ofNullable(edgeDescription.getPreconditionExpression())
                 .map(expressions::add);
 
-        List<Tool> edgeTools = Optional.ofNullable(edgeDescription.getPalette()).stream()
-                .flatMap(palette -> EMFUtils.allContainedObjectOfType(palette, Tool.class))
-                .toList();
+        final List<Tool> allEdgeTools = EMFUtils.allContainedObjectOfType(edgeDescription, Tool.class).toList();
 
-        for (Tool edgeTool : edgeTools) {
+        for (Tool edgeTool : allEdgeTools) {
             expressions.add(edgeTool.getPreconditionExpression());
             if (edgeTool instanceof LabelEditTool labelEditTool) {
                 expressions.add(labelEditTool.getInitialDirectEditLabelExpression());

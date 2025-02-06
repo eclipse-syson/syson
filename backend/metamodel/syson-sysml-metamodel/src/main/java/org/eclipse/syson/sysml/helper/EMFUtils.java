@@ -168,12 +168,12 @@ public class EMFUtils {
      */
     public static <T extends EObject> Stream<T> allContainedObjectOfType(Notifier self, Class<T> type) {
         final Stream<T> result;
-        if (self instanceof EObject) {
-            result = eAllContentStreamWithSelf((EObject) self).filter(e -> type.isInstance(e)).map(e -> type.cast(e));
-        } else if (self instanceof Resource) {
-            result = eAllContentSteamWithSelf((Resource) self).filter(e -> type.isInstance(e)).map(e -> type.cast(e));
-        } else if (self instanceof ResourceSet) {
-            result = eAllContentSteamWithSelf((ResourceSet) self).filter(e -> type.isInstance(e))
+        if (self instanceof EObject eObject) {
+            result = eAllContentStreamWithSelf(eObject).filter(e -> type.isInstance(e)).map(e -> type.cast(e));
+        } else if (self instanceof Resource resource) {
+            result = eAllContentSteamWithSelf(resource).filter(e -> type.isInstance(e)).map(e -> type.cast(e));
+        } else if (self instanceof ResourceSet resourceSet) {
+            result = eAllContentSteamWithSelf(resourceSet).filter(e -> type.isInstance(e))
                     .map(e -> type.cast(e));
         } else {
             result = Stream.empty();
