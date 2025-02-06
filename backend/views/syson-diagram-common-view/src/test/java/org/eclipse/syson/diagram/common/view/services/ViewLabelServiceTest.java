@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,6 +82,26 @@ public class ViewLabelServiceTest {
         attributeUsage.setDeclaredShortName(ATTRIBUTE_USAGE_SHORT_NAME);
         assertEquals(LabelConstants.LESSER_THAN + ATTRIBUTE_USAGE_SHORT_NAME + LabelConstants.GREATER_THAN + LabelConstants.SPACE + ATTRIBUTE_USAGE_NAME,
                 this.viewLabelService.getCompartmentItemLabel(attributeUsage));
+    }
+
+    @DisplayName("Given a FeatureValue to an attribute, when it is an initial FeatureValue relationship, then the label should use the symbole ':=' instead of '='")
+    @Test
+    public void testInitalFeatureValueSymboleLabel() {
+        AttributeUsage attributeUsage = SysmlFactory.eINSTANCE.createAttributeUsage();
+        attributeUsage.setDeclaredName(ATTRIBUTE_USAGE_NAME);
+
+        LiteralInteger literal = SysmlFactory.eINSTANCE.createLiteralInteger();
+        literal.setValue(1);
+        FeatureValue featureValue = SysmlFactory.eINSTANCE.createFeatureValue();
+        featureValue.getOwnedRelatedElement().add(literal);
+        attributeUsage.getOwnedRelationship().add(featureValue);
+
+        assertEquals("myAttributeUsage = 1", this.viewLabelService.getCompartmentItemLabel(attributeUsage));
+
+        featureValue.setIsInitial(true);
+
+        assertEquals("myAttributeUsage := 1", this.viewLabelService.getCompartmentItemLabel(attributeUsage));
+
     }
 
     @DisplayName("Check Attribute Usage item label with no name")

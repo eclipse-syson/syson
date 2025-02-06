@@ -16,6 +16,7 @@ import java.io.IOException;
 
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.configuration.SysMLEditingContextProcessor;
 import org.eclipse.syson.application.export.checker.SysmlImportExportChecker;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
@@ -44,11 +45,15 @@ public class ImportExportTests extends AbstractIntegrationTests {
     @Autowired
     private SysMLv2DocumentExporter exporter;
 
+    @Autowired
+    private SysMLEditingContextProcessor sysMLEditingContextProcessor;
+
+
     private SysmlImportExportChecker checker;
 
     @BeforeEach
     public void setUp() {
-        this.checker = new SysmlImportExportChecker(this.sysmlLoader, this.editingDomainFactory, this.exporter);
+        this.checker = new SysmlImportExportChecker(this.sysmlLoader, this.editingDomainFactory, this.exporter, this.sysMLEditingContextProcessor);
     }
 
     /**
@@ -153,6 +158,27 @@ public class ImportExportTests extends AbstractIntegrationTests {
                 port def Port1;
                 part part1 {
                     port port1 : Port1;
+                }""";
+        this.checker.check(input, input);
+    }
+
+    /**
+     * Test import/export of AttributeUsages with FeatureValue with different combination of default or initial value.
+     *
+     * @throws IOException
+     */
+    @DisplayName("Given a model with AttributeUsages with default and initial value, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @Test
+    public void checkScalarValueAttribute() throws IOException {
+        var input = """
+                package Occurrences {
+                  private import ScalarValues::*;
+                  occurrence def Occurrence1 {
+                      attribute a : Integer;
+                      attribute b : Integer default = 1;
+                      attribute c : Integer = 1;
+                      attribute d : Integer := 3;
+                  }
                 }""";
         this.checker.check(input, input);
     }

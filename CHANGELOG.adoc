@@ -27,6 +27,7 @@ New default names now includes a number, this number corresponding to the count 
 They are now properly downloaded.
 Export to textual SysMLv2 is not fully implemented yet so there are still unhandled cases.
 - https://github.com/eclipse-syson/syson/issues/998[#998] Fix `Port Usage` labels in diagrams.
+- https://github.com/eclipse-syson/syson/issues/1002[#1002] Invalid label for Feature (e.g.: `Attribute Usage`) when the `Feature Value` aims to define "initial" value.
 
 === Improvements
 
