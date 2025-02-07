@@ -52,6 +52,7 @@ export class Explorer {
     cy.getByTestId('insert-textual-sysmlv2-modal-textarea').type(textualContent);
     cy.getByTestId('insert-textual-sysmlv2-submit').should('not.be.disabled');
     cy.getByTestId('insert-textual-sysmlv2-submit').click();
+    cy.getByTestId('insert-textual-sysmlv2-submit').should('be.disabled');
   }
 
   public getFilter(filterLabel: string): Cypress.Chainable<JQuery<HTMLElement>> {
