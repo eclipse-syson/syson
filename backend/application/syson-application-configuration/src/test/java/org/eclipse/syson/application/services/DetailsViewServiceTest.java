@@ -57,6 +57,14 @@ public class DetailsViewServiceTest {
     }
 
     @Test
+    public void getCoreFeaturesOfFeatureValue() {
+        List<EStructuralFeature> coreStructuralFeatures = this.detailsViewService.getCoreFeatures(SysmlFactory.eINSTANCE.createFeatureValue());
+        assertThat(coreStructuralFeatures).containsOnly(SysmlPackage.eINSTANCE.getMembership_Visibility(),
+                SysmlPackage.eINSTANCE.getFeatureValue_IsDefault(),
+                SysmlPackage.eINSTANCE.getFeatureValue_IsInitial());
+    }
+
+    @Test
     public void isReadOnlyElementInImportedLibrary() {
         Resource resource = new JSONResourceFactory().createResourceFromPath("testResource");
         Namespace namespace = SysmlFactory.eINSTANCE.createNamespace();
