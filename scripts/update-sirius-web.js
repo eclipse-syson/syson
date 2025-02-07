@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ projects.set("syson-application-configuration", "application");
 projects.set("syson-frontend", "application");
 projects.set("syson-sysml-import", "application");
 projects.set("syson-sysml-export", "application");
+projects.set("syson-sysml-validation", "application");
 projects.set("syson-sysml-metamodel", "metamodel");
 projects.set("syson-sysml-metamodel-edit", "metamodel");
 projects.set("syson-siriusweb-customnodes-metamodel", "metamodel");
