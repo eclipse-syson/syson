@@ -88,12 +88,12 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
         var expandedIds = List.of(
                 SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE1.toString(),
                 SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE2.toString(),
-                SysMLv2Identifiers.SIMPLE_PROJECT.toString(),
+                SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(),
                 SysMLv2Identifiers.SIMPLE_PROJECT_DOCUMENT.toString());
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeProvider.getDescriptionId(), expandedIds,
                 List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID));
-        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
@@ -115,7 +115,7 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT.toString(),
+                    UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(),
                     explorerRepresentationId,
                     List.of(SysMLv2Identifiers.SIMPLE_PROJECT_PART_DEF.toString()),
                     SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE1.toString(),
@@ -161,12 +161,12 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
         var expandedIds = List.of(
                 SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE1.toString(),
                 SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE2.toString(),
-                SysMLv2Identifiers.SIMPLE_PROJECT.toString(),
+                SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(),
                 SysMLv2Identifiers.SIMPLE_PROJECT_DOCUMENT.toString());
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeProvider.getDescriptionId(), expandedIds,
                 List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_ROOT_NAMESPACES_ID));
-        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input);
 
         Consumer<Object> initialTreeContentConsumer = object -> Optional.of(object)
@@ -188,7 +188,7 @@ public class DropTreeItemHandlerTest extends AbstractIntegrationTests {
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT.toString(),
+                    UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID.toString(),
                     explorerRepresentationId,
                     List.of(SysMLv2Identifiers.SIMPLE_PROJECT_PACKAGE1.toString()),
                     SysMLv2Identifiers.SIMPLE_PROJECT_PART.toString(),

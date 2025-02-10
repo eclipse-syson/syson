@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetRootCandidateSearchProvider;
+import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserRootCandidateSearchProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Service;
  * @author arichard
  */
 @Service
-public class SysONReferenceWidgetRootCandidateSearchProvider implements IReferenceWidgetRootCandidateSearchProvider {
+public class SysONReferenceWidgetRootCandidateSearchProvider implements IModelBrowserRootCandidateSearchProvider {
 
     @Override
     public boolean canHandle(String descriptionId) {

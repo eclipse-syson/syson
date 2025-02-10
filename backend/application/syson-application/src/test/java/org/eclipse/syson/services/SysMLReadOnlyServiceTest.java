@@ -73,7 +73,7 @@ public class SysMLReadOnlyServiceTest extends AbstractIntegrationTests {
 
         this.givenCommittedTransaction.commit();
 
-        Optional<IEditingContext> ed = this.editingContextSearchService.findById(SysMLv2Identifiers.SIMPLE_PROJECT);
+        Optional<IEditingContext> ed = this.editingContextSearchService.findById(SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID);
 
         assertThat(ed).isPresent();
 

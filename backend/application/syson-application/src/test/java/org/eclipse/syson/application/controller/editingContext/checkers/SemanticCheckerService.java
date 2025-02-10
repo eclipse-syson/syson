@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ public class SemanticCheckerService {
     }
 
     public void checkEditingContext(ISemanticChecker semanticChecker, Step<DiagramRefreshedEventPayload> verifier) {
-        Runnable runnableChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT,
+        Runnable runnableChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     semanticChecker.check(editingContext);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);

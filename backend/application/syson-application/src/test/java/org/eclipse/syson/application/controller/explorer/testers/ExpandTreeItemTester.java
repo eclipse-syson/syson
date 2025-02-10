@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
-import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,9 +40,9 @@ public class ExpandTreeItemTester {
     @Autowired
     private ExpandAllTreePathQueryRunner expandAllTreePathQueryRunner;
 
-    public List<String> expandTreeItem(String projectId, String treeId, String treeItemId) {
+    public List<String> expandTreeItem(String editingContextId, String treeId, String treeItemId) {
         Map<String, Object> expandVariables = Map.of(
-                "editingContextId", SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+                "editingContextId", editingContextId,
                 "treeId", treeId,
                 "treeItemId", treeItemId);
         String result = this.expandAllTreePathQueryRunner.run(expandVariables);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunction
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
+import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.sysml.datafetchers.MutationInsertTextualSysMLv2DataFetcher;
 import org.eclipse.syson.sysml.dto.InsertTextualSysMLv2Input;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,8 +53,6 @@ import reactor.test.StepVerifier;
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegrationTests {
-
-    private static final String SIMPLE_PROJECT = "a427f187-9003-498c-9178-72e8350cc67c";
 
     private static final String SIMPLE_PROJECT_PACKAGE1 = "d51791b8-6666-46e3-8c60-c975e1f3e490";
 
@@ -82,8 +81,8 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     @Test
     public void testCreationFromText() {
         this.givenCommittedTransaction.commit();
-        var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), SIMPLE_PROJECT, SIMPLE_PROJECT_PACKAGE1, """
-                package importerPackage;
+        var input = new InsertTextualSysMLv2Input(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID, SIMPLE_PROJECT_PACKAGE1, """
+                package importedPackage;
                 """);
         var result = this.queryRunner.run(input);
         String typename = JsonPath.read(result, "$.data.insertTextualSysMLv2.__typename");
@@ -93,7 +92,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
             return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), this.objectService.getObject(editingContext, SIMPLE_PROJECT_PACKAGE1).get());
         };
-        var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), SIMPLE_PROJECT, function));
+        var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID, function));
 
         Predicate<IPayload> predicate = payload -> Optional.of(payload)
                 .filter(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)
@@ -101,7 +100,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
                 .map(ExecuteEditingContextFunctionSuccessPayload::result)
                 .filter(org.eclipse.syson.sysml.Package.class::isInstance)
                 .map(org.eclipse.syson.sysml.Package.class::cast)
-                .map(p -> p.getOwnedElement().stream().anyMatch(e -> e instanceof org.eclipse.syson.sysml.Package pack && "importerPackage".equals(pack.getName())))
+                .map(p -> p.getOwnedElement().stream().anyMatch(e -> e instanceof org.eclipse.syson.sysml.Package pack && "importedPackage".equals(pack.getName())))
                 .orElse(false);
 
         StepVerifier.create(mono)
@@ -109,5 +108,4 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
                 .thenCancel()
                 .verify();
     }
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,7 +78,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
     public void givenImportedDocumentWhenRootObjectIsCreatedThenItIsCreatedProperlyAndDocumentIsNotImported() {
         this.givenCommittedTransaction.commit();
 
-        this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Optional<Resource> optResource = this.getResource(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL);
                     assertThat(optResource).isPresent();
@@ -89,7 +89,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
 
         var input = new CreateRootObjectInput(
                 UUID.randomUUID(),
-                SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+                SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 UUID.fromString(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL),
                 SysmlPackage.eNS_URI,
                 "SysMLv2EditService-Package");
@@ -108,7 +108,7 @@ public class ObjectCreationTests extends AbstractIntegrationTests {
         String objectKind = JsonPath.read(result, "$.data.createRootObject.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=sysml&entity=Package");
 
-        this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Optional<Resource> optResource = this.getResource(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL);
                     assertThat(optResource).isPresent();

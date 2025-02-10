@@ -109,7 +109,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
         Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT);
+                "editingContextId", SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(1);
@@ -125,7 +125,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
         TestTransaction.end();
         TestTransaction.start();
         Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", SysMLv2Identifiers.SYSON_STUDIO_PROJECT);
+                "editingContextId", SysMLv2Identifiers.SYSON_STUDIO_EDITING_CONTEXT_ID);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).hasSize(1);
@@ -139,7 +139,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
     public void getExplorerContentWithDefaultFilters() {
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(), this.defaultFilters);
-        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
 
         AtomicReference<String> sysmlModelTreeItemId = new AtomicReference<>();
@@ -169,14 +169,14 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialExplorerContentConsumer)
-                .then(() -> expandedTreeItemIds.addAll(this.expandTreeItemTester.expandTreeItem(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, treeId.get(), sysmlModelTreeItemId.get())))
+                .then(() -> expandedTreeItemIds.addAll(this.expandTreeItemTester.expandTreeItem(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, treeId.get(), sysmlModelTreeItemId.get())))
                 .then(() -> expandedTreeItemIds
-                        .addAll(this.expandTreeItemTester.expandTreeItem(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, treeId.get(), librariesDirectoryTreeItemId.get())))
+                        .addAll(this.expandTreeItemTester.expandTreeItem(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, treeId.get(), librariesDirectoryTreeItemId.get())))
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
 
         var updatedExplorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, expandedTreeItemIds, this.defaultFilters);
-        var updatedInput = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, updatedExplorerRepresentationId);
+        var updatedInput = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, updatedExplorerRepresentationId);
         var updatedFlux = this.explorerEventSubscriptionRunner.run(updatedInput);
 
         var updatedExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
@@ -220,7 +220,7 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
         List<String> filters = List.of(SysONTreeFilterProvider.HIDE_MEMBERSHIPS_TREE_ITEM_FILTER_ID, SysONTreeFilterProvider.HIDE_KERML_STANDARD_LIBRARIES_TREE_FILTER_ID);
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId, List.of(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_MODEL), filters);
-        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input);
 
         var initialExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {

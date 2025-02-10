@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,8 @@ import { CreateDocumentData } from './support/server/createDocumentCommand.types
 import { CreateProjectData } from './support/server/createProjectCommand.types';
 import { CreateProjectFromTemplateData } from './support/server/createProjectFromTemplateCommand.types';
 import { DeleteProjectData } from './support/server/deleteProjectCommand.types';
-import { MutationResponse } from './support/server/graphql.types';
+import { GetCurrentEditingContextIdtData } from './support/server/getCurrentEditingContextId.types';
+import { MutationResponse, QueryResponse } from './support/server/graphql.types';
 
 export {};
 
@@ -25,6 +26,9 @@ declare global {
       getByTestId: (testId: string) => Chainable<JQuery<HTMLElement>>;
       findByTestId: (testId: string) => Chainable<JQuery<HTMLElement>>;
 
+      getCurrentEditingContextId: (
+        projectId: string
+      ) => Chainable<Response<QueryResponse<GetCurrentEditingContextIdtData>>>;
       createProject: (name: string) => Chainable<Response<MutationResponse<CreateProjectData>>>;
       createProjectFromTemplate: (name: string) => Chainable<Response<MutationResponse<CreateProjectFromTemplateData>>>;
       deleteProject: (projectId: string) => Chainable<Response<MutationResponse<DeleteProjectData>>>;
