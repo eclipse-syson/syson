@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.syson.application.configuration.SysMLStandardLibrariesConfiguration;
+import org.eclipse.syson.application.configuration.SysONDefaultLibrariesConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +59,7 @@ public class ASTTransformerTest {
 
     @BeforeAll
     public static void beforeAll() {
-        standardLibraries = new ArrayList<>(new SysMLStandardLibrariesConfiguration().getLibrariesResourceSet().getResources());
+        standardLibraries = new ArrayList<>(new SysONDefaultLibrariesConfiguration().getLibrariesResourceSet().getResources());
     }
 
     @BeforeEach

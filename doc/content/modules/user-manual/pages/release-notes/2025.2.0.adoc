@@ -14,14 +14,6 @@ The _Validation_ view shows the results of the execution of the constraints on y
 - *Undo/redo*: Users can now undo and redo any semantic change (i.e. in _Explorer_ and _Details_ views) with "CTRL + z" and "CTRL + y".
 Undo/redo is not available yet in diagrams.
 
-
-== Breaking changes
-
-- https://github.com/eclipse-syson/syson/issues/987[#987] Implementation of drag and drop in SysOn Explorer view
-* A new service has been added to centralize the behavior of moving semantic elements in _org.eclipse.syson.services.api.ISysMLMoveElementService_.
-It replaces the public methods _UtilService.moveMembership_ and _ToolService.moveSemanticElement_
-* A new service has been added to centralize the verification of read-only elements in _org.eclipse.syson.services.api.ISysMLReadOnlyService_.
-
 == Bug fixes
 
 - Fix an issue where the server could crash when successive REST APIs calls are executed.
@@ -129,6 +121,8 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 
 - In the `General View` diagram, Package graphical nodes can now be resized smaller than their default size.
 - Display in the _Details_ view the properties _isDefault_ and _isInitial_ in Core tab of `FeatureValue` concept.
+- It is now easier for downstream applications to customize the default metamodels and libraries made available in all SysML projects.
+To do so, create a `@Primary @Configuration` that extend `SysMLDefaultLibrariesConfiguration`, and optionally redefine `getDefaultLibraries()` and/or `getDefaultEPackages()`.
 
 
 == Dependency update
@@ -137,4 +131,4 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 
 == Technical details
 
-* For technical details on this {product} release please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
+* For technical details on this {product} release (including breaking changes) please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
