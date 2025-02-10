@@ -183,12 +183,12 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+                SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
     }
@@ -208,7 +208,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     public void createTopNode(EClass eClass, int compartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
 
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 this.diagram,
                 creationToolId));
 
@@ -231,7 +231,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
         this.verifier.consumeNextWith(updatedDiagramConsumer);
 
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM_OBJECT).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);
@@ -251,7 +251,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     @Test
     public void createTopNamespaceImportNode() {
         AtomicReference<Optional<String>> libId = new AtomicReference<>(Optional.empty());
-        this.verifier.then(this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.verifier.then(this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     libId.set(this.getISQAcousticsLibraryId(editingContext));
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
@@ -263,7 +263,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(SysmlPackage.eINSTANCE.getNamespaceImport()));
         if (libId.get().isPresent()) {
             this.verifier.then(() -> {
-                this.nodeCreationTester.createNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+                this.nodeCreationTester.createNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                         this.diagram,
                         null,
                         creationToolId,
@@ -335,7 +335,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     public void givenAnEmptySysMLProjectWhenWeSubscribeToTheSelectionDialogTreeOfTheNamespaceImportToolThenTheTreeIsSent() {
         AtomicReference<Optional<String>> selectionDialogDescriptionId = new AtomicReference<>(Optional.empty());
 
-        this.verifier.then(this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.verifier.then(this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     selectionDialogDescriptionId.set(this.getSelectionDialogDescriptionId(editingContext));
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);
@@ -345,8 +345,9 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
         assertThat(selectionDialogDescriptionId.get()).isNotEmpty();
 
         if (selectionDialogDescriptionId.get().isPresent()) {
-            var representationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, List.of());
-            var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, representationId);
+            var representationId = this.representationIdBuilder.buildSelectionRepresentationId(selectionDialogDescriptionId.get().get(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
+                    List.of());
+            var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID, representationId);
             var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
 
             var hasResourceRootContent = this.getTreeSubscriptionConsumer(tree -> {

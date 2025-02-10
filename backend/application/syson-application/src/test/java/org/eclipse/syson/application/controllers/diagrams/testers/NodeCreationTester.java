@@ -55,15 +55,15 @@ public class NodeCreationTester {
     @Autowired
     private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
 
-    public void createNodeOnDiagram(String projectId, AtomicReference<Diagram> diagram, String toolId) {
-        this.createNode(projectId, diagram, null, toolId);
+    public void createNodeOnDiagram(String editingContextId, AtomicReference<Diagram> diagram, String toolId) {
+        this.createNode(editingContextId, diagram, null, toolId);
     }
 
-    public void createNode(String projectId, AtomicReference<Diagram> diagram, String parentNodeTargetObjectLabel, String toolId) {
-        this.createNode(projectId, diagram, parentNodeTargetObjectLabel, toolId, List.of());
+    public void createNode(String editingContextId, AtomicReference<Diagram> diagram, String parentNodeTargetObjectLabel, String toolId) {
+        this.createNode(editingContextId, diagram, parentNodeTargetObjectLabel, toolId, List.of());
     }
 
-    public void createNode(String projectId, AtomicReference<Diagram> diagram, String parentNodeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
+    public void createNode(String editingContextId, AtomicReference<Diagram> diagram, String parentNodeTargetObjectLabel, String toolId, List<ToolVariable> variables) {
         String parentId = diagram.get().getId();
         if (parentNodeTargetObjectLabel != null) {
             DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
@@ -71,7 +71,7 @@ public class NodeCreationTester {
         }
         var createElementInput = new InvokeSingleClickOnDiagramElementToolInput(
                 UUID.randomUUID(),
-                projectId,
+                editingContextId,
                 diagram.get().getId(),
                 parentId,
                 toolId,
@@ -83,19 +83,19 @@ public class NodeCreationTester {
         assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
     }
 
-    public void renameRootNode(String projectId, AtomicReference<Diagram> diagram, String nodeName, String newName) {
+    public void renameRootNode(String editingContextId, AtomicReference<Diagram> diagram, String nodeName, String newName) {
         Optional<Node> optionalNode = diagram.get().getNodes().stream().filter(n -> n.getTargetObjectLabel().equals(nodeName)).findFirst();
 
         assertThat(optionalNode).as("the node " + nodeName + " is not present in the diagram").isNotEmpty();
 
-        var input = new EditLabelInput(UUID.randomUUID(), projectId, diagram.get().getId(), optionalNode.get().getInsideLabel().getId(), newName);
+        var input = new EditLabelInput(UUID.randomUUID(), editingContextId, diagram.get().getId(), optionalNode.get().getInsideLabel().getId(), newName);
         var invokeSingleClickOnDiagramElementToolResult = this.editLabelMutationRunner.run(input);
 
         String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.editLabel.__typename");
         assertThat(invokeSingleClickOnDiagramElementToolResultTypename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
     }
 
-    public void renameNode(String projectId, AtomicReference<Diagram> diagram, String nodeName, String newName) {
+    public void renameNode(String editingContextId, AtomicReference<Diagram> diagram, String nodeName, String newName) {
         List<Node> nodes = new ArrayList<>();
         List<Node> rootNodes = diagram.get().getNodes();
         nodes.addAll(rootNodes);
@@ -106,7 +106,7 @@ public class NodeCreationTester {
 
         assertThat(optionalNode).as("the node " + nodeName + " is not present in the diagram").isNotEmpty();
 
-        var input = new EditLabelInput(UUID.randomUUID(), projectId, diagram.get().getId(), optionalNode.get().getInsideLabel().getId(), newName);
+        var input = new EditLabelInput(UUID.randomUUID(), editingContextId, diagram.get().getId(), optionalNode.get().getInsideLabel().getId(), newName);
         var invokeSingleClickOnDiagramElementToolResult = this.editLabelMutationRunner.run(input);
 
         String invokeSingleClickOnDiagramElementToolResultTypename = JsonPath.read(invokeSingleClickOnDiagramElementToolResult, "$.data.editLabel.__typename");

@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextApplicationService;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.ChangeType;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommit;
@@ -43,11 +44,14 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
 
     private final SysONObjectRestService objectRestService;
 
+    private final IEditingContextApplicationService editingContextApplicationService;
+
     public SysONProjectDataVersioningRestService(IDefaultProjectDataVersioningRestService defaultProjectDataVersioningRestService, IObjectService objectService,
-            SysONObjectRestService objectRestService) {
+            SysONObjectRestService objectRestService, IEditingContextApplicationService editingContextApplicationService) {
         this.defaultProjectDataVersioningRestService = Objects.requireNonNull(defaultProjectDataVersioningRestService);
         this.objectService = Objects.requireNonNull(objectService);
         this.objectRestService = Objects.requireNonNull(objectRestService);
+        this.editingContextApplicationService = Objects.requireNonNull(editingContextApplicationService);
     }
 
     @Override
@@ -73,12 +77,13 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
     @Override
     public List<RestDataVersion> getCommitChange(IEditingContext editingContext, UUID commitId, List<ChangeType> changeTypes) {
         List<RestDataVersion> dataVersions = new ArrayList<>();
+        var projectId = this.editingContextApplicationService.getProjectId(editingContext.getId());
         var changeTypesAllowed = changeTypes == null || changeTypes.isEmpty();
-        if (commitId != null && commitId.toString().equals(editingContext.getId()) && changeTypesAllowed) {
+        if (commitId != null && projectId.isPresent() && Objects.equals(commitId.toString(), projectId.get()) && changeTypesAllowed) {
             var elements = this.objectRestService.getElements(editingContext);
             for (var element : elements) {
                 var elementId = this.objectService.getId(element);
-                var changeId = UUID.nameUUIDFromBytes((commitId.toString() + elementId).getBytes());
+                var changeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
                 var dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), element);
                 dataVersions.add(dataVersion);
             }
@@ -89,13 +94,14 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
     @Override
     public RestDataVersion getCommitChangeById(IEditingContext editingContext, UUID commitId, UUID changeId) {
         RestDataVersion dataVersion = null;
-        if (changeId != null && commitId != null && commitId.toString().equals(editingContext.getId())) {
+        var projectId = this.editingContextApplicationService.getProjectId(editingContext.getId());
+        if (changeId != null && projectId.isPresent() && Objects.equals(commitId.toString(), projectId.get())) {
             var elements = this.objectRestService.getElements(editingContext);
             for (var element : elements) {
                 var elementId = this.objectService.getId(element);
                 if (elementId != null) {
-                    var computedChangeId = UUID.nameUUIDFromBytes((commitId.toString() + elementId).getBytes());
-                    if (changeId.toString().equals(computedChangeId.toString())) {
+                    var computedChangeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
+                    if (Objects.equals(changeId.toString(), computedChangeId.toString())) {
                         dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), element);
                         break;
                     }

@@ -115,12 +115,12 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+                SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
@@ -150,13 +150,13 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
     public void testApplyTool(EClass eClass, String nodeName, int definitionCompartmentCount) {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId(this.descriptionNameGenerator.getCreationToolName(eClass));
 
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 this.diagram,
                 creationToolId));
 
         var diagramAfterAddingElement = this.givenDiagram.getDiagram(this.verifier);
 
-        this.verifier.then(() -> this.nodeCreationTester.renameRootNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.verifier.then(() -> this.nodeCreationTester.renameRootNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 diagramAfterAddingElement,
                 nodeName,
                 this.getNewName(nodeName)));
@@ -166,12 +166,12 @@ public class GVAddNewFeatureTypingFromPartUsageTests extends AbstractIntegration
         String toolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(eClass), "New Feature Typing");
         assertThat(toolId).as("The tool 'New Feature Typing' should exist on a ").isNotNull();
 
-        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 diagramAfterRenameElement,
                 this.getNewName(nodeName),
                 toolId));
 
-        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT,
+        Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM_OBJECT).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);

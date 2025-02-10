@@ -95,12 +95,12 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
+                SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_DIAGRAM);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
+        var diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.INTERCONNECTION_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
@@ -121,7 +121,7 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
     public void givenASysMLProjectWhenNewFlowConnectionToolOfFirstLevelElementIsRequestedOnAPartUsageThenANewPartUsageAndAFlowConnectionEdgeAreCreated() {
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow Connection");
         assertThat(creationToolId).as("The tool 'New Flow Connection' should exist on a PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
+        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID,
                 this.diagram,
                 "part1",
                 creationToolId));
@@ -147,17 +147,17 @@ public class IVAddNewFlowConnectionFromPartUsageTests extends AbstractIntegratio
         String creationPartToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getFirstLevelNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Part");
         assertThat(creationPartToolId).as("The tool 'New Part' should exist on a first level PartUsage").isNotNull();
 
-        this.verifier.then(() -> this.nodeCreationTester.renameNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT, this.diagram, "part1", "firstLevelPart"));
+        this.verifier.then(() -> this.nodeCreationTester.renameNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID, this.diagram, "part1", "firstLevelPart"));
 
         var diagramAfterRenaming = this.givenDiagram.getDiagram(this.verifier);
 
-        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT, diagramAfterRenaming, "firstLevelPart", creationPartToolId));
+        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID, diagramAfterRenaming, "firstLevelPart", creationPartToolId));
 
         var diagramAfterNestedPartUsageCreation = this.givenDiagram.getDiagram(this.verifier);
 
         String creationToolId = this.diagramDescriptionIdProvider.getNodeCreationToolId(this.descriptionNameGenerator.getNodeName(SysmlPackage.eINSTANCE.getPartUsage()), "New Flow Connection");
         assertThat(creationToolId).as("The tool 'New Flow Connection' should exist on a nested PartUsage").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_PROJECT,
+        this.verifier.then(() -> this.nodeCreationTester.createNode(SysMLv2Identifiers.INTERCONNECTION_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID,
                 diagramAfterNestedPartUsageCreation,
                 "part1",
                 creationToolId));

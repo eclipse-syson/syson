@@ -82,7 +82,7 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenASimpleProjectWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSentAndBackendConsoleHasNoAQLErrors(CapturedOutput capturedOutput) {
-        var input = new ValidationEventInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT, this.representationIdBuilder.buildValidationRepresentationId());
+        var input = new ValidationEventInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());
         var flux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, input)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
@@ -111,7 +111,7 @@ public class ValidationRulesTests extends AbstractIntegrationTests {
     @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
     public void givenAProjectWithManyElementsWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSentAndBackendConsoleHasNoAQLErrors(CapturedOutput capturedOutput) {
-        var input = new ValidationEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_PROJECT, this.representationIdBuilder.buildValidationRepresentationId());
+        var input = new ValidationEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());
         var flux = this.graphQLRequestor.subscribe(GET_VALIDATION_EVENT_SUBSCRIPTION, input)
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)

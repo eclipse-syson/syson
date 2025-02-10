@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,7 +71,7 @@ public class RelatedElementsViewTests extends AbstractIntegrationTests {
     @Test
     public void getRelatedElementsView() {
         var relatedElementRepresentationId = this.representationIdBuilder.buildRelatedElementsRepresentationId(List.of(SysMLv2Identifiers.INTERCONNECTION_VIEW_EMPTY_DIAGRAM_OBJECT.toString()));
-        var input = new RelatedElementsEventInput(UUID.randomUUID(), SysMLv2Identifiers.INTERCONNECTION_VIEW_EMPTY_PROJECT.toString(), relatedElementRepresentationId);
+        var input = new RelatedElementsEventInput(UUID.randomUUID(), SysMLv2Identifiers.INTERCONNECTION_VIEW_EMPTY_EDITING_CONTEXT_ID.toString(), relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input);
 
         Predicate<Form> formPredicate = form -> {

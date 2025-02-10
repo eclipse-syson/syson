@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -105,12 +105,12 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     public void setUp() {
         this.givenInitialServerState.initialize();
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(),
-                SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_PROJECT,
+                SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_DIAGRAM);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
         this.diagram = this.givenDiagram.getDiagram(this.verifier);
-        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_PROJECT,
+        this.diagramDescription = this.givenDiagramDescription.getDiagramDescription(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID,
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
     }
@@ -129,7 +129,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     public void addExistingElementsOnDiagram() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements");
         assertThat(creationToolId).as("The tool 'Add existing elements' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_PROJECT, this.diagram, creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID, this.diagram, creationToolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)
@@ -153,7 +153,7 @@ public class GVAddExistingElementsTests extends AbstractIntegrationTests {
     public void addExistingElementsRecursiveOnDiagram() {
         String creationToolId = this.diagramDescriptionIdProvider.getDiagramCreationToolId("Add existing elements (recursive)");
         assertThat(creationToolId).as("The tool 'Add existing elements (recursive)' should exist on the diagram").isNotNull();
-        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_PROJECT, this.diagram, creationToolId));
+        this.verifier.then(() -> this.nodeCreationTester.createNodeOnDiagram(SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_EDITING_CONTEXT_ID, this.diagram, creationToolId));
 
         Consumer<DiagramRefreshedEventPayload> updatedDiagramConsumer = payload -> Optional.of(payload)
                 .map(DiagramRefreshedEventPayload::diagram)

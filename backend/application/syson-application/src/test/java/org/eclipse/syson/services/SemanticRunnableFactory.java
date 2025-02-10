@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,9 +46,9 @@ public class SemanticRunnableFactory {
     @Autowired
     private IExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
-    public Runnable createRunnable(String projectId, BiFunction<IEditingContext, IInput, IPayload> function) {
+    public Runnable createRunnable(String editingContextId, BiFunction<IEditingContext, IInput, IPayload> function) {
         return () -> {
-            var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), projectId, function);
+            var input = new ExecuteEditingContextFunctionInput(UUID.randomUUID(), editingContextId, function);
 
             Mono<IPayload> result = this.executeEditingContextFunctionRunner.execute(input);
             var payload = result.block();

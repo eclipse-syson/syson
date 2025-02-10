@@ -26,10 +26,8 @@ import java.util.UUID;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.syson.application.configuration.SysMLEditingContextProcessor;
 import org.eclipse.syson.sysml.export.SysMLv2DocumentExporter;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
@@ -61,7 +59,7 @@ public class SysmlImportExportChecker {
     public void check(String importedText, String expectedResult) throws IOException {
 
         UUID uuid = UUID.randomUUID();
-        AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain(this.createFakeProject(uuid));
+        AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain();
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
         this.sysMLEditingContextProcessor.preProcess(editingContext);
 
@@ -80,10 +78,6 @@ public class SysmlImportExportChecker {
 
     private URI createFakeURI(UUID uuid) {
         return URI.createURI("fakeUri:/" + uuid.toString() + "/test.sysml");
-    }
-
-    private Project createFakeProject(UUID uuid) {
-        return Project.newProject().name(uuid.toString()).natures(List.of()).build(new ICause.NoOp());
     }
 
     private String normalize(String content) {
