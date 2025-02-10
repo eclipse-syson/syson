@@ -15,11 +15,11 @@ package org.eclipse.syson.application.configuration;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
@@ -32,15 +32,13 @@ import org.eclipse.emf.ecore.util.EcoreAdapterFactory;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ReflectiveItemProviderAdapterFactory;
-import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
+import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.syson.sysml.util.ElementUtil;
+import org.eclipse.syson.application.libraries.SysONLibraryLoader;
 import org.eclipse.syson.util.SysONEContentAdapter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 
 /**
  * Tests about loading of SysML Standard libraries.
@@ -48,7 +46,6 @@ import org.springframework.core.io.support.ResourcePatternResolver;
  * @author arichard
  */
 public class SysMLEditingContextProcessorTest {
-
 
     private static ResourceSet resourceSet;
 
@@ -66,36 +63,38 @@ public class SysMLEditingContextProcessorTest {
         resourceSet.setPackageRegistry(ePackageRegistry);
         resourceSet.eAdapters().add(new ECrossReferenceAdapter());
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
-        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysMLStandardLibrariesConfiguration(), e -> false);
+        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysONDefaultLibrariesConfiguration(), e -> false);
         editingContextProcessor.preProcess(editingContext);
         assertNotNull(resourceSet);
     }
 
     @Test
-    void loadKerMLLibraries() throws IOException {
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        org.springframework.core.io.Resource[] resources = resolver.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "kerml.libraries/" + "*." + JsonResourceFactoryImpl.EXTENSION);
-        for (org.springframework.core.io.Resource resource : resources) {
-            String libraryFilePath = resource.getFilename();
-            ClassPathResource classPathResource = new ClassPathResource("kerml.libraries/" + libraryFilePath);
-            String path = classPathResource.getPath();
-            URI uri = URI.createURI(ElementUtil.KERML_LIBRARY_SCHEME + ":///" + UUID.nameUUIDFromBytes(path.getBytes()));
-            Resource emfResource = resourceSet.getResource(uri, false);
-            assertNotNull(emfResource, "Unable to load " + libraryFilePath);
+    void loadKerMLLibraries() {
+        final SysONLibraryLoader sysonLibraryLoader = new SysONLibraryLoader();
+        for (final ClassPathResource classPathResource : sysonLibraryLoader.findAllLibraryResourcesFromApplicationClasspath(SysONDefaultLibrariesConfiguration.KERML)) {
+            final URI uri = sysonLibraryLoader.createEmfUriFor(classPathResource, SysONDefaultLibrariesConfiguration.KERML);
+            final Resource emfResource = resourceSet.getResource(uri, false);
+            assertNotNull(emfResource, "Unable to load %s resource: %s".formatted(SysONDefaultLibrariesConfiguration.KERML.familyName(), classPathResource.getFilename()));
+
+            final List<ResourceMetadataAdapter> resourceMetadataAdapters = emfResource.eAdapters().stream().filter(ResourceMetadataAdapter.class::isInstance).map(ResourceMetadataAdapter.class::cast)
+                    .toList();
+            assertThat(resourceMetadataAdapters).hasSize(1);
+            assertThat(resourceMetadataAdapters.get(0).getName()).isEqualTo(FilenameUtils.getBaseName(classPathResource.getFilename()));
         }
     }
 
     @Test
-    void loadSysMLLibraries() throws IOException {
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        org.springframework.core.io.Resource[] resources = resolver.getResources(ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + "sysml.libraries/" + "*." + JsonResourceFactoryImpl.EXTENSION);
-        for (org.springframework.core.io.Resource resource : resources) {
-            String libraryFilePath = resource.getFilename();
-            ClassPathResource classPathResource = new ClassPathResource("sysml.libraries/" + libraryFilePath);
-            String path = classPathResource.getPath();
-            URI uri = URI.createURI(ElementUtil.SYSML_LIBRARY_SCHEME + ":///" + UUID.nameUUIDFromBytes(path.getBytes()));
-            Resource emfResource = resourceSet.getResource(uri, false);
-            assertNotNull(emfResource, "Unable to load " + libraryFilePath);
+    void loadSysMLLibraries() {
+        final SysONLibraryLoader sysonLibraryLoader = new SysONLibraryLoader();
+        for (final ClassPathResource classPathResource : sysonLibraryLoader.findAllLibraryResourcesFromApplicationClasspath(SysONDefaultLibrariesConfiguration.SYSML)) {
+            final URI uri = sysonLibraryLoader.createEmfUriFor(classPathResource, SysONDefaultLibrariesConfiguration.SYSML);
+            final Resource emfResource = resourceSet.getResource(uri, false);
+            assertNotNull(emfResource, "Unable to load %s resource: %s".formatted(SysONDefaultLibrariesConfiguration.SYSML.familyName(), classPathResource.getFilename()));
+
+            final List<ResourceMetadataAdapter> resourceMetadataAdapters = emfResource.eAdapters().stream().filter(ResourceMetadataAdapter.class::isInstance).map(ResourceMetadataAdapter.class::cast)
+                    .toList();
+            assertThat(resourceMetadataAdapters).hasSize(1);
+            assertThat(resourceMetadataAdapters.get(0).getName()).isEqualTo(FilenameUtils.getBaseName(classPathResource.getFilename()));
         }
     }
 
@@ -113,7 +112,7 @@ public class SysMLEditingContextProcessorTest {
         rSet.setPackageRegistry(ePackageRegistry);
         rSet.eAdapters().add(new ECrossReferenceAdapter());
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
-        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysMLStandardLibrariesConfiguration(), e -> true);
+        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysONDefaultLibrariesConfiguration(), e -> true);
         editingContextProcessor.preProcess(editingContext);
 
         assertThat(editingContext.getDomain().getResourceSet().eAdapters()).noneMatch(adapter -> adapter instanceof SysONEContentAdapter);

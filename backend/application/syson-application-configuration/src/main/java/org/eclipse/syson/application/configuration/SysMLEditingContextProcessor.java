@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * {@link IEditingContextProcessor} for SysML libraries. All SysML standard libraries should be loaded when a project
+ * {@link IEditingContextProcessor} for SysML libraries. All SysML default libraries should be loaded when a project
  * (i.e. an editing context) is loaded.
  *
  * @author arichard
@@ -46,12 +46,12 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(SysMLEditingContextProcessor.class);
 
-    private final SysMLStandardLibrariesConfiguration standardLibraries;
+    private final SysONDefaultLibrariesConfiguration defaultLibraries;
 
     private final IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate;
 
-    public SysMLEditingContextProcessor(SysMLStandardLibrariesConfiguration standardLibraries, IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate) {
-        this.standardLibraries = Objects.requireNonNull(standardLibraries);
+    public SysMLEditingContextProcessor(SysONDefaultLibrariesConfiguration standardLibraries, IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate) {
+        this.defaultLibraries = Objects.requireNonNull(standardLibraries);
         this.studioCapableEditingContextPredicate = Objects.requireNonNull(studioCapableEditingContextPredicate);
     }
 
@@ -63,7 +63,7 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
             siriusWebEditingContext.getDomain().getResourceSet().eAdapters().add(new SysONEContentAdapter());
 
             Instant start = Instant.now();
-            ResourceSet sourceResourceSet = this.standardLibraries.getLibrariesResourceSet();
+            ResourceSet sourceResourceSet = this.defaultLibraries.getLibrariesResourceSet();
             ResourceSet targetResourceSet = siriusWebEditingContext.getDomain().getResourceSet();
             /*
              * Use a common copier for all the resources to make sure cross-references are correctly copied.
@@ -93,7 +93,7 @@ public class SysMLEditingContextProcessor implements IEditingContextProcessor {
             copier.copyReferences();
             Instant finish = Instant.now();
             long timeElapsed = Duration.between(start, finish).toMillis();
-            this.logger.info("Copy all standard libraries in the editing context in {} ms", timeElapsed);
+            this.logger.info("Copied all default libraries in the editing context in {} ms", timeElapsed);
         }
     }
 

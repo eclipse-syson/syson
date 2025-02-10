@@ -10,6 +10,7 @@
 * A new service has been added to centralize the behavior of moving semantic elements in _org.eclipse.syson.services.api.ISysMLMoveElementService_.
 It replaces the public methods _UtilService.moveMembership_ and _ToolService.moveSemanticElement_
 * A new service has been added to centralize the verification of read-only elements in _org.eclipse.syson.services.api.ISysMLReadOnlyService_.
+- https://github.com/eclipse-syson/syson/issues/1018[#1018] `SysMLStandardLibrariesConfiguration` has been refactored and renamed `SysONDefaultLibrariesConfiguration`.
 
 
 === Dependency update
@@ -54,6 +55,7 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/960[#960] [general-view] In the selection dialog of the creation tools for `Stakeholders` and `Actors`, display possible `Part Usage` candidates in a tree instead of a list.
 - https://github.com/eclipse-syson/syson/issues/1012[#1012] [general-view] Allow package nodes to be smaller than their default size
 - https://github.com/eclipse-syson/syson/issues/1006[#1006] [details] Display `FeatureValue.isDefault` and `FeatureValue.isInitial` in Core tab of `FeatureValue` concept.
+- https://github.com/eclipse-syson/syson/issues/1018[#1018] [libraries] Make customizing the default metamodels and libraries available in SysML projects easier by making default implementation `SysONDefaultLibrariesConfiguration` more extensible.
 
 
 === New features
