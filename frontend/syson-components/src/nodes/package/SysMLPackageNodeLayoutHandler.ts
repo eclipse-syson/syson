@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,7 +80,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNode: Node<NodeData, DiagramNodeType> | undefined,
     borderWidth: number,
-    _forceDimensions?: ForcedDimensions
+    forceDimensions?: ForcedDimensions
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNode);
 
@@ -155,7 +155,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
         directChildrenAwareNodeWidth,
         northBorderNodeFootprintWidth,
         southBorderNodeFootprintWidth,
-        node.data.defaultWidth ? node.data.defaultWidth : 0
+        node.data.defaultWidth && !node.data.resizedByUser ? node.data.defaultWidth : 0
       ) +
       borderWidth * 2;
 
@@ -178,11 +178,11 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
         directChildrenAwareNodeHeight,
         eastBorderNodeFootprintHeight,
         westBorderNodeFootprintHeight,
-        node.data.defaultHeight ? node.data.defaultHeight : 0
+        node.data.defaultHeight && !node.data.resizedByUser ? node.data.defaultHeight : 0
       ) +
       borderWidth * 2;
 
-    const nodeWidth: number = _forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
+    const nodeWidth: number = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight: number = getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
     const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
@@ -225,8 +225,8 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     const labelHeight: number =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
 
-    const minNodeWith: number = node.data.defaultWidth ?? 0;
-    const minNodeHeight: number = Math.max(labelHeight, node.data.defaultHeight ?? 0);
+    const minNodeWith: number = node.data.resizedByUser ? 75 : node.data.defaultWidth ?? 75;
+    const minNodeHeight: number = Math.max(labelHeight, node.data.resizedByUser ? 50 : node.data.defaultHeight ?? 50);
 
     const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
       (prevNode) => prevNode.id === node.id
