@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionR
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controller.explorer.testers.ExpandTreeItemTester;
+import org.eclipse.syson.application.controller.explorer.testers.TreeItemContextMenuTester;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.tree.explorer.view.SysONTreeViewDescriptionProvider;
 import org.eclipse.syson.tree.explorer.view.filters.SysONTreeFilterProvider;
@@ -82,6 +84,9 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
 
     @Autowired
     private ExpandTreeItemTester expandTreeItemTester;
+
+    @Autowired
+    private TreeItemContextMenuTester treeItemContextMenuTester;
 
     @Autowired
     private SysONTreeFilterProvider sysonTreeFilterProvider;
@@ -242,6 +247,64 @@ public class SysONExplorerTests extends AbstractIntegrationTests {
                 .consumeNextWith(initialExplorerContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @DisplayName("Given an empty SysML Project, when context menu is queried, then the menu is returned")
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @Test
+    public void getContextMenuOfModelAndLibraryDirectories() {
+        // Expand the Libraries directory when building the explorer, we want to check the context menu of elements
+        // under it.
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.treeDescriptionId,
+                List.of(UUID.nameUUIDFromBytes("SysON_Libraries_Directory".getBytes()).toString()), this.defaultFilters);
+        var input = new ExplorerEventInput(UUID.randomUUID(), SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input);
+
+        AtomicReference<String> sysmlModelTreeItemId = new AtomicReference<>();
+        AtomicReference<String> librariesDirectoryTreeItemId = new AtomicReference<>();
+        AtomicReference<String> kermlDirectoryTreeItemId = new AtomicReference<>();
+        AtomicReference<String> sysmlDirectoryTreeItemId = new AtomicReference<>();
+
+        var initialExplorerContentConsumer = this.getTreeSubscriptionConsumer(tree -> {
+            assertThat(tree).isNotNull();
+            assertThat(tree.getChildren()).hasSize(2);
+            TreeItem sysmlv2Model = tree.getChildren().get(0);
+            this.assertThatTreeItemHasLabel(sysmlv2Model, "SysMLv2");
+            sysmlModelTreeItemId.set(sysmlv2Model.getId());
+            assertThat(sysmlv2Model.isHasChildren()).isTrue();
+            TreeItem librariesDirectory = tree.getChildren().get(1);
+            this.assertThatTreeItemHasLabel(librariesDirectory, "Libraries");
+            librariesDirectoryTreeItemId.set(librariesDirectory.getId());
+            assertThat(librariesDirectory.isHasChildren()).isTrue();
+            assertThat(librariesDirectory.getChildren()).hasSize(2);
+            TreeItem kermlDirectory = librariesDirectory.getChildren().get(0);
+            this.assertThatTreeItemHasLabel(kermlDirectory, "KerML");
+            kermlDirectoryTreeItemId.set(kermlDirectory.getId());
+            assertThat(kermlDirectory.isHasChildren()).isTrue();
+            TreeItem sysmlDirectory = librariesDirectory.getChildren().get(1);
+            this.assertThatTreeItemHasLabel(sysmlDirectory, "SysML");
+            sysmlDirectoryTreeItemId.set(sysmlDirectory.getId());
+            assertThat(sysmlDirectory.isHasChildren()).isTrue();
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialExplorerContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+
+        List<String> sysmlModelContextMenu = this.treeItemContextMenuTester.getContextMenuEntries(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, explorerRepresentationId, sysmlModelTreeItemId.get());
+        // The expected size is 1: there is only one entry contributed from the backend, the other entries (new object,
+        // download, etc) are contributed from the frontend.
+        assertThat(sysmlModelContextMenu).hasSize(1).anyMatch(entry -> Objects.equals(entry, "expandAll"));
+        List<String> librariesDirectoryContextMenu = this.treeItemContextMenuTester.getContextMenuEntries(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, explorerRepresentationId, librariesDirectoryTreeItemId.get());
+        assertThat(librariesDirectoryContextMenu).isEmpty();
+        List<String> kermlDirectoryContextMenu = this.treeItemContextMenuTester.getContextMenuEntries(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, explorerRepresentationId,
+                kermlDirectoryTreeItemId.get());
+        assertThat(kermlDirectoryContextMenu).isEmpty();
+        List<String> sysmlDirectoryContextMenu = this.treeItemContextMenuTester.getContextMenuEntries(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_PROJECT, explorerRepresentationId,
+                sysmlDirectoryTreeItemId.get());
+        assertThat(sysmlDirectoryContextMenu).isEmpty();
     }
 
     private void assertThatTreeItemHasLabel(TreeItem treeItem, String label) {

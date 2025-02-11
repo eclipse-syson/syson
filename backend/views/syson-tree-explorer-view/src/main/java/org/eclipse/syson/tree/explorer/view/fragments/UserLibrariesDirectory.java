@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,10 +34,13 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
 
     private String label;
 
+    private final Object parent;
+
     private final ISysONExplorerFilterService filterService;
 
-    public UserLibrariesDirectory(String label, ISysONExplorerFilterService filterService) {
+    public UserLibrariesDirectory(String label, Object parent, ISysONExplorerFilterService filterService) {
         this.label = Objects.requireNonNull(label);
+        this.parent = Objects.requireNonNull(parent);
         this.filterService = Objects.requireNonNull(filterService);
     }
 
@@ -52,8 +55,18 @@ public class UserLibrariesDirectory implements ISysONExplorerFragment {
     }
 
     @Override
+    public String getKind() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
     public List<String> getIconURL() {
         return List.of("icons/LibraryResource.svg");
+    }
+
+    @Override
+    public Object getParent() {
+        return this.parent;
     }
 
     @Override

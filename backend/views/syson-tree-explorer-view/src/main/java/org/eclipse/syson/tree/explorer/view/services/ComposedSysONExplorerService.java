@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONDefaultExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerService;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerServiceDelegate;
@@ -112,6 +113,13 @@ public class ComposedSysONExplorerService implements ISysONExplorerService {
     }
 
     @Override
+    public boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext) { // , List<String> expandedIds,
+        return this.getDelegate(editingContext)
+                .map(delegate -> delegate.canExpandAll(treeItem, editingContext))
+                .orElseGet(() -> this.defaultExplorerService.canExpandAll(treeItem, editingContext));
+    }
+
+    @Override
     public List<Object> getChildren(Object self, IEditingContext editingContext, List<String> expandedIds, List<String> activeFilterIds) {
         return this.getDelegate(self)
                 .map(delegate -> delegate.getChildren(self, editingContext, expandedIds, activeFilterIds))
@@ -130,5 +138,6 @@ public class ComposedSysONExplorerService implements ISysONExplorerService {
                 .filter(delegate -> delegate.canHandle(object))
                 .findFirst();
     }
+
 
 }

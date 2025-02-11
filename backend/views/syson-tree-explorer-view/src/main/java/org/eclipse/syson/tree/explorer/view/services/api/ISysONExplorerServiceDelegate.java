@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.syson.tree.explorer.view.services.api;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.trees.TreeItem;
 
 /**
  * Interface of the delegation service interacting with the SysON explorer.
@@ -44,6 +45,8 @@ public interface ISysONExplorerServiceDelegate {
     Object getParent(Object self, String treeItemId, IEditingContext editingContext);
 
     boolean hasChildren(Object self, IEditingContext editingContext, List<String> expandedIds, List<String> activeFilterIds);
+
+    boolean canExpandAll(TreeItem treeItem, IEditingContext editingContext);
 
     List<Object> getChildren(Object self, IEditingContext editingContext, List<String> expandedIds, List<String> activeFilterIds);
 

@@ -10,6 +10,11 @@
 * A new service has been added to centralize the behavior of moving semantic elements in _org.eclipse.syson.services.api.ISysMLMoveElementService_.
 It replaces the public methods _UtilService.moveMembership_ and _ToolService.moveSemanticElement_
 * A new service has been added to centralize the verification of read-only elements in _org.eclipse.syson.services.api.ISysMLReadOnlyService_.
+- https://github.com/eclipse-syson/syson/issues/893[#893] [explorer] Fix _Expand All_ tool in SysON Explorer View
+* `ISysONExplorerFragment` implementations now need to implement `getKind()` and `getParent()`.
+* The constructors of `KerMLStandardLibraryDirectory`, `LibrariesDirectory`, `SysMLStandardLibraryDirectory`, and `UserLibrariesDirectory` now have a new `parent` parameter.
+* `ISysONExplorerService` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
+* `ISysONExplorerServiceDelegate` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
 
 
 === Dependency update
@@ -29,6 +34,7 @@ Export to textual SysMLv2 is not fully implemented yet so there are still unhand
 - https://github.com/eclipse-syson/syson/issues/998[#998] Fix `Port Usage` labels in diagrams.
 - https://github.com/eclipse-syson/syson/issues/1002[#1002] Invalid label for `Usages` (e.g.: `Attribute Usage`) when their `Feature Value` aims to define "initial" value.
 - https://github.com/eclipse-syson/syson/issues/1003[#1003] Invalid label for `Usages` (e.g.: `Attribute Usage`) when their `Feature Value` aims to define "default" value.
+- https://github.com/eclipse-syson/syson/issues/893[#893] [explorer] Fix _Expand All_ tool in SysON Explorer View
 
 === Improvements
 

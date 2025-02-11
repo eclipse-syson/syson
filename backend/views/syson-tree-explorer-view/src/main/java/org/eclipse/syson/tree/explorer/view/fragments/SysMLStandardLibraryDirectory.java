@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,8 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
 import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterService;
+import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFragment;
 
 /**
  * The <i>SysML</i> directory displayed in the explorer.
@@ -29,11 +29,14 @@ import org.eclipse.syson.tree.explorer.view.services.api.ISysONExplorerFilterSer
  */
 public class SysMLStandardLibraryDirectory implements ISysONExplorerFragment {
 
-    private final String id = UUID.nameUUIDFromBytes("SYSML".getBytes()).toString();
+    private final String id = UUID.nameUUIDFromBytes("SysON_SysML_Directory".getBytes()).toString();
+
+    private final Object parent;
 
     private final ISysONExplorerFilterService filterService;
 
-    public SysMLStandardLibraryDirectory(ISysONExplorerFilterService filterService) {
+    public SysMLStandardLibraryDirectory(Object parent, ISysONExplorerFilterService filterService) {
+        this.parent = Objects.requireNonNull(parent);
         this.filterService = Objects.requireNonNull(filterService);
     }
 
@@ -48,8 +51,18 @@ public class SysMLStandardLibraryDirectory implements ISysONExplorerFragment {
     }
 
     @Override
+    public String getKind() {
+        return this.getClass().getSimpleName();
+    }
+
+    @Override
     public List<String> getIconURL() {
         return List.of("icons/LibraryResource.svg");
+    }
+
+    @Override
+    public Object getParent() {
+        return this.parent;
     }
 
     @Override

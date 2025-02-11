@@ -17,10 +17,16 @@ Undo/redo is not available yet in diagrams.
 
 == Breaking changes
 
-- https://github.com/eclipse-syson/syson/issues/987[#987] Implementation of drag and drop in SysOn Explorer view
+- Implementation of drag and drop in SysOn Explorer view
 * A new service has been added to centralize the behavior of moving semantic elements in _org.eclipse.syson.services.api.ISysMLMoveElementService_.
 It replaces the public methods _UtilService.moveMembership_ and _ToolService.moveSemanticElement_
 * A new service has been added to centralize the verification of read-only elements in _org.eclipse.syson.services.api.ISysMLReadOnlyService_.
+- Fix an issue that made the _Expand All_ tool not work consistently in SysON Explorer View
+* `ISysONExplorerFragment` implementations now need to implement `getKind()` and `getParent()`.
+* The constructors of `KerMLStandardLibraryDirectory`, `LibrariesDirectory`, `SysMLStandardLibraryDirectory`, and `UserLibrariesDirectory` now have a new `parent` parameter.
+* `ISysONExplorerService` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
+* `ISysONExplorerServiceDelegate` implementations now need to implement `canExpandAll(TreeItem, IEditingContext)`
+
 
 == Bug fixes
 
@@ -35,6 +41,7 @@ Export to textual SysMLv2 is not fully implemented yet so there are still unhand
 - Fix `Port Usage` labels in diagrams (feature typing was incorrectly duplicated).
 - In diagrams, labels of `Usages` (e.g.: `Attribute Usages`) with a `Feature Value` relationship having the _initial_ property set to true now use the ":=" symbol instead of "=".
 - In diagrams, labels of `Usages` (e.g.: `Attribute Usages`) with a `Feature Value` relationship having the _default_ property set to true now display the _default_ keyword.
+- Fix an issue that made the _Expand All_ tool not work consistently in SysON Explorer View
 
 == New features
 

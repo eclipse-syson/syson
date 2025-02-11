@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,18 @@
  *******************************************************************************/
 package org.eclipse.syson.tree.explorer.view;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
+import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.tree.TreeBuilders;
 import org.eclipse.sirius.components.view.builder.generated.tree.TreeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
+import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -70,6 +73,7 @@ public class SysONExplorerTreeDescriptionProvider {
                 .treeItemIdExpression("aql:self.getTreeItemId()")
                 .treeItemObjectExpression("aql:id.getTreeItemObject(editingContext)")
                 .treeItemLabelDescriptions(this.createDefaultStyle())
+                .contextMenuEntries(this.getContextMenuEntries().toArray(TreeItemContextMenuEntry[]::new))
                 .build();
         return description;
     }
@@ -87,5 +91,13 @@ public class SysONExplorerTreeDescriptionProvider {
         return new TreeBuilders().newTreeItemLabelFragmentDescription()
                 .labelExpression("aql:self.getLabel()")
                 .build();
+    }
+
+    private List<TreeItemContextMenuEntry> getContextMenuEntries() {
+        var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
+                .contributionId("expandAll")
+                .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".canExpandAll(editingContext)")// ,
+                .build();
+        return List.of(expandAllMenuEntry);
     }
 }
