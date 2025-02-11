@@ -128,7 +128,7 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 
 - In the `General View` diagram, Package graphical nodes can now be resized smaller than their default size.
 - Display in the _Details_ view the properties _isDefault_ and _isInitial_ in Core tab of `FeatureValue` concept.
-
+- The direct edit tool on `Feature` elements now allows to use the ":=" and "default" symbols (see for more details in xref:ROOT:how-tos/model-management.adoc#direct-edit[user documentation] ).
 
 == Dependency update
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,7 @@ import org.eclipse.syson.services.grammars.DirectEditParser.EffectExpressionCont
 import org.eclipse.syson.services.grammars.DirectEditParser.EndPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureChainExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.FeatureValueExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ListItemExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.LiteralExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MeasurementExpressionContext;
@@ -745,6 +746,55 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
     }
 
     @Override
+    public void exitFeatureValueExpression(FeatureValueExpressionContext ctx) {
+        if (this.options.contains(LabelService.VALUE_OFF)) {
+            return;
+        }
+        if (this.element instanceof Feature valueOwner) {
+            FeatureValue featureValue = null;
+            featureValue = this.element.getOwnedRelationship().stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .findFirst()
+                    .orElseGet(() -> {
+                        var result = SysmlFactory.eINSTANCE.createFeatureValue();
+                        valueOwner.getOwnedRelationship().add(result);
+                        return result;
+                    });
+
+            LiteralExpression literalExpression = this.createLiteralExpression(ctx.literalExpression());
+            Optional<OperatorExpression> optMeasurementOperator = this.handleMeasurementExpression(ctx.measurementExpression(), valueOwner, literalExpression);
+            if (optMeasurementOperator.isPresent()) {
+                featureValue.getOwnedRelatedElement().clear();
+                featureValue.getOwnedRelatedElement().add(optMeasurementOperator.get());
+            } else {
+                // Add the literal expression as a fallback if there is no measurement or if the measurement reference
+                // cannot be found.
+                featureValue.getOwnedRelatedElement().clear();
+                featureValue.getOwnedRelatedElement().add(literalExpression);
+            }
+            // Check for isDefault token;
+            int childCount = ctx.getChildCount();
+            if (childCount > 0) {
+                String token = ctx.getChild(0).getText();
+                if (token != null && LabelConstants.DEFAULT.equals(token.trim())) {
+                    featureValue.setIsDefault(true);
+                    if (childCount > 1) {
+                        token = ctx.getChild(1).getText();
+                    }
+                } else {
+                    featureValue.setIsDefault(false);
+                }
+
+                if (LabelConstants.COLON_EQUAL.equals(token)) {
+                    featureValue.setIsInitial(true);
+                } else if (LabelConstants.EQUAL.equals(token)) {
+                    featureValue.setIsInitial(false);
+                }
+            }
+        }
+    }
+    @Override
     public void exitValueExpression(ValueExpressionContext ctx) {
         if (this.options.contains(LabelService.VALUE_OFF)) {
             return;
@@ -1188,7 +1238,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         } else if (ctx instanceof NodeExpressionContext nodeCtx) {
             featureExpressions = nodeCtx.featureExpressions();
         }
-        if (this.element instanceof Usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.valueExpression(), LabelConstants.EQUAL)) {
+        if (this.element instanceof Usage && featureExpressions != null && (this.isDeleteFeatureExpression(featureExpressions, featureExpressions.featureValueExpression(), LabelConstants.EQUAL)
+                || this.isDeleteFeatureExpression(featureExpressions, featureExpressions.featureValueExpression(), LabelConstants.COLON_EQUAL))) {
             var featureValue = this.element.getOwnedRelationship().stream()
                     .filter(FeatureValue.class::isInstance)
                     .map(FeatureValue.class::cast)

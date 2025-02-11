@@ -1,7 +1,7 @@
 // Generated from DirectEdit.g4 by ANTLR 4.10.1
 
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -241,6 +241,16 @@ public interface DirectEditListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitValueExpression(DirectEditParser.ValueExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DirectEditParser#featureValueExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFeatureValueExpression(DirectEditParser.FeatureValueExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DirectEditParser#featureValueExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFeatureValueExpression(DirectEditParser.FeatureValueExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link DirectEditParser#literalExpression}.
 	 * @param ctx the parse tree
