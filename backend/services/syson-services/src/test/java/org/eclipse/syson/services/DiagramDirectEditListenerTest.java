@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ import org.eclipse.syson.sysml.FeatureChainExpression;
 import org.eclipse.syson.sysml.FeatureMembership;
 import org.eclipse.syson.sysml.FeatureReferenceExpression;
 import org.eclipse.syson.sysml.FeatureTyping;
+import org.eclipse.syson.sysml.FeatureValue;
 import org.eclipse.syson.sysml.LiteralInteger;
 import org.eclipse.syson.sysml.MultiplicityRange;
 import org.eclipse.syson.sysml.OperatorExpression;
@@ -58,6 +59,8 @@ import org.junit.jupiter.api.Test;
  */
 public class DiagramDirectEditListenerTest {
 
+    private static final String A_FEATURE_NAME = "aFeatureName";
+
     private static final String GREATER_OR_EQUAL = ">=";
 
     private static final String CONSTRAINT_SHOULD_HAVE_ONE_OPERATOR_MESSAGE = "The constraint should have 1 owned OperatorExpression";
@@ -79,6 +82,77 @@ public class DiagramDirectEditListenerTest {
         assertThat(operatorExpression.getArgument().get(1)).isInstanceOf(LiteralInteger.class);
         LiteralInteger literalInteger2 = (LiteralInteger) operatorExpression.getArgument().get(1);
         assertThat(literalInteger2.getValue()).isEqualTo(2);
+    }
+
+    @DisplayName("Given a Feature with a FeatureValue, when it is edited with ':=' symbol, then its FeatureValue should have its isInital property modified")
+    @Test
+    public void testDirectEditFeatureWithInitialValue() {
+        Feature feature = SysmlFactory.eINSTANCE.createFeature();
+        this.doDirectEditOnCompartmentListItem(feature, "aFeatureName := 2");
+        assertEquals(A_FEATURE_NAME, feature.getName());
+        this.checkHasInitialValue(feature, true);
+
+        FeatureValue featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
+
+        this.hasIntegerValue(featureValue, 2);
+
+        this.doDirectEditOnCompartmentListItem(feature, "aFeatureName = 2");
+
+        assertEquals(A_FEATURE_NAME, feature.getName());
+        this.checkHasInitialValue(feature, false);
+
+        featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
+
+        this.hasIntegerValue(featureValue, 2);
+
+        // Partial direct edit
+        this.doDirectEditOnCompartmentListItem(feature, ":= 3");
+        assertEquals(A_FEATURE_NAME, feature.getName());
+        this.checkHasInitialValue(feature, true);
+        this.hasIntegerValue(featureValue, 3);
+    }
+
+    @DisplayName("Given a Feature with a FeatureValue, when it is edited with 'default' symbol, then its FeatureValue should have its isDefault property modified")
+    @Test
+    public void testDirectEditFeatureWithDefaultValue() {
+        Feature feature = SysmlFactory.eINSTANCE.createFeature();
+        this.doDirectEditOnCompartmentListItem(feature, "aFeatureName default = 2");
+        assertEquals(A_FEATURE_NAME, feature.getName());
+        this.checkHasDefaultValue(feature, true);
+
+        FeatureValue featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
+
+        this.hasIntegerValue(featureValue, 2);
+
+        this.doDirectEditOnCompartmentListItem(feature, "aFeatureName = 2");
+
+        assertEquals(A_FEATURE_NAME, feature.getName());
+        this.checkHasDefaultValue(feature, false);
+
+        featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
+
+        this.hasIntegerValue(featureValue, 2);
+    }
+
+    @DisplayName("Given an Element, when editing its name with the symbol 'default', then it should be allowed if not suffixed with a ' ' ")
+    @Test
+    public void testDirectEditElementWithNameAndDefaultSymbole() {
+        Feature feature = SysmlFactory.eINSTANCE.createFeature();
+        this.doDirectEditOnCompartmentListItem(feature, "defaultAttr1");
+        assertEquals("defaultAttr1", feature.getName());
+
+        this.doDirectEditOnCompartmentListItem(feature, "default Attr1");
+        assertEquals("default Attr1", feature.getName());
+
+        // Prevent the use of ' default' keyword
+        this.doDirectEditOnCompartmentListItem(feature, "Attr1 default");
+        assertEquals("Attr1", feature.getName());
+
+        this.doDirectEditOnCompartmentListItem(feature, "Attr1 default := 3");
+        assertEquals("Attr1", feature.getName());
+        this.checkHasInitialValue(feature, true);
+        FeatureValue featureValue = (FeatureValue) feature.getOwnedRelationship().get(0);
+        this.hasIntegerValue(featureValue, 3);
     }
 
     @DisplayName("Given a ConstraintUsage, when it is edited with 'myAttribute >= 1', then its expression is set")
@@ -148,7 +222,6 @@ public class DiagramDirectEditListenerTest {
         assertThat(operatorExpression.getArgument().get(1)).isInstanceOf(LiteralInteger.class);
         LiteralInteger literalInteger = (LiteralInteger) operatorExpression.getArgument().get(1);
         assertThat(literalInteger.getValue()).isEqualTo(1);
-
     }
 
     @DisplayName("Given a ConstraintUsage, when it is edited with 'feature1.feature2 >= 1', then its expression is set")
@@ -411,5 +484,23 @@ public class DiagramDirectEditListenerTest {
         ParseTreeWalker walker = new ParseTreeWalker();
         DirectEditListener listener = new DiagramDirectEditListener(element, new IFeedbackMessageService.NoOp());
         walker.walk(listener, tree);
+    }
+
+    private void hasIntegerValue(FeatureValue featureValue, int value) {
+        assertThat(featureValue.getOwnedRelatedElement().stream().filter(Expression.class::isInstance)).as("The feature value should contain a LiteralInteger with value " + value)
+                .hasSize(1)
+                .allMatch(r -> r instanceof LiteralInteger litInt && litInt.getValue() == value);
+    }
+
+    private void checkHasInitialValue(Feature feature, boolean expected) {
+        assertThat(feature.getOwnedRelationship().stream().filter(FeatureValue.class::isInstance)).as("The feature should have a FeatureValue with isInitial feature set to " + expected)
+                .hasSize(1)
+                .allMatch(r -> ((FeatureValue) r).isIsInitial() == expected);
+    }
+
+    private void checkHasDefaultValue(Feature feature, boolean expected) {
+        assertThat(feature.getOwnedRelationship().stream().filter(FeatureValue.class::isInstance)).as("The feature should have a FeatureValue with isDefault feature set to " + expected)
+                .hasSize(1)
+                .allMatch(r -> ((FeatureValue) r).isIsDefault() == expected);
     }
 }

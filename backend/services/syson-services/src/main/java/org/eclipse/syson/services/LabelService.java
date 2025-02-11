@@ -572,7 +572,7 @@ public class LabelService {
         final String affectationSymbole;
 
         if (featureValueMembership.isIsInitial()) {
-            affectationSymbole = ":=";
+            affectationSymbole = LabelConstants.COLON_EQUAL;
         } else {
             affectationSymbole = LabelConstants.EQUAL;
         }

@@ -14,7 +14,8 @@
 
 === Improvements
 
--https://github.com/eclipse-syson/syson/issues/1061[#1061] [general-view] Add ellipsis on `Packages` label, to provide visual feedback on name overflow.
+- https://github.com/eclipse-syson/syson/issues/1061[#1061] [general-view] Add ellipsis on `Packages` label, to provide visual feedback on name overflow.
+- https://github.com/eclipse-syson/syson/issues/1007[#1007] Improve direct edit on Feature elements to be able to set the `isDefault` and `isInitial` properties
 
 === New features
 

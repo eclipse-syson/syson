@@ -295,5 +295,26 @@ If _SomeTypeName_ doesn't exist, it's created as an appropriate type element (fo
 * Typing `someElement:>otherElement` on a element sets _someElement_ as a `subsetting` of the _otherElement_ if both element are of the same type.
 Otherwise, it creates a `specialization` relationship between _someElement_ and _otherElement_.
 * Typing `someElement:>>otherElement` on an element sets _someElement_ as a `redefinition` of _otherElement_.
+* On a `Feature`, typing `= someExpression` sets a bounded value to the feature (at the moment only `LiteralExpression` are handled in the expression part).
+* On a `Feature`, typing  `:= someExpression` sets an initial value to the feature (at the moment only `LiteralExpression` are handled in the expression part).
+* On a `Feature`, typing  the symbol `default` before the symbols `=` or `:=` makes the bounded or initial value "default" (to be opposed as "fixed" if the symbol is not present).
 
 These shortcuts offer a convenient way to update model elements efficiently.
+
+[WARNING]
+====
+When using the direct edit tool to set the name of an `Element` be aware that the following keywords would not be accepted in the name part of your input:
+
+* ':'
+* ':>'
+* '::>'
+* ':>>'
+* '=' 
+* ':='
+* '['
+* ' default'
+* ' ordered'
+* ' nonunique'
+
+To be able to use those in the name of the `Element`, use the "name" field in the {details} view.
+====

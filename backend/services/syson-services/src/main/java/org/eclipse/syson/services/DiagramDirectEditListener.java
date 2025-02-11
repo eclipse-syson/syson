@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import org.antlr.v4.runtime.InputMismatchException;
 import org.antlr.v4.runtime.NoViableAltException;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.misc.Interval;
-import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -43,6 +42,7 @@ import org.eclipse.syson.services.grammars.DirectEditParser.EffectExpressionCont
 import org.eclipse.syson.services.grammars.DirectEditParser.EndPrefixExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureChainExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.FeatureExpressionsContext;
+import org.eclipse.syson.services.grammars.DirectEditParser.FeatureValueExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.ListItemExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.LiteralExpressionContext;
 import org.eclipse.syson.services.grammars.DirectEditParser.MeasurementExpressionContext;
@@ -143,25 +143,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         this.getVisitedTransitionFeatures().put(TransitionFeatureKind.EFFECT, false);
     }
 
-    /**
-     * Returns the full text contained in the provided {@code ctx}.
-     * <p>
-     * The full text includes whitespaces that are skipped by the lexer. It is used to handle KerML unrestricted names
-     * without quotes (e.g. "A Part" as the name of a Part Definition).
-     * </p>
-     *
-     * @param ctx
-     *            the parser rule's context
-     * @return the full text contained in the provided {@code ctx}
-     */
-    private String getFullText(ParserRuleContext ctx) {
-        if (ctx.start == null || ctx.stop == null || ctx.start.getStartIndex() < 0 || ctx.stop.getStopIndex() < 0) {
-            // Fallback
-            return ctx.getText();
-        } else {
-            return ctx.start.getInputStream().getText(Interval.of(ctx.start.getStartIndex(), ctx.stop.getStopIndex()))
-                    .strip();
-        }
+    public Map<TransitionFeatureKind, Boolean> getVisitedTransitionFeatures() {
+        return this.visitedTransitionFeatures;
     }
 
     @Override
@@ -454,6 +437,177 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
+    @Override
+    public void exitRedefinitionExpression(RedefinitionExpressionContext ctx) {
+        if (this.options.contains(LabelService.REDEFINITION_OFF)) {
+            return;
+        }
+        if (this.element instanceof Usage redefining) {
+            this.handleRedefintion(ctx, redefining);
+        }
+    }
+
+    @Override
+    public void exitSubsettingExpression(SubsettingExpressionContext ctx) {
+        if (this.options.contains(LabelService.SUBSETTING_OFF)) {
+            return;
+        }
+        if (this.element instanceof Usage subsettingUsage) {
+            this.handleSubsetting(ctx, subsettingUsage);
+        } else if (this.element instanceof Definition subclassificationDef) {
+            this.handleSubclassification(ctx, subclassificationDef);
+        }
+    }
+
+    @Override
+    public void exitFeatureValueExpression(FeatureValueExpressionContext ctx) {
+        if (this.options.contains(LabelService.VALUE_OFF)) {
+            return;
+        }
+        if (this.element instanceof Feature valueOwner) {
+            FeatureValue featureValue = null;
+            featureValue = this.element.getOwnedRelationship().stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .findFirst()
+                    .orElseGet(() -> {
+                        var result = SysmlFactory.eINSTANCE.createFeatureValue();
+                        valueOwner.getOwnedRelationship().add(result);
+                        return result;
+                    });
+
+            LiteralExpression literalExpression = this.createLiteralExpression(ctx.literalExpression());
+            Optional<OperatorExpression> optMeasurementOperator = this.handleMeasurementExpression(ctx.measurementExpression(), valueOwner, literalExpression);
+            if (optMeasurementOperator.isPresent()) {
+                featureValue.getOwnedRelatedElement().clear();
+                featureValue.getOwnedRelatedElement().add(optMeasurementOperator.get());
+            } else {
+                // Add the literal expression as a fallback if there is no measurement or if the measurement reference
+                // cannot be found.
+                featureValue.getOwnedRelatedElement().clear();
+                featureValue.getOwnedRelatedElement().add(literalExpression);
+            }
+            // Check for isDefault token;
+            int childCount = ctx.getChildCount();
+            if (childCount > 0) {
+                String token = ctx.getChild(0).getText();
+                if (token != null && LabelConstants.DEFAULT.equals(token.trim())) {
+                    featureValue.setIsDefault(true);
+                    if (childCount > 1) {
+                        token = ctx.getChild(1).getText();
+                    }
+                } else {
+                    featureValue.setIsDefault(false);
+                }
+
+                if (LabelConstants.COLON_EQUAL.equals(token)) {
+                    featureValue.setIsInitial(true);
+                } else if (LabelConstants.EQUAL.equals(token)) {
+                    featureValue.setIsInitial(false);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void exitValueExpression(ValueExpressionContext ctx) {
+        if (this.options.contains(LabelService.VALUE_OFF)) {
+            return;
+        }
+        if (this.element instanceof Usage valueOwner) {
+            FeatureValue featureValue = null;
+            featureValue = this.element.getOwnedRelationship().stream()
+                    .filter(FeatureValue.class::isInstance)
+                    .map(FeatureValue.class::cast)
+                    .findFirst()
+                    .orElseGet(() -> {
+                        var result = SysmlFactory.eINSTANCE.createFeatureValue();
+                        valueOwner.getOwnedRelationship().add(result);
+                        return result;
+                    });
+
+            LiteralExpression literalExpression = this.createLiteralExpression(ctx.literalExpression());
+            Optional<OperatorExpression> optMeasurementOperator = this.handleMeasurementExpression(ctx.measurementExpression(), valueOwner, literalExpression);
+            if (optMeasurementOperator.isPresent()) {
+                featureValue.getOwnedRelatedElement().clear();
+                featureValue.getOwnedRelatedElement().add(optMeasurementOperator.get());
+            } else {
+                // Add the literal expression as a fallback if there is no measurement or if the measurement reference
+                // cannot be found.
+                featureValue.getOwnedRelatedElement().clear();
+                featureValue.getOwnedRelatedElement().add(literalExpression);
+            }
+        }
+    }
+
+    @Override
+    public void enterTriggerExpression(TriggerExpressionContext ctx) {
+        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
+            return;
+        }
+        if (this.element instanceof TransitionUsage transition) {
+            this.utilService.removeTransitionFeaturesOfSpecificKind(transition, TransitionFeatureKind.TRIGGER);
+            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
+        }
+        super.enterTriggerExpression(ctx);
+    }
+
+    @Override
+    public void exitTriggerExpression(TriggerExpressionContext ctx) {
+        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
+            return;
+        }
+        if (this.element instanceof TransitionUsage) {
+            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
+        }
+        super.exitTriggerExpression(ctx);
+    }
+
+    @Override
+    public void exitTriggerExpressionName(TriggerExpressionNameContext ctx) {
+        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
+            return;
+        }
+        if (this.element instanceof TransitionUsage transition) {
+            this.handleTriggerExpressionName(transition, ctx);
+        }
+        super.exitTriggerExpressionName(ctx);
+    }
+
+    @Override
+    public void exitEffectExpression(EffectExpressionContext ctx) {
+        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
+            return;
+        }
+        if (this.element instanceof TransitionUsage transition) {
+            this.utilService.removeTransitionFeaturesOfSpecificKind(transition, TransitionFeatureKind.EFFECT);
+            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.EFFECT, true);
+            this.handleEffectExpression(transition, ctx);
+        }
+        super.exitEffectExpression(ctx);
+    }
+
+    /**
+     * Returns the full text contained in the provided {@code ctx}.
+     * <p>
+     * The full text includes whitespaces that are skipped by the lexer. It is used to handle KerML unrestricted names
+     * without quotes (e.g. "A Part" as the name of a Part Definition).
+     * </p>
+     *
+     * @param ctx
+     *            the parser rule's context
+     * @return the full text contained in the provided {@code ctx}
+     */
+    private String getFullText(ParserRuleContext ctx) {
+        if (ctx.start == null || ctx.stop == null || ctx.start.getStartIndex() < 0 || ctx.stop.getStopIndex() < 0) {
+            // Fallback
+            return ctx.getText();
+        } else {
+            return ctx.start.getInputStream().getText(Interval.of(ctx.start.getStartIndex(), ctx.stop.getStopIndex()))
+                    .strip();
+        }
+    }
+
     private Element handleOperandExpression(OperandContext operandContext, Namespace context) {
         Element result = null;
         if (operandContext.featureChainExpression() != null && !operandContext.featureChainExpression().getText().isBlank()) {
@@ -638,18 +792,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    @Override
-    public void exitSubsettingExpression(SubsettingExpressionContext ctx) {
-        if (this.options.contains(LabelService.SUBSETTING_OFF)) {
-            return;
-        }
-        if (this.element instanceof Usage subsettingUsage) {
-            this.handleSubsetting(ctx, subsettingUsage);
-        } else if (this.element instanceof Definition subclassificationDef) {
-            this.handleSubclassification(ctx, subclassificationDef);
-        }
-    }
-
     private void handleSubclassification(SubsettingExpressionContext ctx, Definition subclassificationDef) {
         var identifier = ctx.qualifiedName();
         if (identifier != null) {
@@ -706,16 +848,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    @Override
-    public void exitRedefinitionExpression(RedefinitionExpressionContext ctx) {
-        if (this.options.contains(LabelService.REDEFINITION_OFF)) {
-            return;
-        }
-        if (this.element instanceof Usage redefining) {
-            this.handleRedefintion(ctx, redefining);
-        }
-    }
-
     private void handleRedefintion(RedefinitionExpressionContext ctx, Usage redefining) {
         var identifier = ctx.qualifiedName();
         if (identifier != null) {
@@ -744,71 +876,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         }
     }
 
-    @Override
-    public void exitValueExpression(ValueExpressionContext ctx) {
-        if (this.options.contains(LabelService.VALUE_OFF)) {
-            return;
-        }
-        if (this.element instanceof Usage valueOwner) {
-            FeatureValue featureValue = null;
-            featureValue = this.element.getOwnedRelationship().stream()
-                    .filter(FeatureValue.class::isInstance)
-                    .map(FeatureValue.class::cast)
-                    .findFirst()
-                    .orElseGet(() -> {
-                        var result = SysmlFactory.eINSTANCE.createFeatureValue();
-                        valueOwner.getOwnedRelationship().add(result);
-                        return result;
-                    });
-
-            LiteralExpression literalExpression = this.createLiteralExpression(ctx.literalExpression());
-            Optional<OperatorExpression> optMeasurementOperator = this.handleMeasurementExpression(ctx.measurementExpression(), valueOwner, literalExpression);
-            if (optMeasurementOperator.isPresent()) {
-                featureValue.getOwnedRelatedElement().clear();
-                featureValue.getOwnedRelatedElement().add(optMeasurementOperator.get());
-            } else {
-                // Add the literal expression as a fallback if there is no measurement or if the measurement reference
-                // cannot be found.
-                featureValue.getOwnedRelatedElement().clear();
-                featureValue.getOwnedRelatedElement().add(literalExpression);
-            }
-        }
-    }
-
-    @Override
-    public void enterTriggerExpression(TriggerExpressionContext ctx) {
-        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
-            return;
-        }
-        if (this.element instanceof TransitionUsage transition) {
-            this.utilService.removeTransitionFeaturesOfSpecificKind(transition, TransitionFeatureKind.TRIGGER);
-            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
-        }
-        super.enterTriggerExpression(ctx);
-    }
-
-    @Override
-    public void exitTriggerExpression(TriggerExpressionContext ctx) {
-        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
-            return;
-        }
-        if (this.element instanceof TransitionUsage) {
-            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.TRIGGER, true);
-        }
-        super.exitTriggerExpression(ctx);
-    }
-
-    @Override
-    public void exitTriggerExpressionName(TriggerExpressionNameContext ctx) {
-        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
-            return;
-        }
-        if (this.element instanceof TransitionUsage transition) {
-            this.handleTriggerExpressionName(transition, ctx);
-        }
-        super.exitTriggerExpressionName(ctx);
-    }
-
     private void handleTriggerExpressionName(TransitionUsage transition, TriggerExpressionNameContext triggerExpressionName) {
         String name = triggerExpressionName.name().getText();
         TypingExpressionContext typingExpression = triggerExpressionName.typingExpression();
@@ -825,19 +892,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         if (typeValue != null) {
             this.addTransitionFeature(transition, TransitionFeatureKind.TRIGGER, name, typeValue);
         }
-    }
-
-    @Override
-    public void exitEffectExpression(EffectExpressionContext ctx) {
-        if (this.options.contains(LabelService.TRANSITION_EXPRESSION_OFF)) {
-            return;
-        }
-        if (this.element instanceof TransitionUsage transition) {
-            this.utilService.removeTransitionFeaturesOfSpecificKind(transition, TransitionFeatureKind.EFFECT);
-            this.getVisitedTransitionFeatures().put(TransitionFeatureKind.EFFECT, true);
-            this.handleEffectExpression(transition, ctx);
-        }
-        super.exitEffectExpression(ctx);
     }
 
     private void handleEffectExpression(TransitionUsage transition, EffectExpressionContext effectExpression) {
@@ -973,11 +1027,6 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             }
         }
         this.importService.handleImport(this.element, typeValue);
-    }
-
-    @Override
-    public void visitErrorNode(ErrorNode node) {
-        super.visitErrorNode(node);
     }
 
     private void handleMissingDirectionPrefixExpression(ListItemExpressionContext ctx) {
@@ -1188,7 +1237,8 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
         } else if (ctx instanceof NodeExpressionContext nodeCtx) {
             featureExpressions = nodeCtx.featureExpressions();
         }
-        if (this.element instanceof Usage && featureExpressions != null && this.isDeleteFeatureExpression(featureExpressions, featureExpressions.valueExpression(), LabelConstants.EQUAL)) {
+        if (this.element instanceof Usage && featureExpressions != null && (this.isDeleteFeatureExpression(featureExpressions, featureExpressions.featureValueExpression(), LabelConstants.EQUAL)
+                || this.isDeleteFeatureExpression(featureExpressions, featureExpressions.featureValueExpression(), LabelConstants.COLON_EQUAL))) {
             var featureValue = this.element.getOwnedRelationship().stream()
                     .filter(FeatureValue.class::isInstance)
                     .map(FeatureValue.class::cast)
@@ -1303,9 +1353,5 @@ public class DiagramDirectEditListener extends DirectEditBaseListener {
             membership.getOwnedRelatedElement().add(literalInfinity);
         }
         return literalInfinity;
-    }
-
-    public Map<TransitionFeatureKind, Boolean> getVisitedTransitionFeatures() {
-        return this.visitedTransitionFeatures;
     }
 }
