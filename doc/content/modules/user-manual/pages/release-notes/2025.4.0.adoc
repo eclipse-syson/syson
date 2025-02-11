@@ -13,6 +13,8 @@ name is truncated.
 
 image::release-notes-package-name-ellipsis-overflow.png[Package name overflow with ellipsis, width=85%,height=85%]
 
+- In diagrams, the direct edit tool on `Feature` elements now allows to use the ":=" and "default" symbols (see for more details in xref:ROOT:how-tos/model-management.adoc#direct-edit[user documentation] ).
+
 == Dependency update
 
 == Technical details

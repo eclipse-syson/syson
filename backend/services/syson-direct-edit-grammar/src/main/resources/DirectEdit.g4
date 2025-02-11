@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ grammar DirectEdit;
 
 @header {
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,8 +99,8 @@ multiplicityExpressionMember :
 ;
 
 featureExpressions :
-	(subsettingExpression|redefinitionExpression)? (typingExpression)? (valueExpression)?
-	| (typingExpression)? (subsettingExpression|redefinitionExpression)? (valueExpression)?
+	(subsettingExpression|redefinitionExpression)? (typingExpression)? (featureValueExpression)?
+	| (typingExpression)? (subsettingExpression|redefinitionExpression)? (featureValueExpression)?
 ;
 
 subsettingExpression :
@@ -117,6 +117,10 @@ typingExpression :
 
 valueExpression :
 	'=' literalExpression ('[' measurementExpression ']')?
+;
+
+featureValueExpression :
+	(DEFAULT_SUFFIX)? ('='|':=') literalExpression ('[' measurementExpression ']')?
 ;
 
 literalExpression : 
@@ -200,7 +204,7 @@ name :
 	// We can't use ANY+ or .+ here because it conflicts with reserved keywords, which will be matched over ANY since 
 	// they are longer. Using .+ is also too greedy, and will match ':' ':>' etc, making the parser unable to properly 
 	// handle the input.
-	~(':' | ':>' | '::>' | ':>>' | '=' | '[' | ORDERED_SUFFIX | NONUNIQUE_SUFFIX )+
+	~(':' | ':>' | '::>' | ':>>' | '=' | ':=' | '[' | DEFAULT_SUFFIX | ORDERED_SUFFIX | NONUNIQUE_SUFFIX )+
 ;
 
 
@@ -230,6 +234,7 @@ CONJUGATION : 'conjugation';
 CONNECTOR : 'connector';
 DATATYPE : 'datatype';
 DEFAULT : 'default';
+DEFAULT_SUFFIX : WS DEFAULT;
 DEPENDENCY : 'dependency';
 DERIVED : 'derived';
 DERIVED_PREFIX : DERIVED WS;

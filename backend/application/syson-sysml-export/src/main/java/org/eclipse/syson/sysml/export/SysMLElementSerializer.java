@@ -1210,7 +1210,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
                 builder.appendWithSpaceIfNeeded(LabelConstants.DEFAULT);
             }
             if (feature.isIsInitial()) {
-                builder.appendWithSpaceIfNeeded(":=");
+                builder.appendWithSpaceIfNeeded(LabelConstants.COLON_EQUAL);
             } else {
                 builder.appendWithSpaceIfNeeded(LabelConstants.EQUAL);
             }

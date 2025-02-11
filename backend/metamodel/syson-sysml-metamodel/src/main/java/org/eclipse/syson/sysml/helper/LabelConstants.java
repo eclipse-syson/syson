@@ -41,6 +41,8 @@ public class LabelConstants {
 
     public static final String EQUAL = "=";
 
+    public static final String COLON_EQUAL = ":=";
+
     public static final String GREATER_THAN = ">";
 
     public static final String IN = "in";
