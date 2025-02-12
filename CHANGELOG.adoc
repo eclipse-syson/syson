@@ -29,6 +29,7 @@ Export to textual SysMLv2 is not fully implemented yet so there are still unhand
 - https://github.com/eclipse-syson/syson/issues/998[#998] Fix `Port Usage` labels in diagrams.
 - https://github.com/eclipse-syson/syson/issues/1002[#1002] Invalid label for `Usages` (e.g.: `Attribute Usage`) when their `Feature Value` aims to define "initial" value.
 - https://github.com/eclipse-syson/syson/issues/1003[#1003] Invalid label for `Usages` (e.g.: `Attribute Usage`) when their `Feature Value` aims to define "default" value.
+- https://github.com/eclipse-syson/syson/issues/1020[#1020] [general-view] The multiplicity should not be displayed on edges.
 
 === Improvements
 

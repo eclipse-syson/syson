@@ -35,6 +35,7 @@ Export to textual SysMLv2 is not fully implemented yet so there are still unhand
 - Fix `Port Usage` labels in diagrams (feature typing was incorrectly duplicated).
 - In diagrams, labels of `Usages` (e.g.: `Attribute Usages`) with a `Feature Value` relationship having the _initial_ property set to true now use the ":=" symbol instead of "=".
 - In diagrams, labels of `Usages` (e.g.: `Attribute Usages`) with a `Feature Value` relationship having the _default_ property set to true now display the _default_ keyword.
+- In the `General View` diagram, the multiplicity is no longer displayed on edges to conform to the SysMLv2 specification..
 
 == New features
 
