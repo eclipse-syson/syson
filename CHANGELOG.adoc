@@ -31,6 +31,7 @@ Export to textual SysMLv2 is not fully implemented yet so there are still unhand
 - https://github.com/eclipse-syson/syson/issues/1002[#1002] Invalid label for `Usages` (e.g.: `Attribute Usage`) when their `Feature Value` aims to define "initial" value.
 - https://github.com/eclipse-syson/syson/issues/1003[#1003] Invalid label for `Usages` (e.g.: `Attribute Usage`) when their `Feature Value` aims to define "default" value.
 - https://github.com/eclipse-syson/syson/issues/1020[#1020] [general-view] The multiplicity should not be displayed on edges.
+- https://github.com/eclipse-syson/syson/issues/1009[#1009] [metamodel] Fix an issue where the diagram direct edit on graphical nodes could raise a backend error on unsettable enum attributes.
 
 === Improvements
 
