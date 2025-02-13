@@ -44,6 +44,7 @@ A new creation tool can be found in the `Requirements` section of the palette.
 image::release-notes-gv-satisfy-requirement-usage.png[Satisfy Requirement Usage node creation tool, width=50%, height=50%]
 
 - The `General View` diagram is now proposed first when creating a diagram.
+- It is now possible, in diagrams, to reduce the width of `Usages` (e.g. `Part`) and `Definition` (e.g. `Part Definition`) graphical nodes with a long name as their label can now be wrapped.
 
 
 == Dependency update

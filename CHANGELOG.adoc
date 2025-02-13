@@ -25,7 +25,8 @@
 - https://github.com/eclipse-syson/syson/issues/938[#938] [general-view] Add `Satisfy Requirement Usage` to General View diagram.
 A new creation tool is available in the `Requirements` section of the palette, allowing the creation of `Satisfy Requirement Usage` objects.
 A new dra & drop tool is available on the diagram, allowing moving `Satisfy Requirement Usage` graphical nodes on the diagram.
-- The `General View` diagram is now proposed first when creating a diagram.
+- [explorer] The `General View` diagram is now proposed first when creating a diagram.
+- https://github.com/eclipse-syson/syson/issues/1024[#1024] [diagrams] Allow `Usage` and `Definition` graphical node labels to be wrapped to handle long names more easily.
 
 === New features
 
