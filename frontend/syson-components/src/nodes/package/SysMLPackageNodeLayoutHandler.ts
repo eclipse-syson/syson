@@ -225,7 +225,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     const labelHeight: number =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
 
-    const minNodeWith: number = node.data.resizedByUser ? 75 : node.data.defaultWidth ?? 75;
+    const minNodeWidth: number = node.data.resizedByUser ? 75 : node.data.defaultWidth ?? 75;
     const minNodeHeight: number = Math.max(labelHeight, node.data.resizedByUser ? 50 : node.data.defaultHeight ?? 50);
 
     const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
@@ -234,8 +234,8 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
     const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
 
     if (node.data.resizedByUser) {
-      if (minNodeWith > previousDimensions.width) {
-        node.width = minNodeWith;
+      if (minNodeWidth > previousDimensions.width) {
+        node.width = minNodeWidth;
       } else {
         node.width = previousDimensions.width;
       }
@@ -245,7 +245,7 @@ export class SysMLPackageNodeLayoutHandler implements INodeLayoutHandler<SysMLPa
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = minNodeWith;
+      node.width = minNodeWidth;
       node.height = minNodeHeight;
     }
   }

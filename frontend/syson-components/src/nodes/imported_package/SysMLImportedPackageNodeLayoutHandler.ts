@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,8 +63,8 @@ export class SysMLImportedPackageNodeLayoutHandler implements INodeLayoutHandler
     const labelHeight: number =
       rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
 
-    const minNodeWith: number = node.data.defaultWidth ?? 0;
-    const minNodeHeight: number = Math.max(labelHeight, node.data.defaultHeight ?? 0);
+    const minNodeWidth: number = node.data.resizedByUser ? 75 : node.data.defaultWidth ?? 75;
+    const minNodeHeight: number = Math.max(labelHeight, node.data.resizedByUser ? 50 : node.data.defaultHeight ?? 50);
 
     const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
       (prevNode) => prevNode.id === node.id
@@ -72,8 +72,8 @@ export class SysMLImportedPackageNodeLayoutHandler implements INodeLayoutHandler
     const previousDimensions: Dimensions = computePreviousSize(previousNode, node);
 
     if (node.data.resizedByUser) {
-      if (minNodeWith > previousDimensions.width) {
-        node.width = minNodeWith;
+      if (minNodeWidth > previousDimensions.width) {
+        node.width = minNodeWidth;
       } else {
         node.width = previousDimensions.width;
       }
@@ -83,7 +83,7 @@ export class SysMLImportedPackageNodeLayoutHandler implements INodeLayoutHandler
         node.height = previousDimensions.height;
       }
     } else {
-      node.width = minNodeWith;
+      node.width = minNodeWidth;
       node.height = minNodeHeight;
     }
   }
