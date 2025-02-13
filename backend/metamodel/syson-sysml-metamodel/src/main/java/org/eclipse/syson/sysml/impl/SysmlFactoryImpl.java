@@ -2433,13 +2433,10 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public FeatureDirectionKind createFeatureDirectionKindFromString(EDataType eDataType, String initialValue) {
         FeatureDirectionKind result = FeatureDirectionKind.get(initialValue);
-        if (result == null) {
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-        }
         return result;
     }
 
@@ -2455,13 +2452,10 @@ public class SysmlFactoryImpl extends EFactoryImpl implements SysmlFactory {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     public PortionKind createPortionKindFromString(EDataType eDataType, String initialValue) {
         PortionKind result = PortionKind.get(initialValue);
-        if (result == null) {
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-        }
         return result;
     }
 

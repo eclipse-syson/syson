@@ -123,6 +123,7 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 - Display in the _Details_ view the properties _isDefault_ and _isInitial_ in Core tab of `FeatureValue` concept.
 - It is now easier for downstream applications to customize the default metamodels and libraries made available in all SysML projects.
 To do so, create a `@Primary @Configuration` that extend `SysMLDefaultLibrariesConfiguration`, and optionally redefine `getDefaultLibraries()` and/or `getDefaultEPackages()`.
+- Fix an issue where the diagram direct edit on graphical nodes could raise a backend error on unsettable enum attributes.
 
 
 == Dependency update
