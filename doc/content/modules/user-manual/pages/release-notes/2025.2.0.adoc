@@ -129,6 +129,9 @@ To do so, create a `@Primary @Configuration` that extend `SysMLDefaultLibrariesC
 == Dependency update
 
 - Switch to Sirius Web 2025.1.6
+- Switch to SysIDE 0.8.0
+- Upgrade `turbo` to version 2.3.3
+- Switch to Spring Boot 3.4.1
 
 == Technical details
 
