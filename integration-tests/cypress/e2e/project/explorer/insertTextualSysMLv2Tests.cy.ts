@@ -34,8 +34,7 @@ describe('Insert Textual SysMLv2 Menu Tests', () => {
 
     afterEach(() => cy.deleteProject(projectId));
 
-    // locally ok but fails on the github CI
-    context.skip('When we select a Package in the explorer', () => {
+    context('When we select a Package in the explorer', () => {
       it("Then we can perform the 'New objects from text' menu entry", () => {
         const explorer = new Explorer();
         explorer.insertTextualSysMLv2(sysmlv2.getRootElementLabel(), 'attribute myAttribute');
