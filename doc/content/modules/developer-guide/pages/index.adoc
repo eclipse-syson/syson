@@ -32,7 +32,7 @@ image::environment-m2e-version.png[m2e version]
 . Retrieve the source code or fork it if you want to make contribution
 . Import _backend_ plugins from {product} repository in your workspace
 . Update _settings.xml_ file from your _.m2_ folder to give access to other repositories during the build
-  In order to see dependance with access to add in _settings.xml_, have a look on _backend\application\syson-application\pom.xml_
+  In order to see dependence with access to add in _settings.xml_, have a look on _backend\application\syson-application\pom.xml_
   You need to create https://github.com/settings/tokens[access tokens] on Github to complete _settings.xml_.
 +
 image::environment-settings.png[settings file]
@@ -57,7 +57,7 @@ Here are the steps to follow:
 . Install https://pnpm.io/installation[pnpm].
 . Go to the root of your local SysIDE repository.
 . Execute `pnpm install` command.
-. Execute `pnpm run build`command.
+. Execute `pnpm run build` command.
 . Execute `pnpm run --dir packages/syside-cli/ esbuild` command.
 . It produces a `your_local_syside_repo/packages/syside-cli/out/index.js` file
 . Get a copy of the `your-local-syside-repo/packages/syside-cli/out/index.js` file.

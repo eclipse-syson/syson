@@ -17,6 +17,9 @@ It replaces the public methods _UtilService.moveMembership_ and _ToolService.mov
 
 - Switch to Sirius Web 2025.1.6
 - https://github.com/eclipse-syson/syson/issues/953[#953] [rest-apis] Backend module `syson-sysml-rest-api-services` now depends on `jackson-datatype-jsr310` for JSON dates serialization
+- https://github.com/eclipse-syson/syson/issues/1023[#1023] [releng] Switch to SysIDE 0.8.0
+- Upgrade `turbo` to version 2.3.3
+- Switch to Spring Boot 3.4.1
 
 === Bug fixes
 
