@@ -350,19 +350,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseSuccessionAsUsage(SuccessionAsUsage sucession) {
+    public String caseSuccessionAsUsage(SuccessionAsUsage successionAsUsage) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
 
-        this.appendBasicUsagePrefix(builder, sucession);
+        this.appendBasicUsagePrefix(builder, successionAsUsage);
 
         Appender declarationBuilder = new Appender(this.lineSeparator, this.indentation);
-        this.appendUsageDeclaration(declarationBuilder, sucession);
+        this.appendUsageDeclaration(declarationBuilder, successionAsUsage);
 
         if (!declarationBuilder.isEmpty()) {
             builder.appendWithSpaceIfNeeded(declarationBuilder.toString());
         }
 
-        List<EndFeatureMembership> endFeatureMemberships = sucession.getFeatureMembership().stream()
+        List<EndFeatureMembership> endFeatureMemberships = successionAsUsage.getFeatureMembership().stream()
                 .filter(EndFeatureMembership.class::isInstance)
                 .map(EndFeatureMembership.class::cast)
                 .toList();
@@ -371,10 +371,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         if (endFeatureMemberships.size() == 2) {
 
-            builder.appendWithSpaceIfNeeded("first");
             EndFeatureMembership first = endFeatureMemberships.get(0);
+            if (!this.isSuccessionUsageImplicitSource(first) || !this.isSourceFeaturePreviousDefinedFeature(successionAsUsage)) {
+                builder.appendWithSpaceIfNeeded("first");
+                this.appendConnectorEndMember(builder, first);
+            }
             childrenToExclude.add(first);
-            this.appendConnectorEndMember(builder, first);
 
             builder.appendWithSpaceIfNeeded("then");
             EndFeatureMembership second = endFeatureMemberships.get(1);
@@ -382,17 +384,52 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             this.appendConnectorEndMember(builder, second);
 
         } else {
-            this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", sucession.getElementId()));
+            this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", successionAsUsage.getElementId()));
         }
 
-        List<Relationship> children = sucession.getOwnedRelationship().stream()
+        List<Relationship> children = successionAsUsage.getOwnedRelationship().stream()
                 .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
                 .filter(e -> !childrenToExclude.contains(e))
                 .toList();
 
-        this.appendChildrenContent(builder, sucession, children);
+        this.appendChildrenContent(builder, successionAsUsage, children);
 
         return builder.toString();
+    }
+
+    private boolean isSourceFeaturePreviousDefinedFeature(SuccessionAsUsage successionAsUsage) {
+        Feature sourceFeature = successionAsUsage.getSourceFeature();
+
+        Namespace namespace = successionAsUsage.getOwningNamespace();
+        if (namespace != null) {
+
+            EList<Membership> memberships = namespace.getMembership();
+            int index = memberships.indexOf(successionAsUsage.getOwningFeatureMembership());
+            if (index > 0) {
+                Membership previousMembership = memberships.get(index - 1);
+                return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getFeature() == sourceFeature;
+            }
+
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the source feature define force the given {@link EndFeatureMembership} is implicit or not
+     * 
+     * @param endFeatureMembership
+     *            the element to test
+     * @return <code>true</code> if the given EndFeatureMembership represent an implicit feature
+     */
+    private boolean isSuccessionUsageImplicitSource(EndFeatureMembership endFeatureMembership) {
+        EList<Element> relatedElements = endFeatureMembership.getOwnedRelatedElement();
+        if (relatedElements.size() == 1) {
+            Element relatedElement = relatedElements.get(0);
+            if (relatedElement instanceof ReferenceUsage refUsage) {
+                return refUsage.getOwnedSpecialization().stream().allMatch(s -> s.isIsImplied());
+            }
+        }
+        return false;
     }
 
     private void appendConnectorEndMember(Appender builder, EndFeatureMembership endFeatureMembership) {
@@ -415,9 +452,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (refSubsetting != null) {
             this.appendOwnedReferenceSubsetting(builder, refSubsetting);
         }
-
         // We still need to implement this part here ( ownedRelationship += OwnedMultiplicity )?
-
     }
 
     private void appendOwnedReferenceSubsetting(Appender builder, ReferenceSubsetting refSubsetting) {
@@ -438,23 +473,17 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private Appender appendDefaultDefinition(Appender builder, Definition def) {
-
         if (def instanceof OccurrenceDefinition occDef) {
             this.appendDefinitionPrefix(builder, occDef);
         }
-
         builder.appendSpaceIfNeeded().append(this.getDefinitionKeyword(def));
-
         this.appendDefinition(builder, def);
-
         return builder;
-
     }
 
     @Override
     public String caseLiteralExpression(LiteralExpression expression) {
         Appender builder = this.newAppender();
-
         if (expression instanceof LiteralInteger lit) {
             builder.append(this.caseLiteralInteger(lit));
         } else if (expression instanceof LiteralString lit) {
@@ -466,52 +495,41 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else if (expression instanceof LiteralInfinity lit) {
             builder.append(this.caseLiteralInfinity(lit));
         }
-
         return builder.toString();
     }
 
     @Override
     public String caseLiteralString(LiteralString literal) {
         Appender builder = this.newAppender();
-
         builder.append(literal.getValue());
-
         return builder.toString();
     }
 
     @Override
     public String caseLiteralRational(LiteralRational literal) {
         Appender builder = this.newAppender();
-
         builder.append(String.valueOf(literal.getValue()));
-
         return builder.toString();
     }
 
     @Override
     public String caseLiteralBoolean(LiteralBoolean literal) {
         Appender builder = this.newAppender();
-
         builder.append(String.valueOf(literal.isValue()));
-
         return builder.toString();
     }
 
     @Override
     public String caseLiteralInfinity(LiteralInfinity literal) {
         Appender builder = this.newAppender();
-
         builder.append("*");
-
         return builder.toString();
     }
 
     @Override
     public String caseLiteralInteger(LiteralInteger literal) {
         Appender builder = this.newAppender();
-
         builder.append(String.valueOf(literal.getValue()));
-
         return builder.toString();
     }
 
@@ -520,39 +538,29 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private String serializeDeclarationWithModifiers(Appender builder, Usage usage, String keyword) {
-
         this.appendUsagePrefix(builder, usage);
-
         builder.appendSpaceIfNeeded().append(keyword);
-
         this.appendUsageDeclaration(builder, usage);
-
         this.appendUsageCompletion(builder, usage);
-
         return builder.toString();
     }
 
     private void appendDefinitionBody(Appender builder, Usage usage) {
         List<Relationship> children = usage.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ITEM_MEMBER).toList();
-
         this.appendChildrenContent(builder, usage, children);
     }
 
     @Override
     public String caseAttributeUsage(AttributeUsage attrUsage) {
         Appender builder = this.newAppender();
-
         this.appendDefaultUsage(builder, attrUsage);
-
         return builder.toString();
     }
 
     @Override
     public String caseEnumerationUsage(EnumerationUsage enumUsage) {
         Appender builder = this.newAppender();
-
         this.appendDefaultUsage(builder, enumUsage);
-
         return builder.toString();
     }
 
@@ -569,7 +577,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         } else {
             this.appendFeatureReferenceMember(builder, membership);
         }
-
         return builder.toString();
     }
 
@@ -1493,9 +1500,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendDefinition(Appender builder, Definition definition) {
-
         this.appendDefinitionDeclaration(builder, definition);
-
         List<Relationship> children = definition.getOwnedRelationship().stream().filter(IS_DEFINITION_BODY_ITEM_MEMBER).toList();
         this.appendChildrenContent(builder, definition, children);
     }
@@ -1528,7 +1533,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     private void appendUsageDeclaration(Appender builder, Usage usage) {
         this.appendNameWithShortName(builder, usage);
-
         this.appendFeatureSpecilizationPart(builder, usage, false);
     }
 
@@ -1552,7 +1556,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendDefinitionPrefix(Appender builder, Definition def) {
-
         builder.appendSpaceIfNeeded().append(this.getBasicDefinitionPrefix(def));
 
         if (def instanceof OccurrenceDefinition occDef) {
@@ -1570,7 +1573,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendUsagePrefix(Appender builder, Usage usage) {
-
         this.appendBasicUsagePrefix(builder, usage);
 
         final String isRef;
@@ -1651,7 +1653,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendBasicUsagePrefix(Appender builder, Usage usage) {
-
         FeatureDirectionKind direction = usage.getDirection();
         if (direction != null) {
             builder.appendWithSpaceIfNeeded(direction.toString());
@@ -1684,7 +1685,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     private void appendChildrenContent(Appender builder, Element element, List<? extends Relationship> childrenRelationships) {
-
         String content = this.getContent(childrenRelationships, this.lineSeparator);
         if (content != null && !content.isBlank()) {
             builder.append(" {");
@@ -1701,7 +1701,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseImport(Import aImport) {
-
         Appender builder = this.newAppender();
 
         VisibilityKind visibility = aImport.getVisibility();
@@ -1731,7 +1730,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseComment(Comment comment) {
-
         Appender builder = this.newAppender();
         EList<Element> annotatedElements = comment.getAnnotatedElement();
         boolean selfNamespaceDescribingComment = this.isSelfNamespaceDescribingComment(comment);
@@ -1757,7 +1755,6 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     @Override
     public String caseDocumentation(Documentation doc) {
-
         Appender builder = this.newAppender();
 
         builder.appendSpaceIfNeeded().append("doc");
@@ -1916,14 +1913,11 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         if (portUsage.isIsEnd()) {
             builder.appendWithSpaceIfNeeded("end");
         }
-
         this.appendUsage(builder, portUsage);
-
     }
 
     private void appendUsage(Appender builder, Usage portUsage) {
         this.appendUsageDeclaration(builder, portUsage);
-
         this.appendUsageCompletion(builder, portUsage);
     }
 

@@ -22,6 +22,21 @@ image::release-notes-create-diagram-on-root-namespace-element.png[Create diagram
 
 image::release-notes-gv-subject-creation-selection-dialog-tree.png['subject creation tool selection dialog tree' compartment, width=50%, height=50%]
 
+- Improve handling of `SuccessionAsUsage` textual import with implicit source feature.
+For example importing the following SysMLv2 content would now create a valid semantic model:
+
+```
+action def ActionDef1 {
+    action a2;
+    action a3;
+    first start;
+    then a2;
+    then a3;
+}
+```
+
+The textual export module has also be improved to produce the same file than the one imported.
+
 == Dependency update
 
 == Technical details

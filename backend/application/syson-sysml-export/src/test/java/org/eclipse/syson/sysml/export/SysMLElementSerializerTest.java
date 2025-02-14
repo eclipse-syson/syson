@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1088,6 +1088,7 @@ public class SysMLElementSerializerTest {
 
         Feature feature = this.builder.createWithName(Feature.class, SUBSETTING1);
         subsetting.setSubsettedFeature(feature);
+        subsetting.setSubsettingFeature(attributeUsage);
 
         this.assertTextualFormEquals("attribute attribute1 :> sub1;", attributeUsage);
     }
@@ -1101,9 +1102,11 @@ public class SysMLElementSerializerTest {
 
         Feature feature = this.builder.createWithName(Feature.class, SUBSETTING1);
         subsetting.setSubsettedFeature(feature);
+        subsetting.setSubsettingFeature(attributeUsage);
 
         Feature feature1 = this.builder.createWithName(Feature.class, SUBSETTING2);
         subsetting1.setSubsettedFeature(feature1);
+        subsetting1.setSubsettingFeature(attributeUsage);
 
         this.assertTextualFormEquals("attribute attribute1 :> sub1, sub2;", attributeUsage);
     }
@@ -1116,6 +1119,7 @@ public class SysMLElementSerializerTest {
 
         Feature feature = this.builder.createWithName(Feature.class, SUBSETTING1);
         subsetting.setSubsettedFeature(feature);
+        subsetting.setSubsettingFeature(attributeUsage);
 
         MultiplicityRange multiplicity = this.builder.createIn(MultiplicityRange.class, attributeUsage);
         LiteralInteger literal = this.builder.createIn(LiteralInteger.class, multiplicity);
@@ -1132,6 +1136,7 @@ public class SysMLElementSerializerTest {
 
         Feature feature = this.builder.createWithName(Feature.class, SUBSETTING1);
         subsetting.setSubsettedFeature(feature);
+        subsetting.setSubsettingFeature(attributeUsage);
 
         MultiplicityRange multiplicity = this.builder.createIn(MultiplicityRange.class, attributeUsage);
         multiplicity.setIsUnique(false);
@@ -1150,6 +1155,7 @@ public class SysMLElementSerializerTest {
 
         Feature feature = this.builder.createWithName(Feature.class, SUBSETTING1);
         subsetting.setSubsettedFeature(feature);
+        subsetting.setSubsettingFeature(attributeUsage);
 
         MultiplicityRange multiplicity = this.builder.createIn(MultiplicityRange.class, attributeUsage);
         LiteralInteger literal = this.builder.createIn(LiteralInteger.class, multiplicity);
@@ -1280,7 +1286,7 @@ public class SysMLElementSerializerTest {
         Subsetting subset = this.builder.createIn(Subsetting.class, ref);
         AttributeUsage attr = this.builder.createWithName(AttributeUsage.class, "attr");
         subset.setSubsettedFeature(attr);
-
+        subset.setSubsettingFeature(ref);
         this.assertTextualFormEquals("refu :> attr;", ref);
     }
 

@@ -630,7 +630,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
      * @generated NOT
      */
     public ReferenceSubsetting basicGetOwnedReferenceSubsetting() {
-        return this.getOwnedRelationship().stream()
+        return this.getOwnedSpecialization().stream()
                 .filter(ReferenceSubsetting.class::isInstance)
                 .map(ReferenceSubsetting.class::cast)
                 .findFirst()
@@ -644,7 +644,7 @@ public class FeatureImpl extends TypeImpl implements Feature {
      */
     @Override
     public EList<Subsetting> getOwnedSubsetting() {
-        Subsetting[] subSettings = this.getOwnedRelationship().stream()
+        Subsetting[] subSettings = this.getOwnedSpecialization().stream()
                 .filter(Subsetting.class::isInstance)
                 .map(Subsetting.class::cast)
                 .toArray(Subsetting[]::new);

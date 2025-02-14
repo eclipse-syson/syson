@@ -18,6 +18,7 @@
 - https://github.com/eclipse-syson/syson/issues/1007[#1007] Improve direct edit on Feature elements to be able to set the `isDefault` and `isInitial` properties
 - https://github.com/eclipse-syson/syson/issues/1033[#1033] [explorer] Make it possible to create a diagram representation directly under a `root Namespace` element
 - https://github.com/eclipse-syson/syson/issues/960[#960] [general-view] In the selection dialog of the `subject` creation tool, display possible `Usage` candidates in a tree instead of a list.
+- https://github.com/eclipse-syson/syson/issues/1028[#1028] [import] Improve handling of `SuccessionAsUsage` with implicit source feature. 
 
 === New features
 
@@ -81,6 +82,7 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/1006[#1006] [details] Display `FeatureValue.isDefault` and `FeatureValue.isInitial` in Core tab of `FeatureValue` concept.
 - https://github.com/eclipse-syson/syson/issues/1018[#1018] [libraries] Make customizing the default metamodels and libraries available in SysML projects easier by making default implementation `SysONDefaultLibrariesConfiguration.java` more extensible.
 To do so, create a `@Primary @Configuration` component that extend `SysMLDefaultLibrariesConfiguration`, and optionally redefine `getDefaultLibraries()` method and/or `getDefaultEPackages()`.
+
 
 === New features
 
