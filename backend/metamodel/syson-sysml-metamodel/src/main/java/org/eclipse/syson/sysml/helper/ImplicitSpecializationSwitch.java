@@ -14,8 +14,10 @@ package org.eclipse.syson.sysml.helper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.syson.sysml.AcceptActionUsage;
 import org.eclipse.syson.sysml.ActionDefinition;
@@ -42,6 +44,7 @@ import org.eclipse.syson.sysml.ConstraintUsage;
 import org.eclipse.syson.sysml.ControlNode;
 import org.eclipse.syson.sysml.DecisionNode;
 import org.eclipse.syson.sysml.Element;
+import org.eclipse.syson.sysml.EndFeatureMembership;
 import org.eclipse.syson.sysml.EventOccurrenceUsage;
 import org.eclipse.syson.sysml.ExhibitStateUsage;
 import org.eclipse.syson.sysml.Feature;
@@ -59,6 +62,7 @@ import org.eclipse.syson.sysml.ItemDefinition;
 import org.eclipse.syson.sysml.ItemUsage;
 import org.eclipse.syson.sysml.JoinNode;
 import org.eclipse.syson.sysml.LifeClass;
+import org.eclipse.syson.sysml.Membership;
 import org.eclipse.syson.sysml.MergeNode;
 import org.eclipse.syson.sysml.MetadataDefinition;
 import org.eclipse.syson.sysml.MetadataUsage;
@@ -71,6 +75,9 @@ import org.eclipse.syson.sysml.PerformActionUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.Redefinition;
+import org.eclipse.syson.sysml.ReferenceSubsetting;
+import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.Relationship;
 import org.eclipse.syson.sysml.RenderingDefinition;
 import org.eclipse.syson.sysml.RenderingUsage;
 import org.eclipse.syson.sysml.RequirementConstraintKind;
@@ -87,6 +94,7 @@ import org.eclipse.syson.sysml.StateSubactionMembership;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Subclassification;
 import org.eclipse.syson.sysml.Subsetting;
+import org.eclipse.syson.sysml.SuccessionAsUsage;
 import org.eclipse.syson.sysml.SuccessionFlowConnectionUsage;
 import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.TransitionUsage;
@@ -156,6 +164,79 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
             }
         }
         return implicitSpecializations;
+    }
+
+    @Override
+    public List<Specialization> caseReferenceUsage(ReferenceUsage referenceUsage) {
+        final List<Specialization> result;
+        Type owningType = referenceUsage.getOwningType();
+        if (owningType instanceof SuccessionAsUsage successionAsUsage) {
+            result = this.handleReferenceUsageInSuccessionAsUsage(referenceUsage, successionAsUsage);
+        } else {
+            result = List.of();
+        }
+        if (!result.isEmpty()) {
+            return result;
+        }
+        // If not found check for super type cases
+        return super.caseReferenceUsage(referenceUsage);
+    }
+
+    /**
+     * Handle special case of {@link ReferenceUsage} inside the {@link EndFeatureMembership} of a
+     * {@link SuccessionAsUsage}.
+     *
+     * <p>
+     * The first two ReferenceUsage of a SuccessionAsUsage point to the source and target. If those ReferenceUsages do
+     * not explicitly define a {@link ReferenceSubsetting} then a {@link ReferenceSubsetting} is computed from the
+     * previous and next feature.
+     * </p>
+     *
+     * @param referenceUsage
+     *            the {@link ReferenceUsage} that might need modificationU
+     * @param parentSuccessionAsUsage
+     *            the parent element of the given {@link ReferenceUsage}
+     * @return a list of {@link Specialization}
+     */
+    private List<Specialization> handleReferenceUsageInSuccessionAsUsage(ReferenceUsage referenceUsage, SuccessionAsUsage parentSuccessionAsUsage) {
+        final List<Specialization> result;
+        // At this moment we only handle the case of implicit source since we haven't found a
+        // case where the target is implicit
+        int index = parentSuccessionAsUsage.getOwnedFeature().indexOf(referenceUsage);
+        if (index == 0 && this.getOwnedRelations(ReferenceSubsetting.class, referenceUsage).isEmpty()) {
+            // Source feature
+            // Add a reference ReferenceSubsetting to the previous setting
+            Feature sourceFeature = this.computeSourceFeature(parentSuccessionAsUsage);
+            result = List.of(this.implicitReferenceSubsetting(referenceUsage, sourceFeature));
+        } else {
+            result = List.of();
+        }
+        return result;
+    }
+
+    private <T extends Relationship> List<T> getOwnedRelations(Class<T> type, Element parent) {
+        return parent.getOwnedRelationship().stream()
+                .filter(type::isInstance)
+                .map(type::cast)
+                .toList();
+    }
+
+    private Feature computeSourceFeature(SuccessionAsUsage successionAsUsage) {
+        Type owningType = successionAsUsage.getOwningType();
+        if (owningType != null) {
+            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
+            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
+            if (index > 0) {
+                ListIterator<Membership> iterator = ownedMemberships.subList(0, index).listIterator(index);
+                while (iterator.hasPrevious()) {
+                    Membership previous = iterator.previous();
+                    if (previous.getMemberElement() instanceof Feature feature) {
+                        return feature;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -1319,14 +1400,27 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
     private Subsetting implicitSubsetting(Feature feature, String implicitSubsettedFeatureQualifiedName) {
         var implicitFeature = this.elementUtil.findByNameAndType(feature, implicitSubsettedFeatureQualifiedName, Feature.class);
         if (implicitFeature != null) {
-            var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
-            subsetting.setDeclaredName("subsets (implicit)");
-            subsetting.setIsImplied(true);
-            subsetting.setSubsettingFeature(feature);
-            subsetting.setSubsettedFeature(implicitFeature);
-            return subsetting;
+            return this.implicitSubsetting(feature, implicitFeature);
         }
         return null;
+    }
+
+    private Subsetting implicitSubsetting(Feature feature, Feature implicitFeature) {
+        var subsetting = SysmlFactory.eINSTANCE.createSubsetting();
+        subsetting.setDeclaredName("subsets (implicit)");
+        subsetting.setIsImplied(true);
+        subsetting.setSubsettingFeature(feature);
+        subsetting.setSubsettedFeature(implicitFeature);
+        return subsetting;
+    }
+
+    private Subsetting implicitReferenceSubsetting(Feature feature, Feature implicitFeature) {
+        var subsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+        subsetting.setDeclaredName("subsets (implicit)");
+        subsetting.setIsImplied(true);
+        subsetting.setSubsettingFeature(feature);
+        subsetting.setSubsettedFeature(implicitFeature);
+        return subsetting;
     }
 
     private FeatureTyping implicitTyping(Feature feature, String implicitTypeQualifiedName) {
