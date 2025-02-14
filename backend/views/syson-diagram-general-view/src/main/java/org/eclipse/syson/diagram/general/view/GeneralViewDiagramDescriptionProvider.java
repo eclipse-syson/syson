@@ -146,6 +146,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getPerformActionUsage(),
             SysmlPackage.eINSTANCE.getPortUsage(),
             SysmlPackage.eINSTANCE.getRequirementUsage(),
+            SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
             SysmlPackage.eINSTANCE.getUseCaseUsage(),
             SysmlPackage.eINSTANCE.getStateUsage()
             );
@@ -154,39 +155,40 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
             SysmlPackage.eINSTANCE.getDocumentation(), SysmlPackage.eINSTANCE.getComment());
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_LIST_ITEMS = Map.ofEntries(
-            Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
-            Map.entry(SysmlPackage.eINSTANCE.getAllocationDefinition(),  List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
-            Map.entry(SysmlPackage.eINSTANCE.getAttributeDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
-            Map.entry(SysmlPackage.eINSTANCE.getCaseDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
-            Map.entry(SysmlPackage.eINSTANCE.getConstraintDefinition(),  List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getConcernDefinition(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getEnumerationDefinition(), List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue())),
-            Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
-            Map.entry(SysmlPackage.eINSTANCE.getInterfaceDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
-            Map.entry(SysmlPackage.eINSTANCE.getItemDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
-            Map.entry(SysmlPackage.eINSTANCE.getMetadataDefinition(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
-            Map.entry(SysmlPackage.eINSTANCE.getOccurrenceDefinition(),  List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence())),
-            Map.entry(SysmlPackage.eINSTANCE.getPartDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())),
-            Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
-            Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(), List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getUseCaseDefinition(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
-            Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())),
-            Map.entry(SysmlPackage.eINSTANCE.getAcceptActionUsage(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
-            Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),           List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction())),
-            Map.entry(SysmlPackage.eINSTANCE.getAllocationUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAllocation())),
-            Map.entry(SysmlPackage.eINSTANCE.getAttributeUsage(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
-            Map.entry(SysmlPackage.eINSTANCE.getCaseUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
-            Map.entry(SysmlPackage.eINSTANCE.getConcernUsage(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getConstraintUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getInterfaceUsage(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
-            Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
-            Map.entry(SysmlPackage.eINSTANCE.getOccurrenceUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedOccurrence())),
-            Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
-            Map.entry(SysmlPackage.eINSTANCE.getPerformActionUsage(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction())),
-            Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
-            Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())),
-            Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),            List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
-            Map.entry(SysmlPackage.eINSTANCE.getUseCaseUsage(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation()))
+            Map.entry(SysmlPackage.eINSTANCE.getActionDefinition(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction())),
+            Map.entry(SysmlPackage.eINSTANCE.getAllocationDefinition(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
+            Map.entry(SysmlPackage.eINSTANCE.getAttributeDefinition(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
+            Map.entry(SysmlPackage.eINSTANCE.getCaseDefinition(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
+            Map.entry(SysmlPackage.eINSTANCE.getConstraintDefinition(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedConstraint())),
+            Map.entry(SysmlPackage.eINSTANCE.getConcernDefinition(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())),
+            Map.entry(SysmlPackage.eINSTANCE.getEnumerationDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getEnumerationDefinition_EnumeratedValue())),
+            Map.entry(SysmlPackage.eINSTANCE.getExhibitStateUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
+            Map.entry(SysmlPackage.eINSTANCE.getInterfaceDefinition(),     List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedInterface(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getItemDefinition(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute())),
+            Map.entry(SysmlPackage.eINSTANCE.getMetadataDefinition(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getOccurrenceDefinition(),    List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedOccurrence())),
+            Map.entry(SysmlPackage.eINSTANCE.getPartDefinition(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedAction(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())),
+            Map.entry(SysmlPackage.eINSTANCE.getPortDefinition(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), SysmlPackage.eINSTANCE.getDefinition_OwnedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementDefinition(),   List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedAttribute(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(), SysmlPackage.eINSTANCE.getRequirementDefinition_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementDefinition_RequiredConstraint())),
+            Map.entry(SysmlPackage.eINSTANCE.getUseCaseDefinition(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
+            Map.entry(SysmlPackage.eINSTANCE.getStateDefinition(),         List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getDefinition_OwnedState())),
+            Map.entry(SysmlPackage.eINSTANCE.getAcceptActionUsage(),       List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
+            Map.entry(SysmlPackage.eINSTANCE.getActionUsage(),             List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction())),
+            Map.entry(SysmlPackage.eINSTANCE.getAllocationUsage(),         List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAllocation())),
+            Map.entry(SysmlPackage.eINSTANCE.getAttributeUsage(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getCaseUsage(),               List.of(SysmlPackage.eINSTANCE.getElement_Documentation())),
+            Map.entry(SysmlPackage.eINSTANCE.getConcernUsage(),            List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())),
+            Map.entry(SysmlPackage.eINSTANCE.getConstraintUsage(),         List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedConstraint())),
+            Map.entry(SysmlPackage.eINSTANCE.getInterfaceUsage(),          List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort())),
+            Map.entry(SysmlPackage.eINSTANCE.getItemUsage(),               List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getOccurrenceUsage(),         List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedOccurrence())),
+            Map.entry(SysmlPackage.eINSTANCE.getPartUsage(),               List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), SysmlPackage.eINSTANCE.getUsage_NestedAction(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
+            Map.entry(SysmlPackage.eINSTANCE.getPerformActionUsage(),      List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedItem(), SysmlPackage.eINSTANCE.getUsage_NestedAction())),
+            Map.entry(SysmlPackage.eINSTANCE.getPortUsage(),               List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getUsage_NestedReference())),
+            Map.entry(SysmlPackage.eINSTANCE.getRequirementUsage(),        List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())),
+            Map.entry(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedAttribute(), SysmlPackage.eINSTANCE.getRequirementUsage_AssumedConstraint(), SysmlPackage.eINSTANCE.getRequirementUsage_RequiredConstraint())),
+            Map.entry(SysmlPackage.eINSTANCE.getStateUsage(),              List.of(SysmlPackage.eINSTANCE.getElement_Documentation(), SysmlPackage.eINSTANCE.getUsage_NestedState())),
+            Map.entry(SysmlPackage.eINSTANCE.getUseCaseUsage(),            List.of(SysmlPackage.eINSTANCE.getElement_Documentation()))
             );
 
     public static  final Map<EClass, List<EReference>> COMPARTMENTS_WITH_MERGED_LIST_ITEMS = Map.ofEntries(
@@ -198,6 +200,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
     public static final ToolSectionDescription REQUIREMENTS_TOOL_SECTIONS = new ToolSectionDescription(ToolConstants.REQUIREMENTS, List.of(
             SysmlPackage.eINSTANCE.getConcernUsage(),
             SysmlPackage.eINSTANCE.getConcernDefinition(),
+            SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
             SysmlPackage.eINSTANCE.getRequirementUsage(),
             SysmlPackage.eINSTANCE.getRequirementDefinition(),
             SysmlPackage.eINSTANCE.getConstraintUsage(),
@@ -301,6 +304,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         this.linkConcernSubjectCompartment(cache);
         this.linkConcernActorsCompartment(cache);
         this.linkConcernStakeholdersCompartment(cache);
+        this.linkSatisfyRequirementUsageSubjectCompartment(cache);
+        this.linkSatisfyRequirementUsageActorsCompartment(cache);
+        this.linkSatisfyRequirementUsageStakeholdersCompartment(cache);
         this.linkCaseSubjectCompartment(cache);
         this.linkCaseActorsCompartment(cache);
         this.linkCaseObjectiveRequirementCompartment(cache);
@@ -353,15 +359,17 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
         final List<IDiagramElementDescriptionProvider<?>> compartmentNodeDescriptionProviders = new ArrayList<>();
 
         // Compartment "subject" (SubjectParameter) is defined for:
-        // CaseDefinition, CaseUsage, ConcernDefinition, ConcernUsage, RequirementDefinition, RequirementUsage
+        // CaseDefinition, CaseUsage, ConcernDefinition, ConcernUsage, RequirementDefinition, RequirementUsage,
+        // SatisfyRequirementUsage
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForSubjectParameter(colorProvider));
 
         // Compartment "actors" (ActorParameter) is defined for:
-        // CaseDefinition, CaseUsage, ConcernDefinition, ConcernUsage, RequirementDefinition, RequirementUsage
+        // CaseDefinition, CaseUsage, ConcernDefinition, ConcernUsage, RequirementDefinition, RequirementUsage,
+        // SatisfyRequirementUsage
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForActorParameter(colorProvider));
 
         // Compartment "stakeholders" (StakeholderParameter) is defined for:
-        // ConcernDefinition, ConcernUsage, RequirementDefinition, RequirementUsage
+        // ConcernDefinition, ConcernUsage, RequirementDefinition, RequirementUsage, SatisfyRequirementUsage
         compartmentNodeDescriptionProviders.addAll(this.createCompartmentsForStakeholderParameter(colorProvider));
 
         // Compartment "objective" (ObjectiveRequirement) is defined for:
@@ -508,7 +516,11 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 SysmlPackage.eINSTANCE.getRequirementDefinition_SubjectParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new RequirementUsageSubjectCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
                 SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequirementUsageSubjectCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
                 SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new RequirementDefinitionSubjectCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
@@ -536,7 +548,11 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new RequirementUsageActorsCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
                 SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequirementUsageActorsCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
                 SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new RequirementDefinitionActorsCompartmentNodeDescriptionProvider(colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
@@ -557,7 +573,11 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new RequirementUsageStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
                 SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new RequirementUsageStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getConcernUsage(),
+                SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
+        compartmentNodeDescriptionProviders.add(new CompartmentItemNodeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(),
                 SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
         compartmentNodeDescriptionProviders.add(new RequirementDefinitionStakeholdersCompartmentNodeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(),
                 SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider, this.getDescriptionNameGenerator()));
@@ -632,7 +652,7 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), colorProvider,
                         this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
-                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(),
+                .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedRequirement(),
                         colorProvider, this.getDescriptionNameGenerator()));
         definitionOwnedUsageEdgeDescriptionProviders
                 .add(new DefinitionOwnedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getStateUsage(), SysmlPackage.eINSTANCE.getDefinition_OwnedState(), colorProvider,
@@ -661,6 +681,8 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getPortUsage(), SysmlPackage.eINSTANCE.getUsage_NestedPort(), colorProvider, this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(),
                 colorProvider, this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedRequirement(),
+                colorProvider, this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(new UsageNestedUsageEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getUsage_NestedConstraint(),
                 colorProvider, this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(
@@ -687,6 +709,12 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                         this.getDescriptionNameGenerator()));
         usageCompositeEdgeDescriptionProviders.add(
                 new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_StakeholderParameter(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter(), colorProvider,
+                        this.getDescriptionNameGenerator()));
+        usageCompositeEdgeDescriptionProviders.add(
+                new NestedActorEdgeDescriptionProvider(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter(), colorProvider,
                         this.getDescriptionNameGenerator()));
 
         return usageCompositeEdgeDescriptionProviders;
@@ -732,6 +760,13 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(concernDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
+    private void linkSatisfyRequirementUsageSubjectCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription satisfyRequirementUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage())).get();
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_SubjectParameter()))
+                .ifPresent(satisfyRequirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+    }
+
     private void linkConcernActorsCompartment(IViewDiagramElementFinder cache) {
         NodeDescription concernUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernUsage())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
@@ -743,6 +778,13 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 .ifPresent(concernDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
+    private void linkSatisfyRequirementUsageActorsCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription satisfyRequirementUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage())).get();
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
+                .ifPresent(satisfyRequirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
+    }
+
     private void linkConcernStakeholdersCompartment(IViewDiagramElementFinder cache) {
         NodeDescription concernUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getConcernUsage())).get();
         cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
@@ -752,6 +794,13 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
                 this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getConcernDefinition(),
                         SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
                 .ifPresent(concernDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+    }
+
+    private void linkSatisfyRequirementUsageStakeholdersCompartment(IViewDiagramElementFinder cache) {
+        NodeDescription satisfyRequirementUsageNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage())).get();
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+                .ifPresent(satisfyRequirementUsageNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     private void linkCaseSubjectCompartment(IViewDiagramElementFinder cache) {
@@ -809,8 +858,9 @@ public class GeneralViewDiagramDescriptionProvider implements IRepresentationDes
 
     private void linkAllocationDefinitionEndsCompartment(IViewDiagramElementFinder cache) {
         NodeDescription allocationDefinitionNodeDescription = cache.getNodeDescription(this.getDescriptionNameGenerator().getNodeName(SysmlPackage.eINSTANCE.getAllocationDefinition())).get();
-        cache.getNodeDescription(this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
-            .ifPresent(allocationDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentName(SysmlPackage.eINSTANCE.getAllocationDefinition(), SysmlPackage.eINSTANCE.getConnectionDefinition_ConnectionEnd()))
+                .ifPresent(allocationDefinitionNodeDescription.getReusedChildNodeDescriptions()::add);
     }
 
     private void linkStatesCompartment(IViewDiagramElementFinder cache) {

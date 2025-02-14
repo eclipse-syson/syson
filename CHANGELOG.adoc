@@ -12,6 +12,9 @@
 
 === Improvements
 
+- https://github.com/eclipse-syson/syson/issues/938[#938] [general-view] Add `Satisfy Requirement Usage` to General View diagram.
+A new node creation tool is available in the `Requirements` section of the palette, allowing the creation of `Satisfy Requirement Usage` objects.
+A new drop node tool is available on the diagram, allowing representing `Satisfy Requirement Usage` objects as nodes of the diagram.
 - https://github.com/eclipse-syson/syson/issues/960[#960] [general-view] In the selection dialog of the creation tools for `Stakeholders` and `Actors`, display possible `Part Usage` candidates in a tree instead of a list.
 
 
