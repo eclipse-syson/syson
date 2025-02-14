@@ -62,6 +62,9 @@ public class RequirementUsageActorsCompartmentNodeDescriptionProvider extends Ab
         cache.getNodeDescription(
                 this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementDefinition(), SysmlPackage.eINSTANCE.getRequirementDefinition_ActorParameter()))
                 .ifPresent(droppableNodes::add);
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_ActorParameter()))
+                .ifPresent(droppableNodes::add);
         return droppableNodes;
     }
 

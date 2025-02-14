@@ -106,6 +106,8 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
 
     private static final String DEFAULT_REQUIREMENT_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "requirement" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
+    private static final String DEFAULT_SATISFY_REQUIREMENT_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "satisfy requirement" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
+
     private static final String DEFAULT_USE_CASE_DEFINITION_LABEL = LabelConstants.OPEN_QUOTE + "use case def" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
 
     private static final String DEFAULT_USE_CASE_USAGE_LABEL = LabelConstants.OPEN_QUOTE + REF_ATTRIBUTE_LABEL + "use case" + LabelConstants.CLOSE_QUOTE + LabelConstants.CR;
@@ -152,6 +154,7 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
                 Arguments.of(SYSML.getPerformActionUsage(), DEFAULT_PERFORM_ACTION_USAGE_LABEL),
                 Arguments.of(SYSML.getPortDefinition(), DEFAULT_PORT_DEFINITION_LABEL),
                 Arguments.of(SYSML.getPortUsage(), DEFAULT_PORT_USAGE_LABEL),
+                Arguments.of(SYSML.getSatisfyRequirementUsage(), DEFAULT_SATISFY_REQUIREMENT_USAGE_LABEL),
                 Arguments.of(SYSML.getRequirementDefinition(), DEFAULT_REQUIREMENT_DEFINITION_LABEL),
                 Arguments.of(SYSML.getRequirementUsage(), DEFAULT_REQUIREMENT_USAGE_LABEL),
                 Arguments.of(SYSML.getUseCaseDefinition(), DEFAULT_USE_CASE_DEFINITION_LABEL),
@@ -191,6 +194,7 @@ public class MultilineLabelSwitchTest extends AbstractServiceTest {
                 Arguments.of(SYSML.getPortUsage(), DEFAULT_PORT_USAGE_LABEL),
                 Arguments.of(SYSML.getRequirementDefinition(), DEFAULT_REQUIREMENT_DEFINITION_LABEL),
                 Arguments.of(SYSML.getRequirementUsage(), DEFAULT_REQUIREMENT_USAGE_LABEL),
+                Arguments.of(SYSML.getSatisfyRequirementUsage(), DEFAULT_SATISFY_REQUIREMENT_USAGE_LABEL),
                 Arguments.of(SYSML.getUseCaseDefinition(), DEFAULT_USE_CASE_DEFINITION_LABEL),
                 Arguments.of(SYSML.getUseCaseUsage(), DEFAULT_USE_CASE_USAGE_LABEL),
                 Arguments.of(SYSML.getStateDefinition(), DEFAULT_STATE_DEFINITION_LABEL),

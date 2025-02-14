@@ -19,6 +19,9 @@
 - https://github.com/eclipse-syson/syson/issues/1033[#1033] [explorer] Make it possible to create a diagram representation directly under a `root Namespace` element
 - https://github.com/eclipse-syson/syson/issues/960[#960] [general-view] In the selection dialog of the `subject` creation tool, display possible `Usage` candidates in a tree instead of a list.
 - https://github.com/eclipse-syson/syson/issues/1028[#1028] [import] Improve handling of `SuccessionAsUsage` with implicit source feature. 
+- https://github.com/eclipse-syson/syson/issues/938[#938] [general-view] Add `Satisfy Requirement Usage` to General View diagram.
+A new creation tool is available in the `Requirements` section of the palette, allowing the creation of `Satisfy Requirement Usage` objects.
+A new dra & drop tool is available on the diagram, allowing moving `Satisfy Requirement Usage` graphical nodes on the diagram.
 
 === New features
 

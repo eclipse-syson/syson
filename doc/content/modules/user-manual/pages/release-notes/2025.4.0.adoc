@@ -37,6 +37,13 @@ action def ActionDef1 {
 
 The textual export module has also be improved to produce the same file than the one imported.
 
+- The `General View` diagram now supports `Satisfy Requirement Usage` objects.
+A new creation tool can be found in the `Requirements` section of the palette.
+`Satisfy Requirement Usage` objects may also be drag-and-dropped from the _Explorer_ onto the diagram background.
+
+image::release-notes-gv-satisfy-requirement-usage.png[Satisfy Requirement Usage node creation tool, width=50%, height=50%]
+
+
 == Dependency update
 
 == Technical details
