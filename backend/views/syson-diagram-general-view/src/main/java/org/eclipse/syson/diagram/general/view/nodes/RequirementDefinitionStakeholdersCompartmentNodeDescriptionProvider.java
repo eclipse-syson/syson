@@ -68,6 +68,9 @@ public class RequirementDefinitionStakeholdersCompartmentNodeDescriptionProvider
         cache.getNodeDescription(
                 this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
                 .ifPresent(droppableNodeDescriptions::add);
+        cache.getNodeDescription(
+                this.getDescriptionNameGenerator().getCompartmentItemName(SysmlPackage.eINSTANCE.getSatisfyRequirementUsage(), SysmlPackage.eINSTANCE.getRequirementUsage_StakeholderParameter()))
+                .ifPresent(droppableNodeDescriptions::add);
 
         return droppableNodeDescriptions;
     }
