@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ package org.eclipse.syson.util;
  */
 public class ViewConstants {
 
-    public static final String DEFAULT_NODE_WIDTH = "125";
+    public static final String DEFAULT_NODE_WIDTH = "155";
 
     public static final String DEFAULT_COMPARTMENT_NODE_HEIGHT = "60";
 
