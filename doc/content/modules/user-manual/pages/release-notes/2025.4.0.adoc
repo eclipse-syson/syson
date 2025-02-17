@@ -18,6 +18,10 @@ image::release-notes-package-name-ellipsis-overflow.png[Package name overflow wi
 
 image::release-notes-create-diagram-on-root-namespace-element.png[Create diagram on root namespace element, width=50%, height=50%]
 
+- In the `General View` diagram, the subject creation tool displays available `Usages` in a tree instead of a list.
+
+image::release-notes-gv-subject-creation-selection-dialog-tree.png['subject creation tool selection dialog tree' compartment, width=50%, height=50%]
+
 == Dependency update
 
 == Technical details
