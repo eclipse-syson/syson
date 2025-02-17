@@ -1,0 +1,24 @@
+= 2025.4.0 (work in progress)
+
+== Key highlights
+
+
+== Bug fixes
+
+
+== New features
+
+
+== Improvements
+
+- In the `General View` diagram, the subject creation tool displays available `Usages` in a tree instead of a list.
+
+image::release-notes-gv-subject-creation-selection-dialog-tree.png['subject creation tool selection dialog tree' compartment, width=50%, height=50%]
+
+
+== Dependency update
+
+
+== Technical details
+
+* For technical details on this {product} release (including breaking changes) please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].
