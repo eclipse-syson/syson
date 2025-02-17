@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,8 @@
  *******************************************************************************/
 package org.eclipse.syson.diagram.common.view.tools;
 
-import java.util.List;
-
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
-import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.util.AQLUtils;
-import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
  * Node tool provider for Subject compartment in the element that need such compartment.
@@ -33,13 +29,14 @@ public class SubjectCompartmentNodeToolProvider extends AbstractCompartmentNodeT
 
     @Override
     protected SelectionDialogDescription getSelectionDialogDescription() {
-        String domainType = SysMLMetamodelHelper.buildQualifiedName(SysmlPackage.eINSTANCE.getType());
         var selectionDialogTree = this.diagramBuilderHelper.newSelectionDialogTreeDescription()
-                .elementsExpression(AQLUtils.getSelfServiceCallExpression("getAllReachable", List.of(domainType, "false")))
+                .elementsExpression(AQLUtils.getServiceCallExpression("editingContext", "getSubjectSelectionDialogElements"))
+                .childrenExpression(AQLUtils.getSelfServiceCallExpression("getSubjectSelectionDialogChildren"))
+                .isSelectableExpression("aql:self.oclIsKindOf(sysml::Usage)")
                 .build();
         return this.diagramBuilderHelper.newSelectionDialogDescription()
                 .selectionDialogTreeDescription(selectionDialogTree)
-                .selectionMessage("Select an existing Type as subject:")
+                .selectionMessage("Select an existing Usage as subject:")
                 .build();
     }
 
