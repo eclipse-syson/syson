@@ -60,6 +60,7 @@ import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
 import org.eclipse.syson.sysml.RequirementDefinition;
 import org.eclipse.syson.sysml.RequirementUsage;
+import org.eclipse.syson.sysml.SatisfyRequirementUsage;
 import org.eclipse.syson.sysml.StateDefinition;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.TriggerInvocationExpression;
@@ -652,6 +653,25 @@ public class MultiLineLabelSwitch extends SysmlSwitch<String> {
                 .append(LabelConstants.OPEN_QUOTE)
                 .append(this.reference(object))
                 .append("requirement")
+                .append(LabelConstants.CLOSE_QUOTE)
+                .append(LabelConstants.CR)
+                .append(this.caseElement(object))
+                .append(this.multiplicityRange(object))
+                .append(this.labelService.getTypingLabel(object))
+                .append(this.labelService.getRedefinitionLabel(object))
+                .append(this.labelService.getSubsettingLabel(object))
+                .append(this.labelService.getValueLabel(object));
+        return label.toString();
+    }
+
+    @Override
+    public String caseSatisfyRequirementUsage(SatisfyRequirementUsage object) {
+        StringBuilder label = new StringBuilder();
+        label
+                .append(this.getBasicNamePrefix(object))
+                .append(LabelConstants.OPEN_QUOTE)
+                .append(this.reference(object))
+                .append("satisfy requirement")
                 .append(LabelConstants.CLOSE_QUOTE)
                 .append(LabelConstants.CR)
                 .append(this.caseElement(object))
