@@ -111,7 +111,7 @@ public class ViewCreateService {
      * @return {@code true} if the diagram can be created on the provided {@code element}
      */
     public boolean canCreateDiagram(Element element) {
-        return !this.utilService.isRootNamespace(element);
+        return true;
     }
 
     /**
@@ -336,14 +336,14 @@ public class ViewCreateService {
      * {@link RequirementDefinition}.
      *
      * @param self
-     *            a {@link RequirementUsage} or {@link RequirementDefinition}, otherwise no {@link PartUsage} will be
-     *            created.
+     *         a {@link RequirementUsage} or {@link RequirementDefinition}, otherwise no {@link PartUsage} will be
+     *         created.
      * @param selectedObject
-     *            a {@link ItemUsage} or {@link ItemDefinition} that will be subsetted by (respectively that will type)
-     *            the created {@link PartUsage}.
+     *         a {@link ItemUsage} or {@link ItemDefinition} that will be subsetted by (respectively that will type)
+     *         the created {@link PartUsage}.
      * @return the newly-created {@link PartUsage}, contained by {@code self} through a {@link StakeholderMembership}.
-     *         If {@code self} was neither a {@link RequirementUsage} nor a {@link RequirementDefinition}, {@code self}
-     *         is returned as-is.
+     * If {@code self} was neither a {@link RequirementUsage} nor a {@link RequirementDefinition}, {@code self}
+     * is returned as-is.
      */
     public Element createPartUsageAsStakeholder(Element self, Element selectedObject) {
         Objects.requireNonNull(self);
