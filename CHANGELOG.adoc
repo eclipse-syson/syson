@@ -1,6 +1,24 @@
 = Changelog
 
-== v2025.2.0 (work in progress)
+== v2025.4.0 (work in progress)
+
+=== Shapes
+
+=== Breaking changes
+
+
+=== Dependency update
+
+=== Bug fixes
+
+=== Improvements
+
+- https://github.com/eclipse-syson/syson/issues/1033[#1033] [common-view] Make it possible to create a diagram representation directly under a root namespace element
+
+=== New features
+
+
+== v2025.2.0
 
 === Shapes
 
