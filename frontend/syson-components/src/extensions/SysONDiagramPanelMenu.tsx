@@ -23,7 +23,7 @@ import Popper from '@mui/material/Popper';
 import Tooltip from '@mui/material/Tooltip';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-
+import { SvgExport } from './proto/SvgExport';
 import { ShowHideDiagramsIcons } from './ShowHideDiagramsIcons';
 import { ShowHideDiagramsInheritedMembers } from './ShowHideDiagramsInheritedMembers';
 import { ShowHideDiagramsInheritedMembersFromStandardLibraries } from './ShowHideDiagramsInheritedMembersFromStandardLibraries';
@@ -108,6 +108,12 @@ export const SysONDiagramPanelMenu = ({ editingContextId, diagramId }: DiagramPa
                       />
                     }
                     label={'Show Inherited Members from Standard Libraries'}
+                  />
+                  <FormControlLabel
+                    key={'Proto SVG Export - Menu Entry'}
+                    className={classes.menuEntry}
+                    control={<SvgExport />}
+                    label={'Proto SVG Export'}
                   />
                 </FormGroup>
               </ClickAwayListener>
