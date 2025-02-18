@@ -179,10 +179,12 @@ public class ModelBuilder {
         // Set source
         ReferenceUsage sourceRefUsage = this.create(ReferenceUsage.class);
         sourceRefUsage.setIsEnd(true);
-        ReferenceSubsetting sourceReferenceSubsetting = this.addReferenceSubsetting(sourceRefUsage, source);
-        // FeatureChains are directly contained by the Subsetting relationship
-        if (!source.getOwnedFeatureChaining().isEmpty()) {
-            sourceReferenceSubsetting.getOwnedRelatedElement().add(source);
+        if (source != null) {
+            ReferenceSubsetting sourceReferenceSubsetting = this.addReferenceSubsetting(sourceRefUsage, source);
+            // FeatureChains are directly contained by the Subsetting relationship
+            if (!source.getOwnedFeatureChaining().isEmpty()) {
+                sourceReferenceSubsetting.getOwnedRelatedElement().add(source);
+            }
         }
 
         EndFeatureMembership sourceEndFeatureMembership = this.create(EndFeatureMembership.class);
@@ -192,11 +194,14 @@ public class ModelBuilder {
         // Set target
         ReferenceUsage targetTefUsage = this.create(ReferenceUsage.class);
         targetTefUsage.setIsEnd(true);
-        ReferenceSubsetting targetReferenceSubsetting = this.addReferenceSubsetting(targetTefUsage, target);
 
-        // FeatureChains are directly contained by the Subsetting relationship
-        if (!target.getOwnedFeatureChaining().isEmpty()) {
-            targetReferenceSubsetting.getOwnedRelatedElement().add(target);
+        if (target != null) {
+            ReferenceSubsetting targetReferenceSubsetting = this.addReferenceSubsetting(targetTefUsage, target);
+
+            // FeatureChains are directly contained by the Subsetting relationship
+            if (!target.getOwnedFeatureChaining().isEmpty()) {
+                targetReferenceSubsetting.getOwnedRelatedElement().add(target);
+            }
         }
 
         EndFeatureMembership targetEndFeatureMembership = this.create(EndFeatureMembership.class);
