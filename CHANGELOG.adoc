@@ -4,6 +4,8 @@
 
 === Shapes
 
+- Add support for library publication
+
 === Breaking changes
 
 - https://github.com/eclipse-syson/syson/issues/987[#987] Implementation of drag and drop in SysOn Explorer view
