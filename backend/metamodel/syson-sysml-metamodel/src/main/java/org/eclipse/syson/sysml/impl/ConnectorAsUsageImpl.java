@@ -19,12 +19,12 @@ import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -228,34 +228,42 @@ public abstract class ConnectorAsUsageImpl extends UsageImpl implements Connecto
      */
     @Override
     public EList<Element> getRelatedElement() {
-        List<Element> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_RelatedElement(), data.size(), data.toArray());
+        EList<Feature> data = this.getRelatedFeature();
+        return new EcoreEList.UnmodifiableEList(this, SysmlPackage.eINSTANCE.getRelationship_RelatedElement(), data.size(), data.toArray());
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Should inherit its implementation from ConnectorImpl.getSource() but due to multiple
+     * inheritances, it needs to be copied here.<!-- end-user-doc -->
      *
-     * @generated
+     * @see org.eclipse.syson.sysml.impl.ConnectorImpl#getSource
+     * @generated NOT
      */
     @Override
     public EList<Element> getSource() {
-        if (this.source == null) {
-            this.source = new EObjectResolvingEList<>(Element.class, this, SysmlPackage.CONNECTOR_AS_USAGE__SOURCE);
+        EList<Element> sources = new BasicEList<>();
+        Feature sourceFeature = this.getSourceFeature();
+        if (sourceFeature != null) {
+            sources.add(sourceFeature);
         }
-        return this.source;
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Source(), sources.size(), sources.toArray());
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> Should inherit its implementation from ConnectorImpl.getTarget() but due to multiple
+     * inheritances, it needs to be copied here.<!-- end-user-doc -->
      *
-     * @generated
+     * @see org.eclipse.syson.sysml.impl.ConnectorImpl#getTarget
+     * @generated NOT
      */
     @Override
     public EList<Element> getTarget() {
-        if (this.target == null) {
-            this.target = new EObjectResolvingEList<>(Element.class, this, SysmlPackage.CONNECTOR_AS_USAGE__TARGET);
+        EList<Element> targets = new BasicEList<>();
+        EList<Feature> targetFeature = this.getTargetFeature();
+        if (targetFeature != null) {
+            targets.addAll(targetFeature);
         }
-        return this.target;
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_Target(), targets.size(), targets.toArray());
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
@@ -34,9 +35,11 @@ import org.eclipse.syson.sysml.ReferenceUsage;
 import org.eclipse.syson.sysml.StateUsage;
 import org.eclipse.syson.sysml.Succession;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
+import org.eclipse.syson.sysml.SysmlFactory;
 import org.eclipse.syson.sysml.SysmlPackage;
 import org.eclipse.syson.sysml.TransitionUsage;
 import org.eclipse.syson.sysml.Usage;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.util.SysMLMetamodelHelper;
 
 /**
@@ -90,9 +93,58 @@ public class ViewEdgeService {
                 .toList();
     }
 
-    private boolean isAnAllocateEdge(AllocationUsage allocationUsage) {
-        // an allocate edge is an AllocationUsage that contains 2 EndFeaturesMembership
-        return this.getFeatures(allocationUsage).size() == 2;
+    public Element getSource(SuccessionAsUsage succession) {
+        Feature sourceFeature = succession.getSourceFeature();
+        String membershipAliasId = null;
+
+        EList<Feature> ends = succession.getConnectorEnd();
+        if (!ends.isEmpty()) {
+            Feature firstEnd = ends.get(0);
+            if (firstEnd instanceof ReferenceUsage refUsage) {
+                EList<String> aliasId = refUsage.getAliasIds();
+                if (!aliasId.isEmpty()) {
+                    membershipAliasId = aliasId.get(0);
+                }
+            }
+        }
+
+        if (membershipAliasId != null && sourceFeature != null) {
+            // Check for referencing membership
+            Membership membership = this.getReferencingMembershipWithId(sourceFeature, membershipAliasId);
+            if (membership != null) {
+                return membership;
+            }
+        }
+        return sourceFeature;
+    }
+
+    public Element getTarget(SuccessionAsUsage succession) {
+        Feature targetFeature = null;
+        EList<Feature> targetFeatures = succession.getTargetFeature();
+        if (!targetFeatures.isEmpty()) {
+
+            targetFeature = targetFeatures.get(0);
+            String membershipAliasId = null;
+            EList<Feature> ends = succession.getConnectorEnd();
+            if (ends.size() > 1) {
+                Feature firstEnd = ends.get(1);
+                if (firstEnd instanceof ReferenceUsage refUsage) {
+                    EList<String> aliasId = refUsage.getAliasIds();
+                    if (!aliasId.isEmpty()) {
+                        membershipAliasId = aliasId.get(0);
+                    }
+                }
+            }
+
+            if (membershipAliasId != null) {
+                // Check for referencing membership
+                Membership membeship = this.getReferencingMembershipWithId(targetFeature, membershipAliasId);
+                if (membeship != null) {
+                    return membeship;
+                }
+            }
+        }
+        return targetFeature;
     }
 
     public Element getSourceAllocateEdge(AllocationUsage allocationUsage) {
@@ -109,6 +161,37 @@ public class ViewEdgeService {
             return this.getFeatureElement(features.get(1));
         }
         return null;
+    }
+
+    public Element reconnectSourceAllocateEdge(AllocationUsage self, Element newSource) {
+        if (newSource instanceof Usage usage) {
+            var features = this.getFeatures(self);
+            if (features.size() == 2) {
+                var reference = features.get(0).getOwnedReferenceSubsetting();
+                if (reference != null) {
+                    reference.setReferencedFeature(usage);
+                }
+            }
+        }
+        return self;
+    }
+
+    public Element reconnectTargetAllocateEdge(AllocationUsage self, Element newTarget) {
+        if (newTarget instanceof Usage usage) {
+            var features = this.getFeatures(self);
+            if (features.size() == 2) {
+                var reference = features.get(1).getOwnedReferenceSubsetting();
+                if (reference != null) {
+                    reference.setReferencedFeature(usage);
+                }
+            }
+        }
+        return self;
+    }
+
+    private boolean isAnAllocateEdge(AllocationUsage allocationUsage) {
+        // an allocate edge is an AllocationUsage that contains 2 EndFeaturesMembership
+        return this.getFeatures(allocationUsage).size() == 2;
     }
 
     private List<Feature> getFeatures(AllocationUsage allocationUsage) {
@@ -151,93 +234,66 @@ public class ViewEdgeService {
         return result;
     }
 
-    public Element reconnectSourceAllocateEdge(AllocationUsage self, Element newSource) {
-        if (newSource instanceof Usage usage) {
-            var features = this.getFeatures(self);
-            if (features.size() == 2) {
-                var reference = features.get(0).getOwnedReferenceSubsetting();
-                if (reference != null) {
-                    reference.setReferencedFeature(usage);
-                }
-            }
-        }
-        return self;
-    }
-
-    public Element reconnectTargetAllocateEdge(AllocationUsage self, Element newTarget) {
-        if (newTarget instanceof Usage usage) {
-            var features = this.getFeatures(self);
-            if (features.size() == 2) {
-                var reference = features.get(1).getOwnedReferenceSubsetting();
-                if (reference != null) {
-                    reference.setReferencedFeature(usage);
-                }
-            }
-        }
-        return self;
+    /**
+     * Gets all memberships referencing the given feature with the specified id
+     *
+     * @param sourceFeature
+     *            the source feature
+     * @param membershipId
+     *            the id of the membership
+     * @return membership or <code>null</code> if not found
+     */
+    private Membership getReferencingMembershipWithId(Feature sourceFeature, String membershipId) {
+        return EMFUtils.getInverse(sourceFeature, SysmlPackage.eINSTANCE.getMembership_MemberElement()).stream()
+                .filter(setting -> setting.getEObject() instanceof Membership membership && membershipId.equals(membership.getElementId()))
+                .map(setting -> (Membership) setting.getEObject())
+                .findFirst()
+                .orElse(null);
     }
 
     public Element reconnectSourceSuccessionEdge(SuccessionAsUsage succession, Element oldSource, Element newSource) {
-        succession.getOwnedRelationship().stream()
-                .filter(EndFeatureMembership.class::isInstance)
-                .map(EndFeatureMembership.class::cast)
-                // the succession source is in the first endFeatureMembership
-                .findFirst()
-                .ifPresent(efm -> {
-                    efm.getOwnedRelatedElement().stream()
-                            .filter(ReferenceUsage.class::isInstance)
-                            .map(ReferenceUsage.class::cast)
-                            .findFirst()
-                            .ifPresent(ru -> {
-                                ru.getOwnedRelationship().stream()
-                                        .filter(ReferenceSubsetting.class::isInstance)
-                                        .map(ReferenceSubsetting.class::cast)
-                                        .findFirst()
-                                        .ifPresent(rss -> {
-                                            this.getAction(newSource).ifPresent(rss::setReferencedFeature);
-                                        });
-                            });
-                });
-        // Succession stores the source in source feature as well.
-        succession.getSource().replaceAll(e -> {
-            if (Objects.equals(e, oldSource)) {
-                return newSource;
-            }
-            return e;
-        });
+        EList<Feature> ends = succession.getConnectorEnd();
+        if (!ends.isEmpty()) {
+            Feature sourceEnd = ends.get(0);
+            this.setConnectorEndFeature(sourceEnd, newSource);
+        }
         return succession;
     }
 
     public Element reconnectTargetSuccessionEdge(SuccessionAsUsage succession, Element oldTarget, Element newTarget) {
-        var endFeatureMemberships = succession.getOwnedRelationship().stream()
-                .filter(EndFeatureMembership.class::isInstance)
-                .map(EndFeatureMembership.class::cast)
-                .toList();
-        // the succession target is in the second endFeatureMembership
-        if (endFeatureMemberships.size() > 1) {
-            var targetEndFeatureMembership = endFeatureMemberships.get(1);
-            targetEndFeatureMembership.getOwnedRelatedElement().stream()
-                    .filter(ReferenceUsage.class::isInstance)
-                    .map(ReferenceUsage.class::cast)
-                    .findFirst()
-                    .ifPresent(ru -> {
-                        ru.getOwnedRelationship().stream()
-                                .filter(ReferenceSubsetting.class::isInstance)
-                                .map(ReferenceSubsetting.class::cast)
-                                .findFirst()
-                                .ifPresent(rss -> {
-                                    this.getAction(newTarget).ifPresent(rss::setReferencedFeature);
-                                });
-                    });
+        EList<Feature> ends = succession.getConnectorEnd();
+        if (ends.size() > 1) {
+            Feature sourceEnd = ends.get(1);
+            this.setConnectorEndFeature(sourceEnd, newTarget);
         }
-        // Succession stores the target in target feature as well.
-        succession.getTarget().replaceAll(e -> {
-            if (Objects.equals(e, oldTarget)) {
-                return newTarget;
-            }
-            return e;
-        });
         return succession;
+    }
+
+    /**
+     * Redefines the target feature of the given source end.
+     *
+     * @param sourceEnd
+     *            the source end to modify
+     * @param newTargetFeature
+     *            the new target feature
+     */
+    private void setConnectorEndFeature(Feature sourceEnd, Element newTargetFeature) {
+        if (sourceEnd instanceof ReferenceUsage refUsage) {
+            sourceEnd.getAliasIds().clear();
+
+            ReferenceSubsetting referenceSubsetting = sourceEnd.getOwnedReferenceSubsetting();
+            if (referenceSubsetting == null || referenceSubsetting.isIsImplied()) {
+                // Needs to create a new one because this one is inherited
+                referenceSubsetting = SysmlFactory.eINSTANCE.createReferenceSubsetting();
+                referenceSubsetting.setSubsettingFeature(refUsage);
+            }
+            this.getAction(newTargetFeature).ifPresent(referenceSubsetting::setReferencedFeature);
+            // In case the newSource if a membership (e.g for 'start' and 'done') keep the membership id to identify
+            // the graphical source of the edge
+            if (newTargetFeature instanceof Membership sourceMembership) {
+                refUsage.getAliasIds().add(sourceMembership.getElementId());
+            }
+        }
     }
 
     /**

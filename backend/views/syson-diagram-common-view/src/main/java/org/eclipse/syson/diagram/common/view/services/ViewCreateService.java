@@ -759,10 +759,6 @@ public class ViewCreateService {
             var targetEnd = this.createEndFeatureMembershipFor(successionTarget);
             succession.getOwnedRelationship().add(sourceEnd);
             succession.getOwnedRelationship().add(targetEnd);
-            // we are also using source and target features to store edge ends
-            // to be able to retrieve Membership element holding standard actions.
-            succession.getSource().add(successionSource);
-            succession.getTarget().add(successionTarget);
         }
         return successionSource;
     }
@@ -777,6 +773,9 @@ public class ViewCreateService {
             if (membership.getMemberElement() instanceof ActionUsage au) {
                 referenceSubSetting.setReferencedFeature(au);
             }
+            // Keep track of the selected membership in order to be able to identify uniquely the source/target
+            // graphically
+            referenceUsage.getAliasIds().add(membership.getElementId());
         } else if (sourceOrTarget instanceof ActionUsage au) {
             referenceSubSetting.setReferencedFeature(au);
         }

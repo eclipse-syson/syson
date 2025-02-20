@@ -1,6 +1,10 @@
 = 2025.4.0 (work in progress)
 
-== Key highlights
+== Breaking changes
+
+- A `SuccessionUsage` now computes its _source_ and _target_ from the properties _sourceFeature_ and _targetFeature_.
+It might causes some `SuccessionUsage` not to be displayed correctly in diagrams if they were starting or ending from an inherited standard library `ActionUsage` (such as `start` or `done)`.
+In such cases, delete the `SuccessionUsage` graphical node and recreate it graphically (e.g. by drag&drop or with _Add existing element_ tool).
 
 == Bug fixes
 

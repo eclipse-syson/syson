@@ -128,6 +128,11 @@ public class SuccessionAsUsageTest {
         this.checkReferenceUsage(expectedTargetIsImplied, expectedTarget, targetRefUsage);
 
         this.checkEndFeatures(expectedSource, expectedTarget, toTest);
+
+        assertThat(toTest.getSource()).hasSize(1)
+                .allMatch(f -> f == expectedSource);
+        assertThat(toTest.getTarget()).hasSize(1)
+                .allMatch(f -> f == expectedTarget);
     }
 
     private void checkEndFeatures(Feature expectedSource, Feature expectedTarget, SuccessionAsUsage toTest) {
