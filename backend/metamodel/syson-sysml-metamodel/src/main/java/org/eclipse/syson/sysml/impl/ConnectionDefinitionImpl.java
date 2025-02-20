@@ -228,8 +228,10 @@ public class ConnectionDefinitionImpl extends PartDefinitionImpl implements Conn
      */
     @Override
     public EList<Element> getRelatedElement() {
-        List<ActionUsage> data = new ArrayList<>();
-        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_RelatedElement(), data.size(), data.toArray());
+        List<Element> relatedElements = new ArrayList<>();
+        relatedElements.addAll(this.getSource());
+        relatedElements.addAll(this.getTarget());
+        return new EcoreEList.UnmodifiableEList<>(this, SysmlPackage.eINSTANCE.getRelationship_RelatedElement(), relatedElements.size(), relatedElements.toArray());
     }
 
     /**
