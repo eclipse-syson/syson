@@ -153,5 +153,16 @@ describe('Diagram Creation Tests', () => {
         cy.getByTestId('new-representation').should('not.exist');
       });
     });
+
+    context('When we select a root namespace element', () => {
+      it('Then we can create a new representation in it', () => {
+        const explorer = new Explorer();
+        cy.getByTestId('tree-filter-menu-icon').should('exist').click();
+        cy.getByTestId('tree-filter-menu-checkbox-Hide Root Namespaces').click();
+        explorer.getTreeItemByLabel('Namespace').should('exist');
+        explorer.createRepresentation('Namespace', 'General View', 'generalView');
+        diagram.getDiagram('generalView').should('exist');
+      });
+    });
   });
 });

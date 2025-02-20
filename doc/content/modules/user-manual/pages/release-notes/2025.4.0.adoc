@@ -1,0 +1,22 @@
+= 2025.4.0 (work in progress)
+
+== Key highlights
+
+
+== Bug fixes
+
+
+== New features
+
+
+== Improvements
+
+- It is now possible to create a `General View` diagram under root namespace elements.
+
+image::release-notes-create-diagram-on-root-namespace-element.png[Create diagram on root namespace element, width=50%, height=50%]
+
+== Dependency update
+
+
+== Technical details
+
