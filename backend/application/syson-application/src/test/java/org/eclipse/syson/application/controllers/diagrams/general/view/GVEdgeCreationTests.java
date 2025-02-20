@@ -120,7 +120,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectService);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectService, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID);
     }
 
     @AfterEach

@@ -4,14 +4,16 @@
 
 === Breaking changes
 
+- Due to  https://github.com/eclipse-syson/syson/issues/1030[#1030], the _source_ and _target_ features are no longer editable on all concepts inheriting from `ConnectorAsUsage`.
+
 === Dependency update
 
 === Bug fixes
 
 === Improvements
 
-- https://github.com/eclipse-syson/syson/issues/1028[#1028] [import] Improve `SuccessionAsUsage` with implicit source feature. 
-
+- https://github.com/eclipse-syson/syson/issues/1028[#1028] [import] Improve `SuccessionAsUsage` with implicit source feature.
+- https://github.com/eclipse-syson/syson/issues/1030[#1030] `ConnectorAsUsage.getSourceFeature` and `ConnectorAsUsage.getTargetFeature` should redefine `Relationship.source` and `Relationship.target` features
 
 == v2025.2.0 (work in progress)
 
@@ -73,7 +75,6 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/1012[#1012] [general-view] Allow `Package` and `NamespaceImport` graphical nodes to be smaller than their default size
 - https://github.com/eclipse-syson/syson/issues/1006[#1006] [details] Display `FeatureValue.isDefault` and `FeatureValue.isInitial` in Core tab of `FeatureValue` concept.
 - https://github.com/eclipse-syson/syson/issues/1018[#1018] [libraries] Make customizing the default metamodels and libraries available in SysML projects easier by making default implementation `SysONDefaultLibrariesConfiguration` more extensible.
-
 
 
 === New features
