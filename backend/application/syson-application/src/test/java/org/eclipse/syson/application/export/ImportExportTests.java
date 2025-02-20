@@ -55,6 +55,64 @@ public class ImportExportTests extends AbstractIntegrationTests {
         this.checker = new SysmlImportExportChecker(this.sysmlLoader, this.editingDomainFactory, this.exporter, this.sysMLEditingContextProcessor);
     }
 
+    @DisplayName("Given a SuccessionAsUsage with an implicit source feature, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @Test
+    public void checkSuccessionAsUsageImplicitSourceTest() throws IOException {
+        var input = """
+                action def ActionDef1 {
+                    action a0;
+                    action a1;
+                    action a2;
+                    then a1;
+                    then a0;
+                }""";
+
+        this.checker.check(input, input);
+    }
+
+    @DisplayName("Given a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, when importing and exporting the model, then the exported text file should be semantically equal.")
+    @Test
+    public void checkSuccessionAsUsageImplicitSourceToStartTest() throws IOException {
+        var input = """
+                action def ActionDef1 {
+                    action a2;
+                    first start;
+                    then a2;
+                }""";
+        /**
+         * Here we have differences here because :
+         *
+         * <ul>
+         * <li>The strange construction of the Membership referencing 'start' is hard to detect so we chose to use the
+         * complete syntax "first source then target;"</li>
+         * <li>The current implementation of implicit specialization causes some issues during name de-resolution see
+         * https://github.com/eclipse-syson/syson/issues/1029</li>
+         * <ul>
+         */
+        var expected = """
+                action def ActionDef1 {
+                    action a2;
+                    first Actions::Action::start then a2;
+                }""";
+
+        this.checker.check(input, expected);
+    }
+
+    @DisplayName("Given a SuccessionAsUsage with an explicit source feature, when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @Test
+    public void checkSuccessionAsUsageExplicitSourceTest() throws IOException {
+        var input = """
+                action def ActionDef1 {
+                    action a0;
+                    action a1;
+                    action a2;
+                    first a0 then a1;
+                    first a1 then a2;
+                }""";
+
+        this.checker.check(input, input);
+    }
+
     /**
      * Test import/export on test file UseCaseTest.sysml. The content of UseCaseTest.sysml that have been copied below
      * is under LGPL-3.0-only license. The LGPL-3.0-only license is accessible at the root of this repository, in the
