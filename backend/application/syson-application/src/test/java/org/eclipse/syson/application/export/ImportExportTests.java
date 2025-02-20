@@ -71,6 +71,38 @@ public class ImportExportTests extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a SuccessionAsUsage with target defined after the then keyword, when importing and exporting the model,  then the exported text file should be semantically equal.")
+    public void checkSuccessionDefiningImplicitTarget() throws IOException {
+        var input = """
+                action def ActionDef1 {
+                    action a0;
+                    first a0;
+                    then action a1;
+                    then action a2;
+                }""";
+        /**
+         * Here we have differences here because :
+         *
+         * <ul>
+         * <li>The construction of SuccessionAsUsage defining new ActionUsage is hard to detect so we chose to use the
+         * complete syntax "first source then target;"</li>
+         * <li>The current implementation of implicit specialization causes some issues during name de-resolution see
+         * https://github.com/eclipse-syson/syson/issues/1029</li>
+         * <ul>
+         */
+        var expected = """
+                action def ActionDef1 {
+                    action a0;
+                    then ActionDef1::a1;
+                    action a1;
+                    then ActionDef1::a2;
+                    action a2;
+                }""";
+
+        this.checker.check(input, expected);
+    }
+
+    @Test
     @DisplayName("Given a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, when importing and exporting the model, then the exported text file should be semantically equal.")
     public void checkSuccessionAsUsageImplicitSourceToStartTest() throws IOException {
         var input = """
@@ -124,13 +156,9 @@ public class ImportExportTests extends AbstractIntegrationTests {
     @Test
     public void checkUseCaseTest() throws IOException {
         /*
-         * The file has been modified because a problem has been detected during the export phase.
-         * Those problem force us to use some full-length qualified name. This should be investigated.
-         *
-         * for example:
-                include UseCaseTest::uc2;
-         * instead of
-                include uc2;
+         * The file has been modified because a problem has been detected during the export phase. Those problem force
+         * us to use some full-length qualified name. This should be investigated. for example: include
+         * UseCaseTest::uc2; instead of include uc2;
          */
         var input = """
                 package UseCaseTest {
@@ -242,18 +270,15 @@ public class ImportExportTests extends AbstractIntegrationTests {
     /**
      * Test import/export on test file ImportTest.sysml.
      *
-     * @see <a href="https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/ImportTest.sysml">ImportTest</a>
+     * @see <a href=
+     *      "https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/ImportTest.sysml">ImportTest</a>
      */
     @Test
     public void checkImportTest() throws IOException {
         /*
-         * The file has been modified because a problem has been detected during the export phase.
-         * Those problem force us to use some full-length qualified name. This should be investigated.
-         *
-         * for example:
-                private import Pkg2::Pkg21::Pkg211::*::**;
-         * instead of
-                private import Pkg211::*::**;
+         * The file has been modified because a problem has been detected during the export phase. Those problem force
+         * us to use some full-length qualified name. This should be investigated. for example: private import
+         * Pkg2::Pkg21::Pkg211::*::**; instead of private import Pkg211::*::**;
          */
         var input = """
                 package ImportTest {
@@ -335,7 +360,8 @@ public class ImportExportTests extends AbstractIntegrationTests {
     /**
      * Test import/export on test file OccurrenceTest.sysml.
      *
-     * @see <a href="https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/OccurrenceTest.sysml">OccurrenceTest</a>
+     * @see <a href=
+     *      "https://github.com/Systems-Modeling/SysML-v2-Release/blob/master/sysml/src/examples/Simple%20Tests/OccurrenceTest.sysml">OccurrenceTest</a>
      */
     @Test
     public void checkOccurrenceTest() throws IOException {
