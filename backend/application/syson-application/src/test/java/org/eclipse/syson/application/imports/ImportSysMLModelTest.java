@@ -63,6 +63,33 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     }
 
     @Test
+    @DisplayName("Given a SuccessionAsUsage using the syntax that create a new target action, when importing and exporting the model, then the source and target should be correctly computed.")
+    public void checkSuccessionToDefinedActionSourceTest() throws IOException {
+        var input = """
+                action def ActionDef1 {
+                    first start;
+                    then action a1;
+                    then action a2;
+                }""";
+
+        this.checker.checkImportedModel(resource -> {
+            List<SuccessionAsUsage> successionAsUsages = EMFUtils.allContainedObjectOfType(resource, SuccessionAsUsage.class).toList();
+
+            assertThat(successionAsUsages).hasSize(2);
+
+            SuccessionAsUsage firstToA1 = successionAsUsages.get(0);
+
+            assertThat(firstToA1.getSourceFeature().getName()).isEqualTo("start");
+            assertThat(firstToA1.getTargetFeature()).hasSize(1).allMatch(f -> "a1".equals(f.getName()));
+
+            SuccessionAsUsage firstToA2 = successionAsUsages.get(1);
+
+            assertThat(firstToA2.getSourceFeature().getName()).isEqualTo("a1");
+            assertThat(firstToA2.getTargetFeature()).hasSize(1).allMatch(f -> "a2".equals(f.getName()));
+        }).check(input);
+    }
+
+    @Test
     @DisplayName("Given a SuccessionAsUsage with an implicit source feature targeting the 'start' standard library element, "
             + "when importing the model, "
             + "then a special membership should be created that reference the 'start' element and its id should belong to the aliasId of the source connector end.")

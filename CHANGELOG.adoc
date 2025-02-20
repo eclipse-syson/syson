@@ -30,6 +30,7 @@ A new dra & drop tool is available on the diagram, allowing moving `Satisfy Requ
 - [explorer] The `General View` diagram is now proposed first when creating a diagram.
 - https://github.com/eclipse-syson/syson/issues/1024[#1024] [diagrams] Allow `Usage` and `Definition` graphical node labels to be wrapped to handle long names more easily.
 - https://github.com/eclipse-syson/syson/issues/1030[#1030] [metamodel] `ConnectorAsUsage.getSourceFeature` and `ConnectorAsUsage.getTargetFeature` should redefine `Relationship.source` and `Relationship.target` features
+- https://github.com/eclipse-syson/syson/issues/1042[#1042] [import] Improve textual import of `SuccessionAsUsage` which define a new target action directly after the 'then' keyword.
 
 === New features
 

@@ -26,7 +26,7 @@ image::release-notes-create-diagram-on-root-namespace-element.png[Create diagram
 
 image::release-notes-gv-subject-creation-selection-dialog-tree.png['subject creation tool selection dialog tree' compartment, width=50%, height=50%]
 
-- Improve handling of `SuccessionAsUsage` textual import with implicit source feature.
+- Improve handling of `SuccessionAsUsage` textual import with implicit _source_ property.
 For example importing the following SysMLv2 content would now create a valid semantic model:
 
 ```
@@ -50,6 +50,16 @@ image::release-notes-gv-satisfy-requirement-usage.png[Satisfy Requirement Usage 
 - The `General View` diagram is now proposed first when creating a diagram.
 - It is now possible, in diagrams, to reduce the width of `Usages` (e.g. `Part`) and `Definition` (e.g. `Part Definition`) graphical nodes with a long name as their label can now be wrapped.
 
+- Improve textual import of `SuccessionAsUsage` which define a new target action directly after the 'then' keyword.
+For example importing the following SysML file would now create a valid semantic model:
+
+```
+ action def ActionDef1 {
+    first start;
+    then action a1;
+    then action a2;
+}
+```
 
 == Dependency update
 

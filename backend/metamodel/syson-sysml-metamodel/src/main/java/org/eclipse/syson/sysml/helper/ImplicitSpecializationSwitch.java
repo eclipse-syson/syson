@@ -203,11 +203,17 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
         // At this moment we only handle the case of implicit source since we haven't found a
         // case where the target is implicit
         int index = parentSuccessionAsUsage.getOwnedFeature().indexOf(referenceUsage);
+        boolean hasNoExpliciteSubsetting = this.getOwnedRelations(ReferenceSubsetting.class, referenceUsage).isEmpty();
         if (index == 0 && this.getOwnedRelations(ReferenceSubsetting.class, referenceUsage).isEmpty()) {
             // Source feature
-            // Add a reference ReferenceSubsetting to the previous setting
+            // Add a reference ReferenceSubsetting to the previous feature
             Feature sourceFeature = this.computeSourceFeature(parentSuccessionAsUsage);
             result = List.of(this.implicitReferenceSubsetting(referenceUsage, sourceFeature));
+        } else if (index == 1 && hasNoExpliciteSubsetting) {
+            // Target feature
+            // Add a reference ReferenceSubsetting to the next feature
+            Feature targetFeature = this.computeTargetFeature(parentSuccessionAsUsage);
+            result = List.of(this.implicitReferenceSubsetting(referenceUsage, targetFeature));
         } else {
             result = List.of();
         }
@@ -1432,6 +1438,24 @@ public class ImplicitSpecializationSwitch extends SysmlSwitch<List<Specializatio
             featureTyping.setTypedFeature(feature);
             featureTyping.setType(implicitType);
             return featureTyping;
+        }
+        return null;
+    }
+
+    private Feature computeTargetFeature(SuccessionAsUsage successionAsUsage) {
+        Type owningType = successionAsUsage.getOwningType();
+        if (owningType != null) {
+            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
+            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
+            if (index > 0 && ownedMemberships.size() > index) {
+                ListIterator<Membership> iterator = ownedMemberships.subList(index + 1, ownedMemberships.size()).listIterator();
+                while (iterator.hasNext()) {
+                    Membership next = iterator.next();
+                    if (next.getMemberElement() instanceof Feature feature) {
+                        return feature;
+                    }
+                }
+            }
         }
         return null;
     }

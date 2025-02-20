@@ -36,6 +36,7 @@ import org.eclipse.syson.sysml.parser.EAttributeHandler;
 import org.eclipse.syson.sysml.parser.NonContainmentReferenceHandler;
 import org.eclipse.syson.sysml.parser.ProxiedReference;
 import org.eclipse.syson.sysml.parser.ProxyResolver;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,8 +102,43 @@ public class ASTTransformer {
      *            a root element.
      */
     private void fixSuccessionUsageImplicitSource(EObject root) {
-        EMFUtils.allContainedObjectOfType(root, SuccessionAsUsage.class)
-                .filter(this::hasImplicitSourceFeature)
+        List<SuccessionAsUsage> succesionAsUsage = EMFUtils.allContainedObjectOfType(root, SuccessionAsUsage.class).toList();
+        this.fixImplicitSourceFeature(succesionAsUsage);
+        this.fixImplicitTarget(succesionAsUsage);
+    }
+
+    /**
+     * Try to fix all {@link SuccessionAsUsage} elements contained in the given root to workaround
+     * https://github.com/eclipse-syson/syson/issues/1042 and https://github.com/sensmetry/sysml-2ls/issues/13.
+     *
+     * @param root
+     *            a root element.
+     */
+    private void fixImplicitTarget(List<SuccessionAsUsage> succesionAsUsage) {
+        succesionAsUsage.stream().filter(this::hasImplicitTargetFeature)
+                .forEach(suc -> {
+                    Feature invalidFeature = suc.getConnectorEnd().get(1);
+                    FeatureMembership owningFeatureMembershit = invalidFeature.getOwningFeatureMembership();
+                    ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+                    EList<Element> ownedRelatedElements = owningFeatureMembershit.getOwnedRelatedElement();
+
+                    Membership previousMembershipFeature = this.computeTargetFeatureMembership(suc);
+                    if (previousMembershipFeature != null && ElementUtil.isFromLibrary(previousMembershipFeature.getMemberElement(), true)) {
+                        // For implicit target that targets an element of the standard library, we need to keep a
+                        // "virtual link" to the previous feature membership to identify the source of SuccessionAsUsage
+                        // see implementation :
+                        // org.eclipse.syson.diagram.common.view.services.ViewCreateService.createEndFeatureMembershipFor(Element)
+                        refUsage.getAliasIds().add(previousMembershipFeature.getElementId());
+                    }
+
+                    int index = ownedRelatedElements.indexOf(invalidFeature);
+                    ownedRelatedElements.remove(index);
+                    ownedRelatedElements.add(index, refUsage);
+                });
+    }
+
+    private void fixImplicitSourceFeature(List<SuccessionAsUsage> succesionAsUsage) {
+        succesionAsUsage.stream().filter(this::hasImplicitSourceFeature)
                 .forEach(suc -> {
                     Feature invalidFeature = suc.getConnectorEnd().get(0);
                     FeatureMembership owningFeatureMembershit = invalidFeature.getOwningFeatureMembership();
@@ -142,10 +178,39 @@ public class ASTTransformer {
         return null;
     }
 
+    private Membership computeTargetFeatureMembership(SuccessionAsUsage successionAsUsage) {
+        Type owningType = successionAsUsage.getOwningType();
+        if (owningType != null) {
+
+            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
+            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
+            if (index > 0 && ownedMemberships.size() > index) {
+                ListIterator<Membership> iterator = ownedMemberships.subList(index + 1, ownedMemberships.size()).listIterator();
+                while (iterator.hasNext()) {
+                    Membership next = iterator.next();
+                    if (next.getMemberElement() instanceof Feature) {
+                        return next;
+                    }
+                }
+            }
+
+        }
+        return null;
+    }
+
     private boolean hasImplicitSourceFeature(SuccessionAsUsage successionUsage) {
         EList<Feature> ends = successionUsage.getConnectorEnd();
         if (!ends.isEmpty()) {
             Feature sourceEnd = ends.get(0);
+            return sourceEnd.eClass() == SysmlPackage.eINSTANCE.getFeature() && sourceEnd.getOwnedRelationship().isEmpty();
+        }
+        return false;
+    }
+
+    private boolean hasImplicitTargetFeature(SuccessionAsUsage successionUsage) {
+        EList<Feature> ends = successionUsage.getConnectorEnd();
+        if (ends.size() > 1) {
+            Feature sourceEnd = ends.get(1);
             return sourceEnd.eClass() == SysmlPackage.eINSTANCE.getFeature() && sourceEnd.getOwnedRelationship().isEmpty();
         }
         return false;
