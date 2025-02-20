@@ -83,7 +83,7 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
                 SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID);
     }
 
     @AfterEach

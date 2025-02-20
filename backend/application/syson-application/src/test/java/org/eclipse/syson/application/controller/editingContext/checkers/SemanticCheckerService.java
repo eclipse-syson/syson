@@ -12,6 +12,12 @@
  *******************************************************************************/
 package org.eclipse.syson.application.controller.editingContext.checkers;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
@@ -19,6 +25,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.services.SemanticRunnableFactory;
+import org.eclipse.syson.sysml.Element;
 
 import reactor.test.StepVerifier.Step;
 
@@ -33,9 +40,12 @@ public class SemanticCheckerService {
 
     private final IObjectSearchService objectSearchService;
 
-    public SemanticCheckerService(SemanticRunnableFactory semanticRunnableFactory, IObjectSearchService objectSearchService) {
+    private final String editingContextId;
+
+    public SemanticCheckerService(SemanticRunnableFactory semanticRunnableFactory, IObjectSearchService objectSearchService, String editingContextId) {
         this.semanticRunnableFactory = semanticRunnableFactory;
         this.objectSearchService = objectSearchService;
+        this.editingContextId = editingContextId;
     }
 
     public ISemanticChecker getElementInParentSemanticChecker(String parentLabel, EReference containmentReference, EClass childEClass) {
@@ -45,8 +55,34 @@ public class SemanticCheckerService {
                 .hasType(childEClass);
     }
 
+    /**
+     * Do some checks on the element identified by the given id.
+     *
+     * @param <T>
+     *            the type element under test
+     * @param verifier
+     *            the verifier
+     * @param type
+     *            the type of the element under test
+     * @param idSupplier
+     *            a supplier that returns the id of the semantic object
+     * @param semanticChecker
+     *            the checks that needs to be run
+     */
+    public <T extends Element> void checkElement(Step<DiagramRefreshedEventPayload> verifier, Class<T> type, Supplier<String> idSupplier, Consumer<T> semanticChecker) {
+        ISemanticChecker checker = editingContext -> {
+            Optional<Object> optElement = this.objectSearchService.getObject(editingContext, idSupplier.get());
+            assertThat(optElement).isPresent();
+            Object element = optElement.get();
+            assertThat(element).isInstanceOf(type);
+            T castedElement = type.cast(element);
+            semanticChecker.accept(castedElement);
+        };
+        this.checkEditingContext(checker, verifier);
+    }
+
     public void checkEditingContext(ISemanticChecker semanticChecker, Step<DiagramRefreshedEventPayload> verifier) {
-        Runnable runnableChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_EDITING_CONTEXT_ID,
+        Runnable runnableChecker = this.semanticRunnableFactory.createRunnable(this.editingContextId,
                 (editingContext, executeEditingContextFunctionInput) -> {
                     semanticChecker.check(editingContext);
                     return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), true);

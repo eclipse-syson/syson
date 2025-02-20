@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,12 +49,16 @@ public class EdgeCreationTester {
         DiagramNavigator diagramNavigator = new DiagramNavigator(diagram.get());
         String sourceId = diagramNavigator.nodeWithTargetObjectLabel(sourceNodeTargetObjectLabel).getNode().getId();
         String targetId = diagramNavigator.nodeWithTargetObjectLabel(targetNodeTargetObjectLabel).getNode().getId();
+        this.createEdgeUsingNodeId(projectId, diagram, sourceId, targetId, toolId);
+    }
+
+    public void createEdgeUsingNodeId(String projectId, AtomicReference<Diagram> diagram, String sourceNodeId, String targetNodeId, String toolId) {
         var createEdgeInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(
                 UUID.randomUUID(),
                 projectId,
                 diagram.get().getId(),
-                sourceId,
-                targetId,
+                sourceNodeId,
+                targetNodeId,
                 0,
                 0,
                 0,

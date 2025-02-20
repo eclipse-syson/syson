@@ -8,6 +8,8 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-syson/syson/issues/1030[#1030] [metamodel] The _source_ and _target_ features are no longer editable on all concepts inheriting from `ConnectorAsUsage`.
+
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
@@ -27,6 +29,7 @@ A new creation tool is available in the `Requirements` section of the palette, a
 A new dra & drop tool is available on the diagram, allowing moving `Satisfy Requirement Usage` graphical nodes on the diagram.
 - [explorer] The `General View` diagram is now proposed first when creating a diagram.
 - https://github.com/eclipse-syson/syson/issues/1024[#1024] [diagrams] Allow `Usage` and `Definition` graphical node labels to be wrapped to handle long names more easily.
+- https://github.com/eclipse-syson/syson/issues/1030[#1030] [metamodel] `ConnectorAsUsage.getSourceFeature` and `ConnectorAsUsage.getTargetFeature` should redefine `Relationship.source` and `Relationship.target` features
 
 === New features
 
@@ -90,7 +93,6 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/1006[#1006] [details] Display `FeatureValue.isDefault` and `FeatureValue.isInitial` in Core tab of `FeatureValue` concept.
 - https://github.com/eclipse-syson/syson/issues/1018[#1018] [libraries] Make customizing the default metamodels and libraries available in SysML projects easier by making default implementation `SysONDefaultLibrariesConfiguration.java` more extensible.
 To do so, create a `@Primary @Configuration` component that extend `SysMLDefaultLibrariesConfiguration`, and optionally redefine `getDefaultLibraries()` method and/or `getDefaultEPackages()`.
-
 
 === New features
 

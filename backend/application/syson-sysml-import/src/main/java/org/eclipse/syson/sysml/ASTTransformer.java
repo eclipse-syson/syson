@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -108,10 +109,37 @@ public class ASTTransformer {
                     ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
                     EList<Element> ownedRelatedElements = owningFeatureMembershit.getOwnedRelatedElement();
 
+                    Membership previousMembershipFeature = this.computePreviousFeatureMembership(suc);
+                    if (previousMembershipFeature != null) {
+                        // For implicit source that targets an element of the standard library, we need to keep a
+                        // "virtual link" to the previous feature membership to identify the source of SuccessionAsUsage
+                        // see implementation :
+                        // org.eclipse.syson.diagram.common.view.services.ViewCreateService.createEndFeatureMembershipFor(Element)
+                        refUsage.getAliasIds().add(previousMembershipFeature.getElementId());
+                    }
+
                     int index = ownedRelatedElements.indexOf(invalidFeature);
                     ownedRelatedElements.remove(index);
                     ownedRelatedElements.add(index, refUsage);
                 });
+    }
+
+    private Membership computePreviousFeatureMembership(SuccessionAsUsage successionAsUsage) {
+        Type owningType = successionAsUsage.getOwningType();
+        if (owningType != null) {
+            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
+            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
+            if (index > 0) {
+                ListIterator<Membership> iterator = ownedMemberships.subList(0, index).listIterator(index);
+                while (iterator.hasPrevious()) {
+                    Membership previous = iterator.previous();
+                    if (previous.getMemberElement() instanceof Feature) {
+                        return previous;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     private boolean hasImplicitSourceFeature(SuccessionAsUsage successionUsage) {
