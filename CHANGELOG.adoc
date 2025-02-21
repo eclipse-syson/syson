@@ -15,6 +15,7 @@
 - https://github.com/eclipse-syson/syson/issues/1028[#1028] [import] Improve `SuccessionAsUsage` with implicit source feature.
 - https://github.com/eclipse-syson/syson/issues/1030[#1030] `ConnectorAsUsage.getSourceFeature` and `ConnectorAsUsage.getTargetFeature` should redefine `Relationship.source` and `Relationship.target` features
 - https://github.com/eclipse-syson/syson/issues/1042[#1042] Improve SuccessionAsUsage defining directly the target actions.
+- https://github.com/eclipse-syson/syson/issues/1045[#1045] [export] Improve export to properly handle named `SuccessionAsUsage`
 
 == v2025.2.0 (work in progress)
 

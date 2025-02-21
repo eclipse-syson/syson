@@ -44,6 +44,17 @@ For example importing the following SysML file would now create a valid semantic
 }
 ```
 
+- Improve textual export of a `SuccessionAsUsage` to property handle its name.
+For example exporting a model with a named `SuccessionAsUsage` would produce the following file:
+
+```
+action def A4 {
+    action a1;
+    action a2;
+    succession s1 first a1 then a2;
+}
+```
+
 
 == Dependency update
 

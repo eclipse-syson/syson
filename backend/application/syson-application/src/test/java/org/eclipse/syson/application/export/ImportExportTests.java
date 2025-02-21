@@ -57,6 +57,19 @@ public class ImportExportTests extends AbstractIntegrationTests {
 
     @DisplayName("Given a SuccessionAsUsage with an implicit source feature, when importing and exporting the model, then the exported text file should be the same as the imported one.")
     @Test
+    public void checkNamedSuccessionAsUsageInActionDefinitionTest() throws IOException {
+        var input = """
+                action def A4 {
+                    action a1;
+                    action a2;
+                    succession s1 first a1 then a2;
+                }""";
+
+        this.checker.check(input, input);
+    }
+
+    @DisplayName("Given a named SuccessionAsUsage , when importing and exporting the model, then the exported text file should be the same as the imported one.")
+    @Test
     public void checkSuccessionAsUsageImplicitSourceTest() throws IOException {
         var input = """
                 action def ActionDef1 {
