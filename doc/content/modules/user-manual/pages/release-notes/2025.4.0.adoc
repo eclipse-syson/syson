@@ -54,10 +54,20 @@ image::release-notes-gv-satisfy-requirement-usage.png[Satisfy Requirement Usage 
 For example importing the following SysML file would now create a valid semantic model:
 
 ```
- action def ActionDef1 {
+action def ActionDef1 {
     first start;
     then action a1;
     then action a2;
+}
+```
+- Improve textual export of `SuccessionAsUsage` by properly handle its _name_.
+For example exporting a model of an `ActionDefinition` containing two `ActionUsages` and a named `SuccessionAsUsage` would produce the following file:
+
+```
+action def ActionDef1 {
+    action a1;
+    action a2;
+    succession s1 first a1 then a2;
 }
 ```
 

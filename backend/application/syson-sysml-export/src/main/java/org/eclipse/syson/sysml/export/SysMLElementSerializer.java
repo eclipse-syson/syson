@@ -359,7 +359,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
         this.appendUsageDeclaration(declarationBuilder, successionAsUsage);
 
         if (!declarationBuilder.isEmpty()) {
-            builder.appendWithSpaceIfNeeded(declarationBuilder.toString());
+            builder.appendWithSpaceIfNeeded("succession ").append(declarationBuilder.toString());
         }
 
         List<EndFeatureMembership> endFeatureMemberships = successionAsUsage.getFeatureMembership().stream()
@@ -416,7 +416,7 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
     /**
      * Checks if the source feature define force the given {@link EndFeatureMembership} is implicit or not
-     * 
+     *
      * @param endFeatureMembership
      *            the element to test
      * @return <code>true</code> if the given EndFeatureMembership represent an implicit feature
