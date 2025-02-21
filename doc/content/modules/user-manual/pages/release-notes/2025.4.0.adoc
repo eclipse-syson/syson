@@ -1,0 +1,65 @@
+= 2025.4.0 (work in progress)
+
+== Breaking changes
+
+- A `SuccessionUsage` now computes its _source_ and _target_ from the properties _sourceFeature_ and _targetFeature_.
+It might causes some `SuccessionUsage` not to be displayed correctly in diagrams if they were starting or ending from an inherited standard library `ActionUsage` (such as `start` or `done)`.
+In such cases, delete the `SuccessionUsage` and recreate it graphically.
+
+== Key highlights
+
+== Bug fixes
+
+
+
+== New features
+
+
+
+== Improvements
+
+- Improve `SuccessionAsUsage` with implicit source feature.
+For example importing the following SysML file would now create a valid semantic model:
+
+```
+action def ActionDef1 {
+    action a2;
+    action a3;
+    first start;
+    then a2;
+    then a3;
+}
+```
+
+The export feature has also be improved to produce the same file than the one imported.
+
+- Improve textual import of a `SuccessionAsUsage` which defines a new target action directly after the 'then' keyword.
+For example importing the following SysML file would now create a valid semantic model:
+
+```
+ action def ActionDef1 {
+    first start;
+    then action a1;
+    then action a2;
+}
+```
+
+- Improve textual export of a `SuccessionAsUsage` to property handle its name.
+For example exporting a model with a named `SuccessionAsUsage` would produce the following file:
+
+```
+action def A4 {
+    action a1;
+    action a2;
+    succession s1 first a1 then a2;
+}
+```
+
+
+== Dependency update
+
+
+
+== Technical details
+
+* For technical details on this {product} release (including breaking changes) please refer to https://github.com/eclipse-syson/syson/blob/main/CHANGELOG.adoc[changelog].

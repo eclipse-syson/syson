@@ -350,19 +350,19 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
     }
 
     @Override
-    public String caseSuccessionAsUsage(SuccessionAsUsage sucession) {
+    public String caseSuccessionAsUsage(SuccessionAsUsage successionAsUsage) {
         Appender builder = new Appender(this.lineSeparator, this.indentation);
 
-        this.appendBasicUsagePrefix(builder, sucession);
+        this.appendBasicUsagePrefix(builder, successionAsUsage);
 
         Appender declarationBuilder = new Appender(this.lineSeparator, this.indentation);
-        this.appendUsageDeclaration(declarationBuilder, sucession);
+        this.appendUsageDeclaration(declarationBuilder, successionAsUsage);
 
         if (!declarationBuilder.isEmpty()) {
-            builder.appendWithSpaceIfNeeded(declarationBuilder.toString());
+            builder.appendWithSpaceIfNeeded("succession ").append(declarationBuilder.toString());
         }
 
-        List<EndFeatureMembership> endFeatureMemberships = sucession.getFeatureMembership().stream()
+        List<EndFeatureMembership> endFeatureMemberships = successionAsUsage.getFeatureMembership().stream()
                 .filter(EndFeatureMembership.class::isInstance)
                 .map(EndFeatureMembership.class::cast)
                 .toList();
@@ -371,10 +371,12 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
 
         if (endFeatureMemberships.size() == 2) {
 
-            builder.appendWithSpaceIfNeeded("first");
             EndFeatureMembership first = endFeatureMemberships.get(0);
+            if (!this.isSuccessionUsageImplicitSource(first) || !this.isSourceFeaturePreviousDefinedFeature(successionAsUsage)) {
+                builder.appendWithSpaceIfNeeded("first");
+                this.appendConnectorEndMember(builder, first);
+            }
             childrenToExclude.add(first);
-            this.appendConnectorEndMember(builder, first);
 
             builder.appendWithSpaceIfNeeded("then");
             EndFeatureMembership second = endFeatureMemberships.get(1);
@@ -382,17 +384,53 @@ public class SysMLElementSerializer extends SysmlSwitch<String> {
             this.appendConnectorEndMember(builder, second);
 
         } else {
-            this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", sucession.getElementId()));
+            this.reportConsumer.accept(Status.warning("Unable to export a SuccessionAsUsage ({0}) invalid number of ends", successionAsUsage.getElementId()));
         }
 
-        List<Relationship> children = sucession.getOwnedRelationship().stream()
+        List<Relationship> children = successionAsUsage.getOwnedRelationship().stream()
                 .filter(IS_DEFINITION_BODY_ITEM_MEMBER)
                 .filter(e -> !childrenToExclude.contains(e))
                 .toList();
 
-        this.appendChildrenContent(builder, sucession, children);
+        this.appendChildrenContent(builder, successionAsUsage, children);
 
         return builder.toString();
+    }
+
+    private boolean isSourceFeaturePreviousDefinedFeature(SuccessionAsUsage successionAsUsage) {
+        Feature sourceFeature = successionAsUsage.getSourceFeature();
+
+        Namespace namespace = successionAsUsage.getOwningNamespace();
+        if (namespace != null) {
+
+            EList<Membership> memberships = namespace.getMembership();
+            int index = memberships.indexOf(successionAsUsage.getOwningFeatureMembership());
+            if (index > 0) {
+                Membership previousMembership = memberships.get(index - 1);
+                return previousMembership instanceof FeatureMembership featureMembership && featureMembership.getFeature() == sourceFeature;
+            }
+
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the source feature define force the given {@link EndFeatureMembership} is implicit or not
+     *
+     * @param endFeatureMembership
+     *            the element to test
+     * @return <code>true</code> if the given EndFeatureMembership represent an implicit feature
+     */
+    private boolean isSuccessionUsageImplicitSource(EndFeatureMembership endFeatureMembership) {
+        EList<Element> relatedElements = endFeatureMembership.getOwnedRelatedElement();
+        if (relatedElements.size() == 1) {
+            Element relatedElement = relatedElements.get(0);
+            if (relatedElement instanceof ReferenceUsage refUsage) {
+                return refUsage.getOwnedSpecialization().stream().allMatch(s -> s.isIsImplied());
+            }
+        }
+        return false;
     }
 
     private void appendConnectorEndMember(Appender builder, EndFeatureMembership endFeatureMembership) {

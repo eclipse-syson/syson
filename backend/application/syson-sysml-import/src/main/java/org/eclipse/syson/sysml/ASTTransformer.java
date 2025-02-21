@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,19 +20,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.ListIterator;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.parser.AstTreeParser;
 import org.eclipse.syson.sysml.parser.ContainmentReferenceHandler;
 import org.eclipse.syson.sysml.parser.EAttributeHandler;
 import org.eclipse.syson.sysml.parser.NonContainmentReferenceHandler;
 import org.eclipse.syson.sysml.parser.ProxiedReference;
 import org.eclipse.syson.sysml.parser.ProxyResolver;
+import org.eclipse.syson.sysml.util.ElementUtil;
 import org.eclipse.syson.sysml.utils.MessageReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,6 +74,9 @@ public class ASTTransformer {
                 result = new JSONResourceFactory().createResourceFromPath(null);
                 resourceSet.getResources().add(result);
                 result.getContents().addAll(rootSysmlObjects);
+
+                this.preResolvingFixingPhase(rootSysmlObjects);
+
                 this.logger.info("File Parsed");
                 List<ProxiedReference> proxiedReferences = this.nonContainmentReferenceHandler.getProxiesToResolve();
                 this.logger.info("{} references to resolve.", proxiedReferences.size());
@@ -79,6 +86,134 @@ public class ASTTransformer {
             }
         }
         return result;
+    }
+
+    private void preResolvingFixingPhase(List<EObject> rootSysmlObjects) {
+        for (EObject root : rootSysmlObjects) {
+            this.fixSuccessionUsageImplicitSource(root);
+        }
+    }
+
+    /**
+     * Try to fix all {@link SuccessionAsUsage} element contained in the given root to workaround
+     * https://github.com/sensmetry/sysml-2ls/issues/13.
+     *
+     * @param root
+     *            a root element.
+     */
+    private void fixSuccessionUsageImplicitSource(EObject root) {
+        List<SuccessionAsUsage> succesionAsUsage = EMFUtils.allContainedObjectOfType(root, SuccessionAsUsage.class).toList();
+        this.fixImplicitSourceFeature(succesionAsUsage);
+        this.fixImplicitTarget(succesionAsUsage);
+    }
+
+    /**
+     * Try to fix all {@link SuccessionAsUsage} elements contained in the given root to workaround
+     * https://github.com/eclipse-syson/syson/issues/1042 and https://github.com/sensmetry/sysml-2ls/issues/13.
+     *
+     * @param root
+     *            a root element.
+     */
+    private void fixImplicitTarget(List<SuccessionAsUsage> succesionAsUsage) {
+        succesionAsUsage.stream().filter(this::hasImplicitTargetFeature)
+                .forEach(suc -> {
+                    Feature invalidFeature = suc.getConnectorEnd().get(1);
+                    FeatureMembership owningFeatureMembershit = invalidFeature.getOwningFeatureMembership();
+                    ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+                    EList<Element> ownedRelatedElements = owningFeatureMembershit.getOwnedRelatedElement();
+
+                    Membership previousMembershipFeature = this.computeTargetFeatureMembership(suc);
+                    if (previousMembershipFeature != null && ElementUtil.isFromLibrary(previousMembershipFeature.getMemberElement(), true)) {
+                        // For implicit target that targets an element of the standard library, we need to keep a
+                        // "virtual link" to the previous feature membership to identify the source of SuccessionAsUsage
+                        // see implementation :
+                        // org.eclipse.syson.diagram.common.view.services.ViewCreateService.createEndFeatureMembershipFor(Element)
+                        refUsage.getAliasIds().add(previousMembershipFeature.getElementId());
+                    }
+
+                    int index = ownedRelatedElements.indexOf(invalidFeature);
+                    ownedRelatedElements.remove(index);
+                    ownedRelatedElements.add(index, refUsage);
+                });
+    }
+
+    private void fixImplicitSourceFeature(List<SuccessionAsUsage> succesionAsUsage) {
+        succesionAsUsage.stream().filter(this::hasImplicitSourceFeature)
+                .forEach(suc -> {
+                    Feature invalidFeature = suc.getConnectorEnd().get(0);
+                    FeatureMembership owningFeatureMembershit = invalidFeature.getOwningFeatureMembership();
+                    ReferenceUsage refUsage = SysmlFactory.eINSTANCE.createReferenceUsage();
+                    EList<Element> ownedRelatedElements = owningFeatureMembershit.getOwnedRelatedElement();
+
+                    Membership previousMembershipFeature = this.computePreviousFeatureMembership(suc);
+                    if (previousMembershipFeature != null) {
+                        // For implicit source that targets an element of the standard library, we need to keep a
+                        // "virtual link" to the previous feature membership to identify the source of SuccessionAsUsage
+                        // see implementation :
+                        // org.eclipse.syson.diagram.common.view.services.ViewCreateService.createEndFeatureMembershipFor(Element)
+                        refUsage.getAliasIds().add(previousMembershipFeature.getElementId());
+                    }
+
+                    int index = ownedRelatedElements.indexOf(invalidFeature);
+                    ownedRelatedElements.remove(index);
+                    ownedRelatedElements.add(index, refUsage);
+                });
+    }
+
+    private Membership computePreviousFeatureMembership(SuccessionAsUsage successionAsUsage) {
+        Type owningType = successionAsUsage.getOwningType();
+        if (owningType != null) {
+            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
+            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
+            if (index > 0) {
+                ListIterator<Membership> iterator = ownedMemberships.subList(0, index).listIterator(index);
+                while (iterator.hasPrevious()) {
+                    Membership previous = iterator.previous();
+                    if (previous.getMemberElement() instanceof Feature) {
+                        return previous;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private Membership computeTargetFeatureMembership(SuccessionAsUsage successionAsUsage) {
+        Type owningType = successionAsUsage.getOwningType();
+        if (owningType != null) {
+
+            EList<Membership> ownedMemberships = owningType.getOwnedMembership();
+            int index = ownedMemberships.indexOf(successionAsUsage.getOwningMembership());
+            if (index > 0 && ownedMemberships.size() > index) {
+                ListIterator<Membership> iterator = ownedMemberships.subList(index + 1, ownedMemberships.size()).listIterator();
+                while (iterator.hasNext()) {
+                    Membership next = iterator.next();
+                    if (next.getMemberElement() instanceof Feature) {
+                        return next;
+                    }
+                }
+            }
+
+        }
+        return null;
+    }
+
+    private boolean hasImplicitSourceFeature(SuccessionAsUsage successionUsage) {
+        EList<Feature> ends = successionUsage.getConnectorEnd();
+        if (!ends.isEmpty()) {
+            Feature sourceEnd = ends.get(0);
+            return sourceEnd.eClass() == SysmlPackage.eINSTANCE.getFeature() && sourceEnd.getOwnedRelationship().isEmpty();
+        }
+        return false;
+    }
+
+    private boolean hasImplicitTargetFeature(SuccessionAsUsage successionUsage) {
+        EList<Feature> ends = successionUsage.getConnectorEnd();
+        if (ends.size() > 1) {
+            Feature sourceEnd = ends.get(1);
+            return sourceEnd.eClass() == SysmlPackage.eINSTANCE.getFeature() && sourceEnd.getOwnedRelationship().isEmpty();
+        }
+        return false;
     }
 
     public List<Message> getTransformationMessages() {

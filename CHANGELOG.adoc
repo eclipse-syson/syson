@@ -1,5 +1,22 @@
 = Changelog
 
+== v2025.4.0
+
+=== Breaking changes
+
+- Due to  https://github.com/eclipse-syson/syson/issues/1030[#1030], the _source_ and _target_ features are no longer editable on all concepts inheriting from `ConnectorAsUsage`.
+
+=== Dependency update
+
+=== Bug fixes
+
+=== Improvements
+
+- https://github.com/eclipse-syson/syson/issues/1028[#1028] [import] Improve `SuccessionAsUsage` with implicit source feature.
+- https://github.com/eclipse-syson/syson/issues/1030[#1030] `ConnectorAsUsage.getSourceFeature` and `ConnectorAsUsage.getTargetFeature` should redefine `Relationship.source` and `Relationship.target` features
+- https://github.com/eclipse-syson/syson/issues/1042[#1042] Improve SuccessionAsUsage defining directly the target actions.
+- https://github.com/eclipse-syson/syson/issues/1045[#1045] [export] Improve export to properly handle named `SuccessionAsUsage`
+
 == v2025.2.0 (work in progress)
 
 === Shapes
