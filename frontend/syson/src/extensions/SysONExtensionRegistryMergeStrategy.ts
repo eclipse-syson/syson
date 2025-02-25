@@ -13,11 +13,14 @@
 
 import {
   ComponentExtension,
-  ExtensionRegistryMergeStrategy,
   DataExtension,
+  ExtensionRegistryMergeStrategy,
 } from '@eclipse-sirius/sirius-components-core';
-import { DefaultExtensionRegistryMergeStrategy } from '@eclipse-sirius/sirius-web-application';
 import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import {
+  DefaultExtensionRegistryMergeStrategy,
+  navigationBarMenuEntryExtensionPoint,
+} from '@eclipse-sirius/sirius-web-application';
 
 export class SysONExtensionRegistryMergeStrategy
   extends DefaultExtensionRegistryMergeStrategy
@@ -37,6 +40,16 @@ export class SysONExtensionRegistryMergeStrategy
             contribution.identifier !== `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_object` &&
             contribution.identifier !== `siriusweb_${treeItemContextMenuEntryExtensionPoint.identifier}_document`
           );
+        }),
+        newValues
+      );
+    } else if (_identifier === navigationBarMenuEntryExtensionPoint.identifier) {
+      // Temporary hack to remove the Libraries menu
+      // To remove when the libraries mechanism will be fully implemented in Sirius Web
+      return super.mergeComponentExtensions(
+        _identifier,
+        existingValues.filter((contribution) => {
+          return contribution.identifier !== `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_libraries`;
         }),
         newValues
       );
