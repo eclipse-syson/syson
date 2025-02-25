@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -82,7 +82,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private IObjectService objectService;
+    private IObjectSearchService objectSearchService;
 
     @Autowired
     private EdgeCreationTester edgeCreationTester;
@@ -120,7 +120,7 @@ public class GVEdgeCreationTests extends AbstractIntegrationTests {
                 SysMLv2Identifiers.GENERAL_VIEW_DIAGRAM_DESCRIPTION_ID);
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectService);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService);
     }
 
     @AfterEach

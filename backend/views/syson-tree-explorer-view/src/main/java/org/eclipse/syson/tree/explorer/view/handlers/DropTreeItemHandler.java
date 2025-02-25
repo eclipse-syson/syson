@@ -22,7 +22,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.trees.api.IDropTreeItemHandler;
 import org.eclipse.sirius.components.collaborative.trees.dto.DropTreeItemInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
@@ -43,14 +44,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class DropTreeItemHandler implements IDropTreeItemHandler {
 
-    private IObjectService objectService;
+    private ILabelService labelService;
+
+    private IObjectSearchService objectSearchService;
 
     private SysONTreeViewDescriptionProvider treeProvider;
 
     private ISysMLMoveElementService moveService;
 
-    public DropTreeItemHandler(IObjectService objectService, SysONTreeViewDescriptionProvider treeProvider, ISysMLMoveElementService moveService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DropTreeItemHandler(ILabelService labelService, IObjectSearchService objectSearchService, SysONTreeViewDescriptionProvider treeProvider, ISysMLMoveElementService moveService) {
+        this.labelService = Objects.requireNonNull(labelService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.treeProvider = Objects.requireNonNull(treeProvider);
         this.moveService = Objects.requireNonNull(moveService);
     }
@@ -63,7 +67,7 @@ public class DropTreeItemHandler implements IDropTreeItemHandler {
     @Override
     public IStatus handle(IEditingContext editingContext, Tree tree, DropTreeItemInput input) {
 
-        Object targetObject = this.objectService.getObject(editingContext, input.targetElementId())
+        Object targetObject = this.objectSearchService.getObject(editingContext, input.targetElementId())
                 .orElse(null);
 
         boolean atLeastOneSuccessDrop = false;
@@ -71,7 +75,7 @@ public class DropTreeItemHandler implements IDropTreeItemHandler {
 
         if (targetObject instanceof Element targetElement) {
             List<Object> droppedObjects = input.droppedElementIds().stream()
-                    .map(id -> this.objectService.getObject(editingContext, id))
+                    .map(id -> this.objectSearchService.getObject(editingContext, id))
                     .filter(Optional::isPresent)
                     .map(Optional::get)
 
@@ -108,7 +112,7 @@ public class DropTreeItemHandler implements IDropTreeItemHandler {
     }
 
     private String getLabel(Object droppedElement) {
-        String label = this.objectService.getLabel(droppedElement);
+        String label = this.labelService.getLabel(droppedElement);
         if ((label == null || label.isEmpty()) && droppedElement instanceof EObject droppedEObject) {
             label = droppedEObject.eClass().getName();
         }

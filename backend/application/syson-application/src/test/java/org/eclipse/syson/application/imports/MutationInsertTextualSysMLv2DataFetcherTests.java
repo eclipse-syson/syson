@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
@@ -69,7 +69,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
     private MutationInsertTextualSysMLv2DataRunner queryRunner;
 
     @Autowired
-    private IObjectService objectService;
+    private IObjectSearchService objectSearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -90,7 +90,7 @@ public class MutationInsertTextualSysMLv2DataFetcherTests extends AbstractIntegr
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
-            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), this.objectService.getObject(editingContext, SIMPLE_PROJECT_PACKAGE1).get());
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), this.objectSearchService.getObject(editingContext, SIMPLE_PROJECT_PACKAGE1).get());
         };
         var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), SysMLv2Identifiers.SIMPLE_PROJECT_EDITING_CONTEXT_ID, function));
 

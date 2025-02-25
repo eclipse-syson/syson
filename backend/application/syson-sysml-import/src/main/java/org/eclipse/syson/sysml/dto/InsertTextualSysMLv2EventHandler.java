@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -58,7 +58,7 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHandler {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final ICollaborativeMessageService messageService;
 
@@ -68,9 +68,9 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
 
     private final Counter counter;
 
-    public InsertTextualSysMLv2EventHandler(IObjectService objectService, ICollaborativeMessageService messageService, IFeedbackMessageService feedbackMessageService,
+    public InsertTextualSysMLv2EventHandler(IObjectSearchService objectSearchService, ICollaborativeMessageService messageService, IFeedbackMessageService feedbackMessageService,
             SysmlToAst sysmlToAst, MeterRegistry meterRegistry) {
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.sysmlToAst = Objects.requireNonNull(sysmlToAst);
@@ -133,7 +133,7 @@ public class InsertTextualSysMLv2EventHandler implements IEditingContextEventHan
     }
 
     private Element getParentElement(String parentObjectId, IEMFEditingContext emfEditingContext) {
-        var parentObject = this.objectService.getObject(emfEditingContext, parentObjectId);
+        var parentObject = this.objectSearchService.getObject(emfEditingContext, parentObjectId);
         if (parentObject.isPresent()) {
             var object = parentObject.get();
             if (object instanceof Element parentElement) {

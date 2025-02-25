@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramServices;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -57,12 +57,12 @@ public class ViewNodeService {
 
     private final Logger logger = LoggerFactory.getLogger(ViewNodeService.class);
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final UtilService utilService;
 
-    public ViewNodeService(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ViewNodeService(IObjectSearchService objectSearchService) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.utilService = new UtilService();
     }
 
@@ -99,7 +99,7 @@ public class ViewNodeService {
                 .toList())
                 .orElse(List.of());
 
-        Object parentObject = this.objectService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
+        Object parentObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
 
         NodeDescriptionService nodeDescriptionService = new NodeDescriptionService();
 
@@ -298,7 +298,7 @@ public class ViewNodeService {
 
     private Node getOneMatchingAnnotatedNodes(Node node, EList<Element> annotatedElements, IDiagramContext diagramContext, IEditingContext editingContext) {
         Node matchingAnnotatedNode = null;
-        Optional<Object> semanticNodeOpt = this.objectService.getObject(editingContext, node.getTargetObjectId());
+        Optional<Object> semanticNodeOpt = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
         if (semanticNodeOpt.isPresent()) {
             if (annotatedElements.contains(semanticNodeOpt.get())) {
                 boolean isDeletingAnnotatingNode = diagramContext.getViewDeletionRequests().stream() //

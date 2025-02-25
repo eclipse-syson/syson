@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -103,7 +103,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private IObjectService objectService;
+    private IObjectSearchService objectSearchService;
 
     @Autowired
     private NodeCreationTester nodeCreationTester;
@@ -224,7 +224,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
         this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectService);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService);
     }
 
     @AfterEach
@@ -436,7 +436,7 @@ public class GVSubNodeRequirementCreationTests extends AbstractIntegrationTests 
                     .check(initialDiagram, newDiagram);
         };
         final ISemanticChecker semanticChecker = (editingContext) -> {
-            final Element semanticRootElement = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).filter(Element.class::isInstance)
+            final Element semanticRootElement = this.objectSearchService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).filter(Element.class::isInstance)
                     .map(Element.class::cast).orElseGet(() -> Assertions.fail("Could not find the expected root semantic object."));
             final List<PartUsage> allStakeholderPartUsages = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
                     .filter(element -> Objects.equals(element.getName(), "stakeholder1")).toList();

@@ -22,7 +22,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.syson.AbstractIntegrationTests;
 import org.eclipse.syson.application.controller.editingContext.checkers.ISemanticChecker;
@@ -66,7 +66,7 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
     private IGivenDiagramSubscription givenDiagramSubscription;
 
     @Autowired
-    private IObjectService objectService;
+    private IObjectSearchService objectSearchService;
 
     @Autowired
     private SemanticRunnableFactory semanticRunnableFactory;
@@ -83,7 +83,7 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
                 SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM);
         var flux = this.givenDiagramSubscription.subscribe(diagramEventInput);
         this.verifier = StepVerifier.create(flux);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectService);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService);
     }
 
     @AfterEach
@@ -100,7 +100,7 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
     @Test
     public void testImplicitSpecializationOnPartUsage() {
         ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
             assertThat(semanticRootObject).isInstanceOf(Element.class);
             Element semanticRootElement = (Element) semanticRootObject;
             Optional<PartUsage> optPartUsage = EMFUtils.allContainedObjectOfType(semanticRootElement, PartUsage.class)
@@ -152,7 +152,7 @@ public class ImplicitSpecializationsTests extends AbstractIntegrationTests {
     @Test
     public void testImplicitSpecializationOnAcceptActionUsage() {
         ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
             assertThat(semanticRootObject).isInstanceOf(Element.class);
             Element semanticRootElement = (Element) semanticRootObject;
             Optional<AcceptActionUsage> optAcceptActionUsage = EMFUtils.allContainedObjectOfType(semanticRootElement, AcceptActionUsage.class)

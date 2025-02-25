@@ -36,7 +36,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogTreeEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -111,7 +112,10 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private IObjectService objectService;
+    private IIdentityService identityService;
+
+    @Autowired
+    private IObjectSearchService objectSearchService;
 
     @Autowired
     private NodeCreationTester nodeCreationTester;
@@ -233,7 +237,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
 
         Runnable semanticChecker = this.semanticRunnableFactory.createRunnable(SysMLv2Identifiers.GENERAL_VIEW_EMPTY_EDITING_CONTEXT_ID,
                 (editingContext, executeEditingContextFunctionInput) -> {
-                    Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM_OBJECT).orElse(null);
+                    Object semanticRootObject = this.objectSearchService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_EMPTY_DIAGRAM_OBJECT).orElse(null);
                     assertThat(semanticRootObject).isInstanceOf(Element.class);
                     Element semanticRootElement = (Element) semanticRootObject;
                     assertThat(semanticRootElement.getOwnedElement()).anySatisfy(element -> {
@@ -308,7 +312,7 @@ public class GVTopNodeCreationTests extends AbstractIntegrationTests {
                     .findFirst()
                     .flatMap(this::getISQAcousticsLibraryPackageElement);
             if (optionalPackage.isPresent()) {
-                return Optional.of(this.objectService.getId(optionalPackage.get()));
+                return Optional.of(this.identityService.getId(optionalPackage.get()));
             }
         }
         return Optional.empty();

@@ -31,7 +31,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -102,7 +102,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private IObjectService objectService;
+    private IObjectSearchService objectSearchService;
 
     @Autowired
     private NodeCreationTester nodeCreationTester;
@@ -185,7 +185,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         this.diagramDescriptionIdProvider = new DiagramDescriptionIdProvider(this.diagramDescription, this.diagramIdProvider);
         this.creationTestsService = new NodeCreationTestsService(this.nodeCreationTester, this.descriptionNameGenerator);
         this.diagramCheckerService = new DiagramCheckerService(this.diagramComparator, this.descriptionNameGenerator);
-        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectService);
+        this.semanticCheckerService = new SemanticCheckerService(this.semanticRunnableFactory, this.objectSearchService);
     }
 
     @AfterEach
@@ -317,7 +317,7 @@ public class GVSubNodeAnalysisCreationTests extends AbstractIntegrationTests {
         };
         this.diagramCheckerService.checkDiagram(diagramChecker, this.diagram, this.verifier);
         ISemanticChecker semanticChecker = (editingContext) -> {
-            Object semanticRootObject = this.objectService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
+            Object semanticRootObject = this.objectSearchService.getObject(editingContext, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT).orElse(null);
             assertThat(semanticRootObject).isInstanceOf(Element.class);
             Element semanticRootElement = (Element) semanticRootObject;
             Optional<ReferenceUsage> optParentElement = EMFUtils.allContainedObjectOfType(semanticRootElement, ReferenceUsage.class)

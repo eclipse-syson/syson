@@ -22,7 +22,8 @@ import java.util.Set;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
@@ -46,7 +47,9 @@ import org.eclipse.syson.sysml.helper.EMFUtils;
  */
 public class ToolService {
 
-    protected final IObjectService objectService;
+    protected final IIdentityService identityService;
+
+    protected final IObjectSearchService objectSearchService;
 
     protected final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
@@ -54,9 +57,10 @@ public class ToolService {
 
     protected final ISysMLMoveElementService moveService;
 
-    public ToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService,
-            ISysMLMoveElementService moveService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService,
+                       ISysMLMoveElementService moveService) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.moveService = Objects.requireNonNull(moveService);
@@ -117,7 +121,7 @@ public class ToolService {
     }
 
     protected boolean isPresent(Element element, List<Node> nodes) {
-        return nodes.stream().anyMatch(node -> node.getTargetObjectId().equals(this.objectService.getId(element)));
+        return nodes.stream().anyMatch(node -> node.getTargetObjectId().equals(this.identityService.getId(element)));
     }
 
     protected ViewCreationRequest createView(Element element, IEditingContext editingContext, IDiagramContext diagramContext, Object selectedNode,
@@ -141,7 +145,7 @@ public class ToolService {
                 .containmentKind(nodeKind)
                 .descriptionId(descriptionId)
                 .parentElementId(parentElementId)
-                .targetObjectId(this.objectService.getId(element))
+                .targetObjectId(this.identityService.getId(element))
                 .build();
         diagramContext.getViewCreationRequests().add(request);
         return request;
@@ -205,18 +209,18 @@ public class ToolService {
                     .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), node.getDescriptionId()))
                     .findFirst()
                     .orElse(null);
-            parentObject = this.objectService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
+            parentObject = this.objectSearchService.getObject(editingContext, node.getTargetObjectId()).orElse(null);
             candidates = nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes);
         } else if (parent instanceof ViewCreationRequest viewCreationRequest && viewCreationRequest.getDescriptionId() != null) {
             NodeDescription parentNodeDescription = convertedNodes.values().stream()
                     .filter(nodeDescription -> Objects.equals(nodeDescription.getId(), viewCreationRequest.getDescriptionId()))
                     .findFirst()
                     .orElse(null);
-            parentObject = this.objectService.getObject(editingContext, viewCreationRequest.getTargetObjectId()).orElse(null);
+            parentObject = this.objectSearchService.getObject(editingContext, viewCreationRequest.getTargetObjectId()).orElse(null);
             candidates = nodeDescriptionService.getChildNodeDescriptionsForRendering(element, parentObject, List.of(parentNodeDescription), convertedNodes);
         } else {
             var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagramContext.getDiagram().getDescriptionId());
-            parentObject = this.objectService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId()).orElse(null);
+            parentObject = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId()).orElse(null);
             candidates = diagramDescription
                     .filter(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::isInstance)
                     .map(org.eclipse.sirius.components.diagrams.description.DiagramDescription.class::cast)
