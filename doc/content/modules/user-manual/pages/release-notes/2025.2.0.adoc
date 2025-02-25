@@ -28,6 +28,7 @@ Export to textual SysMLv2 is not fully implemented yet so there are still unhand
 - In diagrams, labels of `Usages` (e.g.: `Attribute Usages`) with a `Feature Value` relationship having the _initial_ property set to true now use the ":=" symbol instead of "=".
 - In diagrams, labels of `Usages` (e.g.: `Attribute Usages`) with a `Feature Value` relationship having the _default_ property set to true now display the _default_ keyword.
 - In the `General View` diagram, the multiplicity is no longer displayed on graphical edges to conform to the SysMLv2 specification.
+- In the `General View` diagram, fix an issue where the execution of `New Port In/Inout/Out` tools was failing.
 
 == New features
 
@@ -128,7 +129,7 @@ To do so, create a `@Primary @Configuration` that extend `SysMLDefaultLibrariesC
 
 == Dependency update
 
-- Switch to Sirius Web 2025.1.6
+- Switch to Sirius Web 2025.1.7
 - Switch to SysIDE 0.8.0
 - Upgrade `turbo` to version 2.3.3
 - Switch to Spring Boot 3.4.1
