@@ -236,6 +236,14 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
                 .map(TestNameGenerator::namedArguments);
     }
 
+    private static Stream<Arguments> directedPortsInPartDefinitionChildNodeParameters() {
+        return Stream.of(
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), "New Port In"),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), "New Port Inout"),
+                Arguments.of(SysmlPackage.eINSTANCE.getPortUsage(), "ports", SysmlPackage.eINSTANCE.getDefinition_OwnedPort(), "New Port Out"))
+                .map(TestNameGenerator::namedArguments);
+    }
+
     @BeforeEach
     public void setUp() {
         this.givenInitialServerState.initialize();
@@ -428,6 +436,20 @@ public class GVSubNodeStructureCreationTests extends AbstractIntegrationTests {
         String parentLabel = "part";
         this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, childEClass);
         this.diagramCheckerService.checkDiagram(this.diagramCheckerService.getSiblingNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, childEClass, compartmentCount),
+                this.diagram, this.verifier);
+        this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
+    }
+
+    @Sql(scripts = { "/scripts/syson-test-database.sql" }, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = { "/scripts/cleanup.sql" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD, config = @SqlConfig(transactionMode = SqlConfig.TransactionMode.ISOLATED))
+    @ParameterizedTest
+    @MethodSource("directedPortsInPartDefinitionChildNodeParameters")
+    public void createDirectedPortsInPartDefinitionChildNodeParameters(EClass childEClass, String compartmentName, EReference containmentReference, String creationToolName) {
+        EClass parentEClass = SysmlPackage.eINSTANCE.getPartDefinition();
+        String parentLabel = "PartDefinition";
+        this.creationTestsService.createNode(this.verifier, this.diagramDescriptionIdProvider, this.diagram, parentEClass, parentLabel, creationToolName);
+        this.diagramCheckerService.checkDiagram(
+                this.diagramCheckerService.getCompartmentNodeGraphicalChecker(this.diagram, this.diagramDescriptionIdProvider, parentLabel, parentEClass, containmentReference, compartmentName),
                 this.diagram, this.verifier);
         this.semanticCheckerService.checkEditingContext(this.semanticCheckerService.getElementInParentSemanticChecker(parentLabel, containmentReference, childEClass), this.verifier);
     }

@@ -237,9 +237,9 @@ public class ViewCreateService {
             if (item instanceof Element elementItem) {
                 var membership = this.createAppropriateMembership(structuralFeature);
                 element.getOwnedRelationship().add(membership);
-                membership.getOwnedRelatedElement().add(result);
+                membership.getOwnedRelatedElement().add(elementItem);
                 result = this.elementInitializer(elementItem);
-                if (directionLiteral != null && item instanceof Feature feature) {
+                if (directionLiteral != null && elementItem instanceof Feature feature) {
                     feature.setDirection(FeatureDirectionKind.get(directionLiteral));
                     result.setDeclaredName(result.getName() + StringUtils.capitalize(directionLiteral));
                 }

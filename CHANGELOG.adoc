@@ -35,6 +35,7 @@ Export to textual SysMLv2 is not fully implemented yet so there are still unhand
 - https://github.com/eclipse-syson/syson/issues/1003[#1003] Invalid label for `Usages` (e.g.: `Attribute Usage`) when their `Feature Value` aims to define "default" value.
 - https://github.com/eclipse-syson/syson/issues/1020[#1020] [general-view] The multiplicity should not be displayed on edges.
 - https://github.com/eclipse-syson/syson/issues/1009[#1009] [metamodel] Fix an issue where the diagram direct edit on graphical nodes could raise a backend error on unsettable enum attributes.
+- https://github.com/eclipse-syson/syson/issues/1052[#1052] [general-view] Fix an issue where the execution of "New Port In/Inout/Out" tools was failing.
 
 === Improvements
 
@@ -95,7 +96,7 @@ The _Validation_ view show the results of the execution of the constraints on yo
 
 === Dependency update
 
-- [releng] Switch to Sirius Web 2025.1.0
+- [releng] Switch to Sirius Web 2025.1.7
 - [releng] Upgrade `turbo` to version 2.3.3 (from 1.13.3 before)
 The `start` task used in our turbo configuration is now marked as `persistent` and as a result we have separated the `start` script from `syson` used to run the frontend in dev from from the `start` script from other packages used to build them in development mode by renaming the later to `build-dev`.
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.1[Spring Boot 3.4.1].
