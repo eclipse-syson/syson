@@ -13,6 +13,7 @@
 *** xref:user-manual:features/details.adoc[]
 *** xref:user-manual:features/related-elements.adoc[]
 *** xref:user-manual:features/representations-view.adoc[]
+*** xref:user-manual:features/query-view.adoc[]
 *** xref:user-manual:features/validation.adoc[]
 *** xref:user-manual:features/keyboard-shortcuts.adoc[]
 ** xref:user-manual:features/general-view.adoc[]
@@ -20,6 +21,8 @@
 ** xref:user-manual:features/action-flow-view.adoc[]
 ** xref:user-manual:features/state-transition-view.adoc[]
 ** xref:user-manual:features/other-views.adoc[]
+
+* xref:user-manual:features/import-export-textual.adoc[]
 
 * xref:user-manual:features/mbse-capability.adoc[]
 

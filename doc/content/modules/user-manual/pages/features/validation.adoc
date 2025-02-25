@@ -5,6 +5,10 @@ include::user-manual:partial$before-you-start-experimental-all.adoc[]
 The {validation} view displays diagnostics for the entire project, organized by their kind such as `ERROR`, `WARNING`, or `INFO`.
 Users can conveniently toggle the visibility of diagnostics by using an accordion widget.
 
-Validation view is turn-off for now and no diagnostic are available.
+image::validation-view-collapsed.png[Validation View collapsed, width=85%,height=85%]
+
+The {validation} view displays the result of the execution of the constraints (a.k.a. validation rules) from the {sysmlv2} language.
+
+image::validation-view-expanded.png[Validation View expanded, width=85%,height=85%]
 
 Feel free to xref:ROOT:help.adoc[contact us] for more details.

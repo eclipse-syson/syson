@@ -26,6 +26,7 @@ asciidoc:
     product-jar: "org.eclipse.syson.syson-application-YYYY.M.X.jar"
     projects-list: "Projects List"
     projects-list-menu: "Project Options Menu"
+    query-view: "Query"
     related-elements: "Related Elements"
     representations-view: "Representations"
     resources-url: "https://mbse-syson.org/#resources"

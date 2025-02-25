@@ -1,8 +1,9 @@
 = Simulation and validation tools
 
-Validation view is disabled for now, more details are explained on xref:features/validation.adoc[Validation] page.
+A {validation} view is available, more details are explained on xref:features/validation.adoc[Validation] page.
 
-{product} plans the ability to export data in sysMlv2 to connect to a simulation tools such as Matlab or others.
+{product} also has the ability to export data in {sysmlv2} to connect to a simulation tools such as Matlab or others.
+More details are explained on xref:features/import-export-textual.adoc[Textual Import/Export] page.
 
 Interested in integrating simulation and validation tools with {product}?
 Feel free to xref:ROOT:help.adoc[contact us] for more details.

@@ -22,7 +22,7 @@ The sidebar can be toggled by clicking on the icon of the active view.
 ====
 
 [#switch-right-sidebar]
-== Access {details} / {representations-view} / {related-elements} views from the right sidebar
+== Access {details} / {query-view} / {representations-view} / {related-elements} views from the right sidebar
 
 To seamlessly switch between the Details, the Representations and the Related Elements views in the right sidebar of {product}, use the following steps:
 
