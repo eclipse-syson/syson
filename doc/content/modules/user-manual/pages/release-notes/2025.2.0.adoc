@@ -102,7 +102,7 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 
 == Dependency update
 
-- Switch to Sirius Web 2025.1.7
+- Switch to Sirius Web 2025.2.0
 - Switch to SysIDE 0.8.0
 - Upgrade `turbo` to version 2.3.3
 - Switch to Spring Boot 3.4.1
