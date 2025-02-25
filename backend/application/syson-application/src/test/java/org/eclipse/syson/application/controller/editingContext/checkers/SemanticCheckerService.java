@@ -15,7 +15,7 @@ package org.eclipse.syson.application.controller.editingContext.checkers;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.syson.application.data.SysMLv2Identifiers;
 import org.eclipse.syson.services.SemanticRunnableFactory;
@@ -31,15 +31,15 @@ public class SemanticCheckerService {
 
     private final SemanticRunnableFactory semanticRunnableFactory;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
-    public SemanticCheckerService(SemanticRunnableFactory semanticRunnableFactory, IObjectService objectService) {
+    public SemanticCheckerService(SemanticRunnableFactory semanticRunnableFactory, IObjectSearchService objectSearchService) {
         this.semanticRunnableFactory = semanticRunnableFactory;
-        this.objectService = objectService;
+        this.objectSearchService = objectSearchService;
     }
 
     public ISemanticChecker getElementInParentSemanticChecker(String parentLabel, EReference containmentReference, EClass childEClass) {
-        return new CheckElementInParent(this.objectService, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT)
+        return new CheckElementInParent(this.objectSearchService, SysMLv2Identifiers.GENERAL_VIEW_WITH_TOP_NODES_DIAGRAM_OBJECT)
                 .withParentLabel(parentLabel)
                 .withContainmentReference(containmentReference)
                 .hasType(childEClass);

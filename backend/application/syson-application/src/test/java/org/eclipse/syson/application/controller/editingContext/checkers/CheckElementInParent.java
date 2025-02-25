@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.syson.sysml.Element;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 
@@ -32,7 +32,7 @@ import org.eclipse.syson.sysml.helper.EMFUtils;
  */
 public class CheckElementInParent implements ISemanticChecker {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final String rootElementId;
 
@@ -42,8 +42,8 @@ public class CheckElementInParent implements ISemanticChecker {
 
     private EClass eClass;
 
-    public CheckElementInParent(IObjectService objectService, String rootElementId) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public CheckElementInParent(IObjectSearchService objectSearchService, String rootElementId) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.rootElementId = Objects.requireNonNull(rootElementId);
     }
 
@@ -64,7 +64,7 @@ public class CheckElementInParent implements ISemanticChecker {
 
     @Override
     public void check(IEditingContext editingContext) {
-        Object semanticRootObject = this.objectService.getObject(editingContext, this.rootElementId).orElse(null);
+        Object semanticRootObject = this.objectSearchService.getObject(editingContext, this.rootElementId).orElse(null);
         assertThat(semanticRootObject).isInstanceOf(Element.class);
         Element semanticRootElement = (Element) semanticRootObject;
         Optional<Element> optParentElement = EMFUtils.allContainedObjectOfType(semanticRootElement, Element.class)

@@ -21,7 +21,8 @@ import java.util.stream.Stream;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -49,9 +50,9 @@ public class InterconnectionViewToolService extends ViewToolService {
 
     private final ElementInitializerSwitch elementInitializerSwitch;
 
-    public InterconnectionViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
-        super(objectService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService, feedbackMessageService, moveService);
+    public InterconnectionViewToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+                                          IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
+        super(identityService, objectSearchService, representationDescriptionSearchService, viewRepresentationDescriptionSearchService, feedbackMessageService, moveService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
     }
 

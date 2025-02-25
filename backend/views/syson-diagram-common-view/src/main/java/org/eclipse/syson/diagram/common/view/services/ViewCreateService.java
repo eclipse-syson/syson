@@ -24,7 +24,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -83,7 +83,7 @@ public class ViewCreateService {
 
     private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService;
 
@@ -93,10 +93,10 @@ public class ViewCreateService {
 
     private final UtilService utilService;
 
-    public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectService objectService,
+    public ViewCreateService(IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IObjectSearchService objectSearchService,
             ShowDiagramsInheritedMembersService showDiagramsInheritedMembersService) {
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.showDiagramsInheritedMembersService = Objects.requireNonNull(showDiagramsInheritedMembersService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
@@ -508,7 +508,7 @@ public class ViewCreateService {
             // parent is diagram
             id = diagram.getTargetObjectId();
         }
-        return this.objectService.getObject(editingContext, id)
+        return this.objectSearchService.getObject(editingContext, id)
                 .filter(Element.class::isInstance)
                 .map(Element.class::cast)
                 .orElse(null);

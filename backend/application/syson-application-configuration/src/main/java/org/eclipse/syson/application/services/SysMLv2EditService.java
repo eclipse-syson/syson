@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IDefaultEditService;
 import org.eclipse.sirius.components.core.api.IEditServiceDelegate;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.syson.services.DeleteService;
@@ -56,7 +56,7 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     private final IDefaultEditService defaultEditService;
 
-    private final IObjectService objectService;
+    private final ILabelService labelService;
 
     private final IEMFKindService emfKindService;
 
@@ -64,9 +64,9 @@ public class SysMLv2EditService implements IEditServiceDelegate {
 
     private final UtilService utilService;
 
-    public SysMLv2EditService(IDefaultEditService defaultEditService, IObjectService objectService, IEMFKindService emfKindService) {
+    public SysMLv2EditService(IDefaultEditService defaultEditService, ILabelService labelService, IEMFKindService emfKindService) {
         this.defaultEditService = Objects.requireNonNull(defaultEditService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.labelService = Objects.requireNonNull(labelService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.deleteService = new DeleteService();
         this.utilService = new UtilService();
@@ -87,14 +87,14 @@ public class SysMLv2EditService implements IEditServiceDelegate {
         final List<ChildCreationDescription> rootObjectCreationDescription = new ArrayList<>();
         if (SysmlPackage.eNS_URI.equals(domainId)) {
             if (suggested) {
-                List<String> iconURL = this.objectService.getImagePath(EcoreUtil.create(SysmlPackage.eINSTANCE.getPackage()));
-                String label = this.objectService.getLabel(SysmlPackage.eINSTANCE.getPackage());
+                List<String> iconURL = this.labelService.getImagePath(EcoreUtil.create(SysmlPackage.eINSTANCE.getPackage()));
+                String label = this.labelService.getLabel(SysmlPackage.eINSTANCE.getPackage());
                 rootObjectCreationDescription.add(new ChildCreationDescription(ID_PREFIX + SysmlPackage.eINSTANCE.getPackage().getName(), label, iconURL));
             } else {
                 List<EClass> childrenCandidates = new GetChildCreationSwitch().doSwitch(SysmlPackage.eINSTANCE.getNamespace());
                 childrenCandidates.forEach(candidate -> {
-                    List<String> iconURL = this.objectService.getImagePath(EcoreUtil.create(candidate));
-                    String label = this.objectService.getLabel(candidate);
+                    List<String> iconURL = this.labelService.getImagePath(EcoreUtil.create(candidate));
+                    String label = this.labelService.getLabel(candidate);
                     ChildCreationDescription childCreationDescription = new ChildCreationDescription(ID_PREFIX + candidate.getName(), label, iconURL);
                     rootObjectCreationDescription.add(childCreationDescription);
                 });
@@ -117,8 +117,8 @@ public class SysMLv2EditService implements IEditServiceDelegate {
             if (eClass.isPresent()) {
                 List<EClass> childrenCandidates = new GetChildCreationSwitch().doSwitch(eClass.get());
                 childrenCandidates.forEach(candidate -> {
-                    List<String> iconURL = this.objectService.getImagePath(EcoreUtil.create(candidate));
-                    String label = this.objectService.getLabel(candidate);
+                    List<String> iconURL = this.labelService.getImagePath(EcoreUtil.create(candidate));
+                    String label = this.labelService.getLabel(candidate);
                     ChildCreationDescription childCreationDescription = new ChildCreationDescription(ID_PREFIX + candidate.getName(), label, iconURL);
                     childCreationDescriptions.add(childCreationDescription);
                 });

@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextApplicationService;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.ChangeType;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
@@ -40,16 +40,16 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
 
     private final IDefaultProjectDataVersioningRestService defaultProjectDataVersioningRestService;
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final SysONObjectRestService objectRestService;
 
     private final IEditingContextApplicationService editingContextApplicationService;
 
-    public SysONProjectDataVersioningRestService(IDefaultProjectDataVersioningRestService defaultProjectDataVersioningRestService, IObjectService objectService,
+    public SysONProjectDataVersioningRestService(IDefaultProjectDataVersioningRestService defaultProjectDataVersioningRestService, IIdentityService identityService,
             SysONObjectRestService objectRestService, IEditingContextApplicationService editingContextApplicationService) {
         this.defaultProjectDataVersioningRestService = Objects.requireNonNull(defaultProjectDataVersioningRestService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
         this.objectRestService = Objects.requireNonNull(objectRestService);
         this.editingContextApplicationService = Objects.requireNonNull(editingContextApplicationService);
     }
@@ -82,7 +82,7 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
         if (commitId != null && projectId.isPresent() && Objects.equals(commitId.toString(), projectId.get()) && changeTypesAllowed) {
             var elements = this.objectRestService.getElements(editingContext);
             for (var element : elements) {
-                var elementId = this.objectService.getId(element);
+                var elementId = this.identityService.getId(element);
                 var changeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
                 var dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), element);
                 dataVersions.add(dataVersion);
@@ -98,7 +98,7 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
         if (changeId != null && projectId.isPresent() && Objects.equals(commitId.toString(), projectId.get())) {
             var elements = this.objectRestService.getElements(editingContext);
             for (var element : elements) {
-                var elementId = this.objectService.getId(element);
+                var elementId = this.identityService.getId(element);
                 if (elementId != null) {
                     var computedChangeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
                     if (Objects.equals(changeId.toString(), computedChangeId.toString())) {

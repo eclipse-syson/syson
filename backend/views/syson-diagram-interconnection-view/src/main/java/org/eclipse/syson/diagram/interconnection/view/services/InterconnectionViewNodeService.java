@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.syson.diagram.interconnection.view.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.syson.diagram.common.view.services.ViewNodeService;
 import org.eclipse.syson.diagram.interconnection.view.InterconnectionViewDiagramDescriptionProvider;
 import org.eclipse.syson.sysml.ActionUsage;
@@ -40,8 +40,8 @@ public class InterconnectionViewNodeService extends ViewNodeService {
 
     private final Logger logger = LoggerFactory.getLogger(InterconnectionViewNodeService.class);
 
-    public InterconnectionViewNodeService(IObjectService objectService) {
-        super(objectService);
+    public InterconnectionViewNodeService(IObjectSearchService objectSearchService) {
+        super(objectSearchService);
     }
 
     /**

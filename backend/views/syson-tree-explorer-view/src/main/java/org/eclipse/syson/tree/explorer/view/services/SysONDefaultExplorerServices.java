@@ -19,8 +19,9 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -43,7 +44,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysONDefaultExplorerServices implements ISysONDefaultExplorerService {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
+
+    private final IContentService contentService;
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
@@ -53,9 +56,10 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     private final UtilService utilService = new UtilService();
 
-    public SysONDefaultExplorerServices(IObjectService objectService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices,
+    public SysONDefaultExplorerServices(IIdentityService identityService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices,
             ISysONExplorerFilterService filterService) {
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
+        this.contentService = Objects.requireNonNull(contentService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
         this.filterService = Objects.requireNonNull(filterService);
@@ -125,7 +129,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
         } else if (self instanceof Resource resource) {
             hasChildren = !this.filterService.applyFilters(resource.getContents(), activeFilterIds).isEmpty();
         } else if (self instanceof Element element) {
-            List<Object> contents = this.filterService.applyFilters(this.objectService.getContents(self), activeFilterIds);
+            List<Object> contents = this.filterService.applyFilters(this.contentService.getContents(self), activeFilterIds);
             hasChildren = !contents.isEmpty() && contents.stream().anyMatch(e -> !(e instanceof EAnnotation))
                 || this.hasRepresentation(element, editingContext);
         }
@@ -133,7 +137,7 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     }
 
     private boolean hasRepresentation(EObject self, IEditingContext editingContext) {
-        String id = this.objectService.getId(self);
+        String id = this.identityService.getId(self);
         return this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id);
     }
 

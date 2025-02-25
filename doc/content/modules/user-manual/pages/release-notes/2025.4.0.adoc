@@ -13,7 +13,7 @@ name is truncated.
 
 image::release-notes-package-name-ellipsis-overflow.png[Package name overflow with ellipsis, width=85%,height=85%]
 
-- In diagrams, the direct edit tool on `Feature` elements now allows to use the ":=" and "default" symbols (see for more details in xref:user-manual:how-tos/model-management.adoc#direct-edit[user documentation] ).
+- In diagrams, the direct edit tool on `Feature` elements now allows to use the ":=" and "default" symbols (see for more details in xref:user-manual:hands-on/how-tos/model-management.adoc#direct-edit[user documentation] ).
 - It is now possible to create a `General View` diagram under root namespace elements.
 
 image::release-notes-create-diagram-on-root-namespace-element.png[Create diagram on root namespace element, width=50%, height=50%]

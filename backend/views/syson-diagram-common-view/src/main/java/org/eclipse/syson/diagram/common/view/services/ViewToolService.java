@@ -36,7 +36,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
@@ -125,9 +126,9 @@ public class ViewToolService extends ToolService {
 
     private final NodeDescriptionService nodeDescriptionService;
 
-    public ViewToolService(IObjectService objectService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
-        super(objectService, representationDescriptionSearchService, feedbackMessageService, moveService);
+    public ViewToolService(IIdentityService identityService, IObjectSearchService objectSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
+                           IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, ISysMLMoveElementService moveService) {
+        super(identityService, objectSearchService, representationDescriptionSearchService, feedbackMessageService, moveService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.elementInitializerSwitch = new ElementInitializerSwitch();
         this.deleteService = new DeleteService();
@@ -357,10 +358,10 @@ public class ViewToolService extends ToolService {
         Optional<Object> optTargetElement;
         Optional<org.eclipse.sirius.components.view.diagram.NodeDescription> optNodeDescription = Optional.empty();
         if (selectedNode != null) {
-            optTargetElement = this.objectService.getObject(editingContext, selectedNode.getTargetObjectId());
+            optTargetElement = this.objectSearchService.getObject(editingContext, selectedNode.getTargetObjectId());
             optNodeDescription = convertedNodes.entrySet().stream().filter(entry -> entry.getValue().getId().equals(selectedNode.getDescriptionId())).map(Entry::getKey).findFirst();
         } else {
-            optTargetElement = this.objectService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
+            optTargetElement = this.objectSearchService.getObject(editingContext, diagramContext.getDiagram().getTargetObjectId());
         }
         if (optNodeDescription.isPresent() && optNodeDescription.get().getName().contains("EmptyDiagram")) {
             // The element is dropped on the information box displayed on an empty diagram. This box is visible only if

@@ -26,7 +26,8 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
@@ -87,7 +88,10 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
     private IDiagramIdProvider diagramIdProvider;
 
     @Autowired
-    private IObjectService objectService;
+    private IIdentityService identityService;
+
+    @Autowired
+    private IObjectSearchService objectSearchService;
 
     @Autowired
     private DropFromExplorerTester dropFromExplorerTester;
@@ -218,13 +222,13 @@ public class GVDropFromExplorerTests extends AbstractIntegrationTests {
     }
 
     private String getSemanticElementWithTargetObjectLabel(IEditingContext editingContext, String targetObjectLabel) {
-        Object semanticRootObject = this.objectService.getObject(editingContext,
+        Object semanticRootObject = this.objectSearchService.getObject(editingContext,
                 SysMLv2Identifiers.GENERAL_VIEW_ADD_EXISTING_ELEMENTS_DIAGRAM_OBJECT).orElse(null);
         assertThat(semanticRootObject).isInstanceOf(Package.class);
         Package rootPackage = (Package) semanticRootObject;
         Optional<Element> optPartUsage = rootPackage.getOwnedMember().stream().filter(m -> Objects.equals(m.getName(), targetObjectLabel)).findFirst();
         assertThat(optPartUsage).isPresent();
-        String partUsageId = this.objectService.getId(optPartUsage.get());
+        String partUsageId = this.identityService.getId(optPartUsage.get());
         assertThat(partUsageId).isNotNull();
         return partUsageId;
     }
