@@ -26,7 +26,9 @@ import {
   DiagramRepresentationConfiguration,
   footerExtensionPoint,
   navigationBarIconExtensionPoint,
+  navigationBarMenuEntryExtensionPoint,
   navigationBarMenuHelpURLExtensionPoint,
+  NavigationBarMenuItemProps,
   NodeTypeRegistry,
   SiriusWebApplication,
 } from '@eclipse-sirius/sirius-web-application';
@@ -113,6 +115,17 @@ extensionRegistry.addComponent(treeItemContextMenuEntryExtensionPoint, {
 extensionRegistry.addComponent(footerExtensionPoint, {
   identifier: `syson_${footerExtensionPoint.identifier}`,
   Component: SysONFooter,
+});
+
+// Temporary hack to remove the Libraries menu
+// To remove when the libraries mechanism will be fully implemented in Sirius Web
+const HideLibrariesButtonContribution = ({}: NavigationBarMenuItemProps) => {
+  return <></>;
+};
+
+extensionRegistry.addComponent(navigationBarMenuEntryExtensionPoint, {
+  identifier: `siriusweb_${navigationBarMenuEntryExtensionPoint.identifier}_libraries`,
+  Component: HideLibrariesButtonContribution,
 });
 
 /*
