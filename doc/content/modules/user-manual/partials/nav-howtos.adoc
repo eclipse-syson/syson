@@ -6,3 +6,5 @@
 ** xref:user-manual:hands-on/how-tos/user-interface-navigation.adoc[]
 ** xref:user-manual:hands-on/how-tos/explorer.adoc[]
 ** xref:user-manual:hands-on/how-tos/representations-view.adoc[]
+** xref:user-manual:features/query-view.adoc[]
+** xref:user-manual:features/import-export-textual.adoc[]

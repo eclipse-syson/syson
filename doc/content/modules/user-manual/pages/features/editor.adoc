@@ -64,7 +64,7 @@ xref:features/features.adoc#sysmlv2-views[Explore various types of representatio
 
 === Right sidebar
 
-The right sidebar contains different views such as the xref:features/details.adoc[{details}], the xref:features/representations-view.adoc[{representations-view}] and the xref:features/related-elements.adoc[{related-elements}] views to ...
+The right sidebar contains different views such as the xref:features/details.adoc[{details}], the xref:features/query-view.adoc[{query-view}], the xref:features/representations-view.adoc[{representations-view}] and the xref:features/related-elements.adoc[{related-elements}] views to ...
 
 [NOTE]
 ====

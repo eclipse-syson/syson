@@ -60,8 +60,8 @@ The changes are:
 - https://github.com/eclipse-syson/syson/issues/960[#960] [general-view] In the selection dialog of the creation tools for `Stakeholders` and `Actors`, display possible `Part Usage` candidates in a tree instead of a list.
 - https://github.com/eclipse-syson/syson/issues/1012[#1012] [general-view] Allow `Package` and `NamespaceImport` graphical nodes to be smaller than their default size
 - https://github.com/eclipse-syson/syson/issues/1006[#1006] [details] Display `FeatureValue.isDefault` and `FeatureValue.isInitial` in Core tab of `FeatureValue` concept.
-- https://github.com/eclipse-syson/syson/issues/1018[#1018] [libraries] Make customizing the default metamodels and libraries available in SysML projects easier by making default implementation `SysONDefaultLibrariesConfiguration` more extensible.
-
+- https://github.com/eclipse-syson/syson/issues/1018[#1018] [libraries] Make customizing the default metamodels and libraries available in SysML projects easier by making default implementation `SysONDefaultLibrariesConfiguration.java` more extensible.
+To do so, create a `@Primary @Configuration` component that extend `SysMLDefaultLibrariesConfiguration`, and optionally redefine `getDefaultLibraries()` method and/or `getDefaultEPackages()`.
 
 === New features
 

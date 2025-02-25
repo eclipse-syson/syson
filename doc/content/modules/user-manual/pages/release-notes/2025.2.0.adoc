@@ -32,48 +32,24 @@ Export to textual SysMLv2 is not fully implemented yet so there are still unhand
 
 == New features
 
-- A new experimental view named _Query_ is available in SysON, allowing users to query the models.
+- A new view named _Query_ is available in SysON, allowing users to query the models.
 
 image::release-notes-query-view.png[Query View, width=85%,height=85%]
 
 This view allows to write AQL queries (see https://eclipse.dev/acceleo/documentation/[AQL documentation] for more details) and get the results of the queries written.
-[WARNING]
-====
-This view comes from https://eclipse.dev/sirius/sirius-web.html[Sirius Web], the software on which SysON is based upon.
-It will be improved release after release, with new variables and services, but it is experimental for now.
-====
-Only one variable is accessible for now, `editingContext` which represent the current project.
-From this context, you can use the following services:
-
-- `Collection<Object> allContents()`: allows to retrieve all contents recursively (documents, and each element of all models) present in your editing context.
-Please use this service very carefully as it can retrieve thousands elements very easily and may also lead to performance issues.
-- `Collection<Object> contents()`: allows to retrieve all contents (documents) present in your editing context.
-- `Object getObjectById(String id)`: from its ID, allows to retrieve an object (a document or a {sysmlv2} model Element) present in your editing context.
-
-[WARNING]
-====
-The use of this _Query_ view requires knowledge of AQL and also a good knowledge of the {sysmlv2} language (attributes, references, operations).
-====
-Here are some examples of AQL queries applied on a simple project:
-- The following example uses the `getObjectById` service with an ID as parameter, corresponding to the _Package 1_ element (its ID has been retrieved from the _Advanced_ tab in _Details_ view).
-
-image::release-notes-query-view-getObjectById.png[Query View getObjectById, width=85%,height=85%]
-
-The result is visible in the _Evaluation result_ part of the _Query_ view (_Package 1_).
-
-- The following example uses the `ownedMember` reference from the SysMLv2 language, applied on _Package 1_ element.
-
-image::release-notes-query-view-ownedMember.png[Query View ownedMember, width=85%,height=85%]
-
-The result is visible in the _Evaluation result_ part of the _Query_ view (_part1_ and _action1_).
-In this case it corresponds to the members of _Package 1_ that you can also see in the _Explorer_ view on the left side of the screenshot above.
+Please read the xref:user-manual:features/query-view.adoc[Query view section] in this documentation for more details.
 
 - The _Validation_ view now displays the result of the execution of the constraints (a.k.a. validation rules) from the SysMLv2 specification.
 
-- Users can now move semantic elements using the drag and drop operation in the _Explorer_ view.
+image::release-notes-validation-view.png[Validation View, width=85%,height=85%]
+
+- Users can now move semantic elements using the drag and drop operation in the _Explorer_ view (i.e. move tree items inside the _Explorer_ view).
 
 - Users can now undo and redo any semantic change (i.e. in _Explorer_ and _Details_ views) with "CTRL + z" and "CTRL + y".
 Undo/redo is not available yet in diagrams.
+
+- A minimap is now available on all diagrams, at the bottom right corner.
+This minimap allows to see the whole diagram in a small square, it highlights the current viewport, and allows to click/drag/scroll the minimap to navigate the diagram.
 
 == Improvements
 
@@ -122,10 +98,7 @@ image::release-notes-diagrams-export-as-png.png[Export diagram as PNG, width=50%
 
 - In the `General View` diagram, `Package` and `Namespace Import` graphical nodes can now be resized smaller than their default size.
 - Display in the _Details_ view the properties _isDefault_ and _isInitial_ in Core tab of `Feature Value` concept.
-- It is now easier for downstream applications to customize the default metamodels and libraries made available in all SysML projects.
-To do so, create a `@Primary @Configuration` that extend `SysMLDefaultLibrariesConfiguration`, and optionally redefine `getDefaultLibraries()` and/or `getDefaultEPackages()`.
 - Fix an issue where the diagram direct edit on graphical nodes could raise a backend error on unsettable enum attributes.
-
 
 == Dependency update
 
