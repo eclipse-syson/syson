@@ -1,8 +1,21 @@
 = Changelog
 
-== v2025.2.0
+== v2025.4.0 (work in progress)
 
 === Shapes
+
+=== Breaking changes
+
+=== Dependency update
+
+=== Bug fixes
+
+=== Improvements
+
+=== New features
+
+
+== v2025.2.0
 
 === Breaking changes
 
@@ -11,7 +24,6 @@
 It replaces the public methods _UtilService.moveMembership_ and _ToolService.moveSemanticElement_
 * A new service has been added to centralize the verification of read-only elements in _org.eclipse.syson.services.api.ISysMLReadOnlyService_.
 - https://github.com/eclipse-syson/syson/issues/1018[#1018] `SysMLStandardLibrariesConfiguration` has been refactored and renamed `SysONDefaultLibrariesConfiguration`.
-
 
 === Dependency update
 
