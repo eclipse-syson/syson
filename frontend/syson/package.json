@@ -29,6 +29,7 @@
     "@eclipse-sirius/sirius-components-tsconfig": "2025.2.0",
     "@eclipse-sirius/sirius-components-validation": "2025.2.0",
     "@eclipse-sirius/sirius-components-widget-reference": "2025.2.0",
+    "@eclipse-sirius/sirius-components-widget-table": "2025.2.0",
     "@eclipse-sirius/sirius-web-application": "2025.2.0",
     "@eclipse-syson/syson-components": "2025.1.8",
     "@lexical/react": "0.8.1",

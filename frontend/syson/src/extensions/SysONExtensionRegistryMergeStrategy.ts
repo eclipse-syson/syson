@@ -18,6 +18,7 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
 import {
+  apolloClientOptionsConfigurersExtensionPoint,
   DefaultExtensionRegistryMergeStrategy,
   navigationBarMenuEntryExtensionPoint,
 } from '@eclipse-sirius/sirius-web-application';
@@ -62,7 +63,7 @@ export class SysONExtensionRegistryMergeStrategy
     existingValues: DataExtension<any>,
     newValues: DataExtension<any>
   ): DataExtension<any> {
-    if (identifier === 'apolloClient#apolloClientOptionsConfigurers') {
+    if (identifier === apolloClientOptionsConfigurersExtensionPoint.identifier) {
       return this.mergeApolloClientContributions(existingValues, newValues);
     }
     return newValues;
