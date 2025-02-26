@@ -8,6 +8,11 @@
 
 == Improvements
 
+- In `General View` and `State Transition View` diagrams, when `Packages` labels exceed the available space, an ellipsis is added to provide a visual indication that the
+name is truncated.
+
+image::release-notes-package-name-ellipsis-overflow.png[Package name overflow with ellipsis, width=85%,height=85%]
+
 == Dependency update
 
 == Technical details

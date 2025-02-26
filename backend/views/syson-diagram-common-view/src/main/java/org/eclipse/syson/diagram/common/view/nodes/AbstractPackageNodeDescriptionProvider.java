@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
+import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -74,7 +75,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
      * description.
      *
      * @param cache
-     *            the cache used to retrieve node descriptions.
+     *         the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that are added as reused child.
      */
     protected abstract List<NodeDescription> getReusedChildren(IViewDiagramElementFinder cache);
@@ -84,7 +85,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
      * {@link NodeDescription}.
      *
      * @param cache
-     *            the cache used to retrieve node descriptions.
+     *         the cache used to retrieve node descriptions.
      * @return the list of {@link NodeDescription} that can be dropped inside this package.
      */
     protected abstract List<NodeDescription> getDroppableNodes(IViewDiagramElementFinder cache);
@@ -94,7 +95,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
      * This list is used to create edge tools associated to this package.
      *
      * @param cache
-     *            the cache used to retrieve node descriptions.
+     *         the cache used to retrieve node descriptions.
      * @return the list of all {@link NodeDescription} defined in the diagram.
      */
     protected abstract List<NodeDescription> getAllNodeDescriptions(IViewDiagramElementFinder cache);
@@ -155,6 +156,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .position(InsideLabelPosition.TOP_CENTER)
                 .style(this.createInsideLabelStyle())
                 .textAlign(LabelTextAlign.CENTER)
+                .overflowStrategy(LabelOverflowStrategy.ELLIPSIS)
                 .build();
     }
 
