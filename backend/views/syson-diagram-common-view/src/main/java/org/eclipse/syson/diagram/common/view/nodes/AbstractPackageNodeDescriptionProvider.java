@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -300,6 +300,7 @@ public abstract class AbstractPackageNodeDescriptionProvider extends AbstractNod
                 .name(this.descriptionNameGenerator.getCreationToolName(eClass))
                 .iconURLsExpression("/icons/full/obj16/" + eClass.getName() + ".svg")
                 .body(createMembership.build())
+                .elementsToSelectExpression("aql:newInstance")
                 .build();
     }
 }
