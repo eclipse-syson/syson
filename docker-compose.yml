@@ -9,7 +9,7 @@ services:
     networks:
       - syson
   app:
-    image: "${IMAGE_TAG:-eclipsesyson/syson:v2025.1.8}"
+    image: "${IMAGE_TAG:-eclipsesyson/syson:v2025.2.0}"
     ports:
       - "8080:8080"
     environment:
