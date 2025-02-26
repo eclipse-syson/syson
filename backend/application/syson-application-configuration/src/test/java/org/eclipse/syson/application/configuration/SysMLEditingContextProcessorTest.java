@@ -63,7 +63,8 @@ public class SysMLEditingContextProcessorTest {
         resourceSet.setPackageRegistry(ePackageRegistry);
         resourceSet.eAdapters().add(new ECrossReferenceAdapter());
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
-        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysONDefaultLibrariesConfiguration(), e -> false);
+        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysONDefaultLibrariesConfiguration(new SysONLoadDefaultLibrariesOnApplicationStartConfiguration()),
+                e -> false);
         editingContextProcessor.preProcess(editingContext);
         assertNotNull(resourceSet);
     }
@@ -112,7 +113,8 @@ public class SysMLEditingContextProcessorTest {
         rSet.setPackageRegistry(ePackageRegistry);
         rSet.eAdapters().add(new ECrossReferenceAdapter());
         EditingContext editingContext = new EditingContext(UUID.randomUUID().toString(), editingDomain, Map.of(), List.of());
-        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysONDefaultLibrariesConfiguration(), e -> true);
+        SysMLEditingContextProcessor editingContextProcessor = new SysMLEditingContextProcessor(new SysONDefaultLibrariesConfiguration(new SysONLoadDefaultLibrariesOnApplicationStartConfiguration()),
+                e -> true);
         editingContextProcessor.preProcess(editingContext);
 
         assertThat(editingContext.getDomain().getResourceSet().eAdapters()).noneMatch(adapter -> adapter instanceof SysONEContentAdapter);

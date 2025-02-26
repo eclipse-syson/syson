@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuration to load the KerML and SysML standard libraries.
+ * Configuration to load KerML and SysML default libraries.
  *
  * @author arichard
  */
@@ -60,7 +60,10 @@ public class SysONDefaultLibrariesConfiguration {
 
     private ResourceSet librariesResourceSet;
 
-    public SysONDefaultLibrariesConfiguration() {
+    public SysONDefaultLibrariesConfiguration(SysONLoadDefaultLibrariesOnApplicationStartConfiguration startConfiguration) {
+        if (startConfiguration.mustLoadDefaultLibrariesOnStart()) {
+            this.getLibrariesResourceSet();
+        }
     }
 
     public ResourceSet getLibrariesResourceSet() {
