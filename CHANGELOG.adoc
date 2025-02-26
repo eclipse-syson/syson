@@ -12,6 +12,8 @@
 
 === Improvements
 
+-https://github.com/eclipse-syson/syson/issues/1061[#1061] [general-view] Add ellipsis on `Packages` label, to provide visual feedback on name overflow.
+
 === New features
 
 
