@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.syson.application.configuration.SysONDefaultLibrariesConfiguration;
+import org.eclipse.syson.application.configuration.SysONLoadDefaultLibrariesOnApplicationStartConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,7 +60,7 @@ public class ASTTransformerTest {
 
     @BeforeAll
     public static void beforeAll() {
-        standardLibraries = new ArrayList<>(new SysONDefaultLibrariesConfiguration().getLibrariesResourceSet().getResources());
+        standardLibraries = new ArrayList<>(new SysONDefaultLibrariesConfiguration(new SysONLoadDefaultLibrariesOnApplicationStartConfiguration()).getLibrariesResourceSet().getResources());
     }
 
     @BeforeEach
@@ -675,7 +676,7 @@ public class ASTTransformerTest {
         assertEquals(attributeUsagecount, assignmentActionUsage.getReferent());
 
         // to check and fix if needed
-        OperatorExpression operatorExpression = (OperatorExpression) assignmentActionUsage.getTargetArgument();
+        // OperatorExpression operatorExpression = (OperatorExpression) assignmentActionUsage.getTargetArgument();
         // assertEquals("+", operatorExpression.getOperator());
         // To implement assertEquals(1, (LiteralInteger) operatorExpression.getOperand().get(0));
 
