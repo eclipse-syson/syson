@@ -16,5 +16,6 @@ export default defineConfig(({ mode }) => ({
   //Dependencies (such as react-trello) might expect environment variables to be defined (REDUX_LOGGING in this case).
   define: {
     'process.env': { ...process.env, ...loadEnv(mode, process.cwd()) },
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(process.env.npm_package_version),
   },
 }));

@@ -30,10 +30,11 @@ const useFooterStyles = makeStyles()((theme: Theme) => ({
 
 export const SysONFooter = ({}: FooterProps) => {
   const { classes } = useFooterStyles();
+  const appVersion = import.meta.env.VITE_APP_VERSION;
   return (
     <footer className={classes.footer}>
       <Typography variant="caption">
-        &copy; {new Date().getFullYear()} Obeo. SysON v2025.2.0. Powered by&nbsp;
+        &copy; {new Date().getFullYear()} Obeo. SysON v{appVersion}. Powered by&nbsp;
       </Typography>
       <Link variant="caption" href="https://www.eclipse.dev/sirius" rel="noopener noreferrer" target="_blank">
         Sirius Web
