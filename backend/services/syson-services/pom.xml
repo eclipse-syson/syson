@@ -18,7 +18,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.1</version>
+		<version>3.4.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.eclipse.syson</groupId>
@@ -29,7 +29,7 @@
 
 	<properties>
 		<java.version>17</java.version>
-		<sirius.web.version>2025.2.0</sirius.web.version>
+		<sirius.web.version>2025.2.1</sirius.web.version>
 		<antlr.version>4.10.1</antlr.version>
 	</properties>
 

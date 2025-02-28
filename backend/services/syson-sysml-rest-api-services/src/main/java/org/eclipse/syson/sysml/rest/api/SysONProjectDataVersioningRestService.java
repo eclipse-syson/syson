@@ -20,7 +20,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingContextApplicationService;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.ChangeType;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestCommit;
@@ -28,6 +28,9 @@ import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataId
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestDataVersion;
 import org.eclipse.sirius.web.application.project.data.versioning.services.api.IDefaultProjectDataVersioningRestService;
 import org.eclipse.sirius.web.application.project.data.versioning.services.api.IProjectDataVersioningRestServiceDelegate;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,14 +47,14 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
 
     private final SysONObjectRestService objectRestService;
 
-    private final IEditingContextApplicationService editingContextApplicationService;
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
 
     public SysONProjectDataVersioningRestService(IDefaultProjectDataVersioningRestService defaultProjectDataVersioningRestService, IIdentityService identityService,
-            SysONObjectRestService objectRestService, IEditingContextApplicationService editingContextApplicationService) {
+            SysONObjectRestService objectRestService, IProjectSemanticDataSearchService projectSemanticDataSearchService) {
         this.defaultProjectDataVersioningRestService = Objects.requireNonNull(defaultProjectDataVersioningRestService);
         this.identityService = Objects.requireNonNull(identityService);
         this.objectRestService = Objects.requireNonNull(objectRestService);
-        this.editingContextApplicationService = Objects.requireNonNull(editingContextApplicationService);
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
     }
 
     @Override
@@ -77,7 +80,7 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
     @Override
     public List<RestDataVersion> getCommitChange(IEditingContext editingContext, UUID commitId, List<ChangeType> changeTypes) {
         List<RestDataVersion> dataVersions = new ArrayList<>();
-        var projectId = this.editingContextApplicationService.getProjectId(editingContext.getId());
+        var projectId = this.getProjectId(editingContext.getId());
         var changeTypesAllowed = changeTypes == null || changeTypes.isEmpty();
         if (commitId != null && projectId.isPresent() && Objects.equals(commitId.toString(), projectId.get()) && changeTypesAllowed) {
             var elements = this.objectRestService.getElements(editingContext);
@@ -94,7 +97,7 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
     @Override
     public RestDataVersion getCommitChangeById(IEditingContext editingContext, UUID commitId, UUID changeId) {
         RestDataVersion dataVersion = null;
-        var projectId = this.editingContextApplicationService.getProjectId(editingContext.getId());
+        var projectId = this.getProjectId(editingContext.getId());
         if (changeId != null && projectId.isPresent() && Objects.equals(commitId.toString(), projectId.get())) {
             var elements = this.objectRestService.getElements(editingContext);
             for (var element : elements) {
@@ -129,5 +132,12 @@ public class SysONProjectDataVersioningRestService implements IProjectDataVersio
     @Override
     public RestBranch deleteBranch(IEditingContext editingContext, UUID branchId) {
         return this.defaultProjectDataVersioningRestService.getBranchById(editingContext, branchId);
+    }
+
+    protected Optional<String> getProjectId(String editingContextId) {
+        return new UUIDParser().parse(editingContextId)
+                .flatMap(semanticDataId -> this.projectSemanticDataSearchService.findBySemanticDataId(AggregateReference.to(semanticDataId)))
+                .map(ProjectSemanticData::getProject)
+                .map(AggregateReference::getId);
     }
 }

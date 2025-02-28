@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: test_username
       POSTGRES_PASSWORD: test_password
   app:
-    image: "${IMAGE_TAG:-eclipsesyson/syson:latest}"
+    image: '${IMAGE_TAG:-eclipsesyson/syson:latest}'
     ports:
       - '8080:8080'
     environment:

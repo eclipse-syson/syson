@@ -500,7 +500,6 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private WidgetDescription createTextfieldWidget() {
         TextfieldDescription textfield = FormFactory.eINSTANCE.createTextfieldDescription();
-        textfield.setDiagnosticsExpression("aql:Sequence{}");
         textfield.setName("TextfieldWidget");
         textfield.setLabelExpression(AQLUtils.getSelfServiceCallExpression("getDetailsViewLabel", E_STRUCTURAL_FEATURE));
         textfield.setValueExpression(AQLUtils.getSelfServiceCallExpression("eGet", E_STRUCTURAL_FEATURE));
@@ -552,7 +551,6 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private FormElementDescription createDocumentationWidget() {
         TextAreaDescription textarea = FormFactory.eINSTANCE.createTextAreaDescription();
-        textarea.setDiagnosticsExpression("aql:Sequence{}");
         textarea.setName("DocumentationWidget");
         textarea.setLabelExpression("Documentation");
         textarea.setValueExpression(AQLUtils.getSelfServiceCallExpression("getDocumentation"));
@@ -570,7 +568,6 @@ public class SysMLv2PropertiesConfigurer implements IPropertiesDescriptionRegist
 
     private FormElementDescription createCommentWidget() {
         TextAreaDescription textarea = FormFactory.eINSTANCE.createTextAreaDescription();
-        textarea.setDiagnosticsExpression("aql:Sequence{}");
         textarea.setName("CommentWidget");
         textarea.setLabelExpression("Comment");
         textarea.setValueExpression(AQLUtils.getSelfServiceCallExpression("getCommentBody"));

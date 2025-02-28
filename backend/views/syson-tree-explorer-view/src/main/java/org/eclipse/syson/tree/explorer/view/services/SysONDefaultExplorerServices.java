@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -137,8 +138,12 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
     }
 
     private boolean hasRepresentation(EObject self, IEditingContext editingContext) {
-        String id = this.identityService.getId(self);
-        return this.representationMetadataSearchService.existAnyRepresentationForProjectAndTargetObjectId(AggregateReference.to(editingContext.getId()), id);
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        if (optionalSemanticDataId.isPresent()) {
+            String id = this.identityService.getId(self);
+            return this.representationMetadataSearchService.existAnyRepresentationMetadataForSemanticDataAndTargetObjectId(AggregateReference.to(optionalSemanticDataId.get()), id);
+        }
+        return false;
     }
 
     @Override
