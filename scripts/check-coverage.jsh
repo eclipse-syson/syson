@@ -36,18 +36,18 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel", 49.0),
   new ModuleCoverage("syson-siriusweb-customnodes-metamodel-edit", 0.0),
   new ModuleCoverage("syson-direct-edit-grammar", 64.0),
-  new ModuleCoverage("syson-services", 64.0),
+  new ModuleCoverage("syson-services", 65.0),
   new ModuleCoverage("syson-sysml-rest-api-services", 94.0),
   new ModuleCoverage("syson-sysml-import", 77.0),
   new ModuleCoverage("syson-sysml-export", 88.0),
   new ModuleCoverage("syson-sysml-validation", 99.0),
   new ModuleCoverage("syson-diagram-common-view", 79.0),
-  new ModuleCoverage("syson-diagram-general-view", 99.0),
+  new ModuleCoverage("syson-diagram-general-view", 98.0),
   new ModuleCoverage("syson-diagram-actionflow-view", 96.0),
   new ModuleCoverage("syson-diagram-statetransition-view", 94.0),
   new ModuleCoverage("syson-diagram-interconnection-view", 95.0),
   new ModuleCoverage("syson-tree-explorer-view", 83.0),
-  new ModuleCoverage("syson-application-configuration", 43.0),
+  new ModuleCoverage("syson-application-configuration", 44.0),
   new ModuleCoverage("syson-application", 37.0)
 );
 
