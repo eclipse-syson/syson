@@ -8,6 +8,8 @@ In such cases, delete the `SuccessionUsage` graphical node and recreate it graph
 
 == Bug fixes
 
+- In `Explorer View`, the fold/unfold arrow is now also available for non-sysml model elements.
+
 == New features
 
 == Improvements
