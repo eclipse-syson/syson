@@ -133,6 +133,8 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             List<Object> contents = this.filterService.applyFilters(this.contentService.getContents(self), activeFilterIds);
             hasChildren = !contents.isEmpty() && contents.stream().anyMatch(e -> !(e instanceof EAnnotation))
                 || this.hasRepresentation(element, editingContext);
+        } else {
+            hasChildren = explorerServices.hasChildren(self, editingContext);
         }
         return hasChildren;
     }
