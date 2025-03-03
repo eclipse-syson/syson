@@ -1,0 +1,39 @@
+= Add support for ViewUsages and ViewDefinitions
+
+== Problem
+
+In SysON, users cannot use ViewUsages and ViewDefinitions to define and instantiate diagrams/trees/tables...
+Furthermore, inside one diagram, users cannot see other diagrams.
+
+== Key Result
+
+1. all Sirius Web graphical representations should be associated to _sysml::ViewUsages_ elements
+2. The _New Representation_ modal in the _Explorer_ view applied on a _sysml::Package/Usage/Definition_ should create a _sysml::ViewUsage_ inside this _sysml::Package/Usage/Definition_.
+.. then the new representation should be created on this to _sysml::ViewUsage_.
+3. The list of candidates available in the _New Representation_ modal should be:
+.. the standard view definitions from the standard libraries (GeneralView, InterconnectionView, ActionFlowView...) 
+.. the _sysml::ViewDefinitions_ from the current project and known libraries.
+4. A diagram containing a tree can contains other kind of diagrams, inside _sysml::ViewUsages_ graphical nodes.
+5. In a diagram, on a graphical node, a menu entry/tool allows to change its graphical representation to some other _sysml::ViewUsages_.
+.. e.g. a PartUsage represented as a Tree can be change to a PartUSage represented as an InterconnectionView
+.. TODO confirm item #5
+6. _sysml::ViewUsages_ can be displayed in SysON diagrams
+.. also be drag and dropped from the _Explorer_ view.
+7. _sysml::Relationships_ stay synchronized edges, so it should be possible to display them between two _sysml::ViewUsages_ inside a diagram.
+8. There should remain only one _siriusweb::view::DiagramDescription_.
+..existing _siriusweb::view::DiagramDescription_ such as GeneralView, InterconnectionView, ActionFlowView should be merged in only one _siriusweb::view::DiagramDescription_.
+.. a mechanism should be developed to pick the appropriate _siriusweb::view::NodeDescriptions_ in this unique _siriusweb::view::DiagramDescription_ to create the appropriate diagram (e.g. a GeneralView).
+.. SysON library could be developed to propose some type of diagrams (i.e. _sysml::ViewDefinitions_) off-the-shelf (e.g. TreeDiagram)
+
+== Solution
+
+
+=== Scenario
+
+=== Breadboarding
+
+=== Cutting backs
+
+== Rabbit holes
+
+== No-gos
