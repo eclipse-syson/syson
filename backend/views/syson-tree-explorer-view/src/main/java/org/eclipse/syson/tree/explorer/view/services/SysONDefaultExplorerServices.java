@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.views.explorer.services.ExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.syson.services.UtilService;
@@ -57,13 +58,16 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
 
     private final UtilService utilService = new UtilService();
 
+    private final ExplorerServices siriuswebExplorerService;
+
     public SysONDefaultExplorerServices(IIdentityService identityService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices,
-            ISysONExplorerFilterService filterService) {
+            ISysONExplorerFilterService filterService, ExplorerServices siriuswebExplorerService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.contentService = Objects.requireNonNull(contentService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.explorerServices = Objects.requireNonNull(explorerServices);
         this.filterService = Objects.requireNonNull(filterService);
+        this.siriuswebExplorerService = Objects.requireNonNull(siriuswebExplorerService);
     }
 
     @Override
@@ -133,6 +137,8 @@ public class SysONDefaultExplorerServices implements ISysONDefaultExplorerServic
             List<Object> contents = this.filterService.applyFilters(this.contentService.getContents(self), activeFilterIds);
             hasChildren = !contents.isEmpty() && contents.stream().anyMatch(e -> !(e instanceof EAnnotation))
                 || this.hasRepresentation(element, editingContext);
+        } else {
+            siriuswebExplorerService.hasChildren(self, editingContext);
         }
         return hasChildren;
     }
