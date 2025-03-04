@@ -8,6 +8,8 @@ In such cases, delete the `SuccessionUsage` graphical node and recreate it graph
 
 == Bug fixes
 
+- Fix a problem encountered during the import of a SysML textual file in a specific model configuration. The model incorrectly resolves the target of a `Redefintion` when a name conflict is encountered.
+
 == New features
 
 == Improvements

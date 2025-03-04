@@ -108,9 +108,13 @@ public class ProxyResolver {
                 if (membership != null) {
                     if (SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(proxyObject.eClass())) {
                         target = membership;
-                    } else {
+                    } else if (eReference.getEType().isInstance(membership.getMemberElement())) {
                         target = membership.getMemberElement();
                     }
+                }
+                // Return the first matching element
+                if (target != null) {
+                    return target;
                 }
             }
         }
