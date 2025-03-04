@@ -419,38 +419,6 @@ public class ASTTransformerTest {
 
     }
 
-    @DisplayName("Test Conjugated")
-    @Test
-    void convertConjugatedPortTest() {
-        Resource testResource = this.getResourceFromFile("ASTTransformerTest/convertConjugatedPortTest/conjugatedPort.ast.json", true);
-        assertNotNull(testResource);
-
-        Namespace namespace = (Namespace) testResource.getContents().get(0);
-        Package packageObject = (Package) namespace.getMember().get(0);
-
-        AttributeDefinition tempAttributeDefinition = (AttributeDefinition) packageObject.getMember().get(0);
-        assertEquals("Temp", tempAttributeDefinition.getName());
-
-        PortDefinition tempPortPortDefinition = (PortDefinition) packageObject.getMember().get(1);
-        assertEquals("TempPort", tempPortPortDefinition.getName());
-        AttributeUsage temperatureAttributeUsage = tempPortPortDefinition.getOwnedAttribute().get(0);
-        assertEquals("temperature", temperatureAttributeUsage.getName());
-        assertEquals(tempAttributeDefinition, temperatureAttributeUsage.getOwnedSpecialization().get(0).getGeneral());
-
-        PartDefinition tempPortClassicPartDefinition = (PartDefinition) packageObject.getMember().get(2);
-        assertEquals("TempPortClassic", tempPortClassicPartDefinition.getName());
-        PortUsage tempPortClassicPortUsage = tempPortClassicPartDefinition.getOwnedPort().get(0);
-        assertEquals("tempPortClassic", tempPortClassicPortUsage.getName());
-        assertEquals(tempPortPortDefinition, tempPortClassicPortUsage.getOwnedSpecialization().get(0).getGeneral());
-
-        PartDefinition tempPortConjPartDefinition = (PartDefinition) packageObject.getMember().get(3);
-        assertEquals("TempPortConj", tempPortConjPartDefinition.getName());
-        PortUsage tempPortConjPortUsage = tempPortConjPartDefinition.getOwnedPort().get(0);
-        assertEquals("tempPortConj", tempPortConjPortUsage.getName());
-
-        assertEquals(1, tempPortConjPortUsage.getOwnedTyping().size());
-    }
-
     @DisplayName("Test Subclassification")
     @Test
     void convertSubclassificationTest() {

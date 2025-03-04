@@ -14,6 +14,7 @@ package org.eclipse.syson.application.imports;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
@@ -27,10 +28,14 @@ import org.eclipse.syson.services.UtilService;
 import org.eclipse.syson.sysml.ConjugatedPortDefinition;
 import org.eclipse.syson.sysml.Feature;
 import org.eclipse.syson.sysml.Membership;
+import org.eclipse.syson.sysml.PartUsage;
 import org.eclipse.syson.sysml.PortDefinition;
 import org.eclipse.syson.sysml.PortUsage;
+import org.eclipse.syson.sysml.Redefinition;
 import org.eclipse.syson.sysml.ReferenceUsage;
+import org.eclipse.syson.sysml.Specialization;
 import org.eclipse.syson.sysml.SuccessionAsUsage;
+import org.eclipse.syson.sysml.Type;
 import org.eclipse.syson.sysml.helper.EMFUtils;
 import org.eclipse.syson.sysml.upload.SysMLExternalResourceLoaderService;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,6 +68,91 @@ public class ImportSysMLModelTest extends AbstractIntegrationTests {
     @BeforeEach
     public void setUp() {
         this.checker = new SysMLv2SemanticImportChecker(this.sysmlResourceLoader, this.editingDomainFactory, this.sysMLEditingContextProcessor);
+    }
+
+    @Test
+    @DisplayName("Given a model with duplicated names, when importing the model, then the resolution of name shoud match the closest matching element")
+    public void checkNameResolutionProcessWithDuplicatedName() throws IOException {
+        var input = """
+                package p1 {
+                    part pa1 {
+                        part pa11 :> pa1;
+                        part pa1;
+                    }
+                }""";
+
+        this.checker.checkImportedModel(resource -> {
+            PartUsage pa11 = EMFUtils.allContainedObjectOfType(resource, PartUsage.class)
+                    .filter(pa -> "pa11".equals(pa.getDeclaredName()))
+                    .findFirst().get();
+
+            assertThat(pa11.getOwnedSpecialization()).hasSize(1);
+
+            Specialization specialization = pa11.getOwnedSpecialization().get(0);
+
+            Type general = specialization.getGeneral();
+
+            assertNotNull(general);
+            assertThat(general.getQualifiedName()).isEqualTo("p1::pa1::pa1"); // And not "p1::pa1"
+
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a model with a Redefintion, when importing the model, then the resolution of name should special Redefinition rules")
+    public void checkNameResolutionProcessInRedifinition() throws IOException {
+        var input = """
+                package p1 {
+                    part pa2 :> pa0 {
+                        part pa11 :>> pa1;
+                    }
+                    part pa0 {
+                        part pa1;
+                    }
+                }""";
+
+        this.checker.checkImportedModel(resource -> {
+            PartUsage pa11 = EMFUtils.allContainedObjectOfType(resource, PartUsage.class)
+                    .filter(pa -> "pa11".equals(pa.getDeclaredName()))
+                    .findFirst().get();
+
+            assertThat(pa11.getOwnedRedefinition()).hasSize(1);
+
+            Redefinition redefinition = pa11.getOwnedRedefinition().get(0);
+
+            Feature redefinedFeature = redefinition.getRedefinedFeature();
+
+            assertNotNull(redefinedFeature);
+            assertThat(redefinedFeature.getQualifiedName()).isEqualTo("p1::pa0::pa1");
+
+        }).check(input);
+    }
+
+    @Test
+    @DisplayName("Given a model with a reference to an invalid type, when importing the model then the resolution of name shoud not set a reference with an incompatible target")
+    public void checkNameResolutionProcessWithInvalidTargetName() throws IOException {
+        var input = """
+                package p1 {
+                    part pa1 {
+                        part pa11 :> pa1; // <-- 'pa1' resolve to the Package "pa1" in the current namespace. This model is not valid.
+                        package pa1;
+                    }
+                }""";
+
+        this.checker.checkImportedModel(resource -> {
+            PartUsage pa11 = EMFUtils.allContainedObjectOfType(resource, PartUsage.class)
+                    .filter(pa -> "pa11".equals(pa.getDeclaredName()))
+                    .findFirst().get();
+
+            assertThat(pa11.getOwnedSpecialization()).hasSize(1);
+
+            Specialization specialization = pa11.getOwnedSpecialization().get(0);
+
+            Type general = specialization.getGeneral();
+
+            assertNull(general);
+
+        }).check(input);
     }
 
     @Test

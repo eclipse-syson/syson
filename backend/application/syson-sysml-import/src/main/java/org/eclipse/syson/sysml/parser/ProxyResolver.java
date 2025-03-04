@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -72,18 +72,9 @@ public class ProxyResolver {
                 proxiedReference.owner().eSet(proxiedReference.reference(), resultCollection);
             }
         } else {
-            // Manage specific case of conjugated port
-            if (proxiedReference.owner() instanceof ConjugatedPortTyping && realElement instanceof PortDefinition elementPortDefinition) {
-                realElement = elementPortDefinition.getConjugatedPortDefinition();
-            }
             proxiedReference.owner().eSet(proxiedReference.reference(), realElement);
-            if (realElement != null) {
-                LOGGER.debug("Set the reference {} of object {} with the resolved proxy {} to target {}", proxiedReference.reference().getName(), proxiedReference.owner(),
-                        proxiedReference.targetProxy().eProxyURI().fragment(), realElement);
-            } else {
-                LOGGER.debug("Unable to set the reference {} of object {} because of the unresolved proxy {}.", proxiedReference.reference().getName(), proxiedReference.owner(),
-                        proxiedReference.targetProxy().eProxyURI().fragment());
-            }
+            LOGGER.debug("Set the reference {} of object {} with the resolved proxy {} to target {}", proxiedReference.reference().getName(), proxiedReference.owner(),
+                    proxiedReference.targetProxy().eProxyURI().fragment(), realElement);
         }
         return true;
     }
@@ -108,13 +99,24 @@ public class ProxyResolver {
                 if (membership != null) {
                     if (SysmlPackage.eINSTANCE.getMembership().isSuperTypeOf(proxyObject.eClass())) {
                         target = membership;
-                    } else {
+                    } else if (eReference.getEType().isInstance(membership.getMemberElement())) {
                         target = membership.getMemberElement();
+                    } else if (this.isConjufatedPortReference(owner, membership.getMemberElement())) {
+                        // Manage specific case of conjugated port
+                        target = ((PortDefinition) membership.getMemberElement()).getConjugatedPortDefinition();
                     }
+                }
+                // Return the first matching element
+                if (target != null) {
+                    return target;
                 }
             }
         }
 
         return target;
+    }
+
+    private boolean isConjufatedPortReference(final EObject owner, final Element target) {
+        return owner instanceof ConjugatedPortTyping && target instanceof PortDefinition elementPortDefinition;
     }
 }

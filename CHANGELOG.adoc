@@ -17,8 +17,9 @@
 
 === Bug fixes
 
-- https://github.com/eclipse-syson/syson/issues/870[#870] Fix an issue while computing the name of `VariantMembership`. 
-- https://github.com/eclipse-syson/syson/issues/1083[#1083] Fix an issue where resolving against "unrestricted" name did not work
+- https://github.com/eclipse-syson/syson/issues/870[#870] [metamodel] Fix an issue while computing the name of `VariantMembership`. 
+- https://github.com/eclipse-syson/syson/issues/1083[#1083] [metamodel] Fix an issue where resolving against "unrestricted" name did not work
+- https://github.com/eclipse-syson/syson/issues/1075[#1075] [import] Fix a ClassCastException thrown while importing a model with a name conflict.
 
 === Improvements
 
